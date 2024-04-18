@@ -10,7 +10,7 @@
     <!-- Add Google Icons link -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="css/login.css">
-    @vite(['resources/scss/app.scss','resources/js/app.js','resources/css/app.css'])
+    @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
     <style>
        body {
