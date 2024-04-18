@@ -1,0 +1,63 @@
+// Imports
+@use "../vars/colors" as colors;
+
+// ==============================
+// Contenedor de vistas
+// ==============================
+.content-views {
+  display: block;
+  padding: 20px;
+
+  .title-component {
+    h1 {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 15px;
+      margin-bottom: 3px;
+      color: rgba(colors.$black, 0.8);
+    }
+
+    // Divisor
+    .divisor-title {
+      height: 3px;
+      margin-bottom: 15px;
+      border-radius: 50px;
+      background-color: colors.$primary;
+      width: calc(8px * var(--title-length, 0));
+    }
+  }
+
+  .views {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: colors.$white;
+    border: 1px solid rgba(colors.$black, 0.05);
+
+    @media (max-width: 570px) {
+      position: absolute;
+    }
+  }
+}
+
+// Especifica las dimenciones en las que se deben poner el nav y el contenedor
+// Sidebar Expandido
+.dimension-content {
+  margin-top: 50px;
+  left: 220px; /* Ajustar el espacio a la izquierda del contenido */
+
+}
+
+.dimension-nav,
+.dimension-content {
+  left: 230px;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+// Sidebar Retraido
+.dimension-nav-hidden,
+.dimension-content-hidden {
+  left: 220px;
+  transition: all 0.3s ease;
+  width: calc(100% - 220px); /* Restar el ancho del sidebar */
+}

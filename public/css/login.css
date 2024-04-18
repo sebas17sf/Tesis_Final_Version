@@ -1,0 +1,40 @@
+.container-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-box {
+    max-width: 400px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.circular-image {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
+
+
+.input-group-prepend,
+.input-group-append {
+    display: flex;
+}
+
+.input-group-text {
+    background-color: white;
+    border: none;
+    border-right: 1px solid #ced4da;
+    border-radius: 5px 0 0 5px;
+}
+
+.input-group input {
+    border-left: none;
+    border-radius: 0 5px 5px 0;
+}

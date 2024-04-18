@@ -1,0 +1,130 @@
+@use 'vars/colors' as colors;
+@use "structure/scroll";
+@use "components/input";
+@use "components/buttons";
+@use "components/menu_nav";
+@use "components/table" as table;
+@use "menu-profile/menu-profile.component";
+@use "sidebar/sidebar.component";
+@use "navbar/navbar";
+@use "navbar/app.component";
+@use "deshboard/dashboard.component.scss";
+
+ 
+// ===============================================
+// Estilos para sweedAlert2
+// ===============================================
+
+div:where(.swal2-icon) {
+  margin: 0 auto 0em !important;
+  transform: scale(0.5) !important;
+}
+
+// Contenedor
+div:where(.swal2-container) div:where(.swal2-popup) {
+  padding: 1.5em 0 1.25em !important;
+  transform: scale(0.8) !important;
+}
+
+// Titulo
+div:where(.swal2-container) h2:where(.swal2-title) {
+  padding: 0px !important;
+}
+
+// ===============================================
+// Estilos generales
+// ===============================================
+html,
+body {
+  padding: 0;
+  user-select: none;
+}
+
+body {
+  background-color: colors.$bg;
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+}
+.content-views {
+  margin-left: 230px; /* Igual al ancho del sidebar */
+}
+// Campos requeridos
+.contenedor_campo_requerido {
+  font-size: 10px;
+  color: var(--red);
+}
+
+// Cerrar sesion
+.logout {
+  cursor: pointer;
+
+  &:hover {
+    color: var(--red) !important;
+  }
+}
+    // Divisor
+    .divisor-title {
+      height: 3px;
+      margin-bottom: 15px;
+      border-radius: 50px;
+      background-color: colors.$primary;
+      width: calc(8px * var(--title-length, 0));
+    }
+    .sidebar a {
+      padding: 10px 20px;
+      /* Espaciado de los enlaces */
+      text-decoration: none;
+      /* Quitar subrayado de los enlaces */
+      font-size: 14px;
+      /* Tamaño de fuente de los enlaces */
+      color: #000000;
+      /* Texto blanco */
+      display: flex;
+      /* Mostrar como flex para alinear icono y texto */
+      align-items: center;
+      /* Centrar verticalmente el contenido */
+  }
+  .sidebar a .material-icons {
+    margin-right: 10px;
+    /* Espaciado a la derecha del icono */
+}
+
+.sidebar a:hover {
+    background-color: #55595e;
+    color: #ffffff;
+    /* Texto blanco */
+}
+/* Estilo para el texto encima de la imagen */
+
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 2;
+  /* Asegurarse de que el submenú tenga un índice z mayor que las opciones del menú principal */
+}
+
+
+/* Estilo para las opciones del submenu */
+.dropdown-menu {
+  color: #ffffff;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  margin-top: 0;
+}
+
+/* Estilo personalizado para las opciones del submenu */
+.dropdown-item {
+  color: #ffffff;
+  padding: 10px 20px;
+  font-size: 18px;
+}
+
+/* Estilo personalizado al pasar el cursor sobre las opciones del submenu */
+.dropdown-item:hover {
+  background-color: #ffff;
+}
