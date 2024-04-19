@@ -307,7 +307,6 @@
         </div>
     @endif
 
-
     <script>
         // Función para verificar el estado al cargar la página
         window.onload = function() {
@@ -360,8 +359,7 @@
             }
         }
     </script>
-    
-    
+
 <style>
     table {
         width: 100%;
