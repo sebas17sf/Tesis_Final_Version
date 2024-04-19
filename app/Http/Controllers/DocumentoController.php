@@ -761,7 +761,7 @@ class DocumentoController extends Controller
     ////////////////////////Creacion de reportes estudiantes vinculacion
     public function reportesVinculacion(Request $request)
     {
-        $plantillaPath = public_path('Plantillas\\Reporte-Vinculacion-Estudiantes.xlsx');
+        $plantillaPath = public_path('Plantillas/Reporte-Vinculacion-Estudiantes.xlsx');
         $template = new TemplateProcessor($plantillaPath);
 
         $spreadsheet = IOFactory::load($plantillaPath);
@@ -836,7 +836,7 @@ class DocumentoController extends Controller
 
     public function reportesProyectos(Request $request)
     {
-        $plantillaPath = public_path('Plantillas\\Reporte-Proyectos.xlsx');
+        $plantillaPath = public_path('Plantillas/Reporte-Proyectos.xlsx');
 
         $spreadsheet = IOFactory::load($plantillaPath);
 
@@ -904,7 +904,7 @@ class DocumentoController extends Controller
     ////////Reporteria de estudiantes//////////
     public function reportesEstudiantes(Request $request)
     {
-        $plantillaPath = public_path('Plantillas\\Reporte-Estudiantes.xlsx');
+        $plantillaPath = public_path('Plantillas/Reporte-Estudiantes.xlsx');
 
         $spreadsheet = IOFactory::load($plantillaPath);
         $datosEstudiantes = DB::table('Estudiantes')
@@ -976,7 +976,7 @@ class DocumentoController extends Controller
     ///////Reporteria para las empresas agregadas////////////////////////////////
     public function reportesEmpresas(Request $request)
     {
-        $plantillaPath = public_path('Plantillas\\Reporte-Empresas.xlsx');
+        $plantillaPath = public_path('Plantillas/Reporte-Empresas.xlsx');
 
         $spreadsheet = IOFactory::load($plantillaPath);
 
@@ -1039,7 +1039,7 @@ class DocumentoController extends Controller
     /////////reporteria Practias I////////////////////////////////////////
     public function reportesPracticaI(Request $request)
     {
-        $plantillaPath = public_path('Plantillas\\Reporte-PracticasI.xlsx');
+        $plantillaPath = public_path('Plantillas/Reporte-PracticasI.xlsx');
 
         $spreadsheet = IOFactory::load($plantillaPath);
 
@@ -1124,7 +1124,7 @@ class DocumentoController extends Controller
     /////////reporteria Practias II////////////////////////////////////////
     public function reportesPracticaII(Request $request)
     {
-        $plantillaPath = public_path('Plantillas\\Reporte-PracticasII.xlsx');
+        $plantillaPath = public_path('Plantillas/Reporte-PracticasII.xlsx');
 
         $spreadsheet = IOFactory::load($plantillaPath);
 
@@ -1207,7 +1207,7 @@ class DocumentoController extends Controller
     /////////////////////reporte de estudiantes con proyectos en vinculacion//////////////////////////
     public function reporteVinculacionProyectos(Request $request)
     {
-        $plantillaPath = public_path('Plantillas\\Proyectos_Vinculacion.xlsx');
+        $plantillaPath = public_path('Plantillas/Proyectos_Vinculacion.xlsx');
         $spreadsheet = IOFactory::load($plantillaPath);
 
         $datosProyectosYEstudiantes = Proyecto::with([
