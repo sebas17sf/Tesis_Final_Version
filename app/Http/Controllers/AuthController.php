@@ -21,7 +21,7 @@ class AuthController extends Controller
     {
         // Validar los datos del formulario
         $validatedData = $request->validate([
-            'CorreoElectronico' => 'required|string|email|unique:Usuarios',
+            'CorreoElectronico' => 'required|string|email|unique:usuarios',
             'Contrasena' => 'required|string|min:6',
         ]);
     

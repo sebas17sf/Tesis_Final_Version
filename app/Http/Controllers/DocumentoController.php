@@ -69,8 +69,8 @@ class DocumentoController extends Controller
 
         // Consulta para obtener los datos de los estudiantes asignados a un proyecto específico
         $datosEstudiantes = DB::table('estudiantes')
-            ->join('asignacionproyectos', 'estudiantes.EstudianteID', '=', 'asignacionproyectos.EstudianteID')
-            ->join('proyectos', 'asignacionproyectos.ProyectoID', '=', 'proyectos.ProyectoID')
+            ->join('asignacionProyectos', 'estudiantes.EstudianteID', '=', 'asignacionProyectos.EstudianteID')
+            ->join('proyectos', 'asignacionProyectos.ProyectoID', '=', 'proyectos.ProyectoID')
             ->select(
                 'estudiantes.Apellidos',
                 'estudiantes.Nombres',
@@ -81,7 +81,7 @@ class DocumentoController extends Controller
                 'proyectos.NombreProyecto',
             )
             ->where('proyectos.Estado', '=', 'Ejecucion')
-            ->where('asignacionproyectos.ProyectoID', '=', $proyectoID) // Filtrar por ProyectoID de AsignacionProyecto
+            ->where('asignacionProyectos.ProyectoID', '=', $proyectoID) // Filtrar por ProyectoID de AsignacionProyecto
             ->orderBy('estudiantes.Apellidos', 'asc')
             ->get();
 
@@ -310,11 +310,11 @@ class DocumentoController extends Controller
 
         // Consulta para obtener los datos de los estudiantes asignados a un proyecto específico
         $datosEstudiantes = DB::table('estudiantes')
-            ->join('asignacionproyectos', 'estudiantes.EstudianteID', '=', 'asignacionproyectos.EstudianteID')
-            ->join('proyectos', 'asignacionproyectos.ProyectoID', '=', 'proyectos.ProyectoID')
+            ->join('asignacionProyectos', 'estudiantes.EstudianteID', '=', 'asignacionProyectos.EstudianteID')
+            ->join('proyectos', 'asignacionProyectos.ProyectoID', '=', 'proyectos.ProyectoID')
             ->join('usuarios', 'estudiantes.UserID', '=', 'usuarios.UserID')
-            ->join('ProfesUniversidad as director', 'proyectos.id_directorProyecto', '=', 'director.id')
-            ->join('ProfesUniversidad as participante', 'proyectos.id_docenteParticipante', '=', 'participante.id')
+            ->join('profesUniversidad as director', 'proyectos.id_directorProyecto', '=', 'director.id')
+            ->join('profesUniversidad as participante', 'proyectos.id_docenteParticipante', '=', 'participante.id')
             ->select(
                 'estudiantes.Apellidos',
                 'estudiantes.Nombres',
@@ -334,7 +334,7 @@ class DocumentoController extends Controller
                 'participante.Apellidos as ApellidoParticipante'
             )
             ->where('proyectos.Estado', '=', 'Ejecucion')
-            ->where('asignacionproyectos.ProyectoID', '=', $proyectoID)
+            ->where('asignacionProyectos.ProyectoID', '=', $proyectoID)
             ->orderBy('estudiantes.Apellidos', 'asc')
 
             ->get();

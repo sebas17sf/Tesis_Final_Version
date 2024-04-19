@@ -20,7 +20,7 @@ use App\Models\DirectorVinculacion;
 use App\Models\ParticipanteVincunlacion;
 use App\Models\ProfesUniversidad;
 use Illuminate\Support\Facades\Mail;
-use App\Models\Estudiantesvinculacion;
+use App\Models\EstudiantesVinculacion;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
@@ -178,29 +178,29 @@ class AdminController extends Controller
 
 
         // Consulta para estudiantes de vinculación
-        $queryEstudiantesvinculacion = Estudiantesvinculacion::orderBy('nombres', 'asc');
+        $queryEstudiantesVinculacion = EstudiantesVinculacion::orderBy('nombres', 'asc');
 
         // Búsqueda de estudiantes de vinculación
         if ($request->has('buscarEstudiantes')) {
-            $busquedaEstudiantesvinculacion = $request->input('buscarEstudiantes');
-            $queryEstudiantesvinculacion->where(function ($query) use ($busquedaEstudiantesvinculacion) {
-                $query->where('cedula_identidad', 'like', '%' . $busquedaEstudiantesvinculacion . '%')
-                    ->orWhere('correo_electronico', 'like', '%' . $busquedaEstudiantesvinculacion . '%')
-                    ->orWhere('espe_id', 'like', '%' . $busquedaEstudiantesvinculacion . '%')
-                    ->orWhere('nombres', 'like', '%' . $busquedaEstudiantesvinculacion . '%')
-                    ->orWhere('periodo_ingreso', 'like', '%' . $busquedaEstudiantesvinculacion . '%')
-                    ->orWhere('periodo_vinculacion', 'like', '%' . $busquedaEstudiantesvinculacion . '%')
-                    ->orWhere('actividades_macro', 'like', '%' . $busquedaEstudiantesvinculacion . '%')
-                    ->orWhere('docente_participante', 'like', '%' . $busquedaEstudiantesvinculacion . '%')
-                    ->orWhere('fecha_inicio', 'like', '%' . $busquedaEstudiantesvinculacion . '%')
-                    ->orWhere('fecha_fin', 'like', '%' . $busquedaEstudiantesvinculacion . '%')
-                    ->orWhere('total_horas', 'like', '%' . $busquedaEstudiantesvinculacion . '%')
-                    ->orWhere('director_proyecto', 'like', '%' . $busquedaEstudiantesvinculacion . '%')
-                    ->orWhere('nombre_proyecto', 'like', '%' . $busquedaEstudiantesvinculacion . '%');
+            $busquedaEstudiantesVinculacion = $request->input('buscarEstudiantes');
+            $queryEstudiantesVinculacion->where(function ($query) use ($busquedaEstudiantesVinculacion) {
+                $query->where('cedula_identidad', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
+                    ->orWhere('correo_electronico', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
+                    ->orWhere('espe_id', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
+                    ->orWhere('nombres', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
+                    ->orWhere('periodo_ingreso', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
+                    ->orWhere('periodo_vinculacion', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
+                    ->orWhere('actividades_macro', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
+                    ->orWhere('docente_participante', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
+                    ->orWhere('fecha_inicio', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
+                    ->orWhere('fecha_fin', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
+                    ->orWhere('total_horas', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
+                    ->orWhere('director_proyecto', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
+                    ->orWhere('nombre_proyecto', 'like', '%' . $busquedaEstudiantesVinculacion . '%');
             });
         }
 
-        $Estudiantesvinculacion = $queryEstudiantesvinculacion->paginate($elementosPorPagina);
+        $estudiantesVinculacion = $queryEstudiantesVinculacion->paginate($elementosPorPagina);
 
         // Consulta y paginación para estudiantes aprobados
         $queryEstudiantesAprobados = Estudiante::whereIn('Estado', ['Aprobado', 'Aprobado-prácticas']);
@@ -219,7 +219,7 @@ class AdminController extends Controller
         return view('admin.aceptacionEstudiantes', [
             'estudiantesEnRevision' => $estudiantesEnRevision,
             'estudiantesAprobados' => $estudiantesAprobados,
-            'Estudiantesvinculacion' => $Estudiantesvinculacion,
+            'estudiantesVinculacion' => $estudiantesVinculacion,
             'elementosPorPagina' => $elementosPorPagina,
             'elementosPorPaginaAprobados' => $elementosPorPaginaAprobados, // Cambio de nombre
         ]);
@@ -455,8 +455,8 @@ class AdminController extends Controller
                     'Estado' => 'Aprobado-practicas',
                 ]);
 
-                // Mover al estudiante a la tabla 'Estudiantesvinculacion'
-                Estudiantesvinculacion::create([
+                // Mover al estudiante a la tabla 'estudiantesvinculacion'
+                EstudiantesVinculacion::create([
                     'cedula_identidad' => $estudiante->cedula,
                     'correo_electronico' => $estudiante->Correo,
                     'espe_id' => $estudiante->espe_id,

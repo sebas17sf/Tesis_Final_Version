@@ -12,7 +12,7 @@ class Usuario extends Model implements Authenticatable
 {
     use HasFactory, Notifiable;
     // Nombre de la tabla en la base de datos
-    protected $table = 'Usuarios';
+    protected $table = 'usuarios';
 
     // Nombre de la columna que es clave primaria en la tabla
     protected $primaryKey = 'UserID';
