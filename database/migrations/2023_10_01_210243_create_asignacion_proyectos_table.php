@@ -20,10 +20,10 @@ return new class extends Migration
             $table->date('FechaAsignacion');
             $table->timestamps();
 
-            $table->foreign('EstudianteID')->references('EstudianteID')->on('Estudiantes');
-            $table->foreign('ProyectoID')->references('ProyectoID')->on('Proyectos');
-            $table->foreign('DirectorID')->references('id')->on('ProfesUniversidad');
-            $table->foreign('ParticipanteID')->references('id')->on('ProfesUniversidad');
+            $table->foreign('EstudianteID')->references('EstudianteID')->on('estudiantes');
+            $table->foreign('ProyectoID')->references('ProyectoID')->on('proyectos');
+            $table->foreign('DirectorID')->references('id')->on('profesUniversidad');
+            $table->foreign('ParticipanteID')->references('id')->on('profesUniversidad');
         });
     }
 
