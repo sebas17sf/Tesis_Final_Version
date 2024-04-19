@@ -544,11 +544,40 @@ class AdminController extends Controller
 
 
 
-
-
     public function guardarMaestro(Request $request)
     {
         try {
+            // Verificar si ya existe un maestro con los mismos nombres, apellidos, correo o cédula
+            $existente = ProfesUniversidad::where(function ($query) use ($request) {
+                $query->where('Nombres', $request->nombres)
+                    ->where('Apellidos', $request->apellidos);
+            })->exists();
+    
+            if ($existente) {
+                $mensaje = 'Ya existe un maestro con los mismos nombres y apellidos.';
+    
+                // Devolver el mensaje de error
+                return redirect()->back()->with('errorMaestro', $mensaje);
+            }
+    
+            // Verificar si ya existe un maestro con el mismo correo o cédula
+            $existenteCorreo = ProfesUniversidad::where('Correo', $request->correo)->exists();
+            $existenteCedula = ProfesUniversidad::where('Cedula', $request->cedula)->exists();
+    
+            if ($existenteCorreo) {
+                $mensaje = 'El correo ya está registrado en Docentes.';
+            }
+    
+            if ($existenteCedula) {
+                $mensaje .= ' La cédula ya está registrada en Docentes.';
+            }
+    
+            if ($existenteCorreo || $existenteCedula) {
+                // Devolver el mensaje de error
+                return redirect()->back()->with('errorMaestro', $mensaje);
+            }
+    
+            // Validar los campos
             $request->validate([
                 'nombres' => 'required|string|max:255',
                 'apellidos' => 'required|string|max:255',
@@ -556,9 +585,9 @@ class AdminController extends Controller
                 'cedula' => 'required|string|min:10',
                 'departamento' => 'required|string',
             ]);
-
+    
+            // Crear el maestro
             $usuario = explode('@', $request->correo)[0];
-
             ProfesUniversidad::create([
                 'Nombres' => $request->nombres,
                 'Usuario' => $usuario,
@@ -567,13 +596,19 @@ class AdminController extends Controller
                 'Cedula' => $request->cedula,
                 'Departamento' => $request->departamento,
             ]);
-
+    
+            // Devolver el mensaje de éxito
             return redirect()->route('admin.index')->with('success', 'Docente creado con éxito');
         } catch (\Exception $e) {
+            // Devolver el mensaje de error en caso de excepción
             return redirect()->back()->with('error', 'No se pudo crear el Docente. Por favor, verifica los datos e intenta de nuevo.');
         }
-
     }
+    
+
+
+
+
 
 
     public function eliminarMaestro(Request $request, $id)
@@ -700,6 +735,7 @@ class AdminController extends Controller
         $request->validate([
             'periodoInicio' => 'required|date',
             'periodoFin' => 'required|date|after:periodoInicio',
+            'numeroPeriodo' => 'required|integer',
         ]);
 
         // Obtén las fechas del formulario
@@ -718,6 +754,7 @@ class AdminController extends Controller
             'Periodo' => $periodoAcademico,
             'PeriodoInicio' => $fechaInicio,
             'PeriodoFin' => $fechaFin,
+            'numeroPeriodo' => $request->numeroPeriodo,
         ]);
 
         return redirect()->route('admin.index')->with('success', 'Periodo académico creado con éxito.');

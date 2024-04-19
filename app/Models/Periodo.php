@@ -16,6 +16,7 @@ class Periodo extends Model
         'Periodo', 
         'PeriodoInicio',
         'PeriodoFin',
+        'numeroPeriodo'
     ];
     public $timestamps = false;
 
