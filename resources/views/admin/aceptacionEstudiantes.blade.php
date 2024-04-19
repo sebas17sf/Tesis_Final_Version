@@ -6,7 +6,7 @@
 
 @section('content')
 
-    <h4>Estudiantes en Proceso de Revisión</h4>
+    <h4>Estudiantes en Proceso</h4>
 
     <form action="{{ route('admin.estudiantes') }}" method="GET">
         @csrf
