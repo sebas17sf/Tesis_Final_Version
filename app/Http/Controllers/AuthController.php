@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Usuario; // Importa el modelo Usuario
+use App\Models\Usuario;  
+use App\Models\Role;
+
 
 class AuthController extends Controller
 {
@@ -22,26 +24,29 @@ class AuthController extends Controller
             'CorreoElectronico' => 'required|string|email|unique:Usuarios',
             'Contrasena' => 'required|string|min:6',
         ]);
-
+    
+        // Obtener el ID del rol 'Estudiante' de la tabla 'roles'
+        $estudianteRoleId = Role::where('Tipo', 'Estudiante')->value('id');
+    
         // Crear un nuevo usuario
         $user = new Usuario;
         $user->NombreUsuario = $request->NombreUsuario;
         $user->CorreoElectronico = $request->CorreoElectronico;
         $user->FechaNacimiento = $request->FechaNacimiento;
         $user->Contrasena = bcrypt($request->Contrasena);
-         $user->TipoUsuario = 'Estudiante';
-
-      
-        if ($user->TipoUsuario == 'Estudiante'){
+        $user->role_id = $estudianteRoleId;
+    
+        // Verificar si el rol del usuario es 'Estudiante' y establecer el estado en 'Aprobado'
+        if ($user->role_id === $estudianteRoleId) {
             $user->Estado = 'Aprobado'; 
+            $mensaje = 'Usuario creado y aprobado';
+        } else {
             $mensaje = 'Usuario creado';
-
         }
-
+    
         $user->save();
-
+    
         return redirect()->route('login')->with('success', $mensaje);
     }
-
   
 }

@@ -31,13 +31,14 @@ class DocumentosVinculacion extends Controller
         $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
          // Obtener la relación AsignacionProyecto para este ParticipanteVinculacion
         $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)->first();
- 
-        if (!$asignacionProyecto || $asignacionProyecto->estado !== 'En ejecución') {
-            return redirect()->back()->with('error', 'El proyecto no está en ejecución.');
-        }
+  
 
         ///obtener la id del director de AsiignacionProyecto
         $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
+        if ($proyecto->Estado != 'Ejecucion') {
+            return redirect()->back()->with('error', 'No tiene Proyectos en ejecucion.');
+        }
+    
           ////buscar en profesores universidad
         $Director = ProfesUniversidad::where('id', $proyecto->id_directorProyecto)->first();
         // Obtener los estudiantes asignados a este proyecto

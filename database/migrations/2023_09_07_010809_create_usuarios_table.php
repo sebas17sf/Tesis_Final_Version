@@ -14,9 +14,10 @@ class CreateUsuariosTable extends Migration
             $table->string('CorreoElectronico')->unique();
             $table->string('Contrasena');
             $table->string('FechaNacimiento');
-            $table->string('TipoUsuario');
             $table->string('Estado');
             $table->string('token')->nullable();
+            $table->unsignedBigInteger('role_id'); 
+            $table->foreign('role_id')->references('id')->on('roles');  
             $table->timestamps();
         });
     }
@@ -25,4 +26,4 @@ class CreateUsuariosTable extends Migration
     {
         Schema::dropIfExists('Usuarios');
     }
-};
+}

@@ -13,6 +13,7 @@ use Illuminate\Pagination\Paginator;
 use App\Models\Cohorte;
 use App\Models\AsignacionProyecto;
 use App\Models\Empresa;
+use App\Models\Role;
 
 use App\Models\Periodo;
 use App\Models\DirectorVinculacion;
@@ -26,10 +27,6 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function boot()
-    {
-        Paginator::useBootstrap();
-    }
 
     public function index(Request $request)
     {
@@ -40,43 +37,54 @@ class AdminController extends Controller
             $perPage = 10;
         }
 
-        if (Auth::check() && Auth::user()->TipoUsuario === 'Administrador') {
+        if (Auth::check()) {
+            $user = Auth::user();
+            $role = Role::find($user->role_id);
 
-            $searchTerm = $request->input('search');
+            if ($role && $role->Tipo === 'Administrador') {
 
-            $query = ProfesUniversidad::query();
+                $searchTerm = $request->input('search');
 
-            if ($searchTerm) {
-                $query->where(function ($q) use ($searchTerm) {
-                    $q->where('Apellidos', 'like', "%{$searchTerm}%")
-                        ->orWhere('Nombres', 'like', "%{$searchTerm}%")
-                        ->orWhere('Correo', 'like', "%{$searchTerm}%")
-                        ->orWhere('Usuario', 'like', "%{$searchTerm}%")
-                        ->orWhere('Cedula', 'like', "%{$searchTerm}%")
-                        ->orWhere('Departamento', 'like', "%{$searchTerm}%");
-                });
+                $query = ProfesUniversidad::query();
+
+                if ($searchTerm) {
+                    $query->where(function ($q) use ($searchTerm) {
+                        $q->where('Apellidos', 'like', "%{$searchTerm}%")
+                            ->orWhere('Nombres', 'like', "%{$searchTerm}%")
+                            ->orWhere('Correo', 'like', "%{$searchTerm}%")
+                            ->orWhere('Usuario', 'like', "%{$searchTerm}%")
+                            ->orWhere('Cedula', 'like', "%{$searchTerm}%")
+                            ->orWhere('Departamento', 'like', "%{$searchTerm}%");
+                    });
+                }
+
+                $profesores = $query->paginate($perPage);
+
+                $periodos = Periodo::all();
+                $cohortes = Cohorte::all();
+                $profesorRoleId = Role::where('Tipo', 'Profesor')->value('id');
+
+
+                $profesoresPendientes = Usuario::where('role_id', $profesorRoleId)->where('Estado', 'Pendiente')->get();
+
+                // Consulta para obtener los profesores con permisos
+                $profesoresConPermisos = Usuario::where('role_id', $profesorRoleId)
+                    ->whereIn('Estado', ['Vinculacion', 'Lector', 'Director-Departamento'])
+                    ->get();
+
+                return view('admin.index', [
+                    'profesoresPendientes' => $profesoresPendientes,
+                    'profesoresConPermisos' => $profesoresConPermisos,
+                    'profesores' => $profesores,
+                    'periodos' => $periodos,
+                    'cohortes' => $cohortes,
+                    'perPage' => $perPage,
+                ]);
             }
-
-            $profesores = $query->paginate($perPage);
-
-            $periodos = Periodo::all();
-            $cohortes = Cohorte::all();
-            $profesoresPendientes = Usuario::where('TipoUsuario', 'Profesor')->where('Estado', 'Pendiente')->get();
-            $profesoresConPermisos = Usuario::where('TipoUsuario', 'Profesor')->whereIn('Estado', ['Vinculacion', 'Lector', 'Director-Departamento'])->get();
-
-            return view('admin.index', [
-                'profesoresPendientes' => $profesoresPendientes,
-                'profesoresConPermisos' => $profesoresConPermisos,
-                'profesores' => $profesores,
-                'periodos' => $periodos,
-                'cohortes' => $cohortes,
-                'perPage' => $perPage,
-            ]);
         }
 
-        return redirect()->route('/')->with('error', 'Acceso no autorizado');
+        return redirect()->route('login')->with('error', 'Acceso no autorizado');
     }
-
     ////actualizar permisos
     public function updateEstado(Request $request, $id)
     {
@@ -338,7 +346,7 @@ class AdminController extends Controller
             'cupos' => 'required|integer',
             'Estado' => 'required|string|max:255',
         ]);
-    
+
         // Verificar si uno de los profesores ya está asociado a un proyecto en ejecución
         $existingProject = Proyecto::where('Estado', 'Ejecucion')
             ->where(function ($query) use ($validatedData) {
@@ -346,18 +354,22 @@ class AdminController extends Controller
                     ->orWhere('id_docenteParticipante', $validatedData['ProfesorParticipante']);
             })
             ->exists();
-    
+
         if ($existingProject) {
             return redirect()->route('admin.indexProyectos')->with('error', 'El director o profesor participante ya está asociado a un proyecto en ejecución');
         }
-    
+
+        $directorRoleId = Role::where('Tipo', 'DirectorVinculacion')->value('id');
+        $participanteRoleId = Role::where('Tipo', 'ParticipanteVinculacion')->value('id');
+
+
         // Buscar el DirectorProyecto y ProfesorParticipante por su id en la tabla ProfesUniversidad
         $director = ProfesUniversidad::findOrFail($validatedData['DirectorProyecto']);
         $participante = ProfesUniversidad::findOrFail($validatedData['ProfesorParticipante']);
-    
+
         // Verificar si el director ya tiene un usuario creado
         $directorUserExists = Usuario::where('CorreoElectronico', $director->Correo)->exists();
-    
+
         if (!$directorUserExists) {
             // Crear el usuario del director
             Usuario::create([
@@ -367,14 +379,14 @@ class AdminController extends Controller
                 'CorreoElectronico' => $director->Correo,
                 'FechaNacimiento' => now(),
                 'Contrasena' => bcrypt('123'),
-                'TipoUsuario' => 'Profesor',
-                'Estado' => 'DirectorVinculacion',
+                'Estado' => 'activo',
+                'role_id' => $directorRoleId,
             ]);
         }
-    
+
         // Verificar si el profesor participante ya tiene un usuario creado
         $participanteUserExists = Usuario::where('CorreoElectronico', $participante->Correo)->exists();
-    
+
         if (!$participanteUserExists) {
             // Crear el usuario del profesor participante
             Usuario::create([
@@ -384,11 +396,11 @@ class AdminController extends Controller
                 'CorreoElectronico' => $participante->Correo,
                 'FechaNacimiento' => now(),
                 'Contrasena' => bcrypt('123'),
-                'TipoUsuario' => 'Profesor',
-                'Estado' => 'ParticipanteVinculacion',
+                'Estado' => 'activo',
+                'role_id' => $participanteRoleId,
             ]);
         }
-    
+
         // Crear el nuevo proyecto
         $proyecto = Proyecto::create([
             'id_directorProyecto' => $director->id,
@@ -401,7 +413,7 @@ class AdminController extends Controller
             'cupos' => $validatedData['cupos'],
             'Estado' => $validatedData['Estado'],
         ]);
-    
+
         return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto agregado correctamente');
     }
 
@@ -502,7 +514,7 @@ class AdminController extends Controller
 
         // Obtener el proyecto seleccionado
         $proyecto = Proyecto::where('Estado', 'Ejecucion')
-        ->find($request->proyecto_id);
+            ->find($request->proyecto_id);
 
         // Verificar si hay cupos disponibles en el proyecto
         if ($proyecto->cupos > 0) {

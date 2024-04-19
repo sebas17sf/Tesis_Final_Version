@@ -27,7 +27,7 @@
         <h4>Estudiantes por calificar</h4>
 
         @if (count($estudiantesConNotasPendientes) === 0)
-            <p>No hay estudiantes por calificar en este momento.</p>
+            <p>El docente participante aun no a calificado a los estudiantes.</p>
         @else
             <h4>Actualizar Informe de Servicio Comunitario</h4>
             <form method="post" action="{{ route('director_vinculacion.actualizarInforme') }}">

@@ -23,9 +23,9 @@ class Usuario extends Model implements Authenticatable
         'FechaNacimiento',
         'CorreoElectronico',
         'Contrasena',
-        'TipoUsuario',
-        'token',
-        'Estado'
+         'token',
+        'Estado',
+        'role_id'
     ];
 
     // Desactivar timestamps (created_at y updated_at) en el modelo
@@ -75,6 +75,14 @@ class Usuario extends Model implements Authenticatable
     {
         return $this->hasOne(Estudiante::class, 'UserID', 'UserID');
     }
+
+    // Relación con la tabla roles
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id', 'id');
+    }
+
+
 
    
 }

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="css/admin/admin.css">
     <script src="js/menu.js"></script>
-    @vite(['resources/scss/app.scss', 'resources/js/app.js', 'resources/css/app.css'])
+    @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
 </head>
 

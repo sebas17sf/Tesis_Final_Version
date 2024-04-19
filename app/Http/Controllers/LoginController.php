@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RecuperarContrasena;
+use App\Models\Role;
+
 
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
@@ -22,7 +24,7 @@ class LoginController extends Controller
     {
         return view('login');
     }
-  
+
     // Procesar el inicio de sesión
     public function login(Request $request)
     {
@@ -31,46 +33,44 @@ class LoginController extends Controller
             'Contrasena' => 'required',
         ]);
 
-         $user = Usuario::where('CorreoElectronico', $credentials['CorreoElectronico'])->first();
+        $user = Usuario::where('CorreoElectronico', $credentials['CorreoElectronico'])->first();
 
-         if ($user) {
-             if (password_verify($credentials['Contrasena'], $user->Contrasena) || $user->Contrasena === $credentials['Contrasena']) {
-                 Auth::login($user);
+        if ($user && (password_verify($credentials['Contrasena'], $user->Contrasena) || $user->Contrasena === $credentials['Contrasena'])) {
+            Auth::login($user);
 
-                 session()->regenerate();
+            session()->regenerate();
 
-                 $token = Str::random(60);
+            $token = Str::random(60);
 
-                 $user->token = hash('sha256', $token);
-                $user->save();
+            $user->token = hash('sha256', $token);
+            $user->save();
 
-                // Redirigir al usuario a la página deseada después del inicio de sesión
-                if ($user->TipoUsuario === 'Administrador') {
-                    return redirect()->route('admin.index')->with('token', $token); // Cambia 'admin.index' a la ruta deseada para administradores
-                } elseif ($user->TipoUsuario === 'Profesor') {
-                    if ($user->Estado === 'Director-Departamento' || $user->Estado === 'Director-Carrera') {
-                        return redirect()->route('director.indexProyectos')->with('token', $token); // Cambia 'dashboard' a la ruta deseada
-                    } elseif ($user->Estado === 'Vinculacion') {
-                        return redirect()->route('coordinador.index')->with('token', $token); // Redirige a la ruta de coordinadores
-                    } elseif ($user->Estado === 'DirectorVinculacion') {
-                        return redirect()->route('director_vinculacion.index')->with('token', $token); // Ruta para Directores de Vinculación
-                    } elseif ($user->Estado === 'ParticipanteVinculacion') {
-                        return redirect()->route('ParticipanteVinculacion.index')->with('token', $token); // Ruta para Participantes de Vinculación
-                    } else {
-                        return back()->withErrors([
-                            'CorreoElectronico' => 'Su estado no permite el acceso en este momento.',
-                        ]);
-                    }
+             $userRole = Role::find($user->role_id);
+
+             if ($userRole->Tipo === 'Administrador') {
+                return redirect()->route('admin.index')->with('token', $token); // Cambia 'admin.index' a la ruta deseada para administradores
+            } elseif ($user->Estado === 'activo') {
+                if ($userRole->Tipo === 'Director-Departamento' || $user->Estado === 'Director-Carrera') {
+                    return redirect()->route('director.indexProyectos')->with('token', $token); // Cambia 'dashboard' a la ruta deseada
+                } elseif ($userRole->Tipo === 'Vinculacion') {
+                    return redirect()->route('coordinador.index')->with('token', $token); // Redirige a la ruta de coordinadores
+                } elseif ($userRole->Tipo === 'DirectorVinculacion') {
+                    return redirect()->route('director_vinculacion.index')->with('token', $token); // Ruta para Directores de Vinculación
+                } elseif ($userRole->Tipo === 'ParticipanteVinculacion') {
+                    return redirect()->route('ParticipanteVinculacion.index')->with('token', $token); // Ruta para Participantes de Vinculación
                 } else {
-                    return redirect()->route('estudiantes.create')->with('token', $token);  
+                    return back()->withErrors([
+                        'CorreoElectronico' => 'Su estado no permite el acceso en este momento.',
+                    ]);
                 }
+            } else {
+                return redirect()->route('estudiantes.create')->with('token', $token);
             }
         }
 
         // Si las credenciales o el inicio de sesión fallan, redirige de nuevo al formulario de inicio de sesión con un mensaje de error
         return redirect()->route('login')->with('error', 'Las credenciales proporcionadas no coinciden con nuestros registros.');
     }
-
 
     //////recuperar contraseña
     public function recuperarContrasena()
@@ -145,6 +145,6 @@ class LoginController extends Controller
     }
 
 
-     
+
 
 }
