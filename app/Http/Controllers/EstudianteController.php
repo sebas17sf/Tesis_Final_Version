@@ -17,6 +17,8 @@ use App\Models\PracticaI;
 use App\Models\PracticaII;
 use App\Models\ActividadEstudiante;
 use App\Models\Usuario;
+use Intervention\Image\Facades\Image;
+
 
 
 
@@ -394,7 +396,9 @@ class EstudianteController extends Controller
             return redirect()->back()->with('error', 'La imagen es muy pesada. El tamaño máximo permitido es de 500 KB.');
         }
 
-        $evidenciaBase64 = base64_encode(File::get($evidencia));
+        $compressedImage = Image::make($evidencia)->encode('jpg', 75);
+        $evidenciaBase64 = base64_encode($compressedImage);
+
 
         $actividadEstudiante = new ActividadEstudiante([
             'EstudianteID' => $estudiante->EstudianteID,
