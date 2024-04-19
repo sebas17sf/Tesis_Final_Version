@@ -4,6 +4,8 @@
 
 @section('title_component', 'Aceptación de Estudiantes')
 
+<div></div>
+
 @section('content')
 
     <h4>Estudiantes en Proceso</h4>
