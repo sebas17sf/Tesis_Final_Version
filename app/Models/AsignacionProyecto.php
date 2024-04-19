@@ -10,7 +10,7 @@ class AsignacionProyecto extends Model
     use HasFactory;
 
     // Nombre de la tabla en la base de datos
-    protected $table = 'AsignacionProyectos';
+    protected $table = 'asignacionProyectos';
 
     // Nombre de la columna que es clave primaria en la tabla
     protected $primaryKey = 'AsignacionID';

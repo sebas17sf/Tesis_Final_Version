@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Estudiante extends Model
 {
     // Nombre de la tabla en la base de datos
-    protected $table = 'Estudiantes';
+    protected $table = 'estudiantes';
 
     // Nombre de la columna que es clave primaria en la tabla
     protected $primaryKey = 'EstudianteID';
@@ -60,7 +60,7 @@ class Estudiante extends Model
     }
     public function proyectos()
     {
-        return $this->belongsToMany(Proyecto::class, 'AsignacionProyectos', 'EstudianteID', 'ProyectoID');
+        return $this->belongsToMany(Proyecto::class, 'asignacionProyectos', 'EstudianteID', 'ProyectoID');
     }
 
     public function cohortes()

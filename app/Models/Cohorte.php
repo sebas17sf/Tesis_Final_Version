@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cohorte extends Model
 {
     use HasFactory;
-    protected $table = 'Cohorte';
+    protected $table = 'cohorte';
     protected $primaryKey = 'ID_cohorte';
 
     protected $fillable = [

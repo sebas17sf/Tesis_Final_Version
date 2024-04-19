@@ -8,10 +8,10 @@ class CreateEstudiantesTable extends Migration
 {
     public function up()
     {
-        Schema::create('Estudiantes', function (Blueprint $table) {
+        Schema::create('estudiantes', function (Blueprint $table) {
             $table->id('EstudianteID');
             $table->unsignedBigInteger('UserID');
-            $table->foreign('UserID')->references('UserID')->on('Usuarios');
+            $table->foreign('UserID')->references('UserID')->on('usuarios');
             $table->string('Nombres', 20);
             $table->string('Apellidos', 20);
             $table->string('espe_id', 20);
@@ -27,13 +27,13 @@ class CreateEstudiantesTable extends Migration
             $table->string('comentario');
 
             // Definir las relaciones con las tablas Cohorte y Periodo
-            $table->foreign('id_cohorte')->references('ID_cohorte')->on('Cohorte');
-            $table->foreign('id_periodo')->references('id')->on('Periodo');
+            $table->foreign('id_cohorte')->references('ID_cohorte')->on('cohorte');
+            $table->foreign('id_periodo')->references('id')->on('periodo');
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('Estudiantes');
+        Schema::dropIfExists('estudiantes');
     }
 }

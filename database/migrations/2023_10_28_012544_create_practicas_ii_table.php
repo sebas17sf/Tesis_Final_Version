@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('practicasii', function (Blueprint $table) {
             $table->id('PracticasII');
             $table->unsignedBigInteger('EstudianteID');
-            $table->foreign('EstudianteID')->references('EstudianteID')->on('Estudiantes');
+            $table->foreign('EstudianteID')->references('EstudianteID')->on('estudiantes');
             $table->string('NombreEstudiante', 100);
             $table->string('ApellidoEstudiante', 100);
             $table->string('Departamento', 100);

@@ -9,7 +9,7 @@ class Proyecto extends Model
 {
     use HasFactory;
 
-    protected $table = 'Proyectos';
+    protected $table = 'proyectos';
     protected $primaryKey = 'ProyectoID';
 
     protected $fillable = [
@@ -26,7 +26,7 @@ class Proyecto extends Model
     ];
     public function estudiantes()
     {
-        return $this->belongsToMany(Estudiante::class, 'AsignacionProyectos', 'ProyectoID', 'EstudianteID');
+        return $this->belongsToMany(Estudiante::class, 'asignacionProyectos', 'ProyectoID', 'EstudianteID');
     }
     public function asignaciones()
     {
