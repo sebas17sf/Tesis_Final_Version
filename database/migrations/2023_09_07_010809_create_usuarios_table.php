@@ -13,7 +13,7 @@ class CreateUsuariosTable extends Migration
             $table->string('NombreUsuario');
             $table->string('CorreoElectronico')->unique();
             $table->string('Contrasena');
-            $table->string('FechaNacimiento');
+            $table->date('FechaNacimiento');
             $table->string('Estado');
             $table->string('token')->nullable();
             $table->unsignedBigInteger('role_id'); 
