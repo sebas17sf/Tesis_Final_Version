@@ -20,57 +20,57 @@
     @if ($estudiantesEnRevision->isEmpty())
         <p>No hay estudiantes en proceso de revisión.</p>
     @else
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nombres</th>
-                <th>Apellidos</th>
-                <th>ID ESPE</th>
-                <th>Celular</th>
-                <th>Cédula</th>
-                <th>Cohorte</th>
-                <th>Departamento</th>
-                <th>Estado Actual</th>
-                <th>Actualizar Estado</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($estudiantesEnRevision as $estudiante)
-            <tr>
-                <td>{{ strtoupper($estudiante->Nombres) }}</td>
-                <td>{{ strtoupper($estudiante->Apellidos) }}</td>
-                <td>{{ $estudiante->espe_id }}</td>
-                <td>{{ $estudiante->celular }}</td>
-                <td>{{ $estudiante->cedula }}</td>
-                <td>{{ $estudiante->cohortes->Cohorte }}</td>
-                <td>{{ strtoupper($estudiante->Departamento) }}</td>
-                <td>{{ strtoupper($estudiante->Estado) }}</td>
-                <td>
-                    <form action="{{ route('admin.updateEstudiante', ['id' => $estudiante->EstudianteID]) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <input type="hidden" id="motivoNegacion" name="motivoNegacion" class="input" >
-                        <select name="nuevoEstado" id="nuevoEstado" onchange="verificarEstado()" class="input input-select">
-                            <option value="Aprobado">Aprobado</option>
-                            <option value="Negado">Negado</option>
-                        </select>
-                        <button type="submit">Enviar</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>ID ESPE</th>
+                    <th>Celular</th>
+                    <th>Cédula</th>
+                    <th>Cohorte</th>
+                    <th>Departamento</th>
+                    <th>Estado Actual</th>
+                    <th>Actualizar Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($estudiantesEnRevision as $estudiante)
+                    <tr>
+                        <td>{{ strtoupper($estudiante->Nombres) }}</td>
+                        <td>{{ strtoupper($estudiante->Apellidos) }}</td>
+                        <td>{{ $estudiante->espe_id }}</td>
+                        <td>{{ $estudiante->celular }}</td>
+                        <td>{{ $estudiante->cedula }}</td>
+                        <td>{{ $estudiante->cohortes->Cohorte }}</td>
+                        <td>{{ strtoupper($estudiante->Departamento) }}</td>
+                        <td>{{ strtoupper($estudiante->Estado) }}</td>
+                        <td>
+                            <form action="{{ route('admin.updateEstudiante', ['id' => $estudiante->EstudianteID]) }}"
+                                method="POST">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" id="motivoNegacion" name="motivoNegacion" class="input">
+                                <select name="nuevoEstado" id="nuevoEstado" onchange="verificarEstado()"
+                                    class="input input-select">
+                                    <option value="Aprobado">Aprobado</option>
+                                    <option value="Negado">Negado</option>
+                                </select>
+                                <button type="submit">Enviar</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     @endif
 
     <h4>Seguimiento Estudiantes</h4>
     <div class="d-flex">
         <form method="GET" action="{{ route('admin.estudiantes') }}" class="mr-3">
-            <label for="elementosPorPaginaAprobados">Estudiantes a visualizar:</label> <!-- Cambio de nombre -->
-            <select name="elementosPorPaginaAprobados" class="input input-select"id="elementosPorPaginaAprobados" onchange="this.form.submit">
-                <!-- Cambio de nombre -->
+            <label for="elementosPorPaginaAprobados">Estudiantes a visualizar:</label>
+            <select name="elementosPorPaginaAprobados" class="input input-select"id="elementosPorPaginaAprobados"
+                onchange="this.form.submit">
                 <option value="10" @if ($elementosPorPaginaAprobados == 10) selected @endif>10</option>
                 <option value="20" @if ($elementosPorPaginaAprobados == 20) selected @endif>20</option>
                 <option value="50" @if ($elementosPorPaginaAprobados == 50) selected @endif>50</option>
@@ -81,7 +81,7 @@
         <form action="{{ route('admin.estudiantes') }}" method="GET">
             @csrf
             <div class="form-group">
-                <label for="buscarEstudiantesAprobados"></label>
+                <label for="buscarEstudiantesAprobados">Buscar estudiantes aprobados:</label>
                 <input class="input" type="text" name="buscarEstudiantesAprobados" id="buscarEstudiantesAprobados"
                     placeholder="Buscar estudiantes aprobados">
                 <button type="submit" class="button">Buscar</button>
@@ -127,7 +127,6 @@
                                     {{ strtoupper($estudiante->Estado) }}
                                 @endif
                             </td>
-
                         </tr>
                     @endforeach
                 </tbody>
@@ -139,7 +138,6 @@
                     <i class="fas fa-file-excel"></i> Generar Reporte
                 </button>
             </form>
-
         </div>
 
         <div class="d-flex justify-content-center">
@@ -185,7 +183,8 @@
     <div class="d-flex">
         <form method="GET" action="{{ route('admin.estudiantes') }}" class="mr-3">
             <label for="elementosPorPagina">Estudiantes a visualizar:</label>
-            <select name="elementosPorPagina" class="input input-select" id="elementosPorPagina" onchange="this.form.submit()">
+            <select name="elementosPorPagina" class="input input-select" id="elementosPorPagina"
+                onchange="this.form.submit()">
                 <option value="10" @if (request('elementosPorPagina', $elementosPorPagina) == 10) selected @endif>10
                 </option>
                 <option value="20" @if (request('elementosPorPagina', $elementosPorPagina) == 20) selected @endif>20
@@ -197,175 +196,152 @@
             </select>
         </form>
 
-        <form method="GET" action="{{ route('admin.estudiantes') }}">
-            <input type="text" name="buscarEstudiantes" class="input" placeholder="Buscar estudiantes de vinculación a la sociedad">
-            <button type="submit" class="button">Buscar</button>
+        <form id="formBusquedaEstudiantes" method="GET" action="{{ route('admin.estudiantes') }}">
+            <input type="text" name="buscarEstudiantes" id="buscarEstudiantes" class="input"
+                placeholder="Buscar estudiantes de vinculación a la sociedad">
         </form>
+
     </div>
 
-    @if ($estudiantesVinculacion->isEmpty())
-        <p>No hay estudiantes de vinculación a la sociedad culminados.</p>
-    @else
-        <div style="overflow-x: auto;">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>N~</th>
-                        <th>Nombres</th>
-                        <th>Cédula</th>
-                        <th>Correo Electrónico</th>
-                        <th>ESPE ID</th>
-                        <th>Período de Ingreso</th>
-                        <th>Período de Vinculación</th>
-                        <th>Actividades Macro</th>
-                        <th>Docente Participante</th>
-                        <th>Fecha de Inicio</th>
-                        <th>Fecha de Fin</th>
-                        <th>Total de Horas</th>
-                        <th>Director del Proyecto</th>
-                        <th>Nombre del Proyecto</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php
-                        $contador = ($estudiantesVinculacion->currentPage() - 1) * $elementosPorPagina + 1;
-                    @endphp
-
-                    @foreach ($estudiantesVinculacion as $estudiante)
+    <div id="tablaEstudiantes">
+        @if ($estudiantesVinculacion->isEmpty() && $noResultadosEstudiantesVinculacion)
+            <p>No se encontraron resultados para la búsqueda.</p>
+        @elseif ($estudiantesVinculacion->isEmpty())
+            <p>No hay estudiantes de vinculación a la sociedad culminados.</p>
+        @else
+            <div style="overflow-x: auto;">
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td>{{ $contador }}</td>
-                            <td>{{ mb_strtoupper($estudiante->nombres) }}</td>
-                            <td>{{ $estudiante->cedula_identidad }}</td>
-                            <td>{{ mb_strtolower($estudiante->correo_electronico) }}</td>
-                            <td>{{ $estudiante->espe_id }}</td>
-                            <td>{{ $estudiante->periodo_ingreso }}</td>
-                            <td>{{ $estudiante->periodo_vinculacion }}</td>
-                            <td>{{ mb_strtoupper($estudiante->actividades_macro) }}</td>
-                            <td>{{ mb_strtoupper($estudiante->docente_participante) }}</td>
-                            <td>{{ $estudiante->fecha_inicio }}</td>
-                            <td>{{ $estudiante->fecha_fin }}</td>
-                            <td>{{ $estudiante->total_horas }}</td>
-                            <td>{{ mb_strtoupper($estudiante->director_proyecto) }}</td>
-                            <td>{{ mb_strtoupper($estudiante->nombre_proyecto) }}</td>
+                            <th>N°</th>
+                            <th>Nombres</th>
+                            <th>Cédula de Identidad</th>
+                            <th>Correo Electrónico</th>
+                            <th>ESPE ID</th>
+                            <th>Período de Ingreso</th>
+                            <th>Período de Vinculación</th>
+                            <th>Actividades Macro</th>
+                            <th>Docente Participante</th>
+                            <th>Fecha de Inicio</th>
+                            <th>Fecha de Fin</th>
+                            <th>Total de Horas</th>
+                            <th>Director del Proyecto</th>
+                            <th>Nombre del Proyecto</th>
                         </tr>
-
+                    </thead>
+                    <tbody>
                         @php
-                            $contador++;
+                            $contador = ($estudiantesVinculacion->currentPage() - 1) * $elementosPorPagina + 1;
                         @endphp
-                    @endforeach
-                </tbody>
-            </table>
-            <form action="{{ route('coordinador.reportesVinculacion') }}" method="post">
-                @csrf
-                <button type="submit" class="btn btn-sm btn-secondary">
-                    <i class="fas fa-file-excel"></i> Generar Reporte
-                </button>
-            </form>
 
-            <div class="d-flex justify-content-center">
-                <ul class="pagination">
-                    @if ($estudiantesVinculacion->onFirstPage())
-                        <li class="page-item disabled">
-                            <span class="page-link">Anterior</span>
-                        </li>
-                    @else
-                        <li class="page-item">
-                            <a class="page-link"
-                                href="{{ $estudiantesVinculacion->previousPageUrl() }}&elementosPorPagina={{ $elementosPorPagina }}"
-                                aria-label="Anterior">Anterior</a>
-                        </li>
-                    @endif
-
-                    @foreach ($estudiantesVinculacion->getUrlRange(1, $estudiantesVinculacion->lastPage()) as $page => $url)
-                        @if ($page == $estudiantesVinculacion->currentPage())
-                            <li class="page-item active">
-                                <span class="page-link">{{ $page }}</span>
-                            </li>
-                        @else
-                            <li class="page-item">
-                                <a class="page-link"
-                                    href="{{ $url }}&elementosPorPagina={{ $elementosPorPagina }}">{{ $page }}</a>
-                            </li>
-                        @endif
-                    @endforeach
-
-                    @if ($estudiantesVinculacion->hasMorePages())
-                        <li class="page-item">
-                            <a class="page-link"
-                                href="{{ $estudiantesVinculacion->nextPageUrl() }}&elementosPorPagina={{ $elementosPorPagina }}"
-                                aria-label="Siguiente">Siguiente</a>
-                        </li>
-                    @else
-                        <li class="page-item disabled">
-                            <span class="page-link">Siguiente</span>
-                        </li>
-                    @endif
-                </ul>
+                        @foreach ($estudiantesVinculacion as $estudiante)
+                            <tr>
+                                <td>{{ $contador }}</td>
+                                <td>{{ mb_strtoupper($estudiante->nombres) }}</td>
+                                <td>{{ $estudiante->cedula_identidad }}</td>
+                                <td>{{ mb_strtolower($estudiante->correo_electronico) }}</td>
+                                <td>{{ $estudiante->espe_id }}</td>
+                                <td>{{ $estudiante->periodo_ingreso }}</td>
+                                <td>{{ $estudiante->periodo_vinculacion }}</td>
+                                <td>{{ mb_strtoupper($estudiante->actividades_macro) }}</td>
+                                <td>{{ mb_strtoupper($estudiante->docente_participante) }}</td>
+                                <td>{{ $estudiante->fecha_inicio }}</td>
+                                <td>{{ $estudiante->fecha_fin }}</td>
+                                <td>{{ $estudiante->total_horas }}</td>
+                                <td>{{ mb_strtoupper($estudiante->director_proyecto) }}</td>
+                                <td>{{ mb_strtoupper($estudiante->nombre_proyecto) }}</td>
+                            </tr>
+                            @php
+                                $contador++;
+                            @endphp
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
+        @endif
+    </div>
 
 
-        </div>
-    @endif
 
+
+
+    <form action="{{ route('coordinador.reportesVinculacion') }}" method="post">
+        @csrf
+        <button type="submit" class="btn btn-sm btn-secondary">
+            <i class="fas fa-file-excel"></i> Generar Reporte
+        </button>
+    </form>
+
+    <div class="d-flex justify-content-center">
+        <ul class="pagination">
+            @if ($estudiantesVinculacion->onFirstPage())
+                <li class="page-item disabled">
+                    <span class="page-link">Anterior</span>
+                </li>
+            @else
+                <li class="page-item">
+                    <a class="page-link"
+                        href="{{ $estudiantesVinculacion->previousPageUrl() }}&elementosPorPagina={{ $elementosPorPagina }}"
+                        aria-label="Anterior">Anterior</a>
+                </li>
+            @endif
+
+            @foreach ($estudiantesVinculacion->getUrlRange(1, $estudiantesVinculacion->lastPage()) as $page => $url)
+                @if ($page == $estudiantesVinculacion->currentPage())
+                    <li class="page-item active">
+                        <span class="page-link">{{ $page }}</span>
+                    </li>
+                @else
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="{{ $url }}&elementosPorPagina={{ $elementosPorPagina }}">{{ $page }}</a>
+                    </li>
+                @endif
+            @endforeach
+
+            @if ($estudiantesVinculacion->hasMorePages())
+                <li class="page-item">
+                    <a class="page-link"
+                        href="{{ $estudiantesVinculacion->nextPageUrl() }}&elementosPorPagina={{ $elementosPorPagina }}"
+                        aria-label="Siguiente">Siguiente</a>
+                </li>
+            @else
+                <li class="page-item disabled">
+                    <span class="page-link">Siguiente</span>
+                </li>
+            @endif
+        </ul>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // Función para verificar el estado al cargar la página
-        window.onload = function() {
-            verificarEstado();
-        };
-    
-        function mostrarSweetAlert() {
-            Swal.fire({
-                title: 'Ingrese el motivo de la negación',
-                input: 'textarea',
-                inputLabel: 'Motivo',
-                inputPlaceholder: 'Ingrese el motivo aquí...',
-                inputAttributes: {
-                    rows: 7,
-                    style: 'resize: vertical;'
-                },
-                showCancelButton: true,
-                cancelButtonText: 'Cancelar',
-                confirmButtonText: 'Confirmar',
-                preConfirm: (motivo) => {
-                    if (!motivo) {
-                        Swal.showValidationMessage('Debe ingresar un motivo');
+        var delayTimer;
+        $('#buscarEstudiantes').on('keyup', function() {
+            clearTimeout(delayTimer);
+            var query = $(this).val();
+            delayTimer = setTimeout(function() {
+                $.ajax({
+                    url: '{{ route('admin.estudiantes') }}',
+                    type: 'GET',
+                    data: {
+                        buscarEstudiantes: query
+                    },
+                    success: function(response) {
+                        $('#tablaEstudiantes').html($(response).find('#tablaEstudiantes')
+                        .html());
                     }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Asignar el motivo de negación al campo oculto
-                    document.getElementById('motivoNegacion').value = result.value;
-                    // Enviar el formulario
-                    enviarFormulario();
-                }
-            });
-        }
-    
-        // Función para enviar el formulario al controlador
-        function enviarFormulario() {
-            // Obtener el formulario
-            var formulario = document.getElementById('formNegacion');
-            // Enviar el formulario
-            formulario.submit();
-        }
-    
-        // Función para mostrar el Sweet Alert solo cuando se selecciona "Negado"
-        function verificarEstado() {
-            var estado = document.getElementById('nuevoEstado').value;
-            if (estado === 'Negado') {
-                mostrarSweetAlert();
-            } else {
-                // Si el estado no es "Negado", no se muestra el Sweet Alert
-            }
-        }
+                });
+            }, 500);  
+        });
     </script>
+
+@endsection
+
 
 <style>
     table {
         width: 100%;
         border-collapse: collapse;
         white-space: nowrap;
-        /* Evita el desbordamiento de texto */
     }
 
     table,
@@ -380,9 +356,7 @@
         text-align: left;
         border: 1px solid #ddd;
         overflow: hidden;
-        /* Oculta el contenido desbordado */
         text-overflow: ellipsis;
-        /* Agrega puntos suspensivos en el texto desbordado */
     }
 
     th {
@@ -403,6 +377,3 @@
         line-height: 1.5;
     }
 </style>
-@endsection
-
- 

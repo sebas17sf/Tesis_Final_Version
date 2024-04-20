@@ -216,14 +216,19 @@ class AdminController extends Controller
 
         $estudiantesAprobados = $queryEstudiantesAprobados->paginate($elementosPorPaginaAprobados); // Cambio de nombre
 
+        // Verificar si no se encontraron resultados para la búsqueda de estudiantes de vinculación
+        $noResultadosEstudiantesVinculacion = $estudiantesVinculacion->isEmpty() && $estudiantesVinculacion->total() === 0;
+
         return view('admin.aceptacionEstudiantes', [
             'estudiantesEnRevision' => $estudiantesEnRevision,
             'estudiantesAprobados' => $estudiantesAprobados,
             'estudiantesVinculacion' => $estudiantesVinculacion,
             'elementosPorPagina' => $elementosPorPagina,
             'elementosPorPaginaAprobados' => $elementosPorPaginaAprobados, // Cambio de nombre
+            'noResultadosEstudiantesVinculacion' => $noResultadosEstudiantesVinculacion,
         ]);
     }
+
 
 
 
@@ -552,31 +557,31 @@ class AdminController extends Controller
                 $query->where('Nombres', $request->nombres)
                     ->where('Apellidos', $request->apellidos);
             })->exists();
-    
+
             if ($existente) {
                 $mensaje = 'Ya existe un maestro con los mismos nombres y apellidos.';
-    
+
                 // Devolver el mensaje de error
                 return redirect()->back()->with('errorMaestro', $mensaje);
             }
-    
+
             // Verificar si ya existe un maestro con el mismo correo o cédula
             $existenteCorreo = ProfesUniversidad::where('Correo', $request->correo)->exists();
             $existenteCedula = ProfesUniversidad::where('Cedula', $request->cedula)->exists();
-    
+
             if ($existenteCorreo) {
                 $mensaje = 'El correo ya está registrado en Docentes.';
             }
-    
+
             if ($existenteCedula) {
                 $mensaje .= ' La cédula ya está registrada en Docentes.';
             }
-    
+
             if ($existenteCorreo || $existenteCedula) {
                 // Devolver el mensaje de error
                 return redirect()->back()->with('errorMaestro', $mensaje);
             }
-    
+
             // Validar los campos
             $request->validate([
                 'nombres' => 'required|string|max:255',
@@ -585,7 +590,7 @@ class AdminController extends Controller
                 'cedula' => 'required|string|min:10',
                 'departamento' => 'required|string',
             ]);
-    
+
             // Crear el maestro
             $usuario = explode('@', $request->correo)[0];
             ProfesUniversidad::create([
@@ -596,7 +601,7 @@ class AdminController extends Controller
                 'Cedula' => $request->cedula,
                 'Departamento' => $request->departamento,
             ]);
-    
+
             // Devolver el mensaje de éxito
             return redirect()->route('admin.index')->with('success', 'Docente creado con éxito');
         } catch (\Exception $e) {
@@ -604,7 +609,7 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'No se pudo crear el Docente. Por favor, verifica los datos e intenta de nuevo.');
         }
     }
-    
+
 
 
 

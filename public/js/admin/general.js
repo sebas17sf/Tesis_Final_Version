@@ -87,5 +87,70 @@ document.getElementById('cohorte').addEventListener('input', function() {
     }
 });
 
-/////////////////////////Errores en tiempo real de los inputs de maestros/////////////////////////
- 
+/////////////////////////Busqueda tiempo real/////////////////////////
+$(document).ready(function() {
+    $('#buscarEstudiantes').on('keyup', function() {
+        var query = $(this).val(); // Obtener el valor del campo de búsqueda
+        $.ajax({
+            url: '{{ route("admin.estudiantes") }}',
+            type: 'GET',
+            data: { buscarEstudiantes: query },
+            success: function(response) {
+                // Actualizar solo la tabla de estudiantes de vinculación
+                $('#tablaEstudiantes').html($(response).find('#tablaEstudiantes').html());
+            }
+        });
+    });
+});
+
+////////////////////////////////////estudiantes mensaje
+
+window.onload = function() {
+    verificarEstado();
+};
+
+function mostrarSweetAlert() {
+    Swal.fire({
+        title: 'Ingrese el motivo de la negación',
+        input: 'textarea',
+        inputLabel: 'Motivo',
+        inputPlaceholder: 'Ingrese el motivo aquí...',
+        inputAttributes: {
+            rows: 7,
+            style: 'resize: vertical;'
+        },
+        showCancelButton: true,
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Confirmar',
+        preConfirm: (motivo) => {
+            if (!motivo) {
+                Swal.showValidationMessage('Debe ingresar un motivo');
+            }
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Asignar el motivo de negación al campo oculto
+            document.getElementById('motivoNegacion').value = result.value;
+            // Enviar el formulario
+            enviarFormulario();
+        }
+    });
+}
+
+// Función para enviar el formulario al controlador
+function enviarFormulario() {
+    // Obtener el formulario
+    var formulario = document.getElementById('formNegacion');
+    // Enviar el formulario
+    formulario.submit();
+}
+
+// Función para mostrar el Sweet Alert solo cuando se selecciona "Negado"
+function verificarEstado() {
+    var estado = document.getElementById('nuevoEstado').value;
+    if (estado === 'Negado') {
+        mostrarSweetAlert();
+    } else {
+        // Si el estado no es "Negado", no se muestra el Sweet Alert
+    }
+}
