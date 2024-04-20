@@ -5,9 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    /**
-     * Run the migrations.
-     */
+    
     public function up(): void
     {
         Schema::create('nrc_vinculacion', function (Blueprint $table) {
@@ -19,10 +17,7 @@ return new class extends Migration {
              $table->foreign('id_periodo')->references('id')->on('periodo');
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
+ 
     public function down(): void
     {
         Schema::dropIfExists('nrc_vinculacion');

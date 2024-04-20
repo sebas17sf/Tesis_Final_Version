@@ -278,4 +278,9 @@ Route::post('/coordinador/reportes-practicaII', [DocumentoController::class, 're
 Route::post('/coordinador/reportes-vinculacion-proyectos', [DocumentoController::class, 'reporteVinculacionProyectos'])->name('coordinador.reporteVinculacionProyectos');
 
 
+////////////////NRC Vincluacion de admin
+Route::post('/admin/nrc-vinculacion', [AdminController::class, 'GuardarNRC'])->name('admin.nrcVinculacion');
+
+
+
  });

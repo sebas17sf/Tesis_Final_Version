@@ -11,8 +11,7 @@
             Swal.fire({
                 icon: 'success',
                 title: 'Éxito',
-                text: '{{ session('
-                                                                    success ') }}',
+                text: '{{ session('success') }}',
                 confirmButtonText: 'Ok'
             });
         </script>
@@ -32,7 +31,7 @@
             }
         </script>
     @endif
- 
+
 
 
     @if (session('error'))
@@ -40,8 +39,7 @@
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: '{{ session('
-                                                                    error ') }}',
+                text: '{{ session('error') }}',
                 confirmButtonText: 'Ok'
             });
         </script>
@@ -49,15 +47,15 @@
 
 
     @if (session('errorMaestro'))
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Error al agregar el docente',
-            html: '{{ session('errorMaestro') }}',
-            confirmButtonText: 'Ok'
-        });
-    </script>
-@endif
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al agregar el docente',
+                html: '{{ session('errorMaestro') }}',
+                confirmButtonText: 'Ok'
+            });
+        </script>
+    @endif
 
     <div class="mat-elevation-z8 contenedor_general">
         @if ($profesoresPendientes->isEmpty())
@@ -295,10 +293,11 @@
             </ul>
         </div>
 
-        <button id="toggleFormBtn2" class="btn btn-outline-secondary btn-block">Agregar Cohoerte/Periodo
-            Academico</button>
+        <button id="toggleFormBtn2" class="btn btn-outline-secondary btn-block">Agregar Cohoerte/Periodo/NRC
+        </button>
         <div id="registrarPeriodos" style="display: none;">
-            <br>
+
+            <!-- Formulario para agregar cohorte -->
             <form action="{{ route('admin.guardarCohorte') }}" method="post">
                 @csrf
                 <div class="row align-items-center">
@@ -310,8 +309,6 @@
                                 title="Debe ingresar exactamente 6 números" required>
                             <small id="errorCohorte" class="form-text text-danger"></small>
                         </div>
-
-
                     </div>
                     <div class="col-md-3">
                         <button type="submit" class="button">Guardar Cohorte</button>
@@ -319,6 +316,7 @@
                 </div>
             </form>
 
+            <!-- Formulario para agregar período académico -->
             <form action="{{ route('admin.guardarPeriodo') }}" method="post">
                 @csrf
                 <div class="row align-items-center">
@@ -343,8 +341,6 @@
                                 title="Ingrese un número no negativo de hasta 6 dígitos" required>
                             <small id="errorNumeroPeriodo" class="form-text text-danger"></small>
                         </div>
-
-
                     </div>
                     <div class="col-md-4">
                         <button type="submit" class="button">Guardar Periodo Académico</button>
@@ -352,25 +348,61 @@
                 </div>
             </form>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <h4>Periodos Agregados</h>
-                        <div class="d-flex align-items-center">
-                            <select id="selectPeriodo" class="form-select me-2 input input_select ">
-                                <option value="">Seleccionar Periodo</option>
+            <!-- Formulario para agregar NRC Vinculacion -->
+            <h4>NRC Vinculacion</h4>
+            <form action="{{ route('admin.nrcVinculacion') }}" method="post">
+                @csrf
+                <div class="row align-items-center">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="nrc"><strong>Ingrese el NRC:</strong></label>
+                            <input type="text" id="nrc" name="nrc" class="form-control input"
+                                placeholder="Ingrese 5 números" pattern="\d{5}"
+                                title="Debe ingresar exactamente 5 números" required>
+                            <small id="errorNRC" class="form-text text-danger"></small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="periodo"><strong>Seleccione el período:</strong></label>
+                            <select id="periodo" name="periodo" class="form-select me-2 input input_select " required>
+                                <option value="">Seleccione un período</option>
                                 @foreach ($periodos as $periodo)
-                                    <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }}
+                                    <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} -
                                         {{ $periodo->Periodo }}</option>
                                 @endforeach
                             </select>
-
-                            @if (!empty($periodo))
-                                <form action="{{ route('admin.editarPeriodo', ['id' => $periodo->id]) }}" method="GET">
-                                    @csrf
-                                    <button type="submit" class="button">Editar</button>
-                                </form>
-                            @endif
+                            <small id="errorPeriodo" class="form-text text-danger"></small>
                         </div>
+                    </div>
+                </div>
+                <button type="submit" class="button">Guardar NRC</button>
+            </form>
+
+
+
+            <!-- Elementos agregados (Periodos y Cohortes) -->
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Periodos Agregados</h4>
+                    <div class="d-flex align-items-center">
+                        <select id="selectPeriodo" class="form-select me-2 input input_select ">
+                            <option value="">Seleccionar Periodo</option>
+                            @foreach ($periodos as $periodo)
+                                <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }}
+                                    {{ $periodo->Periodo }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        @if (!empty($periodo))
+                            <form action="{{ route('admin.editarPeriodo', ['id' => $periodo->id]) }}" method="GET">
+                                @csrf
+                                <button type="submit" class="button">Editar</button>
+                            </form>
+                        @endif
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <h4>Cohortes Agregadas</h4>
@@ -393,6 +425,9 @@
                 </div>
             </div>
         </div>
+
+
+
     </div>
 @endsection
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

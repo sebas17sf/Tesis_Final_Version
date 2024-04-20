@@ -15,14 +15,15 @@ use App\Models\AsignacionProyecto;
 use App\Models\Empresa;
 use App\Models\Role;
 
+
 use App\Models\Periodo;
-use App\Models\DirectorVinculacion;
-use App\Models\ParticipanteVincunlacion;
+
 use App\Models\ProfesUniversidad;
 use Illuminate\Support\Facades\Mail;
 use App\Models\EstudiantesVinculacion;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\NrcVinculacion;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -279,6 +280,8 @@ class AdminController extends Controller
     /////////////////////////////visualizar proyectos
     public function indexProyectos(Request $request)
     {
+        $nrcs = NrcVinculacion::all();
+
         $perPage = $request->input('perPage', 10);
         $search = $request->input('search');
 
@@ -287,9 +290,9 @@ class AdminController extends Controller
             $perPage = 10;
         }
 
-        $query = Proyecto::with(['director', 'docenteParticipante']);
+        $query = Proyecto::with(['director', 'docenteParticipante', 'nrcs']);
 
-        // Aplicar búsqueda si se proporciona un término de búsqueda
+        // Apply search if a search term is provided
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('NombreProyecto', 'LIKE', '%' . $search . '%')
@@ -304,13 +307,12 @@ class AdminController extends Controller
                             ->orWhere('Apellidos', 'LIKE', '%' . $search . '%');
                     });
             });
-
         }
 
-        // Obtener proyectos paginados
+        // Get paginated projects
         $proyectos = $query->paginate($perPage);
 
-        // Obtener otros datos necesarios
+        // Get other necessary data
         $proyectosDisponibles = Proyecto::where('Estado', 'Ejecucion')->get();
 
         $estudiantesAprobados = Estudiante::where('Estado', 'Aprobado')
@@ -322,17 +324,19 @@ class AdminController extends Controller
             'proyectosDisponibles' => $proyectosDisponibles,
             'estudiantesAprobados' => $estudiantesAprobados,
             'perPage' => $perPage,
+            'nrcs' => $nrcs,
             'search' => $search,
         ]);
     }
-
 
     ///////////////////////Vista para crear los proyectos
 
     public function crearProyectoForm()
     {
+        $nrcs = NrcVinculacion::all();
+
         $profesores = ProfesUniversidad::all();
-        return view('admin.agregarProyecto', compact('profesores'));
+        return view('admin.agregarProyecto', compact('profesores', 'nrcs'));
     }
 
     ///////////////////////guardar proyectos
@@ -695,16 +699,30 @@ class AdminController extends Controller
     {
         // Validar los datos del formulario
         $request->validate([
-            'cohorte' => 'required|string|unique:cohorte,Cohorte|max:6',
+            'cohorte' => 'required|max:6',
         ]);
 
-        // Crear una nueva instancia del modelo Cohorte y asignar los valores
-        $cohorte = new Cohorte;
+        ////verifica si la cohorte ya existe
+        $cohorteExistente = Cohorte::where('Cohorte', $request->cohorte)->first();
+
+        if ($cohorteExistente) {
+            return redirect()->route('admin.index')->with('error', 'La cohorte ingresada ya existe.');
+        }
+
+
+        // Crear una nueva instancia de Cohorte
+        $cohorte = new Cohorte();
         $cohorte->Cohorte = $request->cohorte;
+
+
+
+
+
 
         if ($cohorte->save()) {
             return redirect()->route('admin.index')->with('success', 'Cohorte guardada con éxito');
         } else {
+            // Si hay algún error inesperado al guardar, redirigir con un mensaje de error
             return redirect()->route('admin.index')->with('error', 'No se pudo crear el cohorte. Por favor, verifica los datos e intenta de nuevo.');
         }
     }
@@ -740,21 +758,23 @@ class AdminController extends Controller
         $request->validate([
             'periodoInicio' => 'required|date',
             'periodoFin' => 'required|date|after:periodoInicio',
-            'numeroPeriodo' => 'required|integer',
+            'numeroPeriodo' => 'required',
         ]);
 
-        // Obtén las fechas del formulario
+        $periodoExistente = Periodo::where('numeroPeriodo', $request->numeroPeriodo)->first();
+
+        if ($periodoExistente) {
+            return redirect()->route('admin.index')->with('error', 'El período ingresado ya existe.');
+        }
+
         $fechaInicio = \Carbon\Carbon::parse($request->periodoInicio);
         $fechaFin = \Carbon\Carbon::parse($request->periodoFin);
 
-        // Formatea las fechas en el formato deseado (MESaño)
         $periodoInicio = strtoupper($fechaInicio->format('M')) . $fechaInicio->format('Y');
         $periodoFin = strtoupper($fechaFin->format('M')) . $fechaFin->format('y');
 
-        // Combina las fechas para formar el período académico
         $periodoAcademico = $periodoInicio . '-' . $periodoFin;
 
-        // Guarda el período académico en la base de datos
         Periodo::create([
             'Periodo' => $periodoAcademico,
             'PeriodoInicio' => $fechaInicio,
@@ -764,6 +784,7 @@ class AdminController extends Controller
 
         return redirect()->route('admin.index')->with('success', 'Periodo académico creado con éxito.');
     }
+
     public function editarPeriodo($id)
     {
         // Buscar el período académico por su ID
@@ -1168,6 +1189,27 @@ class AdminController extends Controller
 
 
 
+    ///////agregar nrc
+    public function GuardarNRC(Request $request)
+    {
+        $request->validate([
+            'nrc' => 'required|numeric|digits:5',
+            'periodo' => 'required',
+        ]);
+
+        $nrcExistente = NrcVinculacion::where('nrc', $request->nrc)->first();
+
+        if ($nrcExistente) {
+            return redirect()->route('admin.index')->with('error', 'El NRC ingresado ya existe.');
+        }
+
+        NrcVinculacion::create([
+            'nrc' => $request->nrc,
+            'id_periodo' => $request->periodo,
+        ]);
+
+        return redirect()->route('admin.index')->with('success', 'NRC guardado con éxito.');
+    }
 
 
 

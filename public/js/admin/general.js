@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     // Verificar si hay un estado guardado para el formulario de maestros
     var maestrosVisible = localStorage.getItem('maestrosVisible');
     if (maestrosVisible === 'true') {
@@ -16,10 +16,10 @@ $(document).ready(function() {
         $("#toggleFormBtn2").text("Ocultar Registro");
     } else {
         $("#registrarPeriodos").hide();
-        $("#toggleFormBtn2").text("Agregar Cohorte/Periodo Académico");
+        $("#toggleFormBtn2").text("Agregar Cohoerte/Periodo/NRC");
     }
 
-    $("#toggleFormBtn").click(function(event) {
+    $("#toggleFormBtn").click(function (event) {
         event.preventDefault();
         $("#registrarMaestros").toggle();
         if ($("#registrarMaestros").is(":visible")) {
@@ -31,14 +31,14 @@ $(document).ready(function() {
         }
     });
 
-    $("#toggleFormBtn2").click(function(event) {
+    $("#toggleFormBtn2").click(function (event) {
         event.preventDefault();
         $("#registrarPeriodos").toggle();
         if ($("#registrarPeriodos").is(":visible")) {
             $(this).text("Ocultar Registro");
             localStorage.setItem('periodosVisible', 'true');
         } else {
-            $(this).text("Agregar Cohorte/Periodo Académico");
+            $(this).text("Agregar Cohoerte/Periodo/NRC");
             localStorage.setItem('periodosVisible', 'false');
         }
     });
@@ -46,8 +46,8 @@ $(document).ready(function() {
 
 
 
-
-document.getElementById('numeroPeriodo').addEventListener('input', function() {
+///////////////////validacion numeros negativos////////////////////////////////////
+document.getElementById('numeroPeriodo').addEventListener('input', function () {
     var numeroPeriodo = this.value.trim();
     var errorElement = document.getElementById('errorNumeroPeriodo');
 
@@ -67,7 +67,7 @@ document.getElementById('numeroPeriodo').addEventListener('input', function() {
     }
 });
 
-document.getElementById('cohorte').addEventListener('input', function() {
+document.getElementById('cohorte').addEventListener('input', function () {
     var cohorte = this.value.trim();
     var errorElement = document.getElementById('errorCohorte');
 
@@ -87,15 +87,34 @@ document.getElementById('cohorte').addEventListener('input', function() {
     }
 });
 
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('nrc').addEventListener('input', function(event) {
+        var input = event.target;
+        var value = input.value.trim();
+
+         if (isNaN(value)) {
+            input.setCustomValidity('Ingrese un número válido');
+            document.getElementById('errorNRC').textContent = 'Ingrese un número válido';
+        } else if (parseInt(value) < 0) {
+             input.setCustomValidity('Ingrese un número no negativo');
+            document.getElementById('errorNRC').textContent = 'Ingrese un número no negativo';
+        } else {
+            input.setCustomValidity('');
+            document.getElementById('errorNRC').textContent = '';
+        }
+    });
+});
+
 /////////////////////////Busqueda tiempo real/////////////////////////
-$(document).ready(function() {
-    $('#buscarEstudiantes').on('keyup', function() {
+$(document).ready(function () {
+    $('#buscarEstudiantes').on('keyup', function () {
         var query = $(this).val(); // Obtener el valor del campo de búsqueda
         $.ajax({
             url: '{{ route("admin.estudiantes") }}',
             type: 'GET',
             data: { buscarEstudiantes: query },
-            success: function(response) {
+            success: function (response) {
                 // Actualizar solo la tabla de estudiantes de vinculación
                 $('#tablaEstudiantes').html($(response).find('#tablaEstudiantes').html());
             }
@@ -105,7 +124,7 @@ $(document).ready(function() {
 
 ////////////////////////////////////estudiantes mensaje
 
-window.onload = function() {
+window.onload = function () {
     verificarEstado();
 };
 

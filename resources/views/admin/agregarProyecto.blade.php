@@ -54,6 +54,20 @@ Swal.fire({
         </div>
 
         <div class="form-group">
+            <label for="nrc">Vinculacion NRC:</label>
+            <select name="nrc" class="form-control input input-select" required>
+                <option value="">Seleccionar NRC</option>
+                @foreach ($nrcs as $nrc)
+                    <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        
+        
+        
+
+        <div class="form-group">
             <label for="NombreProyecto">Nombre del Proyecto:</label>
             <input type="text" name="NombreProyecto" class="form-control input"
                 placeholder="Ingrese el Nombre del Proyecto" required>
