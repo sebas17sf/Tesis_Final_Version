@@ -15,6 +15,7 @@ class Proyecto extends Model
     protected $fillable = [
         'id_directorProyecto',
         'id_docenteParticipante',
+        'id_nrc_vinculacion',
         'NombreProyecto',
         'DescripcionProyecto',
         'CorreoElectronicoTutor',
@@ -24,25 +25,29 @@ class Proyecto extends Model
         'cupos',
         'Estado',
     ];
+
     public function estudiantes()
     {
         return $this->belongsToMany(Estudiante::class, 'asignacionProyectos', 'ProyectoID', 'EstudianteID');
     }
+
     public function asignaciones()
     {
         return $this->hasMany(AsignacionProyecto::class, 'ProyectoID', 'ProyectoID');
     }
+
     public function director()
     {
         return $this->belongsTo(ProfesUniversidad::class, 'id_directorProyecto');
     }
 
-     public function docenteParticipante()
+    public function docenteParticipante()
     {
         return $this->belongsTo(ProfesUniversidad::class, 'id_docenteParticipante');
     }
 
-
- 
-
+    public function nrcVinculacion()
+    {
+        return $this->belongsTo(NrcVinculacion::class, 'id_nrc_vinculacion');
+    }
 }
