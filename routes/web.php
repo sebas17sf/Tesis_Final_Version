@@ -276,6 +276,8 @@ Route::post('/coordinador/reportes-practicaI', [DocumentoController::class, 'rep
 Route::post('/coordinador/reportes-practicaII', [DocumentoController::class, 'reportesPracticaII'])->name('coordinador.reportesPracticaII');
 ////reporteVinculacionProyectos
 Route::post('/coordinador/reportes-vinculacion-proyectos', [DocumentoController::class, 'reporteVinculacionProyectos'])->name('coordinador.reporteVinculacionProyectos');
+////////////Reporte Docentes de admin
+Route::post('/admin/reportes-docentes', [DocumentoController::class, 'ReporteProyectos'])->name('admin.reportesDocentes');
 
 
 ////////////////NRC Vincluacion de admin

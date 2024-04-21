@@ -44,6 +44,37 @@ $(document).ready(function () {
     });
 });
 
+$(document).ready(function () {
+    // Verificar si se guardó un estado previo en el almacenamiento local
+    var asignarEstudianteVisible = localStorage.getItem('asignarEstudianteVisible');
+
+    // Mostrar u ocultar el formulario según el estado guardado
+    if (asignarEstudianteVisible === 'true') {
+        $("#asignarEstudiante").show();
+        $("#toggleFormBtn3").text("Ocultar Asignar Estudiante");
+    } else {
+        $("#asignarEstudiante").hide();
+        $("#toggleFormBtn3").text("Asignar estudiante");
+    }
+
+    // Manejar el evento de clic en el botón
+    $("#toggleFormBtn3").click(function () {
+        $("#asignarEstudiante").toggle();
+
+        // Guardar el estado en el almacenamiento local
+        var isVisible = $("#asignarEstudiante").is(":visible");
+        localStorage.setItem('asignarEstudianteVisible', isVisible.toString());
+
+        // Actualizar el texto del botón
+        if (isVisible) {
+            $(this).text("Ocultar Asignar Estudiante");
+        } else {
+            $(this).text("Asignar estudiante");
+        }
+    });
+});
+
+
 
 
 ///////////////////validacion numeros negativos////////////////////////////////////
@@ -88,16 +119,16 @@ document.getElementById('cohorte').addEventListener('input', function () {
 });
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('nrc').addEventListener('input', function(event) {
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('nrc').addEventListener('input', function (event) {
         var input = event.target;
         var value = input.value.trim();
 
-         if (isNaN(value)) {
+        if (isNaN(value)) {
             input.setCustomValidity('Ingrese un número válido');
             document.getElementById('errorNRC').textContent = 'Ingrese un número válido';
         } else if (parseInt(value) < 0) {
-             input.setCustomValidity('Ingrese un número no negativo');
+            input.setCustomValidity('Ingrese un número no negativo');
             document.getElementById('errorNRC').textContent = 'Ingrese un número no negativo';
         } else {
             input.setCustomValidity('');

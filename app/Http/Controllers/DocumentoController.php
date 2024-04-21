@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
+use App\Models\NrcVinculacion;
 use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpWord\Shared\ZipArchive;
 use PhpOffice\PhpWord\Settings;
@@ -136,13 +137,13 @@ class DocumentoController extends Controller
         $template->setValue('FechaInicio', $fechaFormateada);
         $template->setValue('NombreProyecto', $NombreProyecto);
 
-        
+
 
         $nombreArchivo = '1.2-Acta-Designacion-Estudiantes.docx';
         $template->saveAs($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
 
-     }
+    }
 
 
 
@@ -175,11 +176,11 @@ class DocumentoController extends Controller
         // Obtener las asignaciones de proyectos del estudiante
         $asignaciones = $estudiante->asignaciones;
 
- 
+
         if (!$asignaciones->count()) {
             return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');
         }
-    
+
 
         // Crear una lista para almacenar los nombres de proyectos
         $nombresProyectos = [];
@@ -840,20 +841,27 @@ class DocumentoController extends Controller
 
         $spreadsheet = IOFactory::load($plantillaPath);
 
-        $datosProyectos = Proyecto::with(['director:id,Apellidos,Nombres', 'docenteParticipante:id,Apellidos,Nombres'])
-            ->select(
+        $estado = $request->input('estado');
 
-                'NombreProyecto',
-                'FechaInicio',
-                'FechaFinalizacion',
-                'DepartamentoTutor',
-                'Estado',
-                'DescripcionProyecto',
-                'id_directorProyecto',
-                'id_docenteParticipante'
-            )
-            ->orderBy('NombreProyecto', 'asc')
-            ->get();
+
+        $plantillaPath = public_path('Plantillas/Reporte-Proyectos.xlsx');
+
+        $spreadsheet = IOFactory::load($plantillaPath);
+
+        $estado = $request->input('estado');
+
+        $query = Proyecto::with([
+            'director:id,Apellidos,Nombres',
+            'docenteParticipante:id,Apellidos,Nombres',
+            'nrcs:id,nrc,id_periodo',
+            'nrcs.periodo:id,Periodo',
+        ])->orderBy('NombreProyecto', 'asc');
+
+        if ($estado) {
+            $query->where('Estado', $estado);
+        }
+
+        $datosProyectos = $query->get();
 
 
         $sheet = $spreadsheet->getActiveSheet();
@@ -869,24 +877,42 @@ class DocumentoController extends Controller
         foreach ($datosProyectos as $index => $proyecto) {
             $director = ProfesUniversidad::find($proyecto->id_directorProyecto);
             $participante = ProfesUniversidad::find($proyecto->id_docenteParticipante);
+            $nrc = NrcVinculacion::find($proyecto->id_nrc_vinculacion);
+
             $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
             $sheet->setCellValue('B' . ($filaInicio + $index), $proyecto->NombreProyecto);
-            $sheet->setCellValue('G' . ($filaInicio + $index), $proyecto->FechaInicio);
-            $sheet->setCellValue('H' . ($filaInicio + $index), $proyecto->FechaFinalizacion);
-            $sheet->setCellValue('F' . ($filaInicio + $index), $proyecto->DepartamentoTutor);
 
-            // Obtener nombre completo del director si está presente
+            // Ajustar automáticamente la altura de la fila para el nombre del proyecto
+            $sheet->getStyle('B' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
+
+            $sheet->setCellValue('C' . ($filaInicio + $index), $proyecto->codigoProyecto);
+            $sheet->setCellValue('I' . ($filaInicio + $index), $proyecto->FechaInicio);
+            $sheet->setCellValue('J' . ($filaInicio + $index), $proyecto->FechaFinalizacion);
+            $sheet->setCellValue('G' . ($filaInicio + $index), $proyecto->DepartamentoTutor);
+
             $nombreDirector = $director ? $director->Nombres . ' ' . $director->Apellidos : 'No especificado';
-            $sheet->setCellValue('C' . ($filaInicio + $index), $nombreDirector);
+            $sheet->setCellValue('E' . ($filaInicio + $index), $nombreDirector);
 
-            // Obtener nombre completo del participante si está presente
             $nombreParticipante = $participante ? $participante->Nombres . ' ' . $participante->Apellidos : 'No especificado';
-            $sheet->setCellValue('D' . ($filaInicio + $index), $nombreParticipante);
+            $sheet->setCellValue('F' . ($filaInicio + $index), $nombreParticipante);
 
-            $sheet->setCellValue('I' . ($filaInicio + $index), $proyecto->Estado);
-            $sheet->setCellValue('E' . ($filaInicio + $index), $proyecto->DescripcionProyecto);
+            $nrcValue = $nrc ? $nrc->nrc : 'No especificado';
+            $sheet->setCellValue('K' . ($filaInicio + $index), $nrcValue);
+
+            $sheet->setCellValue('L' . ($filaInicio + $index), $proyecto->Estado);
+
+            // Ajustar automáticamente la altura de la fila para la descripción del proyecto
+            $sheet->getStyle('D' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
+            $sheet->setCellValue('D' . ($filaInicio + $index), $proyecto->DescripcionProyecto);
+
+            // Obtener el periodo del NRC
+            $periodo = $nrc ? $nrc->periodo->numeroPeriodo : 'No especificado';
+            $sheet->setCellValue('H' . ($filaInicio + $index), $periodo);
+
             $contador++;
         }
+
+
 
 
 
@@ -920,7 +946,7 @@ class DocumentoController extends Controller
                 'Estudiantes.Departamento',
                 'Estudiantes.Estado',
                 'Periodo.Periodo',
-             )
+            )
             ->join('Cohorte', 'Estudiantes.id_cohorte', '=', 'Cohorte.ID_cohorte')
             ->join('Periodo', 'Estudiantes.id_periodo', '=', 'Periodo.id') // Cambiado aquí
             ->orderBy('Estudiantes.Apellidos', 'asc')
@@ -1263,6 +1289,46 @@ class DocumentoController extends Controller
 
         // Descargar el documento generado
         return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
+    }
+
+
+    ////////////////////////reporte de docentes///////////////////////
+
+    public function ReporteProyectos()
+    {
+        $plantillaPath = public_path('Plantillas/Reporte-Docentes.xlsx');
+
+        $spreadsheet = IOFactory::load($plantillaPath);
+
+        // Obtener todos los docentes ordenados por apellido de manera alfabética
+        $docentes = ProfesUniversidad::orderBy('Apellidos')->get();
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $filaInicio = 9;
+
+        $cantidadFilas = count($docentes);
+        $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
+
+        $contador = 1;
+
+        // Bucle para reemplazar los valores en la plantilla
+        foreach ($docentes as $index => $docente) {
+            $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
+            $nombreCompleto = $docente->Apellidos . ', ' . $docente->Nombres;
+            $sheet->setCellValue('B' . ($filaInicio + $index), $nombreCompleto);
+            $sheet->setCellValue('C' . ($filaInicio + $index), $docente->Correo);
+            $sheet->setCellValue('D' . ($filaInicio + $index), $docente->Usuario);
+            $sheet->setCellValue('E' . ($filaInicio + $index), $docente->Cedula);
+            $sheet->setCellValue('F' . ($filaInicio + $index), $docente->Departamento);
+            $contador++;
+        }
+
+        // Guardar el documento generado
+        $nombreArchivo = 'Reporte-Docentes.xlsx';
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
     }
 
 

@@ -44,7 +44,8 @@
             <form method="GET" action="{{ route('admin.indexProyectos') }}">
                 <div class="d-flex align-items-center mb-3">
                     <label for="perPage" class="me-2">Proyectos por página:</label>
-                    <select id="perPage" name="perPage" class="form-select input input-select" onchange="this.form.submit()">
+                    <select id="perPage" name="perPage" class="form-select input input-select"
+                        onchange="this.form.submit()">
                         <option value="10" @if ($perPage == 10) selected @endif>10</option>
                         <option value="20" @if ($perPage == 20) selected @endif>20</option>
                         <option value="50" @if ($perPage == 50) selected @endif>50</option>
@@ -54,69 +55,89 @@
             </form>
 
             <div class="mb-3">
-                <form action="{{ route('admin.indexProyectos') }}" method="GET" class="d-flex">
+                <form id="formBusquedaProyectos" class="d-flex">
                     <input type="text" name="search" value="{{ $search }}" class="input"
                         placeholder="Buscar proyectos...">
-                    <button type="submit" class="button">Buscar</button>
                 </form>
             </div>
+
+        </div>
+
+        <div id="tablaProyectos">
+            @if ($proyectos->isEmpty())
+                <p>No se encontraron resultados para la busqueda</p>
+            @else
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nombre del docente director de proyecto</th>
+                            <th>Nombre del docente participante de proyecto</th>
+                            <th>Nombre del proyecto</th>
+                            <th>Descripción</th>
+                            <th>Correo del tutor</th>
+                            <th>Correo del profesor participante</th>
+                            <th>Departamento</th>
+                            <th>Código del Proyecto Social</th>
+                            <th>NRC</th>
+                            <th>Periodo</th>
+                            <th>Fecha de inicio</th>
+                            <th>Fecha fin</th>
+                            <th>Cupos</th>
+                            <th>Estado del proyecto</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($proyectos as $proyecto)
+                            <tr>
+                                <td>{{ strtoupper($proyecto->director->Apellidos) }}
+                                    {{ strtoupper($proyecto->director->Nombres) }}
+                                </td>
+                                <td>{{ strtoupper($proyecto->docenteParticipante->Apellidos) }}
+                                    {{ strtoupper($proyecto->docenteParticipante->Nombres) }}</td>
+                                <td>{{ strtoupper($proyecto->NombreProyecto) }}</td>
+                                <td>{{ strtoupper($proyecto->DescripcionProyecto) }}</td>
+                                <td>{{ strtoupper($proyecto->director->Correo) }}</td>
+                                <td>{{ strtoupper($proyecto->docenteParticipante->Correo) }}</td>
+                                <td>{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
+                                <td>
+                                    @if (empty($proyecto->codigoProyecto))
+                                        {{ strtoupper('No requiere código de proyecto') }}
+                                    @else
+                                        {{ strtoupper($proyecto->codigoProyecto) }}
+                                    @endif
+                                </td>
+                                <td>{{ strtoupper($proyecto->nrcs->nrc) }}</td>
+                                <td>{{ strtoupper($proyecto->nrcs->periodo->numeroPeriodo) }}</td>
+                                <td>{{ strtoupper($proyecto->FechaInicio) }}</td>
+                                <td>{{ strtoupper($proyecto->FechaFinalizacion) }}</td>
+                                <td>{{ strtoupper($proyecto->cupos) }}</td>
+                                <td>{{ strtoupper($proyecto->Estado) }}</td>
+                                <td>
+                                    <a href="{{ route('admin.editarProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
+                                        class="btn btn-outline-secondary btn-block">
+                                        <i class="material-icons">edit</i>
+                                    </a>
+                                    <form
+                                        action="{{ route('admin.deleteProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
+                                        method="POST" style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-outline-secondary btn-block"
+                                            onclick="return confirm('¿Estás seguro de eliminar este proyecto?')">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
         </div>
 
 
 
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Nombre del docente director de proyecto</th>
-                    <th>Nombre del docente participante de proyecto</th>
-                    <th>Nombre del proyecto</th>
-                    <th>Descripción</th>
-                    <th>Correo del tutor</th>
-                    <th>Correo del profesor participante</th>
-                    <th>Departamento</th>
-                    <th>Fecha de inicio</th>
-                    <th>Fecha fin</th>
-                    <th>Cupos</th>
-                    <th>Estado del proyecto</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($proyectos as $proyecto)
-                    <tr>
-                        <td>{{ strtoupper($proyecto->director->Apellidos) }}
-                            {{ strtoupper($proyecto->director->Nombres) }}
-                        </td>
-                        <td>{{ strtoupper($proyecto->docenteParticipante->Apellidos) }}
-                            {{ strtoupper($proyecto->docenteParticipante->Nombres) }}</td>
-                        <td>{{ strtoupper($proyecto->NombreProyecto) }}</td>
-                        <td>{{ strtoupper($proyecto->DescripcionProyecto) }}</td>
-                        <td>{{ strtoupper($proyecto->director->Correo) }}</td>
-                        <td>{{ strtoupper($proyecto->docenteParticipante->Correo) }}</td>
-                        <td>{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
-                        <td>{{ strtoupper($proyecto->FechaInicio) }}</td>
-                        <td>{{ strtoupper($proyecto->FechaFinalizacion) }}</td>
-                        <td>{{ strtoupper($proyecto->cupos) }}</td>
-                        <td>{{ strtoupper($proyecto->Estado) }}</td>
-                        <td>
-                            <a href="{{ route('admin.editarProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
-                                class="btn btn-outline-secondary btn-block">
-                                <i class="material-icons">edit</i>
-                            </a>
-                            <form action="{{ route('admin.deleteProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
-                                method="POST" style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-outline-secondary btn-block"
-                                    onclick="return confirm('¿Estás seguro de eliminar este proyecto?')">
-                                    <i class="material-icons">delete</i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
 
         <div class="d-flex justify-content-center">
             <ul class="pagination">
@@ -148,24 +169,32 @@
             </ul>
         </div>
 
-
-
-
-        <form method="POST" action="{{ route('coordinador.reportesProyectos') }}">
-            @csrf
-            <button type="submit" class="btn btn-sm btn-secondary">
-                <i class="fas fa-file-excel"></i> Generar Reporte
-            </button>
-        </form>
     </div>
 
-
+    <form method="POST" action="{{ route('coordinador.reportesProyectos') }}">
+        @csrf
+        <div class="form-inline">
+            <div class="form-group mr-2">
+                <label for="estado" class="mr-2">Estado del Proyecto:</label>
+                <select name="estado" id="estado" class="form-control input input-select">
+                    <option value="">Todos</option>
+                    <option value="Ejecucion">En Ejecución</option>
+                    <option value="Terminado">Terminado</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-sm btn-secondary">
+                    <i class="fas fa-file-excel"></i> Reporte Proyectos
+                </button>
+            </div>
+        </div>
+    </form>
 
 
     <hr>
 
     <div class="container">
-        <button id="toggleFormBtn" class="btn btn-outline-secondary btn-block">Asignar estudiante</button>
+        <button id="toggleFormBtn3" class="btn btn-outline-secondary btn-block">Asignar estudiante</button>
         <div id="asignarEstudiante" style="display: none;">
 
             <HR>
@@ -219,20 +248,29 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
-            // Manejar el clic en el botón para mostrar/ocultar el formulario
-            $("#toggleFormBtn").click(function() {
-                $("#asignarEstudiante").toggle();
-                // Cambiar el texto del botón según si el formulario está visible u oculto
-                if ($("#asignarEstudiante").is(":visible")) {
-                    $(this).text("Ocultar Asignar Estudiante");
-                } else {
-                    $(this).text("Asignar estudiante");
-                }
-            });
+        var delayTimer;
+        $('#formBusquedaProyectos input[name="search"]').on('keyup', function() {
+            clearTimeout(delayTimer);
+            var query = $(this).val();
+            delayTimer = setTimeout(function() {
+                $.ajax({
+                    url: '{{ route('admin.indexProyectos') }}',
+                    type: 'GET',
+                    data: {
+                        search: query
+                    },
+                    success: function(response) {
+                        $('#tablaProyectos').html($(response).find('#tablaProyectos').html());
+                    }
+                });
+            }, 500);
         });
     </script>
+
+
 
 @endsection
 

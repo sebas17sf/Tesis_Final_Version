@@ -78,6 +78,7 @@ class AdminController extends Controller
                     'profesoresConPermisos' => $profesoresConPermisos,
                     'profesores' => $profesores,
                     'periodos' => $periodos,
+                    'search' => $searchTerm,
                     'cohortes' => $cohortes,
                     'perPage' => $perPage,
                 ]);
@@ -333,11 +334,19 @@ class AdminController extends Controller
 
     public function crearProyectoForm()
     {
+        // Obtén todos los NRCs
         $nrcs = NrcVinculacion::all();
-
+    
+        // Filtra los NRCs que ya están asignados a algún proyecto
+        $nrcs = collect($nrcs)->reject(function ($nrc) {
+            return Proyecto::where('id_nrc_vinculacion', $nrc->id)->exists();
+        });
+    
         $profesores = ProfesUniversidad::all();
+    
         return view('admin.agregarProyecto', compact('profesores', 'nrcs'));
     }
+    
 
     ///////////////////////guardar proyectos
 
@@ -347,13 +356,16 @@ class AdminController extends Controller
         $validatedData = $request->validate([
             'DirectorProyecto' => 'required|integer',
             'ProfesorParticipante' => 'required|integer',
-            'NombreProyecto' => 'required|string|max:255',
+            'NombreProyecto' => 'required',
             'DescripcionProyecto' => 'required|string',
-            'DepartamentoTutor' => 'required|string|max:255',
+            'DepartamentoTutor' => 'required',
             'FechaInicio' => 'required|date',
+            'nrc' => 'required|integer',
+            'codigoProyecto' => 'required',
             'FechaFinalizacion' => 'required|date',
             'cupos' => 'required|integer',
-            'Estado' => 'required|string|max:255',
+            'Estado' => 'required',
+
         ]);
 
         // Verificar si uno de los profesores ya está asociado a un proyecto en ejecución
@@ -418,10 +430,14 @@ class AdminController extends Controller
             'DescripcionProyecto' => $validatedData['DescripcionProyecto'],
             'DepartamentoTutor' => $validatedData['DepartamentoTutor'],
             'FechaInicio' => $validatedData['FechaInicio'],
+            'id_nrc_vinculacion' => $validatedData['nrc'],
+            'codigoProyecto' => $validatedData['codigoProyecto'],
             'FechaFinalizacion' => $validatedData['FechaFinalizacion'],
             'cupos' => $validatedData['cupos'],
             'Estado' => $validatedData['Estado'],
         ]);
+
+         $proyecto->save();
 
         return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto agregado correctamente');
     }
@@ -429,8 +445,10 @@ class AdminController extends Controller
     ///////////////editar proyecto
     public function editProyectoForm($ProyectoID)
     {
+        $nrcs = NrcVinculacion::all();
+
         $proyecto = Proyecto::with(['director', 'docenteParticipante'])->findOrFail($ProyectoID);
-        return view('admin.editarProyecto', compact('proyecto'));
+        return view('admin.editarProyecto', compact('proyecto', 'nrcs'));
     }
 
 
@@ -438,8 +456,9 @@ class AdminController extends Controller
     {
         // Valida los datos del formulario de edición antes de actualizar el proyecto
         $validatedData = $request->validate([
-
             'NombreProyecto' => 'required|string|max:255',
+            'nrc' => 'required|integer',
+            'codigoProyecto' => 'required',
             'DescripcionProyecto' => 'required|string',
             'DepartamentoTutor' => 'required|string|max:255',
             'FechaInicio' => 'required|date',
@@ -448,8 +467,22 @@ class AdminController extends Controller
             'Estado' => 'required|string|max:255',
         ]);
 
+        // Obtén el proyecto existente
         $proyecto = Proyecto::findOrFail($ProyectoID);
-        $proyecto->update($validatedData);
+
+        // Actualiza los campos del proyecto con los datos validados del formulario
+        $proyecto->NombreProyecto = $validatedData['NombreProyecto'];
+        $proyecto->id_nrc_vinculacion = $validatedData['nrc'];
+        $proyecto->codigoProyecto = $validatedData['codigoProyecto'];
+        $proyecto->DescripcionProyecto = $validatedData['DescripcionProyecto'];
+        $proyecto->DepartamentoTutor = $validatedData['DepartamentoTutor'];
+        $proyecto->FechaInicio = $validatedData['FechaInicio'];
+        $proyecto->FechaFinalizacion = $validatedData['FechaFinalizacion'];
+        $proyecto->cupos = $validatedData['cupos'];
+        $proyecto->Estado = $validatedData['Estado'];
+
+        // Guarda los cambios en la base de datos
+        $proyecto->save();
 
         // Verificar si el estado del proyecto cambió a "Terminado"
         if ($proyecto->Estado === 'Terminado') {
@@ -480,13 +513,12 @@ class AdminController extends Controller
                     'director_proyecto' => $proyecto->NombreProfesor . ' ' . $proyecto->ApellidoProfesor,
                     'nombre_proyecto' => $proyecto->NombreProyecto,
                 ]);
-
             }
-
         }
 
         return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto actualizado correctamente');
     }
+
     /////eliminar proyecto
     public function deleteProyecto($ProyectoID)
     {

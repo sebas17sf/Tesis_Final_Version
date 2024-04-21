@@ -1,8 +1,11 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+
+
+ 
 
 return new class extends Migration {
     /**
@@ -18,7 +21,7 @@ return new class extends Migration {
             $table->foreign('id_directorProyecto')->references('id')->on('profesUniversidad');
             $table->foreign('id_docenteParticipante')->references('id')->on('profesUniversidad');
             $table->foreign('id_nrc_vinculacion')->references('id')->on('nrc_vinculacion');  
-            $table->string('NombreProyecto');
+            $table->text('NombreProyecto');
             $table->string('codigoProyecto')->nullable();
             $table->string('DescripcionProyecto');
             $table->string('DepartamentoTutor');
@@ -35,4 +38,7 @@ return new class extends Migration {
     {
         Schema::dropIfExists('proyectos');
     }
+
+    
 };
+

@@ -46,7 +46,7 @@ class Proyecto extends Model
         return $this->belongsTo(ProfesUniversidad::class, 'id_docenteParticipante');
     }
 
-    public function nrcVinculacion()
+    public function nrcs()
     {
         return $this->belongsTo(NrcVinculacion::class, 'id_nrc_vinculacion');
     }

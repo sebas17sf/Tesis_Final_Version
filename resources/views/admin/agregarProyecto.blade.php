@@ -63,7 +63,14 @@ Swal.fire({
             </select>
         </div>
 
+        <div class="form-group">
+            <label for="codigoProyecto">Ingrese código del proyecto:</label>
+            <input type="text" name="codigoProyecto" class="form-control input" placeholder="Ingrese el código del proyecto. Si no, déjelo vacío">
+        </div>
         
+
+
+
         
         
 

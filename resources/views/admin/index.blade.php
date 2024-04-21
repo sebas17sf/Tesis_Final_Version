@@ -209,51 +209,69 @@
                 </select>
             </form>
 
-            <form method="GET" action="{{ route('admin.index') }}">
-                <label for="search">Buscar:</label>
-                <input class="input" type="text" name="search" id="search">
-                <button class="button" type="submit">Buscar</button>
-            </form>
+            <div class="mb-3">
+                <form id="formBusquedaDocentes" class="d-flex">
+                    <input type="text" name="search" value="{{ $search }}" class="input"
+                        placeholder="Buscar proyectos...">
+                </form>
+            </div>
+
+
+
         </div>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Correo</th>
-                    <th>Usuario</th>
-                    <th>Cédula</th>
-                    <th>Departamento</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($profesores as $profesor)
+        <div id="tablaDocentes">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>{{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Apellidos)) }}
-                            {{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Nombres)) }}
-                        </td>
-                        <td>{{ $profesor->Correo }}</td>
-                        <td>{{ $profesor->Usuario }}</td>
-                        <td>{{ $profesor->Cedula }}</td>
-                        <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $profesor->Departamento)) }}
-                        </td>
-                        <td>
-                            <form action="{{ route('admin.eliminarMaestro', ['id' => $profesor->id]) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="button8"> <i class="material-icons">delete</i></button>
-                            </form>
-
-                            <form action="{{ route('admin.editarDocente', ['id' => $profesor->id]) }}" method="GET">
-                                @csrf
-                                <button type="submit" class="button3"> <i class="material-icons">edit</i></button>
-                            </form>
-                        </td>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Usuario</th>
+                        <th>Cédula</th>
+                        <th>Departamento</th>
+                        <th>Acciones</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @if ($profesores->isEmpty())
+                        <tr>
+                            <td colspan="6">No se encontraron resultados para la búsqueda.</td>
+                        </tr>
+                    @else
+                        @foreach ($profesores as $profesor)
+                            <tr>
+                                <td>{{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Apellidos)) }}
+                                    {{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Nombres)) }}
+                                </td>
+                                <td>{{ $profesor->Correo }}</td>
+                                <td>{{ $profesor->Usuario }}</td>
+                                <td>{{ $profesor->Cedula }}</td>
+                                <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $profesor->Departamento)) }}
+                                </td>
+                                <td>
+                                    <form action="{{ route('admin.eliminarMaestro', ['id' => $profesor->id]) }}"
+                                        method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="button8"> <i
+                                                class="material-icons">delete</i></button>
+                                    </form>
+
+                                    <form action="{{ route('admin.editarDocente', ['id' => $profesor->id]) }}"
+                                        method="GET">
+                                        @csrf
+                                        <button type="submit" class="button3"> <i class="material-icons">edit</i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+                </tbody>
+            </table>
+        </div>
+
+
+
 
         <div class="d-flex justify-content-center paginator-container">
             <ul class="pagination">
@@ -292,6 +310,17 @@
                 @endif
             </ul>
         </div>
+
+
+        <form action="{{ route('admin.reportesDocentes') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-sm btn-secondary">
+                <i class="fas fa-file-excel"></i> Reporte Docentes
+            </button>
+        </form>
+
+
+
 
         <button id="toggleFormBtn2" class="btn btn-outline-secondary btn-block">Agregar Cohoerte/Periodo/NRC
         </button>
@@ -429,7 +458,30 @@
 
 
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var delayTimer;
+        $('#formBusquedaDocentes input[name="search"]').on('keyup', function() {
+            clearTimeout(delayTimer);
+            var query = $(this).val();
+            delayTimer = setTimeout(function() {
+                $.ajax({
+                    url: '{{ route('admin.index') }}',
+                    type: 'GET',
+                    data: {
+                        search: query
+                    },
+                    success: function(response) {
+                        $('#tablaDocentes').html($(response).find('#tablaDocentes').html());
+                    }
+                });
+            }, 500);
+        });
+    </script>
+
 @endsection
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
-<script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
