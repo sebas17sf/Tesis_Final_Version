@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 
+
 @section('title', 'Aceptación de Estudiantes')
+
 
 @section('title_component', 'Aceptación de Estudiantes')
 
