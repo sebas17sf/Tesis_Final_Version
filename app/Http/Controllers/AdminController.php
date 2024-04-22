@@ -16,6 +16,10 @@ use App\Models\Empresa;
 use App\Models\Role;
 
 
+use Illuminate\Support\Facades\Artisan;
+ use Illuminate\Support\Facades\Storage;
+use Spatie\Backup\Tasks\Backup\BackupJobFactory;
+
 use App\Models\Periodo;
 
 use App\Models\ProfesUniversidad;
@@ -336,17 +340,17 @@ class AdminController extends Controller
     {
         // Obtén todos los NRCs
         $nrcs = NrcVinculacion::all();
-    
+
         // Filtra los NRCs que ya están asignados a algún proyecto
         $nrcs = collect($nrcs)->reject(function ($nrc) {
             return Proyecto::where('id_nrc_vinculacion', $nrc->id)->exists();
         });
-    
+
         $profesores = ProfesUniversidad::all();
-    
+
         return view('admin.agregarProyecto', compact('profesores', 'nrcs'));
     }
-    
+
 
     ///////////////////////guardar proyectos
 
@@ -437,7 +441,7 @@ class AdminController extends Controller
             'Estado' => $validatedData['Estado'],
         ]);
 
-         $proyecto->save();
+        $proyecto->save();
 
         return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto agregado correctamente');
     }
@@ -1241,6 +1245,39 @@ class AdminController extends Controller
         ]);
 
         return redirect()->route('admin.index')->with('success', 'NRC guardado con éxito.');
+    }
+
+
+    ///////////////////////sacar resplado de BD y sistema
+    public function backup()
+    {
+        // Ejecuta el comando de respaldo de la base de datos
+        Artisan::call('backup:run');
+
+        // Obtiene el nombre del último archivo de respaldo
+        $backupFileName = collect(Storage::disk('local')->files('Laravel'))->last();
+
+        // Verifica si se encontró un archivo de respaldo
+        if ($backupFileName && Storage::disk('local')->exists('Laravel/' . $backupFileName)) {
+            // Obtiene la ruta completa del archivo de respaldo
+            $backupPath = Storage::disk('local')->path('Laravel/' . $backupFileName);
+
+            // Envía el archivo adjunto por correo electrónico
+            Mail::send([], [], function ($message) use ($backupPath, $backupFileName) {
+                $message->to('sjflores2@espe.edu.ec')
+                    ->subject('Archivo de respaldo')
+                    ->attach($backupPath, ['as' => $backupFileName]);
+            });
+
+            // Elimina el archivo de respaldo temporal después de enviarlo por correo electrónico
+            Storage::disk('local')->delete('Laravel/' . $backupFileName);
+        } else {
+            // Maneja el caso en el que el archivo de respaldo no existe
+            // Puedes agregar un mensaje de error o registrar el evento
+        }
+
+        // Regresa a la página de inicio con un mensaje de éxito
+        return redirect()->route('admin.index')->with('success', 'Respaldo de la base de datos creado y enviado por correo electrónico con éxito.');
     }
 
 

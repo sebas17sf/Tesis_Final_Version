@@ -284,5 +284,8 @@ Route::post('/admin/reportes-docentes', [DocumentoController::class, 'ReportePro
 Route::post('/admin/nrc-vinculacion', [AdminController::class, 'GuardarNRC'])->name('admin.nrcVinculacion');
 
 
+//////////////////////////respaldo
+Route::post('/respaldo', [AdminController::class, 'backup'])->name('admin.respaldo');
+
 
  });

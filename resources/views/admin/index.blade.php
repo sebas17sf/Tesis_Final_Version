@@ -196,6 +196,12 @@
             </form>
         </div>
 
+        
+    <form action="{{ route('admin.respaldo') }}" method="POST">
+        @csrf
+        <button type="submit" class="button">Respaldar Base de Datos</button>
+    </form>
+
         <hr>
         <h4>Docentes agregados</h4>
         <div class="d-flex">
