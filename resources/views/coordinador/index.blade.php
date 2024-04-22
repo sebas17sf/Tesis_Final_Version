@@ -58,64 +58,84 @@
             </div>
         </div>
 
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Tutor</th>
-                    <th>Nombre del profesor participante</th>
-                    <th>Nombre del proyecto</th>
-                    <th>Descripción</th>
-                    <th>Correo del tutor</th>
-                    <th>Correo del profesor participante</th>
-                    <th>Departamento</th>
-                    <th>Fecha de inicio</th>
-                    <th>Fecha fin</th>
-                    <th>Cupos</th>
-                    <th>Estado del proyecto</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($proyectos as $proyecto)
-                    <tr>
-                        <td>{{ strtoupper($proyecto->director->Apellidos) }} {{ strtoupper($proyecto->director->Nombres) }}
-                        </td>
-                        <td>{{ strtoupper($proyecto->docenteParticipante->Apellidos) }}
-                            {{ strtoupper($proyecto->docenteParticipante->Nombres) }}</td>
-                        <td>{{ strtoupper($proyecto->NombreProyecto) }}</td>
-                        <td>{{ strtoupper($proyecto->DescripcionProyecto) }}</td>
-                        <td>{{ strtoupper($proyecto->director->Correo) }}</td>
-                        <td>{{ strtoupper($proyecto->docenteParticipante->Correo) }}</td>
-                        <td>{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
-                        <td>{{ strtoupper($proyecto->FechaInicio) }}</td>
-                        <td>{{ strtoupper($proyecto->FechaFinalizacion) }}</td>
-                        <td>{{ strtoupper($proyecto->cupos) }}</td>
-                        <td>{{ strtoupper($proyecto->Estado) }}</td>
-                        <td>
-                            <a href="{{ route('coordinador.editarProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
-                                class="btn btn-outline-secondary btn-block">
-                                <i class="material-icons">edit</i>
-                            </a>
-                            <form
-                                action="{{ route('coordinador.deleteProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
-                                method="POST" style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-outline-secondary btn-block"
-                                    onclick="return confirm('¿Estás seguro de eliminar este proyecto?')">
-                                    <i class="material-icons">delete</i>
-                                </button>
-                            </form>
-                            <a href="{{ route('coordinador.descargarEvidencias', ['ProyectoID' => $proyecto->ProyectoID]) }}"
-                                class="btn btn-outline-secondary btn-block">
-                                <i class="material-icons">download</i>
-                            </a>
-                        </td>
 
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div id="tablaProyectos">
+            @if ($proyectos->isEmpty())
+                <p>No se encontraron resultados para la busqueda</p>
+            @else
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nombre del docente director de proyecto</th>
+                            <th>Nombre del docente participante de proyecto</th>
+                            <th>Nombre del proyecto</th>
+                            <th>Descripción</th>
+                            <th>Correo del tutor</th>
+                            <th>Correo del profesor participante</th>
+                            <th>Departamento</th>
+                            <th>Código del Proyecto Social</th>
+                            <th>NRC</th>
+                            <th>Periodo</th>
+                            <th>Fecha de inicio</th>
+                            <th>Fecha fin</th>
+                            <th>Cupos</th>
+                            <th>Estado del proyecto</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($proyectos as $proyecto)
+                            <tr>
+                                <td>{{ strtoupper($proyecto->director->Apellidos) }}
+                                    {{ strtoupper($proyecto->director->Nombres) }}
+                                </td>
+                                <td>{{ strtoupper($proyecto->docenteParticipante->Apellidos) }}
+                                    {{ strtoupper($proyecto->docenteParticipante->Nombres) }}</td>
+                                <td>{{ strtoupper($proyecto->NombreProyecto) }}</td>
+                                <td>{{ strtoupper($proyecto->DescripcionProyecto) }}</td>
+                                <td>{{ strtoupper($proyecto->director->Correo) }}</td>
+                                <td>{{ strtoupper($proyecto->docenteParticipante->Correo) }}</td>
+                                <td>{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
+                                <td>
+                                    @if (empty($proyecto->codigoProyecto))
+                                        {{ strtoupper('No requiere código de proyecto') }}
+                                    @else
+                                        {{ strtoupper($proyecto->codigoProyecto) }}
+                                    @endif
+                                </td>
+                                <td>{{ strtoupper($proyecto->nrcs->nrc) }}</td>
+                                <td>{{ strtoupper($proyecto->nrcs->periodo->numeroPeriodo) }}</td>
+                                <td>{{ strtoupper($proyecto->FechaInicio) }}</td>
+                                <td>{{ strtoupper($proyecto->FechaFinalizacion) }}</td>
+                                <td>{{ strtoupper($proyecto->cupos) }}</td>
+                                <td>{{ strtoupper($proyecto->Estado) }}</td>
+                                <td>
+                                    <a href="{{ route('coordinador.editarProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
+                                        class="btn btn-outline-secondary btn-block">
+                                        <i class="material-icons">edit</i>
+                                    </a>
+                                    <form
+                                        action="{{ route('coordinador.deleteProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
+                                        method="POST" style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-outline-secondary btn-block"
+                                            onclick="return confirm('¿Estás seguro de eliminar este proyecto?')">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                    </form>
+                                    <a href="{{ route('coordinador.descargarEvidencias', ['ProyectoID' => $proyecto->ProyectoID]) }}"
+                                        class="btn btn-outline-secondary btn-block">
+                                        <i class="material-icons">download</i>
+                                    </a>
+                                </td>
+
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
+        </div>
 
 
         <div class="d-flex justify-content-center">
@@ -193,7 +213,8 @@
                     <select name="estudiante_id" id="estudiante_id" class="form-control">
                         @foreach ($estudiantesAprobados as $estudiante)
                             <option value="{{ $estudiante->EstudianteID }}">
-                                {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} - {{ $estudiante->Departamento }}
+                                {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} -
+                                {{ $estudiante->Departamento }}
                             </option>
                         @endforeach
                     </select>
