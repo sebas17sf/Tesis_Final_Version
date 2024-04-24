@@ -391,14 +391,9 @@ class EstudianteController extends Controller
     if ($request->hasFile('evidencias')) {
         $evidencia = $request->file('evidencias');
 
-         $maxFileSize = 500000;  
-        if ($evidencia->getSize() > $maxFileSize) {
-            return redirect()->back()->with('error', 'La imagen es muy pesada. El tamaño máximo permitido es de 500 KB.');
-        }
-
+        // Comprimir la imagen y convertirla en base64
         $compressedImage = Image::make($evidencia)->encode('jpg', 75);
-        $evidenciaBase64 = base64_encode($compressedImage);
-
+        $evidenciaBase64 = base64_encode($compressedImage->encoded);
 
         $actividadEstudiante = new ActividadEstudiante([
             'EstudianteID' => $estudiante->EstudianteID,
