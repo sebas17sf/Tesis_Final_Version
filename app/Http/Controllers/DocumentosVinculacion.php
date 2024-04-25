@@ -160,17 +160,17 @@ class DocumentosVinculacion extends Controller
         $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
         // Obtener la relación AsignacionProyecto para este ParticipanteVinculacion
         $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)->first();
-        if (!$asignacionProyecto || $asignacionProyecto->estado !== 'En ejecución') {
-            return redirect()->back()->with('error', 'El proyecto no está en ejecución.');
-        }
+         
         $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
+
+        if ($proyecto->Estado != 'Ejecucion') {
+            return redirect()->back()->with('error', 'No tiene Proyectos en ejecucion.');
+        }
         // Obtener los estudiantes asignados a este proyecto
         $Director = ProfesUniversidad::where('id', $proyecto->id_directorProyecto)->first();
 
         $estudiantes = AsignacionProyecto::where('ProyectoID', $proyecto->ProyectoID)->get();
-        if ($estudiantes->isEmpty()) {
-            return redirect()->back()->with('error', 'No hay estudiantes asignados a este proyecto.');
-        }
+       
         $hojaCalculo = $spreadsheet->getActiveSheet();
 
 
@@ -270,11 +270,13 @@ class DocumentosVinculacion extends Controller
         $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
         // Obtener la relación AsignacionProyecto para este ParticipanteVinculacion
         $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)->first();
-        if (!$asignacionProyecto || $asignacionProyecto->estado !== 'En ejecución') {
-            return redirect()->back()->with('error', 'El proyecto no está en ejecución.');
-        }
+        
         ///obtener la id del director de AsiignacionProyecto
         $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
+
+        if ($proyecto->Estado != 'Ejecucion') {
+            return redirect()->back()->with('error', 'No tiene Proyectos en ejecucion.');
+        }
         // Obtener los estudiantes asignados a este proyecto
         $estudiantes = AsignacionProyecto::where('ProyectoID', $proyecto->ProyectoID)->get();
         if ($estudiantes->isEmpty()) {
