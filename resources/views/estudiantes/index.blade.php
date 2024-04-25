@@ -60,7 +60,7 @@
                     </tr>
                     <tr>
                         <th><i class="material-icons">calendar_today</i> Cohorte:</th>
-                        <td>{{ strtoupper($cohorte->Cohorte) }}</td>
+                        <td>{{ strtoupper($periodo->numeroPeriodo) }}</td>
                     </tr>
                     <tr>
                         <th><i class="material-icons">school</i> Departamento:</th>

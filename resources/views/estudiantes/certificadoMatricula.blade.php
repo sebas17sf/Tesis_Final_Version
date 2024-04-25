@@ -45,7 +45,7 @@
         <hr>
         <h3>Datos del Estudiante</h3>
         <p><strong>Nombre:</strong> {{ $estudiante->Apellidos }} {{ $estudiante->Nombres }}</p>
-         <p><strong>Cohorte:</strong> {{ $estudiante->cohortes->Cohorte }}</p>
+         <p><strong>Cohorte:</strong> {{ $estudiante->periodos->numeroPeriodo }}</p>
          <p><strong>Carrera:</strong> {{ $estudiante->Carrera }}</p>
         <p><strong>Correo:</strong> {{ $estudiante->Correo }}</p>
         <p><strong>Teléfono:</strong> {{ $estudiante->celular }}</p>

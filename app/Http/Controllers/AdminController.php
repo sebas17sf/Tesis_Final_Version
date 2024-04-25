@@ -16,6 +16,10 @@ use App\Models\Empresa;
 use App\Models\Role;
 
 
+use Illuminate\Support\Facades\Artisan;
+ use Illuminate\Support\Facades\Storage;
+use Spatie\Backup\Tasks\Backup\BackupJobFactory;
+
 use App\Models\Periodo;
 
 use App\Models\ProfesUniversidad;
@@ -62,7 +66,6 @@ class AdminController extends Controller
                 $profesores = $query->paginate($perPage);
 
                 $periodos = Periodo::all();
-                $cohortes = Cohorte::all();
                 $profesorRoleId = Role::where('Tipo', 'Profesor')->value('id');
 
 
@@ -79,7 +82,6 @@ class AdminController extends Controller
                     'profesores' => $profesores,
                     'periodos' => $periodos,
                     'search' => $searchTerm,
-                    'cohortes' => $cohortes,
                     'perPage' => $perPage,
                 ]);
             }
@@ -165,8 +167,8 @@ class AdminController extends Controller
 
         // Consulta para estudiantes en revisión
         $queryEstudiantesEnRevision = Estudiante::where('Estado', 'En proceso de revisión')
-            ->with('cohortes');
-
+            ->orderBy('Nombres', 'asc');
+ 
         // Búsqueda de estudiantes en revisión
         if ($request->has('buscarEstudiantesEnRevision')) {
             $busquedaEstudiantesEnRevision = $request->input('buscarEstudiantesEnRevision');
@@ -336,17 +338,17 @@ class AdminController extends Controller
     {
         // Obtén todos los NRCs
         $nrcs = NrcVinculacion::all();
-    
+
         // Filtra los NRCs que ya están asignados a algún proyecto
         $nrcs = collect($nrcs)->reject(function ($nrc) {
             return Proyecto::where('id_nrc_vinculacion', $nrc->id)->exists();
         });
-    
+
         $profesores = ProfesUniversidad::all();
-    
+
         return view('admin.agregarProyecto', compact('profesores', 'nrcs'));
     }
-    
+
 
     ///////////////////////guardar proyectos
 
@@ -437,7 +439,7 @@ class AdminController extends Controller
             'Estado' => $validatedData['Estado'],
         ]);
 
-         $proyecto->save();
+        $proyecto->save();
 
         return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto agregado correctamente');
     }
@@ -724,60 +726,7 @@ class AdminController extends Controller
 
 
 
-
-
-    ////guardar cohorte
-    public function guardarCohorte(Request $request)
-    {
-        // Validar los datos del formulario
-        $request->validate([
-            'cohorte' => 'required|max:6',
-        ]);
-
-        ////verifica si la cohorte ya existe
-        $cohorteExistente = Cohorte::where('Cohorte', $request->cohorte)->first();
-
-        if ($cohorteExistente) {
-            return redirect()->route('admin.index')->with('error', 'La cohorte ingresada ya existe.');
-        }
-
-
-        // Crear una nueva instancia de Cohorte
-        $cohorte = new Cohorte();
-        $cohorte->Cohorte = $request->cohorte;
-
-
-
-
-
-
-        if ($cohorte->save()) {
-            return redirect()->route('admin.index')->with('success', 'Cohorte guardada con éxito');
-        } else {
-            // Si hay algún error inesperado al guardar, redirigir con un mensaje de error
-            return redirect()->route('admin.index')->with('error', 'No se pudo crear el cohorte. Por favor, verifica los datos e intenta de nuevo.');
-        }
-    }
-
-
-    public function editarCohorte($id)
-    {
-        $cohorte = Cohorte::find($id);
-        return view('admin.editarCohorte', compact('cohorte'));
-    }
-
-    public function actualizarCohorte(Request $request, $id)
-    {
-        $request->validate([
-            'cohorte' => 'required|string|max:6',
-        ]);
-
-        $cohorte = Cohorte::find($id);
-        $cohorte->Cohorte = $request->cohorte;
-        $cohorte->save();
-
-        return redirect()->route('admin.index')->with('success', 'Cohorte actualizada con éxito');
-    }
+ 
 
 
 
@@ -835,6 +784,7 @@ class AdminController extends Controller
         $request->validate([
             'periodoInicio' => 'required|date',
             'periodoFin' => 'required|date|after:periodoInicio',
+            'numeroPeriodo' => 'required',
         ]);
 
         // Obtén las fechas del formulario
@@ -859,6 +809,7 @@ class AdminController extends Controller
         $periodo->Periodo = $periodoAcademico; // Actualiza el nombre del período académico
         $periodo->PeriodoInicio = $fechaInicio; // Actualiza la fecha de inicio
         $periodo->PeriodoFin = $fechaFin; // Actualiza la fecha de fin
+        $periodo->numeroPeriodo = $request->numeroPeriodo; // Actualiza el número de período
         $periodo->save();
 
         return redirect()->route('admin.index')->with('success', 'Período académico actualizado con éxito.');
@@ -879,21 +830,7 @@ class AdminController extends Controller
         return redirect()->route('admin.index')->with('success', 'Periodo académico eliminado con éxito.');
     }
 
-    public function eliminarCohorte(Request $request, $id)
-    {
-        $cohorte = Cohorte::find($id);
-
-
-        if (!$cohorte) {
-            return redirect()->route('admin.index')->with('error', 'Cohorte no encontrado.');
-        }
-
-        $cohorte->delete();
-
-        return redirect()->route('admin.index')->with('success', 'Cohorte eliminado con éxito.');
-
-
-    }
+     
 
     //////guardar empresa////////////////
     public function agregarEmpresa(Request $request)
@@ -1241,6 +1178,39 @@ class AdminController extends Controller
         ]);
 
         return redirect()->route('admin.index')->with('success', 'NRC guardado con éxito.');
+    }
+
+
+    ///////////////////////sacar resplado de BD y sistema
+    public function backup()
+    {
+        // Ejecuta el comando de respaldo de la base de datos
+        Artisan::call('backup:run');
+
+        // Obtiene el nombre del último archivo de respaldo
+        $backupFileName = collect(Storage::disk('local')->files('Laravel'))->last();
+
+        // Verifica si se encontró un archivo de respaldo
+        if ($backupFileName && Storage::disk('local')->exists('Laravel/' . $backupFileName)) {
+            // Obtiene la ruta completa del archivo de respaldo
+            $backupPath = Storage::disk('local')->path('Laravel/' . $backupFileName);
+
+            // Envía el archivo adjunto por correo electrónico
+            Mail::send([], [], function ($message) use ($backupPath, $backupFileName) {
+                $message->to('sjflores2@espe.edu.ec')
+                    ->subject('Archivo de respaldo')
+                    ->attach($backupPath, ['as' => $backupFileName]);
+            });
+
+            // Elimina el archivo de respaldo temporal después de enviarlo por correo electrónico
+            Storage::disk('local')->delete('Laravel/' . $backupFileName);
+        } else {
+            // Maneja el caso en el que el archivo de respaldo no existe
+            // Puedes agregar un mensaje de error o registrar el evento
+        }
+
+        // Regresa a la página de inicio con un mensaje de éxito
+        return redirect()->route('admin.index')->with('success', 'Respaldo de la base de datos creado y enviado por correo electrónico con éxito.');
     }
 
 

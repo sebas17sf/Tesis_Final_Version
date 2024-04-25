@@ -13,14 +13,40 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="css/login.css">   
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
-    
+    <style>
+        /* Estilos para el contenedor del botón */
+        .google-btn {
+            display: inline-block;
+            background: #fff;
+            color: #4285f4;
+            border: 1px solid #4285f4;
+            border-radius: 4px;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Estilos para el texto dentro del botón */
+        .google-btn span {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        /* Estilos para el icono dentro del botón */
+        .google-btn img {
+            vertical-align: middle;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container-box">
         <div class="login-box">
-            <img src="\img\logos\logo_tesis.png" alt="Imagen Circular"
-                class="circular-image">
+            <img src="\img\logos\logo_tesis.png" alt="Imagen Circular" class="circular-image">
             <h2 class="mb-4" id="sesionTitulo">Iniciar Sesión</h2>
             @if (session('success'))
                 <script>
@@ -44,6 +70,7 @@
                 </script>
             @endif
 
+            
             <form action="{{ route('login') }}" method="POST">
                 @csrf
                 <div class="form-group">
@@ -66,12 +93,22 @@
                     </div>
                 </div>
                 <button type="submit" class="button">Iniciar Sesión</button>
-                <div class="mt-2">
-                    <a href="{{ route('recuperar-contrasena') }}">¿Olvidaste tu contraseña?</a>
-                </div>
+                
             </form>
+
+            <hr>
+
+            <a href="#" class="google-btn">
+                <img src="\img\logos\google.png" alt="Google Icon" width="20">
+                <span>Iniciar sesión con Google</span>
+            </a>
+
             <div class="text-center mt-3">
                 <p>¿No tienes una cuenta? <a href="{{ route('register') }}">Regístrate aquí</a></p>
+            </div>
+
+            <div class="mt-2">
+                <a href="{{ route('recuperar-contrasena') }}">¿Olvidaste tu contraseña?</a>
             </div>
         </div>
     </div>
@@ -102,6 +139,7 @@
             sessionTitle.addEventListener('click', handleClick);
         });
     </script>
+
 
 </body>
 

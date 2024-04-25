@@ -133,13 +133,11 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        $uniqueSessionId = $request->session()->get('unique_session_id');
+        Auth::logout();
 
-        if ($uniqueSessionId === $request->session()->getId()) {
-            Auth::logout();
-        }
+        $request->session()->invalidate();
 
-        Session::forget('unique_session_id');
+        $request->session()->regenerateToken();
 
         return redirect('/');
     }

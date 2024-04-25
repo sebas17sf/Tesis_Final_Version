@@ -196,6 +196,12 @@
             </form>
         </div>
 
+
+        <form action="{{ route('admin.respaldo') }}" method="POST">
+            @csrf
+            <button type="submit" class="button">Respaldar Base de Datos</button>
+        </form>
+
         <hr>
         <h4>Docentes agregados</h4>
         <div class="d-flex">
@@ -260,7 +266,7 @@
                                     <form action="{{ route('admin.editarDocente', ['id' => $profesor->id]) }}"
                                         method="GET">
                                         @csrf
-                                        <button type="submit" class="button3 efects_button btn_editar3"> <i class="material-icons">edit</i></button>
+                                        <button type="submit" class="button3"> <i class="material-icons">edit</i></button>
                                     </form>
                                 </td>
                             </tr>
@@ -326,24 +332,6 @@
         </button>
         <div id="registrarPeriodos" style="display: none;">
 
-            <!-- Formulario para agregar cohorte -->
-            <form action="{{ route('admin.guardarCohorte') }}" method="post">
-                @csrf
-                <div class="row align-items-center">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="cohorte"><strong>Ingrese la Cohorte:</strong></label>
-                            <input type="text" id="cohorte" name="cohorte" class="form-control input"
-                                placeholder="Ingrese 6 números" pattern="\d{6}"
-                                title="Debe ingresar exactamente 6 números" required>
-                            <small id="errorCohorte" class="form-text text-danger"></small>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <button type="submit" class="button">Guardar Cohorte</button>
-                    </div>
-                </div>
-            </form>
 
             <!-- Formulario para agregar período académico -->
             <form action="{{ route('admin.guardarPeriodo') }}" method="post">
@@ -379,15 +367,14 @@
 
             <!-- Formulario para agregar NRC Vinculacion -->
             <h4>NRC Vinculacion</h4>
-            <form action="{{ route('admin.nrcVinculacion') }}" method="post">
+            <form class="FormularioNRC" action="{{ route('admin.nrcVinculacion') }}" method="post">
                 @csrf
                 <div class="row align-items-center">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="nrc"><strong>Ingrese el NRC:</strong></label>
                             <input type="text" id="nrc" name="nrc" class="form-control input"
-                                placeholder="Ingrese 5 números" pattern="\d{5}"
-                                title="Debe ingresar exactamente 5 números" required>
+                                placeholder="Ingrese 5 números" required>
                             <small id="errorNRC" class="form-text text-danger"></small>
                         </div>
                     </div>
@@ -411,6 +398,7 @@
 
 
 
+
             <!-- Elementos agregados (Periodos y Cohortes) -->
             <div class="row">
                 <div class="col-md-6">
@@ -420,39 +408,21 @@
                             <option value="">Seleccionar Periodo</option>
                             @foreach ($periodos as $periodo)
                                 <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }}
-                                    {{ $periodo->Periodo }}
-                                </option>
+                                    {{ $periodo->Periodo }}</option>
                             @endforeach
                         </select>
 
-                        @if (!empty($periodo))
-                            <form action="{{ route('admin.editarPeriodo', ['id' => $periodo->id]) }}" method="GET">
-                                @csrf
-                                <button type="submit" class="button">Editar</button>
-                            </form>
-                        @endif
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <h4>Cohortes Agregadas</h4>
-                    <div class="d-flex align-items-center">
-                        <select id="selectCohorte" class="form-select me-2 input input_select ">
-                            <option value="">Seleccionar Cohorte</option>
-                            @foreach ($cohortes as $cohorte)
-                                <option value="{{ $cohorte->ID_cohorte }}">{{ $cohorte->Cohorte }}</option>
-                            @endforeach
-                        </select>
-
-                        @if (!empty($cohorte))
-                            <form action="{{ route('admin.editarCohorte', ['id' => $cohorte->ID_cohorte]) }}"
-                                method="GET">
-                                @csrf
-                                <button type="submit" class="button">Editar</button>
-                            </form>
-                        @endif
+                        <form id="editarPeriodoForm" method="GET">
+                            @csrf
+                            <button type="submit" class="button">Editar</button>
+                        </form>
                     </div>
                 </div>
             </div>
+
+
+
+
         </div>
 
 
@@ -483,5 +453,19 @@
             }, 500);
         });
     </script>
+
+    <script>
+        document.getElementById('selectPeriodo').addEventListener('change', function() {
+            var periodoId = this.value;
+            if (periodoId) {
+                var form = document.getElementById('editarPeriodoForm');
+                var actionUrl = "{{ route('admin.editarPeriodo', ['id' => ':id']) }}";
+                actionUrl = actionUrl.replace(':id', periodoId);
+                form.action = actionUrl;
+            }
+        });
+    </script>
+
+
 
 @endsection
