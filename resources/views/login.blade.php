@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/login.css">   
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
     
 </head>
@@ -51,6 +51,7 @@
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="material-icons">email</i></span>
+
                         </div>
                         <input class="input" type="email" id="CorreoElectronico" name="CorreoElectronico" required>
                     </div>

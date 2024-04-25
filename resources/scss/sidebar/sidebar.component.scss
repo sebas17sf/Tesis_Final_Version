@@ -1,4 +1,5 @@
 @use "../vars/colors" as colors;
+@use "../vars/fonts" as fonts;
 
 // ==============================
 // SIDEBAR
@@ -12,13 +13,12 @@
     width: 100%;
     height: 100%;
     max-width: 220px;
-    padding-bottom: 20px; 
     background: colors.$white;
-    border-radius: 0px 20px 20px 0px;
+    border-radius: 0px 0px 20px 0px;
     box-shadow:
       10px 10px 10px colors.$sha2,
       -10px -10px 10px colors.$sha1;
-    z-index: 99;
+    z-index: 98;
     overflow-x: hidden;
     overflow-y: auto;
     scrollbar-width: none;

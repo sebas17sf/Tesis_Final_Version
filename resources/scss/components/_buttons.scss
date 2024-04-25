@@ -1,34 +1,131 @@
 // Estilos generales
 @use "../vars/colors" as colors;
+@use "../vars/fonts" as fonts;
+
+// General de botones
+@mixin buttons-style {
+  height: 20px;
+  padding: 5px;
+  letter-spacing: 1.15px;
+}
+
+@mixin buttons-style2 {
+  font-weight: 700;
+  font-size: fonts.$text-button-size;
+  color: var(--white);
+  background-color: colors.$primary;
+  border: none;
+  outline: none;
+  box-shadow:
+    2px 2px 5px colors.$sha2,
+    -2px -2px 5px colors.$sha1;
+  transition: all 0.3s ease-in;
+
+  &:hover {
+    background-color: darken(colors.$primary, 10);
+  }
+}
 
 // ===============================================
 // Boton general (semi circulo)
 // ===============================================
+
 .button {
+  @include buttons-style;
+  @include buttons-style2;
   width: 150px;
-  height: 45px;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 1.15px;
-  background-color: darken(colors.$primary, 10);
-  color: var(--white);
-  box-shadow: 2px 2px 5px var(--black-50);
+  border-radius: 25px;
+}
 
-  border: none;
-  outline: none;
+// ===============================================
+// Boton general (semi cuadrado)
+// ===============================================
 
-  @media (max-width: 380px) {
-    height: 40px;
+.button1 {
+  @include buttons-style;
+  @include buttons-style2;
+  width: 150px;
+  border-radius: 5px;
+}
+
+// ===============================================
+// Boton para icono y texto (pequeño)
+// ===============================================
+.button2 {
+  @include buttons-style2;
+  min-width: 40px;
+  width: auto;
+  height: 20px;
+  border-radius: 5px;
+  font-size: fonts.$icon-size - 0.5em;
+
+  i {
+    font-size: 17px;
   }
+}
 
-  @media ((max-width: 335px) and (min-width: 0px)) {
-    width: 100%;
-    padding: 0 25px;
+// ===============================================
+// Boton icon cuadrado
+// ===============================================
+.button3 {
+  @include buttons-style2;
+  display: grid;
+  width: 20px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  font-size: fonts.$icon-size;
+}
+
+// ===============================================
+// Boton icon circulo
+// ===============================================
+.button4 {
+  @include buttons-style2;
+  display: grid;
+  width: 20px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  font-size: fonts.$icon-size;
+}
+
+// ===============================================
+// Boton para asignar poligono clip-path (se debe asignar clase de color)
+// ===============================================
+.button_forma {
+  @include buttons-style2;
+  position: relative;
+  width: 150px;
+  height: 30px;
+  background-color: transparent;
+  border-radius: 0px;
+  overflow: hidden;
+
+  clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+
+  filter: drop-shadow(3px 3px 1.5px var(--black-10));
+
+  &:hover {
+    filter: drop-shadow(3px 3px 5px var(--black-10));
   }
 
   &:hover {
-    background-color: darken(colors.$primary, 20);
+    &::after {
+      background-color: rgba(colors.$primary, 0.9);
+    }
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    border-radius: 0px;
+    backdrop-filter: blur(3px);
+    border: 1px solid colors.$primary;
+    z-index: -1;
   }
 }
 
@@ -45,7 +142,7 @@
     height: 40px;
     border-radius: 0px 5px 0px 0px;
     font-weight: 700;
-    font-size: 14px;
+    font-size: fonts.$text-button-size;
     color: var(--white);
     background-color: transparent;
     border: none;
@@ -59,7 +156,7 @@
     }
 
     @media ((max-width: 350px) and (min-width: 0px)) {
-      font-size: 10px;
+      font-size: fonts.$text-button-size - 0.2em;
       height: 30px;
       width: 150px;
       transform: scale(0.9);
@@ -78,219 +175,19 @@
 }
 
 // ===============================================
-// Boton cuadrado (se debe asignar clase de color)
-// ===============================================
-.button2 {
-  width: 180px;
-  height: 40px;
-  border-radius: 5px;
-  font-weight: 700;
-  font-size: 14px;
-  color: var(--white);
-  box-shadow:
-    5px 5px 5px colors.$sha2,
-    -5px -5px 5px colors.$sha1;
-
-  border: none;
-  outline: none;
-
-  @media ((max-width: 350px) and (min-width: 0px)) {
-    font-size: 10px;
-    height: 30px;
-    width: 150px;
-    transform: scale(0.9);
-  }
-}
-
-// ===============================================
-// Boton cuadrado para palabras cortas (se debe asignar clase de color)
-// ===============================================
-.button3 {
-  width: 60px;
-  height: 40px;
-  border-radius: 5px;
-  font-weight: 700;
-  font-size: 14px;
-  background-color: colors.$btn-color-editar;
-  box-shadow:
-    5px 5px 5px colors.$sha2,
-    -5px -5px 5px colors.$sha1;
-
-  border: none;
-  outline: none;
-}
-.button8 {
-  width: 60px;
-  height: 40px;
-  border-radius: 5px;
-  font-weight: 700;
-  font-size: 14px;
-  background-color: colors.$btn-color-eliminar;
-  box-shadow:
-    5px 5px 5px colors.$sha2,
-    -5px -5px 5px colors.$sha1;
-
-  border: none;
-  outline: none;
-}
-// ===============================================
-// Boton para icono sin borde (se debe asignar clase de color)
-// ===============================================
-.button4 {
-  display: grid;
-  width: 30px;
-  height: 30px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  font-weight: 700;
-  font-size: 25px;
-  border: none;
-  outline: none;
-
-  @media (max-width: 768px) {
-  }
-
-  @media (max-width: 480px) {
-    transform: scale(0.9);
-  }
-
-  @media (max-width: 375px) {
-    transform: scale(0.8);
-  }
-
-  @media ((max-width: 350px) and (min-width: 0px)) {
-    height: 30px;
-  }
-}
-
-// ===============================================
-// Boton para icono (se debe asignar clase de color)
-// ===============================================
-.button5 {
-  width: 40px;
-  height: 40px;
-  border-radius: 5px;
-  font-weight: 700;
-  font-size: 15px;
-  color: var(--white);
-  box-shadow:
-    5px 5px 5px colors.$sha2,
-    -5px -5px 5px colors.$sha1;
-
-  border: none;
-  outline: none;
-
-  i {
-    font-size: 25px;
-  }
-
-  @media ((max-width: 350px) and (min-width: 0px)) {
-    font-size: 10px;
-    height: 30px;
-    width: 150px;
-    transform: scale(0.9);
-  }
-}
-
-// ===============================================
-// Boton para icono navegacion sin borde (se debe asignar clase de color)
-// ===============================================
-.button6 {
-  width: 40px;
-  height: 25px;
-  border-radius: 5px;
-  font-weight: 700;
-  font-size: 12px;
-  color: var(--white);
-  box-shadow:
-    5px 5px 5px colors.$sha2,
-    -5px -5px 5px colors.$sha1;
-
-  border: none;
-  outline: none;
-
-  i {
-    font-size: 17px;
-  }
-
-  @media ((max-width: 350px) and (min-width: 0px)) {
-    font-size: 10px;
-    height: 30px;
-    width: 150px;
-    transform: scale(0.9);
-  }
-}
-
-// ===============================================
-// Boton para asignar poligono clip-path (se debe asignar clase de color)
-// ===============================================
-.button_forma {
-  width: 180px;
-  height: 40px;
-  color: var(--white);
-  border-radius: 0px;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  cursor: pointer;
-
-  filter: drop-shadow(3px 3px 1.5px var(--black-10));
-
-  &:hover {
-    filter: drop-shadow(3px 3px 5px var(--black-10));
-  }
-
-  &:hover {
-    &::after {
-      background-color: rgba(colors.$primary, 0.9);
-    }
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    cursor: pointer;
-    border-radius: 0px;
-    backdrop-filter: blur(3px);
-    background-color: rgba(colors.$primary, 0.6);
-    z-index: -1;
-  }
-}
-
-// ===============================================
-// Efecto 1
+// Efecto
 // ===============================================
 .efects_button {
   cursor: pointer;
 
   &:hover {
-    box-shadow:
-      6px 6px 10px colors.$sha2,
-      -6px -6px 10px colors.$sha1;
-    transform: scale(0.985);
+    transform: scale(0.98);
     transition: 0.25s;
   }
 
   &:active,
   &:focus {
-    box-shadow:
-      2px 2px 6px colors.$sha2,
-      -2px -2px 6px colors.$sha1;
     transform: scale(0.97);
-    transition: 0.25s;
-  }
-}
-
-// ===============================================
-// Ejecto 2 (simple)
-// ===============================================
-.efects2_button {
-  cursor: pointer;
-
-  &:hover,
-  &:active,
-  &:focus {
     transition: 0.25s;
   }
 }
@@ -298,148 +195,218 @@
 // ===============================================
 // Color de botones (relleno)
 // ===============================================
-.btn_actualizar {
-  background-color: colors.$btn-color-actualizar;
+@mixin button-style($color) {
+  background-color: $color;
+  border: 1px solid transparent;
+
+  &:hover {
+    background-color: darken($color, 10%);
+  }
 }
 
-.btn_actualizar:hover {
-  background-color: darken(colors.$btn-color-actualizar, 10%);
-}
-
-.btn_buscar {
-  background-color: colors.$btn-color-buscar;
-}
-
-.btn_buscar:hover {
-  background-color: darken(colors.$btn-color-buscar, 10%);
-}
-
-.btn_cancelar {
-  background-color: colors.$btn-color-cancelar;
-}
-
-.btn_cancelar:hover {
-  background-color: darken(colors.$btn-color-cancelar, 10%);
-}
-
-.btn_editar {
-  background-color: colors.$btn-color-editar;
-}
-
-.btn_editar:hover {
-  background-color: darken(colors.$btn-color-editar, 10%);
-}
-
-.btn_eliminar {
-  background-color: colors.$btn-color-eliminar;
-}
-
-.btn_eliminar:hover {
-  background-color: darken(colors.$btn-color-eliminar, 10%);
+.btn_primary {
+  @include button-style(colors.$primary);
 }
 
 .btn_enviar {
-  background-color: colors.$btn-color-enviar;
-}
-
-.btn_enviar:hover {
-  background-color: darken(colors.$btn-color-enviar, 10%);
-}
-
-.btn_ingresar {
-  background-color: colors.$btn-color-ingresar;
-}
-
-.btn_ingresar:hover {
-  background-color: darken(colors.$btn-color-ingresar, 10%);
+  @include button-style(colors.$btn-color-enviar);
 }
 
 .btn_nuevo {
-  background-color: colors.$btn-color-nuevo;
+  @include button-style(colors.$btn-color-nuevo);
 }
 
-.btn_nuevo:hover {
-  background-color: darken(colors.$btn-color-nuevo, 10%);
+.btn_editar {
+  @include button-style(colors.$btn-color-editar);
+}
+
+.btn_actualizar {
+  @include button-style(colors.$btn-color-actualizar);
+}
+
+.btn_eliminar {
+  @include button-style(colors.$btn-color-eliminar);
+}
+
+.btn_cancelar {
+  @include button-style(colors.$btn-color-cancelar);
+}
+
+// otros botones
+.btn_excel {
+  @include button-style(colors.$btn-color-excel);
 }
 
 .btn_copy {
-  background-color: colors.$btn-color-copy;
+  @include button-style(colors.$btn-color-copy);
 }
 
-.btn_copy:hover {
-  background-color: darken(colors.$btn-color-copy, 10%);
+.btn_filtro {
+  @include button-style(colors.$btn-color-filtro);
 }
 
-.btn_excel {
-  background-color: colors.$btn-color-excel;
+.btn_delete_filter {
+  @include button-style(colors.$btn-color-delete-filtro);
 }
 
-.btn_excel:hover {
-  background-color: darken(colors.$btn-color-excel, 10%);
+
+// xd
+.btn_enviar1 {
+  @include button-style(colors.$btn-color-enviar1);
 }
 
-.btn_csv {
-  background-color: colors.$btn-color-csv;
+.btn_nuevo1 {
+  @include button-style(colors.$btn-color-nuevo1);
 }
 
-.btn_csv:hover {
-  background-color: darken(colors.$btn-color-csv, 10%);
+.btn_editar1 {
+  @include button-style(colors.$btn-color-editar1);
+}
+
+.btn_actualizar1 {
+  @include button-style(colors.$btn-color-actualizar1);
+}
+
+.btn_eliminar1 {
+  @include button-style(colors.$btn-color-eliminar1);
+}
+
+.btn_cancelar1 {
+  @include button-style(colors.$btn-color-cancelar1);
 }
 
 // ===============================================
 // Color de botones (hueco - contorno)
 // ===============================================
-.btn_editar2 {
-  border: 1px solid colors.$btn-color-editar;
-  color: colors.$btn-color-editar;
+@mixin button-style2($color) {
+  border: 1px solid transparent;
+  box-shadow: none;
+  cursor: pointer;
+  color: $color;
+  background-color: transparent;
+
+  &:hover {
+    border: 1px solid transparent;
+    background-color: rgba($color, .1);
+  }
 }
 
-.btn_editar2:hover {
-  background-color: darken(colors.$btn-color-editar, 0%);
-  color: colors.$white;
+.btn_primary2 {
+  @include button-style2(colors.$primary);
+}
+
+.btn_enviar2 {
+  @include button-style2(colors.$btn-color-enviar);
+}
+
+.btn_nuevo2 {
+  @include button-style2(colors.$btn-color-nuevo);
+}
+
+.btn_editar2 {
+  @include button-style2(colors.$btn-color-editar);
+}
+
+.btn_actualizar2 {
+  @include button-style2(colors.$btn-color-actualizar);
 }
 
 .btn_eliminar2 {
-  border: 1px solid colors.$btn-color-eliminar;
-  color: colors.$btn-color-eliminar;
+  @include button-style2(colors.$btn-color-eliminar);
 }
 
-.btn_eliminar2:hover {
-  background-color: darken(colors.$btn-color-eliminar, 0%);
-  color: colors.$white;
-}
-
-.btn_organizaciones2 {
-  border: 1px solid colors.$btn-color-navegacion;
-  color: colors.$btn-color-navegacion;
-}
-
-.btn_organizaciones2:hover {
-  background-color: darken(colors.$btn-color-navegacion, 0%);
-  color: colors.$white;
+.btn_cancelar2 {
+  @include button-style2(colors.$btn-color-cancelar);
 }
 
 // ===============================================
-// Color de botones (solo texto)
+// Color de botones (hueco - contorno - relleno)
 // ===============================================
-.btn_eliminar3 {
-  color: rgba(colors.$black, 0.5);
+@mixin button-style3($color) {
+  border: 1px solid $color;
+  color: $color;
   background-color: transparent;
-  box-shadow: none;
+
+  &:hover {
+    border: 1px solid darken($color, 20);
+    color: colors.$white;
+    background-color: $color;
+  }
 }
 
-.btn_eliminar3:hover {
-  color: colors.$btn-color-eliminar;
+.btn_primary3 {
+  @include button-style3(colors.$primary);
+}
+
+.btn_enviar3 {
+  @include button-style3(colors.$btn-color-enviar);
+}
+
+.btn_nuevo3 {
+  @include button-style3(colors.$btn-color-nuevo);
 }
 
 .btn_editar3 {
-  color: rgba(colors.$black, 0.5);
-  background-color: transparent;
-  box-shadow: none;
+  @include button-style3(colors.$btn-color-editar);
 }
 
-.btn_editar3:hover {
-  color: colors.$btn-color-editar;
+.btn_actualizar3 {
+  @include button-style3(colors.$btn-color-actualizar);
+}
+
+.btn_eliminar3 {
+  @include button-style3(colors.$btn-color-eliminar);
+}
+
+.btn_cancelar3 {
+  @include button-style3(colors.$btn-color-cancelar);
+}
+
+// ===============================================
+// Color de botones (solo texto - sombra)
+// ===============================================
+@mixin button-style4($color) {
+  color: $color;
+  background-color: transparent;
+  border: 1px solid transparent;
+  transition: all 0.3s ease-in;
+
+  &:hover {
+    color: darken($color, 10);
+    background-color: transparent;
+    box-shadow:
+      inset 2px 2px 5px colors.$sha2,
+      inset -2px -2px 5px colors.$sha1;
+    transition: all 0.3s ease-in;
+  }
+}
+
+.btn_primary4 {
+  @include button-style4(colors.$primary);
+}
+
+.btn_enviar4 {
+  @include button-style4(colors.$btn-color-enviar);
+}
+
+.btn_nuevo4 {
+  @include button-style4(colors.$btn-color-nuevo);
+}
+
+.btn_editar4 {
+  @include button-style4(colors.$btn-color-editar);
+}
+
+.btn_actualizar4 {
+  @include button-style4(colors.$btn-color-actualizar);
+}
+
+.btn_eliminar4 {
+  @include button-style4(colors.$btn-color-eliminar);
+}
+
+.btn_cancelar4 {
+  @include button-style4(colors.$btn-color-cancelar);
 }
 
 // ===============================================
@@ -484,7 +451,7 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 50px;
+  width: 40px;
   height: 50px;
   z-index: 9999;
   justify-content: center;
@@ -496,7 +463,7 @@
   color: var(--white);
   cursor: pointer;
   border-radius: 10px;
-  font-size: 20px;
+  font-size: fonts.$icon-size + 0.2em;
   transition: opacity 0.5s ease;
   opacity: 0;
 

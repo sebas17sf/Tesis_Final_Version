@@ -1,7 +1,8 @@
- @use 'root_colors';
- 
- 
-$primary: #15345c;
+// Imports
+@use 'root_colors';
+
+// Variables de colores
+$primary: #40456c;
 $focus-input: lighten($primary, 30%);
 
 $bg: #f1f0f6;
@@ -16,18 +17,38 @@ $black-sha: #18181c;
 $gray: #808080;
 $gray-text: #494949;
 
+$oro: #716b41;
+$shadow-oro: #17181c;
+
 
 // Color de botones
-$btn-color-eliminar: #e04f4f;
-$btn-color-enviar: #27ae60;
+
+$btns: #3c68e3;
+$btn-color-enviar: $btns;
+$btn-color-nuevo: darken($btns, 10);
+$btn-color-editar: darken($btns, 20);
+$btn-color-actualizar: darken($btns, 30);
+$btn-color-eliminar: darken($btns, 40);
+$btn-color-cancelar: darken($btns, 50);
+
+
 $btn-color-buscar: #2980b9;
-$btn-color-editar: #e4b468;
-$btn-color-cancelar: #95a5a6;
-$btn-color-nuevo: #3498db;
-$btn-color-actualizar: #2ecc71;
 $btn-color-ingresar: #1a7500;
 $btn-color-navegacion: #009c8c;
 
-$btn-color-copy: #1e88e5;
-$btn-color-excel: #4caf50;
+
+$btn-color-filtro: darken($btn-color-buscar, 10);
+$btn-color-delete-filtro: darken($btn-color-filtro, 10);
+$btn-color-copy: #006d77;
+$btn-color-excel: #0e753c;
 $btn-color-csv: #ff9800;
+$btn-color-print: #17a2b8;
+
+
+$btn-color-enviar1: #27ae60;
+$btn-color-nuevo1: #3498db;
+$btn-color-editar1: #f39c12;
+$btn-color-actualizar1: #2ecc71;
+$btn-color-eliminar1: #e74c3c;
+$btn-color-cancelar1: #95a5a6;
+

@@ -202,8 +202,8 @@
             <form method="GET" action="{{ route('admin.index') }}">
                 <label for="perPage">Docentes a visualizar:</label>
                 <select class="input" name="perPage" id="perPage" onchange="this.form.submit()">
+                    <option value="5" @if ($perPage == 5) selected @endif>5</option>
                     <option value="10" @if ($perPage == 10) selected @endif>10</option>
-                    <option value="20" @if ($perPage == 20) selected @endif>20</option>
                     <option value="50" @if ($perPage == 50) selected @endif>50</option>
                     <option value="100" @if ($perPage == 100) selected @endif>100</option>
                 </select>
@@ -253,14 +253,14 @@
                                         method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="button8"> <i
+                                        <button type="submit" class="button3 efects_button btn_eliminar3"> <i
                                                 class="material-icons">delete</i></button>
                                     </form>
 
                                     <form action="{{ route('admin.editarDocente', ['id' => $profesor->id]) }}"
                                         method="GET">
                                         @csrf
-                                        <button type="submit" class="button3"> <i class="material-icons">edit</i></button>
+                                        <button type="submit" class="button3 efects_button btn_editar3"> <i class="material-icons">edit</i></button>
                                     </form>
                                 </td>
                             </tr>

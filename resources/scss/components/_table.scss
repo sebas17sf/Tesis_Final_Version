@@ -1,5 +1,6 @@
 // Imports
 @use "../vars/colors" as colors;
+@use "../vars/fonts" as fonts;
 
 // Estilos para el contenedor de la tabla
 .contenedor_tabla {
@@ -16,14 +17,32 @@
       width: 100%;
       box-shadow: none !important;
 
-      .mat-mdc-header-row {
-        font-weight: bold;
-        background: rgba(colors.$gray, 0.1);
-      }
-
       td,
       th {
-        width: 25%;
+        width: 200px;
+        min-width: 150px;
+        font-size: fonts.$form-input;
+      }
+
+      th {
+        position: sticky;
+        font-size: fonts.$text-p;
+        font-weight: bold;
+        top: 0;
+        background: linear-gradient(to bottom, colors.$white, colors.$white),
+        linear-gradient(to bottom, rgba(colors.$primary, 0.3), rgba(colors.$primary, 0.2));
+        background-blend-mode: multiply;
+      }
+
+      .mat-mdc-header-row {
+        height: 40px;
+      }
+
+      .mat-mdc-row {
+        transition: all 0.1s;
+        &:hover {
+          background-color: rgba(colors.$primary, .05);
+        }
       }
     }
   }
@@ -67,7 +86,7 @@
 ::ng-deep .noExisteRegistro {
   display: grid;
   height: 40%;
-  font-size: 20px;
+  font-size: fonts.$text-error;
   text-align: center;
   align-content: end;
   color: colors.$gray;

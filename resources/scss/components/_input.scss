@@ -1,16 +1,27 @@
 // Imports
-@use '../vars/colors' as colors;
+@use "../vars/colors" as colors;
+@use "../vars/fonts" as fonts;
+
+// ===============================================
+// Estilos para labels
+// ===============================================
+label {
+  display: flex;
+  gap: 5px;
+  font-size: fonts.$form-label;
+  color: colors.$gray;
+}
 
 // ===============================================
 // Estilos para input
 // ===============================================
-.input {
+@mixin input-style {
   height: 40px;
   margin: 4px 0;
   border: 1px solid transparent;
   padding-left: 25px;
   padding-right: 25px;
-  font-size: 13px;
+  font-size: fonts.$form-input;
   letter-spacing: 0.15px;
   outline: none;
   background-color: colors.$bg_elements;
@@ -26,17 +37,21 @@
       inset 4px 4px 4px colors.$sha2,
       inset -4px -4px 4px colors.$sha1;
   }
+
+  &:focus,
+  &:active {
+    border: 1px solid colors.$primary;
+  }
+
+  &:focus {
+    box-shadow:
+      0 0 0 1px colors.$primary,
+      0 0 0 4px colors.$focus-input;
+  }
 }
 
-.input:focus,
-.input:active {
-  border: 1px solid colors.$primary;
-}
-
-.input:focus {
-  box-shadow:
-    0 0 0 1px colors.$primary,
-    0 0 0 4px colors.$focus-input;
+.input {
+  @include input-style;
 }
 
 // input inactivo
@@ -79,7 +94,8 @@
 
   span {
     i {
-      font-size: 15px;
+      font-size: fonts.$icon-size;
+      padding-right: 10px;
     }
   }
 
@@ -116,7 +132,11 @@
 // Estilos para selects
 // ===============================================
 
-.input_select {
+@mixin input_select-style {
   padding-left: 5px;
   padding-right: 5px;
+}
+
+.input_select {
+  @include input_select-style;
 }
