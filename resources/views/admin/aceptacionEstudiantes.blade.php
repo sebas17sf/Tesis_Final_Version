@@ -43,7 +43,7 @@
                         <td>{{ $estudiante->espe_id }}</td>
                         <td>{{ $estudiante->celular }}</td>
                         <td>{{ $estudiante->cedula }}</td>
-                        <td>{{ $estudiante->cohortes->Cohorte }}</td>
+                        <td>{{ $estudiante->periodos->numeroPeriodo }}</td>
                         <td>{{ strtoupper($estudiante->Departamento) }}</td>
                         <td>{{ strtoupper($estudiante->Estado) }}</td>
                         <td>
@@ -116,7 +116,7 @@
                             <td>{{ strtoupper($estudiante->Carrera) }}</td>
                             <td>{{ $estudiante->celular }}</td>
                             <td>{{ $estudiante->cedula }}</td>
-                            <td>{{ $estudiante->cohortes->Cohorte }}</td>
+                            <td>{{ $estudiante->periodos->numeroPeriodo }}</td>
                             <td>{{ $estudiante->periodos->Periodo }}</td>
                             <td>{{ strtoupper($estudiante->Departamento) }}</td>
                             <td>

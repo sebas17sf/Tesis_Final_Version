@@ -21,7 +21,7 @@ class Estudiante extends Model
         'espe_id',
         'celular',
         'cedula',
-        'id_cohorte',
+        'Cohorte',
         'id_periodo',
         'Correo',
         'Departamento',
@@ -62,11 +62,7 @@ class Estudiante extends Model
     {
         return $this->belongsToMany(Proyecto::class, 'asignacionProyectos', 'EstudianteID', 'ProyectoID');
     }
-
-    public function cohortes()
-    {
-        return $this->belongsTo(Cohorte::class, 'id_cohorte', 'ID_cohorte');
-    }
+ 
 
     public function periodos()
     {

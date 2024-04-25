@@ -42,7 +42,80 @@ $(document).ready(function () {
             localStorage.setItem('periodosVisible', 'false');
         }
     });
+
+
+    function validarNumeroPeriodo() {
+        var numeroPeriodo = this.value.trim();
+        var errorElement = document.getElementById('numeroPeriodoError');
+        var formulario = document.querySelector('.formulario');
+
+        if (numeroPeriodo === '') {
+            errorElement.textContent = '';
+            return;
+        }
+
+        if (isNaN(numeroPeriodo)) {
+            errorElement.textContent = 'Ingrese un número válido.';
+            formulario.onsubmit = function () {
+                return false; // Evita que se envíe el formulario
+            }
+        } else if (parseInt(numeroPeriodo) <= 0) {
+            errorElement.textContent = 'El número no puede ser negativo.';
+            formulario.onsubmit = function () {
+                return false; // Evita que se envíe el formulario
+            }
+        } else if (numeroPeriodo.length > 6) {
+            errorElement.textContent = 'El número no puede tener más de 6 dígitos.';
+            formulario.onsubmit = function () {
+                return false; // Evita que se envíe el formulario
+            }
+        } else {
+            errorElement.textContent = '';
+            formulario.onsubmit = function () {
+                return true; // Permite que se envíe el formulario
+            }
+        }
+    }
+
+    document.getElementById('numeroPeriodo').addEventListener('input', validarNumeroPeriodo);
+
+    function validarNRC() {
+        var nrc = this.value.trim();
+        var errorElement = document.getElementById('errorNRC');
+        var formulario = document.querySelector('.FormularioNRC');
+        var hayErrores = false; // Bandera para indicar si hay errores
+    
+        if (nrc === '') {
+            errorElement.textContent = '';
+            hayErrores = true; // Hay un error
+        } else if (parseInt(nrc) <= 0) {
+            errorElement.textContent = 'El NRC debe ser un número positivo y mayor que cero.';
+            hayErrores = true; // Hay un error
+        } else if (!/^\d{5}$/.test(nrc)) {
+            errorElement.textContent = 'Debe ingresar exactamente 5 números.';
+            hayErrores = true; // Hay un error
+        } else {
+            errorElement.textContent = '';
+        }
+    
+        // Evitar que se envíe el formulario si hay errores
+        formulario.addEventListener('submit', function(event) {
+            if (hayErrores) {
+                event.preventDefault(); // Evitar el envío del formulario
+            }
+        });
+    }
+    
+    document.getElementById('nrc').addEventListener('input', validarNRC);
+    
+    
+    
+    
+    
+
 });
+
+
 
 $(document).ready(function () {
     // Verificar si se guardó un estado previo en el almacenamiento local
@@ -204,3 +277,4 @@ function verificarEstado() {
         // Si el estado no es "Negado", no se muestra el Sweet Alert
     }
 }
+

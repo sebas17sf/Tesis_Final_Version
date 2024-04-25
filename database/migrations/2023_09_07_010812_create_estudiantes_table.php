@@ -17,8 +17,8 @@ class CreateEstudiantesTable extends Migration
             $table->string('espe_id', 20);
             $table->string('celular');
             $table->String('cedula');
-            $table->unsignedBigInteger('id_cohorte');
-            $table->unsignedBigInteger('id_periodo');
+             $table->unsignedBigInteger('id_periodo');
+             $table->String('Cohorte');
             $table->String('Carrera');
             $table->String('Correo');
             $table->String('Provincia');
@@ -27,8 +27,7 @@ class CreateEstudiantesTable extends Migration
             $table->string('comentario');
 
             // Definir las relaciones con las tablas Cohorte y Periodo
-            $table->foreign('id_cohorte')->references('ID_cohorte')->on('cohorte');
-            $table->foreign('id_periodo')->references('id')->on('periodo');
+             $table->foreign('id_periodo')->references('id')->on('periodo');
         });
     }
 

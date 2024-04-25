@@ -26,8 +26,7 @@ class EstudianteController extends Controller
 {
     public function create()
     {
-        $cohortes = Cohorte::all();
-        $periodos = Periodo::all();
+         $periodos = Periodo::all();
         // Verifica si el usuario autenticado es un estudiante y ya tiene información registrada
         if (Auth::check() && Auth::user()->estudiante) {
             // Si es un estudiante con información registrada, redirige a la página index
@@ -36,7 +35,7 @@ class EstudianteController extends Controller
 
 
         // Si no es un estudiante o no tiene información registrada, muestra la página create
-        return view('estudiantes.create', compact('cohortes', 'periodos'));
+        return view('estudiantes.create', compact( 'periodos'));
     }
 
     public function store(Request $request)
@@ -82,7 +81,7 @@ class EstudianteController extends Controller
             'espe_id' => $validatedData['espe_id'],
             'celular' => $validatedData['celular'],
             'cedula' => $validatedData['cedula'],
-            'id_cohorte' => $validatedData['Cohorte'], // Utiliza el ID de cohorte proporcionado en el formulario
+            'Cohorte' => $validatedData['Cohorte'], // Utiliza el ID de cohorte proporcionado en el formulario
             'id_periodo' => $validatedData['Periodo'], // Utiliza el ID de periodo proporcionado en el formulario
             'Carrera' => $validatedData['Carrera'],
             'Correo' => $CorreoElectronico,
@@ -104,12 +103,13 @@ class EstudianteController extends Controller
         if (Auth::check() && Auth::user()->estudiante) {
             // Obtén los datos del estudiante relacionado con el usuario
             $estudiante = Auth::user()->estudiante;
-            $cohorte = Cohorte::find($estudiante->id_cohorte);
+
+            $periodo = Periodo::find($estudiante->id_periodo);
 
             // Obtén la asignación de proyecto del estudiante (si existe)
             $asignacionProyecto = AsignacionProyecto::where('EstudianteID', $estudiante->EstudianteID)->first();
 
-            return view('estudiantes.index', compact('estudiante', 'cohorte', 'asignacionProyecto'));
+            return view('estudiantes.index', compact('estudiante', 'asignacionProyecto', 'periodo'));
         }
 
         return redirect()->route('login')->with('error', 'Solo puede tener abierta una sesión, no dos o más.');
@@ -126,8 +126,8 @@ class EstudianteController extends Controller
     //////editar estudiante
     public function edit(Estudiante $estudiante)
     {
-        // Lógica para mostrar el formulario de edición
-        return view('estudiantes.edit', compact('estudiante'));
+        $periodos = Periodo::all();
+         return view('estudiantes.edit', compact('estudiante', 'periodos'));
     }
 
 
@@ -138,9 +138,10 @@ class EstudianteController extends Controller
             'Nombres' => 'required|string|max:255',
             'Apellidos' => 'required|string|max:255',
             'espe_id' => 'required|string|max:255',
-            'celular' => 'required|string|max:10',
+            'celular' => 'required|string',
             'cedula' => 'required|string|max:11',
-            'Cohorte' => 'required|string|max:10',
+            'Cohorte' => 'required',
+            'Periodo' => 'required',
             'Carrera' => 'required|string|max:255',
             'Provincia' => 'required|string|max:255',
             'Departamento' => 'required|string|max:255',
@@ -148,15 +149,18 @@ class EstudianteController extends Controller
 
         // Actualiza los campos del estudiante con los datos validados
         $estudiante->update([
-            'Nombres' => $validatedData['Nombres'],
+             'Nombres' => $validatedData['Nombres'],
             'Apellidos' => $validatedData['Apellidos'],
             'espe_id' => $validatedData['espe_id'],
             'celular' => $validatedData['celular'],
             'cedula' => $validatedData['cedula'],
-            'Cohorte' => $validatedData['Cohorte'],
+            'Cohorte' => $validatedData['Cohorte'], // Utiliza el ID de cohorte proporcionado en el formulario
+            'id_periodo' => $validatedData['Periodo'], // Utiliza el ID de periodo proporcionado en el formulario
             'Carrera' => $validatedData['Carrera'],
-            'Provincia' => $validatedData['Provincia'],
+             'Provincia' => $validatedData['Provincia'],
             'Departamento' => $validatedData['Departamento'],
+            'comentario' => 'Sin comentarios',
+            'Estado' => 'En proceso de revisión'
         ]);
 
         return redirect()->route('estudiantes.index')->with('success', 'Información del Estudiante actualizada correctamente');

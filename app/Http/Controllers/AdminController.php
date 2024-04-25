@@ -66,7 +66,6 @@ class AdminController extends Controller
                 $profesores = $query->paginate($perPage);
 
                 $periodos = Periodo::all();
-                $cohortes = Cohorte::all();
                 $profesorRoleId = Role::where('Tipo', 'Profesor')->value('id');
 
 
@@ -83,7 +82,6 @@ class AdminController extends Controller
                     'profesores' => $profesores,
                     'periodos' => $periodos,
                     'search' => $searchTerm,
-                    'cohortes' => $cohortes,
                     'perPage' => $perPage,
                 ]);
             }
@@ -169,8 +167,8 @@ class AdminController extends Controller
 
         // Consulta para estudiantes en revisión
         $queryEstudiantesEnRevision = Estudiante::where('Estado', 'En proceso de revisión')
-            ->with('cohortes');
-
+            ->orderBy('Nombres', 'asc');
+ 
         // Búsqueda de estudiantes en revisión
         if ($request->has('buscarEstudiantesEnRevision')) {
             $busquedaEstudiantesEnRevision = $request->input('buscarEstudiantesEnRevision');
@@ -728,60 +726,7 @@ class AdminController extends Controller
 
 
 
-
-
-    ////guardar cohorte
-    public function guardarCohorte(Request $request)
-    {
-        // Validar los datos del formulario
-        $request->validate([
-            'cohorte' => 'required|max:6',
-        ]);
-
-        ////verifica si la cohorte ya existe
-        $cohorteExistente = Cohorte::where('Cohorte', $request->cohorte)->first();
-
-        if ($cohorteExistente) {
-            return redirect()->route('admin.index')->with('error', 'La cohorte ingresada ya existe.');
-        }
-
-
-        // Crear una nueva instancia de Cohorte
-        $cohorte = new Cohorte();
-        $cohorte->Cohorte = $request->cohorte;
-
-
-
-
-
-
-        if ($cohorte->save()) {
-            return redirect()->route('admin.index')->with('success', 'Cohorte guardada con éxito');
-        } else {
-            // Si hay algún error inesperado al guardar, redirigir con un mensaje de error
-            return redirect()->route('admin.index')->with('error', 'No se pudo crear el cohorte. Por favor, verifica los datos e intenta de nuevo.');
-        }
-    }
-
-
-    public function editarCohorte($id)
-    {
-        $cohorte = Cohorte::find($id);
-        return view('admin.editarCohorte', compact('cohorte'));
-    }
-
-    public function actualizarCohorte(Request $request, $id)
-    {
-        $request->validate([
-            'cohorte' => 'required|string|max:6',
-        ]);
-
-        $cohorte = Cohorte::find($id);
-        $cohorte->Cohorte = $request->cohorte;
-        $cohorte->save();
-
-        return redirect()->route('admin.index')->with('success', 'Cohorte actualizada con éxito');
-    }
+ 
 
 
 
@@ -839,6 +784,7 @@ class AdminController extends Controller
         $request->validate([
             'periodoInicio' => 'required|date',
             'periodoFin' => 'required|date|after:periodoInicio',
+            'numeroPeriodo' => 'required',
         ]);
 
         // Obtén las fechas del formulario
@@ -863,6 +809,7 @@ class AdminController extends Controller
         $periodo->Periodo = $periodoAcademico; // Actualiza el nombre del período académico
         $periodo->PeriodoInicio = $fechaInicio; // Actualiza la fecha de inicio
         $periodo->PeriodoFin = $fechaFin; // Actualiza la fecha de fin
+        $periodo->numeroPeriodo = $request->numeroPeriodo; // Actualiza el número de período
         $periodo->save();
 
         return redirect()->route('admin.index')->with('success', 'Período académico actualizado con éxito.');
@@ -883,21 +830,7 @@ class AdminController extends Controller
         return redirect()->route('admin.index')->with('success', 'Periodo académico eliminado con éxito.');
     }
 
-    public function eliminarCohorte(Request $request, $id)
-    {
-        $cohorte = Cohorte::find($id);
-
-
-        if (!$cohorte) {
-            return redirect()->route('admin.index')->with('error', 'Cohorte no encontrado.');
-        }
-
-        $cohorte->delete();
-
-        return redirect()->route('admin.index')->with('success', 'Cohorte eliminado con éxito.');
-
-
-    }
+     
 
     //////guardar empresa////////////////
     public function agregarEmpresa(Request $request)
