@@ -10,24 +10,24 @@ class CreateEstudiantesTable extends Migration
     {
         Schema::create('estudiantes', function (Blueprint $table) {
             $table->id('EstudianteID');
-            $table->unsignedBigInteger('UserID');
-            $table->foreign('UserID')->references('UserID')->on('usuarios');
-            $table->string('Nombres', 20);
-            $table->string('Apellidos', 20);
-            $table->string('espe_id', 20);
-            $table->string('celular');
-            $table->String('cedula');
-             $table->unsignedBigInteger('id_periodo');
-             $table->String('Cohorte');
-            $table->String('Carrera');
-            $table->String('Correo');
-            $table->String('Provincia');
-            $table->String('Departamento');
-            $table->string ('Estado');
-            $table->string('comentario');
-
+            $table->unsignedBigInteger('UserID')->nullable();
+            $table->foreign('UserID')->references('UserID')->on('usuarios')->nullable();
+            $table->string('Nombres');
+            $table->string('Apellidos');
+            $table->string('espe_id')->nullable();
+            $table->string('celular')->nullable();
+            $table->string('cedula')->nullable();
+            $table->unsignedBigInteger('id_periodo')->nullable();
+            $table->string('Cohorte')->nullable();
+            $table->string('Carrera')->nullable();
+            $table->string('Correo')->nullable();
+            $table->string('Provincia')->nullable();
+            $table->string('Departamento')->nullable();
+            $table->string('Estado')->nullable();
+            $table->string('comentario')->nullable();
+        
             // Definir las relaciones con las tablas Cohorte y Periodo
-             $table->foreign('id_periodo')->references('id')->on('periodo');
+            $table->foreign('id_periodo')->references('id')->on('periodo')->nullable();
         });
     }
 
