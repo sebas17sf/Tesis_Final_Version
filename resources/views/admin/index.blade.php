@@ -196,7 +196,6 @@
             </form>
         </div>
 
-
         <form action="{{ route('admin.respaldo') }}" method="POST">
             @csrf
             <button type="submit" class="button">Respaldar Base de Datos</button>
@@ -204,25 +203,26 @@
 
         <hr>
         <h4>Docentes agregados</h4>
-        <div class="d-flex">
-            <form method="GET" action="{{ route('admin.index') }}">
-                <label for="perPage">Docentes a visualizar:</label>
-                <select class="input" name="perPage" id="perPage" onchange="this.form.submit()">
-                    <option value="10" @if ($perPage == 10) selected @endif>10</option>
-                    <option value="20" @if ($perPage == 20) selected @endif>20</option>
-                    <option value="50" @if ($perPage == 50) selected @endif>50</option>
-                    <option value="100" @if ($perPage == 100) selected @endif>100</option>
-                </select>
-            </form>
-
-            <div class="mb-3">
+        <div class="contenedor_acciones_tabla" 
+        <div class="contenedor_botones">
+             <!-- Excel -->
+          <form action="{{ route('admin.reportesDocentes') }}" method="POST">
+            @csrf
+            <button type="submit" class="button3 efects_button btn_excel" pTooltip="Excel" tooltipPosition="top">
+                <i class="fa-solid fa-file-excel"></i> 
+            </button>
+        </form>
+            <!-- Buscador -->
+            <div class="contenedor_buscador">
                 <form id="formBusquedaDocentes" class="d-flex">
                     <input type="text" name="search" value="{{ $search }}" class="input"
                         placeholder="Buscar proyectos...">
+                        <i class='bx bx-search-alt'></i>
                 </form>
             </div>
 
 
+</div>
 
         </div>
 
@@ -280,7 +280,17 @@
 
 
         <div class="d-flex justify-content-center paginator-container">
-            <ul class="pagination">
+        <ul class="pagination ">
+        <form method="GET" action="{{ route('admin.index') }}">
+                <select class="input paginator-container" name="perPage" id="perPage" onchange="this.form.submit()">
+                    <option value="10" @if ($perPage == 10) selected @endif>10</option>
+                    <option value="20" @if ($perPage == 20) selected @endif>20</option>
+                    <option value="50" @if ($perPage == 50) selected @endif>50</option>
+                    <option value="100" @if ($perPage == 100) selected @endif>100</option>
+                </select>
+            </form>
+        <!-- espacio entre estos dos -->
+        
                 @if ($profesores->onFirstPage())
                     <li class="page-item disabled">
                         <span class="page-link">Anterior</span>
@@ -318,12 +328,7 @@
         </div>
 
 
-        <form action="{{ route('admin.reportesDocentes') }}" method="POST">
-            @csrf
-            <button type="submit" class="btn btn-sm btn-secondary">
-                <i class="fas fa-file-excel"></i> Reporte Docentes
-            </button>
-        </form>
+        
 
 
 

@@ -40,27 +40,58 @@
                 <div class="links_site">
                     <nav class="nav">
                         <ul class="nav-list">
-                            <a href="{{ route('admin.index') }}">
-                                <i class="material-icons">assignment</i> Panel Administrativo
-                            </a>
+                            <a routerLinkActive="active-section" href="{{ route('admin.index') }}">
+                            <div class="icon-sidebar-item">
+                            <i class="material-icons">assignment</i> 
+                        </div>    
+                        <div class="name-sidebar-item">
+                <li>Panel Administrativo</li>
+              </div>
+                        </a>
                             <a href="{{ route('admin.indexProyectos') }}">
-                                <i class="material-icons">library_books</i> Proyectos
+                            <div class="icon-sidebar-item">
+                                <i class="material-icons">library_books</i> 
+                                </div>
+                                <div class="name-sidebar-item">
+                <li>Proyectos</li>
+              </div>
                             </a>
                             <a href="{{ route('admin.estudiantes') }}">
-                                <i class="material-icons">people</i> Estudiantes
+                            <div class="icon-sidebar-item">
+                                <i class="material-icons">people</i> 
+                                </div>
+                                <div class="name-sidebar-item">
+                <li>Estudiantes</li>
+              </div>
                             </a>
                             <div class="dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" id="practicasDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="material-icons">business</i> Prácticas
+                                    <div class="icon-sidebar-item">
+                                    <i class="material-icons">business</i> 
+                                    </div>
+                                    <div class="name-sidebar-item">
+                <li>Prácticas</li>
+              </div>
                                 </a>
+                                
                                 <div class="dropdown-menu" aria-labelledby="practicasDropdown">
                                     <a class="dropdown-item" href="{{ route('admin.agregarEmpresa') }}">
-                                        <i class="material-icons">add_business</i> Agregar-Empresa
+                                    <div class="icon-sidebar-item">
+                                        <i class="material-icons">add_business</i> 
+                                        </div>
+                                        <div class="name-sidebar-item">
+                                        <li>Agregar-Empresa</li>
+              </div>
                                     </a>
                                     <a class="dropdown-item" href="{{ route('admin.aceptarFaseI') }}"
                                         style="margin-top: 10px;">
-                                        <i class="material-icons">check_circle</i> Aprobar-Practicas
+                                        <div class="icon-sidebar-item">
+                                        <i class="material-icons">check_circle</i>
+                                        </div>
+                                        <div class="name-sidebar-item">
+                                        <li>Aprobar-Practicas</li>
+                                        </div>
                                     </a>
                                 </div>
 

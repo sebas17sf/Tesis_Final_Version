@@ -4,6 +4,58 @@
 // ==============================
 // SIDEBAR
 // ==============================
+
+@mixin items-sidebar-styles {
+  display: grid;
+  grid-template-columns: 1fr 15fr 1fr;
+  gap: 0px;
+  padding-right: 20px;
+  align-items: center;
+  justify-content: left;
+  text-decoration: none;
+  border-radius: 30px;
+  border: 1px solid rgba(colors.$black, 10%);
+  box-shadow:
+    inset 5px 5px 15px darken(colors.$sha2, 20%),
+    inset -5px 10px 10px lighten(colors.$sha1, 20%);
+  transition: all 0.3s ease;
+
+  .icon-sidebar-item {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+
+    i {
+      font-size: fonts.$icon-size;
+      color: darken(colors.$primary, 10%);
+    }
+
+    .fontawesome {
+      font-size: fonts.$icon-size - 0.2em;
+    }
+  }
+
+  .icon-sidebar-item-list {
+    display: grid;
+    justify-content: left;
+  }
+
+  .name-sidebar-item {
+    font-size: fonts.$item-text;
+    color: darken(colors.$primary, 10%);
+  }
+
+  &:hover {
+    transition: all 0.3s ease;
+    box-shadow:
+      inset 5px 5px 15px rgba(darken(colors.$sha2, 20%), 0.5),
+      inset -5px 10px 10px rgba(lighten(colors.$sha1, 20%), 0.5);
+  }
+}
+
 // Expandido
 .content-sidebar {
   .content {
@@ -31,7 +83,6 @@
         width: 100%;
         height: min-content;
         gap: 10px;
-        font-size: 18px;
         font-weight: bold;
         align-items: center;
         text-decoration: none;
@@ -49,8 +100,8 @@
           justify-content: center;
 
           img {
-            width: 55px;
-            height: 55px;
+            width: 50px;
+            height: 50px;
           }
         }
       }
@@ -67,8 +118,7 @@
 
       p {
         margin: 0;
-        font-size: 20px;
-        // width: 155px;
+        font-size: fonts.$title-sidebar;
       }
     }
 
@@ -80,56 +130,37 @@
         .nav-list {
           display: grid;
           position: relative;
-          width: 200px;
+          width: 206px;
           margin-top: 10px;
-          left: -34px;
           gap: 10px;
+          padding-left: 6px;
           list-style: none;
 
           a {
-            display: flex;
-            gap: 0px;
-            padding-right: 20px;
-            align-items: center;
-            justify-content: left;
-            text-decoration: none;
-            border-radius: 30px;
-            border: 1px solid rgba(colors.$black, 10%);
-            box-shadow:
-              inset 5px 5px 15px darken(colors.$sha2, 20%),
-              inset -5px 10px 10px lighten(colors.$sha1, 20%);
-            transition: all 0.3s ease;
+            @include items-sidebar-styles;
+          }
 
-            .icon-sidebar-item {
-              display: grid;
-              width: 40px;
-              height: 40px;
-              align-items: center;
-              justify-content: center;
-              border-radius: 30px;
+          .item-list {
+            display: grid;
+            gap: 3px;
+            padding-left: 5px;
+            margin-left: 5px;
+            border-left: 1px solid rgba(colors.$primary, 0.2);
 
-              i {
-                font-size: 18px;
-                color: darken(colors.$primary, 10%);
+            a {
+              @include items-sidebar-styles;
+              height: 30px;
+
+              .icon-sidebar-item {
+                height: 30px;
               }
-            }
-
-            .name-sidebar-item {
-              color: darken(colors.$primary, 10%);
-            }
-
-            &:hover {
-              transition: all 0.3s ease;
-              box-shadow:
-                inset 5px 5px 15px rgba(darken(colors.$sha2, 20%), 0.5),
-                inset -5px 10px 10px rgba(lighten(colors.$sha1, 20%), 0.5);
             }
           }
 
           .divider {
             margin-top: 10px;
             padding-left: 5px;
-            font-size: 9px;
+            font-size: fonts.$item-divider;
             text-transform: uppercase;
             font-weight: bold;
             color: colors.$gray;
@@ -141,13 +172,7 @@
     }
   }
 }
-@media (max-width: 768px) {
-  .dimension-nav,
-  .dimension-content {
-    left: 0; // Ajusta el espacio a la izquierda del contenido
-    width: 100%; // El contenido ocupa toda la pantalla en dispositivos móviles
-  }
-}
+
 // AUTHORS
 .content-autors {
   display: grid;
@@ -159,15 +184,17 @@
   border-radius: 0px 0px 20px 0px;
   background: colors.$bg;
   text-align: center;
+  opacity: 0;
   z-index: 1000;
   transition: all 5s ease;
 
   .autors1 {
     display: block;
     color: colors.$black-sha;
-    font-size: 9px;
+    font-size: fonts.$item-autors;
 
     a {
+      color: colors.$primary;
       text-decoration: none;
 
       &:hover {
@@ -178,6 +205,21 @@
 }
 
 // RETRAIDO
+@mixin items-sidebar-styles-retraido {
+  grid-template-columns: 1fr;
+  padding-right: 0px;
+
+  .name-sidebar-item {
+    display: none;
+  }
+
+  .icon-sidebar-item-list {
+    display: grid;
+    justify-content: center;
+    font-size: fonts.$icon-size - 0.5em;
+    margin-top: -13px;
+  }
+}
 .content-sidebar-hidden {
   .content {
     max-width: 55px;
@@ -185,8 +227,7 @@
     .sidebar {
       .logo_site {
         .title-text {
-          color: transparent;
-          // display: none;
+          display: none;
         }
       }
     }
@@ -194,14 +235,10 @@
     .links_site {
       .nav {
         .nav-list {
-          width: 200px;
+          width: 0px;
 
           a {
-            padding-right: 20px;
-
-            .name-sidebar-item {
-              display: none;
-            }
+            @include items-sidebar-styles-retraido;
           }
 
           .divider {
@@ -209,24 +246,35 @@
             padding-left: 0px;
             transition: all 0.3s ease;
           }
+
+          .item-list {
+            padding-left: 0px;
+            margin-left: 0px;
+
+            a {
+              @include items-sidebar-styles-retraido;
+              transform: scale(0.8);
+            }
+          }
         }
       }
     }
   }
+
   .content-autors {
     display: none;
   }
 }
 
 // Iluminaror de los items del sidebar
-.active-section {
-  background-color: colors.$primary;
+@mixin active-section-style {
   box-shadow:
     inset 5px 5px 15px rgba(darken(colors.$primary, 20%), 0.5),
     inset -5px 10px 10px rgba(lighten(colors.$black, 20%), 0.5) !important;
   transition: all 0s ease;
 
-  .icon-sidebar-item {
+  .icon-sidebar-item,
+  .icon-sidebar-item-list {
     i {
       color: colors.$white !important;
     }
@@ -243,4 +291,14 @@
       inset 5px 5px 15px rgba(darken(colors.$primary, 20%), 0.5),
       inset -5px 10px 10px rgba(lighten(colors.$black, 20%), 0.5) !important;
   }
+}
+
+.active-section {
+  @include active-section-style;
+  background-color: colors.$primary;
+}
+
+.item-list-active-section {
+  @include active-section-style;
+  background-color: rgba(colors.$primary, 0.8);
 }

@@ -1,16 +1,16 @@
 @use 'vars/colors' as colors;
 @use 'vars/fonts' as fonts;
-@use "structure/scroll";
 @use "components/input";
 @use "components/buttons";
 @use "components/menu_nav";
 @use "components/table" as table;
-@use "components/scroll"
+@use "components/scroll";
 @use "menu-profile/menu-profile.component";
 @use "sidebar/sidebar.component";
 @use "navbar/navbar";
 @use "navbar/app.component";
 @use "deshboard/dashboard.component.scss";
+@use "tabla/tabla_filtros";
 
 // ===============================================
 // Estilos para sweedAlert2
@@ -132,7 +132,7 @@ body {
       width: calc(8px * var(--title-length, 0));
     }
     .sidebar a {
-      padding: 10px 20px;
+      padding: 1px 5px;
       /* Espaciado de los enlaces */
       text-decoration: none;
       /* Quitar subrayado de los enlaces */
