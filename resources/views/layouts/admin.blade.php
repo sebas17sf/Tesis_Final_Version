@@ -34,7 +34,7 @@
                         <img src="\img\logos\logo_tesis.png" alt="logo">
                     </div>
                     <div class="title-text">
-                        <p>Gestion Academica</p>
+                        <p>Gestion Academica.</p>
                     </div>
                 </a>
                 <div class="links_site">
