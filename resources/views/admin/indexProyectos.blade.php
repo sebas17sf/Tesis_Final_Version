@@ -88,38 +88,50 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($proyectos as $proyecto)
+                        @foreach ($proyectos->groupBy('director.id') as $directorId => $proyectosDelDirector)
                             <tr>
-                                <td>{{ strtoupper($proyecto->director->Apellidos) }}
-                                    {{ strtoupper($proyecto->director->Nombres) }}
+                                <td>{{ strtoupper($proyectosDelDirector->first()->director->Apellidos) }}
+                                    {{ strtoupper($proyectosDelDirector->first()->director->Nombres) }}
                                 </td>
-                                <td>{{ strtoupper($proyecto->docenteParticipante->Apellidos) }}
-                                    {{ strtoupper($proyecto->docenteParticipante->Nombres) }}</td>
-                                <td>{{ strtoupper($proyecto->NombreProyecto) }}</td>
-                                <td>{{ strtoupper($proyecto->DescripcionProyecto) }}</td>
-                                <td>{{ strtoupper($proyecto->director->Correo) }}</td>
-                                <td>{{ strtoupper($proyecto->docenteParticipante->Correo) }}</td>
-                                <td>{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
                                 <td>
-                                    @if (empty($proyecto->codigoProyecto))
+                                    @foreach ($proyectosDelDirector as $proyecto)
+                                        {{ strtoupper($proyecto->docenteParticipante->Apellidos) }}
+                                        {{ strtoupper($proyecto->docenteParticipante->Nombres) }}
+                                        <br>
+                                    @endforeach
+                                </td>
+                                <td style="word-wrap: break-word; text-align: justify;">
+                                    {{ strtoupper($proyectosDelDirector->first()->NombreProyecto) }}
+                                </td>
+                                <td>{{ strtoupper($proyectosDelDirector->first()->DescripcionProyecto) }}</td>
+                                <td>{{ strtoupper($proyectosDelDirector->first()->director->Correo) }}</td>
+                                <td>
+                                    @foreach ($proyectosDelDirector as $proyecto)
+                                        {{ strtoupper($proyecto->docenteParticipante->Correo) }}
+                                        <br>
+                                    @endforeach
+                                </td>
+                                <td>{{ strtoupper($proyectosDelDirector->first()->DepartamentoTutor) }}</td>
+                                <td>
+                                    @if (empty($proyectosDelDirector->first()->codigoProyecto))
                                         {{ strtoupper('No requiere código de proyecto') }}
                                     @else
-                                        {{ strtoupper($proyecto->codigoProyecto) }}
+                                        {{ strtoupper($proyectosDelDirector->first()->codigoProyecto) }}
                                     @endif
                                 </td>
-                                <td>{{ strtoupper($proyecto->nrcs->nrc) }}</td>
-                                <td>{{ strtoupper($proyecto->nrcs->periodo->numeroPeriodo) }}</td>
-                                <td>{{ strtoupper($proyecto->FechaInicio) }}</td>
-                                <td>{{ strtoupper($proyecto->FechaFinalizacion) }}</td>
-                                <td>{{ strtoupper($proyecto->cupos) }}</td>
-                                <td>{{ strtoupper($proyecto->Estado) }}</td>
+                                <td>{{ strtoupper($proyectosDelDirector->first()->nrcs->nrc) }}</td>
+                                <td>{{ strtoupper($proyectosDelDirector->first()->nrcs->periodo->numeroPeriodo) }}</td>
+                                <td>{{ strtoupper($proyectosDelDirector->first()->FechaInicio) }}</td>
+                                <td>{{ strtoupper($proyectosDelDirector->first()->FechaFinalizacion) }}</td>
+                                <td>{{ strtoupper($proyectosDelDirector->first()->cupos) }}</td>
+                                <td>{{ strtoupper($proyectosDelDirector->first()->Estado) }}</td>
                                 <td>
-                                    <a href="{{ route('admin.editarProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
+                                    <a href="{{ route('admin.editarProyecto', ['ProyectoID' => $proyectosDelDirector->first()->ProyectoID]) }}"
                                         class="btn btn-outline-secondary btn-block">
                                         <i class="material-icons">edit</i>
                                     </a>
                                     <form
-                                        action="{{ route('admin.deleteProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
+                                        action="{{ route('admin.deleteProyecto', ['ProyectoID' => $proyectosDelDirector->first()->ProyectoID]) }}"
                                         method="POST" style="display: inline;">
                                         @csrf
                                         @method('DELETE')
