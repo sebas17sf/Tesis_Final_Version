@@ -33,7 +33,13 @@
                     <nav class="nav">
                         <ul class="nav-list">
                             <a href="#">
-                                <i class="material-icons">assignment</i> Registro Estudiantes
+                            <div class="icon-sidebar-item">
+                                        <i class="material-icons">check_circle</i>
+                                        </div>
+                                        <div class="name-sidebar-item">
+                                        <li>Registro Estudiantes</li>
+                                        </div>
+                                
                             </a>
 
                     </nav>
