@@ -353,66 +353,61 @@ class AdminController extends Controller
     ///////////////////////guardar proyectos
 
     public function crearProyecto(Request $request)
-    {
-        // Valida los datos del formulario antes de crear el proyecto
-        $validatedData = $request->validate([
-            'DirectorProyecto' => 'required|integer',
-            'ProfesorParticipante' => 'required|integer',
-            'NombreProyecto' => 'required',
-            'DescripcionProyecto' => 'required|string',
-            'DepartamentoTutor' => 'required',
-            'FechaInicio' => 'required|date',
-            'nrc' => 'required|integer',
-            'codigoProyecto' => 'required',
-            'FechaFinalizacion' => 'required|date',
-            'cupos' => 'required|integer',
-            'Estado' => 'required',
+{
+     $validatedData = $request->validate([
+        'DirectorProyecto' => 'required|integer',
+        'ProfesorParticipante.*' => 'required|integer', 
+        'NombreProyecto' => 'required',
+        'DescripcionProyecto' => 'required|string',
+        'DepartamentoTutor' => 'required',
+        'FechaInicio' => 'required|date',
+        'nrc' => 'required|integer',
+        'codigoProyecto' => 'required',
+        'FechaFinalizacion' => 'required|date',
+        'cupos' => 'required|integer',
+        'Estado' => 'required',
+    ]);
 
-        ]);
-
-        // Verificar si uno de los profesores ya está asociado a un proyecto en ejecución
+     foreach ($validatedData['ProfesorParticipante'] as $profesorId) {
         $existingProject = Proyecto::where('Estado', 'Ejecucion')
-            ->where(function ($query) use ($validatedData) {
+            ->where(function ($query) use ($validatedData, $profesorId) {
                 $query->where('id_directorProyecto', $validatedData['DirectorProyecto'])
-                    ->orWhere('id_docenteParticipante', $validatedData['ProfesorParticipante']);
+                    ->orWhere('id_docenteParticipante', $profesorId);
             })
             ->exists();
 
         if ($existingProject) {
             return redirect()->route('admin.indexProyectos')->with('error', 'El director o profesor participante ya está asociado a un proyecto en ejecución');
         }
+    }
 
-        $directorRoleId = Role::where('Tipo', 'DirectorVinculacion')->value('id');
-        $participanteRoleId = Role::where('Tipo', 'ParticipanteVinculacion')->value('id');
+    $directorRoleId = Role::where('Tipo', 'DirectorVinculacion')->value('id');
+    $participanteRoleId = Role::where('Tipo', 'ParticipanteVinculacion')->value('id');
 
+     $director = ProfesUniversidad::findOrFail($validatedData['DirectorProyecto']);
 
-        // Buscar el DirectorProyecto y ProfesorParticipante por su id en la tabla ProfesUniversidad
-        $director = ProfesUniversidad::findOrFail($validatedData['DirectorProyecto']);
-        $participante = ProfesUniversidad::findOrFail($validatedData['ProfesorParticipante']);
+     $directorUserExists = Usuario::where('CorreoElectronico', $director->Correo)->exists();
 
-        // Verificar si el director ya tiene un usuario creado
-        $directorUserExists = Usuario::where('CorreoElectronico', $director->Correo)->exists();
+    if (!$directorUserExists) {
+         Usuario::create([
+            'NombreUsuario' => $director->Usuario,
+            'Nombre' => $director->Nombres,
+            'Apellido' => $director->Apellidos,
+            'CorreoElectronico' => $director->Correo,
+            'FechaNacimiento' => now(),
+            'Contrasena' => bcrypt('123'),
+            'Estado' => 'activo',
+            'role_id' => $directorRoleId,
+        ]);
+    }
 
-        if (!$directorUserExists) {
-            // Crear el usuario del director
-            Usuario::create([
-                'NombreUsuario' => $director->Usuario,
-                'Nombre' => $director->Nombres,
-                'Apellido' => $director->Apellidos,
-                'CorreoElectronico' => $director->Correo,
-                'FechaNacimiento' => now(),
-                'Contrasena' => bcrypt('123'),
-                'Estado' => 'activo',
-                'role_id' => $directorRoleId,
-            ]);
-        }
+     foreach ($validatedData['ProfesorParticipante'] as $profesorId) {
+         $participante = ProfesUniversidad::findOrFail($profesorId);
 
-        // Verificar si el profesor participante ya tiene un usuario creado
-        $participanteUserExists = Usuario::where('CorreoElectronico', $participante->Correo)->exists();
+         $participanteUserExists = Usuario::where('CorreoElectronico', $participante->Correo)->exists();
 
         if (!$participanteUserExists) {
-            // Crear el usuario del profesor participante
-            Usuario::create([
+             Usuario::create([
                 'NombreUsuario' => $participante->Usuario,
                 'Nombre' => $participante->Nombres,
                 'Apellido' => $participante->Apellidos,
@@ -427,7 +422,7 @@ class AdminController extends Controller
         // Crear el nuevo proyecto
         $proyecto = Proyecto::create([
             'id_directorProyecto' => $director->id,
-            'id_docenteParticipante' => $participante->id,
+            'id_docenteParticipante' => $profesorId,
             'NombreProyecto' => $validatedData['NombreProyecto'],
             'DescripcionProyecto' => $validatedData['DescripcionProyecto'],
             'DepartamentoTutor' => $validatedData['DepartamentoTutor'],
@@ -440,9 +435,11 @@ class AdminController extends Controller
         ]);
 
         $proyecto->save();
-
-        return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto agregado correctamente');
     }
+
+    return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto(s) agregado(s) correctamente');
+}
+
 
     ///////////////editar proyecto
     public function editProyectoForm($ProyectoID)
@@ -458,7 +455,7 @@ class AdminController extends Controller
     {
         // Valida los datos del formulario de edición antes de actualizar el proyecto
         $validatedData = $request->validate([
-            'NombreProyecto' => 'required|string|max:255',
+            'NombreProyecto' => 'required',
             'nrc' => 'required|integer',
             'codigoProyecto' => 'required',
             'DescripcionProyecto' => 'required|string',
