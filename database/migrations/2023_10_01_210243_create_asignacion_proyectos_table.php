@@ -16,15 +16,13 @@ return new class extends Migration
             $table->unsignedBigInteger('EstudianteID');
             $table->unsignedBigInteger('ProyectoID');
             $table->unsignedBigInteger('DirectorID');
-            $table->unsignedBigInteger('ParticipanteID');
-            $table->date('FechaAsignacion');
+             $table->date('FechaAsignacion');
             $table->timestamps();
 
             $table->foreign('EstudianteID')->references('EstudianteID')->on('estudiantes');
             $table->foreign('ProyectoID')->references('ProyectoID')->on('proyectos');
             $table->foreign('DirectorID')->references('id')->on('profesUniversidad');
-            $table->foreign('ParticipanteID')->references('id')->on('profesUniversidad');
-        });
+         });
     }
 
     public function down()

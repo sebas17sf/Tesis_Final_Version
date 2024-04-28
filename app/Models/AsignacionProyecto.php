@@ -20,8 +20,7 @@ class AsignacionProyecto extends Model
         'EstudianteID',
         'ProyectoID',
         'DirectorID', 
-        'ParticipanteID',
-        'FechaAsignacion',
+         'FechaAsignacion',
 
     ];
 

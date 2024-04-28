@@ -33,6 +33,10 @@
                 <i class="material-icons">assignment_turned_in</i> Documentacion
             </a>
 
+            <a href="{{ route('director.repartoEstudiantes') }}">
+                <i class="material-icons">assignment_turned_in</i> Reparto de Estudiantes
+            </a>
+
 
 
             <a href="{{ route('logout') }}" class="logout-btn">

@@ -12,6 +12,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/participante/participante.css') }}">
+    @vite(['resources/scss/app.scss', 'resources/js/app.js'])
+
+
 </head>
 
 <body>
@@ -50,10 +53,11 @@
         </a>
     </div>
 
-    <div class="view">
+    <div class="content">
+        <main class="container py-4">
             @yield('content')
+        </main>
     </div>
-
     <!-- Agrega los scripts de Bootstrap al final del cuerpo del documento -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>

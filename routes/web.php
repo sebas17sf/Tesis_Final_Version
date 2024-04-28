@@ -139,6 +139,9 @@ Route::get('/director/estudiantes-aprobados', [DirectorController::class, 'mostr
 ///ruta para mostrar los proyectos
 Route::get('/director/proyectos', [DirectorController::class, 'indexProyectos'])->name('director.indexProyectos');
 
+ 
+
+
 ///ruta para guardar guardarPracticas del estudiante
 Route::post('/estudiantes/guardar-practicas', [EstudianteController::class, 'guardarPracticas'])->name('guardarPracticas');
 
@@ -210,6 +213,20 @@ Route::get('/director-vinculacion/documentos', [DirectorVinculacionController::c
 
 //generarInformeDirector
 Route::post('/director-vinculacion/generar-informe-director', [DirectorVinculacionController::class, 'generarInformeDirector'])->name('director_vinculacion.generarInformeDirector');
+
+route::get('/director/estudiantes-repartidos', [DirectorVinculacionController::class, 'repartoEstudiantes'])->name('director.repartoEstudiantes');
+
+//////asignarEstudiantes del director vinculacion
+Route::post('/director-vinculacion/asignar-estudiantes', [DirectorVinculacionController::class, 'asignarEstudiantes'])->name('director_vinculacion.asignarEstudiantes');
+///////desigmarEstudiantes del director vinculacion
+Route::delete('/director-vinculacion/desasignar-estudiantes/{EstudianteID}', [DirectorVinculacionController::class, 'designarEstudiante'])->name('director_vinculacion.desasignarEstudiantes');
+
+Route::delete('/director-vinculacion/eliminar-estudiantes/{EstudianteID}', [DirectorVinculacionController::class, 'eliminarEstudiante'])->name('director_vinculacion.eliminarEstudiante');
+
+
+
+
+
 
 ////agregarEmpresa del admin
 Route::get('/admin/agregar-empresa', [AdminController::class, 'agregarEmpresa'])->name('admin.agregarEmpresa');

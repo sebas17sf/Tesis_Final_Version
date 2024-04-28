@@ -22,6 +22,8 @@
             });
         </script>
     @endif
+
+
     <div class="container" style="overflow-x: auto;">
 
         <h4>Proyecto en Ejecución</h4>
@@ -33,9 +35,7 @@
                         <th>Nombre del proyecto</th>
                         <th>Director</th>
                         <th>Actividades a realizar</th>
-                        <th>Nombre del profesor participante</th>
                         <th>Correo del tutor</th>
-                        <th>Correo del profesor participante</th>
                         <th>Departamento</th>
                         <th>Fecha de inicio</th>
                         <th>Fecha fin</th>
@@ -50,9 +50,6 @@
                             <td>{{ strtoupper($proyecto->director->Apellidos) }}
                                 {{ strtoupper($proyecto->director->Nombres) }}</td>
                             <td>{{ $proyecto->DescripcionProyecto }}</td>
-                            <td>{{ strtoupper($proyecto->docenteParticipante->Apellidos) }}
-                                {{ strtoupper($proyecto->docenteParticipante->Nombres) }}</td>
-                            <td>{{ $proyecto->director->Correo }}</td>
                             <td>{{ $proyecto->docenteParticipante->Correo }}</td>
                             <td>{{ $proyecto->DepartamentoTutor }}</td>
                             <td>{{ $proyecto->FechaInicio }}</td>
@@ -63,7 +60,7 @@
                     @endforeach
                 </tbody>
             </table>
-         @else
+        @else
             <p>No hay proyectos en ejecución.</p>
         @endif
 
@@ -77,7 +74,7 @@
                 <option value="100" {{ request('elementosPorPagina2') == 100 ? 'selected' : '' }}>100</option>
             </select>
         </form>
-        
+
 
 
         @if ($proyectosTerminados->isNotEmpty())
@@ -87,9 +84,7 @@
                         <th>Nombre del proyecto</th>
                         <th>Director</th>
                         <th>Actividades realizadas</th>
-                        <th>Nombre del profesor participante</th>
                         <th>Correo del tutor</th>
-                        <th>Correo del profesor participante</th>
                         <th>Departamento</th>
                         <th>Fecha de inicio</th>
                         <th>Fecha fin</th>
@@ -103,9 +98,7 @@
                             <td>{{ strtoupper($proyecto->director->Apellidos) }}
                                 {{ strtoupper($proyecto->director->Nombres) }}</td>
                             <td>{{ $proyecto->DescripcionProyecto }}</td>
-                            <td>{{ strtoupper($proyecto->docenteParticipante->Apellidos) }}
-                                {{ strtoupper($proyecto->docenteParticipante->Nombres) }}</td>
-                            <td>{{ $proyecto->director->Correo }}</td>
+
                             <td>{{ $proyecto->docenteParticipante->Correo }}</td>
                             <td>{{ $proyecto->DepartamentoTutor }}</td>
                             <td>{{ $proyecto->FechaInicio }}</td>
@@ -119,44 +112,48 @@
         @else
             <p>No hay proyectos terminados.</p>
         @endif
+
     </div>
+
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            padding: 4px 8px;
+
+        }
+
+        table,
+        th,
+        td {
+            font-size: 14px;
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+
+        }
+
+        th {
+            border: 1px solid #70a1ff;
+            background-color: #eaf5ff;
+        }
+
+        .wide-cell {
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .body,
+        table,
+        tr,
+        td,
+        th {
+            font-size: 12px;
+
+        }
+    </style>
+
+
 @endsection
-
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        padding: 4px 8px;
-
-    }
-
-    table,
-    th,
-    td {
-        font-size: 14px;
-        padding: 4px 8px;
-        border: 1px solid #ddd;
-
-    }
-
-    th {
-        border: 1px solid #70a1ff;
-        background-color: #eaf5ff;
-    }
-
-    .wide-cell {
-        max-width: 200px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .body,
-    table,
-    tr,
-    td,
-    th {
-        font-size: 12px;
-
-    }
-</style>

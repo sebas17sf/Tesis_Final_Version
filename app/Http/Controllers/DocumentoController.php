@@ -60,11 +60,10 @@ class DocumentoController extends Controller
         }
 
         // Obtener el ProyectoID del modelo AsignacionProyecto del estudiante
-        $asignacionProyecto = $estudiante->asignaciones->first();
-
-        if ($asignacionProyecto) {
-            $proyectoID = $asignacionProyecto->ProyectoID;
-        } else {
+        $asignacionProyecto = $estudiante->asignacionesEstudiantesDirectores->first();
+          if ($asignacionProyecto) {
+            $proyectoID = $asignacionProyecto->IDProyecto;
+          } else {
             return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
         }
 
@@ -174,9 +173,8 @@ class DocumentoController extends Controller
         }
 
         // Obtener las asignaciones de proyectos del estudiante
-        $asignaciones = $estudiante->asignaciones;
-
-
+        $asignaciones = $estudiante->asignacionesEstudiantesDirectores;
+ 
         if (!$asignaciones->count()) {
             return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');
         }
@@ -207,10 +205,10 @@ class DocumentoController extends Controller
             $proyecto = $asignacion->proyecto;
             if ($proyecto) {
                 $nombresProyectos[] = $proyecto->NombreProyecto;
-                $apellidosProfesores[] = $proyecto->director->Apellidos;
-                $nombresProfesores[] = $proyecto->director->Nombres;
-                $apellidosAsignados[] = $proyecto->docenteParticipante->Apellidos;
-                $nombresAsignados[] = $proyecto->docenteParticipante->Nombres;
+                $apellidosProfesores[] = $proyecto->asignacionesEstudiantesDirectores->first()->director->Apellidos;
+                 $nombresProfesores[] = $proyecto->asignacionesEstudiantesDirectores->first()->director->Nombres;
+                $apellidosAsignados[] = $proyecto->asignacionesEstudiantesDirectores->first()->participante->Apellidos;
+                $nombresAsignados[] = $proyecto->asignacionesEstudiantesDirectores->first()->participante->Nombres;
 
                 $fechaInicio = date('d', strtotime($proyecto->FechaInicio)) . ' ' . $meses[date('F', strtotime($proyecto->FechaInicio))] . ' ' . date('Y', strtotime($proyecto->FechaInicio));
                 $fechasInicio[] = $fechaInicio;
@@ -300,11 +298,11 @@ class DocumentoController extends Controller
         }
 
         // Obtener el ProyectoID del modelo AsignacionProyecto del estudiante
-        $asignacionProyecto = $estudiante->asignaciones->first();
-
+        $asignacionProyecto = $estudiante->asignacionesEstudiantesDirectores->first();
+ 
         if ($asignacionProyecto) {
-            $proyectoID = $asignacionProyecto->ProyectoID;
-        } else {
+            $proyectoID = $asignacionProyecto->IDProyecto;
+         } else {
             // Manejar el caso en que no se encontró la asignación de proyecto para el estudiante
             return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
         }

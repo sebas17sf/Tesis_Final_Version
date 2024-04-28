@@ -69,5 +69,9 @@ class Estudiante extends Model
         return $this->belongsTo(Periodo::class, 'id_periodo', 'id');
     }
 
+    public function asignacionesEstudiantesDirectores()
+    {
+        return $this->hasMany(AsignacionEstudiantesDirector::class, 'EstudianteID');
+    }
 
 }

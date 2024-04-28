@@ -98,7 +98,7 @@
             <li><strong>ID ESPE:</strong> {{ $estudiante->espe_id }}</li>
             <li><strong>Celular:</strong> {{ $estudiante->celular }}</li>
             <li><strong>Cedula:</strong> {{ $estudiante->cedula }}</li>
-            <li><strong>Cohorte:</strong> {{ $estudiante->cohortes->Cohorte }}</li>
+            <li><strong>Cohorte:</strong> {{ $estudiante->periodos->numeroPeriodo }}</li>
             <li><strong>Departamento:</strong> {{ $estudiante->Departamento }}</li>
         </ul>
 

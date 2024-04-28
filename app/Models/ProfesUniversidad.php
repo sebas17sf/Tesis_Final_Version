@@ -27,4 +27,27 @@ class ProfesUniversidad extends Model
     {
         return $this->hasMany(Proyecto::class, 'id_docenteParticipante');
     }
+
+    public function participantesAdicionales()
+    {
+        return $this->hasMany(ParticipanteAdicional::class, 'ParticipanteID');
+    }
+
+    public function asignacionesComoDirector()
+    {
+        return $this->hasMany(AsignacionEstudiantesDirector::class, 'DirectorID');
+    }
+
+     public function asignacionesComoParticipante()
+    {
+        return $this->hasMany(AsignacionEstudiantesDirector::class, 'ParticipanteID');
+    }
+
+    public function asignadosEstudiantes ()
+    {
+        return $this->hasMany(AsignacionProyecto::class, 'DirectorID');
+    }
+
+   
+
 }
