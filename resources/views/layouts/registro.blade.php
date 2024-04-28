@@ -39,9 +39,7 @@
                                         <div class="name-sidebar-item">
                                         <li>Registro Estudiantes</li>
                                         </div>
-                                
                             </a>
-
                     </nav>
                 </div>
             </div>
