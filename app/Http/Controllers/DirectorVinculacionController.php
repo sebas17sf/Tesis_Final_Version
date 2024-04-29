@@ -8,10 +8,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Proyecto;
 use App\Models\Usuario;
+use App\Models\AsignacionEstudiantesDirector;
 use App\Models\ProfesUniversidad;
+use App\Models\ParticipanteAdicional;
 use App\Models\AsignacionProyecto;
 use App\Models\Estudiante;
-use App\Models\ParticipanteVincunlacion;
 use App\Models\NotasEstudiante;
 
 
@@ -23,26 +24,141 @@ class DirectorVinculacionController extends Controller
         $Director = ProfesUniversidad::where('Correo', $correoDirector)->first();
         $proyectosEjecucion = null;
         $proyectosTerminados = null;
-    
+
         $elementosPorPaginaTerminados = $request->input('elementosPorPaginaTerminados', 10);
-    
+
         if ($Director) {
             $DirectorID = $Director->id;
-    
+
             // Obtener proyectos en ejecución sin paginación
             $proyectosEjecucion = Proyecto::where('id_directorProyecto', $DirectorID)
                 ->where('Estado', 'Ejecucion')
                 ->get();
-    
+
             // Obtener proyectos terminados con paginación
             $proyectosTerminados = Proyecto::where('id_directorProyecto', $DirectorID)
                 ->where('Estado', 'Terminado')
                 ->paginate($elementosPorPaginaTerminados);
         }
-    
+
         return view('director_vinculacion.index', compact('proyectosEjecucion', 'proyectosTerminados', 'elementosPorPaginaTerminados'));
     }
+
+
+    ////////////funcion para repartir los estudiantes 
+    public function repartoEstudiantes()
+    {
+        $correoAutenticado = Auth::user()->CorreoElectronico;
     
+        $directorProyecto = ProfesUniversidad::where('Correo', $correoAutenticado)->first();
+    
+        // Obtener el proyecto en ejecución del director
+        $proyectoEjecucion = Proyecto::where('id_directorProyecto', $directorProyecto->id)
+            ->where('Estado', 'Ejecucion')
+            ->first();
+    
+        // Obtener los estudiantes asignados al proyecto en ejecución que no estén en AsignacionEstudiantesDirector
+        $estudiantesAsignados = collect([]);
+        if ($proyectoEjecucion) {
+            $estudiantesAsignados = AsignacionProyecto::where('DirectorID', $directorProyecto->id)
+                ->where('ProyectoID', $proyectoEjecucion->ProyectoID)
+                ->get();
+            $estudiantesAsignados->load('estudiante');
+    
+            // Filtrar estudiantes asignados que no estén en AsignacionEstudiantesDirector
+            $estudiantesAsignados = $estudiantesAsignados->filter(function ($asignacion) {
+                return !AsignacionEstudiantesDirector::where('EstudianteID', $asignacion->EstudianteID)->exists();
+            });
+        }
+    
+        // Obtener el docente participante y otros participantes adicionales del proyecto en ejecución
+        $docenteParticipante = null;
+        $participantesAdicionales = collect([]);
+        if ($proyectoEjecucion) {
+            $docenteParticipante = ProfesUniversidad::find($proyectoEjecucion->id_docenteParticipante);
+            $participantesAdicionales = ParticipanteAdicional::where('ProyectoID', $proyectoEjecucion->ProyectoID)->get();
+            $participantesAdicionales = ProfesUniversidad::whereIn('id', $participantesAdicionales->pluck('ParticipanteID'))->get();
+        }
+    
+        // Obtener las asignaciones de estudiantes director relacionadas con el proyecto en ejecución
+        $asignacionesEstudiantesDirector = AsignacionEstudiantesDirector::where('DirectorID', $directorProyecto->id)
+            ->where('IDProyecto', $proyectoEjecucion->ProyectoID)
+            ->get();
+        $asignacionesEstudiantesDirector->load('estudiante');
+
+          
+      
+        return view('director_vinculacion.RepartoEstudiantes', compact('directorProyecto', 'estudiantesAsignados', 'docenteParticipante', 'participantesAdicionales', 'asignacionesEstudiantesDirector'));
+    }
+    
+
+    //////funcion para asigar los estudaintes repartidos
+    public function asignarEstudiantes(Request $request)
+    {
+        $correoAutenticado = Auth::user()->CorreoElectronico;
+    
+        $directorProyecto = ProfesUniversidad::where('Correo', $correoAutenticado)->first();
+        $docenteId = $request->input('docente_id');
+        $estudianteId = $request->input('estudiante');
+    
+        // Obtener el proyecto en ejecución del director
+        $proyectoEjecucion = Proyecto::where('id_directorProyecto', $directorProyecto->id)
+            ->where('Estado', 'Ejecucion')
+            ->first();
+    
+        if ($proyectoEjecucion) {
+            $asignacion = new AsignacionEstudiantesDirector();
+            $asignacion->DirectorID = $directorProyecto->id;
+            $asignacion->IDProyecto = $proyectoEjecucion->ProyectoID;  
+            $asignacion->ParticipanteID = $docenteId;
+            $asignacion->EstudianteID = $estudianteId;
+            $asignacion->save();
+    
+            return redirect()->route('director.repartoEstudiantes')->with('success', 'Se ha asignado el estudiante correctamente.');
+        } else {
+            return redirect()->route('director.repartoEstudiantes')->with('error', 'No se puede asignar estudiantes porque no hay un proyecto en ejecución.');
+        }
+    }
+    
+
+
+    /////////designar estudiante
+    public function designarEstudiante(Request $request)
+    {
+        $request->validate([
+            'estudiante_id' => 'required',
+        ]);
+
+        $estudianteId = $request->input('estudiante_id');
+
+        AsignacionEstudiantesDirector::where('EstudianteID', $estudianteId)->delete();
+
+        return redirect()->route('director.repartoEstudiantes')->with('success', 'Se ha designado el estudiante correctamente.');
+    }
+
+    //////eliminar estudiante del proyecto
+    public function eliminarEstudiante(Request $request)
+    {
+        $request->validate([
+            'estudiante_id' => 'required',
+        ]);
+
+        $estudianteId = $request->input('estudiante_id');
+        $motivoNegacion = $request->input('motivo_negacion');
+
+        AsignacionEstudiantesDirector::where('EstudianteID', $estudianteId)->delete();
+        AsignacionProyecto::where('EstudianteID', $estudianteId)->delete();
+
+        $estudiante = Estudiante::find($estudianteId);
+        $estudiante->comentario = $motivoNegacion;
+        $estudiante->Estado = 'Negado';
+
+
+        $estudiante->save();
+
+        return redirect()->route('director.repartoEstudiantes')->with('success', 'Se ha eliminado el estudiante correctamente.');
+    }
+
 
 
 
@@ -50,6 +166,8 @@ class DirectorVinculacionController extends Controller
 
     public function estudiantes()
     {
+        $RepartoEstudiantes = AsignacionProyecto::all();
+
         $correoDirector = Auth::user()->CorreoElectronico;
         $director = ProfesUniversidad::where('Correo', $correoDirector)->first();
 

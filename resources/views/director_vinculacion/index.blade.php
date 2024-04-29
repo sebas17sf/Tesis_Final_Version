@@ -23,6 +23,7 @@
         </script>
     @endif
 
+ 
     <div class="container" style="overflow-x: auto;">
         @if ($proyectosEjecucion->isNotEmpty())
             <h4>Proyecto en Ejecución</h4>
@@ -50,10 +51,23 @@
                             <td>{{ strtoupper($proyecto->director->Apellidos) }}
                                 {{ strtoupper($proyecto->director->Nombres) }}</td>
                             <td>{{ $proyecto->DescripcionProyecto }}</td>
-                            <td>{{ strtoupper($proyecto->docenteParticipante->Apellidos) }}
-                                {{ strtoupper($proyecto->docenteParticipante->Nombres) }}</td>
+                            <td>
+                                {{ strtoupper($proyecto->docenteParticipante->Apellidos) }}
+                                {{ strtoupper($proyecto->docenteParticipante->Nombres) }}
+                                @foreach($proyecto->participantesAdicionales as $participanteAdicional)
+                                    <br>
+                                    {{ strtoupper($participanteAdicional->Apellidos) }}
+                                    {{ strtoupper($participanteAdicional->Nombres) }}
+                                @endforeach
+                            </td>
                             <td>{{ $proyecto->director->Correo }}</td>
-                            <td>{{ $proyecto->docenteParticipante->Correo }}</td>
+                            <td>
+                                {{ $proyecto->docenteParticipante->Correo }}
+                                @foreach($proyecto->participantesAdicionales as $participanteAdicional)
+                                    <br>
+                                    {{ $participanteAdicional->Correo }}
+                                @endforeach
+                            </td>
                             <td>{{ $proyecto->DepartamentoTutor }}</td>
                             <td>{{ $proyecto->FechaInicio }}</td>
                             <td>{{ $proyecto->FechaFinalizacion }}</td>

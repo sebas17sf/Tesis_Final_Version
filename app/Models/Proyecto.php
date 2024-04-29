@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Proyecto extends Model
 {
     use HasFactory;
@@ -50,4 +51,15 @@ class Proyecto extends Model
     {
         return $this->belongsTo(NrcVinculacion::class, 'id_nrc_vinculacion');
     }
+
+    public function participantesAdicionales()
+    {
+        return $this->belongsToMany(ProfesUniversidad::class, 'participantesAdicionales', 'ProyectoID', 'ParticipanteID');
+    }
+
+    public function asignacionesEstudiantesDirectores()
+    {
+        return $this->hasMany(AsignacionEstudiantesDirector::class, 'IDProyecto');
+    }
+
 }

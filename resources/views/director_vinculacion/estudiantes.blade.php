@@ -23,7 +23,16 @@
         </script>
     @endif
 
+ 
+
+
+
     <div class="container" style="overflow-x: auto;">
+
+       
+        
+
+
         <h4>Estudiantes por calificar</h4>
 
         @if (count($estudiantesConNotasPendientes) === 0)
