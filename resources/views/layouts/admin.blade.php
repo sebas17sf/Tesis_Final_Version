@@ -129,7 +129,6 @@
                 </div>
 
             </button>
-
             <!-- Aquí agregamos el contenedor del menú desplegable -->
             <div class="popup-menu-profile">
                 <div class="container">
@@ -164,7 +163,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
      <script src="{{ asset('js/admin/general.js') }}"></script>
- 
 </body>
 
 </html>
