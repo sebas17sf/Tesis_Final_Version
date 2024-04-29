@@ -10,10 +10,11 @@ use App\Models\Proyecto;
 use App\Mail\EstudianteAprobado;
 use App\Mail\EstudianteNegado;
 use Illuminate\Pagination\Paginator;
-use App\Models\Cohorte;
-use App\Models\AsignacionProyecto;
+ use App\Models\AsignacionProyecto;
 use App\Models\Empresa;
 use App\Models\Role;
+
+use App\Models\AsignacionEstudiantesDirector;
 
 use App\Models\ParticipanteAdicional;
 
@@ -319,9 +320,14 @@ class AdminController extends Controller
         // Get other necessary data
         $proyectosDisponibles = Proyecto::where('Estado', 'Ejecucion')->get();
 
-        $estudiantesAprobados = Estudiante::where('Estado', 'Aprobado')
-            ->whereNotIn('EstudianteID', AsignacionProyecto::pluck('EstudianteID')->toArray())
+   
+         $estudiantesAprobados = Estudiante::where('Estado', 'Aprobado')
+            ->whereNotIn('EstudianteID', AsignacionEstudiantesDirector::pluck('EstudianteID')->toArray())
             ->get();
+
+
+ 
+
 
         return view('admin.indexProyectos', [
             'proyectos' => $proyectos,
@@ -560,42 +566,43 @@ class AdminController extends Controller
             'estudiante_id' => 'required|exists:estudiantes,EstudianteID',
             'fecha_asignacion' => 'required|date',
         ]);
-
+    
         // Obtener el proyecto seleccionado
         $proyecto = Proyecto::where('Estado', 'Ejecucion')
             ->find($request->proyecto_id);
-
-        // Verificar si hay cupos disponibles en el proyecto
+    
+         // Verificar si hay cupos disponibles en el proyecto
         if ($proyecto->cupos > 0) {
             $directorID = $proyecto->id_directorProyecto;
 
-            // Obtener todos los proyectos con el mismo director
-            $proyectos = Proyecto::where('Estado', 'Ejecucion')
-                ->where('id_directorProyecto', $directorID)
-                ->get();
-
-            foreach ($proyectos as $proyecto) {
-                $participanteID = $proyecto->id_docenteParticipante;
-
-                if ($participanteID) {
-                    AsignacionProyecto::create([
-                        'EstudianteID' => $request->estudiante_id,
-                        'ProyectoID' => $proyecto->ProyectoID,
-                        'DirectorID' => $directorID,
-                         'FechaAsignacion' => $request->fecha_asignacion,
-                    ]);
-
-                    // Reducir el número de cupos disponibles en el proyecto
-                    $proyecto->decrement('cupos');
-                }
+        ////obtener la id del proyecto y buscar en ParticipanteAdicional si hay participantes adicionales en el proyecto
+            $participantesAdicionales = ParticipanteAdicional::where('ProyectoID', $proyecto->ProyectoID)->get();       
+            // Si no hay docentes participantes adicionales, asignar directamente a los estudiantes
+            if ($participantesAdicionales->isEmpty()) {
+                AsignacionEstudiantesDirector::create([
+                    'DirectorID' => $proyecto->id_directorProyecto,
+                    'IDProyecto' => $proyecto->ProyectoID,
+                    'ParticipanteID' => $proyecto->id_docenteParticipante,
+                    'EstudianteID' => $request->estudiante_id
+                 ]);
+            } else {
+                // Si hay docentes participantes adicionales, seguir con la asignación normal
+                AsignacionProyecto::create([
+                    'ProyectoID' => $proyecto->ProyectoID,
+                    'EstudianteID' => $request->estudiante_id,
+                    'DirectorID' => $directorID,
+                    'FechaAsignacion' => $request->fecha_asignacion,
+                ]);
+                $proyecto->decrement('cupos');
             }
-
+    
             return redirect()->route('admin.indexProyectos')->with('success', 'Asignación realizada con éxito.');
         } else {
             return redirect()->route('admin.indexProyectos')->with('error', 'No hay cupos disponibles en el proyecto seleccionado.');
         }
     }
-
+    
+    
 
 
 
