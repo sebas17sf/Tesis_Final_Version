@@ -4,7 +4,7 @@
 
 // General de botones
 @mixin buttons-style {
-  height: 20px;
+  /* height: 20px; */
   padding: 5px;
   letter-spacing: 1.15px;
 }
@@ -55,7 +55,7 @@
   @include buttons-style2;
   min-width: 40px;
   width: auto;
-  height: 20px;
+  /* height: 20px; */
   border-radius: 5px;
   font-size: fonts.$icon-size - 0.5em;
 

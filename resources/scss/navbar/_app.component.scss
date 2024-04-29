@@ -57,7 +57,7 @@
 // Sidebar Retraido
 .dimension-nav-hidden,
 .dimension-content-hidden {
-  left: 220px;
+  left: 60px;
   transition: all 0.3s ease;
-  width: calc(100% - 220px); /* Restar el ancho del sidebar */
+  width: calc(100% - 60px); /* Restar el ancho del sidebar */
 }
