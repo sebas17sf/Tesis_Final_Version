@@ -34,8 +34,6 @@
                 <i class="material-icons">assignment_turned_in</i> Documentacion
             </a>
           
-         
-
             <a href="{{ route('logout') }}" class="logout-btn">
             <i class="material-icons">exit_to_app</i> Cerrar Sesión
             </a>

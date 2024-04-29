@@ -7,7 +7,7 @@
     @endphp
 
     @foreach ($departamentos as $departamento)
-    <h2> {{ $departamento }}</h2>
+    <h5> {{ $departamento }}</h5>
     <div class="d-flex">
 <form method="GET" action="{{ route('coordinador.proyectosEstudiantes') }}" class="mr-3">
         <label for="elementosPorPagina2">Estudiantes a visualizar:</label>

@@ -2,6 +2,8 @@
 
 @section('title', 'Proyectos')
 
+@section('title_component', 'Listado de proyectos')
+
 @section('content')
 
     @if (session('success'))
@@ -28,7 +30,7 @@
 
 
     <div class="container" style="overflow-x: auto;">
-        <h4>Listado de Proyectos</h4>
+
 
         <a href="{{ route('coordinador.agregarProyecto') }}" class="btn btn-outline-secondary btn-sm">
             <i class="material-icons">add</i> Proyecto
@@ -37,19 +39,15 @@
         <br><br>
 
         <div class="d-flex">
-            <form method="GET" action="{{ route('coordinador.index') }}">
-                <div class="d-flex align-items-center mb-3">
-                    <label for="perPage" class="me-2">Proyectos por página:</label>
-                    <select id="perPage" name="perPage" class="form-select" onchange="this.form.submit()">
-                        <option value="10" @if ($perPage == 10) selected @endif>10</option>
-                        <option value="20" @if ($perPage == 20) selected @endif>20</option>
-                        <option value="50" @if ($perPage == 50) selected @endif>50</option>
-                        <option value="100" @if ($perPage == 100) selected @endif>100</option>
-                    </select>
-                </div>
-            </form>
+            
 
-            <div class="mb-3">
+            <div  class="contenedor_acciones_tabla" <div class="contenedor_botones">
+            <form method="POST" action="{{ route('coordinador.reportesProyectos') }}">
+            @csrf
+            <button type="submit" class="btn btn-sm btn-secondary">
+                <i class="fas fa-file-excel"></i> Generar Reporte
+            </button>
+        </form>
                 <form action="{{ route('coordinador.index') }}" method="GET" class="d-flex">
                     <input type="text" name="search" value="{{ $search }}" class="input"
                         placeholder="Buscar proyectos...">
@@ -138,8 +136,17 @@
         </div>
 
 
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center paginator-container">
             <ul class="pagination">
+            <form method="GET" action="{{ route('coordinador.index') }}">
+                <select class="input paginator-container" name="perPage" id="perPage" onchange="this.form.submit()">
+                    <option value="10" @if ($perPage == 10) selected @endif>10</option>
+                    <option value="20" @if ($perPage == 20) selected @endif>20</option>
+                    <option value="50" @if ($perPage == 50) selected @endif>50</option>
+                    <option value="100" @if ($perPage == 100) selected @endif>100</option>
+                </select>
+            </form>
+            <br>
                 @if ($proyectos->onFirstPage())
                     <li class="page-item disabled">
                         <span class="page-link">Anterior</span>
@@ -169,17 +176,6 @@
         </div>
 
 
-
-
-
-
-
-        <form method="POST" action="{{ route('coordinador.reportesProyectos') }}">
-            @csrf
-            <button type="submit" class="btn btn-sm btn-secondary">
-                <i class="fas fa-file-excel"></i> Generar Reporte
-            </button>
-        </form>
     </div>
 
     <hr>

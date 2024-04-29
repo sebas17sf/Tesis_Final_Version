@@ -193,3 +193,12 @@ body {
 .dropdown-item:hover {
   background-color: #ffff;
 }
+.title-text {
+  display: grid;
+  justify-content: start;
+  text-transform: uppercase;
+  justify-items: center;
+  align-content: center;
+  align-items: center;
+  color: colors.$black-sha;
+}

@@ -37,7 +37,7 @@
                         <img src="\img\logos\logo_tesis.png" alt="logo">
                     </div>
                     <div class="title-text">
-                        <p>Gestion Academica.</p>
+                        <p>Gestion Academica</p>
                     </div>
                 </a>
                 <div class="links_site">
@@ -103,21 +103,17 @@
                                         </div>
                                     </a>
                                 </div>
-
-
-
                             </div>
                         </ul>
                     </nav>
                 </div>
-
-
             </div>
             <div class="content-autors">
                 <span class="autors1">
                     <i>Designed by Sebastian Flores & Karen Cueva.</i>
-
                 </span>
+            </div>
+            </div>
             </div>
     </section>
     <!-- SIDEBAR -->
@@ -131,11 +127,12 @@
 
         <main class="navbar">
             <button class="profile-icon dropdown" id="profile-button">
-                <div class="icon-profile">
-                    <i class="material-icons">person</i>
-                </div>
+                
                 <div class="name-profile">
                     <span><?php echo Auth::user()->NombreUsuario; ?></span>
+                </div>
+                <div class="icon-profile">
+                    <i class="material-icons">person</i>
                 </div>
             </button>
             <!-- Aquí agregamos el contenedor del menú desplegable -->
@@ -171,9 +168,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<<<<<<< HEAD
      <script src="{{ asset('js/admin/general.js') }}"></script>
-=======
+
     <script src="{{ asset('js/admin/general.js') }}"></script>
 
    
@@ -181,9 +177,6 @@
     <script src="{{ asset('js/plantilla/vendor.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
 
-   
-
->>>>>>> staging_vista
 </body>
 
 </html>

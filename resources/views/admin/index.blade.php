@@ -149,7 +149,7 @@
                 {{ session('permisosConcedidos') }}
             </div>
         @endif
-
+        <div class="container">
         <button id="toggleFormBtn" class="btn btn-outline-secondary btn-block">Agregar Maestros</button>
         <div id="registrarMaestros" style="display: none;">
             <hr>
@@ -195,14 +195,16 @@
                 <button type="submit" class="btn btn-outline-secondary btn-block">Guardar Docente</button>
             </form>
         </div>
-
+        </div>
+        </div>
+        <br>
         <form action="{{ route('admin.respaldo') }}" method="POST">
             @csrf
             <button type="submit" class="button">Respaldar Base de Datos</button>
         </form>
 
         <hr>
-        <h4>Docentes agregados</h4>
+        <h6>Docentes agregados</h6>
         <div class="contenedor_acciones_tabla" <div class="contenedor_botones">
             <!-- Excel -->
             <form action="{{ route('admin.reportesDocentes') }}" method="POST">
@@ -283,11 +285,6 @@
         </div>
     </div>
 
- 
-
-
-
-
     <div class="d-flex justify-content-center paginator-container">
         <ul class="pagination ">
             <form method="GET" action="{{ route('admin.index') }}">
@@ -334,35 +331,30 @@
         </ul>
     </div>
 
-
-
-
-
-
-
+  <div class="container">
     <button id="toggleFormBtn2" class="btn btn-outline-secondary btn-block">Agregar Cohoerte/Periodo/NRC
     </button>
     <div id="registrarPeriodos" style="display: none;">
-
-
+    <hr>
+    <br>
         <!-- Formulario para agregar período académico -->
         <form action="{{ route('admin.guardarPeriodo') }}" method="post">
             @csrf
             <div class="row align-items-center">
-                <div class=" col-md-3">
+                <div class=" col-md-4">
                     <div class="form-group">
                         <label for="periodoInicio"><strong>Ingrese el inicio del Periodo Académico:</strong></label>
                         <input type="date" id="periodoInicio" name="periodoInicio" class="form-control input"
                             required>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label for="periodoFin"><strong>Ingrese el fin del Periodo Académico:</strong></label>
                         <input type="date" id="periodoFin" name="periodoFin" class="form-control input" required>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label for="numeroPeriodo"><strong>Ingrese el numero identificador del periodo</strong></label>
                         <input type="text" id="numeroPeriodo" name="numeroPeriodo" placeholder="Ingrese 6 números"
@@ -376,9 +368,9 @@
                 </div>
             </div>
         </form>
-
+<br>
         <!-- Formulario para agregar NRC Vinculacion -->
-        <h4>NRC Vinculacion</h4>
+        <h6>NRC Vinculacion</h6>
         <form class="FormularioNRC" action="{{ route('admin.nrcVinculacion') }}" method="post">
             @csrf
             <div class="row align-items-center">
@@ -407,14 +399,11 @@
             </div>
             <button type="submit" class="button">Guardar NRC</button>
         </form>
-
-
-
-
+<br>
         <!-- Elementos agregados (Periodos y Cohortes) -->
         <div class="row">
             <div class="col-md-6">
-                <h4>Periodos Agregados</h4>
+                <h6>Periodos Agregados</h6>
                 <div class="d-flex align-items-center">
                     <select id="selectPeriodo" class="form-select me-2 input input_select ">
                         <option value="">Seleccionar Periodo</option>
@@ -431,13 +420,7 @@
                 </div>
             </div>
         </div>
-
-
-
-
     </div>
-
-
 
     </div>
 
@@ -447,6 +430,25 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+$(document).ready(function() {
+    $("#toggleFormBtn").click(function() {
+        $("#registrarMaestros").toggle();
+        if ($("#registrarMaestros").is(":visible")) {
+            $(this).text("Ocultar Registro de Maestros");
+        } else {
+            $(this).text("Registrar Maestros");
+        }
+    });
+
+    $("#toggleFormBtn2").click(function() {
+        $("#registrarPeriodos").toggle();
+        if ($("#registrarPeriodos").is(":visible")) {
+            $(this).text("Ocultar Registro");
+        } else {
+            $(this).text("Agregar Cohorte/Periodo Académico");
+        }
+    });
+});
         var delayTimer;
         $('#formBusquedaDocentes input[name="search"]').on('keyup', function() {
             clearTimeout(delayTimer);
