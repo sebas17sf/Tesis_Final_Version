@@ -14,6 +14,9 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
 <link rel="stylesheet" href="css/coordinador/coordinador.css">
+<link rel="stylesheet" href="css/admin/admin.css">
+    <script src="js/menu.js"></script>
+    @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 </head>
 
 <body>
