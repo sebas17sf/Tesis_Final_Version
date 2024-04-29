@@ -150,7 +150,7 @@
             </div>
         @endif
         <div class="container">
-        <button id="toggleFormBtn" class="btn btn-outline-secondary btn-block">Agregar Maestros</button>
+        <button id="toggleFormBtn8" class="btn btn-outline-secondary btn-block">Agregar Maestros</button>
         <div id="registrarMaestros" style="display: none;">
             <hr>
             <form action="{{ route('admin.guardarMaestro') }}" method="post">
@@ -431,7 +431,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
 $(document).ready(function() {
-    $("#toggleFormBtn").click(function() {
+    $("#toggleFormBtn8").click(function() {
         $("#registrarMaestros").toggle();
         if ($("#registrarMaestros").is(":visible")) {
             $(this).text("Ocultar Registro de Maestros");
