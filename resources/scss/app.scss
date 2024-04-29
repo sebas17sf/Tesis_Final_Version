@@ -8,6 +8,7 @@
 @use "menu-profile/menu-profile.component";
 @use "sidebar/sidebar.component";
 @use "navbar/navbar";
+@use "module/module.scss";
 @use "navbar/app.component";
 @use "deshboard/dashboard.component.scss";
 @use "tabla/tabla_filtros";
@@ -15,6 +16,9 @@
 // ===============================================
 // Estilos para sweedAlert2
 // ===============================================
+.custom-tooltip {
+  --bs-tooltip-bg: var(--bs-primary);
+}
 
 div:where(.swal2-icon) {
   margin: 0 auto 0em !important;
@@ -47,7 +51,7 @@ body {
   font-family: "Roboto", sans-serif;
 }
 .content-views {
-  margin-left: 230px; /* Igual al ancho del sidebar */
+  margin-left: 20px; /* Igual al ancho del sidebar */
 }
 // Campos requeridos
 .contenedor_campo_requerido {
@@ -110,9 +114,9 @@ body {
 // Sidebar Retraido
 .dimension-nav-hidden,
 .dimension-content-hidden {
-  left: 220px;
+  left: 60px;
   transition: all 0.3s ease;
-  width: calc(100% - 220px); /* Restar el ancho del sidebar */
+  width: calc(100% - 60px); /* Restar el ancho del sidebar */
 }
 
 // Cerrar sesion

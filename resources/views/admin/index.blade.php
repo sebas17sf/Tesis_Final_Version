@@ -203,85 +203,94 @@
 
         <hr>
         <h4>Docentes agregados</h4>
-        <div class="contenedor_acciones_tabla" 
-        <div class="contenedor_botones">
-             <!-- Excel -->
-          <form action="{{ route('admin.reportesDocentes') }}" method="POST">
-            @csrf
-            <button type="submit" class="button3 efects_button btn_excel" pTooltip="Excel" tooltipPosition="top">
-                <i class="fa-solid fa-file-excel"></i> 
-            </button>
-        </form>
+        <div class="contenedor_acciones_tabla" <div class="contenedor_botones">
+            <!-- Excel -->
+            <form action="{{ route('admin.reportesDocentes') }}" method="POST">
+                @csrf
+                <button type="submit" class="button3 efects_button btn_excel" pTooltip="Excel" tooltipPosition="top">
+                    <i class="fa-solid fa-file-excel"></i>
+                </button>
+            </form>
             <!-- Buscador -->
             <div class="contenedor_buscador">
                 <form id="formBusquedaDocentes" class="d-flex">
                     <input type="text" name="search" value="{{ $search }}" class="input"
                         placeholder="Buscar proyectos...">
-                        <i class='bx bx-search-alt'></i>
+                    <i class='bx bx-search-alt'></i>
                 </form>
             </div>
 
 
-</div>
-
         </div>
 
-        <div id="tablaDocentes">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Correo</th>
-                        <th>Usuario</th>
-                        <th>Cédula</th>
-                        <th>Departamento</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if ($profesores->isEmpty())
-                        <tr>
-                            <td colspan="6">No se encontraron resultados para la búsqueda.</td>
-                        </tr>
-                    @else
-                        @foreach ($profesores as $profesor)
-                            <tr>
-                                <td>{{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Apellidos)) }}
-                                    {{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Nombres)) }}
-                                </td>
-                                <td>{{ $profesor->Correo }}</td>
-                                <td>{{ $profesor->Usuario }}</td>
-                                <td>{{ $profesor->Cedula }}</td>
-                                <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $profesor->Departamento)) }}
-                                </td>
-                                <td>
-                                    <form action="{{ route('admin.eliminarMaestro', ['id' => $profesor->id]) }}"
-                                        method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="button3 efects_button btn_eliminar3"> <i
-                                                class="material-icons">delete</i></button>
-                                    </form>
+    </div>
 
-                                    <form action="{{ route('admin.editarDocente', ['id' => $profesor->id]) }}"
-                                        method="GET">
-                                        @csrf
-                                        <button type="submit" class="button3"> <i class="material-icons">edit</i></button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @endif
-                </tbody>
-            </table>
+    <div id="datatable">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive" id="seccion0">
+                    <div id="tablaDocentes">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Correo</th>
+                                    <th>Usuario</th>
+                                    <th>Cédula</th>
+                                    <th>Departamento</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if ($profesores->isEmpty())
+                                    <tr>
+                                        <td colspan="6">No se encontraron resultados para la búsqueda.</td>
+                                    </tr>
+                                @else
+                                    @foreach ($profesores as $profesor)
+                                        <tr>
+                                            <td>{{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Apellidos)) }}
+                                                {{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Nombres)) }}
+                                            </td>
+                                            <td>{{ $profesor->Correo }}</td>
+                                            <td>{{ $profesor->Usuario }}</td>
+                                            <td>{{ $profesor->Cedula }}</td>
+                                            <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $profesor->Departamento)) }}
+                                            </td>
+                                            <td>
+                                                <form action="{{ route('admin.eliminarMaestro', ['id' => $profesor->id]) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="button3 efects_button btn_eliminar3"> <i
+                                                            class="material-icons">delete</i></button>
+                                                </form>
+                
+                                                <form action="{{ route('admin.editarDocente', ['id' => $profesor->id]) }}" method="GET">
+                                                    @csrf
+                                                    <button type="submit" class="button3"> <i class="material-icons">edit</i></button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
         </div>
+    </div>
+
+ 
 
 
 
 
-        <div class="d-flex justify-content-center paginator-container">
+    <div class="d-flex justify-content-center paginator-container">
         <ul class="pagination ">
-        <form method="GET" action="{{ route('admin.index') }}">
+            <form method="GET" action="{{ route('admin.index') }}">
                 <select class="input paginator-container" name="perPage" id="perPage" onchange="this.form.submit()">
                     <option value="10" @if ($perPage == 10) selected @endif>10</option>
                     <option value="20" @if ($perPage == 20) selected @endif>20</option>
@@ -289,146 +298,144 @@
                     <option value="100" @if ($perPage == 100) selected @endif>100</option>
                 </select>
             </form>
-        <!-- espacio entre estos dos -->
-        
-                @if ($profesores->onFirstPage())
-                    <li class="page-item disabled">
-                        <span class="page-link">Anterior</span>
+            <!-- espacio entre estos dos -->
+
+            @if ($profesores->onFirstPage())
+                <li class="page-item disabled">
+                    <span class="page-link">Anterior</span>
+                </li>
+            @else
+                <li class="page-item">
+                    <a class="page-link" href="{{ $profesores->previousPageUrl() }}" aria-label="Anterior">Anterior</a>
+                </li>
+            @endif
+
+            @foreach ($profesores->getUrlRange(1, $profesores->lastPage()) as $page => $url)
+                @if ($page == $profesores->currentPage())
+                    <li class="page-item active">
+                        <span class="page-link">{{ $page }}</span>
                     </li>
                 @else
                     <li class="page-item">
-                        <a class="page-link" href="{{ $profesores->previousPageUrl() }}"
-                            aria-label="Anterior">Anterior</a>
+                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
                     </li>
                 @endif
+            @endforeach
 
-                @foreach ($profesores->getUrlRange(1, $profesores->lastPage()) as $page => $url)
-                    @if ($page == $profesores->currentPage())
-                        <li class="page-item active">
-                            <span class="page-link">{{ $page }}</span>
-                        </li>
-                    @else
-                        <li class="page-item">
-                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                        </li>
-                    @endif
-                @endforeach
-
-                @if ($profesores->hasMorePages())
-                    <li class="page-item">
-                        <a class="page-link" href="{{ $profesores->nextPageUrl() }}"
-                            aria-label="Siguiente">Siguiente</a>
-                    </li>
-                @else
-                    <li class="page-item disabled">
-                        <span class="page-link">Siguiente</span>
-                    </li>
-                @endif
-            </ul>
-        </div>
-
-
-        
+            @if ($profesores->hasMorePages())
+                <li class="page-item">
+                    <a class="page-link" href="{{ $profesores->nextPageUrl() }}" aria-label="Siguiente">Siguiente</a>
+                </li>
+            @else
+                <li class="page-item disabled">
+                    <span class="page-link">Siguiente</span>
+                </li>
+            @endif
+        </ul>
+    </div>
 
 
 
 
-        <button id="toggleFormBtn2" class="btn btn-outline-secondary btn-block">Agregar Cohoerte/Periodo/NRC
-        </button>
-        <div id="registrarPeriodos" style="display: none;">
 
 
-            <!-- Formulario para agregar período académico -->
-            <form action="{{ route('admin.guardarPeriodo') }}" method="post">
-                @csrf
-                <div class="row align-items-center">
-                    <div class=" col-md-3">
-                        <div class="form-group">
-                            <label for="periodoInicio"><strong>Ingrese el inicio del Periodo Académico:</strong></label>
-                            <input type="date" id="periodoInicio" name="periodoInicio" class="form-control input"
-                                required>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="periodoFin"><strong>Ingrese el fin del Periodo Académico:</strong></label>
-                            <input type="date" id="periodoFin" name="periodoFin" class="form-control input" required>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="numeroPeriodo"><strong>Ingrese el numero identificador del periodo</strong></label>
-                            <input type="text" id="numeroPeriodo" name="numeroPeriodo"
-                                placeholder="Ingrese 6 números" class="form-control input" pattern="[0-9]{1,6}"
-                                title="Ingrese un número no negativo de hasta 6 dígitos" required>
-                            <small id="errorNumeroPeriodo" class="form-text text-danger"></small>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <button type="submit" class="button">Guardar Periodo Académico</button>
+
+    <button id="toggleFormBtn2" class="btn btn-outline-secondary btn-block">Agregar Cohoerte/Periodo/NRC
+    </button>
+    <div id="registrarPeriodos" style="display: none;">
+
+
+        <!-- Formulario para agregar período académico -->
+        <form action="{{ route('admin.guardarPeriodo') }}" method="post">
+            @csrf
+            <div class="row align-items-center">
+                <div class=" col-md-3">
+                    <div class="form-group">
+                        <label for="periodoInicio"><strong>Ingrese el inicio del Periodo Académico:</strong></label>
+                        <input type="date" id="periodoInicio" name="periodoInicio" class="form-control input"
+                            required>
                     </div>
                 </div>
-            </form>
-
-            <!-- Formulario para agregar NRC Vinculacion -->
-            <h4>NRC Vinculacion</h4>
-            <form class="FormularioNRC" action="{{ route('admin.nrcVinculacion') }}" method="post">
-                @csrf
-                <div class="row align-items-center">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="nrc"><strong>Ingrese el NRC:</strong></label>
-                            <input type="text" id="nrc" name="nrc" class="form-control input"
-                                placeholder="Ingrese 5 números" required>
-                            <small id="errorNRC" class="form-text text-danger"></small>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="periodo"><strong>Seleccione el período:</strong></label>
-                            <select id="periodo" name="periodo" class="form-select me-2 input input_select " required>
-                                <option value="">Seleccione un período</option>
-                                @foreach ($periodos as $periodo)
-                                    <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} -
-                                        {{ $periodo->Periodo }}</option>
-                                @endforeach
-                            </select>
-                            <small id="errorPeriodo" class="form-text text-danger"></small>
-                        </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="periodoFin"><strong>Ingrese el fin del Periodo Académico:</strong></label>
+                        <input type="date" id="periodoFin" name="periodoFin" class="form-control input" required>
                     </div>
                 </div>
-                <button type="submit" class="button">Guardar NRC</button>
-            </form>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="numeroPeriodo"><strong>Ingrese el numero identificador del periodo</strong></label>
+                        <input type="text" id="numeroPeriodo" name="numeroPeriodo" placeholder="Ingrese 6 números"
+                            class="form-control input" pattern="[0-9]{1,6}"
+                            title="Ingrese un número no negativo de hasta 6 dígitos" required>
+                        <small id="errorNumeroPeriodo" class="form-text text-danger"></small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="button">Guardar Periodo Académico</button>
+                </div>
+            </div>
+        </form>
 
+        <!-- Formulario para agregar NRC Vinculacion -->
+        <h4>NRC Vinculacion</h4>
+        <form class="FormularioNRC" action="{{ route('admin.nrcVinculacion') }}" method="post">
+            @csrf
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="nrc"><strong>Ingrese el NRC:</strong></label>
+                        <input type="text" id="nrc" name="nrc" class="form-control input"
+                            placeholder="Ingrese 5 números" required>
+                        <small id="errorNRC" class="form-text text-danger"></small>
+                    </div>
+                </div>
 
-
-
-            <!-- Elementos agregados (Periodos y Cohortes) -->
-            <div class="row">
-                <div class="col-md-6">
-                    <h4>Periodos Agregados</h4>
-                    <div class="d-flex align-items-center">
-                        <select id="selectPeriodo" class="form-select me-2 input input_select ">
-                            <option value="">Seleccionar Periodo</option>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="periodo"><strong>Seleccione el período:</strong></label>
+                        <select id="periodo" name="periodo" class="form-select me-2 input input_select " required>
+                            <option value="">Seleccione un período</option>
                             @foreach ($periodos as $periodo)
-                                <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }}
+                                <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} -
                                     {{ $periodo->Periodo }}</option>
                             @endforeach
                         </select>
-
-                        <form id="editarPeriodoForm" method="GET">
-                            @csrf
-                            <button type="submit" class="button">Editar</button>
-                        </form>
+                        <small id="errorPeriodo" class="form-text text-danger"></small>
                     </div>
                 </div>
             </div>
+            <button type="submit" class="button">Guardar NRC</button>
+        </form>
 
 
 
 
+        <!-- Elementos agregados (Periodos y Cohortes) -->
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Periodos Agregados</h4>
+                <div class="d-flex align-items-center">
+                    <select id="selectPeriodo" class="form-select me-2 input input_select ">
+                        <option value="">Seleccionar Periodo</option>
+                        @foreach ($periodos as $periodo)
+                            <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }}
+                                {{ $periodo->Periodo }}</option>
+                        @endforeach
+                    </select>
+
+                    <form id="editarPeriodoForm" method="GET">
+                        @csrf
+                        <button type="submit" class="button">Editar</button>
+                    </form>
+                </div>
+            </div>
         </div>
+
+
+
+
+    </div>
 
 
 
