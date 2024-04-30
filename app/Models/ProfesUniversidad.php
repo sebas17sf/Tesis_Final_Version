@@ -16,6 +16,7 @@ class ProfesUniversidad extends Model
         'Usuario',
         'Cedula',
         'Departamento',
+        'espe_id',
     ];
 
     public function proyectosDirigidos()

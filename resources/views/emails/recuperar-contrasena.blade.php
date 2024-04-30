@@ -98,7 +98,7 @@
                 <li><strong>Celular:</strong> {{ $estudiante->celular }}</li>
                 <li><strong>Cedula:</strong> {{ $estudiante->cedula }}</li>
                 <li><strong>Carrera:</strong> {{ $estudiante->Carrera }}</li>
-                <li><strong>Cohorte:</strong> {{ $estudiante->cohortes->Cohorte }}</li>
+                <li><strong>Cohorte:</strong> {{ $estudiante->periodos->numeroPeriodo }}</li>
                 <li><strong>Cohorte:</strong> {{ $estudiante->periodos->Periodo }}</li>
                 <li><strong>Correo Electrónico:</strong> {{ $estudiante->Correo }}</li>
                 <li><strong>Departamento:</strong> {{ $estudiante->Departamento }}</li>

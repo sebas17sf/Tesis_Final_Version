@@ -38,8 +38,7 @@
             <th>Tutor Académico</th>
             <th>Tutor Empresarial</th>
             <th>Empresa</th>
-            <th>Nivel</th>
-            <th>Fecha Inicio</th>
+             <th>Fecha Inicio</th>
             <th>Fecha Fin</th>
             <th>Horas planificadas</th>
             <th>Estado</th>
@@ -51,12 +50,11 @@
             @if ($practicaI->estudiante)
                 <tr>
                     <td>{{ strtoupper($practicaI->estudiante->Apellidos) }} {{ strtoupper($practicaI->estudiante->Nombres) }}</td>
-                    <td>{{ strtoupper($practicaI->Practicas) }}</td>
-                    <td>{{ strtoupper($practicaI->DocenteTutor) }}</td>
+                    <td>{{ strtoupper($practicaI->tipoPractica) }}</td>
+                    <td>{{ strtoupper($practicaI->tutorAcademico->Apellidos) }} {{ strtoupper($practicaI->tutorAcademico->Nombres) }}</td>
                     <td>{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
-                    <td>{{ strtoupper($practicaI->Empresa) }}</td>
-                    <td>{{ strtoupper($practicaI->Nivel) }}</td>
-                    <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
+                    <td>{{ strtoupper($practicaI->Empresa->nombreEmpresa) }}</td>
+                     <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
                     <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                     <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
                     <td>{{ $practicaI->Estado }}</td>
@@ -129,7 +127,6 @@
             <th>Tutor Académico</th>
             <th>Tutor Empresarial</th>
             <th>Empresa</th>
-            <th>Nivel</th>
             <th>Fecha Inicio</th>
             <th>Fecha Fin</th>
             <th>Horas planificadas</th>
@@ -142,12 +139,11 @@
             @if ($practicaI->estudiante)
                 <tr>
                     <td>{{ strtoupper($practicaI->estudiante->Apellidos) }} {{ strtoupper($practicaI->estudiante->Nombres) }}</td>
-                    <td>{{ strtoupper($practicaI->Practicas) }}</td>
-                    <td>{{ strtoupper($practicaI->DocenteTutor) }}</td>
+                    <td>{{ strtoupper($practicaI->tipoPractica) }}</td>
+                    <td>{{ strtoupper($practicaI->tutorAcademico->Apellidos) }} {{ strtoupper($practicaI->tutorAcademico->Nombres) }}</td>
                     <td>{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
-                    <td>{{ strtoupper($practicaI->Empresa) }}</td>
-                    <td>{{ strtoupper($practicaI->Nivel) }}</td>
-                    <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
+                    <td>{{ strtoupper($practicaI->Empresa->nombreEmpresa) }}</td>
+                     <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
                     <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                     <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
                     <td>{{ $practicaI->Estado }}</td>

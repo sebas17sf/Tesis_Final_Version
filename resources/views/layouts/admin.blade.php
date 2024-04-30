@@ -168,14 +168,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-     <script src="{{ asset('js/admin/general.js') }}"></script>
-
-    <script src="{{ asset('js/admin/general.js') }}"></script>
-
+ 
+ 
    
     <script src="{{ asset('js/plantilla/styles.js') }}" defer></script>
     <script src="{{ asset('js/plantilla/vendor.js') }}" type="module"></script>
+
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    <script src="{{ asset('js/admin/general.js') }}"></script>
+
 
 </body>
 

@@ -269,25 +269,25 @@ class DirectorVinculacionController extends Controller
         $Director = Auth::user();
         $correoDirector = $Director->CorreoElectronico;
         $Director = ProfesUniversidad::where('Correo', $correoDirector)->first();
-
-        // Obtener la relación AsignacionProyecto para este DirectorVinculación
-        $asignacion = AsignacionProyecto::where('DirectorID', $Director->id)->first();
-
+         // Obtener la relación AsignacionProyecto para este DirectorVinculación
+        $asignacion = AsignacionEstudiantesDirector::where('DirectorID', $Director->id)->first();
+ 
         // Obtener el proyecto de la asignación
-        $proyecto = Proyecto::find($asignacion->ProyectoID);
+        $proyecto = Proyecto::find($asignacion->IDProyecto);
 
         $plantilla->setValue('NombreProyecto', $proyecto->NombreProyecto);
         $plantilla->setValue('Objetivos', $request->input('Objetivos'));
-        $plantilla->setValue('ParticipanteApellido', $proyecto->ApellidoAsignado);
-        $plantilla->setValue('ParticipanteNombre', $proyecto->NombreAsignado);
+        $plantilla->setValue('ParticipanteApellido', $proyecto->asignacionesEstudiantesDirectores->first()->participante->Apellidos);
+   
+        $plantilla->setValue('ParticipanteNombre', $proyecto->asignacionesEstudiantesDirectores->first()->participante->Nombres);
         $plantilla->setValue('DepartamentoTutor', $proyecto->DepartamentoTutor);
         $plantilla->setValue('intervencion', $request->input('intervencion'));
         $plantilla->setValue('FechaInicio', $proyecto->FechaInicio);
         $plantilla->setValue('FechaFinalizacion', $proyecto->FechaFinalizacion);
 
-        $plantilla->setValue('NombreDirector', $proyecto->ApellidoProfesor . "" . $proyecto->NombreProfesor);
-        $plantilla->setValue('NombreParticipante', $proyecto->ApellidoAsignado . "" . $proyecto->NombreAsignado);
-
+        $plantilla->setValue('NombreDirector', $proyecto->asignacionesEstudiantesDirectores->first()->director->Apellidos. "" . $proyecto->asignacionesEstudiantesDirectores->first()->director->Nombres);
+        $plantilla->setValue('NombreParticipante', $proyecto->asignacionesEstudiantesDirectores->first()->participante->Apellidos . "" . $proyecto->asignacionesEstudiantesDirectores->first()->participante->Nombres);
+ 
 
         $planificadas = $request->input('planificadas');
         $alcanzados = $request->input('alcanzados');
@@ -306,11 +306,11 @@ class DirectorVinculacionController extends Controller
         }
 
         ///obtener los estudiantes que estan asignados al proyecto del DirectorVinculacion
-        $estudiantes = DB::table('AsignacionProyectos')
-            ->join('Estudiantes', 'AsignacionProyectos.EstudianteID', '=', 'Estudiantes.EstudianteID')
-            ->join('Proyectos', 'AsignacionProyectos.ProyectoID', '=', 'Proyectos.ProyectoID')
-            ->where('Proyectos.CorreoElectronicoTutor', $correoDirector)
-            ->select('Estudiantes.*')
+        $estudiantes = DB::table('asignacionEstudiantesDirector')
+            ->join('Estudiantes', 'asignacionEstudiantesDirector.EstudianteID', '=', 'Estudiantes.EstudianteID')
+            ->join('Proyectos', 'asignacionEstudiantesDirector.IDProyecto', '=', 'Proyectos.ProyectoID')
+              ->select('Estudiantes.*')
+            ->where('Proyectos.id_directorProyecto', $Director->id)
             ->get();
 
         $plantilla->cloneRow('estudiante', count($estudiantes));
@@ -342,37 +342,43 @@ class DirectorVinculacionController extends Controller
 
 
         ///obtener ActividadesEstudiante las "evidencias" de los estudiantes que estan asignados al proyecto del DirectorVinculacion
-        $actividades = DB::table('AsignacionProyectos')
-            ->join('Estudiantes', 'AsignacionProyectos.EstudianteID', '=', 'Estudiantes.EstudianteID')
-            ->join('Proyectos', 'AsignacionProyectos.ProyectoID', '=', 'Proyectos.ProyectoID')
-            ->join('actividades_estudiante', 'AsignacionProyectos.EstudianteID', '=', 'actividades_estudiante.EstudianteID')
-            ->where('Proyectos.CorreoElectronicoTutor', $correoDirector)
+        $actividades = DB::table('asignacionEstudiantesDirector')
+            ->join('Estudiantes', 'asignacionEstudiantesDirector.EstudianteID', '=', 'Estudiantes.EstudianteID')
+            ->join('Proyectos', 'asignacionEstudiantesDirector.IDProyecto', '=', 'Proyectos.ProyectoID')
+            ->join('actividades_estudiante', 'asignacionEstudiantesDirector.EstudianteID', '=', 'actividades_estudiante.EstudianteID')
+            ->where('Proyectos.id_directorProyecto', $Director->id)
             ->select('actividades_estudiante.*')
             ->get();
 
         $plantilla->cloneRow('nombre_actividad', count($actividades));
         $contadorFiguras = 1;
 
-        foreach ($actividades as $index => $actividad) {
-            $nombreActividad = $actividad->nombre_actividad;
-            $nombreFigura = 'Figura ' . $contadorFiguras . ': ' . $nombreActividad;
-            $plantilla->setValue('nombre_actividad#' . ($index + 1), $nombreFigura);
+  
+    foreach ($actividades as $index => $actividad) {
+        $nombreActividad = $actividad->nombre_actividad;
+        $nombreFigura = 'Figura ' . $contadorFiguras . ': ' . $nombreActividad;
+        $plantilla->setValue('nombre_actividad#' . ($index + 1), $nombreFigura);
 
-            $rutaImagenDB = $actividad->evidencias;
-            if (strpos($rutaImagenDB, 'public/') === 0) {
-                $rutaImagenDB = substr($rutaImagenDB, 7);
-            }
-            $rutaImagen = storage_path('app/public/' . $rutaImagenDB);
-            if (file_exists($rutaImagen)) {
-                $plantilla->setImageValue('evidencias#' . ($index + 1), [
-                    'path' => $rutaImagen,
-                    'width' => 250,
-                    'height' => 250,
-                    'ratio' => false,
-                ]);
-            }
-            $contadorFiguras++;
+        $imagenBase64 = $actividad->evidencias;
+        if ($imagenBase64) {
+            // Decodifica la imagen en base64
+            $imagenDecodificada = base64_decode($imagenBase64);
+
+            // Crea un archivo temporal para la imagen
+            $rutaImagen = tempnam(sys_get_temp_dir(), 'img');
+            file_put_contents($rutaImagen, $imagenDecodificada);
+
+            // Agrega la imagen a la plantilla
+            $plantilla->setImageValue('evidencias#' . ($index + 1), [
+                'path' => $rutaImagen,
+                'width' => 250,
+                'height' => 250,
+                'ratio' => false,
+            ]);
         }
+        $contadorFiguras++;
+    }
+   
 
 
 

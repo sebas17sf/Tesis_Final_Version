@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Empresa;
+use App\Models\ProfesUniversidad;
 use App\Models\PracticaI;
 use App\Models\PracticaII;
 use App\Models\ActividadEstudiante;
@@ -191,6 +192,8 @@ class EstudianteController extends Controller
     public function practica1()
     {
         $user = Auth::user();
+        $profesores = ProfesUniversidad::all();
+
         $estudiante = $user->estudiante;
 
         // Verifica si el usuario autenticado es un estudiante y su estado es "Aprobado-practicas"
@@ -202,11 +205,10 @@ class EstudianteController extends Controller
             $estadoPractica = PracticaI::where('EstudianteID', $estudiante->EstudianteID)->where('Estado', 'Terminado')->first();
 
             if ($estadoPractica) {
-                // Si el estado de la práctica es "Terminado", redirige a la vista de practicaII
-                return redirect()->route('estudiantes.practica2');
+                 return redirect()->route('estudiantes.practica2');
             }
 
-            return view('estudiantes.practica1', compact('estudiante', 'correoEstudiante', 'empresas', 'practicaPendiente'));
+            return view('estudiantes.practica1', compact('estudiante', 'correoEstudiante', 'empresas', 'practicaPendiente', 'estadoPractica', 'profesores'));
         }
 
         // Si no cumple con los requisitos, muestra un mensaje de alerta y redirige a otra página
@@ -245,46 +247,36 @@ class EstudianteController extends Controller
     ///////guardar practicas
     public function guardarPracticas(Request $request)
     {
-        // Valida los datos del formulario antes de intentar crear la práctica
-        $validatedData = $request->validate([
-            'Nivel' => 'required|string|max:255',
-            'Practicas' => 'required|string|max:255',
-            'DocenteTutor' => 'required|string|max:255',
-            'Empresa' => 'required|string|max:255',
-            'CedulaTutorEmpresarial' => 'required|string|max:255',
-            'NombreTutorEmpresarial' => 'required|string|max:255',
-            'Funcion' => 'required|string|max:255',
-            'TelefonoTutorEmpresarial' => 'required|string|max:10',
-            'EmailTutorEmpresarial' => 'required|string|email|max:255',
-            'DepartamentoTutorEmpresarial' => 'required|string|max:255',
-            'EstadoAcademico' => 'required|string|max:255',
-            'FechaInicio' => 'required|date',
-            'FechaFinalizacion' => 'required|date',
-            'HorasPlanificadas' => 'required|string|max:255',
-            'HoraEntrada' => 'required|string|max:255',
-            'HoraSalida' => 'required|string|max:255',
-            'AreaConocimiento' => 'required|string|max:255',
-
+         $validatedData = $request->validate([
+            'Practicas' => 'required',
+            'Empresa' => 'required',
+            'ID_tutorAcademico' => 'required',
+            'CedulaTutorEmpresarial' => 'required',
+            'NombreTutorEmpresarial' => 'required',
+            'Funcion' => 'required',
+            'TelefonoTutorEmpresarial' => 'required',
+            'EmailTutorEmpresarial' => 'required',
+            'DepartamentoTutorEmpresarial' => 'required',
+            'EstadoAcademico' => 'required',
+            'FechaInicio' => 'required',
+            'FechaFinalizacion' => 'required',
+            'HorasPlanificadas' => 'required',
+            'HoraEntrada' => 'required',
+            'HoraSalida' => 'required',
+            'AreaConocimiento' => 'required',
         ]);
+ 
 
-        // Obtén el UserID del usuario autenticado
-        $userId = Auth::id();
+         $userId = Auth::id();
 
-        // Obtén el modelo Estudiante del usuario autenticado
-        $estudiante = Estudiante::where('UserID', $userId)->first();
-
-        // Verifica si se encontró el estudiante
-        if ($estudiante) {
-            // Crea un nuevo registro de PracticaI y asocia los datos del estudiante
+         $estudiante = Estudiante::where('UserID', $userId)->first();
+ 
+         if ($estudiante) {
             PracticaI::create([
-                'EstudianteID' => $estudiante->EstudianteID,
-                'NombreEstudiante' => $estudiante->Nombres,
-                'ApellidoEstudiante' => $estudiante->Apellidos,
-                'Departamento' => $estudiante->Departamento,
-                'Nivel' => $validatedData['Nivel'],
-                'Practicas' => $validatedData['Practicas'],
-                'DocenteTutor' => $validatedData['DocenteTutor'],
-                'Empresa' => $validatedData['Empresa'],
+                'EstudianteID' => $estudiante->EstudianteID,  
+                'tipoPractica' => $validatedData['Practicas'],  
+                'IDEmpresa' => $validatedData['Empresa'],  
+                'ID_tutorAcademico' => $validatedData['ID_tutorAcademico'],  
                 'CedulaTutorEmpresarial' => $validatedData['CedulaTutorEmpresarial'],
                 'NombreTutorEmpresarial' => $validatedData['NombreTutorEmpresarial'],
                 'Funcion' => $validatedData['Funcion'],
@@ -298,18 +290,16 @@ class EstudianteController extends Controller
                 'HoraEntrada' => $validatedData['HoraEntrada'],
                 'HoraSalida' => $validatedData['HoraSalida'],
                 'AreaConocimiento' => $validatedData['AreaConocimiento'],
-                'Estado' => 'PracticaI'
+                'Estado' => 'PracticaI'  
             ]);
-
-            return redirect()->route('estudiantes.index')->with('success', 'Práctica guardada exitosamente');
+  
+            return redirect()->route('estudiantes.practicas1')->with('success', 'Práctica guardada exitosamente');
         }
 
-        // Manejo de error si no se encuentra el estudiante
-        return redirect()->route('estudiantes.index')->with('error', 'No se encontró información del estudiante.');
+         return redirect()->route('estudiantes.index')->with('error', 'No se encontró información del estudiante.');
     }
 
-    ///////guardar practicas2////////
-    public function guardarPracticas2(Request $request)
+     public function guardarPracticas2(Request $request)
     {
         // Valida los datos del formulario antes de intentar crear la práctica
         $validatedData = $request->validate([
@@ -386,7 +376,7 @@ class EstudianteController extends Controller
     ]);
 
     $estudiante = Auth::user()->estudiante;
-    $asignaciones = $estudiante->asignaciones;
+    $asignaciones = $estudiante->asignacionesEstudiantesDirectores;
 
     if (!$asignaciones->count()) {
         return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');

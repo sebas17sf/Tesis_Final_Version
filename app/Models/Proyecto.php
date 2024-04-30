@@ -22,6 +22,7 @@ class Proyecto extends Model
         'CorreoElectronicoTutor',
         'DepartamentoTutor',
         'FechaInicio',
+        'codigoProyecto',
         'FechaFinalizacion',
         'cupos',
         'Estado',

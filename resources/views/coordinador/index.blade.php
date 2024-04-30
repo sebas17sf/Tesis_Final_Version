@@ -37,23 +37,27 @@
         </a>
 
         <br><br>
-
         <div class="d-flex">
-            
+            <form method="GET" action="{{ route('coordinador.index') }}">
+                <div class="d-flex align-items-center mb-3">
+                    <label for="perPage" class="me-2">Proyectos por página:</label>
+                    <select id="perPage" name="perPage" class="form-select input input-select"
+                        onchange="this.form.submit()">
+                        <option value="10" @if ($perPage == 10) selected @endif>10</option>
+                        <option value="20" @if ($perPage == 20) selected @endif>20</option>
+                        <option value="50" @if ($perPage == 50) selected @endif>50</option>
+                        <option value="100" @if ($perPage == 100) selected @endif>100</option>
+                    </select>
+                </div>
+            </form>
 
-            <div  class="contenedor_acciones_tabla" <div class="contenedor_botones">
-            <form method="POST" action="{{ route('coordinador.reportesProyectos') }}">
-            @csrf
-            <button type="submit" class="btn btn-sm btn-secondary">
-                <i class="fas fa-file-excel"></i> Generar Reporte
-            </button>
-        </form>
-                <form action="{{ route('coordinador.index') }}" method="GET" class="d-flex">
+            <div class="mb-3">
+                <form id="formBusquedaProyectos" class="d-flex">
                     <input type="text" name="search" value="{{ $search }}" class="input"
                         placeholder="Buscar proyectos...">
-                    <button type="submit" class="button">Buscar</button>
                 </form>
             </div>
+
         </div>
 
 
@@ -64,18 +68,18 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>Nombre del docente director de proyecto</th>
-                            <th>Nombre del docente participante de proyecto</th>
+                            <th>Nombre del director del proyecto</th>
+                            <th>Nombres Docentes participantes</th>
                             <th>Nombre del proyecto</th>
                             <th>Descripción</th>
-                            <th>Correo del tutor</th>
-                            <th>Correo del profesor participante</th>
-                            <th>Departamento</th>
+                            <th>Correo del director</th>
+                            <th>Correos de Docentes participantes</th>
+                            <th>Departamento del director</th>
                             <th>Código del Proyecto Social</th>
                             <th>NRC</th>
                             <th>Periodo</th>
                             <th>Fecha de inicio</th>
-                            <th>Fecha fin</th>
+                            <th>Fecha de finalización</th>
                             <th>Cupos</th>
                             <th>Estado del proyecto</th>
                             <th>Acciones</th>
@@ -85,14 +89,27 @@
                         @foreach ($proyectos as $proyecto)
                             <tr>
                                 <td>{{ strtoupper($proyecto->director->Apellidos) }}
-                                    {{ strtoupper($proyecto->director->Nombres) }}
+                                    {{ strtoupper($proyecto->director->Nombres) }}</td>
+                                <td>
+                                    {{ strtoupper($proyecto->docenteParticipante->Apellidos) }}
+                                    {{ strtoupper($proyecto->docenteParticipante->Nombres) }}
+                                    @foreach ($proyecto->participantesAdicionales as $participanteAdicional)
+                                        <br>
+                                        {{ strtoupper($participanteAdicional->Apellidos) }}
+                                        {{ strtoupper($participanteAdicional->Nombres) }}
+                                    @endforeach
                                 </td>
-                                <td>{{ strtoupper($proyecto->docenteParticipante->Apellidos) }}
-                                    {{ strtoupper($proyecto->docenteParticipante->Nombres) }}</td>
-                                <td>{{ strtoupper($proyecto->NombreProyecto) }}</td>
+                                <td style="word-wrap: break-word; text-align: justify;">
+                                    {{ strtoupper($proyecto->NombreProyecto) }}</td>
                                 <td>{{ strtoupper($proyecto->DescripcionProyecto) }}</td>
                                 <td>{{ strtoupper($proyecto->director->Correo) }}</td>
-                                <td>{{ strtoupper($proyecto->docenteParticipante->Correo) }}</td>
+                                <td>
+                                    {{ strtoupper($proyecto->docenteParticipante->Correo) }}
+                                    @foreach ($proyecto->participantesAdicionales as $participanteAdicional)
+                                        <br>
+                                        {{ strtoupper($participanteAdicional->Correo) }}
+                                    @endforeach
+                                </td>
                                 <td>{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
                                 <td>
                                     @if (empty($proyecto->codigoProyecto))
@@ -138,15 +155,15 @@
 
         <div class="d-flex justify-content-center paginator-container">
             <ul class="pagination">
-            <form method="GET" action="{{ route('coordinador.index') }}">
-                <select class="input paginator-container" name="perPage" id="perPage" onchange="this.form.submit()">
-                    <option value="10" @if ($perPage == 10) selected @endif>10</option>
-                    <option value="20" @if ($perPage == 20) selected @endif>20</option>
-                    <option value="50" @if ($perPage == 50) selected @endif>50</option>
-                    <option value="100" @if ($perPage == 100) selected @endif>100</option>
-                </select>
-            </form>
-            <br>
+                <form method="GET" action="{{ route('coordinador.index') }}">
+                    <select class="input paginator-container" name="perPage" id="perPage" onchange="this.form.submit()">
+                        <option value="10" @if ($perPage == 10) selected @endif>10</option>
+                        <option value="20" @if ($perPage == 20) selected @endif>20</option>
+                        <option value="50" @if ($perPage == 50) selected @endif>50</option>
+                        <option value="100" @if ($perPage == 100) selected @endif>100</option>
+                    </select>
+                </form>
+                <br>
                 @if ($proyectos->onFirstPage())
                     <li class="page-item disabled">
                         <span class="page-link">Anterior</span>
@@ -175,6 +192,25 @@
             </ul>
         </div>
 
+        <form method="POST" action="{{ route('coordinador.reportesProyectos') }}">
+            @csrf
+            <div class="form-inline">
+                <div class="form-group mr-2">
+                    <label for="estado" class="mr-2">Estado del Proyecto:</label>
+                    <select name="estado" id="estado" class="form-control input input-select">
+                        <option value="">Todos</option>
+                        <option value="Ejecucion">En Ejecución</option>
+                        <option value="Terminado">Terminado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-sm btn-secondary">
+                        <i class="fas fa-file-excel"></i> Reporte Proyectos
+                    </button>
+                </div>
+            </div>
+        </form>
+
 
     </div>
 
@@ -184,29 +220,32 @@
         <button id="toggleFormBtn" class="btn btn-outline-secondary btn-block">Asignar estudiante</button>
         <div id="asignarEstudiante" style="display: none;">
 
-            <hr>
+            <HR>
             <h4>Asignar Proyecto</h4>
             <form method="POST" action="{{ route('coordinador.guardarAsignacion') }}">
                 @csrf
 
                 <div class="form-group">
                     <label for="proyecto_id">Proyecto Disponible:</label>
-                    <select name="proyecto_id" id="proyecto_id" class="form-control">
+                    <select name="proyecto_id" id="proyecto_id" class="form-control input input-select">
                         @foreach ($proyectosDisponibles as $proyecto)
                             @if ($proyecto->cupos > 0)
                                 <option value="{{ $proyecto->ProyectoID }}">
-                                    <div>{{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }} -
-                                        {{ $proyecto->NombreProyecto }} - Cupos disponibles: {{ $proyecto->cupos }} -
-                                        {{ $proyecto->DepartamentoTutor }}</div>
+                                    {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }} -
+                                    Cupos disponibles: {{ $proyecto->cupos }} -
+                                    {{ $proyecto->DepartamentoTutor }}
                                 </option>
                             @endif
                         @endforeach
                     </select>
                 </div>
 
+
+
+
                 <div class="form-group">
                     <label for="estudiante_id">Estudiante Aprobado:</label>
-                    <select name="estudiante_id" id="estudiante_id" class="form-control">
+                    <select name="estudiante_id" id="estudiante_id" class="form-control input input-select">
                         @foreach ($estudiantesAprobados as $estudiante)
                             <option value="{{ $estudiante->EstudianteID }}">
                                 {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} -
@@ -218,7 +257,7 @@
 
                 <div class="form-group">
                     <label for="fecha_asignacion">Fecha de Asignación:</label>
-                    <input type="date" name="fecha_asignacion" id="fecha_asignacion" class="form-control"
+                    <input type="date" name="fecha_asignacion" id="fecha_asignacion" class="form-control input"
                         value="{{ now()->toDateString() }}">
                 </div>
 
@@ -229,23 +268,51 @@
     </div>
 
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Manejar el clic en el botón para mostrar/ocultar el formulario
-            $("#toggleFormBtn").click(function() {
+            var asignarEstudianteVisible = localStorage.getItem('asignarEstudianteVisible');
+
+             if (asignarEstudianteVisible === 'true') {
+                $("#asignarEstudiante").show();
+                $("#toggleFormBtn").text("Ocultar Asignar Estudiante");
+            }
+
+             $("#toggleFormBtn").click(function() {
                 $("#asignarEstudiante").toggle();
-                // Cambiar el texto del botón según si el formulario está visible u oculto
-                if ($("#asignarEstudiante").is(":visible")) {
+                 localStorage.setItem('asignarEstudianteVisible', $("#asignarEstudiante").is(":visible"));
+                 if ($("#asignarEstudiante").is(":visible")) {
                     $(this).text("Ocultar Asignar Estudiante");
                 } else {
                     $(this).text("Asignar estudiante");
                 }
             });
+
+            var delayTimer;
+            $('#formBusquedaProyectos input[name="search"]').on('keyup', function() {
+                clearTimeout(delayTimer);
+                var query = $(this).val();
+                delayTimer = setTimeout(function() {
+                    $.ajax({
+                        url: '{{ route('coordinador.index') }}',
+                        type: 'GET',
+                        data: {
+                            search: query
+                        },
+                        success: function(response) {
+                            $('#tablaProyectos').html($(response).find(
+                                '#tablaProyectos').html());
+                        }
+                    });
+                }, 500);
+            });
         });
     </script>
+
+
+
 
 @endsection
 

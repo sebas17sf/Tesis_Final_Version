@@ -12,6 +12,7 @@ use App\Models\NotasEstudiante;
 use PhpOffice\PhpSpreadsheet\RichText\RichText;
 use PhpOffice\PhpSpreadsheet\RichText\TextRun;
 use App\Models\DirectorVinculacion;
+use App\Models\AsignacionEstudiantesDirector;
 use Mpdf\Mpdf;
 use App\Models\Estudiante;
 
@@ -29,20 +30,20 @@ class DocumentosVinculacion extends Controller
         $usuario = auth()->user();
         $correoUsuario = $usuario->CorreoElectronico;
         $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
-         // Obtener la relación AsignacionProyecto para este ParticipanteVinculacion
-        $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)->first();
-  
+        // Obtener la relación AsignacionEstudiantesDirector para este ParticipanteVinculacion
+        $asignacionProyecto = AsignacionEstudiantesDirector::where('ParticipanteID', $participanteVinculacion->id)->first();
+
 
         ///obtener la id del director de AsiignacionProyecto
-        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
+        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->IDProyecto)->first();
         if ($proyecto->Estado != 'Ejecucion') {
             return redirect()->back()->with('error', 'No tiene Proyectos en ejecucion.');
         }
-    
-          ////buscar en profesores universidad
+
+        ////buscar en profesores universidad
         $Director = ProfesUniversidad::where('id', $proyecto->id_directorProyecto)->first();
         // Obtener los estudiantes asignados a este proyecto
-        $estudiantes = AsignacionProyecto::where('ProyectoID', $proyecto->ProyectoID)->get();
+        $estudiantes = AsignacionEstudiantesDirector::where('IDProyecto', $proyecto->ProyectoID)->get();
         if ($estudiantes->isEmpty()) {
             return redirect()->back()->with('error', 'No hay estudiantes asignados a este proyecto.');
         }
@@ -110,6 +111,12 @@ class DocumentosVinculacion extends Controller
         $hojaCalculo->getStyle("I13")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         $hojaCalculo->getStyle("I13")->getAlignment()->setWrapText(true);
 
+        foreach ($estudiantes as $index => $estudiante) {
+            $notas = NotasEstudiante::where('EstudianteID', $estudiante->EstudianteID)->first();
+            if ($notas == null) {
+                return redirect()->back()->with('error', 'No se han ingresado notas para los estudiantes');
+            }
+        }
 
         ///crea el foreach para recorrer los estudiantes y obtener Nombres,Apellidos y cedula
         foreach ($estudiantes as $index => $estudiante) {
@@ -137,12 +144,13 @@ class DocumentosVinculacion extends Controller
 
         }
 
-
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $nombreArchivo = "1.4-Evaluación-Estudiantes.xlsx";
-        return response()->streamDownload(function () use ($writer) {
-            $writer->save('php://output');
-        }, $nombreArchivo);
+
+        $nombreArchivo = '1.4-Evaluación-Estudiantes.xlsx';
+        $writer->save($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+
+
 
 
 
@@ -159,9 +167,9 @@ class DocumentosVinculacion extends Controller
         $correoUsuario = $usuario->CorreoElectronico;
         $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
         // Obtener la relación AsignacionProyecto para este ParticipanteVinculacion
-        $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)->first();
-         
-        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
+        $asignacionProyecto = AsignacionEstudiantesDirector::where('ParticipanteID', $participanteVinculacion->id)->first();
+
+        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->IDProyecto)->first();
 
         if ($proyecto->Estado != 'Ejecucion') {
             return redirect()->back()->with('error', 'No tiene Proyectos en ejecucion.');
@@ -169,8 +177,8 @@ class DocumentosVinculacion extends Controller
         // Obtener los estudiantes asignados a este proyecto
         $Director = ProfesUniversidad::where('id', $proyecto->id_directorProyecto)->first();
 
-        $estudiantes = AsignacionProyecto::where('ProyectoID', $proyecto->ProyectoID)->get();
-       
+        $estudiantes = AsignacionEstudiantesDirector::where('IDProyecto', $proyecto->ProyectoID)->get();
+
         $hojaCalculo = $spreadsheet->getActiveSheet();
 
 
@@ -247,10 +255,8 @@ class DocumentosVinculacion extends Controller
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $nombreArchivo = "1.3-Número-Horas-Docentes.xlsx";
-        return response()->streamDownload(function () use ($writer) {
-            $writer->save('php://output');
-        }, $nombreArchivo);
-
+        $writer->save($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
 
     }
 
@@ -269,16 +275,16 @@ class DocumentosVinculacion extends Controller
         $correoUsuario = $usuario->CorreoElectronico;
         $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
         // Obtener la relación AsignacionProyecto para este ParticipanteVinculacion
-        $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)->first();
-        
+        $asignacionProyecto = AsignacionEstudiantesDirector::where('ParticipanteID', $participanteVinculacion->id)->first();
+
         ///obtener la id del director de AsiignacionProyecto
-        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
+        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->IDProyecto)->first();
 
         if ($proyecto->Estado != 'Ejecucion') {
             return redirect()->back()->with('error', 'No tiene Proyectos en ejecucion.');
         }
         // Obtener los estudiantes asignados a este proyecto
-        $estudiantes = AsignacionProyecto::where('ProyectoID', $proyecto->ProyectoID)->get();
+        $estudiantes = AsignacionEstudiantesDirector::where('IDProyecto', $proyecto->ProyectoID)->get();
         if ($estudiantes->isEmpty()) {
             return redirect()->back()->with('error', 'No hay estudiantes asignados a este proyecto.');
         }
@@ -405,11 +411,10 @@ class DocumentosVinculacion extends Controller
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $nombreArchivo = "1.1-Registro-de-Estudiantes.xlsx";
-        
-        return response()->streamDownload(function () use ($writer) {
-            $writer->save('php://output');
-        }, $nombreArchivo);
+        $writer->save($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
 
+       
 
 
     }
