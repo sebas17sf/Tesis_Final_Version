@@ -48,7 +48,7 @@ function triggerToggleSidebar() {
 
 
   var viewsActive = document.querySelector('.views');
- 
+
   // Si la clase dimension-nav-hidden está presente en contentNavbar, la elimina; de lo contrario, la añade
   if (viewsActive.classList.contains('views-active')) {
     viewsActive.classList.remove('views-active');
@@ -59,74 +59,113 @@ function triggerToggleSidebar() {
 }
 
 
-document.addEventListener('DOMContentLoaded', function() {
-// Selecciona todos los elementos con la clase p-element
-var pElements = document.querySelectorAll('.p-element');
+document.addEventListener('DOMContentLoaded', function () {
 
-// Añade un evento de clic a cada elemento
-pElements.forEach(function(element) {
-    element.addEventListener('click', function() {
-        // Elimina la clase active-section de todos los elementos
-        pElements.forEach(function(item) {
-            item.classList.remove('active-section');
-        });
-        
-        // Añade la clase active-section al elemento clicado
-        this.classList.add('active-section');
+  $("#sublista").hide();
+  // Selecciona todos los elementos con la clase p-element
+  var pElements = document.querySelectorAll('.p-element');
+
+  // Añade un evento de clic a cada elemento
+  pElements.forEach(function (element) {
+    element.addEventListener('click', function () {
+      // Elimina la clase active-section de todos los elementos
+      pElements.forEach(function (item) {
+        item.classList.remove('active-section');
+      });
+
+      // Añade la clase active-section al elemento clicado
+      this.classList.add('active-section');
     });
-});
+  });
 
-// Obtén una referencia al botón profile-icon y al menú emergente popup-menu-profile
-var profileButton = document.getElementById('profile-button');
-var popupMenu = document.querySelector('.popup-menu-profile');
+  // Obtén una referencia al botón profile-icon y al menú emergente popup-menu-profile
+  var profileButton = document.getElementById('profile-button');
+  var popupMenu = document.querySelector('.popup-menu-profile');
 
-// Agrega un controlador de eventos de clic al botón profile-icon
-profileButton.addEventListener('click', function(event) {
-  // Evita que el clic en el botón cierre el menú
-  event.stopPropagation();
+  // Agrega un controlador de eventos de clic al botón profile-icon
+  profileButton.addEventListener('click', function (event) {
+    // Evita que el clic en el botón cierre el menú
+    event.stopPropagation();
 
-  // Verifica si el menú emergente está visible
-  var isVisible = popupMenu.style.display === 'block';
+    // Verifica si el menú emergente está visible
+    var isVisible = popupMenu.style.display === 'block';
 
-  // Cambia la visibilidad del menú emergente
-  if (isVisible) {
+    // Cambia la visibilidad del menú emergente
+    if (isVisible) {
       popupMenu.style.display = 'none'; // Oculta el menú emergente si está visible
-  } else {
+    } else {
       popupMenu.style.display = 'block'; // Muestra el menú emergente si está oculto
-  }
-});
+    }
+  });
 
 
-// Agrega un controlador de eventos de clic al documento entero
-document.addEventListener('click', function(event) {
-  // Si el clic se realizó fuera del menú emergente, ciérralo
-  if (!popupMenu.contains(event.target) && event.target !== profileButton) {
+  // Agrega un controlador de eventos de clic al documento entero
+  document.addEventListener('click', function (event) {
+    // Si el clic se realizó fuera del menú emergente, ciérralo
+    if (!popupMenu.contains(event.target) && event.target !== profileButton) {
       popupMenu.style.display = 'none';
-  }
-});
+    }
+  });
 
 
-/* var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-  return new bootstrap.Tooltip(tooltipTriggerEl)
-}) */
+  /* var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+  }) */
 
-var contentSidebar = document.querySelector('.content-sidebar');
+  var contentSidebar = document.querySelector('.content-sidebar');
 
-if (contentSidebar.classList.contains('content-sidebar-hidden')) {
+  if (contentSidebar.classList.contains('content-sidebar-hidden')) {
     var tooltipTriggers = document.querySelectorAll('.p-element');
-    tooltipTriggers.forEach(function(tooltipTrigger) {
-        new bootstrap.Tooltip(tooltipTrigger);
+    tooltipTriggers.forEach(function (tooltipTrigger) {
+      new bootstrap.Tooltip(tooltipTrigger);
     });
-}
+  }
 
-var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-  return new bootstrap.Tooltip(tooltipTriggerEl)
-})
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+    return new bootstrap.Tooltip(tooltipTriggerEl)
+  })
+
+
+  var submenus = document.querySelectorAll('.submenu');
+
+  submenus.forEach(function (submenu) {
+    submenu.addEventListener('click', function () {
+      // Quita la clase item-list-active-section de todos los elementos .nav-item
+      var navItems = document.querySelectorAll('.p-element');
+      navItems.forEach(function (navItem) {
+        navItem.classList.remove('item-list-active-section');
+      });
+
+      // Agrega la clase item-list-active-section solo al elemento padre más cercano de .submenu
+      var closestNavItem = this.closest('.submenu');
+      closestNavItem.classList.add('item-list-active-section');
+    });
+  });
+
+
+
+  var submenu = document.querySelector('.submenu');
+
+
+  submenu.addEventListener('click', function () {
+
+    if (submenu.classList.contains('item-list-active-section')) {
+      $("#sublista").show();
+    }
+
+
+  });
+
+  var submenu = document.querySelector('.submenu');
+
+        submenu.addEventListener('mouseover', function() {
+            console.log('Hola');
+            $("#sublista").show();
+        });
 
 
 
 });
-
 

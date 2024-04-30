@@ -9,8 +9,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-     >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -20,10 +19,13 @@
     <link rel="stylesheet" href="css/admin/admin.css">
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
+
     <style>
-
+        #sublista {
+            display: none;
+            /* Por defecto oculto */
+        }
     </style>
-
 </head>
 
 <body>
@@ -63,6 +65,7 @@
                                     <li>Proyectos</li>
                                 </div>
                             </a>
+
                             <a href="{{ route('admin.estudiantes') }}" class="p-element" data-bs-toggle="tooltip"
                                 data-bs-placement="right" data-bs-custom-class="custom-tooltip"
                                 data-bs-title="Estudiantes">
@@ -73,6 +76,47 @@
                                     <li>Estudiantes</li>
                                 </div>
                             </a>
+
+
+                            <a class="p-element submenu" class="p-element" data-bs-toggle="tooltip"
+                                data-bs-placement="right" 
+                                data-bs-title="Prácticas">
+                                <div class="icon-sidebar-item">
+                                    <i class="material-icons">business</i>
+                                </div>
+                                <div class="name-sidebar-item">
+                                    <li>Prácticas</li>
+                                </div>
+
+                            </a>
+
+                            <div class="item-list" id="sublista">
+                                <a class="p-element mb-1" href="{{ route('admin.agregarEmpresa') }}" class="p-element"
+                                    data-bs-toggle="tooltip" data-bs-placement="right"
+                                   data-bs-title="Agregar-Empresa">
+                                    <div class="icon-sidebar-item">
+                                        <i class="material-icons">add_business</i>
+                                    </div>
+                                    <div class="name-sidebar-item">
+                                        <li>Agregar-Empresa</li>
+                                    </div>
+                                </a>
+                                <a class="p-element" href="{{ route('admin.aceptarFaseI') }}" class="p-element"
+                                    data-bs-toggle="tooltip" data-bs-placement="right"
+                                   data-bs-title="Aprobar-Practicas">
+                                    <div class="icon-sidebar-item">
+                                        <i class="material-icons">check_circle</i>
+                                    </div>
+                                    <div class="name-sidebar-item">
+                                        <li>Aprobar-Practicas</li>
+                                    </div>
+                                </a>
+
+                            </div>
+
+
+
+                            {{-- 
                             <div class="dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" id="practicasDropdown" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -102,11 +146,11 @@
                                             <li>Aprobar-Practicas</li>
                                         </div>
                                     </a>
-                                </div>
+                                </div> --}}
 
 
 
-                            </div>
+                            {{-- </div> --}}
                         </ul>
                     </nav>
                 </div>
@@ -174,12 +218,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/admin/general.js') }}"></script>
 
-   
+
     <script src="{{ asset('js/plantilla/styles.js') }}" defer></script>
     <script src="{{ asset('js/plantilla/vendor.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
 
-   
+
 
 </body>
 

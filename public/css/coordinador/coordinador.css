@@ -33,11 +33,12 @@ body, p, td, table {
     /* Espaciado a la derecha del icono */
 }
 
-.sidebar a:hover {
+/* .sidebar a:hover {
     background-color: #55595e;
     color: #ffffff;
-    /* Texto blanco */
-}
+   
+} */
+ /* Texto blanco */
 
 /* Estilo para el botón "Cerrar Sesión" */
 .logout-btn {
