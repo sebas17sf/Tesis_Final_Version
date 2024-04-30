@@ -19,8 +19,7 @@
 
     <link rel="stylesheet" href="css/admin/admin.css">
     <script src="js/menu.js"></script>
-    @vite(['resources/scss/app.scss', 'resources/js/app.js'])
-</head>
+ </head>
 
 <body>
     <!-- Barra de navegación en el lado izquierdo -->
@@ -160,10 +159,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
-    <script src="{{ asset('js/admin/general.js') }}"></script>
-    <script src="{{ asset('js/plantilla/styles.js') }}" defer></script>
+     <script src="{{ asset('js/plantilla/styles.js') }}" defer></script>
     <script src="{{ asset('js/plantilla/vendor.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <!-- Box Icons -->
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </body>
