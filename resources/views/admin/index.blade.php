@@ -214,18 +214,17 @@
                 </button>
             </form>
             <!-- Buscador -->
-            <div class="contenedor_buscador">
                 <form id="formBusquedaDocentes" class="d-flex">
                     <input type="text" name="search" value="{{ $search }}" class="input"
                         placeholder="Buscar proyectos...">
                     <i class='bx bx-search-alt'></i>
                 </form>
-            </div>
+
 
 
         </div>
 
-    </div>
+    
 
     <div id="datatable">
         <div class="card">

@@ -103,7 +103,7 @@
                 </div>
             </div>
             <div class="content-autors">
-                <span class="autors1">
+                <span class="autors">
                     <i>Designed by Sebastian Flores & Karen Cueva.</i>
                 </span>
             </div>
@@ -160,7 +160,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
-    <script src="{{ asset('js/admin/general.js') }}"></script>
     <script src="{{ asset('js/plantilla/styles.js') }}" defer></script>
     <script src="{{ asset('js/plantilla/vendor.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
