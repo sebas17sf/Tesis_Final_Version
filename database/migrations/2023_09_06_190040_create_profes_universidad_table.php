@@ -11,12 +11,13 @@ return new class extends Migration
     {
         Schema::create('profesUniversidad', function (Blueprint $table) {
             $table->id(); 
-            $table->string('Apellidos', 250);
-            $table->string('Nombres', 250);
-            $table->string('Correo', 250);
+            $table->string('Apellidos');
+            $table->string('Nombres');
+            $table->string('Correo');
             $table->string('Usuario');
             $table->string('Cedula');
-            $table->string('Departamento', 250);
+            $table->string('espe_id')->nullable();
+            $table->string('Departamento');
             $table->timestamps(); 
         });
     }
