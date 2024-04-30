@@ -27,7 +27,7 @@
 
 
     <div class="container" style="overflow-x: auto;">
-        <h4>Estudiantes a realizar Prácticas</h4>
+        <h6>Estudiantes a realizar Prácticas</h6>
         <hr>
         @csrf
         <table class="table table-bordered">
@@ -132,7 +132,7 @@
     <hr>
 
     <div class="container" style="overflow-x: auto;">
-        <h4>Estudiantes Practica I</h4>
+        <h6>Estudiantes Practica I</h6>
         @csrf
         <table class="table table-bordered">
             <thead>
@@ -190,9 +190,9 @@
         </button>
     </form>
     </div>
-
+<hr>
     <div class="container" style="overflow-x: auto;">
-        <h4>Estudiantes Practica II</h4>
+        <h6>Estudiantes Practica II</h6>
         @csrf
         <table class="table table-bordered">
             <thead>

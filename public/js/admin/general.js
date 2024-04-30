@@ -31,6 +31,7 @@ $(document).ready(function () {
         }
     });
 
+    
     $("#toggleFormBtn2").click(function (event) {
         event.preventDefault();
         $("#registrarPeriodos").toggle();

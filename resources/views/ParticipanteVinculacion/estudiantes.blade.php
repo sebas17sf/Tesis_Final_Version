@@ -2,7 +2,7 @@
 
 
 @section('content')
-@if (session('success'))
+    @if (session('success'))
         <script>
             Swal.fire({
                 icon: 'success',
@@ -23,7 +23,7 @@
             });
         </script>
     @endif
-    
+
     <div class="container" style="overflow-x: auto;">
         <h4>Estudiantes por calificar</h4>
 
@@ -44,7 +44,7 @@
                         <th>Aplicación y manejo de destrezas y habilidades acordes al perfil profesional</th>
                         <th>Demuestra capacidad de liderazgo y de trabajo en equipo. Sobre 10%</th>
                         <th>Asiste puntualmente. Sobre 10%</th>
-                        <th></th> <!-- Columna oculta para el ID del estudiante -->
+                        <th></th> 
                     </tr>
                 </thead>
                 <tbody>
@@ -55,23 +55,23 @@
                             <td>{{ $estudiante->Carrera }}</td>
                             <td>{{ $estudiante->Departamento }}</td>
                             <td><input type="number" name="cumple_tareas[]" value="" min="1" max="10"
-                                    step="0.01"></td>
+                                    step="0.01" required></td>
                             <td><input type="number" name="resultados_alcanzados[]" value="" min="1"
-                                    max="10" step="0.01"></td>
+                                    max="10" step="0.01" required></td>
                             <td><input type="number" name="conocimientos_area[]" value="" min="1"
-                                    max="10" step="0.01"></td>
+                                    max="10" step="0.01" required></td>
                             <td><input type="number" name="adaptabilidad[]" value="" min="1" max="10"
-                                    step="0.01"></td>
+                                    step="0.01" required></td>
                             <td><input type="number" name="Aplicacion[]" value="" min="1" max="10"
-                                    step="0.01"></td>
+                                    step="0.01" required></td>
                             <td><input type="number" name="capacidad_liderazgo[]" value="" min="1"
-                                    max="10" step="0.01"></td>
+                                    max="10" step="0.01" required></td>
                             <td><input type="number" name="asistencia_puntual[]" value="" min="1"
-                                    max="10" step="0.01"></td>
-
+                                    max="10" step="0.01" required></td>
                             <td><input type="hidden" name="estudiante_id[]" value="{{ $estudiante->EstudianteID }}"></td>
                         </tr>
                     @endforeach
+
                 </tbody>
             </table>
             <br>
@@ -140,7 +140,7 @@
                                     {{ $nota->Asistencia }}<br>
                                 @endforeach
                             </td>
-                            <td >
+                            <td>
                                 @foreach ($estudiante->notas as $nota)
                                     {{ $nota->Informe }}<br>
                                 @endforeach
@@ -175,11 +175,13 @@
     }
 
     .wide-cell {
-    white-space: normal; /* Permitir que el texto se divida en varias líneas */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-wrap: break-word; /* Romper palabras largas para ajustar al ancho de la celda */
-}
+        white-space: normal;
+        /* Permitir que el texto se divida en varias líneas */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        /* Romper palabras largas para ajustar al ancho de la celda */
+    }
 
 
     .body,

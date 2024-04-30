@@ -10,21 +10,9 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 use App\Models\NrcVinculacion;
 use Illuminate\Support\Facades\Auth;
-use PhpOffice\PhpWord\Shared\ZipArchive;
-use PhpOffice\PhpWord\Settings;
-use Barryvdh\DomPDF\Facade as PDF;
-use PhpOffice\PhpWord\IOFactory as PhpWordIOFactory;
-use Phpdocx\Create\CreateDocx;
 
-use Illuminate\Support\Facades\Http;
 use App\Models\ActividadEstudiante;
 use App\Models\ProfesUniversidad;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-
-use PhpOffice\PhpSpreadsheet\Worksheet\TextRun;
-
-use Carbon\Carbon;
-use App\Models\Estudiante;
 
 
 class DocumentoController extends Controller
@@ -60,18 +48,17 @@ class DocumentoController extends Controller
         }
 
         // Obtener el ProyectoID del modelo AsignacionProyecto del estudiante
-        $asignacionProyecto = $estudiante->asignaciones->first();
-
+        $asignacionProyecto = $estudiante->asignacionesEstudiantesDirectores->first();
         if ($asignacionProyecto) {
-            $proyectoID = $asignacionProyecto->ProyectoID;
+            $proyectoID = $asignacionProyecto->IDProyecto;
         } else {
             return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
         }
 
-        // Consulta para obtener los datos de los estudiantes asignados a un proyecto específico
+
         $datosEstudiantes = DB::table('estudiantes')
-            ->join('asignacionProyectos', 'estudiantes.EstudianteID', '=', 'asignacionProyectos.EstudianteID')
-            ->join('proyectos', 'asignacionProyectos.ProyectoID', '=', 'proyectos.ProyectoID')
+            ->join('asignacionEstudiantesDirector', 'estudiantes.EstudianteID', '=', 'asignacionEstudiantesDirector.EstudianteID')
+            ->join('proyectos', 'asignacionEstudiantesDirector.IDProyecto', '=', 'proyectos.ProyectoID')
             ->select(
                 'estudiantes.Apellidos',
                 'estudiantes.Nombres',
@@ -82,15 +69,11 @@ class DocumentoController extends Controller
                 'proyectos.NombreProyecto',
             )
             ->where('proyectos.Estado', '=', 'Ejecucion')
-            ->where('asignacionProyectos.ProyectoID', '=', $proyectoID) // Filtrar por ProyectoID de AsignacionProyecto
+            ->where('asignacionEstudiantesDirector.IDProyecto', '=', $proyectoID)
             ->orderBy('estudiantes.Apellidos', 'asc')
             ->get();
 
-        // Verificar si se recuperaron datos
-        if ($datosEstudiantes->isEmpty()) {
-            // Manejar el caso en que no se encontraron datos
-            abort(404, 'No se encontraron datos de estudiantes asignados al proyecto activo.');
-        }
+
 
         // Obtener Carrera, Provincia y FechaInicio del primer estudiante asignado al proyecto
         $primerEstudiante = $datosEstudiantes->first();
@@ -174,8 +157,7 @@ class DocumentoController extends Controller
         }
 
         // Obtener las asignaciones de proyectos del estudiante
-        $asignaciones = $estudiante->asignaciones;
-
+        $asignaciones = $estudiante->asignacionesEstudiantesDirectores;
 
         if (!$asignaciones->count()) {
             return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');
@@ -207,10 +189,10 @@ class DocumentoController extends Controller
             $proyecto = $asignacion->proyecto;
             if ($proyecto) {
                 $nombresProyectos[] = $proyecto->NombreProyecto;
-                $apellidosProfesores[] = $proyecto->director->Apellidos;
-                $nombresProfesores[] = $proyecto->director->Nombres;
-                $apellidosAsignados[] = $proyecto->docenteParticipante->Apellidos;
-                $nombresAsignados[] = $proyecto->docenteParticipante->Nombres;
+                $apellidosProfesores[] = $proyecto->asignacionesEstudiantesDirectores->first()->director->Apellidos;
+                $nombresProfesores[] = $proyecto->asignacionesEstudiantesDirectores->first()->director->Nombres;
+                $apellidosAsignados[] = $proyecto->asignacionesEstudiantesDirectores->first()->participante->Apellidos;
+                $nombresAsignados[] = $proyecto->asignacionesEstudiantesDirectores->first()->participante->Nombres;
 
                 $fechaInicio = date('d', strtotime($proyecto->FechaInicio)) . ' ' . $meses[date('F', strtotime($proyecto->FechaInicio))] . ' ' . date('Y', strtotime($proyecto->FechaInicio));
                 $fechasInicio[] = $fechaInicio;
@@ -300,10 +282,10 @@ class DocumentoController extends Controller
         }
 
         // Obtener el ProyectoID del modelo AsignacionProyecto del estudiante
-        $asignacionProyecto = $estudiante->asignaciones->first();
+        $asignacionProyecto = $estudiante->asignacionesEstudiantesDirectores->first();
 
         if ($asignacionProyecto) {
-            $proyectoID = $asignacionProyecto->ProyectoID;
+            $proyectoID = $asignacionProyecto->IDProyecto;
         } else {
             // Manejar el caso en que no se encontró la asignación de proyecto para el estudiante
             return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
@@ -311,11 +293,11 @@ class DocumentoController extends Controller
 
         // Consulta para obtener los datos de los estudiantes asignados a un proyecto específico
         $datosEstudiantes = DB::table('estudiantes')
-            ->join('asignacionProyectos', 'estudiantes.EstudianteID', '=', 'asignacionProyectos.EstudianteID')
-            ->join('proyectos', 'asignacionProyectos.ProyectoID', '=', 'proyectos.ProyectoID')
+            ->join('asignacionEstudiantesDirector', 'estudiantes.EstudianteID', '=', 'asignacionEstudiantesDirector.EstudianteID')
+            ->join('proyectos', 'asignacionEstudiantesDirector.IDProyecto', '=', 'proyectos.ProyectoID')
             ->join('usuarios', 'estudiantes.UserID', '=', 'usuarios.UserID')
             ->join('profesUniversidad as director', 'proyectos.id_directorProyecto', '=', 'director.id')
-            ->join('profesUniversidad as participante', 'proyectos.id_docenteParticipante', '=', 'participante.id')
+            ->join('profesUniversidad as participante', 'asignacionEstudiantesDirector.ParticipanteID', '=', 'participante.id')
             ->select(
                 'estudiantes.Apellidos',
                 'estudiantes.Nombres',
@@ -335,7 +317,7 @@ class DocumentoController extends Controller
                 'participante.Apellidos as ApellidoParticipante'
             )
             ->where('proyectos.Estado', '=', 'Ejecucion')
-            ->where('asignacionProyectos.ProyectoID', '=', $proyectoID)
+            ->where('asignacionEstudiantesDirector.IDProyecto', '=', $proyectoID)
             ->orderBy('estudiantes.Apellidos', 'asc')
 
             ->get();
@@ -473,40 +455,34 @@ class DocumentoController extends Controller
             abort(404, 'El archivo de plantilla no existe.');
         }
 
-        // Cargar la plantilla de Word existente
-        $template = new TemplateProcessor($plantillaPath);
+         $template = new TemplateProcessor($plantillaPath);
 
-        // Obtener el usuario actual (asegúrate de que el usuario esté autenticado)
-        $usuario = auth()->user();
+         $usuario = auth()->user();
 
         if (!$usuario) {
-            // Manejar el caso en que el usuario no esté autenticado
-            abort(403, 'No estás autenticado.');
+             abort(403, 'No estás autenticado.');
         }
 
         // Obtener el estudiante asociado al usuario
         $estudiante = $usuario->estudiante;
 
         if (!$estudiante) {
-            // Manejar el caso en que no se encontró el estudiante asociado al usuario
-            abort(404, 'No se encontró el estudiante asociado a tu usuario.');
+             abort(404, 'No se encontró el estudiante asociado a tu usuario.');
         }
 
-        // Obtener el ProyectoID del modelo AsignacionProyecto del estudiante
-        $asignacionProyecto = $estudiante->asignaciones->first();
+         $asignacionProyecto = $estudiante->asignacionesEstudiantesDirectores->first();
 
         if ($asignacionProyecto) {
-            $proyectoID = $asignacionProyecto->ProyectoID;
+            $proyectoID = $asignacionProyecto->IDProyecto;
         } else {
-            // Manejar el caso en que no se encontró la asignación de proyecto para el estudiante
-            abort(404, 'No se encontró la asignación de proyecto para el estudiante.');
+             return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
         }
 
         $datosEstudiantes = DB::table('estudiantes')
-            ->join('asignacionproyectos', 'estudiantes.EstudianteID', '=', 'asignacionproyectos.EstudianteID')
-            ->join('proyectos', 'asignacionproyectos.ProyectoID', '=', 'proyectos.ProyectoID')
-            ->join('ProfesUniversidad as director', 'proyectos.id_directorProyecto', '=', 'director.id')
-            ->join('ProfesUniversidad as participante', 'proyectos.id_docenteParticipante', '=', 'participante.id')
+            ->join('asignacionEstudiantesDirector', 'estudiantes.EstudianteID', '=', 'asignacionEstudiantesDirector.EstudianteID')
+            ->join('proyectos', 'asignacionEstudiantesDirector.IDProyecto', '=', 'proyectos.ProyectoID')
+            ->join('ProfesUniversidad as director', 'asignacionEstudiantesDirector.DirectorID', '=', 'director.id')
+            ->join('ProfesUniversidad as participante', 'asignacionEstudiantesDirector.ParticipanteID', '=', 'participante.id')
             ->select(
                 'estudiantes.Apellidos',
                 'estudiantes.Nombres',
@@ -523,16 +499,16 @@ class DocumentoController extends Controller
                 'participante.Apellidos as ApellidoAsignado'
             )
             ->where('proyectos.Estado', '=', 'Ejecucion')
-            ->where('asignacionproyectos.ProyectoID', '=', $proyectoID)
+            ->where('asignacionEstudiantesDirector.IDProyecto', '=', $proyectoID)
             ->orderBy('estudiantes.Apellidos', 'asc')
             ->get();
 
-
+ 
 
         $datosEstudiantes2 = DB::table('estudiantes')
-            ->join('asignacionproyectos', 'estudiantes.EstudianteID', '=', 'asignacionproyectos.EstudianteID')
+            ->join('asignacionEstudiantesDirector', 'estudiantes.EstudianteID', '=', 'asignacionEstudiantesDirector.EstudianteID')
             ->join('actividades_estudiante', 'estudiantes.EstudianteID', '=', 'actividades_estudiante.EstudianteID')
-            ->join('proyectos', 'asignacionproyectos.ProyectoID', '=', 'proyectos.ProyectoID')
+            ->join('proyectos', 'asignacionEstudiantesDirector.IDProyecto', '=', 'proyectos.ProyectoID')
             ->select(
                 'actividades_estudiante.fecha',
                 'actividades_estudiante.actividades',
@@ -541,30 +517,15 @@ class DocumentoController extends Controller
                 'actividades_estudiante.nombre_actividad',
             )
             ->where('proyectos.Estado', '=', 'Ejecucion')
-            ->where('asignacionproyectos.ProyectoID', '=', $proyectoID) // Filtrar por ProyectoID de AsignacionProyecto
+            ->where('asignacionEstudiantesDirector.IDProyecto', '=', $proyectoID)  
             ->orderBy('estudiantes.Apellidos', 'asc')
             ->get();
 
-        $datosEstudiantes3 = DB::table('estudiantes')
-            ->join('asignacionproyectos', 'estudiantes.EstudianteID', '=', 'asignacionproyectos.EstudianteID')
-            ->join('actividades_estudiante', 'estudiantes.EstudianteID', '=', 'actividades_estudiante.EstudianteID')
-            ->join('proyectos', 'asignacionproyectos.ProyectoID', '=', 'proyectos.ProyectoID')
-            ->select(
-                'actividades_estudiante.fecha',
-                'actividades_estudiante.actividades',
-                'actividades_estudiante.numero_horas',
-                'actividades_estudiante.evidencias',
-                'actividades_estudiante.nombre_actividad',
-            )
-            ->where('proyectos.Estado', '=', 'Ejecucion')
-            ->where('asignacionproyectos.ProyectoID', '=', $proyectoID) // Filtrar por ProyectoID de AsignacionProyecto
-            ->orderBy('estudiantes.Apellidos', 'asc')
-            ->get();
+  
 
         // Verificar si se recuperaron datos
         if ($datosEstudiantes->isEmpty()) {
-            // Manejar el caso en que no se encontraron datos
-            abort(404, 'No se encontraron datos de estudiantes asignados al proyecto activo.');
+             abort(404, 'No se encontraron datos de estudiantes asignados al proyecto activo.');
         }
 
         // Obtener Carrera, Provincia y FechaInicio del primer estudiante asignado al proyecto
@@ -837,12 +798,6 @@ class DocumentoController extends Controller
 
     public function reportesProyectos(Request $request)
     {
-        $plantillaPath = public_path('Plantillas/Reporte-Proyectos.xlsx');
-
-        $spreadsheet = IOFactory::load($plantillaPath);
-
-        $estado = $request->input('estado');
-
 
         $plantillaPath = public_path('Plantillas/Reporte-Proyectos.xlsx');
 
@@ -879,10 +834,15 @@ class DocumentoController extends Controller
             $participante = ProfesUniversidad::find($proyecto->id_docenteParticipante);
             $nrc = NrcVinculacion::find($proyecto->id_nrc_vinculacion);
 
+            $participantesAdicionales = $proyecto->participantesAdicionales;
+            $nombresParticipantesAdicionales = $participantesAdicionales->map(function ($participante) {
+                return $participante->Nombres . ' ' . $participante->Apellidos;
+            })->join(', ');
+
+
             $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
             $sheet->setCellValue('B' . ($filaInicio + $index), $proyecto->NombreProyecto);
 
-            // Ajustar automáticamente la altura de la fila para el nombre del proyecto
             $sheet->getStyle('B' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
 
             $sheet->setCellValue('C' . ($filaInicio + $index), $proyecto->codigoProyecto);
@@ -893,8 +853,18 @@ class DocumentoController extends Controller
             $nombreDirector = $director ? $director->Nombres . ' ' . $director->Apellidos : 'No especificado';
             $sheet->setCellValue('E' . ($filaInicio + $index), $nombreDirector);
 
+
             $nombreParticipante = $participante ? $participante->Nombres . ' ' . $participante->Apellidos : 'No especificado';
+            if ($nombresParticipantesAdicionales) {
+                $nombreParticipante .= "\n" . $nombresParticipantesAdicionales;
+            }
+
             $sheet->setCellValue('F' . ($filaInicio + $index), $nombreParticipante);
+            $sheet->getStyle('F' . ($filaInicio + $index))->getAlignment()->setWrapText(true);  
+            
+
+            $sheet->setCellValue('F' . ($filaInicio + $index), $nombreParticipante);
+            $sheet->getStyle('F' . ($filaInicio + $index))->getAlignment()->setWrapText(true);  
 
             $nrcValue = $nrc ? $nrc->nrc : 'No especificado';
             $sheet->setCellValue('K' . ($filaInicio + $index), $nrcValue);
@@ -1321,6 +1291,7 @@ class DocumentoController extends Controller
             $sheet->setCellValue('D' . ($filaInicio + $index), $docente->Usuario);
             $sheet->setCellValue('E' . ($filaInicio + $index), $docente->Cedula);
             $sheet->setCellValue('F' . ($filaInicio + $index), $docente->Departamento);
+            $sheet->setCellValue('G' . ($filaInicio + $index), $docente->espe_id);
             $contador++;
         }
 

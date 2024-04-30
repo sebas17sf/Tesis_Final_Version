@@ -10,14 +10,16 @@ use App\Models\Proyecto;
 use App\Mail\EstudianteAprobado;
 use App\Mail\EstudianteNegado;
 use Illuminate\Pagination\Paginator;
-use App\Models\Cohorte;
 use App\Models\AsignacionProyecto;
 use App\Models\Empresa;
 use App\Models\Role;
 
+use App\Models\AsignacionEstudiantesDirector;
+
+use App\Models\ParticipanteAdicional;
 
 use Illuminate\Support\Facades\Artisan;
- use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Backup\Tasks\Backup\BackupJobFactory;
 
 use App\Models\Periodo;
@@ -168,7 +170,7 @@ class AdminController extends Controller
         // Consulta para estudiantes en revisión
         $queryEstudiantesEnRevision = Estudiante::where('Estado', 'En proceso de revisión')
             ->orderBy('Nombres', 'asc');
- 
+
         // Búsqueda de estudiantes en revisión
         if ($request->has('buscarEstudiantesEnRevision')) {
             $busquedaEstudiantesEnRevision = $request->input('buscarEstudiantesEnRevision');
@@ -293,7 +295,7 @@ class AdminController extends Controller
             $perPage = 10;
         }
 
-        $query = Proyecto::with(['director', 'docenteParticipante', 'nrcs']);
+        $query = Proyecto::with(['director', 'docenteParticipante', 'nrcs', 'participantesAdicionales']);
 
         // Apply search if a search term is provided
         if ($search) {
@@ -318,9 +320,14 @@ class AdminController extends Controller
         // Get other necessary data
         $proyectosDisponibles = Proyecto::where('Estado', 'Ejecucion')->get();
 
+
         $estudiantesAprobados = Estudiante::where('Estado', 'Aprobado')
-            ->whereNotIn('EstudianteID', AsignacionProyecto::pluck('EstudianteID')->toArray())
+            ->whereNotIn('EstudianteID', AsignacionEstudiantesDirector::pluck('EstudianteID')->toArray())
             ->get();
+
+
+
+
 
         return view('admin.indexProyectos', [
             'proyectos' => $proyectos,
@@ -353,76 +360,77 @@ class AdminController extends Controller
     ///////////////////////guardar proyectos
 
     public function crearProyecto(Request $request)
-{
-     $validatedData = $request->validate([
-        'DirectorProyecto' => 'required|integer',
-        'ProfesorParticipante.*' => 'required|integer', 
-        'NombreProyecto' => 'required',
-        'DescripcionProyecto' => 'required|string',
-        'DepartamentoTutor' => 'required',
-        'FechaInicio' => 'required|date',
-        'nrc' => 'required|integer',
-        'codigoProyecto' => 'required',
-        'FechaFinalizacion' => 'required|date',
-        'cupos' => 'required|integer',
-        'Estado' => 'required',
-    ]);
+    {
+        $validatedData = $request->validate([
+            'DirectorProyecto' => 'required|integer',
+            'ProfesorParticipante' => 'required|array',
+            'ProfesorParticipante.*' => 'required|integer',
+            'NombreProyecto' => 'required',
+            'DescripcionProyecto' => 'required|string',
+            'DepartamentoTutor' => 'required',
+            'FechaInicio' => 'required|date',
+            'nrc' => 'required|integer',
+            'codigoProyecto' => 'required',
+            'FechaFinalizacion' => 'required|date',
+            'cupos' => 'required|integer',
+            'Estado' => 'required',
+        ]);
 
-     foreach ($validatedData['ProfesorParticipante'] as $profesorId) {
+
+
         $existingProject = Proyecto::where('Estado', 'Ejecucion')
-            ->where(function ($query) use ($validatedData, $profesorId) {
+            ->where(function ($query) use ($validatedData) {
                 $query->where('id_directorProyecto', $validatedData['DirectorProyecto'])
-                    ->orWhere('id_docenteParticipante', $profesorId);
+                    ->orWhereIn('id_docenteParticipante', $validatedData['ProfesorParticipante']);
             })
             ->exists();
 
         if ($existingProject) {
             return redirect()->route('admin.indexProyectos')->with('error', 'El director o profesor participante ya está asociado a un proyecto en ejecución');
         }
-    }
 
-    $directorRoleId = Role::where('Tipo', 'DirectorVinculacion')->value('id');
-    $participanteRoleId = Role::where('Tipo', 'ParticipanteVinculacion')->value('id');
+        $directorRoleId = Role::where('Tipo', 'DirectorVinculacion')->value('id');
+        $participanteRoleId = Role::where('Tipo', 'ParticipanteVinculacion')->value('id');
 
-     $director = ProfesUniversidad::findOrFail($validatedData['DirectorProyecto']);
+        $director = ProfesUniversidad::findOrFail($validatedData['DirectorProyecto']);
+        $participantes = ProfesUniversidad::whereIn('id', $validatedData['ProfesorParticipante'])->get();
 
-     $directorUserExists = Usuario::where('CorreoElectronico', $director->Correo)->exists();
+        $directorUserExists = Usuario::where('CorreoElectronico', $director->Correo)->exists();
 
-    if (!$directorUserExists) {
-         Usuario::create([
-            'NombreUsuario' => $director->Usuario,
-            'Nombre' => $director->Nombres,
-            'Apellido' => $director->Apellidos,
-            'CorreoElectronico' => $director->Correo,
-            'FechaNacimiento' => now(),
-            'Contrasena' => bcrypt('123'),
-            'Estado' => 'activo',
-            'role_id' => $directorRoleId,
-        ]);
-    }
-
-     foreach ($validatedData['ProfesorParticipante'] as $profesorId) {
-         $participante = ProfesUniversidad::findOrFail($profesorId);
-
-         $participanteUserExists = Usuario::where('CorreoElectronico', $participante->Correo)->exists();
-
-        if (!$participanteUserExists) {
-             Usuario::create([
-                'NombreUsuario' => $participante->Usuario,
-                'Nombre' => $participante->Nombres,
-                'Apellido' => $participante->Apellidos,
-                'CorreoElectronico' => $participante->Correo,
+        if (!$directorUserExists) {
+            Usuario::create([
+                'NombreUsuario' => $director->Usuario,
+                'Nombre' => $director->Nombres,
+                'Apellido' => $director->Apellidos,
+                'CorreoElectronico' => $director->Correo,
                 'FechaNacimiento' => now(),
                 'Contrasena' => bcrypt('123'),
                 'Estado' => 'activo',
-                'role_id' => $participanteRoleId,
+                'role_id' => $directorRoleId,
             ]);
+        }
+
+        foreach ($participantes as $participante) {
+            $participanteUserExists = Usuario::where('CorreoElectronico', $participante->Correo)->exists();
+
+            if (!$participanteUserExists) {
+                Usuario::create([
+                    'NombreUsuario' => $participante->Usuario,
+                    'Nombre' => $participante->Nombres,
+                    'Apellido' => $participante->Apellidos,
+                    'CorreoElectronico' => $participante->Correo,
+                    'FechaNacimiento' => now(),
+                    'Contrasena' => bcrypt('123'),
+                    'Estado' => 'activo',
+                    'role_id' => $participanteRoleId,
+                ]);
+            }
         }
 
         // Crear el nuevo proyecto
         $proyecto = Proyecto::create([
             'id_directorProyecto' => $director->id,
-            'id_docenteParticipante' => $profesorId,
+            'id_docenteParticipante' => $participantes->first()->id,
             'NombreProyecto' => $validatedData['NombreProyecto'],
             'DescripcionProyecto' => $validatedData['DescripcionProyecto'],
             'DepartamentoTutor' => $validatedData['DepartamentoTutor'],
@@ -435,26 +443,39 @@ class AdminController extends Controller
         ]);
 
         $proyecto->save();
+
+        // Crear participantes adicionales
+        foreach ($participantes->slice(1) as $participante) {
+            ParticipanteAdicional::create([
+                'ProyectoID' => $proyecto->ProyectoID,
+                'ParticipanteID' => $participante->id,
+            ]);
+        }
+
+        return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto agregado correctamente');
     }
 
-    return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto(s) agregado(s) correctamente');
-}
 
 
     ///////////////editar proyecto
     public function editProyectoForm($ProyectoID)
     {
+
         $nrcs = NrcVinculacion::all();
 
+        $profesores = ProfesUniversidad::all();
+
         $proyecto = Proyecto::with(['director', 'docenteParticipante'])->findOrFail($ProyectoID);
-        return view('admin.editarProyecto', compact('proyecto', 'nrcs'));
+        return view('admin.editarProyecto', compact('proyecto', 'nrcs', 'profesores'));
     }
 
 
     public function editProyecto(Request $request, $ProyectoID)
     {
-        // Valida los datos del formulario de edición antes de actualizar el proyecto
         $validatedData = $request->validate([
+            'DirectorProyecto' => 'required',
+            'ProfesorParticipante' => 'required|array',
+            'ProfesorParticipante.*' => 'required|integer',
             'NombreProyecto' => 'required',
             'nrc' => 'required|integer',
             'codigoProyecto' => 'required',
@@ -469,7 +490,8 @@ class AdminController extends Controller
         // Obtén el proyecto existente
         $proyecto = Proyecto::findOrFail($ProyectoID);
 
-        // Actualiza los campos del proyecto con los datos validados del formulario
+        $proyecto->id_directorProyecto = $validatedData['DirectorProyecto'];
+        $proyecto->id_docenteParticipante = $validatedData['ProfesorParticipante'][0];
         $proyecto->NombreProyecto = $validatedData['NombreProyecto'];
         $proyecto->id_nrc_vinculacion = $validatedData['nrc'];
         $proyecto->codigoProyecto = $validatedData['codigoProyecto'];
@@ -480,29 +502,30 @@ class AdminController extends Controller
         $proyecto->cupos = $validatedData['cupos'];
         $proyecto->Estado = $validatedData['Estado'];
 
-        // Guarda los cambios en la base de datos
         $proyecto->save();
 
-        // Verificar si el estado del proyecto cambió a "Terminado"
+        // Crear usuarios para el director y los participantes si no existen
+        $this->actualizarUsuarioYRol($proyecto->id_directorProyecto, 'DirectorVinculacion');
+        foreach ($validatedData['ProfesorParticipante'] as $idParticipante) {
+            $this->actualizarUsuarioYRol($idParticipante, 'ParticipanteVinculacion');
+        }
+
         if ($proyecto->Estado === 'Terminado') {
-            // Obtener todas las asignaciones relacionadas con el proyecto
             $asignaciones = AsignacionProyecto::where('ProyectoID', $ProyectoID)->get();
 
             foreach ($asignaciones as $asignacion) {
                 $estudiante = $asignacion->estudiante;
 
-                // Actualizar el estado del estudiante en la tabla existente
                 $estudiante->update([
                     'Estado' => 'Aprobado-practicas',
                 ]);
 
-                // Mover al estudiante a la tabla 'estudiantesvinculacion'
                 EstudiantesVinculacion::create([
                     'cedula_identidad' => $estudiante->cedula,
                     'correo_electronico' => $estudiante->Correo,
                     'espe_id' => $estudiante->espe_id,
                     'nombres' => $estudiante->Apellidos . ' ' . $estudiante->Nombres,
-                    'periodo_ingreso' => $estudiante->cohortes->Cohorte,
+                    'periodo_ingreso' => $estudiante->periodos->numeroPeriodo,
                     'periodo_vinculacion' => $estudiante->periodos->Periodo,
                     'actividades_macro' => $proyecto->DescripcionProyecto,
                     'docente_participante' => $proyecto->NombreAsignado . ' ' . $proyecto->ApellidoAsignado,
@@ -516,6 +539,33 @@ class AdminController extends Controller
         }
 
         return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto actualizado correctamente');
+    }
+
+    ////////////////////////va con editar
+    private function actualizarUsuarioYRol($profesorId, $tipoRol)
+    {
+        $profesor = ProfesUniversidad::findOrFail($profesorId);
+        $rolId = Role::where('Tipo', $tipoRol)->value('id');
+    
+        $usuario = Usuario::where('CorreoElectronico', $profesor->Correo)->first();
+    
+        if (!$usuario) {
+             Usuario::create([
+                'NombreUsuario' => $profesor->Usuario,
+                'Nombre' => $profesor->Nombres,
+                'Apellido' => $profesor->Apellidos,
+                'CorreoElectronico' => $profesor->Correo,
+                'FechaNacimiento' => now(),
+                'Contrasena' => bcrypt('123'),
+                'Estado' => 'activo',
+                'role_id' => $rolId,
+            ]);
+        } else {
+             if ($usuario->role_id != $rolId) {
+                $usuario->role_id = $rolId;
+                $usuario->save();
+            }
+        }
     }
 
     /////eliminar proyecto
@@ -543,6 +593,7 @@ class AdminController extends Controller
         return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto y asignaciones relacionadas eliminados correctamente');
     }
     ///////asignar proyecto a estudiante/////////////
+
     public function guardarAsignacion(Request $request)
     {
         // Validación de datos
@@ -559,28 +610,35 @@ class AdminController extends Controller
         // Verificar si hay cupos disponibles en el proyecto
         if ($proyecto->cupos > 0) {
             $directorID = $proyecto->id_directorProyecto;
-            $participanteID = $proyecto->id_docenteParticipante;
 
-            if ($directorID && $participanteID) {
+            ////obtener la id del proyecto y buscar en ParticipanteAdicional si hay participantes adicionales en el proyecto
+            $participantesAdicionales = ParticipanteAdicional::where('ProyectoID', $proyecto->ProyectoID)->get();
+            // Si no hay docentes participantes adicionales, asignar directamente a los estudiantes
+            if ($participantesAdicionales->isEmpty()) {
+                AsignacionEstudiantesDirector::create([
+                    'DirectorID' => $proyecto->id_directorProyecto,
+                    'IDProyecto' => $proyecto->ProyectoID,
+                    'ParticipanteID' => $proyecto->id_docenteParticipante,
+                    'EstudianteID' => $request->estudiante_id
+                ]);
+            } else {
+                // Si hay docentes participantes adicionales, seguir con la asignación normal
                 AsignacionProyecto::create([
+                    'ProyectoID' => $proyecto->ProyectoID,
                     'EstudianteID' => $request->estudiante_id,
-                    'ProyectoID' => $request->proyecto_id,
                     'DirectorID' => $directorID,
-                    'ParticipanteID' => $participanteID,
                     'FechaAsignacion' => $request->fecha_asignacion,
                 ]);
-
-                // Reducir el número de cupos disponibles en el proyecto
                 $proyecto->decrement('cupos');
-
-                return redirect()->route('admin.indexProyectos')->with('success', 'Asignación realizada con éxito.');
-            } else {
-                return redirect()->route('admin.indexProyectos')->with('error', 'No se pudo realizar la asignación debido a problemas con los directores o participantes.');
             }
+
+            return redirect()->route('admin.indexProyectos')->with('success', 'Asignación realizada con éxito.');
         } else {
             return redirect()->route('admin.indexProyectos')->with('error', 'No hay cupos disponibles en el proyecto seleccionado.');
         }
     }
+
+
 
 
 
@@ -619,11 +677,12 @@ class AdminController extends Controller
 
             // Validar los campos
             $request->validate([
-                'nombres' => 'required|string|max:255',
-                'apellidos' => 'required|string|max:255',
-                'correo' => 'required|email|max:255',
-                'cedula' => 'required|string|min:10',
-                'departamento' => 'required|string',
+                'nombres' => 'required',
+                'apellidos' => 'required',
+                'correo' => 'required',
+                'cedula' => 'required',
+                'departamento' => 'required',
+                'espe_id' => 'required',
             ]);
 
             // Crear el maestro
@@ -635,6 +694,7 @@ class AdminController extends Controller
                 'Correo' => $request->correo,
                 'Cedula' => $request->cedula,
                 'Departamento' => $request->departamento,
+                'espe_id' => $request->espe_id,
             ]);
 
             // Devolver el mensaje de éxito
@@ -723,7 +783,7 @@ class AdminController extends Controller
 
 
 
- 
+
 
 
 
@@ -827,7 +887,7 @@ class AdminController extends Controller
         return redirect()->route('admin.index')->with('success', 'Periodo académico eliminado con éxito.');
     }
 
-     
+
 
     //////guardar empresa////////////////
     public function agregarEmpresa(Request $request)

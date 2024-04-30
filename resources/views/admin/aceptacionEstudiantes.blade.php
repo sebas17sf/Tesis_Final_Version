@@ -21,49 +21,57 @@
     @if ($estudiantesEnRevision->isEmpty())
         <p>No hay estudiantes en proceso de revisión.</p>
     @else
-        <table class="table">
-            <thead>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>ID ESPE</th>
+                <th>Celular</th>
+                <th>Cédula</th>
+                <th>Cohorte</th>
+                <th>Departamento</th>
+                <th>Estado Actual</th>
+                <th>Observacion</th>
+                <th>Actualizar Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($estudiantesEnRevision as $estudiante)
                 <tr>
-                    <th>Nombres</th>
-                    <th>Apellidos</th>
-                    <th>ID ESPE</th>
-                    <th>Celular</th>
-                    <th>Cédula</th>
-                    <th>Cohorte</th>
-                    <th>Departamento</th>
-                    <th>Estado Actual</th>
-                    <th>Actualizar Estado</th>
+                    <td>{{ strtoupper($estudiante->Nombres) }}</td>
+                    <td>{{ strtoupper($estudiante->Apellidos) }}</td>
+                    <td>{{ $estudiante->espe_id }}</td>
+                    <td>{{ $estudiante->celular }}</td>
+                    <td>{{ $estudiante->cedula }}</td>
+                    <td>{{ $estudiante->periodos->numeroPeriodo }}</td>
+                    <td>{{ strtoupper($estudiante->Departamento) }}</td>
+                    <td>{{ strtoupper($estudiante->Estado) }}</td>
+                    @if ($estudiante->comentario !== "Sin comentarios")
+                        <td>{{ strtoupper($estudiante->comentario) }}</td>
+                    @else
+                        <td></td> 
+                    @endif
+    
+                    <td>
+                        <form action="{{ route('admin.updateEstudiante', ['id' => $estudiante->EstudianteID]) }}"
+                            method="POST">
+                            @csrf
+                            @method('PUT')
+                            <input type="hidden" id="motivoNegacion" name="motivoNegacion" class="input">
+                            <select name="nuevoEstado" id="nuevoEstado" onchange="verificarEstado()"
+                                class="input input-select">
+                                <option value="Aprobado">Aprobado</option>
+                                <option value="Negado">Negado</option>
+                            </select>
+                            <button type="submit">Enviar</button>
+                        </form>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach ($estudiantesEnRevision as $estudiante)
-                    <tr>
-                        <td>{{ strtoupper($estudiante->Nombres) }}</td>
-                        <td>{{ strtoupper($estudiante->Apellidos) }}</td>
-                        <td>{{ $estudiante->espe_id }}</td>
-                        <td>{{ $estudiante->celular }}</td>
-                        <td>{{ $estudiante->cedula }}</td>
-                        <td>{{ $estudiante->periodos->numeroPeriodo }}</td>
-                        <td>{{ strtoupper($estudiante->Departamento) }}</td>
-                        <td>{{ strtoupper($estudiante->Estado) }}</td>
-                        <td>
-                            <form action="{{ route('admin.updateEstudiante', ['id' => $estudiante->EstudianteID]) }}"
-                                method="POST">
-                                @csrf
-                                @method('PUT')
-                                <input type="hidden" id="motivoNegacion" name="motivoNegacion" class="input">
-                                <select name="nuevoEstado" id="nuevoEstado" onchange="verificarEstado()"
-                                    class="input input-select">
-                                    <option value="Aprobado">Aprobado</option>
-                                    <option value="Negado">Negado</option>
-                                </select>
-                                <button type="submit">Enviar</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+            @endforeach
+        </tbody>
+    </table>
+    
     @endif
 
     <h4>Seguimiento Estudiantes</h4>

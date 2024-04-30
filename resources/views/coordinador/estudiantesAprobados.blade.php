@@ -5,7 +5,7 @@
 @section('content')
 
     <div class="container">
-        <h4>Seguimiento Estudiantes</h4>
+        <h5>Seguimiento Estudiantes</h5>
         <form method="GET" action="{{ route('coordinador.estudiantesAprobados') }}">
             <label for="elementosPorPaginaDepartamento">Elementos por página:</label>
             <select name="elementosPorPaginaDepartamento" onchange="this.form.submit()">
@@ -23,7 +23,7 @@
         </form>
 
 
-        <h4>Departamento DCCO</h4>
+        <h6>Departamento DCCO</h6>
         <div style="overflow-x: auto;">
             <table class="table">
                 <thead>
@@ -65,7 +65,7 @@
             </table>
 
 
-            <h4>Departamento DCEX</h4>
+            <h6>Departamento DCEX</h6>
             <table class="table">
                 <thead>
                     <tr>
@@ -105,7 +105,7 @@
                 </tbody>
             </table>
 
-            <h4>Departamento DCVA</h4>
+            <h6>Departamento DCVA</h6>
             <table class="table">
                 <thead>
                     <tr>
@@ -166,8 +166,9 @@
         <br>
         <button id="toggleFormBtn" class="btn btn-outline-secondary btn-block">Ver Estudiantes culminados Vinculacion a la
             Sociedad</button>
+            <br>
         <div id="verEstudiantes" style="display: none;">
-            <h4>Estudiantes culminados Vinculacion a la sociedad</h4>
+            <h6>Estudiantes culminados Vinculacion a la sociedad</h6>
             <div class="d-flex">
                 <form method="GET" action="{{ route('coordinador.estudiantesAprobados') }}" class="mr-3">
                     <label for="elementosPorPagina">Estudiantes a visualizar:</label>

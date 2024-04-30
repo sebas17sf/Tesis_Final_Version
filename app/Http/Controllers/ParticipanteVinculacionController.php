@@ -10,41 +10,56 @@ use App\Models\Proyecto;
 use App\Models\Usuario;
 use Illuminate\Support\Collection;
 use App\Models\AsignacionProyecto;
+use App\Models\ParticipanteAdicional;
 use App\Models\Estudiante;
-use App\Models\ParticipanteVincunlacion;
+use App\Models\AsignacionEstudiantesDirector;
 use App\Models\NotasEstudiante;
 
 class ParticipanteVinculacionController extends Controller
 {
 
-
     public function index(Request $request)
-    {
-        $elementosPorPagina = $request->input('elementosPorPagina', 10);
-        $elementosPorPagina2 = $request->input('elementosPorPagina2', 10);
+{
+    $elementosPorPagina = $request->input('elementosPorPagina', 10);
 
-        $correoParticipante = Auth::user()->CorreoElectronico;
-        $participante = ProfesUniversidad::where('Correo', $correoParticipante)->first();
-        $proyectosEnEjecucion = null;
-        $proyectosTerminados = null;
+    $correoParticipante = Auth::user()->CorreoElectronico;
+    $participante = ProfesUniversidad::where('Correo', $correoParticipante)->first();
+    $proyectosEnEjecucion = null;
+    $proyectosTerminados = null;
 
-        if ($participante) {
-            $participanteID = $participante->id;
+    if ($participante) {
+        $participanteID = $participante->id;
 
-            $proyectosEnEjecucionQuery = Proyecto::where('id_docenteParticipante', $participanteID)
-                ->where('Estado', 'Ejecucion')
-                ->orderBy('created_at', 'desc');
+        // Buscar si el docente ha sido un participante adicional
+        $participanteAdicional = ParticipanteAdicional::where('ParticipanteID', $participanteID)->first();
 
-            $proyectosTerminadosQuery = Proyecto::where('id_docenteParticipante', $participanteID)
-                ->where('Estado', 'Terminado')
-                ->orderBy('created_at', 'desc');
+        // Obtener proyectos terminados en los que el docente participa como principal
+        $proyectosTerminadosQuery = Proyecto::where('id_docenteParticipante', $participanteID)
+            ->where('Estado', 'Terminado')
+            ->orderBy('created_at', 'desc');
 
-            $proyectosEnEjecucion = $proyectosEnEjecucionQuery->get();
-            $proyectosTerminados = $proyectosTerminadosQuery->paginate($elementosPorPagina2);
+        // Si el docente ha sido un participante adicional, agregar sus proyectos terminados
+        if ($participanteAdicional) {
+            $proyectosTerminadosQuery->orWhereIn('ProyectoID', function ($query) use ($participanteID) {
+                $query->select('ProyectoID')->from('participantesAdicionales')->where('ParticipanteID', $participanteID);
+            });
         }
 
-        return view('ParticipanteVinculacion.index', compact('proyectosEnEjecucion', 'proyectosTerminados'));
+        // Obtener proyectos en ejecución en los que el docente participa como principal
+        $proyectosEnEjecucionQuery = Proyecto::where('id_docenteParticipante', $participanteID)
+            ->where('Estado', 'Ejecucion')
+            ->orderBy('created_at', 'desc');
+
+        $proyectosEnEjecucion = $proyectosEnEjecucionQuery->paginate($elementosPorPagina);
+        $proyectosTerminados = $proyectosTerminadosQuery->paginate($elementosPorPagina);
     }
+
+    return view('ParticipanteVinculacion.index', compact('proyectosEnEjecucion', 'proyectosTerminados'));
+}
+
+    
+    
+
 
 
 
@@ -65,30 +80,53 @@ class ParticipanteVinculacionController extends Controller
             $participante = ProfesUniversidad::where('Correo', $correoParticipante)->first();
 
             if ($participante) {
-                // Obtener los IDs de los proyectos donde el participante está asignado
+                // Obtener los proyectos asociados al participante
                 $proyectos = Proyecto::where('id_docenteParticipante', $participante->id)->pluck('ProyectoID');
 
-                // Obtener los IDs de los estudiantes asignados a los proyectos del participante
-                $estudiantesAsignados = AsignacionProyecto::whereIn('ProyectoID', $proyectos)->pluck('EstudianteID');
+                // Verificar si hay docentes adicionales asociados al proyecto
+                $docentesAdicionales = ParticipanteAdicional::whereIn('ProyectoID', $proyectos)->exists();
 
-                // Obtener los estudiantes con notas registradas
+                if ($docentesAdicionales) {
+                    // Si hay docentes adicionales, mostrar los estudiantes asignados a través de AsignacionEstudiantesDirector para cada docente
+                    $todosEstudiantes = AsignacionEstudiantesDirector::whereIn('ParticipanteID', function ($query) use ($proyectos) {
+                        $query->select('id')->from('participantesAdicionales')->whereIn('ProyectoID', $proyectos);
+                    })
+                        ->pluck('EstudianteID');
+
+                    // Obtener el estudiante asignado al participante principal a través de AsignacionEstudiantesDirector
+                    $estudianteParticipante = AsignacionEstudiantesDirector::where('ParticipanteID', $participante->id)
+                        ->pluck('EstudianteID');
+
+                    // Fusionar los estudiantes asignados a todos los participantes
+                    $todosEstudiantes = $todosEstudiantes->merge($estudianteParticipante)->unique();
+                } else {
+                    // Si no hay docentes adicionales, mostrar todos los estudiantes asignados al docente participante
+                    $todosEstudiantes = AsignacionEstudiantesDirector::where('ParticipanteID', $participante->id)
+                        ->pluck('EstudianteID');
+                }
+
+                // Obtener estudiantes con notas y sin notas según la lógica previamente definida
                 $estudiantesConNotas = Estudiante::with('notas')
-                    ->whereIn('EstudianteID', $estudiantesAsignados)
+                    ->whereIn('EstudianteID', $todosEstudiantes)
                     ->whereHas('proyectos', function ($query) {
                         $query->where('Estado', 'Ejecucion');
                     })
                     ->get();
 
-
-                // Obtener los estudiantes sin notas registradas
-                $estudiantes = Estudiante::whereIn('EstudianteID', $estudiantesAsignados)
+                $estudiantes = Estudiante::whereIn('EstudianteID', $todosEstudiantes)
                     ->whereDoesntHave('notas')
                     ->get();
             }
         }
 
+
         return view('ParticipanteVinculacion.estudiantes', compact('estudiantes', 'estudiantesConNotas'));
     }
+
+
+
+
+
 
 
 
