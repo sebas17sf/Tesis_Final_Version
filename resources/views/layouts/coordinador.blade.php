@@ -19,7 +19,8 @@
 
     <link rel="stylesheet" href="css/admin/admin.css">
     <script src="js/menu.js"></script>
- </head>
+    @vite(['resources/scss/app.scss', 'resources/js/app.js'])
+</head>
 
 <body>
     <!-- Barra de navegación en el lado izquierdo -->
@@ -162,6 +163,7 @@
      <script src="{{ asset('js/plantilla/styles.js') }}" defer></script>
     <script src="{{ asset('js/plantilla/vendor.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Box Icons -->
