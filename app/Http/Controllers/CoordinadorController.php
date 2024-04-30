@@ -22,6 +22,9 @@ use App\Models\PracticaII;
 use App\Models\Empresa;
 use App\Models\AsignacionProyecto;
 
+use ZipStream\ZipStream;
+use ZipStream\Option\Archive;
+
 
 
 class CoordinadorController extends Controller
@@ -846,69 +849,46 @@ class CoordinadorController extends Controller
 
     ///////////////Descargar evidencias//////////////////////
     public function descargarEvidencias($ProyectoID)
-    {
-        $proyecto = Proyecto::find($ProyectoID);
+{
+    $proyecto = Proyecto::find($ProyectoID);
     
-        $estudiantesAsignados = $proyecto->asignacionesEstudiantesDirectores
-            ->where('IDProyecto', $ProyectoID)
-            ->pluck('EstudianteID')
-            ->toArray();
+    // Obtener los estudiantes asignados al proyecto
+    $estudiantesAsignados = $proyecto->asignacionesEstudiantesDirectores
+        ->where('IDProyecto', $ProyectoID)
+        ->pluck('EstudianteID')
+        ->toArray();
     
-        $estudiantesAsignados = Estudiante::whereIn('EstudianteID', $estudiantesAsignados)->get();
+    $estudiantesAsignados = Estudiante::whereIn('EstudianteID', $estudiantesAsignados)->get();
     
-        $tempDirectory = storage_path('app/public/temp');
-        if (!file_exists($tempDirectory)) {
-            mkdir($tempDirectory, 0755, true);
-        }
-    
-        $nombreProyecto = $proyecto->NombreProyecto;
-        $fechaInicio = $proyecto->FechaInicio;
-        $fechaFin = $proyecto->FechaFin;
-    
-        $directorProyecto = ProfesUniversidad::find($proyecto->id_directorProyecto);
-        $nombreDirector = $directorProyecto->Nombres;
-        $apellidoDirector = $directorProyecto->Apellidos;
-    
-        $nombreProyecto = str_replace(' ', '_', $nombreProyecto);
-        $nombreProyecto = preg_replace('/[^A-Za-z0-9\-]/', '', $nombreProyecto);
-    
-        $zipFileName = $nombreProyecto . '_' . $nombreDirector . '_' . $apellidoDirector . '_' . $fechaInicio . '_' . $fechaFin . '.zip';
-        $zipFilePath = storage_path('app/public/temp/' . $zipFileName);
-        dd($zipFilePath);
-        $zip = new ZipArchive();
-    
-        try {
-            if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
-                throw new \Exception('No se pudo abrir el archivo ZIP');
-            }
-    
-            foreach ($estudiantesAsignados as $estudiante) {
-                if ($estudiante->actividades()->exists()) {
-                    foreach ($estudiante->actividades as $actividad) {
-                        if ($actividad->evidencias) {
-                            $decodedEvidencia = base64_decode($actividad->evidencias);
-                            $tempFileName = 'evidencia_' . $estudiante->EstudianteID . '_' . $actividad->ID_Actividades . '.png';
-                            $tempFilePath = storage_path('app/temp/' . $tempFileName);
-                            file_put_contents($tempFilePath, $decodedEvidencia);
-    
-                            $zip->addFile($tempFilePath, $tempFileName);
-    
-                            unlink($tempFilePath);
-                        }
+    // Inicializar el objeto ZipStream
+    $zip = new ZipStream();
+
+    try {
+        // Iterar sobre los estudiantes y sus actividades
+        foreach ($estudiantesAsignados as $estudiante) {
+            if ($estudiante->actividades()->exists()) {
+                foreach ($estudiante->actividades as $actividad) {
+                    if ($actividad->evidencias) {
+                        $decodedEvidencia = base64_decode($actividad->evidencias);
+                        $tempFileName = 'evidencia_' . $estudiante->EstudianteID . '_' . $actividad->ID_Actividades . '.png';
+                        
+                        // Agregar el archivo al ZIP
+                        $zip->addFile($decodedEvidencia, $tempFileName);
                     }
                 }
             }
-    
-            $zip->close();
-    
-             $this->eliminarArchivosTemporales($tempDirectory);
-    
-             return response()->download($zipFilePath, $zipFileName)->deleteFileAfterSend(true);
-        } catch (\Exception $e) {
-            \Log::error('Error al crear o descargar las evidencias: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Ocurrió un error al descargar las evidencias: ' . $e->getMessage());
         }
+
+        // Finalizar el ZIP y enviar como descarga
+        $zip->finish();
+
+    } catch (\Exception $e) {
+        // Manejar errores
+        \Log::error('Error al crear o descargar las evidencias: ' . $e->getMessage());
+        return redirect()->back()->with('error', 'Ocurrió un error al descargar las evidencias: ' . $e->getMessage());
     }
+}
+    
     
 
 

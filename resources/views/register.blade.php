@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,94 +10,84 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Add Google Icons link -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/register.css">
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
-    <style>
-       body {
-            background-color: #f8f9fa;
-        }
-        .container {
-            max-width: 400px;
-            margin: 50px auto 0; /* Ajusta el valor del margin-top para controlar la separación desde arriba */
-            background-color: #ffffff;
-            border-radius: 5px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            font-weight: bold;
-        }
-    </style>
 </head>
+
 <body>
-    <div class="container">
-    <div class="login-box">
-    <img src="\img\logos\logo_tesis.png" alt="Imagen Circular"
-                class="circular-image">
-        <h3 class="text-center">Registro de Usuario</h3>
-        @if($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach($errors->all() as $error)
+    <section class="global_contenedor">
+        <div class="main1">
+            <div class="switch">
+
+                <div class="switch_circle"></div>
+                <div class="switch_circle switch_circle_t"></div>
+                <div class="switch_circle switch_circle_t2"></div>
+                <div class="switch_circle switch_circle_t3"></div>
+
+                <!-- Boton iniciar sesion -->
+                <div class="button_container_login">
+                    <a href="{{ route('login') }}" class="boton_login button1" type="button" id="toggleButton2"><i class="fa-regular fa-angles-left"></i>
+                        Inicia sesión</a>
+                </div>
+
+                @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
+                <form class="switch_container" method="POST" action="{{ route('register') }}">
+
+                    <img class="logo_login" src="\img\logos\logo_tesis.png" alt="Logo">
+
+                    @csrf
+
+                    <div>
+                        <!-- Campo de nombre -->
+                        <label class="description" for="NombreUsuario">Nombre de Usuario</label>
+                        <input type="text" class="input form_input" id="NombreUsuario" name="NombreUsuario" placeholder="Ingrese su nombre" required>
+                    </div>
+
+                    <div>
+                        <!-- Campo de correo electronico -->
+                        <label class="description" for="CorreoElectronico">Correo Electrónico</label>
+                        <input type="email" class="input form_input" id="CorreoElectronico" name="CorreoElectronico" placeholder="Ingrese su correo eléctronico" required>
+                    </div>
+
+                    <div>
+                        <!-- Campo de fecha de nacimiento -->
+                        <label class="description" for="FechaNacimiento">Fecha de Nacimiento</label>
+                        <input type="date" class="input form_input" id="FechaNacimiento" name="FechaNacimiento" placeholder="Ingrese su fecha de nacimiento" required>
+                    </div>
+
+                    <div>
+                        <!-- Campo de contraseña -->
+                        <label class="description" for="Contrasena">Contraseña</label>
+                        <input type="password" class="input form_input" id="Contrasena" name="Contrasena" placeholder="Ingrese su contraseña" required>
+                    </div>
+
+
+
+                    <!-- Botón de enviar -->
+                    <div class="btn_contenedor_register">
+                        <button type="submit" class="button">Registrarse</button>
+                    </div>
+
+                </form>
+
             </div>
-        @endif
-
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
-
-            <div class="form-group">
-                <label for="NombreUsuario">Nombre de Usuario:</label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="material-icons">person</i></span>
-                    </div>
-                    <input type="text" class="form-control" id="NombreUsuario" name="NombreUsuario" required>
-                </div>
-
-            <div class="form-group">
-                <label for="CorreoElectronico">Correo Electrónico:</label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="material-icons">email</i></span>
-                    </div>
-                    <input type="email" class="form-control" id="CorreoElectronico" name="CorreoElectronico" required>
-                </div>
-            </div>
-
-             <div class="form-group">
-                <label for="FechaNacimiento">Fecha de Nacimiento:</label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="material-icons">date_range</i></span>
-                    </div>
-                    <input type="date" class="form-control" id="FechaNacimiento" name="FechaNacimiento" required>
-                </div>
-
-            <div class="form-group">
-                <label for="Contrasena">Contraseña:</label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="material-icons">lock</i></span>
-                    </div>
-                    <input type="password" class="form-control" id="Contrasena" name="Contrasena" required>
-                </div>
-            </div>
-
-            
-
-            <button type="submit" class="btn btn-primary btn-block">Registrarse</button>
-        </form>
         </div>
-    </div>
+    </section>
 
     <!-- Add Bootstrap JavaScript and jQuery dependencies (optional) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

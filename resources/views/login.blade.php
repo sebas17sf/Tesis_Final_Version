@@ -11,107 +11,92 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
-    <link rel="stylesheet" href="css/login.css">   
+    <link rel="stylesheet" href="css/login.css">
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
-    <style>
-        /* Estilos para el contenedor del botón */
-        .google-btn {
-            display: inline-block;
-            background: #fff;
-            color: #4285f4;
-            border: 1px solid #4285f4;
-            border-radius: 4px;
-            padding: 10px 20px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Estilos para el texto dentro del botón */
-        .google-btn span {
-            display: inline-block;
-            vertical-align: middle;
-            margin-left: 10px;
-        }
-
-        /* Estilos para el icono dentro del botón */
-        .google-btn img {
-            vertical-align: middle;
-        }
-    </style>
 </head>
 
 <body>
-    <div class="container-box">
-        <div class="login-box">
-            <img src="\img\logos\logo_tesis.png" alt="Imagen Circular" class="circular-image">
-            <h2 class="mb-4" id="sesionTitulo">Iniciar Sesión</h2>
-            @if (session('success'))
-                <script>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Éxito',
-                        text: '{{ session('success') }}',
-                        confirmButtonText: 'Ok'
-                    });
-                </script>
-            @endif
+    <section class="global_contenedor">
+        <div class="main1" id="main1">
+            <div class="switch">
 
-            @if (session('error'))
-                <script>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: '{{ session('error') }}',
-                        confirmButtonText: 'Ok'
-                    });
-                </script>
-            @endif
+                <div class="switch_circle"></div>
+                <div class="switch_circle switch_circle_t"></div>
+                <div class="switch_circle switch_circle_t2"></div>
+                <div class="switch_circle switch_circle_t3"></div>
 
-            
-            <form action="{{ route('login') }}" method="POST">
-                @csrf
-                <div class="form-group">
-                    <label for="CorreoElectronico">Correo Electrónico:</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="material-icons">email</i></span>
-
-                        </div>
-                        <input class="input" type="email" id="CorreoElectronico" name="CorreoElectronico" required>
-                    </div>
+                <!-- Boton registrarse -->
+                <div class="button_container_register">
+                    <a href="{{ route('register') }}" class="boton_registro button1" type="button">Regístrate <i class="fa-regular fa-angles-right"></i></a>
                 </div>
-                <div class="form-group">
-                    <label for="Contrasena">Contraseña:</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="material-icons">lock</i></span>
-                        </div>
-                        <input class="input" type="password" id="Contrasena" name="Contrasena" required>
+
+                @if (session('success'))
+                        <script>
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Éxito',
+                                text: '{{ session('success') }}',
+                                confirmButtonText: 'Ok'
+                            });
+                        </script>
+                    @endif
+
+                    @if (session('error'))
+                        <script>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: '{{ session('error') }}',
+                                confirmButtonText: 'Ok'
+                            });
+                        </script>
+                    @endif
+
+
+                <form class="switch_container" action="{{ route('login') }}" method="POST">
+
+                    <img class="logo_login" src="\img\logos\logo_tesis.png" alt="Logo">
+                    <h3 class="title" id="sesionTitulo">INICIAR SESIÓN</h3>
+
+
+                    @csrf
+                    <!-- Campo de correo electrónico -->
+                    <label class="description" for="CorreoElectronico">Correo Electrónico</label>
+                    <input class="input form_input" type="email" id="CorreoElectronico" name="CorreoElectronico" required placeholder="Ingrese su correo eléctronico">
+
+                    <!-- Campo de contraseña -->
+                    <label class="description" for="Contrasena">Contraseña</label>
+                    <input class="input form_input" type="password" id="Contrasena" name="Contrasena" placeholder="Ingrese su contraseña" required>
+
+                    <!-- Olvido la contraseña -->
+                    <div class="olvidar_contraseña">
+                        <a href="{{ route('recuperar-contrasena') }}">¿Olvidaste tu contraseña?</a>
                     </div>
-                </div>
-                <button type="submit" class="button">Iniciar Sesión</button>
-                
-            </form>
 
-            <hr>
+                    <!-- Botón de enviar -->
+                    <div class="btn_contenedor_login">
+                        <button type="submit" class="button">Iniciar Sesión</button>
+                    </div>
 
-            <a href="#" class="google-btn">
-                <img src="\img\logos\google.png" alt="Google Icon" width="20">
-                <span>Iniciar sesión con Google</span>
-            </a>
+                    <!-- Divisor de botones -->
+                    <div class="contenedor_divisor">
+                        <hr>
+                        <span>o</span>
+                        <hr>
+                    </div>
 
-            <div class="text-center mt-3">
-                <p>¿No tienes una cuenta? <a href="{{ route('register') }}">Regístrate aquí</a></p>
-            </div>
+                    <!-- Boton de google -->
+                    <a href="#" class="btn_google">
+                        <img src="\img\logos\google.png" alt="Google Icon" width="20">
+                        <span>Continuar con Google</span>
+                    </a>
 
-            <div class="mt-2">
-                <a href="{{ route('recuperar-contrasena') }}">¿Olvidaste tu contraseña?</a>
+                </form>
+
             </div>
         </div>
-    </div>
+    </section>
+
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
