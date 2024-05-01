@@ -6,6 +6,7 @@ use App\Models\Cohorte;
 use App\Models\Periodo;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use App\Models\NrcPracticas1;
 use App\Models\Estudiante;
 use App\Models\AsignacionProyecto;
 use Illuminate\Support\Facades\File;
@@ -194,6 +195,8 @@ class EstudianteController extends Controller
         $user = Auth::user();
         $profesores = ProfesUniversidad::all();
 
+        $nrcpracticas1 = NrcPracticas1::all();
+
         $estudiante = $user->estudiante;
 
         // Verifica si el usuario autenticado es un estudiante y su estado es "Aprobado-practicas"
@@ -208,7 +211,7 @@ class EstudianteController extends Controller
                  return redirect()->route('estudiantes.practica2');
             }
 
-            return view('estudiantes.practica1', compact('estudiante', 'correoEstudiante', 'empresas', 'practicaPendiente', 'estadoPractica', 'profesores'));
+            return view('estudiantes.practica1', compact('estudiante', 'correoEstudiante', 'empresas', 'practicaPendiente', 'estadoPractica', 'profesores', 'nrcpracticas1'));
         }
 
         // Si no cumple con los requisitos, muestra un mensaje de alerta y redirige a otra página
@@ -251,6 +254,7 @@ class EstudianteController extends Controller
             'Practicas' => 'required',
             'Empresa' => 'required',
             'ID_tutorAcademico' => 'required',
+            'nrc' => 'required',
             'CedulaTutorEmpresarial' => 'required',
             'NombreTutorEmpresarial' => 'required',
             'Funcion' => 'required',
@@ -277,6 +281,7 @@ class EstudianteController extends Controller
                 'tipoPractica' => $validatedData['Practicas'],  
                 'IDEmpresa' => $validatedData['Empresa'],  
                 'ID_tutorAcademico' => $validatedData['ID_tutorAcademico'],  
+                'id_nrc_practicas1' => $validatedData['nrc'],
                 'CedulaTutorEmpresarial' => $validatedData['CedulaTutorEmpresarial'],
                 'NombreTutorEmpresarial' => $validatedData['NombreTutorEmpresarial'],
                 'Funcion' => $validatedData['Funcion'],
@@ -293,7 +298,7 @@ class EstudianteController extends Controller
                 'Estado' => 'PracticaI'  
             ]);
   
-            return redirect()->route('estudiantes.practicas1')->with('success', 'Práctica guardada exitosamente');
+            return redirect()->route('estudiantes.index')->with('success', 'Práctica guardada exitosamente');
         }
 
          return redirect()->route('estudiantes.index')->with('error', 'No se encontró información del estudiante.');

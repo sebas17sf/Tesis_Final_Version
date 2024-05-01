@@ -17,6 +17,7 @@ class PracticaI extends Model
         'tipoPractica',
         'IDEmpresa',
         'ID_tutorAcademico',
+        'id_nrc_practicas1',
         'CedulaTutorEmpresarial',
         'NombreTutorEmpresarial',
         'Funcion',
@@ -48,5 +49,10 @@ class PracticaI extends Model
     public function tutorAcademico()
     {
         return $this->belongsTo(ProfesUniversidad::class, 'ID_tutorAcademico', 'id');
+    }
+
+    public function nrcPractica()
+    {
+        return $this->belongsTo(NrcPracticas1::class, 'id_nrc_practicas1', 'id');
     }
 }

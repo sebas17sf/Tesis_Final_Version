@@ -75,4 +75,8 @@ class Estudiante extends Model
         return $this->hasMany(AsignacionEstudiantesDirector::class, 'EstudianteID');
     }
 
+   
+
+
+
 }

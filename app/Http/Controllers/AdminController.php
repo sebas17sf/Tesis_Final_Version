@@ -9,8 +9,7 @@ use App\Models\Estudiante;
 use App\Models\Proyecto;
 use App\Mail\EstudianteAprobado;
 use App\Mail\EstudianteNegado;
-use Illuminate\Pagination\Paginator;
-use App\Models\AsignacionProyecto;
+ use App\Models\AsignacionProyecto;
 use App\Models\Empresa;
 use App\Models\Role;
 
@@ -20,8 +19,7 @@ use App\Models\ParticipanteAdicional;
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
-use Spatie\Backup\Tasks\Backup\BackupJobFactory;
-
+ 
 use App\Models\Periodo;
 
 use App\Models\ProfesUniversidad;
@@ -29,7 +27,9 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\EstudiantesVinculacion;
 use Illuminate\Support\Facades\Auth;
 
+
 use App\Models\NrcVinculacion;
+use App\Models\NrcPracticas1;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -1230,6 +1230,28 @@ class AdminController extends Controller
         }
 
         NrcVinculacion::create([
+            'nrc' => $request->nrc,
+            'id_periodo' => $request->periodo,
+        ]);
+
+        return redirect()->route('admin.index')->with('success', 'NRC guardado con éxito.');
+    }
+
+    //////////////////////agregar nrc practicas 1
+    public function GuardarNRCPracticas1(Request $request)
+    {
+        $request->validate([
+            'nrc' => 'required|numeric|digits:5',
+            'periodo' => 'required',
+        ]);
+
+        $nrcExistente = NrcPracticas1::where('nrc', $request->nrc)->first();
+
+        if ($nrcExistente) {
+            return redirect()->route('admin.index')->with('error', 'El NRC ingresado ya existe.');
+        }
+
+        NrcPracticas1::create([
             'nrc' => $request->nrc,
             'id_periodo' => $request->periodo,
         ]);

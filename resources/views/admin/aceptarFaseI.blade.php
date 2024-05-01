@@ -38,6 +38,8 @@
             <th>Tutor Académico</th>
             <th>Tutor Empresarial</th>
             <th>Empresa</th>
+            <th>NRC</th>
+            <th>Periodo</th>
              <th>Fecha Inicio</th>
             <th>Fecha Fin</th>
             <th>Horas planificadas</th>
@@ -54,6 +56,8 @@
                     <td>{{ strtoupper($practicaI->tutorAcademico->Apellidos) }} {{ strtoupper($practicaI->tutorAcademico->Nombres) }}</td>
                     <td>{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
                     <td>{{ strtoupper($practicaI->Empresa->nombreEmpresa) }}</td>
+                    <td>{{ strtoupper($practicaI->nrcPractica->nrc) }}</td>
+                    <td>{{ strtoupper($practicaI->nrcPractica->periodo->numeroPeriodo) }}</td>
                      <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
                     <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                     <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
@@ -127,6 +131,8 @@
             <th>Tutor Académico</th>
             <th>Tutor Empresarial</th>
             <th>Empresa</th>
+            <th>NRC</th>
+            <th>Periodo</th>
             <th>Fecha Inicio</th>
             <th>Fecha Fin</th>
             <th>Horas planificadas</th>
@@ -143,6 +149,9 @@
                     <td>{{ strtoupper($practicaI->tutorAcademico->Apellidos) }} {{ strtoupper($practicaI->tutorAcademico->Nombres) }}</td>
                     <td>{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
                     <td>{{ strtoupper($practicaI->Empresa->nombreEmpresa) }}</td>
+                    <td>{{ strtoupper($practicaI->nrcPractica->nrc) }}</td>
+                    <td>{{ strtoupper($practicaI->nrcPractica->periodo->numeroPeriodo) }}</td>
+
                      <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
                     <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                     <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>

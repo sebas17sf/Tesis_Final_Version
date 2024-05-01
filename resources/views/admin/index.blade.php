@@ -305,8 +305,7 @@
                     <option value="100" @if ($perPage == 100) selected @endif>100</option>
                 </select>
             </form>
-            <!-- espacio entre estos dos -->
-
+ 
             @if ($profesores->onFirstPage())
                 <li class="page-item disabled">
                     <span class="page-link">Anterior</span>
@@ -347,8 +346,7 @@
         <div id="registrarPeriodos" style="display: none;">
             <hr>
             <br>
-            <!-- Formulario para agregar período académico -->
-            <form action="{{ route('admin.guardarPeriodo') }}" method="post">
+             <form action="{{ route('admin.guardarPeriodo') }}" method="post">
                 @csrf
                 <div class="row align-items-center">
                     <div class=" col-md-4">
@@ -409,6 +407,43 @@
                 </div>
                 <button type="submit" class="button">Guardar NRC</button>
             </form>
+
+            <!-- Formulario para agregar NRC Practicas 1 -->
+
+            <h6>NRC Practicas preprofesinales 1</h6>
+            <form class="FormularioNRCPracticas1" action="{{ route('admin.nrcPracticas1') }}" method="post">
+                @csrf
+                <div class="row align-items-center">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="nrc"><strong>Ingrese el NRC:</strong></label>
+                            <input type="text" id="nrc" name="nrc" class="form-control input"
+                                placeholder="Ingrese 5 números" required>
+                            <small id="errorNRC" class="form-text text-danger"></small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="periodo"><strong>Seleccione el período:</strong></label>
+                            <select id="periodo" name="periodo" class="form-select me-2 input input_select " required>
+                                <option value="">Seleccione un período</option>
+                                @foreach ($periodos as $periodo)
+                                    <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} -
+                                        {{ $periodo->Periodo }}</option>
+                                @endforeach
+                            </select>
+                            <small id="errorPeriodo" class="form-text text-danger"></small>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="button">Guardar NRC</button>
+            </form>
+
+
+
+
+
             <br>
             <!-- Elementos agregados (Periodos y Cohortes) -->
             <div class="row">
@@ -439,6 +474,7 @@
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
         $(document).ready(function() {
             $("#toggleFormBtn8").click(function() {
@@ -450,14 +486,7 @@
                 }
             });
 
-            $("#toggleFormBtn2").click(function() {
-                $("#registrarPeriodos").toggle();
-                if ($("#registrarPeriodos").is(":visible")) {
-                    $(this).text("Ocultar Registro");
-                } else {
-                    $(this).text("Agregar Cohorte/Periodo Académico");
-                }
-            });
+            
         });
         var delayTimer;
         $('#formBusquedaDocentes input[name="search"]').on('keyup', function() {
