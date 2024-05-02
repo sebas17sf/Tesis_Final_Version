@@ -67,80 +67,86 @@
             @if ($proyectos->isEmpty())
                 <p>No se encontraron resultados para la busqueda</p>
             @else
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Nombre del director del proyecto</th>
-                        <th>Nombres Docentes participantes</th>
-                        <th>Nombre del proyecto</th>
-                        <th>Descripción</th>
-                        <th>Correo del director</th>
-                        <th>Correos de Docentes participantes</th>
-                        <th>Departamento del director</th>
-                        <th>Código del Proyecto Social</th>
-                        <th>NRC</th>
-                        <th>Periodo</th>
-                        <th>Fecha de inicio</th>
-                        <th>Fecha de finalización</th>
-                        <th>Cupos</th>
-                        <th>Estado del proyecto</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($proyectos as $proyecto)
-                    <tr>
-                        <td>{{ strtoupper($proyecto->director->Apellidos) }} {{ strtoupper($proyecto->director->Nombres) }}</td>
-                        <td>
-                            {{ strtoupper($proyecto->docenteParticipante->Apellidos) }} 
-                            {{ strtoupper($proyecto->docenteParticipante->Nombres) }}
-                            @foreach($proyecto->participantesAdicionales as $participanteAdicional)
-                                <br>
-                                {{ strtoupper($participanteAdicional->Apellidos) }}
-                                {{ strtoupper($participanteAdicional->Nombres) }}
-                            @endforeach
-                        </td>
-                        <td style="word-wrap: break-word; text-align: justify;">{{ strtoupper($proyecto->NombreProyecto) }}</td>
-                        <td>{{ strtoupper($proyecto->DescripcionProyecto) }}</td>
-                        <td>{{ strtoupper($proyecto->director->Correo) }}</td>
-                        <td>
-                            {{ strtoupper($proyecto->docenteParticipante->Correo) }}
-                            @foreach($proyecto->participantesAdicionales as $participanteAdicional)
-                                <br>
-                                {{ strtoupper($participanteAdicional->Correo) }}
-                            @endforeach
-                        </td>
-                        <td>{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
-                        <td>
-                            @if (empty($proyecto->codigoProyecto))
-                            {{ strtoupper('No requiere código de proyecto') }}
-                            @else
-                            {{ strtoupper($proyecto->codigoProyecto) }}
-                            @endif
-                        </td>
-                        <td>{{ strtoupper($proyecto->nrcs->nrc) }}</td>
-                        <td>{{ strtoupper($proyecto->nrcs->periodo->numeroPeriodo) }}</td>
-                        <td>{{ strtoupper($proyecto->FechaInicio) }}</td>
-                        <td>{{ strtoupper($proyecto->FechaFinalizacion) }}</td>
-                        <td>{{ strtoupper($proyecto->cupos) }}</td>
-                        <td>{{ strtoupper($proyecto->Estado) }}</td>
-                        <td>
-                            <a href="{{ route('admin.editarProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}" class="btn btn-outline-secondary btn-block">
-                                <i class="material-icons">edit</i>
-                            </a>
-                            <form action="{{ route('admin.deleteProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}" method="POST" style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-outline-secondary btn-block" onclick="return confirm('¿Estás seguro de eliminar este proyecto?')">
-                                    <i class="material-icons">delete</i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nombre del director del proyecto</th>
+                            <th>Nombres Docentes participantes</th>
+                            <th>Nombre del proyecto</th>
+                            <th>Descripción</th>
+                            <th>Correo del director</th>
+                            <th>Correos de Docentes participantes</th>
+                            <th>Departamento del director</th>
+                            <th>Código del Proyecto Social</th>
+                            <th>NRC</th>
+                            <th>Periodo</th>
+                            <th>Fecha de inicio</th>
+                            <th>Fecha de finalización</th>
+                            <th>Cupos</th>
+                            <th>Estado del proyecto</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($proyectos as $proyecto)
+                            <tr>
+                                <td>{{ strtoupper($proyecto->director->Apellidos) }}
+                                    {{ strtoupper($proyecto->director->Nombres) }}</td>
+                                <td>
+                                    {{ strtoupper($proyecto->docenteParticipante->Apellidos) }}
+                                    {{ strtoupper($proyecto->docenteParticipante->Nombres) }}
+                                    @foreach ($proyecto->participantesAdicionales as $participanteAdicional)
+                                        <br>
+                                        {{ strtoupper($participanteAdicional->Apellidos) }}
+                                        {{ strtoupper($participanteAdicional->Nombres) }}
+                                    @endforeach
+                                </td>
+                                <td style="word-wrap: break-word; text-align: justify;">
+                                    {{ strtoupper($proyecto->NombreProyecto) }}</td>
+                                <td>{{ strtoupper($proyecto->DescripcionProyecto) }}</td>
+                                <td>{{ strtoupper($proyecto->director->Correo) }}</td>
+                                <td>
+                                    {{ strtoupper($proyecto->docenteParticipante->Correo) }}
+                                    @foreach ($proyecto->participantesAdicionales as $participanteAdicional)
+                                        <br>
+                                        {{ strtoupper($participanteAdicional->Correo) }}
+                                    @endforeach
+                                </td>
+                                <td>{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
+                                <td>
+                                    @if (empty($proyecto->codigoProyecto))
+                                        {{ strtoupper('No requiere código de proyecto') }}
+                                    @else
+                                        {{ strtoupper($proyecto->codigoProyecto) }}
+                                    @endif
+                                </td>
+                                <td>{{ strtoupper($proyecto->nrcs->nrc) }}</td>
+                                <td>{{ strtoupper($proyecto->nrcs->periodo->numeroPeriodo) }}</td>
+                                <td>{{ strtoupper($proyecto->FechaInicio) }}</td>
+                                <td>{{ strtoupper($proyecto->FechaFinalizacion) }}</td>
+                                <td>{{ strtoupper($proyecto->cupos) }}</td>
+                                <td>{{ strtoupper($proyecto->Estado) }}</td>
+                                <td>
+                                    <a href="{{ route('admin.editarProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
+                                        class="btn btn-outline-secondary btn-block">
+                                        <i class="material-icons">edit</i>
+                                    </a>
+                                    <form
+                                        action="{{ route('admin.deleteProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
+                                        method="POST" style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-outline-secondary btn-block"
+                                            onclick="return confirm('¿Estás seguro de eliminar este proyecto?')">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
             @endif
         </div>
 
@@ -217,7 +223,7 @@
                             @if ($proyecto->cupos > 0)
                                 <option value="{{ $proyecto->ProyectoID }}">
                                     {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }} -
-                                      Cupos disponibles: {{ $proyecto->cupos }} -
+                                    Cupos disponibles: {{ $proyecto->cupos }} -
                                     {{ $proyecto->DepartamentoTutor }}
                                 </option>
                             @endif

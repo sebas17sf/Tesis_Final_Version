@@ -16,7 +16,7 @@
             </select>
         </form>
 
- 
+
         <form method="GET" action="{{ route('coordinador.estudiantesAprobados') }}">
             <input type="text" name="buscarEstudiantesGeneral" placeholder="Buscar estudiantes">
             <button type="submit">Buscar</button>
@@ -47,7 +47,7 @@
                             <td>{{ strtoupper($estudiante->Carrera) }}</td>
                             <td>{{ strtoupper($estudiante->celular) }}</td>
                             <td>{{ strtoupper($estudiante->cedula) }}</td>
-                            <td>{{ strtoupper($estudiante->cohortes->Cohorte) }}</td>
+                            <td>{{ strtoupper($estudiante->periodos->numeroPeriodo) }}</td>
                             <td>{{ strtoupper($estudiante->periodos->Periodo) }}</td>
                             <td>{{ strtoupper($estudiante->Departamento) }}</td>
                             <td>
@@ -164,9 +164,9 @@
 
 
         <br>
-        <button id="toggleFormBtn" class="btn btn-outline-secondary btn-block">Ver Estudiantes culminados Vinculacion a la
+        <button id="toggleFormBtn" class="btn btn-outline-secondary btn-block">Estudiantes culminados Vinculacion a la
             Sociedad</button>
-            <br>
+        <br>
         <div id="verEstudiantes" style="display: none;">
             <h6>Estudiantes culminados Vinculacion a la sociedad</h6>
             <div class="d-flex">
@@ -292,66 +292,72 @@
 
 
 
+
             </div>
-        @endsection
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
-        <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                // Obtener el estado del formulario desde localStorage (si existe)
-                var formularioVisible = localStorage.getItem("formularioVisible");
+        </div>
+    @endsection
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+    // Obtener el estado del formulario desde localStorage (si existe)
+    var formularioVisible = localStorage.getItem("formularioVisible");
 
-                // Mostrar u ocultar el formulario según el estado almacenado
-                if (formularioVisible === "true") {
-                    document.getElementById("verEstudiantes").style.display = "block";
-                }
+    // Mostrar u ocultar el formulario según el estado almacenado
+    if (formularioVisible === "true") {
+        document.getElementById("verEstudiantes").style.display = "block";
+        document.getElementById("toggleFormBtn").textContent = "Cerrar Estudiantes culminados Vinculacion a la Sociedad";
+    }
 
-                // Manejar el clic en el botón para mostrar/ocultar el formulario
-                document.getElementById("toggleFormBtn").addEventListener("click", function() {
-                    var formulario = document.getElementById("verEstudiantes");
+    // Manejar el clic en el botón para mostrar/ocultar el formulario
+    document.getElementById("toggleFormBtn").addEventListener("click", function() {
+        var formulario = document.getElementById("verEstudiantes");
 
-                    if (formulario.style.display === "none") {
-                        formulario.style.display = "block";
-                        localStorage.setItem("formularioVisible", "true");
-                    } else {
-                        formulario.style.display = "none";
-                        localStorage.setItem("formularioVisible", "false");
-                    }
-                });
-            });
-        </script>
+        if (formulario.style.display === "none") {
+            formulario.style.display = "block";
+            localStorage.setItem("formularioVisible", "true");
+            this.textContent = "Cerrar Estudiantes culminados Vinculacion a la Sociedad";
+        } else {
+            formulario.style.display = "none";
+            localStorage.setItem("formularioVisible", "false");
+            this.textContent = "Estudiantes culminados Vinculacion a la Sociedad";
+        }
+    });
+});
 
-
-
-
-        <style>
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                white-space: nowrap;
-                /* Evita el desbordamiento de texto */
-            }
-
-            table,
-            th,
-            td {
-                font-size: 0.8rem;
-            }
+    </script>
 
 
-            th,
-            td {
-                padding: 8px 12px;
-                text-align: left;
-                border: 1px solid #ddd;
-                overflow: hidden;
-                /* Oculta el contenido desbordado */
-                text-overflow: ellipsis;
-                /* Agrega puntos suspensivos en el texto desbordado */
-            }
 
-            th {
-                background-color: #f2f2f2;
-            }
-        </style>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            white-space: nowrap;
+            /* Evita el desbordamiento de texto */
+        }
+
+        table,
+        th,
+        td {
+            font-size: 0.8rem;
+        }
+
+
+        th,
+        td {
+            padding: 8px 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+            overflow: hidden;
+            /* Oculta el contenido desbordado */
+            text-overflow: ellipsis;
+            /* Agrega puntos suspensivos en el texto desbordado */
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>

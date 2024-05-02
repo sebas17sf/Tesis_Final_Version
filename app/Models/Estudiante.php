@@ -52,8 +52,9 @@ class Estudiante extends Model
 
     public function evidencias()
     {
-        return $this->hasOne(ActividadEstudiante::class, 'EstudianteID');
+        return $this->hasMany(ActividadEstudiante::class, 'EstudianteID');
     }
+    
     public function actividades()
     {
         return $this->hasMany(ActividadEstudiante::class, 'EstudianteID');
@@ -73,5 +74,9 @@ class Estudiante extends Model
     {
         return $this->hasMany(AsignacionEstudiantesDirector::class, 'EstudianteID');
     }
+
+   
+
+
 
 }

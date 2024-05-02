@@ -299,7 +299,14 @@ Route::post('/admin/reportes-docentes', [DocumentoController::class, 'ReportePro
 
 ////////////////NRC Vincluacion de admin
 Route::post('/admin/nrc-vinculacion', [AdminController::class, 'GuardarNRC'])->name('admin.nrcVinculacion');
+/////////NRC PRACTICAS 1
+Route::post('/admin/nrc-practicas1', [AdminController::class, 'GuardarNRCPracticas1'])->name('admin.nrcPracticas1');
 
+
+////////////////////////Docuemntos de practicas
+Route::post('/estudiantes/documentos-practicas', [DocumentoController::class, 'EncuestaEstudiante'])->name('generar.EncuestaEstudiante');
+Route::post('/estudiantes/documentos-EncuestaEstudiante', [DocumentoController::class, 'EncuestaDocentes'])->name('generar.EncuestaDocentes');
+Route::post('/estudiantes/documentos-EvTutorEmpresarial', [DocumentoController::class, 'EvTutorEmpresarial'])->name('generar.EvTutorEmpresarial');
 
 //////////////////////////respaldo
 Route::post('/respaldo', [AdminController::class, 'backup'])->name('admin.respaldo');

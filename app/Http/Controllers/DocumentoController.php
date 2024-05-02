@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 use App\Models\NrcVinculacion;
+use App\Models\PracticaI;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\ActividadEstudiante;
@@ -455,27 +456,27 @@ class DocumentoController extends Controller
             abort(404, 'El archivo de plantilla no existe.');
         }
 
-         $template = new TemplateProcessor($plantillaPath);
+        $template = new TemplateProcessor($plantillaPath);
 
-         $usuario = auth()->user();
+        $usuario = auth()->user();
 
         if (!$usuario) {
-             abort(403, 'No estás autenticado.');
+            abort(403, 'No estás autenticado.');
         }
 
         // Obtener el estudiante asociado al usuario
         $estudiante = $usuario->estudiante;
 
         if (!$estudiante) {
-             abort(404, 'No se encontró el estudiante asociado a tu usuario.');
+            abort(404, 'No se encontró el estudiante asociado a tu usuario.');
         }
 
-         $asignacionProyecto = $estudiante->asignacionesEstudiantesDirectores->first();
+        $asignacionProyecto = $estudiante->asignacionesEstudiantesDirectores->first();
 
         if ($asignacionProyecto) {
             $proyectoID = $asignacionProyecto->IDProyecto;
         } else {
-             return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
+            return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
         }
 
         $datosEstudiantes = DB::table('estudiantes')
@@ -503,7 +504,7 @@ class DocumentoController extends Controller
             ->orderBy('estudiantes.Apellidos', 'asc')
             ->get();
 
- 
+
 
         $datosEstudiantes2 = DB::table('estudiantes')
             ->join('asignacionEstudiantesDirector', 'estudiantes.EstudianteID', '=', 'asignacionEstudiantesDirector.EstudianteID')
@@ -517,15 +518,15 @@ class DocumentoController extends Controller
                 'actividades_estudiante.nombre_actividad',
             )
             ->where('proyectos.Estado', '=', 'Ejecucion')
-            ->where('asignacionEstudiantesDirector.IDProyecto', '=', $proyectoID)  
+            ->where('asignacionEstudiantesDirector.IDProyecto', '=', $proyectoID)
             ->orderBy('estudiantes.Apellidos', 'asc')
             ->get();
 
-  
+
 
         // Verificar si se recuperaron datos
         if ($datosEstudiantes->isEmpty()) {
-             abort(404, 'No se encontraron datos de estudiantes asignados al proyecto activo.');
+            abort(404, 'No se encontraron datos de estudiantes asignados al proyecto activo.');
         }
 
         // Obtener Carrera, Provincia y FechaInicio del primer estudiante asignado al proyecto
@@ -860,11 +861,11 @@ class DocumentoController extends Controller
             }
 
             $sheet->setCellValue('F' . ($filaInicio + $index), $nombreParticipante);
-            $sheet->getStyle('F' . ($filaInicio + $index))->getAlignment()->setWrapText(true);  
-            
+            $sheet->getStyle('F' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
+
 
             $sheet->setCellValue('F' . ($filaInicio + $index), $nombreParticipante);
-            $sheet->getStyle('F' . ($filaInicio + $index))->getAlignment()->setWrapText(true);  
+            $sheet->getStyle('F' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
 
             $nrcValue = $nrc ? $nrc->nrc : 'No especificado';
             $sheet->setCellValue('K' . ($filaInicio + $index), $nrcValue);
@@ -1305,8 +1306,106 @@ class DocumentoController extends Controller
 
 
 
+    //////////////////////////////////////////////////////////////////////////////////////DOCUMENTOS PRACTICAS/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function EncuestaEstudiante()
+    {
+        $plantillaPath = public_path('Plantillas/practicas/EncuestaEstudiantes.docx');
+        if (!file_exists($plantillaPath)) {
+            abort(404, 'El archivo de plantilla no existe.');
+        }
+
+        $template = new TemplateProcessor($plantillaPath);
+
+        $estudiante = Auth::user()->estudiante;
+
+        $datosEstudiantes = PracticaI::where('EstudianteID', $estudiante->EstudianteID)->get();
+
+        $template->setValue('estudiante', $estudiante->Nombres . ' ' . $estudiante->Apellidos);
+        $template->setValue('cedula', $estudiante->cedula);
+        $template->setValue('espe_id', $estudiante->espe_id);
+        $template->setValue('celular', $estudiante->celular);
+        $template->setValue('correo', $estudiante->Correo);
+
+        $template->setValue('empresa', $datosEstudiantes->first()->empresa->nombreEmpresa);
+        $template->setValue('periodo', $datosEstudiantes->first()->nrcPractica->periodo->numeroPeriodo);
 
 
+        ///////descargar el documento generado
+        $nombreArchivo = 'EncuestaEstudiantes.docx';
+        $template->saveAs($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+
+
+    }
+
+
+    public function EncuestaDocentes()
+    {
+        $plantillaPath = public_path('Plantillas/practicas/EncuestaDocentes.docx');
+        if (!file_exists($plantillaPath)) {
+            abort(404, 'El archivo de plantilla no existe.');
+        }
+        $template = new TemplateProcessor($plantillaPath);
+
+        $estudiante = Auth::user()->estudiante;
+
+        $datosEstudiantes = PracticaI::where('EstudianteID', $estudiante->EstudianteID)->get();
+
+        $template->setValue('Nombre', $datosEstudiantes->first()->tutorAcademico->Nombres . ' ' . $datosEstudiantes->first()->tutorAcademico->Apellidos);
+        $template->setValue('Cedula', $datosEstudiantes->first()->tutorAcademico->Cedula);
+        $template->setValue('Departamento', $datosEstudiantes->first()->tutorAcademico->Departamento);
+        $template->setValue('Correo', $datosEstudiantes->first()->tutorAcademico->Correo);
+        $template->setValue('periodo', $datosEstudiantes->first()->nrcPractica->periodo->numeroPeriodo);
+
+        $nombreArchivo = 'EncuestaDocentes.docx';
+        $template->saveAs($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+
+    }
+
+    public function EvTutorEmpresarial()
+    {
+        $plantillaPath = public_path('Plantillas/practicas/EvTutorEmpresarial.docx');
+        if (!file_exists($plantillaPath)) {
+            abort(404, 'El archivo de plantilla no existe.');
+        }
+        $template = new TemplateProcessor($plantillaPath);
+
+        $estudiante = Auth::user()->estudiante;
+
+        $datosEstudiantes = PracticaI::where('EstudianteID', $estudiante->EstudianteID)->get();
+         $template->setValue('periodo', $datosEstudiantes->first()->nrcPractica->periodo->numeroPeriodo);
+        $template->setValue('estudiante', $estudiante->Nombres . ' ' . $estudiante->Apellidos);
+        $template->setValue('cedula', $estudiante->cedula);
+        $template->setValue('espe_id', $estudiante->espe_id);
+        $template->setValue('celular', $estudiante->celular);
+        $template->setValue('correo', $estudiante->Correo);
+
+       
+        $fechaInicio = $datosEstudiantes->first()->FechaInicio;
+        $formattedFechaInicio = date('d/m/Y', strtotime($fechaInicio));
+        $template->setValue('FechaInicio', $formattedFechaInicio);
+        
+        $fechaFinalizacion = $datosEstudiantes->first()->FechaFinalizacion;
+        $formattedFechaFinalizacion = date('d/m/Y', strtotime($fechaFinalizacion));
+        $template->setValue('FechaFinalizacion', $formattedFechaFinalizacion);
+      
+
+        $template->setValue('HorasPlanificadas', $datosEstudiantes->first()->HorasPlanificadas);
+        $template->setValue('HoraEntrada', $datosEstudiantes->first()->HoraEntrada);
+        $template->setValue('HoraSalida', $datosEstudiantes->first()->HoraSalida);
+
+        $template->setValue('NombresEmpresarial', $datosEstudiantes->first()->NombreTutorEmpresarial);
+        $template->setValue('CedulaEmpresarial', $datosEstudiantes->first()->CedulaTutorEmpresarial);
+
+
+        $nombreArchivo = 'EvTutorEmpresarial.docx';
+        $template->saveAs($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+
+
+    }
 
 
 

@@ -877,6 +877,12 @@ body {
     padding-bottom: 0px;
   }
 }
+.main1 .contenedor_inputs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  justify-content: center;
+}
 .main1 .form_input {
   width: 350px;
   outline: none;
@@ -914,7 +920,7 @@ body {
     font-size: 10px;
   }
 }
-.main1 .btn_contenedor_login {
+.main1 .btn_contenedor_register {
   display: grid;
   margin-top: 0px;
   padding: 10px;
@@ -922,18 +928,18 @@ body {
   justify-items: center;
 }
 @media (max-width: 768px) {
-  .main1 .btn_contenedor_login {
+  .main1 .btn_contenedor_register {
     margin-top: 25px;
   }
 }
-.main1 .btn_contenedor_login .button {
+.main1 .btn_contenedor_register .button {
   width: 180px;
   height: 30px;
 }
-.main1 .btn_contenedor_login .button_forma {
+.main1 .btn_contenedor_register .button_forma {
   transform: scale(0.8);
 }
-.main1 .btn_contenedor_login .button_forma::after {
+.main1 .btn_contenedor_register .button_forma::after {
   width: 180px;
   height: 40px;
   top: 0%;
@@ -1057,21 +1063,21 @@ body {
   padding-bottom: 5px;
 }
 
-.button_container_register {
+.button_container_login {
   position: absolute;
   align-items: center;
   z-index: 100;
   top: 0px;
 }
 
-.button_container_register {
-  right: 0px;
-  filter: drop-shadow(-3px 3px 1.5px rgba(0, 0, 0, 0.5));
+.button_container_login {
+  left: 0px;
+  filter: drop-shadow(3px 3px 1.5px rgba(0, 0, 0, 0.5));
 }
-.button_container_register:hover {
-  filter: drop-shadow(-3px 3px 5px rgba(0, 0, 0, 0.5));
+.button_container_login:hover {
+  filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.5));
 }
-.button_container_register .boton_registro {
+.button_container_login .boton_login {
   display: flex;
   text-decoration: none !important;
   font-weight: bold;
@@ -1081,20 +1087,20 @@ body {
   font-size: 1rem;
 }
 @media (max-width: 480px) {
-  .button_container_register .boton_registro {
-    right: 0px;
+  .button_container_login .boton_login {
+    left: 0px;
   }
 }
-.button_container_register .boton_registro i {
+.button_container_login .boton_login i {
   font-size: 20px;
-  margin-left: 10px;
+  margin-right: 10px;
 }
-.button_container_register .button1::after {
+.button_container_login .button1::after {
   width: 230px;
   height: 40px;
-  left: -50px;
-  -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 20% 100%);
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 20% 100%);
+  right: -50px;
+  -webkit-clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
 }
 
 .error-message {
@@ -1212,4 +1218,4 @@ body {
   }
 }
 
-/*# sourceMappingURL=login.css.map */
+/*# sourceMappingURL=register.css.map */
