@@ -16,15 +16,25 @@
 
 
     <script src="js/menu.js"></script>
-    <link rel="stylesheet" href="css/admin/admin.css">
+      <link rel="stylesheet" href="css/admin/admin.css"> 
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
 
     <style>
+      /*   * {
+
+            font-family: "Arial", sans-serif;
+
+        } */
+
+
         #sublista {
             display: none;
             /* Por defecto oculto */
         }
+
+
+        
     </style>
 </head>
 
@@ -45,9 +55,7 @@
                 <div class="links_site">
                     <nav class="nav">
                         <ul class="nav-list">
-                            <a class="p-element active-section" href="{{ route('admin.index') }}"
-                                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-custom-class="custom-tooltip"
-                                data-bs-title="Panel Administrativo">
+                            <a class="p-element active-section" href="{{ route('admin.index') }}">
                                 <div class="icon-sidebar-item">
                                     <i class="material-icons">assignment</i>
                                 </div>
@@ -55,9 +63,7 @@
                                     <li>Panel Administrativo</li>
                                 </div>
                             </a>
-                            <a href="{{ route('admin.indexProyectos') }}" class="p-element" data-bs-toggle="tooltip"
-                                data-bs-placement="right" data-bs-custom-class="custom-tooltip"
-                                data-bs-title="Proyectos">
+                            <a href="{{ route('admin.indexProyectos') }}" class="p-element">
                                 <div class="icon-sidebar-item">
                                     <i class="material-icons">library_books</i>
                                 </div>
@@ -66,9 +72,7 @@
                                 </div>
                             </a>
 
-                            <a href="{{ route('admin.estudiantes') }}" class="p-element" data-bs-toggle="tooltip"
-                                data-bs-placement="right" data-bs-custom-class="custom-tooltip"
-                                data-bs-title="Estudiantes">
+                            <a href="{{ route('admin.estudiantes') }}" class="p-element">
                                 <div class="icon-sidebar-item">
                                     <i class="material-icons">people</i>
                                 </div>
@@ -78,9 +82,7 @@
                             </a>
 
 
-                            <a class="p-element submenu" class="p-element" data-bs-toggle="tooltip"
-                                data-bs-placement="right" 
-                                data-bs-title="Prácticas">
+                            <a class="p-element submenu" class="p-element">
                                 <div class="icon-sidebar-item">
                                     <i class="material-icons">business</i>
                                 </div>
@@ -91,9 +93,7 @@
                             </a>
 
                             <div class="item-list" id="sublista">
-                                <a class="p-element mb-1" href="{{ route('admin.agregarEmpresa') }}" class="p-element"
-                                    data-bs-toggle="tooltip" data-bs-placement="right"
-                                   data-bs-title="Agregar-Empresa">
+                                <a class="p-element mb-1" href="{{ route('admin.agregarEmpresa') }}" class="p-element">
                                     <div class="icon-sidebar-item">
                                         <i class="material-icons">add_business</i>
                                     </div>
@@ -101,9 +101,7 @@
                                         <li>Agregar-Empresa</li>
                                     </div>
                                 </a>
-                                <a class="p-element" href="{{ route('admin.aceptarFaseI') }}" class="p-element"
-                                    data-bs-toggle="tooltip" data-bs-placement="right"
-                                   data-bs-title="Aprobar-Practicas">
+                                <a class="p-element" href="{{ route('admin.aceptarFaseI') }}" class="p-element">
                                     <div class="icon-sidebar-item">
                                         <i class="material-icons">check_circle</i>
                                     </div>
@@ -155,8 +153,8 @@
                     <i>Designed by Sebastian Flores & Karen Cueva.</i>
                 </span>
             </div>
-            </div>
-            </div>
+        </div>
+        </div>
     </section>
     <!-- SIDEBAR -->
     <section class="content-navbar dimension-nav" _ngcontent-ng-c3252749989>
@@ -169,7 +167,7 @@
 
         <main class="navbar">
             <button class="profile-icon dropdown" id="profile-button">
-                
+
                 <div class="name-profile">
                     <span><?php echo Auth::user()->NombreUsuario; ?></span>
                 </div>
@@ -189,8 +187,7 @@
         </main>
 
     </section>
-    <button id="btn_top" *ngIf="showScrollButton" (click)="scrollToTop()"><i
-            class='bx bxs-chevrons-up'></i></button>
+    <button id="btn_top" *ngIf="showScrollButton" (click)="scrollToTop()"><i class='bx bxs-chevrons-up'></i></button>
     <!-- CONTENEDOR -->
     <section class="content-views dimension-content" _ngcontent-ng-c3252749989>
         <!-- Title component -->
@@ -210,7 +207,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-     <script src="{{ asset('js/admin/general.js') }}"></script>
+    <script src="{{ asset('js/admin/general.js') }}"></script>
 
     <script src="{{ asset('js/admin/general.js') }}"></script>
 

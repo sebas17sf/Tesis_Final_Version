@@ -5,6 +5,19 @@
 // SIDEBAR
 // ==============================
 
+* {
+
+  font-family: "Arial", sans-serif;
+
+}
+
+
+#sublista {
+  display: none;
+  /* Por defecto oculto */
+}
+
+
 @mixin items-sidebar-styles {
   display: grid;
   grid-template-columns: 1fr 15fr 1fr;
@@ -209,9 +222,9 @@
   grid-template-columns: 1fr;
   padding-right: 0px;
 
-  .name-sidebar-item {
+  /*  .name-sidebar-item {
     display: none;
-  }
+  } */
 
   .icon-sidebar-item-list {
     display: grid;
@@ -220,9 +233,10 @@
     margin-top: -13px;
   }
 }
+
 .content-sidebar-hidden {
   .content {
-    max-width: 55px;
+    max-width: 57px;
 
     .sidebar {
       .logo_site {
@@ -253,7 +267,7 @@
 
             a {
               @include items-sidebar-styles-retraido;
-              transform: scale(0.8);
+              /*  transform: scale(0.8); */
             }
           }
         }
@@ -264,6 +278,105 @@
   .content-autors {
     display: none;
   }
+
+
+  //Mostramos cada opcion del menu cuando se comprime el menu
+
+  ul {
+    a {
+      cursor: pointer;
+      transition: all ease-out 120ms;
+
+      li {
+        /*    display: inline-block;  */
+        position: fixed;
+        background-color: #4b5563;
+        padding: 12px 15px;
+        border-radius: 5px;
+        margin-top: -45px;
+        left: 55px;
+        opacity: 0;
+        visibility: hidden;
+        font-size: 16px;
+        letter-spacing: .5px;
+        color: white;
+
+        &:before {
+          content: '';
+          display: block;
+          position: absolute;
+          left: -4px;
+          top: 16px;
+          transform: rotate(45deg);
+          width: 10px;
+          height: 10px;
+          background-color: inherit;
+        }
+
+      }
+
+      &:hover {
+
+        li {
+          visibility: visible;
+          opacity: 1;
+        }
+      }
+    }
+
+    div {
+
+      cursor: pointer;
+      transition: all ease-out 120ms;
+
+      a {
+
+        cursor: pointer;
+        transition: all ease-out 120ms;
+
+        li {
+          /*   display: inline-block; */
+          position: fixed;
+          background-color: #4b5563;
+          padding: 12px 15px;
+          border-radius: 5px;
+          margin-top: -45px;
+          left: 55px;
+          opacity: 0;
+          visibility: hidden;
+          font-size: 16px;
+          letter-spacing: .5px;
+          color: white;
+
+          &:before {
+            content: '';
+            display: block;
+            position: absolute;
+            left: -4px;
+            top: 16px;
+            transform: rotate(45deg);
+            width: 10px;
+            height: 10px;
+            background-color: inherit;
+          }
+
+        }
+
+        &:hover {
+
+          li {
+            visibility: visible;
+            opacity: 1;
+          }
+        }
+
+      }
+    }
+
+
+  }
+
+
 }
 
 // Iluminaror de los items del sidebar
