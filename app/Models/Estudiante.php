@@ -75,6 +75,13 @@ class Estudiante extends Model
         return $this->hasMany(AsignacionEstudiantesDirector::class, 'EstudianteID');
     }
 
+
+
+    public function actividades_practicas()
+    {
+        return $this->hasMany(ActividadesPracticas::class, 'EstudianteID');
+    }
+
    
 
 

@@ -35,11 +35,13 @@
 
                     <dl class="row">
                         <dt class="col-sm-5 text-nowrap">Estudiante:</dt>
-                        <dd class="col-sm-7">{{ $practicaPendiente->estudiante->Apellidos }} {{ $practicaPendiente->estudiante->Nombres }}</dd>
+                        <dd class="col-sm-7">{{ $practicaPendiente->estudiante->Apellidos }}
+                            {{ $practicaPendiente->estudiante->Nombres }}</dd>
                         <dt class="col-sm-5 text-nowrap">Práctica:</dt>
                         <dd class="col-sm-7">{{ $practicaPendiente->tipoPractica }}</dd>
                         <dt class="col-sm-5 text-nowrap">Docente Tutor:</dt>
-                        <dd class="col-sm-7">{{ $practicaPendiente->tutorAcademico->Apellidos }} {{ $practicaPendiente->tutorAcademico->Nombres }}</dd>
+                        <dd class="col-sm-7">{{ $practicaPendiente->tutorAcademico->Apellidos }}
+                            {{ $practicaPendiente->tutorAcademico->Nombres }}</dd>
                         <dt class="col-sm-5 text-nowrap">Empresa:</dt>
                         <dd class="col-sm-7">{{ $practicaPendiente->Empresa->nombreEmpresa }}</dd>
                         <dt class="col-sm-5 text-nowrap">Tutor Empresarial:</dt>
@@ -64,7 +66,7 @@
                         </form>
                     </div>
 
-                    
+
                     <div class="card-body">
                         <form action="{{ route('generar.EncuestaDocentes') }}" method="POST">
                             @csrf
@@ -82,254 +84,384 @@
                             </button>
                         </form>
                     </div>
-                </div>
-            </div>
 
-
-
-
-            <!--------------------------------- De aqui para abajo es otra zona de trabajoooooooooooooooooooooo------------------>
-        @else
-            <br>
-            <hr>
-
-            <h3>Fase 1 - Inicio del proceso de prácticas pre profesionales del estudiante</h3>
-            <form action="{{ route('guardarPracticas') }}" method="POST">
-                @csrf
-                <div class="table-responsive-sm">
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr>
-                                <th>ID de Estudiante:</th>
-                                <td>{{ strtoupper($estudiante->espe_id) }}</td>
-                            </tr>
-                            <tr>
-                                <th>Cédula:</th>
-                                <td>{{ strtoupper($estudiante->cedula) }}</td>
-                            </tr>
-                            <tr>
-                                <th>Nombres Completos:</th>
-                                <td>{{ strtoupper($estudiante->Apellidos) }}
-                                    {{ strtoupper($estudiante->Nombres) }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Correo:</th>
-                                <td>{{ strtoupper($correoEstudiante) }}</td>
-                            </tr>
-                            <tr>
-                                <th>Nivel:</th>
-                                <td>
-                                    <select id="Nivel" name="Nivel" class="form-control">
-                                        <option value="Pregrado">Pregrado</option>
-                                        <option value="Posgrado">Posgrado</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Campus:</th>
-                                <td>EXTENSION SANTO DOMINGO</td>
-                            </tr>
-                            <tr>
-                                <th>Departamento:</th>
-                                <td>{{ strtoupper($estudiante->Departamento) }}</td>
-                            </tr>
-                            <tr>
-                                <th>Escoja Práctica:</th>
-                                <td>
-                                    <select id="Practicas" name="Practicas" class="form-control">
-                                        <option value="SERVICIO A LA COMUNIDAD">SERVICIO A LA COMUNIDAD</option>
-                                        <option value="PASANTIAS">PASANTIAS</option>
-                                        <option value="PRACTICAS PRE PROFESIONALES">PRACTICAS PRE PROFESIONALES
-                                        </option>
-                                        <option value="AYUDANDIA DE CATEDRA">AYUDANDIA DE CATEDRA</option>
-                                        <option value="AYUDANTIA DE INVESTIGACION">AYUDANTIA DE INVESTIGACION
-                                        </option>
-                                        <option value="RECONOCE EXPERIENCIA LABORAL">RECONOCE EXPERIENCIA LABORAL
-                                        </option>
-                                        <option value="P. INTEGRADOR SABERES">P. INTEGRADOR SABERES</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Teléfono:</th>
-                                <td>{{ strtoupper($estudiante->celular) }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="card-body">
+                        <form action="{{ route('generar.PlanificacionPPEstudiante') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-light btn-block">
+                                <i class="fas fa-file-excel"></i> Generar Planificacion Estudiante
+                            </button>
+                        </form>
+                    </div>
                 </div>
 
 
-                <div class="table-responsive-sm">
-                    <h3>Datos de la Práctica</h3>
-                    <table class="table table-bordered">
+                <button id="toggleFormBtn2" class="btn btn-outline-secondary btn-block">Cargar Actividades de la practica
+                </button>
+                <div id="registrarPeriodos" style="display: none;">
+
+                    <br>
+                    <button type="button" class="button" data-toggle="modal" data-target="#modalAgregarActividad">
+                        Agregar actividad
+                    </button>
+
+
+                    <div class="modal fade" id="modalAgregarActividad" tabindex="-1" role="dialog"
+                        aria-labelledby="modalAgregarActividadLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalAgregarActividadLabel">Agregar Actividad</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="actividadForm"
+                                        action="{{ route('estudiantes.guardarActividadesPracticas1') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="hidden" id="EstudianteID" name="EstudianteID"
+                                            value="{{ $practicaPendiente->estudiante->EstudianteID }}">
+                                        <input type="hidden" id="PracticasI" name="PracticasI"
+                                            value="{{ $practicaPendiente->PracticasI }}">
+                                        <div class="form-group">
+                                            <label for="Actividad">Actividad Realizada:</label>
+                                            <input type="text" id="Actividad" name="Actividad"
+                                                class="form-control input">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="horas">Número de Horas:</label>
+                                            <input type="text" id="horas" name="horas" class="form-control input">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="observaciones">Observación:</label>
+                                            <input type="text" id="observaciones" name="observaciones"
+                                                class="form-control input">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="fechaActividad">Fecha de la Actividad:</label>
+                                            <input type="date" id="fechaActividad" name="fechaActividad"
+                                                class="form-control input">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="departamento">Departamento:</label>
+                                            <input type="text" id="departamento" name="departamento"
+                                                class="form-control input">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="funcion">Función Asignada:</label>
+                                            <input type="text" id="funcion" name="funcion"
+                                                class="form-control input">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="evidencia">Evidencia:</label>
+                                            <input type="file" id="evidencia" name="evidencia"
+                                                class="form-control-file input">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="button" data-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="button">Guardar Actividad</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="table-responsive-sm">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Actividad Realizada</th>
+                                    <th>Horas</th>
+                                    <th>Observaciones</th>
+                                    <th>Fecha de la Actividad</th>
+                                    <th>Departamento</th>
+                                    <th>Función Asignada</th>
+                                    <th>Evidencia</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($actividades as $actividad)
+                                    <tr>
+                                        <td>{{ $actividad->Actividad }}</td>
+                                        <td>{{ $actividad->horas }}</td>
+                                        <td>{{ $actividad->observaciones }}</td>
+                                        <td>{{ $actividad->fechaActividad }}</td>
+                                        <td>{{ $actividad->departamento }}</td>
+                                        <td>{{ $actividad->funcion }}</td>
+                                        <td><img src="data:image/png;base64,{{ $actividad->evidencia }}"
+                                                alt="Evidencia de la actividad" width="100px"></td>
+
+                                    </tr>
+                                @endforeach
+                            </tbody>
+
+                            <tfoot>
+                                <tr>
+                                    <td colspan="7" align="left"><strong>Total horas realizadas:</strong> 
+                                        {{ $totalHoras }} / {{ $practicaPendiente->HorasPlanificadas }}
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+
+
+
+                <!--------------------------------- De aqui para abajo es otra zona de trabajoooooooooooooooooooooo------------------>
+            @else
+                <br>
+                <hr>
+
+                <h3>Fase 1 - Inicio del proceso de prácticas pre profesionales del estudiante</h3>
+                <form action="{{ route('guardarPracticas') }}" method="POST">
+                    @csrf
+                    <div class="table-responsive-sm">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th>ID de Estudiante:</th>
+                                    <td>{{ strtoupper($estudiante->espe_id) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Cédula:</th>
+                                    <td>{{ strtoupper($estudiante->cedula) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Nombres Completos:</th>
+                                    <td>{{ strtoupper($estudiante->Apellidos) }}
+                                        {{ strtoupper($estudiante->Nombres) }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Correo:</th>
+                                    <td>{{ strtoupper($correoEstudiante) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Nivel:</th>
+                                    <td>
+                                        <select id="Nivel" name="Nivel" class="form-control">
+                                            <option value="Pregrado">Pregrado</option>
+                                            <option value="Posgrado">Posgrado</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Campus:</th>
+                                    <td>EXTENSION SANTO DOMINGO</td>
+                                </tr>
+                                <tr>
+                                    <th>Departamento:</th>
+                                    <td>{{ strtoupper($estudiante->Departamento) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Escoja Práctica:</th>
+                                    <td>
+                                        <select id="Practicas" name="Practicas" class="form-control">
+                                            <option value="SERVICIO A LA COMUNIDAD">SERVICIO A LA COMUNIDAD</option>
+                                            <option value="PASANTIAS">PASANTIAS</option>
+                                            <option value="PRACTICAS PRE PROFESIONALES">PRACTICAS PRE PROFESIONALES
+                                            </option>
+                                            <option value="AYUDANDIA DE CATEDRA">AYUDANDIA DE CATEDRA</option>
+                                            <option value="AYUDANTIA DE INVESTIGACION">AYUDANTIA DE INVESTIGACION
+                                            </option>
+                                            <option value="RECONOCE EXPERIENCIA LABORAL">RECONOCE EXPERIENCIA LABORAL
+                                            </option>
+                                            <option value="P. INTEGRADOR SABERES">P. INTEGRADOR SABERES</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Teléfono:</th>
+                                    <td>{{ strtoupper($estudiante->celular) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div class="table-responsive-sm">
+                        <h3>Datos de la Práctica</h3>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th>Estado Académico Actual:</th>
+                                    <td>
+                                        <select id="EstadoAcademico" name="EstadoAcademico" class="form-control">
+                                            <option value="FINALIZANDO ESTUDIOS">FINALIZANDO ESTUDIOS</option>
+                                            <option value="CURSANDO ESTUDIOS">CURSANDO ESTUDIOS</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Fecha de inicio de la práctica:</th>
+                                    <td>
+                                        <input type="date" id="FechaInicio" name="FechaInicio" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Fecha de finalización de la práctica:</th>
+                                    <td>
+                                        <input type="date" id="FechaFinalizacion" name="FechaFinalizacion"
+                                            class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Horas planificadas:</th>
+                                    <td>
+                                        <input type="number" id="HorasPlanificadas" name="HorasPlanificadas"
+                                            class="form-control" min="80" max="144">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Horario de entrada:</th>
+                                    <td>
+                                        <input type="time" id="HoraEntrada" name="HoraEntrada" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Horario de salida:</th>
+                                    <td>
+                                        <input type="time" id="HoraSalida" name="HoraSalida" class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Área de conocimiento:</th>
+                                    <td>
+                                        <input type="text" id="AreaConocimiento" name="AreaConocimiento"
+                                            class="form-control">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+
+                    <button type="button" id="verOpcionesBtn" class="btn btn-sm btn-secondary">Ver opciones de
+                        prácticas</button>
+                    <br><br>
+                    <table id="opcionesPracticas" class="table table-bordered" style="display: none;">
                         <tbody>
                             <tr>
-                                <th>Estado Académico Actual:</th>
+                                <th>Sugiera un docente como tutor académico:</th>
                                 <td>
-                                    <select id="EstadoAcademico" name="EstadoAcademico" class="form-control">
-                                        <option value="FINALIZANDO ESTUDIOS">FINALIZANDO ESTUDIOS</option>
-                                        <option value="CURSANDO ESTUDIOS">CURSANDO ESTUDIOS</option>
+                                    <div class="form-group">
+                                        <label for="ID_tutorAcademico">
+                                        </label>
+                                        <select name="ID_tutorAcademico" class="form-control input input select" required>
+                                            <option value="">Seleccionar el Docente</option>
+                                            @foreach ($profesores as $profesor)
+                                                <option value="{{ $profesor->id }}"> {{ $profesor->Apellidos }}
+                                                    {{ $profesor->Nombres }}
+                                                    {{ $profesor->Departamento }} {{ $profesor->Correo }} </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>NRC Practica</th>
+                                <td>
+                                    <div class="form-group">
+                                        <select name="nrc" class="form-control input input-select" required>
+                                            <option value="">Seleccionar NRC</option>
+                                            @foreach ($nrcpracticas1 as $nrc)
+                                                <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>Empresa:</th>
+                                <td>
+                                    <select id="Empresa" name="Empresa" class="form-control">
+                                        @foreach ($empresas as $empresa)
+                                            <option value="{{ $empresa->id }}">{{ $empresa->nombreEmpresa }} -
+                                                Requiere: {{ $empresa->actividadesMacro }} </option>
+                                        @endforeach
                                     </select>
                                 </td>
                             </tr>
+
                             <tr>
-                                <th>Fecha de inicio de la práctica:</th>
+                                <th>Cédula del tutor empresarial:</th>
                                 <td>
-                                    <input type="date" id="FechaInicio" name="FechaInicio" class="form-control">
+                                    <input type="text" id="CedulaTutorEmpresarial" name="CedulaTutorEmpresarial"
+                                        class="form-control">
                                 </td>
+
                             </tr>
+
                             <tr>
-                                <th>Fecha de finalización de la práctica:</th>
+                                <th>Nombre del tutor empresarial:</th>
                                 <td>
-                                    <input type="date" id="FechaFinalizacion" name="FechaFinalizacion"
+                                    <input type="text" id="NombreTutorEmpresarial" name="NombreTutorEmpresarial"
+                                        class="form-control">
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <th>Funcion:</th>
+                                <td>
+                                    <input type="text" id="Funcion" name="Funcion" class="form-control">
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <th>Telefono:</th>
+                                <td>
+                                    <input type="text" id="TelefonoTutorEmpresarial" name="TelefonoTutorEmpresarial"
+                                        class="form-control">
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <th>Email:</th>
+                                <td>
+                                    <input type="text" id="EmailTutorEmpresarial" name="EmailTutorEmpresarial"
                                         class="form-control">
                                 </td>
                             </tr>
+
                             <tr>
-                                <th>Horas planificadas:</th>
+                                <th>Departamento dentro de la empresa:</th>
                                 <td>
-                                    <input type="number" id="HorasPlanificadas" name="HorasPlanificadas"
-                                        class="form-control" min="80" max="144">
+                                    <input type="text" id="DepartamentoTutorEmpresarial"
+                                        name="DepartamentoTutorEmpresarial" class="form-control">
                                 </td>
+
                             </tr>
-                            <tr>
-                                <th>Horario de entrada:</th>
-                                <td>
-                                    <input type="time" id="HoraEntrada" name="HoraEntrada" class="form-control">
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Horario de salida:</th>
-                                <td>
-                                    <input type="time" id="HoraSalida" name="HoraSalida" class="form-control">
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Área de conocimiento:</th>
-                                <td>
-                                    <input type="text" id="AreaConocimiento" name="AreaConocimiento"
-                                        class="form-control">
-                                </td>
-                            </tr>
+
+
+
                         </tbody>
+
                     </table>
-                </div>
-
-
-
-
-                <button type="button" id="verOpcionesBtn" class="btn btn-sm btn-secondary">Ver opciones de
-                    prácticas</button>
-                <br><br>
-                <table id="opcionesPracticas" class="table table-bordered" style="display: none;">
-                    <tbody>
-                        <tr>
-                            <th>Sugiera un docente como tutor académico:</th>
-                            <td>
-                                <div class="form-group">
-                                    <label for="ID_tutorAcademico">
-                                    </label>
-                                    <select name="ID_tutorAcademico" class="form-control input input select" required>
-                                        <option value="">Seleccionar el Docente</option>
-                                        @foreach ($profesores as $profesor)
-                                            <option value="{{ $profesor->id }}"> {{ $profesor->Apellidos }}
-                                                {{ $profesor->Nombres }}
-                                                {{ $profesor->Departamento }} {{ $profesor->Correo }} </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th>NRC Practica</th>
-                            <td>
-                                <div class="form-group">
-                                    <select name="nrc" class="form-control input input-select" required>
-                                        <option value="">Seleccionar NRC</option>
-                                        @foreach ($nrcpracticas1 as $nrc)
-                                            <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th>Empresa:</th>
-                            <td>
-                                <select id="Empresa" name="Empresa" class="form-control">
-                                    @foreach ($empresas as $empresa)
-                                        <option value="{{ $empresa->id }}">{{ $empresa->nombreEmpresa }} -
-                                            Requiere: {{ $empresa->actividadesMacro }} </option>
-                                    @endforeach
-                                </select>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th>Cédula del tutor empresarial:</th>
-                            <td>
-                                <input type="text" id="CedulaTutorEmpresarial" name="CedulaTutorEmpresarial"
-                                    class="form-control">
-                            </td>
-
-                        </tr>
-
-                        <tr>
-                            <th>Nombre del tutor empresarial:</th>
-                            <td>
-                                <input type="text" id="NombreTutorEmpresarial" name="NombreTutorEmpresarial"
-                                    class="form-control">
-                            </td>
-
-                        </tr>
-
-                        <tr>
-                            <th>Funcion:</th>
-                            <td>
-                                <input type="text" id="Funcion" name="Funcion" class="form-control">
-                            </td>
-
-                        </tr>
-
-                        <tr>
-                            <th>Telefono:</th>
-                            <td>
-                                <input type="text" id="TelefonoTutorEmpresarial" name="TelefonoTutorEmpresarial"
-                                    class="form-control">
-                            </td>
-
-                        </tr>
-
-                        <tr>
-                            <th>Email:</th>
-                            <td>
-                                <input type="text" id="EmailTutorEmpresarial" name="EmailTutorEmpresarial"
-                                    class="form-control">
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th>Departamento dentro de la empresa:</th>
-                            <td>
-                                <input type="text" id="DepartamentoTutorEmpresarial"
-                                    name="DepartamentoTutorEmpresarial" class="form-control">
-                            </td>
-
-                        </tr>
-
-
-
-                    </tbody>
-
-                </table>
-                <button type="submit" id="iniciarPracticasBtn" class="btn btn-sm btn-secondary"
-                    style="display: none;">Iniciar
-                    prácticas</button>
-            </form>
+                    <button type="submit" id="iniciarPracticasBtn" class="btn btn-sm btn-secondary"
+                        style="display: none;">Iniciar
+                        prácticas</button>
+                </form>
     @endif
     </div>
 

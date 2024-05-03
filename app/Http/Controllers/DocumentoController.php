@@ -1375,22 +1375,22 @@ class DocumentoController extends Controller
         $estudiante = Auth::user()->estudiante;
 
         $datosEstudiantes = PracticaI::where('EstudianteID', $estudiante->EstudianteID)->get();
-         $template->setValue('periodo', $datosEstudiantes->first()->nrcPractica->periodo->numeroPeriodo);
+        $template->setValue('periodo', $datosEstudiantes->first()->nrcPractica->periodo->numeroPeriodo);
         $template->setValue('estudiante', $estudiante->Nombres . ' ' . $estudiante->Apellidos);
         $template->setValue('cedula', $estudiante->cedula);
         $template->setValue('espe_id', $estudiante->espe_id);
         $template->setValue('celular', $estudiante->celular);
         $template->setValue('correo', $estudiante->Correo);
 
-       
+
         $fechaInicio = $datosEstudiantes->first()->FechaInicio;
         $formattedFechaInicio = date('d/m/Y', strtotime($fechaInicio));
         $template->setValue('FechaInicio', $formattedFechaInicio);
-        
+
         $fechaFinalizacion = $datosEstudiantes->first()->FechaFinalizacion;
         $formattedFechaFinalizacion = date('d/m/Y', strtotime($fechaFinalizacion));
         $template->setValue('FechaFinalizacion', $formattedFechaFinalizacion);
-      
+
 
         $template->setValue('HorasPlanificadas', $datosEstudiantes->first()->HorasPlanificadas);
         $template->setValue('HoraEntrada', $datosEstudiantes->first()->HoraEntrada);
@@ -1408,6 +1408,65 @@ class DocumentoController extends Controller
     }
 
 
+    public function PlanificacionPPEstudiante()
+    {
+        $plantillaPath = public_path('Plantillas/practicas/PlanificacionPPEstudiante.docx');
+        if (!file_exists($plantillaPath)) {
+            abort(404, 'El archivo de plantilla no existe.');
+        }
+        $template = new TemplateProcessor($plantillaPath);
+
+        $estudiante = Auth::user()->estudiante;
+
+        $datosEstudiantes = PracticaI::where('EstudianteID', $estudiante->EstudianteID)->get();
+        $template->setValue('periodo', $datosEstudiantes->first()->nrcPractica->periodo->numeroPeriodo);
+        $template->setValue('estudiante', $estudiante->Nombres . ' ' . $estudiante->Apellidos);
+        $template->setValue('cedula', $estudiante->cedula);
+        $template->setValue('espe_id', $estudiante->espe_id);
+        $template->setValue('celular', $estudiante->celular);
+        $template->setValue('correo', $estudiante->Correo);
+
+        $template->setValue('Empresa', $datosEstudiantes->first()->empresa->nombreEmpresa);
+        $template->setValue('Actividades', $datosEstudiantes->first()->empresa->actividadesMacro);
+        $template->setValue('Direccion', $datosEstudiantes->first()->empresa->direccion);
+
+        $template->setValue('NombresEmpresarial', $datosEstudiantes->first()->NombreTutorEmpresarial);
+        $template->setValue('CedulaEmpresarial', $datosEstudiantes->first()->CedulaTutorEmpresarial);
+        $template->setValue('TelefonoEmpresarial', $datosEstudiantes->first()->TelefonoTutorEmpresarial);
+        $template->setValue('CorreoEmpresarial', $datosEstudiantes->first()->EmailTutorEmpresarial);
+        $template->setValue('Funcion', $datosEstudiantes->first()->Funcion);
+
+
+        $template->setValue('NombresAcademico', $datosEstudiantes->first()->tutorAcademico->Nombres . ' ' . $datosEstudiantes->first()->tutorAcademico->Apellidos);
+        $template->setValue('CedulaAcademico', $datosEstudiantes->first()->tutorAcademico->Cedula);
+        $template->setValue('CorreoAcademico', $datosEstudiantes->first()->tutorAcademico->Correo);
+         $template->setValue('id_espeAcademico', $datosEstudiantes->first()->tutorAcademico->espe_id);
+
+
+
+
+
+        $fechaInicio = $datosEstudiantes->first()->FechaInicio;
+        $formattedFechaInicio = date('d/m/Y', strtotime($fechaInicio));
+        $template->setValue('FechaInicio', $formattedFechaInicio);
+
+        $fechaFinalizacion = $datosEstudiantes->first()->FechaFinalizacion;
+        $formattedFechaFinalizacion = date('d/m/Y', strtotime($fechaFinalizacion));
+        $template->setValue('FechaFinalizacion', $formattedFechaFinalizacion);
+
+
+        $template->setValue('HorasPlanificadas', $datosEstudiantes->first()->HorasPlanificadas);
+        $template->setValue('HoraEntrada', $datosEstudiantes->first()->HoraEntrada);
+        $template->setValue('HoraSalida', $datosEstudiantes->first()->HoraSalida);
+
+
+
+        $nombreArchivo = 'PlanificacionPPEstudiante.docx';
+        $template->saveAs($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+
+
+    }
 
 
 
