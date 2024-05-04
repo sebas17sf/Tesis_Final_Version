@@ -575,7 +575,62 @@ class EstudianteController extends Controller
     }
     
 
+    /////////eliminar actividad practica 1
+    public function eliminarActividadPracticas1($id)
+    {
+        $actividad = ActividadesPracticas::findOrFail($id);
+        $actividad->delete();
 
+        return redirect()->back()->with('success', 'Actividad eliminada exitosamente.');
+    }
+
+    //////editar actividad practica 1
+    public function updateActividadPracticas1(Request $request, $id)
+    {
+        $actividad = ActividadesPracticas::findOrFail($id);
+
+        $request->validate([
+            'Actividad' => 'required',
+            'horas' => 'required',
+            'observaciones' => 'required',
+            'fechaActividad' => 'required',
+            'departamento' => 'required',
+            'funcion' => 'required',
+            'evidencia' => 'required',
+        ]);
+
+        $datosActividad = $request->only([
+            'Actividad',
+            'horas',
+            'observaciones',
+            'fechaActividad',
+            'departamento',
+            'funcion',
+        ]);
+       
+        $evidencia = $request->file('evidencia');
+
+        try {
+            if ($evidencia) {
+                $maxFileSize = 500000; 
+                if ($evidencia->getSize() > $maxFileSize) {
+                    return redirect()->back()->with('error', 'La imagen es muy pesada. El tamaño máximo permitido es de 500 KB.');
+                }
+
+                $img = Image::make($evidencia)->encode('jpg', 75);
+                $datosActividad['evidencia'] = base64_encode($img->encoded);
+            }
+
+         
+  
+
+            $actividad->update($datosActividad);
+ 
+            return redirect()->back()->with('success', 'Actividad actualizada exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Ha ocurrido un error al actualizar la actividad: ' . $e->getMessage());
+        }
+    }
 
 
 

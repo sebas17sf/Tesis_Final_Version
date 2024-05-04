@@ -69,8 +69,9 @@
                                     </div>
                                 </a>
                                 <div class="dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" id="practicasDropdown" role="button"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a href="#" class="nav-link dropdown-toggle" id="practicasDropdown"
+                                        role="button" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
                                         <div class="icon-sidebar-item">
                                             <i class="material-icons">business</i>
                                         </div>
@@ -96,8 +97,8 @@
                                                 <li> Aprobar-Fase I </li>
                                             </div>
                                         </a>
-                                        </div>
-                        
+                                    </div>
+
                         </ul>
                     </nav>
                 </div>
@@ -107,11 +108,11 @@
                     <i>Designed by Sebastian Flores & Karen Cueva.</i>
                 </span>
             </div>
-            </div>
-            </div>
+        </div>
+        </div>
     </section>
-       <!-- SIDEBAR -->
-       <section class="content-navbar dimension-nav" _ngcontent-ng-c3252749989>
+    <!-- SIDEBAR -->
+    <section class="content-navbar dimension-nav" _ngcontent-ng-c3252749989>
         <!-- Toggle sidebar -->
         <div class="icon-menu-sidebar" onclick="triggerToggleSidebar()">
             <i class='bx bx-menu-alt-left'
@@ -159,19 +160,17 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    
-<<<<<<< HEAD
+
     <script src="{{ asset('js/plantilla/styles.js') }}" defer></script>
-=======
-     <script src="{{ asset('js/plantilla/styles.js') }}" defer></script>
->>>>>>> 576c046b4056e89d5370f82e1b6f145954c35342
+    
+   <script src="{{ asset('js/plantilla/styles.js') }}" defer></script>
     <script src="{{ asset('js/plantilla/vendor.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
-    
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Box Icons -->
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </body>
 
 </html>

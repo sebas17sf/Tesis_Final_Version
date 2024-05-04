@@ -311,6 +311,11 @@ Route::post('/estudiantes/documentos-PlanificacionPPEstudiante', [DocumentoContr
 
 ///////////////////guardar actividades del estudiantes de practicas 1
 Route::post('/estudiantes/guardar-actividades-practicas1', [EstudianteController::class, 'guardarActividadPractica1'])->name('estudiantes.guardarActividadesPracticas1');
+//////////////////eliminar actividades del estudiantes de practicas 1
+Route::delete('/estudiantes/{id}/eliminar-actividad-practicas1', [EstudianteController::class, 'eliminarActividadPracticas1'])->name('estudiantes.eliminarActividadPracticas1');
+//////////////////editar actividades del estudiantes de practicas 1
+Route::put('/estudiantes/{id}/editar-actividad-practicas1', [EstudianteController::class, 'updateActividadPracticas1'])->name('estudiantes.actualizarActividadPracticas1');
+
 
 
 //////////////////////////respaldo
