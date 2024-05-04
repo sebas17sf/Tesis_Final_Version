@@ -15,115 +15,149 @@
     display: grid;
 
     .contenedor_list {
-      display: none;
+        display: none;
     }
 
     @media (max-width: 700px) {
-      .contenedor_list {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        padding: 0 20px;
-        border-radius: 10px;
-        background-color: rgba(colors.$gray, 0.2);
-        cursor: pointer;
+        .contenedor_list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            padding: 0 20px;
+            border-radius: 10px;
+            background-color: rgba(colors.$gray, 0.2);
+            cursor: pointer;
 
-        .text_list {
-          font-weight: bold;
-          color: rgba(colors.$black, 0.7);
+            .text_list {
+                font-weight: bold;
+                color: rgba(colors.$black, 0.7);
 
-          @media (max-width: 500px) {
-            font-size: fonts.$icon-size;
-          }
+                @media (max-width: 500px) {
+                    font-size: fonts.$icon-size;
+                }
+            }
+
+            .icon_list {
+                display: grid;
+                align-items: center;
+                text-align: right;
+                color: rgba(colors.$black, 0.7);
+
+                i {
+                    font-size: fonts.$icon-size;
+                }
+            }
         }
-
-        .icon_list {
-          display: grid;
-          align-items: center;
-          text-align: right;
-          color: rgba(colors.$black, 0.7);
-
-          i {
-            font-size: fonts.$icon-size;
-          }
-        }
-      }
     }
 
     .contenedor_filtros {
-      display: none;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
+        display: none;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
 
-      @media (max-width: 1200px) {
-        grid-template-columns: repeat(3, 1fr);
-        row-gap: 0px;
-      }
+        @media (max-width: 1200px) {
+            grid-template-columns: repeat(3, 1fr);
+            row-gap: 0px;
+        }
 
-      @media (max-width: 700px) {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-      }
+        @media (max-width: 700px) {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+        }
 
-      @media (max-width: 500px) {
-        grid-template-columns: 1fr;
-      }
+        @media (max-width: 500px) {
+            grid-template-columns: 1fr;
+        }
 
-      .mat-form-field.mat-focused {
-        display: grid;
-      }
+        .mat-form-field.mat-focused {
+            display: grid;
+        }
 
-      .input {
-        width: 95%;
-      }
+        .input {
+            width: 95%;
+        }
     }
-  }
+}
 
-  .contenedor_acciones_tabla {
-    display: grid;
-    align-items: center;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+.contenedor_acciones_tabla {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 
-    @media (max-width: 700px) {
+  @media (max-width: 700px) {
       grid-template-columns: 1fr;
       padding-top: 10px;
-    }
+  }
 
-    .contenedor_botones {
+  .contenedor_botones {
       display: flex;
       gap: 10px;
 
       @media (max-width: 700px) {
-        justify-content: center;
+          justify-content: center;
 
-        .btn_filtro {
-          display: none;
-        }
+          .btn_filtro {
+              display: none;
+          }
       }
-    }
 
-    .contenedor_buscador {
+      .icon-charge {
+          img {
+              width: 30px;
+          }
+      }
+  }
+
+  .contenedor_buscador {
       display: grid;
 
       div {
-        position: relative;
-        display: grid;
+          form {
+              position: relative;
+              display: grid;
 
-        .input {
-          padding-right: 40px;
-        }
+              .input {
+                  padding-right: 40px;
+              }
 
-        i {
-          position: absolute;
-          display: grid;
-          right: 10px;
-          font-size: 25px;
-          color: rgba(colors.$black, 0.4);
-          transform: translate(0%, 50%);
-        }
+              i {
+                  position: absolute;
+                  display: grid;
+                  right: 10px;
+                  font-size: 25px;
+                  color: rgba(colors.$black, 0.4);
+                  transform: translate(0%, 50%);
+              }
+          }
       }
-    }
   }
+}
+
+.page-item.active .page-link {
+  z-index: 3;
+  color: #fff;
+  background-color: #40456c;
+  border-color: #40456c;
+}
+
+.page-link {
+  position: relative;
+  display: block;
+  padding: .5rem .75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: #101010;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+
+.pagination {
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+
   // TODO: Estado activo
   .sidebar_active_content_acciones_tabla {
     @media (max-width: 860px) {
@@ -315,3 +349,4 @@
     }
   }
 }
+

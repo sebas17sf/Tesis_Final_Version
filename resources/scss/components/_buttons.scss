@@ -33,7 +33,7 @@
 .button {
   @include buttons-style;
   @include buttons-style2;
-  width: 150px;
+  width: 210px;
   border-radius: 25px;
 }
 
@@ -44,8 +44,9 @@
 .button1 {
   @include buttons-style;
   @include buttons-style2;
-  width: 150px;
+  width: 210px;
   border-radius: 5px;
+
 }
 
 // ===============================================
@@ -70,8 +71,8 @@
 .button3 {
   @include buttons-style2;
   display: grid;
-  width: 20px;
-  height: 30px;
+  width: 35px;
+  height: 32px;
   justify-content: center;
   align-items: center;
   border-radius: 5px;
@@ -451,8 +452,8 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 40px;
-  height: 50px;
+  width: 50px;
+  height: 60px;
   z-index: 9999;
   justify-content: center;
   align-items: center;
@@ -482,4 +483,11 @@
     height: 35px;
     font-size: 15px;
   }
+}
+
+.btn-group, .btn-group-vertical {
+  position: static !important;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  vertical-align: middle;
 }
