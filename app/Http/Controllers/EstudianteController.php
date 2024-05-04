@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActividadesPracticas;
 use App\Models\Cohorte;
 use App\Models\Periodo;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -199,19 +200,25 @@ class EstudianteController extends Controller
 
         $estudiante = $user->estudiante;
 
+         $actividades = ActividadesPracticas::where('EstudianteID', $estudiante->EstudianteID)->get();
+
+ 
+
         // Verifica si el usuario autenticado es un estudiante y su estado es "Aprobado-practicas"
         if ($estudiante && $estudiante->Estado === 'Aprobado-practicas') {
             $correoEstudiante = $estudiante->Usuario->CorreoElectronico;
             $empresas = Empresa::all();
+         
             $practicaPendiente = PracticaI::where('EstudianteID', $estudiante->EstudianteID)->where('Estado', 'En ejecucion')->first();
+             $totalHoras = $actividades->sum('horas'); 
 
-            $estadoPractica = PracticaI::where('EstudianteID', $estudiante->EstudianteID)->where('Estado', 'Terminado')->first();
+             $estadoPractica = PracticaI::where('EstudianteID', $estudiante->EstudianteID)->where('Estado', 'Terminado')->first();
 
             if ($estadoPractica) {
                  return redirect()->route('estudiantes.practica2');
             }
 
-            return view('estudiantes.practica1', compact('estudiante', 'correoEstudiante', 'empresas', 'practicaPendiente', 'estadoPractica', 'profesores', 'nrcpracticas1'));
+            return view('estudiantes.practica1', compact('estudiante', 'correoEstudiante', 'empresas', 'practicaPendiente', 'estadoPractica', 'profesores', 'nrcpracticas1', 'actividades', 'totalHoras'));
         }
 
         // Si no cumple con los requisitos, muestra un mensaje de alerta y redirige a otra página
@@ -502,23 +509,71 @@ class EstudianteController extends Controller
 
     public function certificadoMatricula()
     {
-        // Obtén al estudiante actualmente autenticado a través de la relación definida en el modelo Usuario
-        $estudiante = Auth::user()->estudiante;
+         $estudiante = Auth::user()->estudiante;
 
         if ($estudiante) {
-            // Crea una vista para el certificado de matrícula y pasa los datos del estudiante
-            $pdf = PDF::loadView('estudiantes.certificadoMatricula', compact('estudiante'));
+             $pdf = PDF::loadView('estudiantes.certificadoMatricula', compact('estudiante'));
 
-            // Genera y descarga el PDF
-            return $pdf->download('certificadoMatricula.pdf');
+             return $pdf->download('certificadoMatricula.pdf');
         } else {
-            // Maneja la situación en la que no se encuentra el estudiante
-            return redirect()->back()->with('error', 'No se pudo encontrar al estudiante.');
+             return redirect()->back()->with('error', 'No se pudo encontrar al estudiante.');
         }
     }
 
 
 
+    ////////////////////guardar actividad practica 1
+    public function guardarActividadPractica1(Request $request)
+    {
+        $request->validate([
+            'EstudianteID' => 'required',
+            'PracticasI' => 'required',
+            'Actividad' => 'required',
+            'horas' => 'required',
+            'observaciones' => 'required',
+            'fechaActividad' => 'required',
+            'departamento' => 'required',
+            'funcion' => 'required',
+            'evidencia' => 'required',
+        ]);
+
+
+        $datosActividad = $request->only([
+            'EstudianteID',
+            'PracticasI',
+            'Actividad',
+            'horas',
+            'observaciones',
+            'fechaActividad',
+            'departamento',
+            'funcion',
+        ]);
+
+ 
+      
+        $evidencia = $request->file('evidencia');
+    
+        try {
+            if ($evidencia) {
+                $maxFileSize = 500000; 
+                if ($evidencia->getSize() > $maxFileSize) {
+                    return redirect()->back()->with('error', 'La imagen es muy pesada. El tamaño máximo permitido es de 500 KB.');
+                }
+    
+                 $img = Image::make($evidencia)->encode('jpg', 75);
+                $datosActividad['evidencia'] = base64_encode($img->encoded);
+            }
+    
+            $datosActividad['IDPracticasI'] = $request->PracticasI;
+
+            ActividadesPracticas::create($datosActividad);
+    
+            return redirect()->back()->with('success', 'Actividad guardada exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Ha ocurrido un error al guardar la actividad: ' . $e->getMessage());
+        }
+    }
+    
 
 
 

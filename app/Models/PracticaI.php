@@ -55,4 +55,9 @@ class PracticaI extends Model
     {
         return $this->belongsTo(NrcPracticas1::class, 'id_nrc_practicas1', 'id');
     }
+
+    public function actividades_practicas()
+    {
+        return $this->hasMany(ActividadesPracticas::class, 'IDPracticasI', 'PracticasI');
+    }
 }

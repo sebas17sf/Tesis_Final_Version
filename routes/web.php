@@ -307,6 +307,11 @@ Route::post('/admin/nrc-practicas1', [AdminController::class, 'GuardarNRCPractic
 Route::post('/estudiantes/documentos-practicas', [DocumentoController::class, 'EncuestaEstudiante'])->name('generar.EncuestaEstudiante');
 Route::post('/estudiantes/documentos-EncuestaEstudiante', [DocumentoController::class, 'EncuestaDocentes'])->name('generar.EncuestaDocentes');
 Route::post('/estudiantes/documentos-EvTutorEmpresarial', [DocumentoController::class, 'EvTutorEmpresarial'])->name('generar.EvTutorEmpresarial');
+Route::post('/estudiantes/documentos-PlanificacionPPEstudiante', [DocumentoController::class, 'PlanificacionPPEstudiante'])->name('generar.PlanificacionPPEstudiante');
+
+///////////////////guardar actividades del estudiantes de practicas 1
+Route::post('/estudiantes/guardar-actividades-practicas1', [EstudianteController::class, 'guardarActividadPractica1'])->name('estudiantes.guardarActividadesPracticas1');
+
 
 //////////////////////////respaldo
 Route::post('/respaldo', [AdminController::class, 'backup'])->name('admin.respaldo');
