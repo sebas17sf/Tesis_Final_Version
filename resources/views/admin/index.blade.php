@@ -401,6 +401,7 @@
         <div class="container">
             <button id="toggleFormBtn2" class="btn btn-outline-secondary btn-block">Agregar Cohoerte/Periodo/NRC
             </button>
+            <hr>
             <div id="registrarPeriodos" style="display: none;">
                 <form action="{{ route('admin.guardarPeriodo') }}" method="post">
                     @csrf
@@ -504,12 +505,8 @@
                     </div>
                     <button type="submit" class="button efects_button">Guardar NRC</button>
                 </form>
-
-
                 <br>
                 <!-- Elementos agregados (Periodos y Cohortes) -->
-
-
                 <div class="row align-items-center">
 
                     <div class="col-md-6">
@@ -534,11 +531,7 @@
                             </form>
                         </div>
                     </div>
-
-
                 </div>
-
-
             </div>
 
         </div>
