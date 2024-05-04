@@ -3,7 +3,7 @@
 @use "components/input";
 @use "components/buttons";
 @use "components/menu_nav";
-@use "components/table" as table;
+@use "components/table" as table; 
 @use "components/scroll";
 @use "menu-profile/menu-profile.component";
 @use "sidebar/sidebar.component";
@@ -11,7 +11,7 @@
 @use "module/module.scss";
 @use "navbar/app.component";
 @use "deshboard/dashboard.component.scss";
-@use "tabla/tabla_filtros";
+@use "tabla/tabla_filtros"; 
 
 // ===============================================
 // Estilos para sweedAlert2

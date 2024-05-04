@@ -160,12 +160,45 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var submenu = document.querySelector('.submenu');
 
-        submenu.addEventListener('mouseover', function() {
-            console.log('Hola');
-            $("#sublista").show();
-        });
+  submenu.addEventListener('mouseover', function () {
+    console.log('Hola');
+    $("#sublista").show();
+  });
 
 
+
+  window.addEventListener('scroll', function () {
+    var boton = document.getElementById('btn_top');
+    var contenido = document.querySelector('.content');
+
+    // Calcula la distancia entre el final del contenido y el tope del viewport
+    var distanciaAlFinal = contenido.getBoundingClientRect().bottom - window.innerHeight;
+
+    // Si el scroll alcanza el final de la página, agrega la clase 'visible' al botón
+    if (window.scrollY >= distanciaAlFinal) {
+      boton.classList.add('visible');
+    } else {
+      boton.classList.remove('visible');
+    }
+
+    // Si el scroll vuelve hacia arriba, oculta el botón nuevamente
+    if (window.scrollY === 0) {
+      boton.classList.remove('visible');
+    }
+  });
+
+
+  // Obtener referencia al botón
+  var boton = document.getElementById('btn_top');
+
+  // Agregar un evento de clic al botón
+  boton.addEventListener('click', function () {
+    // Hacer que la página se desplace hacia arriba
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // para un desplazamiento suave
+    });
+  });
 
 });
 

@@ -48,10 +48,15 @@
   }
 
   .paginator-container {
-    display: grid;
-    align-items: end;
-    height: 56px;
 
+  
+      display: grid;
+      align-items: center;
+      height: 56px;
+      justify-content: end;
+      align-content: space-between;
+      justify-items: start;
+  
     ::ng-deep .mat-mdc-paginator-container {
       @media (max-width: 620px) {
         align-items: center;
@@ -83,7 +88,7 @@
   }
 }
 
-::ng-deep .noExisteRegistro {
+.noExisteRegistro {
   display: grid;
   height: 40%;
   font-size: fonts.$text-error;

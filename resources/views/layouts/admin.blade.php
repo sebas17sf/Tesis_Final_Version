@@ -16,7 +16,8 @@
 
     <script src="js/menu.js"></script>
     <link rel="stylesheet" href="css/admin/admin.css">
-    @vite(['resources/scss/app.scss', 'resources/js/app.js'])
+    @vite(['resources/scss/app.scss', 'resources/scss/components/', 'resources/js/app.js'])
+
 
 </head>
 
@@ -182,14 +183,40 @@
             <!-- Contenido específico de la página -->
             @yield('content')
         </div>
+
+        {{--   <button id="btn_top" ><i class='bx bxs-chevrons-up'></i></button> --}}
+
+<style>
+    .btn-group, .btn-group-vertical {
+    position: static !important;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    vertical-align: middle;
+}
+</style>
+
+
     </section>
+
+
+
+
+
     <!-- Scripts de jQuery y Popper.js -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+
+
+    <!-- Script de Bootstrap 4.5.2 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Script de Bootstrap 5.3.0 -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <script src="{{ asset('js/plantilla/styles.js') }}" type="module"></script>
+    <script src="{{ asset('js/plantilla/vendor.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
     <script src="{{ asset('js/admin/general.js') }}"></script>
 
