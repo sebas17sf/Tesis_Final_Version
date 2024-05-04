@@ -12,8 +12,8 @@
     }
   });
 });
-  */
-
+  
+ */
 
 function triggerToggleSidebar() {
   var contentSidebar = document.querySelector('.content-sidebar');
@@ -64,18 +64,34 @@ document.addEventListener('DOMContentLoaded', function () {
   $("#sublista").hide();
   // Selecciona todos los elementos con la clase p-element
   var pElements = document.querySelectorAll('.p-element');
+  var segmentoRuta = window.location.pathname.split('/').pop();
 
-  // Añade un evento de clic a cada elemento
-  pElements.forEach(function (element) {
+  pElements.forEach(function (element,i) {
     element.addEventListener('click', function () {
-      // Elimina la clase active-section de todos los elementos
-      pElements.forEach(function (item) {
+   
+      pElements.forEach(function (item) { console.log(item);
         item.classList.remove('active-section');
       });
-
-      // Añade la clase active-section al elemento clicado
       this.classList.add('active-section');
     });
+
+
+    var hrefValor = element.getAttribute('href');
+    var segmentoElementoMenu = null;
+   
+    if(hrefValor !=null){
+      segmentoElementoMenu=  hrefValor.split('/').pop()
+    }
+   
+    console.log(segmentoElementoMenu, segmentoRuta, i);
+    if (segmentoElementoMenu === segmentoRuta) {
+      pElements[i].classList.add('active-section');
+    } else {
+      pElements[i].classList.remove('active-section');
+    } 
+
+
+   
   });
 
   // Obtén una referencia al botón profile-icon y al menú emergente popup-menu-profile
@@ -161,7 +177,6 @@ document.addEventListener('DOMContentLoaded', function () {
   var submenu = document.querySelector('.submenu');
 
   submenu.addEventListener('mouseover', function () {
-    console.log('Hola');
     $("#sublista").show();
   });
 

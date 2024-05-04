@@ -14,9 +14,9 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-    <script src="js/menu.js"></script>
-    <link rel="stylesheet" href="css/admin/admin.css">
-    @vite(['resources/scss/app.scss', 'resources/scss/components/', 'resources/js/app.js'])
+    <script src="../js/menu.js"></script>
+    <link rel="stylesheet" href="../css/admin/admin.css">
+    @vite(['resources/scss/app.scss',  'resources/js/app.js'])
 
 
 </head>
@@ -38,7 +38,7 @@
                 <div class="links_site">
                     <nav class="nav">
                         <ul class="nav-list">
-                            <a class="p-element active-section" href="{{ route('admin.index') }}">
+                            <a class="p-element" href="{{ route('admin.index') }}">
                                 <div class="icon-sidebar-item">
                                     <i class="material-icons">assignment</i>
                                 </div>
@@ -187,12 +187,7 @@
         {{--   <button id="btn_top" ><i class='bx bxs-chevrons-up'></i></button> --}}
 
 <style>
-    .btn-group, .btn-group-vertical {
-    position: static !important;
-    display: -ms-inline-flexbox;
-    display: inline-flex;
-    vertical-align: middle;
-}
+
 </style>
 
 
