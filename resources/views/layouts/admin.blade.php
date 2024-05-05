@@ -8,16 +8,13 @@
     <title>@yield('title')</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> --}}
+   {{--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 
-
-
-  
     <link rel="stylesheet" href="../css/admin/admin.css">
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
@@ -66,7 +63,7 @@
 
                             <a href="{{ route('admin.estudiantes') }}" class="p-element">
                                 <div class="icon-sidebar-item">
-                                    <i class="material-icons">people</i>
+                                    <i class="fa-solid fa-users fontawesome"></i>
                                 </div>
                                 <div class="name-sidebar-item">
                                     <li>Estudiantes</li>
@@ -133,14 +130,19 @@
                     <span><?php echo Auth::user()->NombreUsuario; ?></span>
                 </div>
                 <div class="icon-profile">
-                    <i class="material-icons">person</i>
+                    <img src="../img/default/user.svg">
                 </div>
+
             </button>
             <!-- Aquí agregamos el contenedor del menú desplegable -->
             <div class="popup-menu-profile">
                 <div class="container">
+                    <a href="#" class="change_module">
+                        <i class="fa-regular fa-address-card"></i>
+                        <span>Cambiar modulo</span>
+                    </a>
                     <a class="logout" href="{{ route('logout') }}">
-                        <i class="material-icons">exit_to_app</i>
+                        <i class="fa-sharp fa-regular fa-arrow-up-left-from-circle fontawesome"></i>
                         <span>Cerrar sesión</span>
                     </a>
                 </div>
@@ -202,4 +204,6 @@
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
 <!-- Box Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    integrity="sha384-gL5q2wHNwpg9voDwmz1onh73oSJ8lFvZEydTHpw4M4okQ7N8qI+v5h0zitOykKdp" crossorigin="anonymous">
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>

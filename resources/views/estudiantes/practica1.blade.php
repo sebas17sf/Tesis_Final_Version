@@ -104,6 +104,7 @@
                     <button type="button" class="button" data-toggle="modal" data-target="#modalAgregarActividad">
                         Agregar actividad
                     </button>
+                    <br>
 
 
                     <div class="modal fade" id="modalAgregarActividad" tabindex="-1" role="dialog"
@@ -127,8 +128,7 @@
                                             value="{{ $practicaPendiente->PracticasI }}">
                                         <div class="form-group">
                                             <label for="Actividad">Actividad Realizada:</label>
-                                            <input type="text" id="Actividad" name="Actividad"
-                                                class="form-control input">
+                                            <textarea id="Actividad" name="Actividad" class="form-control input"></textarea>
                                         </div>
                                         <div class="form-group">
                                             <label for="horas">Número de Horas:</label>
@@ -181,6 +181,7 @@
                                     <th>Departamento</th>
                                     <th>Función Asignada</th>
                                     <th>Evidencia</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -194,6 +195,111 @@
                                         <td>{{ $actividad->funcion }}</td>
                                         <td><img src="data:image/png;base64,{{ $actividad->evidencia }}"
                                                 alt="Evidencia de la actividad" width="100px"></td>
+                                        <td>
+                                            <form
+                                                action="{{ route('estudiantes.eliminarActividadPracticas1', $actividad->id) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="button3 efects_button btn_eliminar3"> <i
+                                                        class="material-icons">delete</i></button>
+                                            </form>
+
+                                            <button type="button" class="button3 efects_button btn_editar3"
+                                                data-toggle="modal"
+                                                data-target="#modalEditarActividad{{ $actividad->id }}">
+                                                <i class="material-icons">edit</i>
+                                            </button>
+
+                                            <!-- Modal para editar actividad -->
+                                            <div class="modal fade" id="modalEditarActividad{{ $actividad->id }}"
+                                                tabindex="-1" role="dialog"
+                                                aria-labelledby="modalEditarActividadLabel{{ $actividad->id }}"
+                                                aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title"
+                                                                id="modalEditarActividadLabel{{ $actividad->id }}">Editar
+                                                                Actividad</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form
+                                                                action="{{ route('estudiantes.actualizarActividadPracticas1', $actividad->id) }}"
+                                                                method="POST" enctype="multipart/form-data">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <div class="form-group">
+                                                                    <label for="Actividad">Actividad Realizada:</label>
+                                                                    <input type="text" id="Actividad" name="Actividad"
+                                                                        value="{{ $actividad->Actividad }}"
+                                                                        class="form-control">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="horas">Horas:</label>
+                                                                    <input type="text" id="horas" name="horas"
+                                                                        value="{{ $actividad->horas }}"
+                                                                        class="form-control">
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="observaciones">Observaciones:</label>
+                                                                    <input type="text" id="observaciones"
+                                                                        name="observaciones"
+                                                                        value="{{ $actividad->observaciones }}"
+                                                                        class="form-control">
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="fechaActividad">Fecha de la
+                                                                        Actividad:</label>
+                                                                    <input type="date" id="fechaActividad"
+                                                                        name="fechaActividad"
+                                                                        value="{{ $actividad->fechaActividad }}"
+                                                                        class="form-control">
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="departamento">Departamento:</label>
+                                                                    <input type="text" id="departamento"
+                                                                        name="departamento"
+                                                                        value="{{ $actividad->departamento }}"
+                                                                        class="form-control">
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="funcion">Función Asignada:</label>
+                                                                    <input type="text" id="funcion" name="funcion"
+                                                                        value="{{ $actividad->funcion }}"
+                                                                        class="form-control">
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label for="evidencia">Evidencia:</label>
+                                                                    <input type="file" id="evidencia" name="evidencia"
+                                                                        class="form-control-file">
+                                                                </div>
+
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="button"
+                                                                        data-dismiss="modal">Cerrar</button>
+                                                                    <button type="submit" class="button">Guardar
+                                                                        Cambios</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </td>
+
+
 
                                     </tr>
                                 @endforeach
@@ -201,7 +307,7 @@
 
                             <tfoot>
                                 <tr>
-                                    <td colspan="7" align="left"><strong>Total horas realizadas:</strong> 
+                                    <td colspan="7" align="left"><strong>Total horas realizadas:</strong>
                                         {{ $totalHoras }} / {{ $practicaPendiente->HorasPlanificadas }}
                                     </td>
                                 </tr>
@@ -214,6 +320,10 @@
 
 
                 </div>
+
+
+
+
 
 
 
