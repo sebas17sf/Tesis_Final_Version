@@ -40,9 +40,7 @@ $background_content: rgba(lighten(colors.$white, 10), 1);
       border-radius: 10px;
       border: 1px solid transparent;
 
-      i {
-        font-size: 20px;
-      }
+
 
       &:hover {
         border: 1px solid rgba(colors.$gray, 40%);

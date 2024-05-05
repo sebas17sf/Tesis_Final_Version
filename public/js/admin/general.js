@@ -193,6 +193,7 @@ document.getElementById('cohorte').addEventListener('input', function () {
 });
 
 
+
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('nrc').addEventListener('input', function (event) {
         var input = event.target;
