@@ -162,7 +162,7 @@
             <div class="popup-menu-profile">
                 <div class="container">
                     <a href="#" class="change_module">
-                        <i class="fa-regular fa-address-card"></i>
+                        <i class="fa-regular fa-rectangle-vertical-history"></i>
                         <span>Cambiar modulo</span>
                     </a>
                     <a class="logout" href="{{ route('logout') }}">

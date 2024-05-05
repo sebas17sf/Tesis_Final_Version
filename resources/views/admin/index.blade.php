@@ -213,6 +213,7 @@
         <button type="submit" class="button">Respaldar Base de Datos</button>
     </form>
     <br>
+    <div class="contenedor_registro_genero">
     <section>
         <h6>Docentes agregados</h6>
 
@@ -232,11 +233,11 @@
                     </form>
 
 
-                    {{-- //DESCOMENTAR PARA ACTIVAR LOS OTROS BOTONES
+                    
                 <button class="button3 efects_button btn_copy" pTooltip="Copiar" tooltipPosition="top"><i
                         class="fa-solid fa-copy"></i></button>
 
-              
+                        {{-- //DESCOMENTAR PARA ACTIVAR LOS OTROS BOTONES
                 <button class="button3 efects_button btn_filtro" pTooltip="Filtros" tooltipPosition="top"><i
                         class="fa-solid fa-filter-list"></i></button>
 
@@ -259,13 +260,11 @@
                 </div>
             </div>
 
-
+ <!-- Tabla -->
             <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
-
-
                     <div id="tablaDocentes">
-                        <table class="table mat-mdc-table mdc-data-table__table cdk-table mat-sort">
+                        <table class="table mat-mdc-table mdc-data-table__table cdk-table mat-sort" mat-table [dataSource]="dataSource" matSort>
                             <thead class="ng-star-inserted">
                                 <tr>
                                     <th>Nombre</th>
@@ -393,8 +392,8 @@
 
             </div>
         </div>
-
     </section>
+                        </div>
     <br>
     <section>
 
