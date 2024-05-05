@@ -492,3 +492,6 @@
   display: inline-flex;
   vertical-align: middle;
 }
+.btn_nuevo_2 {
+  @include button-style2(colors.$btn-color-nuevo);
+}

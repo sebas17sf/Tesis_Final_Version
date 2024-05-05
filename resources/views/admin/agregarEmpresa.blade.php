@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-
+@section('title_component', 'Agregar Empresa')
 @section('content')
     <div class="container">
 
@@ -29,7 +29,6 @@
 
 
 
-        <h3>Agregar Empresa</h3>
         <form action="{{ route('admin.guardarEmpresa') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="table-responsive-sm">
@@ -148,7 +147,8 @@
             </div>
             <button type="submit" class="btn btn-sm btn-secondary">Guardar Empresa</button>
         </form>
-        <h3>Listado de Empresas Agregadas</h3>
+        <hr>
+        <h5>Listado de Empresas Agregadas</h5>
         @if ($empresas->isEmpty())
             <p>No hay empresas agregadas.</p>
         @else
