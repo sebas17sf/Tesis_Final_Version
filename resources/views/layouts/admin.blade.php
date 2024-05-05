@@ -142,7 +142,7 @@
                         <span>Cambiar modulo</span>
                     </a>
                     <a class="logout" href="{{ route('logout') }}">
-                        <i class="fa-sharp fa-regular fa-arrow-up-left-from-circle fontawesome"></i>
+                        <i class=" fa-arrow-up-left-from-circle"></i>
                         <span>Cerrar sesión</span>
                     </a>
                 </div>

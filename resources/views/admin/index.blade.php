@@ -56,7 +56,8 @@
             });
         </script>
     @endif
-    <section>
+    <section class="contenedor_agregar_periodo">
+        <section>
         <div class="mat-elevation-z8 contenedor_general">
             @if ($profesoresPendientes->isEmpty())
                 <p>No hay Docentes pendientes.</p>
@@ -213,10 +214,13 @@
         <button type="submit" class="button">Respaldar Base de Datos</button>
     </form>
     <br>
-    <div class="contenedor_registro_genero">
     <section>
-        <h6>Docentes agregados</h6>
-
+          <!-- Archivos de notas -->
+          <div class="contenedor_registro_genero ">
+        <div>
+          <span><b>Docentes agregados</b></span>
+          <hr>
+        </div>
 
         <div class="mat-elevation-z8 contenedor_general">
             <div class="contenedor_acciones_tabla" [ngClass]="{'sidebar_active_content_acciones_tabla': !sidebarHidden}">
@@ -231,8 +235,6 @@
                             <i class="fa-solid fa-file-excel"></i>
                         </button>
                     </form>
-
-
                     
                 <button class="button3 efects_button btn_copy" pTooltip="Copiar" tooltipPosition="top"><i
                         class="fa-solid fa-copy"></i></button>
@@ -272,7 +274,7 @@
                                     <th>Usuario</th>
                                     <th>Cédula</th>
                                     <th>Departamento</th>
-                                    <th>ID ESPE</th>
+                                    <th style="width: 60px;">ID ESPE</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -292,10 +294,10 @@
                                             <td>{{ $profesor->Cedula }}</td>
                                             <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $profesor->Departamento)) }}
                                             </td>
-                                            <td>{{ $profesor->espe_id }}</td>
+                                            <td style="width: 60px;">{{ $profesor->espe_id }}</td>
                                             <td>
                                                 <div class="contenedor_botones">
-                                                    <div class="btn-group  shadow-0">
+                                                    <div class="btn-group shadow-0" style="margin-bottom: 10px;">
 
                                                         <form
                                                             action="{{ route('admin.editarDocente', ['id' => $profesor->id]) }}"
@@ -303,17 +305,17 @@
                                                             @csrf
                                                             <button type="submit"
                                                                 class="button3 efects_button btn_editar3">
-                                                                <i class="material-icons">edit</i></button>
+                                                                <i class='bx bx-edit-alt'></i></button>
                                                         </form>
-
+                        </div>
+                        <div class="btn-group shadow-1" style="margin-bottom: 10px;">
                                                         <form
                                                             action="{{ route('admin.eliminarMaestro', ['id' => $profesor->id]) }}"
                                                             method="POST">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit"
-                                                                class="button3 efects_button btn_eliminar3"> <i
-                                                                    class="material-icons">delete</i></button>
+                                                                class="button3 efects_button btn_eliminar3"><i class='bx bx-trash'></i></button>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -394,7 +396,9 @@
         </div>
     </section>
                         </div>
-    <br>
+
+                        <br>
+    
     <section>
 
         <div class="container">
@@ -534,6 +538,7 @@
             </div>
 
         </div>
+    </section>
     </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">

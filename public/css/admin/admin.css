@@ -179,11 +179,6 @@ tr:hover {
     float: left; /* Alinear a la izquierda */
 }
 
-/* Establecer el ancho del contenido y agregar margen izquierdo */
-.content-views {
-    margin-left: 20px; /* Igual al ancho del sidebar */
-}
-
 /* Limpiar flotantes */
 .clearfix::after {
     content: "";
