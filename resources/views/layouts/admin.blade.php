@@ -16,7 +16,7 @@
 
     <script src="../js/menu.js"></script>
     <link rel="stylesheet" href="../css/admin/admin.css">
-    @vite(['resources/scss/app.scss',  'resources/js/app.js'])
+    @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
 
 </head>
@@ -57,7 +57,7 @@
 
                             <a href="{{ route('admin.estudiantes') }}" class="p-element">
                                 <div class="icon-sidebar-item">
-                                    <i class="material-icons">people</i>
+                                    <i class="fa-solid fa-users fontawesome"></i>
                                 </div>
                                 <div class="name-sidebar-item">
                                     <li>Estudiantes</li>
@@ -109,33 +109,32 @@
 
                                 <div class="dropdown-menu" aria-labelledby="practicasDropdown">
                                     <a class="dropdown-item" href="{{ route('admin.agregarEmpresa') }}">
-                                        <div class="icon-sidebar-item">
-                                            <i class="material-icons">add_business</i>
-                                        </div>
-                                        <div class="name-sidebar-item">
-                                            <li>Agregar-Empresa</li>
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item" href="{{ route('admin.aceptarFaseI') }}"
-                                        style="margin-top: 10px;">
-                                        <div class="icon-sidebar-item">
-                                            <i class="material-icons">check_circle</i>
-                                        </div>
-                                        <div class="name-sidebar-item">
-                                            <li>Aprobar-Practicas</li>
-                                        </div>
-                                    </a>
-                                </div> --}}
-                            {{-- </div> --}}
-                        </ul>
-                    </nav>
+                            <div class="icon-sidebar-item">
+                                <i class="material-icons">add_business</i>
+                            </div>
+                            <div class="name-sidebar-item">
+                                <li>Agregar-Empresa</li>
+                            </div>
+                            </a>
+                            <a class="dropdown-item" href="{{ route('admin.aceptarFaseI') }}" style="margin-top: 10px;">
+                                <div class="icon-sidebar-item">
+                                    <i class="material-icons">check_circle</i>
+                                </div>
+                                <div class="name-sidebar-item">
+                                    <li>Aprobar-Practicas</li>
+                                </div>
+                            </a>
                 </div>
+                {{-- </div> --}}
+                </ul>
+                </nav>
             </div>
-            <div class="content-autors">
-                <span class="autors1">
-                    <i>Designed by Sebastian Flores & Karen Cueva.</i>
-                </span>
-            </div>
+        </div>
+        <div class="content-autors">
+            <span class="autors1">
+                <i>Designed by Sebastian Flores & Karen Cueva.</i>
+            </span>
+        </div>
         </div>
         </div>
     </section>
@@ -155,14 +154,19 @@
                     <span><?php echo Auth::user()->NombreUsuario; ?></span>
                 </div>
                 <div class="icon-profile">
-                    <i class="material-icons">person</i>
+                    <img src="../img/default/user.svg">
                 </div>
+
             </button>
             <!-- Aquí agregamos el contenedor del menú desplegable -->
             <div class="popup-menu-profile">
                 <div class="container">
+                    <a href="#" class="change_module">
+                        <i class="fa-regular fa-address-card"></i>
+                        <span>Cambiar modulo</span>
+                    </a>
                     <a class="logout" href="{{ route('logout') }}">
-                        <i class="material-icons">exit_to_app</i>
+                        <i class="fa-sharp fa-regular fa-arrow-up-left-from-circle fontawesome"></i>
                         <span>Cerrar sesión</span>
                     </a>
                 </div>
@@ -186,9 +190,9 @@
 
         {{--   <button id="btn_top" ><i class='bx bxs-chevrons-up'></i></button> --}}
 
-<style>
+        <style>
 
-</style>
+        </style>
 
 
     </section>
@@ -224,4 +228,6 @@
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
 <!-- Box Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    integrity="sha384-gL5q2wHNwpg9voDwmz1onh73oSJ8lFvZEydTHpw4M4okQ7N8qI+v5h0zitOykKdp" crossorigin="anonymous">
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
