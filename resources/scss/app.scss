@@ -50,9 +50,14 @@ body {
   margin: 0;
   font-family: "Roboto", sans-serif;
 }
-.content-views {
-  margin-left: 20px; /* Igual al ancho del sidebar */
+//Quitar scroll de la pante superior de la vista
+body {
+  overflow-x: hidden;
 }
+
+/* .content-views {
+  margin-left: 20px; //Igual al ancho del sidebar 
+} */
 // Campos requeridos
 .contenedor_campo_requerido {
   font-size: 10px;
@@ -61,46 +66,58 @@ body {
 // ==============================
 // Contenedor de vistas
 // ==============================
-.content-views {
+/* .content-views {
   display: block;
   padding: 20px;
 
   .title-component {
-    h1 {
-      font-size: 20px;
+    display: grid;
+
+    .title-content {
+      font-size: fonts.$title-content;
       font-weight: bold;
-      margin-top: 15px;
-      margin-bottom: 3px;
+      margin-bottom: 5px;
       color: rgba(colors.$black, 0.8);
     }
 
     // Divisor
     .divisor-title {
       height: 3px;
-      margin-bottom: 15px;
+      margin-bottom: 5px;
       border-radius: 50px;
       background-color: colors.$primary;
-      width: calc(8px * var(--title-length, 0));
+      width: calc(5px * var(--title-length, 0));
     }
   }
 
   .views {
-    padding: 20px;
+    position: relative;
+    padding: 10px 20px;
     border-radius: 10px;
     background-color: colors.$white;
     border: 1px solid rgba(colors.$black, 0.05);
 
-    @media (max-width: 570px) {
+    @media (max-width: 630px) {
       position: absolute;
     }
   }
-}
+
+  .views-active {
+    @media (max-width: 630px) {
+      position: relative !important;
+    }
+
+    @media (max-width: 470px) {
+      position: absolute !important;
+    }
+  }
+} */
 
 // Especifica las dimenciones en las que se deben poner el nav y el contenedor
 // Sidebar Expandido
-.dimension-content {
+/* .dimension-content {
   margin-top: 50px;
-  left: 220px; /* Ajustar el espacio a la izquierda del contenido */
+  left: 220px; 
 
 }
 
@@ -116,8 +133,8 @@ body {
 .dimension-content-hidden {
   left: 60px;
   transition: all 0.3s ease;
-  width: calc(100% - 60px); /* Restar el ancho del sidebar */
-}
+  width: calc(100% - 60px); 
+} */
 
 // Cerrar sesion
 .logout {
@@ -128,13 +145,13 @@ body {
   }
 }
     // Divisor
-    .divisor-title {
+  /*   .divisor-title {
       height: 3px;
       margin-bottom: 15px;
       border-radius: 50px;
       background-color: colors.$primary;
       width: calc(8px * var(--title-length, 0));
-    }
+    } */
     .sidebar a {
       padding: 1px 5px;
       /* Espaciado de los enlaces */

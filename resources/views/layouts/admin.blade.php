@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="hydrated">
 
 <head>
     <meta charset="UTF-8">
@@ -14,16 +14,22 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-    <script src="../js/menu.js"></script>
+
     <link rel="stylesheet" href="../css/admin/admin.css">
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+    </style>
+    <script src="../js/menu.js"></script>
 
 </head>
 
 <body>
     <!-- Barra de navegación en el lado izquierdo -->
-    <section class="content-sidebar" _ngcontent-ng-c4160891441>
+    <section class="content-sidebar " _ngcontent-ng-c4160891441>
 
         <div class="content scroll-small">
             <div class="sidebar">
@@ -95,51 +101,21 @@
 
                             </div>
 
-                            {{-- 
-                            <div class="dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" id="practicasDropdown" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <div class="icon-sidebar-item">
-                                        <i class="material-icons">business</i>
-                                    </div>
-                                    <div class="name-sidebar-item">
-                                        <li>Prácticas</li>
-                                    </div>
-                                </a>
 
-                                <div class="dropdown-menu" aria-labelledby="practicasDropdown">
-                                    <a class="dropdown-item" href="{{ route('admin.agregarEmpresa') }}">
-                            <div class="icon-sidebar-item">
-                                <i class="material-icons">add_business</i>
-                            </div>
-                            <div class="name-sidebar-item">
-                                <li>Agregar-Empresa</li>
-                            </div>
-                            </a>
-                            <a class="dropdown-item" href="{{ route('admin.aceptarFaseI') }}" style="margin-top: 10px;">
-                                <div class="icon-sidebar-item">
-                                    <i class="material-icons">check_circle</i>
-                                </div>
-                                <div class="name-sidebar-item">
-                                    <li>Aprobar-Practicas</li>
-                                </div>
-                            </a>
+                        </ul>
+                    </nav>
                 </div>
-                {{-- </div> --}}
-                </ul>
-                </nav>
             </div>
-        </div>
-        <div class="content-autors">
-            <span class="autors1">
-                <i>Designed by Sebastian Flores & Karen Cueva.</i>
-            </span>
-        </div>
+            <div class="content-autors">
+                <span class="autors1">
+                    <i>Designed by Sebastian Flores & Karen Cueva.</i>
+                </span>
+            </div>
         </div>
         </div>
     </section>
     <!-- SIDEBAR -->
-    <section class="content-navbar dimension-nav" _ngcontent-ng-c3252749989>
+    <section class="content-navbar dimension-nav">
         <!-- Toggle sidebar -->
         <div class="icon-menu-sidebar" onclick="triggerToggleSidebar()">
             <i class='bx bx-menu-alt-left'
@@ -176,10 +152,10 @@
     </section>
     <button id="btn_top" *ngIf="showScrollButton" (click)="scrollToTop()"><i class='bx bxs-chevrons-up'></i></button>
     <!-- CONTENEDOR -->
-    <section class="content-views dimension-content" _ngcontent-ng-c3252749989>
+    <section class="content-views dimension-content">
         <!-- Title component -->
         <div class="title-component">
-            <h1>@yield('title_component')</h1>
+            <span class="title-content">@yield('title_component')</span>
             <div class="divisor-title"></div>
         </div>
         <!-- Contenido principal -->
