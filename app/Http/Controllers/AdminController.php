@@ -78,6 +78,7 @@ class AdminController extends Controller
                     ->whereIn('Estado', ['Vinculacion', 'Lector', 'Director-Departamento'])
                     ->get();
 
+ 
                 return view('admin.index', [
                     'profesoresPendientes' => $profesoresPendientes,
                     'profesoresConPermisos' => $profesoresConPermisos,
@@ -85,6 +86,7 @@ class AdminController extends Controller
                     'periodos' => $periodos,
                     'search' => $searchTerm,
                     'perPage' => $perPage,
+                   
                 ]);
             }
         }

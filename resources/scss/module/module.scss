@@ -41,7 +41,7 @@
       margin-bottom: 5px;
       border-radius: 50px;
       background-color: colors.$primary;
-      width: calc(5px * var(--title-length, 0));
+      width: calc(5px * var(6, 0));
     }
   }
 
@@ -68,8 +68,6 @@
   }
 }
 
-// Especifica las dimenciones en las que se deben poner el nav y el contenedor
-// Sidebar Expandido
 .dimension-content {
   position: relative;
   margin-top: 60px;
@@ -86,7 +84,7 @@
 // Sidebar Retraido
 .dimension-nav-hidden,
 .dimension-content-hidden {
-  width: calc(100% - 100px);
+  width: calc(100% - 40px);
   left: 65px;
   transition: all 0.3s ease;
 }
