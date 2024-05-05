@@ -217,8 +217,8 @@
         <h6>Docentes agregados</h6>
 
 
-        <div class="mat-elevation-z8 contenedor_general">
-            <div class="contenedor_acciones_tabla" [ngClass]="{'sidebar_active_content_acciones_tabla': !sidebarHidden}">
+        <div class="contenedor_general mat-elevation-z8 ">
+            <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                 <!-- Botones -->
                 <div class="contenedor_botones">
 
@@ -260,12 +260,12 @@
             </div>
 
 
+
             <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
 
-
                     <div id="tablaDocentes">
-                        <table class="table mat-mdc-table mdc-data-table__table cdk-table mat-sort">
+                        <table class="table mat-mdc-row">
                             <thead class="ng-star-inserted">
                                 <tr>
                                     <th>Nombre</th>

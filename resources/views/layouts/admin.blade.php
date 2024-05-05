@@ -71,7 +71,7 @@
                             </a>
 
 
-                            <a class="p-element submenu" class="p-element">
+                            <a class="p-element submenu" class="p-element" >
                                 <div class="icon-sidebar-item">
                                     <i class="material-icons">business</i>
                                 </div>
@@ -82,7 +82,7 @@
                             </a>
 
                             <div class="item-list" id="sublista">
-                                <a class="p-element mb-1" href="{{ route('admin.agregarEmpresa') }}" class="p-element">
+                                <a class="p-element mb-1" href="{{ route('admin.agregarEmpresa') }}">
                                     <div class="icon-sidebar-item">
                                         <i class="material-icons">add_business</i>
                                     </div>
@@ -90,7 +90,7 @@
                                         <li>Agregar-Empresa</li>
                                     </div>
                                 </a>
-                                <a class="p-element" href="{{ route('admin.aceptarFaseI') }}" class="p-element">
+                                <a class="p-element" href="{{ route('admin.aceptarFaseI') }}">
                                     <div class="icon-sidebar-item">
                                         <i class="material-icons">check_circle</i>
                                     </div>

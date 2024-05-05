@@ -8,7 +8,7 @@ function triggerToggleSidebar() {
 
 
   var elementosAutores = document.querySelectorAll('.content-autors');
-  
+
 
   // Si la clase dimension-nav-hidden está presente en contentSidebar, la elimina; de lo contrario, la añade
   if (contentSidebar.classList.contains('content-sidebar-hidden')) {
@@ -57,11 +57,11 @@ function triggerToggleSidebar() {
 document.addEventListener('DOMContentLoaded', function () {
 
 
-    //agregar linea de los titulos
-    var elementosTitleContent = document.querySelectorAll('.title-content');
-    var elementosHydrated = document.querySelectorAll('.hydrated');
-    elementosHydrated[0].setAttribute('style', `--title-length:${elementosTitleContent[0].textContent.length};`)
-  
+  //agregar linea de los titulos
+  var elementosTitleContent = document.querySelectorAll('.title-content');
+  var elementosHydrated = document.querySelectorAll('.hydrated');
+  elementosHydrated[0].setAttribute('style', `--title-length:${elementosTitleContent[0].textContent.length};`)
+
   $("#sublista").hide();
   // Selecciona todos los elementos con la clase p-element
   var pElements = document.querySelectorAll('.p-element');
@@ -73,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function () {
     element.addEventListener('click', function () {
 
       pElements.forEach(function (item) {
-        console.log(item);
         item.classList.remove('active-section');
       });
       this.classList.add('active-section');
@@ -129,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
   var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl)
-  }) 
+  })
 
   var contentSidebar = document.querySelector('.content-sidebar');
 
@@ -140,43 +139,25 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-
   var submenus = document.querySelectorAll('.submenu');
-
+  var itemList = document.getElementById('sublista');
   submenus.forEach(function (submenu) {
-    submenu.addEventListener('click', function () {
-      // Quita la clase item-list-active-section de todos los elementos .nav-item
-      var navItems = document.querySelectorAll('.p-element');
-      navItems.forEach(function (navItem) {
-        navItem.classList.remove('item-list-active-section');
-      });
+    submenu.addEventListener('mouseover', function () {
 
-      // Agrega la clase item-list-active-section solo al elemento padre más cercano de .submenu
-      var closestNavItem = this.closest('.submenu');
-      closestNavItem.classList.add('item-list-active-section');
+      if (itemList.classList.contains('show')) {
+        $("#sublista").hide();
+        itemList.classList.remove('show');
+        itemList.classList.add('hide');
+      } else {
+        $("#sublista").show();
+        itemList.classList.remove('hide');
+        itemList.classList.add('show');
+
+      }
+
+
     });
   });
-
-
-
-  var submenu = document.querySelector('.submenu');
-
-
-  submenu.addEventListener('click', function () {
-
-    if (submenu.classList.contains('item-list-active-section')) {
-      $("#sublista").show();
-    }
-
-
-  });
-
-  var submenu = document.querySelector('.submenu');
-
-  submenu.addEventListener('mouseover', function () {
-    $("#sublista").show();
-  });
-
 
 
   window.addEventListener('scroll', function () {
@@ -216,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 function activarMenu() {
-  
+
   //finde agregar linea de los titulos
 
   //verificar si el menu esta expandido o no
@@ -226,11 +207,11 @@ function activarMenu() {
   var viewsActive = document.querySelector('.views');
   var sidebarEstado = localStorage.getItem('sidebar');
   console.log(sidebarEstado);
-  if (sidebarEstado=='true') { 
+  if (sidebarEstado == 'true') {
     contentSidebar.classList.add('content-sidebar-hidden');
     contentNavbar.classList.add('dimension-nav-hidden');
     viewsActive.classList.add('views-active');
     contentViews.classList.add('dimension-content-hidden');
-  } 
+  }
 
 }

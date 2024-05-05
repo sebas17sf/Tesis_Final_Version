@@ -26,7 +26,7 @@
   align-items: center;
   justify-content: left;
   text-decoration: none;
-  border-radius: 30px;
+  border-radius: 50px;
   border: 1px solid rgba(colors.$black, 10%);
   box-shadow:
     inset 5px 5px 15px darken(colors.$sha2, 20%),
@@ -236,7 +236,7 @@
 
 .content-sidebar-hidden {
   .content {
-    max-width: 55px;
+    max-width: 60px;
 
     .sidebar {
       .logo_site {
