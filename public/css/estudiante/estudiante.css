@@ -28,3 +28,22 @@ button {
     line-height: 1.5;
 
 }
+/* CSS */
+.custom-form {
+    display: flex;
+    justify-content: space-between; /* Espacio entre los elementos */
+}
+
+.form-column {
+    flex: 1; /* Ocupa el espacio disponible */
+    margin-right: 20px; /* Espacio entre las columnas */
+}
+
+.form-group {
+    margin-bottom: 20px; /* Espacio entre los grupos de campos */
+}
+
+.button.text-center {
+    margin: 3px auto; /* Centro el botón horizontalmente */
+    display: block; /* Asegura que el botón ocupe todo el ancho disponible */
+}
