@@ -119,11 +119,17 @@
                     Agricultura</option>
             </select>
         </div>
+
+
     </div>
 
-    
+    <div class="button-container">
+    <button type="submit" class="button efects_button">Guardar Datos</button>
+</div>
+
+
 </form>
-<button type="submit" class="button text-center">Guardar Datos</button>
+
         </div>
     </div>
 @endsection
