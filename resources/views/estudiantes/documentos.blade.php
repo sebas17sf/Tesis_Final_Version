@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title_component', 'Generar Documentos')
 @section('content')
     @if (session('success'))
         <script>
@@ -23,13 +23,13 @@
         </script>
     @endif
 
-    <div class="container mt-5">
-        <h4 class="text-center mb-4">Generar Documentos</h4>
+    <div class="container mt-4">
         <div class="row">
             <div class="col-md-4">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h4 class="card-title">Generar Acta de Designación de Estudiantes</h4>
+                        <h6 class="card-title"><i>Generar Acta de Designación de Estudiantes</i></h>
+                        <hr>
                         <form action="{{ route('generar-documento') }}" method="post">
                             @csrf
                             <button type="submit" class="btn btn-light btn-block">
@@ -42,7 +42,8 @@
             <div class="col-md-4">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h4 class="card-title">Generar Carta de Compromiso de Estudiante</h4>
+                        <h6 class="card-title"><i>Generar Carta de Compromiso de Estudiante</i></h6>
+                        <hr>
                         <form action="{{ route('generar-documento-cartaCompromiso') }}" method="post">
                             @csrf
                             <button type="submit" class="btn btn-light btn-block">
@@ -55,7 +56,8 @@
             <div class="col-md-4">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h4 class="card-title">Generar Número de Horas de Estudiantes</h4>
+                        <h6 class="card-title"><i>Generar Número de Horas de Estudiantes</i></h6>
+                        <hr>
                         <form action="{{ route('generar-documento-numeroHoras') }}" method="POST">
                             @csrf
                             <button type="submit" class="btn btn-light btn-block">
@@ -68,28 +70,29 @@
         </div>
 
         <button id="toggleFormBtn" class="btn btn-light btn-block">Registrar actividad</button>
-
+<br>
         <div id="registroActividades" style="display: none;">
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
 
                         <div class="card-body">
-                            <h4 class="card-title">Registro de Actividades</h4>
+                            <h6 class="card-title"><b>Registro de Actividades</b></h6>
+                            <hr>
                             <form action="{{ route('estudiantes.guardarActividad') }}" method="post"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
                                     <label for="fecha"><strong>Fecha:</strong></label>
-                                    <input type="date" id="fecha" name="fecha" class="form-control" required>
+                                    <input type="date" id="fecha" name="fecha" class="form-control input" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="actividades"><strong>Actividades a realizar:</strong></label>
-                                    <textarea id="actividades" name="actividades" class="form-control" rows="4" required></textarea>
+                                    <textarea id="actividades" name="actividades" class="form-control input" rows="4" required></textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="horas"><strong>Número de horas:</strong></label>
-                                    <input type="number" id="horas" name="horas" class="form-control" required>
+                                    <input type="number" id="horas" name="horas" class="form-control input" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="evidencias"><strong>Resultados de la actividad
@@ -101,13 +104,13 @@
                                             </span>
                                         </div>
                                         <input type="file" id="evidencias" name="evidencias"
-                                            accept="image/jpeg, image/jpg, image/png" class="form-control-file" required>
+                                            accept="image/jpeg, image/jpg, image/png" class="form-control-file input" required>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="nombre_actividad"><strong>Asigne Nombre de la actividad:</strong></label>
-                                    <input type="text" id="nombre_actividad" name="nombre_actividad" class="form-control"
+                                    <input type="text" id="nombre_actividad" name="nombre_actividad" class="form-control input"
                                         required>
                                 </div>
                                 <button type="submit" class="btn btn-light btn-block">Guardar Actividad</button>
@@ -120,7 +123,8 @@
             </div>
 
             <div class="mt-4">
-                <h4 class="text-center">Actividades Registradas</h4>
+                <h6 class="text-center"><b>Actividades Registradas</b></h6>
+                <hr>
                 <table class="table table-bordered">
                     <thead>
                         <tr>
@@ -179,11 +183,11 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="actividades">Actividades</label>
-                                                            <textarea class="form-control" id="actividades" name="actividades">{{ $actividad->actividades }}</textarea>
+                                                            <textarea class="form-control input textarea" id="actividades" name="actividades">{{ $actividad->actividades }}</textarea>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="numero_horas">Número de Horas</label>
-                                                            <input type="number" class="form-control" id="numero_horas"
+                                                            <input type="number" class="form-control input" id="numero_horas"
                                                                 name="numero_horas"
                                                                 value="{{ $actividad->numero_horas }}">
                                                         </div>
@@ -224,30 +228,31 @@
 
         <br>
         <button id="toggleFormBtn2" class="btn btn-light btn-block">Crear Informe</button>
+        <br>
         <div id="registroInforme" style="display: none;">
             <form action="{{ route('estudiantes.generarInforme') }}" method="post">
                 @csrf
                 <div class="form-group">
                     <label for="nombreComunidad"><strong>Nombre de la Comunidad o Comunidades
                             Beneficiarias:</strong></label>
-                    <input type="text" id="nombreComunidad" name="nombreComunidad" class="form-control" required>
+                    <input type="text" id="nombreComunidad" name="nombreComunidad" class="form-control input" required>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-3">
                         <label for="provincia"><strong>Provincia:</strong></label>
-                        <input type="text" id="provincia" name="provincia" class="form-control" required>
+                        <input type="text" id="provincia" name="provincia" class="form-control input" required>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="canton"><strong>Canton:</strong></label>
-                        <input type="text" id="canton" name="canton" class="form-control" required>
+                        <input type="text" id="canton" name="canton" class="form-control input" required>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="parroquia"><strong>Parroquia:</strong></label>
-                        <input type="text" id="parroquia" name="parroquia" class="form-control" required>
+                        <input type="text" id="parroquia" name="parroquia" class="form-control input" required>
                     </div>
                     <div class="form-group col-md-3">
                         <label for="direccion"><strong>Dirección:</strong></label>
-                        <input type="text" id="direccion" name="direccion" class="form-control" required>
+                        <input type="text" id="direccion" name="direccion" class="form-control input" required>
                     </div>
                 </div>
 
@@ -255,17 +260,17 @@
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="especificos"><strong>Objetivos Específicos:</strong></label>
-                            <textarea name="especificos[]" class="form-control" rows="4" required></textarea>
+                            <textarea name="especificos[]" class="form-control input" rows="4" required></textarea>
                         </div>
 
                         <div class="form-group col-md-4">
                             <label for="alcanzados"><strong>Resultados alcanzados:</strong></label>
-                            <textarea name="alcanzados[]" class="form-control" rows="4" required></textarea>
+                            <textarea name="alcanzados[]" class="form-control input" rows="4" required></textarea>
                         </div>
 
                         <div class="form-group col-md-4">
                             <label for="porcentaje"><strong>Porcentaje alcanzado:</strong></label>
-                            <textarea name="porcentaje[]" class="form-control" rows="4" required></textarea>
+                            <textarea name="porcentaje[]" class="form-control input" rows="4" required></textarea>
                         </div>
                     </div>
 
@@ -282,7 +287,7 @@
                                     realizadas:</strong></label>
                         </td>
                         <td>
-                            <textarea id="razones" name="razones" rows="10" cols="100"></textarea>
+                            <textarea id="razones" class=" textarea input" name="razones" rows="10" cols="100"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -290,7 +295,7 @@
                             <label for="conclusiones"><strong>Conclusiones:</strong></label>
                         </td>
                         <td>
-                            <textarea id="conclusiones" name="conclusiones" rows="10" cols="100"></textarea>
+                            <textarea id="conclusiones" class=" textarea input" name="conclusiones" rows="10" cols="100"></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -298,7 +303,7 @@
                             <label for="recomendaciones"><strong>Recomendaciones:</strong></label>
                         </td>
                         <td>
-                            <textarea id="recomendaciones" name="recomendaciones" rows="10" cols="100"></textarea>
+                            <textarea id="recomendaciones" class=" textarea input" name="recomendaciones" rows="10" cols="100"></textarea>
                         </td>
                     </tr>
                 </table>
