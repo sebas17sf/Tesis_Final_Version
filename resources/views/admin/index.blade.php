@@ -489,7 +489,7 @@
 
 
                                                             </div>
-                                                            <div class="btn-group shadow-1" style="margin-bottom: 10px;">
+                                                            <div class="btn-group shadow-1"
                                                                 <form
                                                                     action="{{ route('admin.eliminarMaestro', ['id' => $profesor->id]) }}"
                                                                     method="POST">
