@@ -16,7 +16,16 @@
 @use "navbar/app.component";
 @use "deshboard/dashboard.component.scss";
 @use "tabla/tabla_filtros"; 
+@use "Contenedores/load-periods.component.scss";
 
+// ===============================================
+// Estilos para fontawesome
+
+
+
+*:not(i) {
+  font-family: fonts.$font-primary;
+}
 // ===============================================
 // Estilos para sweedAlert2
 // ===============================================

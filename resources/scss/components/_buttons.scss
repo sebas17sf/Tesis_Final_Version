@@ -77,6 +77,7 @@
   align-items: center;
   border-radius: 5px;
   font-size: fonts.$icon-size;
+  font-size: 1.5em !important;
 }
 
 // ===============================================
@@ -490,4 +491,7 @@
   display: -ms-inline-flexbox;
   display: inline-flex;
   vertical-align: middle;
+}
+.btn_nuevo_2 {
+  @include button-style2(colors.$btn-color-nuevo);
 }

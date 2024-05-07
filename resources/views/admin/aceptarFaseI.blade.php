@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-
+@section('title_component', 'Fase I')
 @section('content')
     @if (session('success'))
         <script>
@@ -27,7 +27,7 @@
 
 
     <div class="container" style="overflow-x: auto;">
-        <h4>Estudiantes a realizar Prácticas</h4>
+        <h6><b>Estudiantes a realizar Prácticas</b></h6>
         <hr>
         @csrf
         <table class="table table-bordered">
@@ -121,7 +121,8 @@
     <hr>
 
     <div class="container" style="overflow-x: auto;">
-        <h4>Estudiantes Practica I</h4>
+        <h6><b>Estudiantes Practica I</b></h6>
+        <hr>
         @csrf
         <table class="table table-bordered">
     <thead>
@@ -184,7 +185,8 @@
     </div>
 
     <div class="container" style="overflow-x: auto;">
-        <h4>Estudiantes Practica II</h4>
+        <h6><b>Estudiantes Practica II<b></h6>
+        <hr>
         @csrf
         <table class="table table-bordered">
     <thead>

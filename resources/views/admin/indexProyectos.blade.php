@@ -30,11 +30,11 @@
 
 
     <div class="container" style="overflow-x: auto;">
-        <h4>Listado de Proyectos</h4>
+        <h6><b>Listado de Proyectos</b></h6>
+<hr>
 
-
-        <a href="{{ route('admin.agregarProyecto') }}" class="btn btn-outline-secondary btn-sm">
-            <i class="material-icons">add</i> Proyecto
+        <a href="{{ route('admin.agregarProyecto') }}" class="btn btn_nuevo3" id="button3">
+        <i class="fa-solid fa-plus"></i> Proyecto
         </a>
 
 
@@ -212,7 +212,8 @@
         <div id="asignarEstudiante" style="display: none;">
 
             <HR>
-            <h4>Asignar Proyecto</h4>
+            <h6><b>Asignar Proyecto</b></h6>
+            <hr>
             <form method="POST" action="{{ route('admin.guardarAsignacion') }}">
                 @csrf
 

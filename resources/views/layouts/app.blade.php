@@ -2,25 +2,29 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="\img\logos\logo_tesis.png" alt="logo">
+    <meta name=" viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
-    <!-- Add Bootstrap CSS link -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Add Google Icons link -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="css/admin/admin.css">
-    <script src="js/menu.js"></script>
-
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="../css/admin/admin.css">
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 </head>
-
+<style>
+        body {
+            overflow-x: hidden;
+        }
+    </style>
+    <script src="../js/menu.js"></script>
 <body>
     <!-- Barra de navegación en el lado izquierdo -->
-    <section class="content-sidebar" [ngClass]="{'content-sidebar-hidden': sidebarHidden}">
+    <section class="content-sidebar " _ngcontent-ng-c4160891441>
 
         <div class="content scroll-small">
             <div class="sidebar">
@@ -37,17 +41,33 @@
                         <ul class="nav-list">
                             <a href="{{ route('estudiantes.index') }}"
                                 class="{{ Request::is('estudiantes/index') ? 'active' : '' }}">
-                                <i class="material-icons">assignment</i> Informacion
+                                <div class="icon-sidebar-item">
+                                    <i class="material-icons">assignment</i>
+                                </div>
+                                <div class="name-sidebar-item">
+                                    <li>Información</li>
+                                </div>
                             </a>
 
                             <a href="{{ route('estudiantes.documentos') }}"
                                 class="{{ Request::is('estudiantes/documentos') ? 'active' : '' }}">
-                                <i class="material-icons">people_alt</i> Vinculación con la Sociedad
+                                <div class="icon-sidebar-item">
+                                <i class="material-icons">people_alt</i>
+                                </div>
+                                <div class="name-sidebar-item">
+                                    <li>Servicio Comunitario</li>
+                                </div>
+                                 
                             </a>
 
                             <a href="{{ route('estudiantes.practica1') }}"
                                 class="{{ Request::is('estudiantes/practica1') ? 'active' : '' }}">
-                                <i class="material-icons">work</i> Prácticas pre profesionales
+                                <div class="icon-sidebar-item">
+                                <i class="material-icons">work</i>
+                                </div>
+                                <div class="name-sidebar-item">
+                                    <li>Prácticas pre profesionales</li>
+                                </div> 
                             </a>
 
                         </ul>
@@ -63,34 +83,42 @@
         </div>
         </div>
     </section>
-    <!-- SIDEBAR -->
-    <section class="content-navbar dimension-nav" [ngClass]="{'dimension-nav-hidden': sidebarHidden}">
+     <!-- SIDEBAR -->
+     <section class="content-navbar dimension-nav">
         <!-- Toggle sidebar -->
-        <div class="icon-menu-sidebar" (click)="triggerToggleSidebar()">
+        <div class="icon-menu-sidebar" onclick="triggerToggleSidebar()">
             <i class='bx bx-menu-alt-left'
                 [ngClass]="{'bx-menu': sidebarHidden,'bx-menu-alt-left': !sidebarHidden}"></i>
         </div>
         <!-- contenido -->
+
         <main class="navbar">
             <button class="profile-icon dropdown" id="profile-button">
-                <div class="icon-profile">
-                    <i class="material-icons">person</i>
-                </div>
+
                 <div class="name-profile">
                     <span><?php echo Auth::user()->NombreUsuario; ?></span>
                 </div>
+                <div class="icon-profile">
+                    <img src="../img/default/user.svg">
+                </div>
 
             </button>
-
             <!-- Aquí agregamos el contenedor del menú desplegable -->
             <div class="popup-menu-profile">
                 <div class="container">
-                    <a class="logout" href="{{ route('logout') }}">
-                        <i class="material-icons">exit_to_app</i>
-                        <span>Cerrar sesión</span>
+                    <a href="#" class="change_module">
+                        <i class="fa-regular fa-rectangle-vertical-history"></i>
+                        <span>Cambiar modulo</span>
                     </a>
+                    <a class="logout" href="{{ route('logout') }}">
+    <i class="fa-sharp fa-regular fa-arrow-up-left-from-circle fontawesome"></i>
+    <span>Cerrar sesión</span>
+</a>
+
                 </div>
+            </div>
         </main>
+
     </section>
     <button id="btn_top" *ngIf="showScrollButton" (click)="scrollToTop()"><i class='bx bxs-chevrons-up'></i></button>
     <!-- CONTENEDOR -->

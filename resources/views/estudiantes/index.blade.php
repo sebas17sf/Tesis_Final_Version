@@ -26,63 +26,68 @@
             });
         </script>
     @endif
-
-    <div class="mat-elevation-z8 contenedor_general">
-        <h4 class="mb-4">Información proceso de Admisión a Vinculación</h4>
+    <div class="contenedor_general mat-elevation-z8 ">
+    <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+    <div class="contenedor_botones">
+    
         <form action="{{ route('estudiantes.certificadoMatricula') }}" method="get">
-            <button type="submit" class="btn btn-sm btn-secondary">
-                <i class="material-icons">cloud_download</i> Crear Certificado Matrícula
+            <button type="submit" class="button3 efects_button btn_copy" tooltipPosition="top">
+                <i class="material-icons">cloud_download</i> 
             </button>
         </form>
+<!-- Botón de edición con ícono -->
 
-        <div class="table-responsive">
-            <table class="table custom-table">
-                <tbody>
+            <a href="{{ route('estudiantes.edit', ['estudiante' => $estudiante->EstudianteID]) }}"
+                class="button3 efects_button btn_filtro" tooltipPosition="top">
+                <i class="material-icons">edit</i> 
+            </a>
+
+        </div>
+        </div>
+        <div class="table-container mat-elevation-z8">
+        <div id="tablaDocentes">
+            <table class="table mat-mdc-row">
+                <tbody class="ng-star-inserted"">
                     <tr>
-                        <th><i class="material-icons">person</i> Nombres:</th>
+                        <th>Nombres:</th>
                         <td>{{ strtoupper($estudiante->Nombres) }}</td>
                     </tr>
                     <tr>
-                        <th><i class="material-icons">person</i> Apellidos:</th>
+                        <th>Apellidos:</th>
                         <td>{{ strtoupper($estudiante->Apellidos) }}</td>
                     </tr>
                     <tr>
-                        <th><i class="material-icons">info</i> ESPE ID:</th>
+                        <th>ESPE ID:</th>
                         <td>{{ strtoupper($estudiante->espe_id) }}</td>
                     </tr>
                     <tr>
-                        <th><i class="material-icons">phone</i> Celular:</th>
+                        <th>Celular:</th>
                         <td>{{ strtoupper($estudiante->celular) }}</td>
                     </tr>
                     <tr>
-                        <th><i class="material-icons">credit_card</i> Cédula:</th>
+                        <th>Cédula:</th>
                         <td>{{ strtoupper($estudiante->cedula) }}</td>
                     </tr>
                     <tr>
-                        <th><i class="material-icons">calendar_today</i> Cohorte:</th>
+                        <th>Cohorte:</th>
                         <td>{{ strtoupper($periodo->numeroPeriodo) }}</td>
                     </tr>
                     <tr>
-                        <th><i class="material-icons">school</i> Departamento:</th>
+                        <th>Departamento:</th>
                         <td>{{ strtoupper($estudiante->Departamento) }}</td>
                     </tr>
                     <!-- Agrega aquí más campos con íconos si es necesario -->
                 </tbody>
             </table>
         </div>
-
-        <!-- Botón de edición con ícono -->
-        <div class="text-center">
-            <a href="{{ route('estudiantes.edit', ['estudiante' => $estudiante->EstudianteID]) }}"
-                class="btn btn-sm btn-secondary">
-                <i class="material-icons">edit</i> Editar Información
-            </a>
         </div>
+        
 
 
         <!-- Estado y botón de reenvío de información con ícono -->
         <div class="mt-4">
-            <h4><i class="material-icons">check_circle</i> Estado-Aprobación</h4>
+            <h6><b><div class="icon-sidebar-item">Estado-Aprobación</div></b></h6>
+            <hr>
             <table class="table custom-table">
                 <tbody>
                     <tr>
@@ -114,7 +119,8 @@
 
         <!-- Sección para mostrar la información del proyecto asignado -->
         <div class="mt-4">
-            <h4><i class="material-icons">assignment</i> Proyecto Asignado</h4>
+            <h6><b>Proyecto Asignado</b></h6>
+            <hr>
             @if ($asignacionProyecto)
                 <table class="table custom-table">
                     <thead>

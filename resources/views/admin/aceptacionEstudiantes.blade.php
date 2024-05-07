@@ -7,7 +7,8 @@
 
 @section('content')
 
-    <h4>Estudiantes en Proceso de Revisión</h4>
+    <h6><b>Estudiantes en Proceso de Revisión</b></h6>
+    <hr>
 
     <form action="{{ route('admin.estudiantes') }}" method="GET">
         @csrf
@@ -74,7 +75,8 @@
     
     @endif
 
-    <h4>Seguimiento Estudiantes</h4>
+    <h6><b>Seguimiento Estudiantes</b></h6>
+    <hr>
     <div class="d-flex">
         <form method="GET" action="{{ route('admin.estudiantes') }}" class="mr-3">
             <label for="elementosPorPaginaAprobados">Estudiantes a visualizar:</label>
@@ -188,7 +190,8 @@
         </div>
     @endif
 
-    <h4>Estudiantes culminados Vinculación a la sociedad</h4>
+    <h6><b>Estudiantes culminados Vinculación a la sociedad</b></h6>
+    <hr>
     <div class="d-flex">
         <form method="GET" action="{{ route('admin.estudiantes') }}" class="mr-3">
             <label for="elementosPorPagina">Estudiantes a visualizar:</label>

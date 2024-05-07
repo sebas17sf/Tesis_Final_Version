@@ -186,7 +186,6 @@
   }
 }
 
-// AUTHORS
 .content-autors {
   display: grid;
   position: fixed;
@@ -197,7 +196,7 @@
   border-radius: 0px 0px 20px 0px;
   background: colors.$bg;
   text-align: center;
-  opacity: 0;
+  opacity: 1; /* Cambiar opacity a 1 o eliminar esta línea */
   z-index: 1000;
   transition: all 5s ease;
 

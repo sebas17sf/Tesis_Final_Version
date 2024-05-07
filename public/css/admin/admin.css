@@ -1,30 +1,5 @@
-body,
-p,
-td,
-table,
-tr,
-th {
-    background-color: #F5F5F5;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-
-.sidebar a {
-    padding: 10px 20px;
-    /* Espaciado de los enlaces */
-    text-decoration: none;
-    /* Quitar subrayado de los enlaces */
-    font-size: 14px;
-    /* Tamaño de fuente de los enlaces */
-    color: #000000;
-    /* Texto blanco */
-    display: flex;
-    /* Mostrar como flex para alinear icono y texto */
-    align-items: center;
-    /* Centrar verticalmente el contenido */
-}
+@import url('https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css');
+@import url('https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css');
 
 .sidebar a .material-icons {
     margin-right: 10px;
@@ -36,6 +11,10 @@ th {
     color: #ffffff;
   
 } */
+/* Estilo para las filas cuando no se está pasando el cursor */
+tr:hover {
+    background-color: #f5f5f5; /* Cambia el color de fondo cuando se pasa el cursor */
+  }
 
 /* Estilo para el botón "Cerrar Sesión" */
 .logout-btn {
@@ -199,11 +178,6 @@ th {
 .content-sidebar {
     width: 280px; /* Puedes ajustar este valor según tus necesidades */
     float: left; /* Alinear a la izquierda */
-}
-
-/* Establecer el ancho del contenido y agregar margen izquierdo */
-.content-views {
-    margin-left: 20px; /* Igual al ancho del sidebar */
 }
 
 /* Limpiar flotantes */
