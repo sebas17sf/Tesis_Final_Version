@@ -186,8 +186,8 @@
       min-height: $tamañoTabla620;
     }
 
-    .table-container {
-      height: $tamañoTabla - 75px;
+    .table-container div{
+      height: $tamañoTabla - 555px;
 
       @media (max-width: 620px) {
         height: $tamañoTabla620 - (50px * 2);
@@ -201,112 +201,102 @@
         .mat-mdc-row {
           height: 5px;
         }
+
+
+        td {
+
+          height: 30px;
+          border: 0.5px solid rgba(240, 240, 240, 10);
+        }
+
       }
 
-      // Tamaño de celdas en tabla
-      .mat-column-num,
-      .mat-column-num {
-        min-width: 30px !important;
-      }
+    }
+  }
 
-      .APELLIDO-header,
-      .APELLIDO_user-cell {
-        min-width: 130px !important;
-      }
 
-      .NOMBRE-header,
-      .NOMBRE-cell {
-        min-width: 130px !important;
+  .contenedor_tabla {
+    display: grid;
+    border-radius: 5px;
+    border: 1px solid rgba(colors.$gray, 0.3);
+    overflow-x: auto;
+  
+    .table-container div {
+    /*   overflow-x: auto; */
+      box-shadow: none !important;
+  
+      table {
+        width: 100%;
+        box-shadow: none !important;
+  
+        td,
+        th {
+          width: 200px;
+          min-width: 150px;
+          font-size: fonts.$form-input;
+        }
+  
+        th {
+          position: sticky;
+          font-size: fonts.$text-p;
+          font-weight: bold;
+          top: 0;
+          background: linear-gradient(to bottom, colors.$white, colors.$white),
+          linear-gradient(to bottom, rgba(colors.$primary, 0.3), rgba(colors.$primary, 0.2));
+          background-blend-mode: multiply;
+        }
+  
+        // Head
+        .mat-mdc-header-row {
+          height: 40px;
+        }
+  
+        // Body
+        .mat-mdc-row {
+          transition: all 0.1s;
+          &:hover {
+            background-color: rgba(colors.$primary, .05);
+          }
+        }
       }
-
-      .ID-header,
-      .ID-cell {
-        text-align: center;
-        min-width: 100px !important;
+    }
+  
+    .paginator-container {
+      display: grid;
+      align-items: end;
+      height: 56px;
+  
+      ::ng-deep .mat-mdc-paginator-container {
+        @media (max-width: 620px) {
+          align-items: center;
+          justify-content: center;
+          justify-items: center;
+        }
+  
+        @media (max-width: 455px) {
+          margin-top: -25px;
+        }
+  
+        .mat-mdc-paginator-range-actions {
+          @media (max-width: 620px) {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            justify-items: center;
+  
+            div {
+              grid-column: 1 / -1;
+            }
+          }
+        }
       }
-
-      .CEDULA-header,
-      .CEDULA-cell {
-        text-align: center;
-        min-width: 100px !important;
-      }
-
-      .A_CONOCIMIENTO-header,
-      .A_CONOCIMIENTO-cell {
-        min-width: 180px !important;
-      }
-
-      .DEPARTAMENTO-header,
-      .DEPARTAMENTO-cell {
-        text-align: center;
-        min-width: 100px !important;
-      }
-
-      .CURSO-header,
-      .CURSO-cell {
-        text-align: center;
-        min-width: 80px !important;
-      }
-
-      .NRC-header,
-      .NRC-cell {
-        text-align: center;
-        min-width: 80px !important;
-      }
-
-      .ESTADO-header,
-      .ESTADO-cell {
-        text-align: center;
-        min-width: 80px !important;
-      }
-
-      .PROMEDIO-header,
-      .PROMEDIO-cell {
-        text-align: center;
-        min-width: 80px !important;
-      }
-
-      .NOTA1-header,
-      .NOTA1-cell {
-        text-align: center;
-        min-width: 80px !important;
-      }
-
-      .NOTA2-header,
-      .NOTA2-cell {
-        text-align: center;
-        min-width: 80px !important;
-      }
-
-      .NOTA3-header,
-      .NOTA3-cell {
-        text-align: center;
-        min-width: 80px !important;
-      }
-
-      .DOCENTE-header,
-      .DOCENTE-cell {
-        min-width: 200px !important;
-      }
-
-      .NIVEL-header,
-      .NIVEL-cell {
-        min-width: 120px !important;
-      }
-
-      .PERIODO-header,
-      .PERIODO-cell {
-        text-align: center;
-        min-width: 80px !important;
-      }
-
-      .GENERO-header,
-      .GENERO-cell {
-        text-align: center;
-        min-width: 80px !important;
+  
+      // Eliminar texto de numero de filtro en tabla
+      ::ng-deep .mat-mdc-paginator-page-size-label {
+        display: none;
       }
     }
   }
+  
 
   // Eliminar margin del dialog
   ::ng-deep .p-dialog {
