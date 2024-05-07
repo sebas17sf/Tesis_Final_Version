@@ -58,7 +58,6 @@ $fondo-active-hover: darken(colors.$primary, 5);
     min-height: 50px;
     align-items: center;
     justify-content: right;
-
     // TODO: responsive 300px
     @media screen and (max-width: 300px) {
       width: auto;

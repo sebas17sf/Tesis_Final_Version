@@ -17,9 +17,9 @@
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
     <style>
-        body {
-            overflow-x: hidden;
-        }
+    body {
+        overflow-x: hidden;
+    }
     </style>
     <script src="../js/menu.js"></script>
 
@@ -67,16 +67,13 @@
                                     <li>Estudiantes</li>
                                 </div>
                             </a>
-
-
-                            <a class="p-element submenu" class="p-element" >
+                            <a class="p-element submenu" class="p-element">
                                 <div class="icon-sidebar-item">
                                     <i class="material-icons">business</i>
                                 </div>
                                 <div class="name-sidebar-item">
                                     <li>Prácticas</li>
                                 </div>
-
                             </a>
 
                             <div class="item-list" id="sublista">
@@ -118,7 +115,6 @@
                 [ngClass]="{'bx-menu': sidebarHidden,'bx-menu-alt-left': !sidebarHidden}"></i>
         </div>
         <!-- contenido -->
-
         <main class="navbar">
             <button class="profile-icon dropdown" id="profile-button">
 
@@ -128,7 +124,6 @@
                 <div class="icon-profile">
                     <img src="../img/default/user.svg">
                 </div>
-
             </button>
             <!-- Aquí agregamos el contenedor del menú desplegable -->
             <div class="popup-menu-profile">
@@ -138,9 +133,9 @@
                         <span>Cambiar modulo</span>
                     </a>
                     <a class="logout" href="{{ route('logout') }}">
-    <i class="fa-sharp fa-regular fa-arrow-up-left-from-circle fontawesome"></i>
-    <span>Cerrar sesión</span>
-</a>
+                        <i class="fa-sharp fa-regular fa-arrow-up-left-from-circle fontawesome"></i>
+                        <span>Cerrar sesión</span>
+                    </a>
 
                 </div>
             </div>
@@ -163,11 +158,6 @@
 
         {{--   <button id="btn_top" ><i class='bx bxs-chevrons-up'></i></button> --}}
 
-        <style>
-
-        </style>
-
-
     </section>
     <!-- Scripts de jQuery y Popper.js -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -183,14 +173,12 @@
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
     <script src="{{ asset('js/admin/general.js') }}"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-<!-- Box Icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    integrity="sha384-gL5q2wHNwpg9voDwmz1onh73oSJ8lFvZEydTHpw4M4okQ7N8qI+v5h0zitOykKdp" crossorigin="anonymous">
-<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <!-- Box Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        integrity="sha384-gL5q2wHNwpg9voDwmz1onh73oSJ8lFvZEydTHpw4M4okQ7N8qI+v5h0zitOykKdp" crossorigin="anonymous">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 </body>
 
 </html>
-
-
