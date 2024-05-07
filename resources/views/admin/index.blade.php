@@ -695,23 +695,28 @@
                         <button type="submit" class="button efects_button">Guardar NRC</button>
                     </form>
                     <br>
-                    <!-- Elementos agregados (Periodos y Cohortes) -->
+                    <!-- Elementos agregados (Periodos) -->
                     <div class="row align-items-center">
-
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="periodo"><strong>Periodos Agregados:</strong></label>
                                 <select id="selectPeriodo" class="form-control input_select input">
                                     <option value="">Seleccionar Periodo</option>
                                     @foreach ($periodos as $periodo)
-                                        <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }}
-                                            {{ $periodo->Periodo }}</option>
+                                        <option value="{{ $periodo->id }}" data-inicio="{{ $periodo->PeriodoInicio }}"
+                                            data-fin="{{ $periodo->PeriodoFin }}"
+                                            data-numero="{{ $periodo->numeroPeriodo }}">
+                                            {{ $periodo->numeroPeriodo }} {{ $periodo->Periodo }}
+                                        </option>
                                     @endforeach
                                 </select>
-                                {{--   <small id="errorPeriodo" class="form-text text-danger"></small> --}}
+
+
                             </div>
                         </div>
-                        <div class="col-md-6"> </div>
+                        <div class="col-md-6">
+
+                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <form id="editarPeriodoForm" method="GET">
@@ -722,6 +727,55 @@
                         </div>
                     </div>
                 </div>
+
+
+                <!-- Modal para peridoo-------------------------------- -->
+
+                <div class="modal" tabindex="-1" role="dialog" id="editModal">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Editar Periodo</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="formulario" method="POST"
+                                    action="{{ route('admin.actualizarPeriodo', ['id' => $periodo->id]) }}">
+                                    @csrf
+                                    @method('PUT')
+
+                                    <div class="form-group col-md-4">
+                                        <label for="periodoInicio">Fecha de Inicio:</label>
+                                        <input type="date" name="periodoInicio" class="form-control input"
+                                            value="{{ $periodo->PeriodoInicio }}" required>
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        <label for="periodoFin">Fecha de Fin:</label>
+                                        <input type="date" name="periodoFin" class="form-control input"
+                                            value="{{ $periodo->PeriodoFin }}" required>
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        <label for="numeroPeriodo">Ingrese el numero identificador del periodo:</label>
+                                        <input type="text" name="numeroPeriodo" id="numeroPeriodo"
+                                            class="form-control input" value="{{ $periodo->numeroPeriodo }}" required>
+                                        <small id="numeroPeriodoError" class="form-text text-danger"></small>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="button" data-dismiss="modal">Cerrar</button>
+                                        <button type="submit" class="button">Guardar Cambios</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!---------------------------------- -->
+
 
             </div>
         </section>
@@ -762,19 +816,29 @@
                 });
             }, 500);
         });
-    </script>
 
-    <script>
-        document.getElementById('selectPeriodo').addEventListener('change', function() {
-            var periodoId = this.value;
-            if (periodoId) {
-                var form = document.getElementById('editarPeriodoForm');
-                var actionUrl = "{{ route('admin.editarPeriodo', ['id' => ':id']) }}";
-                actionUrl = actionUrl.replace(':id', periodoId);
-                form.action = actionUrl;
-            }
+        $(document).ready(function() {
+            $('#editarPeriodoForm').submit(function(event) {
+                event.preventDefault();
+
+                var periodoId = $('#selectPeriodo').val();
+
+                var inicio = $('#selectPeriodo option:selected').data('inicio');
+                var fin = $('#selectPeriodo option:selected').data('fin');
+                var numero = $('#selectPeriodo option:selected').data('numero');
+
+                $('#editModal').find('form').attr('action', '/admin/actualizar-periodo/' + periodoId);
+                $('#editModal').find('input[name="periodoInicio"]').val(inicio);
+                $('#editModal').find('input[name="periodoFin"]').val(fin);
+                $('#editModal').find('input[name="numeroPeriodo"]').val(numero);
+
+                $('#editModal').modal('show');
+            });
         });
     </script>
+
+
+
 
 
 

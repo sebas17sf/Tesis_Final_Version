@@ -88,7 +88,7 @@ class DirectorVinculacionController extends Controller
 
           
       
-        return view('director_vinculacion.RepartoEstudiantes', compact('directorProyecto', 'estudiantesAsignados', 'docenteParticipante', 'participantesAdicionales', 'asignacionesEstudiantesDirector'));
+        return view('director_vinculacion.repartoEstudiantes', compact('directorProyecto', 'estudiantesAsignados', 'docenteParticipante', 'participantesAdicionales', 'asignacionesEstudiantesDirector'));
     }
     
 

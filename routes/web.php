@@ -249,14 +249,12 @@ Route::put('/admin/actualizar-maestro/{id}', [AdminController::class, 'actualiza
 Route::post('/estudiantes/guardar-practicas2', [EstudianteController::class, 'guardarPracticas2'])->name('guardarPracticas2');
 ////actualizarEstadoEstudiante2 del coordinador
 Route::put('/coordinador/actualizar-estado-estudiante2/{id}', [CoordinadorController::class, 'actualizarEstadoEstudiante2'])->name('coordinador.actualizarEstadoEstudiante2');
-///editarCohorte del admin
-Route::get('/admin/cohorte/{id}/edit', [AdminController::class, 'editarCohorte'])->name('admin.editarCohorte');
-///actualizarCohorte del admin
-Route::put('/admin/actualizar-cohorte/{id}', [AdminController::class, 'actualizarCohorte'])->name('admin.actualizarCohorte');
-///editarPeriodo del admin
+ 
+ ///editarPeriodo del admin
 Route::get('/admin/periodo/{id}/edit', [AdminController::class, 'editarPeriodo'])->name('admin.editarPeriodo');
 //actualizarPeriodo del admin
 Route::put('/admin/actualizar-periodo/{id}', [AdminController::class, 'actualizarPeriodo'])->name('admin.actualizarPeriodo');
+
 ////editarNombreEmpresa del coordinador
 Route::get('/coordinador/estudiante/{id}/edit', [CoordinadorController::class, 'editarNombreEmpresa'])->name('coordinador.editarNombreEmpresa');
 ///actualizarNombreEmpresa del coordinador

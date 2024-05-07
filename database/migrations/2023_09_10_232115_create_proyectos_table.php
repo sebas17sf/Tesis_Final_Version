@@ -23,7 +23,7 @@ return new class extends Migration {
             $table->foreign('id_nrc_vinculacion')->references('id')->on('nrc_vinculacion');  
             $table->text('NombreProyecto');
             $table->string('codigoProyecto')->nullable();
-            $table->string('DescripcionProyecto');
+            $table->text('DescripcionProyecto');
             $table->string('DepartamentoTutor');
             $table->date('FechaInicio');
             $table->date('FechaFinalizacion');
