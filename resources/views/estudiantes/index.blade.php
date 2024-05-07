@@ -158,35 +158,3 @@
 
 @endsection
 
-<style>
-    .table th {
-        width: 20%;
-        border: 1px solid #70a1ff;
-        background-color: #eaf5ff;
-    }
-
-    .custom-table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    .custom-table td,
-    .custom-table tr {
-        border: 1px solid #70a1ff;
-        padding: 8px;
-    }
-
-    body,
-    input,
-    select,
-    th,
-    td,
-    label,
-    button {
-        background-color: #F5F5F5;
-        font-family: Arial, sans-serif;
-        font-size: 14px;
-        line-height: 1.5;
-
-    }
-</style>
