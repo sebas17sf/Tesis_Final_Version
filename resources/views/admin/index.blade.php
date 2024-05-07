@@ -247,10 +247,10 @@
 
 
 
-        <div class="mat-elevation-z8 contenedor_general">
-            <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
-                <!-- Botones -->
-                <div class="contenedor_botones">
+                <div class="mat-elevation-z8 contenedor_general">
+                    <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+                        <!-- Botones -->
+                        <div class="contenedor_botones">
 
 
                             <form action="{{ route('admin.reportesDocentes') }}" method="POST">
@@ -292,39 +292,40 @@
                     <div class="contenedor_tabla">
                         <div class="table-container mat-elevation-z8">
 
-                    <div id="tablaDocentes">
-                        <table class="mat-mdc-table">
-                            <thead class="ng-star-inserted">
-                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th>Nombre</th>
-                                    <th>Correo</th>
-                                    <th>Usuario</th>
-                                    <th>Cédula</th>
-                                    <th>Departamento</th>
-                                    <th>ID ESPE</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody class="mdc-data-table__content ng-star-inserted">
-                                @if ($profesores->isEmpty())
-                                    <tr class="noExisteRegistro ng-star-inserted" style="text-align:center">
-                                        <td colspan="6">No se encontraron resultados para la búsqueda.</td>
-                                    </tr>
-                                @else
-                                    @foreach ($profesores as $profesor)
-                                        <tr>
-                                            <td>{{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Apellidos)) }}
-                                                {{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Nombres)) }}
-                                            </td>
-                                            <td>{{ $profesor->Correo }}</td>
-                                            <td>{{ $profesor->Usuario }}</td>
-                                            <td>{{ $profesor->Cedula }}</td>
-                                            <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $profesor->Departamento)) }}
-                                            </td>
-                                            <td>{{ $profesor->espe_id }}</td>
-                                            <td>
-                                                <div class="contenedor_botones">
-                                                    <div class="btn-group  shadow-0">
+                            <div id="tablaDocentes">
+                                <table class="mat-mdc-table">
+                                    <thead class="ng-star-inserted">
+                                        <tr
+                                            class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                            <th>Nombre</th>
+                                            <th>Correo</th>
+                                            <th>Usuario</th>
+                                            <th>Cédula</th>
+                                            <th>Departamento</th>
+                                            <th>ID ESPE</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="mdc-data-table__content ng-star-inserted">
+                                        @if ($profesores->isEmpty())
+                                            <tr class="noExisteRegistro ng-star-inserted" style="text-align:center">
+                                                <td colspan="6">No se encontraron resultados para la búsqueda.</td>
+                                            </tr>
+                                        @else
+                                            @foreach ($profesores as $profesor)
+                                                <tr>
+                                                    <td>{{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Apellidos)) }}
+                                                        {{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Nombres)) }}
+                                                    </td>
+                                                    <td>{{ $profesor->Correo }}</td>
+                                                    <td>{{ $profesor->Usuario }}</td>
+                                                    <td>{{ $profesor->Cedula }}</td>
+                                                    <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $profesor->Departamento)) }}
+                                                    </td>
+                                                    <td>{{ $profesor->espe_id }}</td>
+                                                    <td>
+                                                        <div class="contenedor_botones">
+                                                            <div class="btn-group  shadow-0">
 
 
 
@@ -489,15 +490,14 @@
 
 
                                                             </div>
-                                                            <div class="btn-group shadow-1"
-                                                                <form
-                                                                    action="{{ route('admin.eliminarMaestro', ['id' => $profesor->id]) }}"
-                                                                    method="POST">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit"
-                                                                        class="button3 efects_button btn_eliminar3"><i
-                                                                            class='bx bx-trash'></i></button>
+                                                            <div class="btn-group shadow-1" <form
+                                                                action="{{ route('admin.eliminarMaestro', ['id' => $profesor->id]) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit"
+                                                                    class="button3 efects_button btn_eliminar3"><i
+                                                                        class='bx bx-trash'></i></button>
                                                                 </form>
                                                             </div>
                                                         </div>
