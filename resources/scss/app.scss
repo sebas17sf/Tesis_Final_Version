@@ -3,8 +3,12 @@
 @use "components/input";
 @use "components/buttons";
 @use "components/menu_nav";
-@use "components/table" as table; 
+
 @use "components/scroll";
+
+
+@use "components/table" as table; 
+
 @use "menu-profile/menu-profile.component";
 @use "sidebar/sidebar.component";
 @use "navbar/navbar";

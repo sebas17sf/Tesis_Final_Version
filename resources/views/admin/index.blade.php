@@ -217,7 +217,7 @@
         <h6>Docentes agregados</h6>
 
 
-        <div class="contenedor_general mat-elevation-z8 ">
+        <div class="mat-elevation-z8 contenedor_general">
             <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                 <!-- Botones -->
                 <div class="contenedor_botones">
@@ -265,9 +265,9 @@
                 <div class="table-container mat-elevation-z8">
 
                     <div id="tablaDocentes">
-                        <table class="table mat-mdc-row">
+                        <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
-                                <tr>
+                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                     <th>Nombre</th>
                                     <th>Correo</th>
                                     <th>Usuario</th>
@@ -277,9 +277,9 @@
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="mdc-data-table__content ng-star-inserted">
                                 @if ($profesores->isEmpty())
-                                    <tr style="text-align:center">
+                                    <tr class="noExisteRegistro ng-star-inserted" style="text-align:center">
                                         <td colspan="6">No se encontraron resultados para la búsqueda.</td>
                                     </tr>
                                 @else
