@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="hydrated">
 
 <head>
     <meta charset="UTF-8">
@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="../css/admin/admin.css">
-    <script src="../js/menu.js"></script>
+    <link rel="stylesheet" href="css/admin/admin.css">
+
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 </head>
 <style>
@@ -22,7 +22,7 @@ body {
     overflow-x: hidden;
 }
 </style>
-
+<script src="../js/menu.js"></script>
 <body>
     <!-- Barra de navegación en el lado izquierdo -->
     <section class="content-sidebar " _ngcontent-ng-c4160891441>
@@ -51,7 +51,7 @@ body {
                             </a>
 
                             <a href="{{ route('estudiantes.documentos') }}"
-                                class="{{ Request::is('estudiantes/documentos') ? 'active' : '' }}">
+                            class="p-element">
                                 <div class="icon-sidebar-item">
                                     <i class="material-icons">people_alt</i>
                                 </div>
@@ -60,7 +60,7 @@ body {
                                 </div>
                             </a>
                             <a href="{{ route('estudiantes.practica1') }}"
-                                class="{{ Request::is('estudiantes/practica1') ? 'active' : '' }}">
+                            class="p-element">
                                 <div class="icon-sidebar-item">
                                     <i class="material-icons">work</i>
                                 </div>
@@ -116,10 +116,10 @@ body {
     </section>
     <button id="btn_top" *ngIf="showScrollButton" onclick="scrollToTop()"><i class='bx bxs-chevrons-up'></i></button>
     <!-- CONTENEDOR -->
-    <section class="content-views dimension-content" [ngClass]="{'dimension-content-hidden': sidebarHidden}">
+    <section class="content-views dimension-content">
         <!-- Title component -->
         <div class="title-component">
-            <h1>@yield('title_component')</h1>
+            <span class="title-content">@yield('title_component')</span>
             <div class="divisor-title"></div>
         </div>
         <!-- Contenido principal -->
@@ -142,6 +142,7 @@ body {
     <script src="{{ asset('js/plantilla/styles.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/vendor.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    <script src="{{ asset('js/admin/general.js') }}"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <!-- Box Icons -->
