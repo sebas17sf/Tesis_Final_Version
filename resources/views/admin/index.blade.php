@@ -174,8 +174,9 @@
 
                 <div class="modal fade" id="modalAgregarMaestro" tabindex="-1" role="dialog"
                     aria-labelledby="modalAgregarMaestroLabel" aria-hidden="true">
+
                     <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
+                        <div class="modal-content draggable">
                             <div class="modal-header">
                                 <span class="modal-title" id="modalAgregarMaestroLabel"><b>Agregar Docentes</b></span>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -228,7 +229,8 @@
                                                     Computación</option>
                                                 <option value="Ciencias de la Vida">Departamento de Ciencias de la Vida
                                                 </option>
-                                                <option value="Ciencias Exactas">Departamento de Ciencias Exactas</option>
+                                                <option value="Ciencias Exactas">Departamento de Ciencias Exactas
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
@@ -241,6 +243,7 @@
                         </div>
                     </div>
                 </div>
+
 
 
                 <!--------------------------------------- -->
@@ -347,137 +350,159 @@
                                                                     aria-labelledby="modalEditarMaestroLabel{{ $profesor->id }}"
                                                                     aria-hidden="true">
                                                                     <div class="modal-dialog modal-lg" role="document">
-                                                                        <!-- Añade la clase modal-lg para un modal grande -->
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <span class="modal-title"
-                                                                                    id="modalEditarMaestroLabel{{ $profesor->id }}">
-                                                                                    <b>Editar Docentes</b></span>
+                                                                        <div class="modal-content draggable">
+                                                                            <!-- Agrega la clase "draggable" -->
 
-                                                                                <button type="button" class="close"
-                                                                                    data-dismiss="modal"
-                                                                                    aria-label="Close">
-                                                                                    <span aria-hidden="true">&times;</span>
-                                                                                </button>
-                                                                            </div>
-                                                                            <div class="modal-body">
-                                                                                <form
-                                                                                    action="{{ route('admin.actualizarMaestro', ['id' => $profesor->id]) }}"
-                                                                                    method="POST">
-                                                                                    @csrf
-                                                                                    @method('PUT')
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <span class="modal-title"
+                                                                                        id="modalEditarMaestroLabel{{ $profesor->id }}">
+                                                                                        <b>Editar Docentes</b></span>
 
-                                                                                    <div class="form-row">
-                                                                                        <div class="form-group col-md-4">
-                                                                                            <label for="nombres"><strong>Ingrese
-                                                                                                    Nombres:</strong></label>
-                                                                                            <input type="text"
-                                                                                                id="nombres"
-                                                                                                name="nombres"
-                                                                                                class="form-control input"
-                                                                                                value="{{ $profesor->Nombres }}"
-                                                                                                required>
+                                                                                    <button type="button" class="close"
+                                                                                        data-dismiss="modal"
+                                                                                        aria-label="Close">
+                                                                                        <span
+                                                                                            aria-hidden="true">&times;</span>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <form
+                                                                                        action="{{ route('admin.actualizarMaestro', ['id' => $profesor->id]) }}"
+                                                                                        method="POST">
+                                                                                        @csrf
+                                                                                        @method('PUT')
+
+                                                                                        <div class="form-row">
+                                                                                            <div
+                                                                                                class="form-group col-md-4">
+                                                                                                <label
+                                                                                                    for="nombres"><strong>Ingrese
+                                                                                                        Nombres:</strong></label>
+                                                                                                <input type="text"
+                                                                                                    id="nombres"
+                                                                                                    name="nombres"
+                                                                                                    class="form-control input"
+                                                                                                    value="{{ $profesor->Nombres }}"
+                                                                                                    required>
+                                                                                            </div>
+
+                                                                                            <div
+                                                                                                class="form-group col-md-4">
+                                                                                                <label
+                                                                                                    for="apellidos"><strong>Ingrese
+                                                                                                        Apellidos:</strong></label>
+                                                                                                <input type="text"
+                                                                                                    id="apellidos"
+                                                                                                    name="apellidos"
+                                                                                                    class="form-control input"
+                                                                                                    value="{{ $profesor->Apellidos }}"
+                                                                                                    required>
+                                                                                            </div>
+
+                                                                                            <div
+                                                                                                class="form-group col-md-4">
+                                                                                                <label
+                                                                                                    for="correo"><strong>Ingrese
+                                                                                                        Correo:</strong></label>
+                                                                                                <input type="email"
+                                                                                                    id="correo"
+                                                                                                    name="correo"
+                                                                                                    class="form-control input"
+                                                                                                    value="{{ $profesor->Correo }}"
+                                                                                                    required>
+                                                                                            </div>
                                                                                         </div>
 
-                                                                                        <div class="form-group col-md-4">
-                                                                                            <label for="apellidos"><strong>Ingrese
-                                                                                                    Apellidos:</strong></label>
-                                                                                            <input type="text"
-                                                                                                id="apellidos"
-                                                                                                name="apellidos"
-                                                                                                class="form-control input"
-                                                                                                value="{{ $profesor->Apellidos }}"
-                                                                                                required>
+                                                                                        <div class="form-row">
+                                                                                            <div
+                                                                                                class="form-group col-md-4">
+                                                                                                <label
+                                                                                                    for="Usuario"><strong>Ingrese
+                                                                                                        el
+                                                                                                        Usuario:</strong></label>
+                                                                                                <input type="text"
+                                                                                                    id="Usuario"
+                                                                                                    name="Usuario"
+                                                                                                    class="form-control input"
+                                                                                                    value="{{ $profesor->Usuario }}"
+                                                                                                    required>
+                                                                                            </div>
+
+                                                                                            <div
+                                                                                                class="form-group col-md-4">
+                                                                                                <label
+                                                                                                    for="espe_id"><strong>Ingrese
+                                                                                                        el ESPE
+                                                                                                        ID:</strong></label>
+                                                                                                <input type="text"
+                                                                                                    id="espe_id"
+                                                                                                    name="espe_id"
+                                                                                                    class="form-control input"
+                                                                                                    value="{{ $profesor->espe_id }}"
+                                                                                                    required>
+                                                                                            </div>
+
+                                                                                            <div
+                                                                                                class="form-group col-md-4">
+                                                                                                <label
+                                                                                                    for="cedula"><strong>Ingrese
+                                                                                                        la
+                                                                                                        Cedula:</strong></label>
+                                                                                                <input type="text"
+                                                                                                    id="cedula"
+                                                                                                    name="cedula"
+                                                                                                    class="form-control input"
+                                                                                                    value="{{ $profesor->Cedula }}"
+                                                                                                    required>
+                                                                                            </div>
                                                                                         </div>
 
-                                                                                        <div class="form-group col-md-4">
-                                                                                            <label for="correo"><strong>Ingrese
-                                                                                                    Correo:</strong></label>
-                                                                                            <input type="email"
-                                                                                                id="correo"
-                                                                                                name="correo"
-                                                                                                class="form-control input"
-                                                                                                value="{{ $profesor->Correo }}"
-                                                                                                required>
-                                                                                        </div>
-                                                                                    </div>
-
-                                                                                    <div class="form-row">
-                                                                                        <div class="form-group col-md-4">
-                                                                                            <label for="Usuario"><strong>Ingrese
-                                                                                                    el
-                                                                                                    Usuario:</strong></label>
-                                                                                            <input type="text"
-                                                                                                id="Usuario"
-                                                                                                name="Usuario"
-                                                                                                class="form-control input"
-                                                                                                value="{{ $profesor->Usuario }}"
-                                                                                                required>
-                                                                                        </div>
-
-                                                                                        <div class="form-group col-md-4">
-                                                                                            <label for="espe_id"><strong>Ingrese
-                                                                                                    el ESPE
-                                                                                                    ID:</strong></label>
-                                                                                            <input type="text"
-                                                                                                id="espe_id"
-                                                                                                name="espe_id"
-                                                                                                class="form-control input"
-                                                                                                value="{{ $profesor->espe_id }}"
-                                                                                                required>
+                                                                                        <div class="form-row">
+                                                                                            <div
+                                                                                                class="form-group col-md-4">
+                                                                                                <label
+                                                                                                    for="departamento"><strong>Seleccione
+                                                                                                        el departamento al
+                                                                                                        que
+                                                                                                        pertenece:</strong></label>
+                                                                                                <select id="departamento"
+                                                                                                    name="departamento"
+                                                                                                    class="form-control input"
+                                                                                                    required>
+                                                                                                    <option
+                                                                                                        value="Ciencias de la Computación"
+                                                                                                        {{ $profesor->Departamento === 'Ciencias de la Computación' ? 'selected' : '' }}>
+                                                                                                        Departamento de
+                                                                                                        Ciencias
+                                                                                                        de Computación
+                                                                                                    </option>
+                                                                                                    <option
+                                                                                                        value="Ciencias de la Vida"
+                                                                                                        {{ $profesor->Departamento === 'Ciencias de la Vida' ? 'selected' : '' }}>
+                                                                                                        Departamento de
+                                                                                                        Ciencias
+                                                                                                        de la Vida</option>
+                                                                                                    <option
+                                                                                                        value="Ciencias Exactas"
+                                                                                                        {{ $profesor->Departamento === 'Ciencias Exactas' ? 'selected' : '' }}>
+                                                                                                        Departamento de
+                                                                                                        Ciencias
+                                                                                                        Exactas</option>
+                                                                                                </select>
+                                                                                            </div>
                                                                                         </div>
 
-                                                                                        <div class="form-group col-md-4">
-                                                                                            <label for="cedula"><strong>Ingrese
-                                                                                                    la
-                                                                                                    Cedula:</strong></label>
-                                                                                            <input type="text"
-                                                                                                id="cedula"
-                                                                                                name="cedula"
-                                                                                                class="form-control input"
-                                                                                                value="{{ $profesor->Cedula }}"
-                                                                                                required>
+                                                                                        <div class="modal-footer">
+                                                                                            <button type="button"
+                                                                                                class="button"
+                                                                                                data-dismiss="modal">Cerrar</button>
+                                                                                            <button type="submit"
+                                                                                                class="button">Guardar
+                                                                                                Cambios</button>
                                                                                         </div>
-                                                                                    </div>
-
-                                                                                    <div class="form-row">
-                                                                                        <div class="form-group col-md-4">
-                                                                                            <label
-                                                                                                for="departamento"><strong>Seleccione
-                                                                                                    el departamento al que
-                                                                                                    pertenece:</strong></label>
-                                                                                            <select id="departamento"
-                                                                                                name="departamento"
-                                                                                                class="form-control input"
-                                                                                                required>
-                                                                                                <option
-                                                                                                    value="Ciencias de la Computación"
-                                                                                                    {{ $profesor->Departamento === 'Ciencias de la Computación' ? 'selected' : '' }}>
-                                                                                                    Departamento de Ciencias
-                                                                                                    de Computación</option>
-                                                                                                <option
-                                                                                                    value="Ciencias de la Vida"
-                                                                                                    {{ $profesor->Departamento === 'Ciencias de la Vida' ? 'selected' : '' }}>
-                                                                                                    Departamento de Ciencias
-                                                                                                    de la Vida</option>
-                                                                                                <option
-                                                                                                    value="Ciencias Exactas"
-                                                                                                    {{ $profesor->Departamento === 'Ciencias Exactas' ? 'selected' : '' }}>
-                                                                                                    Departamento de Ciencias
-                                                                                                    Exactas</option>
-                                                                                            </select>
-                                                                                        </div>
-                                                                                    </div>
-
-                                                                                    <div class="modal-footer">
-                                                                                        <button type="button"
-                                                                                            class="button"
-                                                                                            data-dismiss="modal">Cerrar</button>
-                                                                                        <button type="submit"
-                                                                                            class="button">Guardar
-                                                                                            Cambios</button>
-                                                                                    </div>
-                                                                                </form>
+                                                                                    </form>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -490,7 +515,7 @@
 
 
                                                             </div>
-                                                            <div class="btn-group shadow-1" <form
+                                                            <div class="btn-group shadow-1"
                                                                 action="{{ route('admin.eliminarMaestro', ['id' => $profesor->id]) }}"
                                                                 method="POST">
                                                                 @csrf
@@ -835,6 +860,16 @@
                 $('#editModal').modal('show');
             });
         });
+
+        $(document).ready(function() {
+            $('.draggable').draggable({
+                handle: '.modal-header'
+            });
+        });
+
+
+
+ 
     </script>
 
 

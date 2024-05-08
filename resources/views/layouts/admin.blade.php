@@ -17,9 +17,26 @@
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
     <style>
-    body {
-        overflow-x: hidden;
-    }
+        body {
+            overflow-x: hidden;
+        }
+
+        .modal-content {
+            cursor: move;
+        }
+
+        .modal-backdrop.show {
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        .modal-backdrop {
+            z-index: auto !important;
+        }
+
+        .modal {
+            z-index: 1050 !important;
+        }
     </style>
     <script src="../js/menu.js"></script>
 
@@ -174,6 +191,9 @@
     <script src="{{ asset('js/admin/general.js') }}"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
     <!-- Box Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
         integrity="sha384-gL5q2wHNwpg9voDwmz1onh73oSJ8lFvZEydTHpw4M4okQ7N8qI+v5h0zitOykKdp" crossorigin="anonymous">
