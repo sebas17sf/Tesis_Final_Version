@@ -19,12 +19,15 @@
         </div>
     </form>
 
-    @if ($estudiantesEnRevision->isEmpty())
-        <p>No hay estudiantes en proceso de revisión.</p>
-    @else
-    <table class="table">
-        <thead>
-            <tr>
+    <div class="mat-elevation-z8 contenedor_general">
+
+    <div class="contenedor_tabla">
+                        <div class="table-container mat-elevation-z8">
+
+                            <div id="tablaDocentes">
+                                <table class="mat-mdc-table">
+        <thead class="ng-star-inserted">
+            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                 <th>Nombres</th>
                 <th>Apellidos</th>
                 <th>ID ESPE</th>
@@ -37,7 +40,13 @@
                 <th>Actualizar Estado</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="mdc-data-table__content ng-star-inserted">
+        @if ($estudiantesEnRevision->isEmpty())
+        <tr class="noExisteRegistro ng-star-inserted" style="text-align:center">
+          <td colspan="6">No hay estudiantes en proceso de revisión.</td>
+         </tr>
+     
+    @else
             @foreach ($estudiantesEnRevision as $estudiante)
                 <tr>
                     <td>{{ strtoupper($estudiante->Nombres) }}</td>
@@ -70,13 +79,17 @@
                     </td>
                 </tr>
             @endforeach
+            @endif
         </tbody>
     </table>
     
-    @endif
-
+    </div>
+</div>
+</div>
+<br>
     <h6><b>Seguimiento Estudiantes</b></h6>
     <hr>
+    <div class="container">
     <div class="d-flex">
         <form method="GET" action="{{ route('admin.estudiantes') }}" class="mr-3">
             <label for="elementosPorPaginaAprobados">Estudiantes a visualizar:</label>
@@ -221,8 +234,15 @@
         @elseif ($estudiantesVinculacion->isEmpty())
             <p>No hay estudiantes de vinculación a la sociedad culminados.</p>
         @else
-            <div style="overflow-x: auto;">
-                <table class="table">
+        <div class="mat-elevation-z8 contenedor_general">
+
+<div class="contenedor_tabla">
+                    <div class="table-container mat-elevation-z8">
+
+                        <div id="tablaEstudiantes">
+                            <table class="mat-mdc-table">
+    <thead class="ng-star-inserted">
+        <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                     <thead>
                         <tr>
                             <th>N°</th>
@@ -272,7 +292,6 @@
             </div>
         @endif
     </div>
-
 
 
 
