@@ -24,6 +24,7 @@ class Usuario extends Model implements Authenticatable
         'CorreoElectronico',
         'Contrasena',
          'token',
+        'token_expires_at',
         'Estado',
         'role_id'
     ];

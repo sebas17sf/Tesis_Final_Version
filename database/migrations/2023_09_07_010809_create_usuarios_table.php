@@ -16,6 +16,7 @@ class CreateUsuariosTable extends Migration
             $table->date('FechaNacimiento');
             $table->string('Estado');
             $table->string('token')->nullable();
+            $table->timestamp('token_expires_at')->nullable();
             $table->unsignedBigInteger('role_id'); 
             $table->foreign('role_id')->references('id')->on('roles');  
             $table->timestamps();
