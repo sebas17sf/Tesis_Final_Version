@@ -174,7 +174,7 @@
   $tamañoTabla620: $tamañoTabla + 100px;
   .contenedor_tabla {
     max-height: $tamañoTabla;
-    min-height: $tamañoTabla;
+    min-height: none;
 
     @media (max-width: 620px) {
       max-height: $tamañoTabla620;

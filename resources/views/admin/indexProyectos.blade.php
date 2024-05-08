@@ -33,43 +33,66 @@
         <h6><b>Listado de Proyectos</b></h6>
 <hr>
 
-        <a href="{{ route('admin.agregarProyecto') }}" class="btn btn_nuevo3" id="button3">
-        <i class="fa-solid fa-plus"></i> Proyecto
-        </a>
+        
 
 
 
         <br><br>
-        <div class="d-flex">
-            <form method="GET" action="{{ route('admin.indexProyectos') }}">
-                <div class="d-flex align-items-center mb-3">
-                    <label for="perPage" class="me-2">Proyectos por página:</label>
-                    <select id="perPage" name="perPage" class="form-select input input-select"
-                        onchange="this.form.submit()">
-                        <option value="10" @if ($perPage == 10) selected @endif>10</option>
-                        <option value="20" @if ($perPage == 20) selected @endif>20</option>
-                        <option value="50" @if ($perPage == 50) selected @endif>50</option>
-                        <option value="100" @if ($perPage == 100) selected @endif>100</option>
-                    </select>
-                </div>
-            </form>
-
-            <div class="mb-3">
+        <div class="mat-elevation-z8 contenedor_general">
+                    <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+                        <!-- Botones -->
+                        <div class="contenedor_botones">
+                        <div class="form-group">
+                        <a href="{{ route('admin.agregarProyecto') }}" class="btn btn_nuevo3" id="button3">
+        <i class="fa-solid fa-plus"></i> Proyecto
+        </a>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="button3 efects_button btn_excel" pTooltip="Excel"
+                                    tooltipPosition="top">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                </button>
+            </div>
+            <div class="form-group">
+                        <form method="POST" action="{{ route('coordinador.reportesProyectos') }}">
+        @csrf
+        <div class="form-inline">
+            <div class="form-group mr-2">
+                <label for="estado" class="mr-2">Estado del Proyecto:</label>
+                <select name="estado" id="estado" class="form-control input input-select">
+                    <option value="">Todos</option>
+                    <option value="Ejecucion">En Ejecución</option>
+                    <option value="Terminado">Terminado</option>
+                </select>
+            </div>
+           
+        </div>
+    </form>
+    </div>
+    </div>
+    <div class="form-group">
+     
+    <div class="contenedor_buscador">
+            <div>
                 <form id="formBusquedaProyectos" class="d-flex">
-                    <input type="text" name="search" value="{{ $search }}" class="input"
-                        placeholder="Buscar proyectos...">
+                <input type="text" class="input" name="search" value="{{ $search }}"
+                                        matInput placeholder="Buscar proyectos...">
+                                    
                 </form>
             </div>
-
+</div>
+</div>
         </div>
+     
 
-        <div id="tablaProyectos">
-            @if ($proyectos->isEmpty())
-                <p>No se encontraron resultados para la busqueda</p>
-            @else
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
+            <div class="contenedor_tabla">
+                        <div class="table-container mat-elevation-z8">
+
+                            <div id="tablaDocentes">
+                                <table class="mat-mdc-table">
+                                    <thead class="ng-star-inserted">
+                                        <tr
+                                            class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                             <th>Nombre del director del proyecto</th>
                             <th>Nombres Docentes participantes</th>
                             <th>Nombre del proyecto</th>
@@ -87,9 +110,16 @@
                             <th>Acciones</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($proyectos as $proyecto)
-                            <tr>
+                    <tbody class="mdc-data-table__content ng-star-inserted">
+                    @if ($proyectos->isEmpty())
+                        
+                            <tr class="noExisteRegistro ng-star-inserted" style="text-align:center">
+                           
+                            <td colspan="6">No se encontraron resultados para la busqueda</td>
+                            </tr>
+            @else
+            @foreach ($proyectos as $proyecto)
+            <tr>
                                 <td>{{ strtoupper($proyecto->director->Apellidos) }}
                                     {{ strtoupper($proyecto->director->Nombres) }}</td>
                                 <td>
@@ -127,20 +157,24 @@
                                 <td>{{ strtoupper($proyecto->cupos) }}</td>
                                 <td>{{ strtoupper($proyecto->Estado) }}</td>
                                 <td>
+                                <div class="contenedor_botones">
+                                                            <div class="btn-group  shadow-0">
+                                                           
                                     <a href="{{ route('admin.editarProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
-                                        class="btn btn-outline-secondary btn-block">
-                                        <i class="material-icons">edit</i>
+                                    type="button" class="button3 efects_button btn_editar3">
+                                        <i class="bx bx-edit-alt"></i>
                                     </a>
-                                    <form
+                                    <form class="btn-group shadow-1"
                                         action="{{ route('admin.deleteProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
-                                        method="POST" style="display: inline;">
+                                        method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-outline-secondary btn-block"
+                                        <button type="submit" class="button3 efects_button btn_eliminar3"
                                             onclick="return confirm('¿Estás seguro de eliminar este proyecto?')">
-                                            <i class="material-icons">delete</i>
+                                            <i class="bx bx-trash"></i>
                                         </button>
                                     </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -151,10 +185,22 @@
         </div>
 
 
+        </div>
+        <div class="paginator-container">
+                            <nav aria-label="...">
 
-
-        <div class="d-flex justify-content-center">
-            <ul class="pagination">
+                                <ul class="pagination">
+                                    <li class="page-item mx-3">
+            <form method="GET" action="{{ route('admin.indexProyectos') }}">
+            <select class="form-control page-item" class="input" name="perPage"
+                                                id="perPage" onchange="this.form.submit()">
+                        <option value="10" @if ($perPage == 10) selected @endif>10</option>
+                        <option value="20" @if ($perPage == 20) selected @endif>20</option>
+                        <option value="50" @if ($perPage == 50) selected @endif>50</option>
+                        <option value="100" @if ($perPage == 100) selected @endif>100</option>
+                    </select>
+            </form>
+            </li>
                 @if ($proyectos->onFirstPage())
                     <li class="page-item disabled">
                         <span class="page-link">Anterior</span>
@@ -185,25 +231,9 @@
 
     </div>
 
-    <form method="POST" action="{{ route('coordinador.reportesProyectos') }}">
-        @csrf
-        <div class="form-inline">
-            <div class="form-group mr-2">
-                <label for="estado" class="mr-2">Estado del Proyecto:</label>
-                <select name="estado" id="estado" class="form-control input input-select">
-                    <option value="">Todos</option>
-                    <option value="Ejecucion">En Ejecución</option>
-                    <option value="Terminado">Terminado</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-sm btn-secondary">
-                    <i class="fas fa-file-excel"></i> Reporte Proyectos
-                </button>
-            </div>
-        </div>
-    </form>
-
+    
+    </div>
+</div>
 
     <hr>
 
@@ -218,8 +248,9 @@
                 @csrf
 
                 <div class="form-group">
-                    <label for="proyecto_id">Proyecto Disponible:</label>
+                    <label for="proyecto_id"><strong>Proyecto Disponible:</strong></label>
                     <select name="proyecto_id" id="proyecto_id" class="form-control input input-select">
+                        <option value="">Seleccione un proyecto</option>
                         @foreach ($proyectosDisponibles as $proyecto)
                             @if ($proyecto->cupos > 0)
                                 <option value="{{ $proyecto->ProyectoID }}">
@@ -236,8 +267,9 @@
 
 
                 <div class="form-group">
-                    <label for="estudiante_id">Estudiante Aprobado:</label>
+                    <label for="estudiante_id"><strong> Estudiante Aprobado:</strong></label>
                     <select name="estudiante_id" id="estudiante_id" class="form-control input input-select">
+                        <option value="">Seleccione un estudiante</option>
                         @foreach ($estudiantesAprobados as $estudiante)
                             <option value="{{ $estudiante->EstudianteID }}">
                                 {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} -
@@ -248,7 +280,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="fecha_asignacion">Fecha de Asignación:</label>
+                    <label for="fecha_asignacion"><strong>Fecha de Asignación:</strong></label>
                     <input type="date" name="fecha_asignacion" id="fecha_asignacion" class="form-control input"
                         value="{{ now()->toDateString() }}">
                 </div>

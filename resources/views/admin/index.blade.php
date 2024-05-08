@@ -515,7 +515,7 @@
 
 
                                                             </div>
-                                                            <div class="btn-group shadow-1"
+                                                            <form class="btn-group shadow-1"
                                                                 action="{{ route('admin.eliminarMaestro', ['id' => $profesor->id]) }}"
                                                                 method="POST">
                                                                 @csrf
@@ -533,10 +533,6 @@
                                     </tbody>
                                 </table>
                             </div>
-
-
-
-
                         </div>
 
                         <div class="paginator-container">
@@ -771,19 +767,19 @@
                                     @csrf
                                     @method('PUT')
 
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group">
                                         <label for="periodoInicio">Fecha de Inicio:</label>
                                         <input type="date" name="periodoInicio" class="form-control input"
                                             value="{{ $periodo->PeriodoInicio }}" required>
                                     </div>
 
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group">
                                         <label for="periodoFin">Fecha de Fin:</label>
                                         <input type="date" name="periodoFin" class="form-control input"
                                             value="{{ $periodo->PeriodoFin }}" required>
                                     </div>
 
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group ">
                                         <label for="numeroPeriodo">Ingrese el numero identificador del periodo:</label>
                                         <input type="text" name="numeroPeriodo" id="numeroPeriodo"
                                             class="form-control input" value="{{ $periodo->numeroPeriodo }}" required>
