@@ -47,12 +47,9 @@
         <i class="fa-solid fa-plus"></i> Proyecto
         </a>
         </div>
-        <div class="form-group">
-            <button type="submit" class="button3 efects_button btn_excel" pTooltip="Excel"
-                                    tooltipPosition="top">
-                                    <i class="fa-solid fa-file-excel"></i>
-                                </button>
-            </div>
+        
+            
+           
             <div class="form-group">
                         <form method="POST" action="{{ route('coordinador.reportesProyectos') }}">
         @csrf
@@ -65,7 +62,10 @@
                     <option value="Terminado">Terminado</option>
                 </select>
             </div>
-           
+            <button type="submit" class="button3 efects_button btn_excel" pTooltip="Excel"
+                                    tooltipPosition="top">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                </button>
         </div>
     </form>
     </div>
