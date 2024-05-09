@@ -15,16 +15,23 @@ class RecuperarContrasena extends Mailable
     public $usuario;
     public $estudiante;
 
+    public $token;
+
     /**
      * Create a new message instance.
      *
      * @param Usuario|null $usuario
      * @param Estudiante|null $estudiante
+     * @param $token
+     * 
+     * 
      */
-    public function __construct(?Usuario $usuario, ?Estudiante $estudiante)
+    public function __construct(?Usuario $usuario, ?Estudiante $estudiante, $token)
     {
         $this->usuario = $usuario;
         $this->estudiante = $estudiante;
+        $this->token = $token;
+
     }
 
     /**

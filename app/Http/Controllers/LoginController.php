@@ -31,7 +31,7 @@ class LoginController extends Controller
         $credentials = $request->validate([
             'CorreoElectronico' => 'required|email',
             'Contrasena' => 'required',
-        ]);  
+        ]);
 
         $user = Usuario::where('CorreoElectronico', $credentials['CorreoElectronico'])->first();
 
@@ -45,9 +45,9 @@ class LoginController extends Controller
             $user->token = hash('sha256', $token);
             $user->save();
 
-             $userRole = Role::find($user->role_id);
+            $userRole = Role::find($user->role_id);
 
-             if ($userRole->Tipo === 'Administrador') {
+            if ($userRole->Tipo === 'Administrador') {
                 return redirect()->route('admin.index')->with('token', $token); // Cambia 'admin.index' a la ruta deseada para administradores
             } elseif ($user->Estado === 'activo') {
                 if ($userRole->Tipo === 'Director-Departamento' || $user->Estado === 'Director-Carrera') {
@@ -90,18 +90,36 @@ class LoginController extends Controller
             return back()->with('error', 'Correo no registrado, no cuenta con un usuario en el sistema.');
         }
 
+        $token = Str::random(60);
+        $usuario->token = $token;
+        $usuario->token_expires_at = now()->addHours(1);
+        $usuario->save();
+
         $estudiante = Estudiante::where('Correo', $request->email)->first();
 
-        Mail::to($usuario->CorreoElectronico)->send(new RecuperarContrasena($usuario, $estudiante));
+        Mail::to($usuario->CorreoElectronico)->send(new RecuperarContrasena($usuario, $estudiante, $token));
 
         return redirect('/')->with('success', 'Se ha enviado un enlace de restablecimiento de contraseña a su correo electrónico.');
     }
 
 
-    public function mostrarFormularioRestablecimiento($correoElectronico)
+    public function mostrarFormularioRestablecimiento($token)
     {
-        return view('cambiarContrasena')->with('correoElectronico', $correoElectronico);
+        $usuario = Usuario::where('token', $token)
+            ->where('token_expires_at', '>', now())
+            ->first();
+
+        if (!$usuario) {
+            return redirect('/')->with('error', 'Su solicitud de restablecimiento de contraseña no es válida o ha expirado.');
+        }
+
+        // Pasa los datos a la vista utilizando un arreglo asociativo
+        return view('cambiarContrasena')->with([
+            'correoElectronico' => $usuario->CorreoElectronico,
+            'token' => $token,
+        ]);
     }
+
 
     public function cambiarContrasenaUsuario(Request $request, $correoElectronico)
     {
@@ -114,14 +132,19 @@ class LoginController extends Controller
         ]);
 
         // Buscar al usuario por su correo electrónico
-        $usuario = Usuario::where('CorreoElectronico', $correoElectronico)->first();
+        $usuario = Usuario::where('CorreoElectronico', $correoElectronico)
+            ->where('token', $request->token)
+            ->where('token_expires_at', '>', now())
+            ->first();
 
         if (!$usuario) {
-            return back()->with('error', 'El correo electrónico no está registrado en el sistema.');
+            return back()->with('error', 'El token de restablecimiento de contraseña no es válido o ha expirado.');
         }
 
         // Actualizar la contraseña del usuario
         $usuario->Contrasena = Hash::make($request->password);
+        $usuario->token = null; // Eliminar el token
+        $usuario->token_expires_at = null; // Eliminar la fecha de expiración del token
         $usuario->save();
 
         return redirect('/')->with('success', 'Contraseña cambiada exitosamente.');

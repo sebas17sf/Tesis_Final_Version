@@ -107,9 +107,10 @@
             @endif
         </ul>
 
-
         <p>Para restablecer tu contraseña, haz clic en el siguiente enlace:</p>
-        <p><a href="{{ route('mostrar-formulario-restablecimiento', ['correoElectronico' => $usuario->CorreoElectronico]) }}">Restablecer Contraseña</a></p>
+        <p><a href="{{ route('mostrar-formulario-restablecimiento', ['token' => $token]) }}">Restablecer Contraseña</a>
+        </p>
+
 
         <p>Si no has solicitado restablecer tu contraseña, puedes ignorar este correo.</p>
 
