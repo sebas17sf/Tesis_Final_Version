@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UsuariosSession;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
@@ -39,6 +40,21 @@ class LoginController extends Controller
             Auth::login($user);
 
             session()->regenerate();
+
+            $existingSession = UsuariosSession::where('UserID', $user->UserID)
+                ->where('ip_address', $request->ip())
+                ->where('user_agent', $request->userAgent())
+                ->first();
+
+            if (!$existingSession) {
+                $session = new UsuariosSession();
+                $session->UserID = $user->UserID;
+                $session->session_id = session()->getId();
+                $session->start_time = now();
+                $session->ip_address = $request->ip();
+                $session->user_agent = $request->userAgent();
+                $session->save();
+            }
 
             $token = Str::random(60);
 

@@ -83,6 +83,12 @@ class Usuario extends Model implements Authenticatable
         return $this->belongsTo(Role::class, 'role_id', 'id');
     }
 
+    // Relación con la tabla usuarios_sessions
+    public function session()
+    {
+        return $this->hasOne(UsuariosSession::class, 'UserID', 'UserID');
+    }
+
 
 
    

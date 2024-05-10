@@ -9,7 +9,7 @@ use App\Models\Estudiante;
 use App\Models\Proyecto;
 use App\Mail\EstudianteAprobado;
 use App\Mail\EstudianteNegado;
- use App\Models\AsignacionProyecto;
+use App\Models\AsignacionProyecto;
 use App\Models\Empresa;
 use App\Models\Role;
 
@@ -19,7 +19,7 @@ use App\Models\ParticipanteAdicional;
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
- 
+
 use App\Models\Periodo;
 
 use App\Models\ProfesUniversidad;
@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Auth;
 
 
 use App\Models\NrcVinculacion;
+use App\Models\UsuariosSession;
 use App\Models\NrcPracticas1;
 use Illuminate\Http\Request;
 
@@ -78,7 +79,7 @@ class AdminController extends Controller
                     ->whereIn('Estado', ['Vinculacion', 'Lector', 'Director-Departamento'])
                     ->get();
 
- 
+
                 return view('admin.index', [
                     'profesoresPendientes' => $profesoresPendientes,
                     'profesoresConPermisos' => $profesoresConPermisos,
@@ -86,7 +87,7 @@ class AdminController extends Controller
                     'periodos' => $periodos,
                     'search' => $searchTerm,
                     'perPage' => $perPage,
-                   
+
                 ]);
             }
         }
@@ -400,36 +401,44 @@ class AdminController extends Controller
         $directorUserExists = Usuario::where('CorreoElectronico', $director->Correo)->exists();
 
         if (!$directorUserExists) {
+            $cedulaDirector = $director->Cedula;
+            $nombreDirector = $director->Nombres;
+            $contrasenaDirector = substr($nombreDirector, 0, 2) . $cedulaDirector . '$';
+
             Usuario::create([
                 'NombreUsuario' => $director->Usuario,
                 'Nombre' => $director->Nombres,
                 'Apellido' => $director->Apellidos,
                 'CorreoElectronico' => $director->Correo,
                 'FechaNacimiento' => now(),
-                'Contrasena' => bcrypt('123'),
+                'Contrasena' => bcrypt($contrasenaDirector),
                 'Estado' => 'activo',
                 'role_id' => $directorRoleId,
             ]);
+            dd($contrasenaDirector);
         }
 
         foreach ($participantes as $participante) {
             $participanteUserExists = Usuario::where('CorreoElectronico', $participante->Correo)->exists();
 
             if (!$participanteUserExists) {
+                $cedula = $participante->Cedula;
+                $nombre = $participante->Nombres;
+                $contrasena = substr($nombre, 0, 2) . $cedula . '$';
+                dd($contrasena);
                 Usuario::create([
                     'NombreUsuario' => $participante->Usuario,
                     'Nombre' => $participante->Nombres,
                     'Apellido' => $participante->Apellidos,
                     'CorreoElectronico' => $participante->Correo,
                     'FechaNacimiento' => now(),
-                    'Contrasena' => bcrypt('123'),
+                    'Contrasena' => bcrypt($contrasena),
                     'Estado' => 'activo',
                     'role_id' => $participanteRoleId,
                 ]);
             }
         }
 
-        // Crear el nuevo proyecto
         $proyecto = Proyecto::create([
             'id_directorProyecto' => $director->id,
             'id_docenteParticipante' => $participantes->first()->id,
@@ -446,7 +455,6 @@ class AdminController extends Controller
 
         $proyecto->save();
 
-        // Crear participantes adicionales
         foreach ($participantes->slice(1) as $participante) {
             ParticipanteAdicional::create([
                 'ProyectoID' => $proyecto->ProyectoID,
@@ -548,11 +556,11 @@ class AdminController extends Controller
     {
         $profesor = ProfesUniversidad::findOrFail($profesorId);
         $rolId = Role::where('Tipo', $tipoRol)->value('id');
-    
+
         $usuario = Usuario::where('CorreoElectronico', $profesor->Correo)->first();
-    
+
         if (!$usuario) {
-             Usuario::create([
+            Usuario::create([
                 'NombreUsuario' => $profesor->Usuario,
                 'Nombre' => $profesor->Nombres,
                 'Apellido' => $profesor->Apellidos,
@@ -563,7 +571,7 @@ class AdminController extends Controller
                 'role_id' => $rolId,
             ]);
         } else {
-             if ($usuario->role_id != $rolId) {
+            if ($usuario->role_id != $rolId) {
                 $usuario->role_id = $rolId;
                 $usuario->save();
             }
@@ -1294,6 +1302,70 @@ class AdminController extends Controller
         return redirect()->route('admin.index')->with('success', 'Respaldo de la base de datos creado y enviado por correo electrónico con éxito.');
     }
 
+
+    ////////////////////////////cambiar credenciales
+    public function cambiarCredencialesUsuario()
+    {
+        $usuario = Auth::user();
+        $userSessions = UsuariosSession::where('UserID', $usuario->UserID)->get();
+
+        foreach ($userSessions as $session) {
+            $session->browser = $this->getBrowserFromUserAgent($session->user_agent);
+        }
+
+        return view('admin.cambiarCredencialesUsuario', compact('usuario', 'userSessions'));
+    }
+    private function getBrowserFromUserAgent($userAgent)
+    {
+        if (strpos($userAgent, 'OPR') !== false) {
+            return 'Opera';
+        } elseif (strpos($userAgent, 'Edg') !== false) {
+            return 'Microsoft Edge';
+        } elseif (strpos($userAgent, 'Chrome') !== false) {
+            return 'Chrome';
+        } elseif (strpos($userAgent, 'Firefox') !== false) {
+            return 'Firefox';
+        } elseif (strpos($userAgent, 'Safari') !== false) {
+            return 'Safari';
+        } elseif (strpos($userAgent, 'MSIE') !== false) {
+            return 'Internet Explorer';
+        } else {
+            return 'Desconocido';
+        }
+    }
+    
+    
+
+    
+
+    public function actualizarCredenciales(Request $request)
+    {
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+            'password_confirmation' => 'required',
+            'nombre' => 'required',
+        ]);
+
+        if ($request->password !== $request->password_confirmation) {
+            return redirect()->back()->with('error', 'Las contraseñas no coinciden')->withInput();
+        }
+
+        //////las credenciales deben ser minimo de 6 caracteres
+        if (strlen($request->password) < 6) {
+            return redirect()->back()->with('error', 'La contraseña debe tener al menos 6 caracteres')->withInput();
+        }
+
+        $usuario = Auth::user();
+
+        $usuario->CorreoElectronico = $request->email;
+        $usuario->NombreUsuario = $request->nombre;
+        $usuario->Contrasena = bcrypt($request->password);
+
+        $usuario->save();
+
+        return redirect()->route('admin.index')->with('success', 'Credenciales actualizadas exitosamente');
+    }
 
 
 

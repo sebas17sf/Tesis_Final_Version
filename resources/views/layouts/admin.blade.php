@@ -149,6 +149,12 @@
                         <i class="fa-regular fa-rectangle-vertical-history"></i>
                         <span>Cambiar modulo</span>
                     </a>
+
+                    <a href="{{route('admin.cambio-credenciales')}}" class="change_password">
+                        <i class="far fa-cog"></i>
+                        <span>Configuracion</span>
+                    </a>
+
                     <a class="logout" href="{{ route('logout') }}">
                         <i class="fa-sharp fa-regular fa-arrow-up-left-from-circle fontawesome"></i>
                         <span>Cerrar sesión</span>
@@ -198,6 +204,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
         integrity="sha384-gL5q2wHNwpg9voDwmz1onh73oSJ8lFvZEydTHpw4M4okQ7N8qI+v5h0zitOykKdp" crossorigin="anonymous">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 </body>
 

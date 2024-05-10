@@ -104,6 +104,12 @@ body {
                         <i class="fa-regular fa-rectangle-vertical-history"></i>
                         <span>Cambiar modulo</span>
                     </a>
+
+                    <a href="{{route('estudiantes.cambio-credenciales')}}" class="change_password">
+                        <i class="far fa-cog"></i>
+                        <span>Configuracion</span>
+                    </a>
+                    
                     <a class="logout" href="{{ route('logout') }}">
                         <i class="fa-sharp fa-regular fa-arrow-up-left-from-circle fontawesome"></i>
                         <span>Cerrar sesión</span>
