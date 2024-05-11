@@ -71,6 +71,7 @@
                         <th>Hora de Inicio</th>
                         <th>Dirección IP</th>
                         <th>Agente de Usuario</th>
+                        <th>Ubicacion</th>
                     </tr>
                 </thead>
                 <tbody class="mdc-data-table__content ng-star-inserted">
@@ -79,6 +80,7 @@
                             <td>{{ $session->start_time }}</td>
                             <td>{{ $session->ip_address }}</td>
                             <td>{{ $session->browser }}</td>
+                            <td>{{ $session->locality }}</td>
                         </tr>
                     @endforeach
 

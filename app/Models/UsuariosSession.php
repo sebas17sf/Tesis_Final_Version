@@ -15,7 +15,8 @@ class UsuariosSession extends Model
         'session_id',
         'start_time',
         'ip_address',
-        'user_agent'
+        'user_agent',
+        'locality',
     ];
 
     public function usuario()

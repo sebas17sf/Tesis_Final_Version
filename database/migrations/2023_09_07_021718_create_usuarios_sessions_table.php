@@ -18,6 +18,7 @@ return new class extends Migration
             $table->dateTime('start_time');
             $table->string('ip_address')->nullable();
             $table->string('user_agent')->nullable();
+            $table->string('locality')->nullable();
             $table->timestamps();
             $table->foreign('UserID')->references('UserID')->on('usuarios')->onDelete('cascade');
 

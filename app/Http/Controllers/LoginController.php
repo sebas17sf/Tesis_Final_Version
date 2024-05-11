@@ -28,6 +28,7 @@ class LoginController extends Controller
     }
 
     // Procesar el inicio de sesión
+
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -40,32 +41,56 @@ class LoginController extends Controller
         if ($user && (password_verify($credentials['Contrasena'], $user->Contrasena) || $user->Contrasena === $credentials['Contrasena'])) {
             Auth::login($user);
 
-            session()->regenerate();
+            $userAgent = $request->userAgent();
+            $response = Http::get('https://api.ipify.org?format=json');
+
+            if ($response->successful()) {
+                $ipAddress = $response->json('ip');
+            } else {
+                $ipAddress = $request->ip();
+            }
+
+            $geoIpResponse = Http::get("https://ipinfo.io/{$ipAddress}/json");
+
+            if ($geoIpResponse->successful()) {
+                $geoData = $geoIpResponse->json();
+                $locality = $geoData['city'] . ', ' . $geoData['region'] . ', ' . $geoData['country'];
+                $locality .= ', ' . $geoData['loc'];
+            } else {
+                $locality = 'Desconocida';
+            }
+
+
 
             $existingSession = UsuariosSession::where('UserID', $user->UserID)
-                ->where('ip_address', $request->ip())
-                ->where('user_agent', $request->userAgent())
+                ->where('user_agent', $userAgent)
+                ->where('ip_address', $ipAddress)
                 ->first();
 
-                if (!$existingSession) {
-                    $session = new UsuariosSession();
-                    $session->UserID = $user->UserID;
-                    $session->session_id = session()->getId();
-                    $session->start_time = now();
-                    
-                     $response = Http::get('https://api.ipify.org?format=json');
-                
-                     if ($response->successful()) {
-                        $ipAddress = $response->json('ip');
-                        $session->ip_address = $ipAddress;
-                    } else {
-                         $session->ip_address = $request->ip();
-                    }
-                
-                    $session->user_agent = $request->userAgent();
-                    $session->save();
+
+            if ($existingSession) {
+                $existingSession->update(['start_time' => now()]);
+            } else {
+                $session = new UsuariosSession();
+                $session->UserID = $user->UserID;
+                $session->session_id = session()->getId();
+                $session->start_time = now();
+                $session->user_agent = $request->userAgent();
+                $session->locality = $locality;
+
+
+                $response = Http::get('https://api.ipify.org?format=json');
+                if ($response->successful()) {
+                    $ip = $response->json()['ip'];
+                    $session->ip_address = $ip;
+                } else {
+                    $session->ip_address = $request->ip();
                 }
-                
+
+                $session->save();
+            }
+
+            session()->regenerate();
 
             $token = Str::random(60);
 
@@ -75,16 +100,16 @@ class LoginController extends Controller
             $userRole = Role::find($user->role_id);
 
             if ($userRole->Tipo === 'Administrador') {
-                return redirect()->route('admin.index')->with('token', $token); // Cambia 'admin.index' a la ruta deseada para administradores
+                return redirect()->route('admin.index')->with('token', $token);
             } elseif ($user->Estado === 'activo') {
                 if ($userRole->Tipo === 'Director-Departamento' || $user->Estado === 'Director-Carrera') {
-                    return redirect()->route('director.indexProyectos')->with('token', $token); // Cambia 'dashboard' a la ruta deseada
+                    return redirect()->route('director.indexProyectos')->with('token', $token);
                 } elseif ($userRole->Tipo === 'Vinculacion') {
-                    return redirect()->route('coordinador.index')->with('token', $token); // Redirige a la ruta de coordinadores
+                    return redirect()->route('coordinador.index')->with('token', $token);
                 } elseif ($userRole->Tipo === 'DirectorVinculacion') {
-                    return redirect()->route('director_vinculacion.index')->with('token', $token); // Ruta para Directores de Vinculación
+                    return redirect()->route('director_vinculacion.index')->with('token', $token);
                 } elseif ($userRole->Tipo === 'ParticipanteVinculacion') {
-                    return redirect()->route('ParticipanteVinculacion.index')->with('token', $token); // Ruta para Participantes de Vinculación
+                    return redirect()->route('ParticipanteVinculacion.index')->with('token', $token);
                 } else {
                     return back()->withErrors([
                         'CorreoElectronico' => 'Su estado no permite el acceso en este momento.',
@@ -95,9 +120,9 @@ class LoginController extends Controller
             }
         }
 
-        // Si las credenciales o el inicio de sesión fallan, redirige de nuevo al formulario de inicio de sesión con un mensaje de error
         return redirect()->route('login')->with('error', 'Las credenciales proporcionadas no coinciden con nuestros registros.');
     }
+
 
     //////recuperar contraseña
     public function recuperarContrasena()
