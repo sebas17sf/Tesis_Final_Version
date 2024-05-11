@@ -174,9 +174,8 @@
 
                 <div class="modal fade" id="modalAgregarMaestro" tabindex="-1" role="dialog"
                     aria-labelledby="modalAgregarMaestroLabel" aria-hidden="true">
-
                     <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content draggable">
+                        <div class="modal-content">
                             <div class="modal-header">
                                 <span class="modal-title" id="modalAgregarMaestroLabel"><b>Agregar Docentes</b></span>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -229,8 +228,7 @@
                                                     Computación</option>
                                                 <option value="Ciencias de la Vida">Departamento de Ciencias de la Vida
                                                 </option>
-                                                <option value="Ciencias Exactas">Departamento de Ciencias Exactas
-                                                </option>
+                                                <option value="Ciencias Exactas">Departamento de Ciencias Exactas</option>
                                             </select>
                                         </div>
                                     </div>
@@ -243,7 +241,6 @@
                         </div>
                     </div>
                 </div>
-
 
 
                 <!--------------------------------------- -->
@@ -268,12 +265,12 @@
                                     class="fa-solid fa-copy"></i></button>
 
                             {{-- //DESCOMENTAR PARA ACTIVAR LOS OTROS BOTONES
-                <button class="button3 efects_button btn_filtro" pTooltip="Filtros" tooltipPosition="top"><i
-                        class="fa-solid fa-filter-list"></i></button>
+                                <button class="button3 efects_button btn_filtro" pTooltip="Filtros" tooltipPosition="top"><i
+                                        class="fa-solid fa-filter-list"></i></button>
 
-               
-                <button class="button3 efects_button btn_delete_filter" pTooltip="Eliminar filtros" tooltipPosition="top"><i
-                        class="fa-sharp fa-solid fa-filter-circle-xmark"></i></button> --}}
+                            
+                                <button class="button3 efects_button btn_delete_filter" pTooltip="Eliminar filtros" tooltipPosition="top"><i
+                                        class="fa-sharp fa-solid fa-filter-circle-xmark"></i></button> --}}
 
                         </div>
 
@@ -350,159 +347,137 @@
                                                                     aria-labelledby="modalEditarMaestroLabel{{ $profesor->id }}"
                                                                     aria-hidden="true">
                                                                     <div class="modal-dialog modal-lg" role="document">
-                                                                        <div class="modal-content draggable">
-                                                                            <!-- Agrega la clase "draggable" -->
+                                                                        <!-- Añade la clase modal-lg para un modal grande -->
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <span class="modal-title"
+                                                                                    id="modalEditarMaestroLabel{{ $profesor->id }}">
+                                                                                    <b>Editar Docentes</b></span>
 
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <span class="modal-title"
-                                                                                        id="modalEditarMaestroLabel{{ $profesor->id }}">
-                                                                                        <b>Editar Docentes</b></span>
+                                                                                <button type="button" class="close"
+                                                                                    data-dismiss="modal"
+                                                                                    aria-label="Close">
+                                                                                    <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <form
+                                                                                    action="{{ route('admin.actualizarMaestro', ['id' => $profesor->id]) }}"
+                                                                                    method="POST">
+                                                                                    @csrf
+                                                                                    @method('PUT')
 
-                                                                                    <button type="button" class="close"
-                                                                                        data-dismiss="modal"
-                                                                                        aria-label="Close">
-                                                                                        <span
-                                                                                            aria-hidden="true">&times;</span>
-                                                                                    </button>
-                                                                                </div>
-                                                                                <div class="modal-body">
-                                                                                    <form
-                                                                                        action="{{ route('admin.actualizarMaestro', ['id' => $profesor->id]) }}"
-                                                                                        method="POST">
-                                                                                        @csrf
-                                                                                        @method('PUT')
-
-                                                                                        <div class="form-row">
-                                                                                            <div
-                                                                                                class="form-group col-md-4">
-                                                                                                <label
-                                                                                                    for="nombres"><strong>Ingrese
-                                                                                                        Nombres:</strong></label>
-                                                                                                <input type="text"
-                                                                                                    id="nombres"
-                                                                                                    name="nombres"
-                                                                                                    class="form-control input"
-                                                                                                    value="{{ $profesor->Nombres }}"
-                                                                                                    required>
-                                                                                            </div>
-
-                                                                                            <div
-                                                                                                class="form-group col-md-4">
-                                                                                                <label
-                                                                                                    for="apellidos"><strong>Ingrese
-                                                                                                        Apellidos:</strong></label>
-                                                                                                <input type="text"
-                                                                                                    id="apellidos"
-                                                                                                    name="apellidos"
-                                                                                                    class="form-control input"
-                                                                                                    value="{{ $profesor->Apellidos }}"
-                                                                                                    required>
-                                                                                            </div>
-
-                                                                                            <div
-                                                                                                class="form-group col-md-4">
-                                                                                                <label
-                                                                                                    for="correo"><strong>Ingrese
-                                                                                                        Correo:</strong></label>
-                                                                                                <input type="email"
-                                                                                                    id="correo"
-                                                                                                    name="correo"
-                                                                                                    class="form-control input"
-                                                                                                    value="{{ $profesor->Correo }}"
-                                                                                                    required>
-                                                                                            </div>
+                                                                                    <div class="form-row">
+                                                                                        <div class="form-group col-md-4">
+                                                                                            <label for="nombres"><strong>Ingrese
+                                                                                                    Nombres:</strong></label>
+                                                                                            <input type="text"
+                                                                                                id="nombres"
+                                                                                                name="nombres"
+                                                                                                class="form-control input"
+                                                                                                value="{{ $profesor->Nombres }}"
+                                                                                                required>
                                                                                         </div>
 
-                                                                                        <div class="form-row">
-                                                                                            <div
-                                                                                                class="form-group col-md-4">
-                                                                                                <label
-                                                                                                    for="Usuario"><strong>Ingrese
-                                                                                                        el
-                                                                                                        Usuario:</strong></label>
-                                                                                                <input type="text"
-                                                                                                    id="Usuario"
-                                                                                                    name="Usuario"
-                                                                                                    class="form-control input"
-                                                                                                    value="{{ $profesor->Usuario }}"
-                                                                                                    required>
-                                                                                            </div>
-
-                                                                                            <div
-                                                                                                class="form-group col-md-4">
-                                                                                                <label
-                                                                                                    for="espe_id"><strong>Ingrese
-                                                                                                        el ESPE
-                                                                                                        ID:</strong></label>
-                                                                                                <input type="text"
-                                                                                                    id="espe_id"
-                                                                                                    name="espe_id"
-                                                                                                    class="form-control input"
-                                                                                                    value="{{ $profesor->espe_id }}"
-                                                                                                    required>
-                                                                                            </div>
-
-                                                                                            <div
-                                                                                                class="form-group col-md-4">
-                                                                                                <label
-                                                                                                    for="cedula"><strong>Ingrese
-                                                                                                        la
-                                                                                                        Cedula:</strong></label>
-                                                                                                <input type="text"
-                                                                                                    id="cedula"
-                                                                                                    name="cedula"
-                                                                                                    class="form-control input"
-                                                                                                    value="{{ $profesor->Cedula }}"
-                                                                                                    required>
-                                                                                            </div>
+                                                                                        <div class="form-group col-md-4">
+                                                                                            <label for="apellidos"><strong>Ingrese
+                                                                                                    Apellidos:</strong></label>
+                                                                                            <input type="text"
+                                                                                                id="apellidos"
+                                                                                                name="apellidos"
+                                                                                                class="form-control input"
+                                                                                                value="{{ $profesor->Apellidos }}"
+                                                                                                required>
                                                                                         </div>
 
-                                                                                        <div class="form-row">
-                                                                                            <div
-                                                                                                class="form-group col-md-4">
-                                                                                                <label
-                                                                                                    for="departamento"><strong>Seleccione
-                                                                                                        el departamento al
-                                                                                                        que
-                                                                                                        pertenece:</strong></label>
-                                                                                                <select id="departamento"
-                                                                                                    name="departamento"
-                                                                                                    class="form-control input"
-                                                                                                    required>
-                                                                                                    <option
-                                                                                                        value="Ciencias de la Computación"
-                                                                                                        {{ $profesor->Departamento === 'Ciencias de la Computación' ? 'selected' : '' }}>
-                                                                                                        Departamento de
-                                                                                                        Ciencias
-                                                                                                        de Computación
-                                                                                                    </option>
-                                                                                                    <option
-                                                                                                        value="Ciencias de la Vida"
-                                                                                                        {{ $profesor->Departamento === 'Ciencias de la Vida' ? 'selected' : '' }}>
-                                                                                                        Departamento de
-                                                                                                        Ciencias
-                                                                                                        de la Vida</option>
-                                                                                                    <option
-                                                                                                        value="Ciencias Exactas"
-                                                                                                        {{ $profesor->Departamento === 'Ciencias Exactas' ? 'selected' : '' }}>
-                                                                                                        Departamento de
-                                                                                                        Ciencias
-                                                                                                        Exactas</option>
-                                                                                                </select>
-                                                                                            </div>
+                                                                                        <div class="form-group col-md-4">
+                                                                                            <label for="correo"><strong>Ingrese
+                                                                                                    Correo:</strong></label>
+                                                                                            <input type="email"
+                                                                                                id="correo"
+                                                                                                name="correo"
+                                                                                                class="form-control input"
+                                                                                                value="{{ $profesor->Correo }}"
+                                                                                                required>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="form-row">
+                                                                                        <div class="form-group col-md-4">
+                                                                                            <label for="Usuario"><strong>Ingrese
+                                                                                                    el
+                                                                                                    Usuario:</strong></label>
+                                                                                            <input type="text"
+                                                                                                id="Usuario"
+                                                                                                name="Usuario"
+                                                                                                class="form-control input"
+                                                                                                value="{{ $profesor->Usuario }}"
+                                                                                                required>
                                                                                         </div>
 
-                                                                                        <div class="modal-footer">
-                                                                                            <button type="button"
-                                                                                                class="button"
-                                                                                                data-dismiss="modal">Cerrar</button>
-                                                                                            <button type="submit"
-                                                                                                class="button">Guardar
-                                                                                                Cambios</button>
+                                                                                        <div class="form-group col-md-4">
+                                                                                            <label for="espe_id"><strong>Ingrese
+                                                                                                    el ESPE
+                                                                                                    ID:</strong></label>
+                                                                                            <input type="text"
+                                                                                                id="espe_id"
+                                                                                                name="espe_id"
+                                                                                                class="form-control input"
+                                                                                                value="{{ $profesor->espe_id }}"
+                                                                                                required>
                                                                                         </div>
-                                                                                    </form>
-                                                                                </div>
+
+                                                                                        <div class="form-group col-md-4">
+                                                                                            <label for="cedula"><strong>Ingrese
+                                                                                                    la
+                                                                                                    Cedula:</strong></label>
+                                                                                            <input type="text"
+                                                                                                id="cedula"
+                                                                                                name="cedula"
+                                                                                                class="form-control input"
+                                                                                                value="{{ $profesor->Cedula }}"
+                                                                                                required>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="form-row">
+                                                                                        <div class="form-group col-md-4">
+                                                                                            <label
+                                                                                                for="departamento"><strong>Seleccione
+                                                                                                    el departamento al que
+                                                                                                    pertenece:</strong></label>
+                                                                                            <select id="departamento"
+                                                                                                name="departamento"
+                                                                                                class="form-control input"
+                                                                                                required>
+                                                                                                <option
+                                                                                                    value="Ciencias de la Computación"
+                                                                                                    {{ $profesor->Departamento === 'Ciencias de la Computación' ? 'selected' : '' }}>
+                                                                                                    Departamento de Ciencias
+                                                                                                    de Computación</option>
+                                                                                                <option
+                                                                                                    value="Ciencias de la Vida"
+                                                                                                    {{ $profesor->Departamento === 'Ciencias de la Vida' ? 'selected' : '' }}>
+                                                                                                    Departamento de Ciencias
+                                                                                                    de la Vida</option>
+                                                                                                <option
+                                                                                                    value="Ciencias Exactas"
+                                                                                                    {{ $profesor->Departamento === 'Ciencias Exactas' ? 'selected' : '' }}>
+                                                                                                    Departamento de Ciencias
+                                                                                                    Exactas</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="modal-footer">
+                                                                                        <button type="button"
+                                                                                            class="button"
+                                                                                            data-dismiss="modal">Cerrar</button>
+                                                                                        <button type="submit"
+                                                                                            class="button">Guardar
+                                                                                            Cambios</button>
+                                                                                    </div>
+                                                                                </form>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -515,14 +490,15 @@
 
 
                                                             </div>
-                                                            <form class="btn-group shadow-1"
-                                                                action="{{ route('admin.eliminarMaestro', ['id' => $profesor->id]) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit"
-                                                                    class="button3 efects_button btn_eliminar3"><i
-                                                                        class='bx bx-trash'></i></button>
+                                                            <div class="btn-group shadow-1" style="margin-bottom: 10px;">
+                                                                <form
+                                                                    action="{{ route('admin.eliminarMaestro', ['id' => $profesor->id]) }}"
+                                                                    method="POST">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit"
+                                                                        class="button3 efects_button btn_eliminar3"><i
+                                                                            class='bx bx-trash'></i></button>
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -598,7 +574,7 @@
                         </div>
 
                     </div>
-
+                </div>
         </section>
 
 
@@ -613,190 +589,124 @@
                 <div id="registrarPeriodos" style="display: none;">
                     <form action="{{ route('admin.guardarPeriodo') }}" method="post">
                         @csrf
-
+                    
                         <div class="form-row">
                             <div class="form-group col-md-4">
-
-                                <div class="form-group">
-                                    <label for="periodoInicio"><strong>Ingrese el inicio del Periodo
-                                            Académico:</strong></label>
-                                    <input type="date" id="periodoInicio" name="periodoInicio"
-                                        class="form-control input" required>
-                                </div>
+                                <label for="periodoInicio"><strong>Ingrese el inicio del Periodo Académico:</strong></label>
+                                <input type="date" id="periodoInicio" name="periodoInicio" class="form-control input" required>
                             </div>
                             <div class="form-group col-md-4">
-                                <div class="form-group">
-                                    <label for="periodoFin"><strong>Ingrese el fin del Periodo Académico:</strong></label>
-                                    <input type="date" id="periodoFin" name="periodoFin" class="form-control input"
-                                        required>
-                                </div>
+                                <label for="periodoFin"><strong>Ingrese el fin del Periodo Académico:</strong></label>
+                                <input type="date" id="periodoFin" name="periodoFin" class="form-control input" required>
                             </div>
                             <div class="form-group col-md-4">
-                                <div class="form-group">
-                                    <label for="numeroPeriodo"><strong>Ingrese el numero identificador del
-                                            periodo</strong></label>
-                                    <input type="text" id="numeroPeriodo" name="numeroPeriodo"
-                                        placeholder="Ingrese 6 números" class="form-control input" pattern="[0-9]{1,6}"
-                                        title="Ingrese un número no negativo de hasta 6 dígitos" required>
-                                    <small id="errorNumeroPeriodo" class="form-text text-danger"></small>
-                                </div>
+                                <label for="numeroPeriodo"><strong>Ingrese el número identificador del periodo:</strong></label>
+                                <input type="text" id="numeroPeriodo" name="numeroPeriodo" placeholder="Ingrese 6 números"
+                                    class="form-control input" pattern="[0-9]{1,6}"
+                                    title="Ingrese un número no negativo de hasta 6 dígitos" required>
+                                <small id="errorNumeroPeriodo" class="form-text text-danger"></small>
                             </div>
+                        </div>
+                        <div class="form-row">
                             <div class="col-md-6">
                                 <button type="submit" class="button efects_button">Guardar Periodo Académico</button>
                             </div>
                         </div>
                     </form>
+                    
                     <br>
                     <!-- Formulario para agregar NRC Vinculacion -->
                     <h6>NRC Vinculacion</h6>
                     <form class="FormularioNRC" action="{{ route('admin.nrcVinculacion') }}" method="post">
                         @csrf
+                    
                         <div class="form-row">
                             <div class="form-group col-md-6">
-
-                                <div class="form-group">
-                                    <label for="nrc"><strong>Ingrese el NRC:</strong></label>
-                                    <input type="text" id="nrc" name="nrc" class="form-control input"
-                                        placeholder="Ingrese 5 números" required>
-                                    <small id="errorNRC" class="form-text text-danger"></small>
-                                </div>
+                                <label for="nrc"><strong>Ingrese el NRC:</strong></label>
+                                <input type="text" id="nrc" name="nrc" class="form-control input" placeholder="Ingrese 5 números" required>
+                                <small id="errorNRC" class="form-text text-danger"></small>
                             </div>
-                            <div class="form-group col-lg-6">
-
-                                <div class="form-group">
-                                    <label for="periodo"><strong>Seleccione el período:</strong></label>
-                                    <select id="periodo" name="periodo" class="form-control input_select input"
-                                        required>
-                                        <option value="">Seleccione un período</option>
-                                        @foreach ($periodos as $periodo)
-                                            <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} -
-                                                {{ $periodo->Periodo }}</option>
-                                        @endforeach
-                                    </select>
-                                    <small id="errorPeriodo" class="form-text text-danger"></small>
-                                </div>
+                            <div class="form-group col-md-6">
+                                <label for="periodo"><strong>Seleccione el período:</strong></label>
+                                <select id="periodo" name="periodo" class="form-control input_select input" required>
+                                    <option value="">Seleccione un período</option>
+                                    @foreach ($periodos as $periodo)
+                                        <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} - {{ $periodo->Periodo }}</option>
+                                    @endforeach
+                                </select>
+                                <small id="errorPeriodo" class="form-text text-danger"></small>
                             </div>
+                        </div>
+                        <div class="form-row">
                             <div class="col-md-6">
                                 <button type="submit" class="button efects_button">Guardar NRC</button>
                             </div>
                         </div>
-
                     </form>
+                    
                     <br>
                     <!-- Formulario para agregar NRC Practicas 1 -->
 
                     <h6>NRC Practicas preprofesinales 1</h6>
                     <form class="FormularioNRCPracticas1" action="{{ route('admin.nrcPracticas1') }}" method="post">
                         @csrf
-                        <div class="row align-items-center">
-                            <div class="col-md-6">
-                                <div class="form-group">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                            
                                     <label for="nrc"><strong>Ingrese el NRC:</strong></label>
                                     <input type="text" id="nrc" name="nrc" class="form-control input"
                                         placeholder="Ingrese 5 números" required>
                                     <small id="errorNRC" class="form-text text-danger"></small>
-                                </div>
+                              
                             </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
+                            <div class="form-group col-md-6">
+                               
                                     <label for="periodo"><strong>Seleccione el período:</strong></label>
-                                    <select id="periodo" name="periodo" class="form-control input_select input"
-                                        required>
+                                    <select id="periodo" name="periodo" class="form-control input_select input" required>
                                         <option value="">Seleccione un período</option>
                                         @foreach ($periodos as $periodo)
-                                            <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} -
-                                                {{ $periodo->Periodo }}</option>
+                                            <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} - {{ $periodo->Periodo }}</option>
                                         @endforeach
                                     </select>
                                     <small id="errorPeriodo" class="form-text text-danger"></small>
                                 </div>
+                           
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="submit" class="button efects_button">Guardar NRC</button>
                             </div>
                         </div>
-                        <button type="submit" class="button efects_button">Guardar NRC</button>
                     </form>
+                    
                     <br>
-                    <!-- Elementos agregados (Periodos) -->
+                    <!-- Elementos agregados (Periodos y Cohortes) -->
                     <div class="row align-items-center">
-                        <div class="col-md-6">
-                            <div class="form-group">
+                        <div class="form-group col-md-6">
+                           
                                 <label for="periodo"><strong>Periodos Agregados:</strong></label>
                                 <select id="selectPeriodo" class="form-control input_select input">
                                     <option value="">Seleccionar Periodo</option>
                                     @foreach ($periodos as $periodo)
-                                        <option value="{{ $periodo->id }}" data-inicio="{{ $periodo->PeriodoInicio }}"
-                                            data-fin="{{ $periodo->PeriodoFin }}"
-                                            data-numero="{{ $periodo->numeroPeriodo }}">
-                                            {{ $periodo->numeroPeriodo }} {{ $periodo->Periodo }}
-                                        </option>
+                                        <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} {{ $periodo->Periodo }}</option>
                                     @endforeach
                                 </select>
-
-
-                            </div>
+                                {{--   <small id="errorPeriodo" class="form-text text-danger"></small> --}}
+                          
                         </div>
-                        <div class="col-md-6">
-
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <form id="editarPeriodoForm" method="GET">
-                                    @csrf
-                                    <button type="submit" class="button">Editar</button>
-                                </form>
-                            </div>
+                        <div class="col-md-12">
+                            <div class="form-group col-md-6">
+                            
+                                    <form id="editarPeriodoForm" method="GET">
+                                        @csrf
+                                        <button type="submit" class="button">Editar</button>
+                                    </form>
+                                </div>
+                           
                         </div>
                     </div>
+                    
                 </div>
-
-
-                <!-- Modal para peridoo-------------------------------- -->
-
-                <div class="modal" tabindex="-1" role="dialog" id="editModal">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Editar Periodo</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form class="formulario" method="POST"
-                                    action="{{ route('admin.actualizarPeriodo', ['id' => $periodo->id]) }}">
-                                    @csrf
-                                    @method('PUT')
-
-                                    <div class="form-group">
-                                        <label for="periodoInicio">Fecha de Inicio:</label>
-                                        <input type="date" name="periodoInicio" class="form-control input"
-                                            value="{{ $periodo->PeriodoInicio }}" required>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="periodoFin">Fecha de Fin:</label>
-                                        <input type="date" name="periodoFin" class="form-control input"
-                                            value="{{ $periodo->PeriodoFin }}" required>
-                                    </div>
-
-                                    <div class="form-group ">
-                                        <label for="numeroPeriodo">Ingrese el numero identificador del periodo:</label>
-                                        <input type="text" name="numeroPeriodo" id="numeroPeriodo"
-                                            class="form-control input" value="{{ $periodo->numeroPeriodo }}" required>
-                                        <small id="numeroPeriodoError" class="form-text text-danger"></small>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="button" data-dismiss="modal">Cerrar</button>
-                                        <button type="submit" class="button">Guardar Cambios</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!---------------------------------- -->
-
 
             </div>
         </section>
@@ -837,39 +747,19 @@
                 });
             }, 500);
         });
-
-        $(document).ready(function() {
-            $('#editarPeriodoForm').submit(function(event) {
-                event.preventDefault();
-
-                var periodoId = $('#selectPeriodo').val();
-
-                var inicio = $('#selectPeriodo option:selected').data('inicio');
-                var fin = $('#selectPeriodo option:selected').data('fin');
-                var numero = $('#selectPeriodo option:selected').data('numero');
-
-                $('#editModal').find('form').attr('action', '/admin/actualizar-periodo/' + periodoId);
-                $('#editModal').find('input[name="periodoInicio"]').val(inicio);
-                $('#editModal').find('input[name="periodoFin"]').val(fin);
-                $('#editModal').find('input[name="numeroPeriodo"]').val(numero);
-
-                $('#editModal').modal('show');
-            });
-        });
-
-        $(document).ready(function() {
-            $('.draggable').draggable({
-                handle: '.modal-header'
-            });
-        });
-
-
-
- 
     </script>
 
-
-
+    <script>
+        document.getElementById('selectPeriodo').addEventListener('change', function() {
+            var periodoId = this.value;
+            if (periodoId) {
+                var form = document.getElementById('editarPeriodoForm');
+                var actionUrl = "{{ route('admin.editarPeriodo', ['id' => ':id']) }}";
+                actionUrl = actionUrl.replace(':id', periodoId);
+                form.action = actionUrl;
+            }
+        });
+    </script>
 
 
 
