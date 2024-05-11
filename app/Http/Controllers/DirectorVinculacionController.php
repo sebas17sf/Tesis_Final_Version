@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Proyecto;
 use App\Models\Usuario;
+use App\Models\UsuariosSession;
+
 use App\Models\AsignacionEstudiantesDirector;
 use App\Models\ProfesUniversidad;
 use App\Models\ParticipanteAdicional;
@@ -49,14 +51,14 @@ class DirectorVinculacionController extends Controller
     public function repartoEstudiantes()
     {
         $correoAutenticado = Auth::user()->CorreoElectronico;
-    
+
         $directorProyecto = ProfesUniversidad::where('Correo', $correoAutenticado)->first();
-    
+
         // Obtener el proyecto en ejecución del director
         $proyectoEjecucion = Proyecto::where('id_directorProyecto', $directorProyecto->id)
             ->where('Estado', 'Ejecucion')
             ->first();
-    
+
         // Obtener los estudiantes asignados al proyecto en ejecución que no estén en AsignacionEstudiantesDirector
         $estudiantesAsignados = collect([]);
         if ($proyectoEjecucion) {
@@ -64,13 +66,13 @@ class DirectorVinculacionController extends Controller
                 ->where('ProyectoID', $proyectoEjecucion->ProyectoID)
                 ->get();
             $estudiantesAsignados->load('estudiante');
-    
+
             // Filtrar estudiantes asignados que no estén en AsignacionEstudiantesDirector
             $estudiantesAsignados = $estudiantesAsignados->filter(function ($asignacion) {
                 return !AsignacionEstudiantesDirector::where('EstudianteID', $asignacion->EstudianteID)->exists();
             });
         }
-    
+
         // Obtener el docente participante y otros participantes adicionales del proyecto en ejecución
         $docenteParticipante = null;
         $participantesAdicionales = collect([]);
@@ -79,47 +81,52 @@ class DirectorVinculacionController extends Controller
             $participantesAdicionales = ParticipanteAdicional::where('ProyectoID', $proyectoEjecucion->ProyectoID)->get();
             $participantesAdicionales = ProfesUniversidad::whereIn('id', $participantesAdicionales->pluck('ParticipanteID'))->get();
         }
-    
-        // Obtener las asignaciones de estudiantes director relacionadas con el proyecto en ejecución
-        $asignacionesEstudiantesDirector = AsignacionEstudiantesDirector::where('DirectorID', $directorProyecto->id)
-            ->where('IDProyecto', $proyectoEjecucion->ProyectoID)
-            ->get();
-        $asignacionesEstudiantesDirector->load('estudiante');
 
-          
-      
+        // Obtener las asignaciones de estudiantes director relacionadas con el proyecto en ejecución
+
+        $asignacionesEstudiantesDirector = collect([]);
+        if ($proyectoEjecucion) {
+            $asignacionesEstudiantesDirector = AsignacionEstudiantesDirector::where('DirectorID', $directorProyecto->id)
+                ->where('IDProyecto', $proyectoEjecucion->ProyectoID)
+                ->get();
+            $asignacionesEstudiantesDirector->load('estudiante');
+        }
+
+
+
+
         return view('director_vinculacion.repartoEstudiantes', compact('directorProyecto', 'estudiantesAsignados', 'docenteParticipante', 'participantesAdicionales', 'asignacionesEstudiantesDirector'));
     }
-    
+
 
     //////funcion para asigar los estudaintes repartidos
     public function asignarEstudiantes(Request $request)
     {
         $correoAutenticado = Auth::user()->CorreoElectronico;
-    
+
         $directorProyecto = ProfesUniversidad::where('Correo', $correoAutenticado)->first();
         $docenteId = $request->input('docente_id');
         $estudianteId = $request->input('estudiante');
-    
+
         // Obtener el proyecto en ejecución del director
         $proyectoEjecucion = Proyecto::where('id_directorProyecto', $directorProyecto->id)
             ->where('Estado', 'Ejecucion')
             ->first();
-    
+
         if ($proyectoEjecucion) {
             $asignacion = new AsignacionEstudiantesDirector();
             $asignacion->DirectorID = $directorProyecto->id;
-            $asignacion->IDProyecto = $proyectoEjecucion->ProyectoID;  
+            $asignacion->IDProyecto = $proyectoEjecucion->ProyectoID;
             $asignacion->ParticipanteID = $docenteId;
             $asignacion->EstudianteID = $estudianteId;
             $asignacion->save();
-    
+
             return redirect()->route('director.repartoEstudiantes')->with('success', 'Se ha asignado el estudiante correctamente.');
         } else {
             return redirect()->route('director.repartoEstudiantes')->with('error', 'No se puede asignar estudiantes porque no hay un proyecto en ejecución.');
         }
     }
-    
+
 
 
     /////////designar estudiante
@@ -269,25 +276,25 @@ class DirectorVinculacionController extends Controller
         $Director = Auth::user();
         $correoDirector = $Director->CorreoElectronico;
         $Director = ProfesUniversidad::where('Correo', $correoDirector)->first();
-         // Obtener la relación AsignacionProyecto para este DirectorVinculación
+        // Obtener la relación AsignacionProyecto para este DirectorVinculación
         $asignacion = AsignacionEstudiantesDirector::where('DirectorID', $Director->id)->first();
- 
+
         // Obtener el proyecto de la asignación
         $proyecto = Proyecto::find($asignacion->IDProyecto);
 
         $plantilla->setValue('NombreProyecto', $proyecto->NombreProyecto);
         $plantilla->setValue('Objetivos', $request->input('Objetivos'));
         $plantilla->setValue('ParticipanteApellido', $proyecto->asignacionesEstudiantesDirectores->first()->participante->Apellidos);
-   
+
         $plantilla->setValue('ParticipanteNombre', $proyecto->asignacionesEstudiantesDirectores->first()->participante->Nombres);
         $plantilla->setValue('DepartamentoTutor', $proyecto->DepartamentoTutor);
         $plantilla->setValue('intervencion', $request->input('intervencion'));
         $plantilla->setValue('FechaInicio', $proyecto->FechaInicio);
         $plantilla->setValue('FechaFinalizacion', $proyecto->FechaFinalizacion);
 
-        $plantilla->setValue('NombreDirector', $proyecto->asignacionesEstudiantesDirectores->first()->director->Apellidos. "" . $proyecto->asignacionesEstudiantesDirectores->first()->director->Nombres);
+        $plantilla->setValue('NombreDirector', $proyecto->asignacionesEstudiantesDirectores->first()->director->Apellidos . "" . $proyecto->asignacionesEstudiantesDirectores->first()->director->Nombres);
         $plantilla->setValue('NombreParticipante', $proyecto->asignacionesEstudiantesDirectores->first()->participante->Apellidos . "" . $proyecto->asignacionesEstudiantesDirectores->first()->participante->Nombres);
- 
+
 
         $planificadas = $request->input('planificadas');
         $alcanzados = $request->input('alcanzados');
@@ -309,7 +316,7 @@ class DirectorVinculacionController extends Controller
         $estudiantes = DB::table('asignacionEstudiantesDirector')
             ->join('Estudiantes', 'asignacionEstudiantesDirector.EstudianteID', '=', 'Estudiantes.EstudianteID')
             ->join('Proyectos', 'asignacionEstudiantesDirector.IDProyecto', '=', 'Proyectos.ProyectoID')
-              ->select('Estudiantes.*')
+            ->select('Estudiantes.*')
             ->where('Proyectos.id_directorProyecto', $Director->id)
             ->get();
 
@@ -353,32 +360,32 @@ class DirectorVinculacionController extends Controller
         $plantilla->cloneRow('nombre_actividad', count($actividades));
         $contadorFiguras = 1;
 
-  
-    foreach ($actividades as $index => $actividad) {
-        $nombreActividad = $actividad->nombre_actividad;
-        $nombreFigura = 'Figura ' . $contadorFiguras . ': ' . $nombreActividad;
-        $plantilla->setValue('nombre_actividad#' . ($index + 1), $nombreFigura);
 
-        $imagenBase64 = $actividad->evidencias;
-        if ($imagenBase64) {
-            // Decodifica la imagen en base64
-            $imagenDecodificada = base64_decode($imagenBase64);
+        foreach ($actividades as $index => $actividad) {
+            $nombreActividad = $actividad->nombre_actividad;
+            $nombreFigura = 'Figura ' . $contadorFiguras . ': ' . $nombreActividad;
+            $plantilla->setValue('nombre_actividad#' . ($index + 1), $nombreFigura);
 
-            // Crea un archivo temporal para la imagen
-            $rutaImagen = tempnam(sys_get_temp_dir(), 'img');
-            file_put_contents($rutaImagen, $imagenDecodificada);
+            $imagenBase64 = $actividad->evidencias;
+            if ($imagenBase64) {
+                // Decodifica la imagen en base64
+                $imagenDecodificada = base64_decode($imagenBase64);
 
-            // Agrega la imagen a la plantilla
-            $plantilla->setImageValue('evidencias#' . ($index + 1), [
-                'path' => $rutaImagen,
-                'width' => 250,
-                'height' => 250,
-                'ratio' => false,
-            ]);
+                // Crea un archivo temporal para la imagen
+                $rutaImagen = tempnam(sys_get_temp_dir(), 'img');
+                file_put_contents($rutaImagen, $imagenDecodificada);
+
+                // Agrega la imagen a la plantilla
+                $plantilla->setImageValue('evidencias#' . ($index + 1), [
+                    'path' => $rutaImagen,
+                    'width' => 250,
+                    'height' => 250,
+                    'ratio' => false,
+                ]);
+            }
+            $contadorFiguras++;
         }
-        $contadorFiguras++;
-    }
-   
+
 
 
 
@@ -393,6 +400,67 @@ class DirectorVinculacionController extends Controller
     }
 
 
+
+
+    ////////////////////////////cambiar credenciales
+    public function cambiarCredencialesUsuario()
+    {
+        $usuario = Auth::user();
+        $userSessions = UsuariosSession::where('UserID', $usuario->UserID)->get();
+
+        foreach ($userSessions as $session) {
+            $session->browser = $this->getBrowserFromUserAgent($session->user_agent);
+        }
+
+        return view('director_vinculacion.cambiarCredencialesUsuario', compact('usuario', 'userSessions'));
+    }
+    private function getBrowserFromUserAgent($userAgent)
+    {
+        if (strpos($userAgent, 'OPR') !== false) {
+            return 'Opera';
+        } elseif (strpos($userAgent, 'Edg') !== false) {
+            return 'Microsoft Edge';
+        } elseif (strpos($userAgent, 'Chrome') !== false) {
+            return 'Chrome';
+        } elseif (strpos($userAgent, 'Firefox') !== false) {
+            return 'Firefox';
+        } elseif (strpos($userAgent, 'Safari') !== false) {
+            return 'Safari';
+        } elseif (strpos($userAgent, 'MSIE') !== false) {
+            return 'Internet Explorer';
+        } else {
+            return 'Desconocido';
+        }
+    }
+    
+    public function actualizarCredenciales(Request $request)
+    {
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+            'password_confirmation' => 'required',
+            'nombre' => 'required',
+        ]);
+
+        if ($request->password !== $request->password_confirmation) {
+            return redirect()->back()->with('error', 'Las contraseñas no coinciden')->withInput();
+        }
+
+        //////las credenciales deben ser minimo de 6 caracteres
+        if (strlen($request->password) < 6) {
+            return redirect()->back()->with('error', 'La contraseña debe tener al menos 6 caracteres')->withInput();
+        }
+
+        $usuario = Auth::user();
+
+        $usuario->CorreoElectronico = $request->email;
+        $usuario->NombreUsuario = $request->nombre;
+        $usuario->Contrasena = bcrypt($request->password);
+
+        $usuario->save();
+
+        return redirect()->route('director_vinculacion.index')->with('success', 'Credenciales actualizadas exitosamente');
+    }
 
 
 

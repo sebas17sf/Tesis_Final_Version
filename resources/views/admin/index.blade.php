@@ -490,88 +490,87 @@
 
 
                                                             </div>
-                                                            <div class="btn-group shadow-1" style="margin-bottom: 10px;">
-                                                                <form
-                                                                    action="{{ route('admin.eliminarMaestro', ['id' => $profesor->id]) }}"
-                                                                    method="POST">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit"
-                                                                        class="button3 efects_button btn_eliminar3"><i
-                                                                            class='bx bx-trash'></i></button>
-                                                                </form>
-                                                            </div>
+                                                            <form class="btn-group shadow-1"
+                                                                action="{{ route('admin.eliminarMaestro', ['id' => $profesor->id]) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit"
+                                                                    class="button3 efects_button btn_eliminar3"><i
+                                                                        class='bx bx-trash'></i></button>
+                                                            </form>
                                                         </div>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        @endif
-                                    </tbody>
-                                </table>
                             </div>
+                            </td>
+                            </tr>
+                            @endforeach
+                            @endif
+                            </tbody>
+                            </table>
                         </div>
+                    </div>
 
-                        <div class="paginator-container">
-                            <nav aria-label="...">
+                    <div class="paginator-container">
+                        <nav aria-label="...">
 
-                                <ul class="pagination">
-                                    <li class="page-item mx-3">
-                                        <form method="GET" action="{{ route('admin.index') }}">
-                                            <select class="form-control page-item" class="input" name="perPage"
-                                                id="perPage" onchange="this.form.submit()">
-                                                <option value="10" @if ($perPage == 10) selected @endif>10
-                                                </option>
-                                                <option value="20" @if ($perPage == 20) selected @endif>20
-                                                </option>
-                                                <option value="50" @if ($perPage == 50) selected @endif>
-                                                    50
-                                                </option>
-                                                <option value="100" @if ($perPage == 100) selected @endif>
-                                                    100
-                                                </option>
-                                            </select>
-                                        </form>
+                            <ul class="pagination">
+                                <li class="page-item mx-3">
+                                    <form method="GET" action="{{ route('admin.index') }}">
+                                        <select class="form-control page-item" class="input" name="perPage"
+                                            id="perPage" onchange="this.form.submit()">
+                                            <option value="10" @if ($perPage == 10) selected @endif>10
+                                            </option>
+                                            <option value="20" @if ($perPage == 20) selected @endif>20
+                                            </option>
+                                            <option value="50" @if ($perPage == 50) selected @endif>
+                                                50
+                                            </option>
+                                            <option value="100" @if ($perPage == 100) selected @endif>
+                                                100
+                                            </option>
+                                        </select>
+                                    </form>
+                                </li>
+
+
+                                @if ($profesores->onFirstPage())
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Anterior</span>
                                     </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $profesores->previousPageUrl() }}"
+                                            aria-label="Anterior">Anterior</a>
+                                    </li>
+                                @endif
 
-
-                                    @if ($profesores->onFirstPage())
-                                        <li class="page-item disabled">
-                                            <span class="page-link">Anterior</span>
+                                @foreach ($profesores->getUrlRange(1, $profesores->lastPage()) as $page => $url)
+                                    @if ($page == $profesores->currentPage())
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ $page }}</span>
                                         </li>
                                     @else
                                         <li class="page-item">
-                                            <a class="page-link" href="{{ $profesores->previousPageUrl() }}"
-                                                aria-label="Anterior">Anterior</a>
+                                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
                                         </li>
                                     @endif
+                                @endforeach
 
-                                    @foreach ($profesores->getUrlRange(1, $profesores->lastPage()) as $page => $url)
-                                        @if ($page == $profesores->currentPage())
-                                            <li class="page-item active">
-                                                <span class="page-link">{{ $page }}</span>
-                                            </li>
-                                        @else
-                                            <li class="page-item">
-                                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                                            </li>
-                                        @endif
-                                    @endforeach
-
-                                    @if ($profesores->hasMorePages())
-                                        <li class="page-item">
-                                            <a class="page-link" href="{{ $profesores->nextPageUrl() }}"
-                                                aria-label="Siguiente">Siguiente</a>
-                                        </li>
-                                    @else
-                                        <li class="page-item disabled">
-                                            <span class="page-link">Siguiente</span>
-                                        </li>
-                                    @endif
+                                @if ($profesores->hasMorePages())
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $profesores->nextPageUrl() }}"
+                                            aria-label="Siguiente">Siguiente</a>
+                                    </li>
+                                @else
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Siguiente</span>
+                                    </li>
+                                @endif
 
 
-                                </ul>
-                            </nav>
-                        </div>
+                            </ul>
+                        </nav>
+                    </div>
 
                     </div>
                 </div>
@@ -626,18 +625,21 @@
                                 <input type="text" id="nrc" name="nrc" class="form-control input" placeholder="Ingrese 5 números" required>
                                 <small id="errorNRC" class="form-text text-danger"></small>
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="periodo"><strong>Seleccione el período:</strong></label>
-                                <select id="periodo" name="periodo" class="form-control input_select input" required>
-                                    <option value="">Seleccione un período</option>
-                                    @foreach ($periodos as $periodo)
-                                        <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} - {{ $periodo->Periodo }}</option>
-                                    @endforeach
-                                </select>
-                                <small id="errorPeriodo" class="form-text text-danger"></small>
+                            <div class="form-group col-lg-6">
+
+                                <div class="form-group">
+                                    <label for="periodo"><strong>Seleccione el período:</strong></label>
+                                    <select id="periodo" name="periodo" class="form-control input_select input"
+                                        required>
+                                        <option value="">Seleccione un período</option>
+                                        @foreach ($periodos as $periodo)
+                                            <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} -
+                                                {{ $periodo->Periodo }}</option>
+                                        @endforeach
+                                    </select>
+                                    <small id="errorPeriodo" class="form-text text-danger"></small>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-row">
                             <div class="col-md-6">
                                 <button type="submit" class="button efects_button">Guardar NRC</button>
                             </div>
@@ -657,7 +659,7 @@
                                     <input type="text" id="nrc" name="nrc" class="form-control input"
                                         placeholder="Ingrese 5 números" required>
                                     <small id="errorNRC" class="form-text text-danger"></small>
-                              
+                             </div>
                             </div>
                             <div class="form-group col-md-6">
                                
@@ -691,8 +693,12 @@
                                         <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} {{ $periodo->Periodo }}</option>
                                     @endforeach
                                 </select>
-                                {{--   <small id="errorPeriodo" class="form-text text-danger"></small> --}}
-                          
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+
                         </div>
                         <div class="col-md-12">
                             <div class="form-group col-md-6">
@@ -705,7 +711,53 @@
                            
                         </div>
                     </div>
-                    
+                </div>
+
+
+                <!-- Modal para peridoo-------------------------------- -->
+
+                <div class="modal" tabindex="-1" role="dialog" id="editModal">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Editar Periodo</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="formulario" method="POST"
+                                    action="{{ route('admin.actualizarPeriodo', ['id' => $periodo->id]) }}">
+                                    @csrf
+                                    @method('PUT')
+
+                                    <div class="form-group">
+                                        <label for="periodoInicio">Fecha de Inicio:</label>
+                                        <input type="date" name="periodoInicio" class="form-control input"
+                                            value="{{ $periodo->PeriodoInicio }}" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="periodoFin">Fecha de Fin:</label>
+                                        <input type="date" name="periodoFin" class="form-control input"
+                                            value="{{ $periodo->PeriodoFin }}" required>
+                                    </div>
+
+                                    <div class="form-group ">
+                                        <label for="numeroPeriodo">Ingrese el numero identificador del periodo:</label>
+                                        <input type="text" name="numeroPeriodo" id="numeroPeriodo"
+                                            class="form-control input" value="{{ $periodo->numeroPeriodo }}" required>
+                                        <small id="numeroPeriodoError" class="form-text text-danger"></small>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="button" onclick="cerrarModal()">Cerrar</button>
+                                        <button type="submit" class="button">Guardar Cambios</button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -749,16 +801,34 @@
         });
     </script>
 
-    <script>
-        document.getElementById('selectPeriodo').addEventListener('change', function() {
-            var periodoId = this.value;
-            if (periodoId) {
-                var form = document.getElementById('editarPeriodoForm');
-                var actionUrl = "{{ route('admin.editarPeriodo', ['id' => ':id']) }}";
-                actionUrl = actionUrl.replace(':id', periodoId);
-                form.action = actionUrl;
-            }
+        $(document).ready(function() {
+            $('#editarPeriodoForm').submit(function(event) {
+                event.preventDefault();
+
+                var periodoId = $('#selectPeriodo').val();
+
+                var inicio = $('#selectPeriodo option:selected').data('inicio');
+                var fin = $('#selectPeriodo option:selected').data('fin');
+                var numero = $('#selectPeriodo option:selected').data('numero');
+
+                $('#editModal').find('form').attr('action', '/admin/actualizar-periodo/' + periodoId);
+                $('#editModal').find('input[name="periodoInicio"]').val(inicio);
+                $('#editModal').find('input[name="periodoFin"]').val(fin);
+                $('#editModal').find('input[name="numeroPeriodo"]').val(numero);
+
+                $('#editModal').modal('show');
+            });
         });
+
+        $(document).ready(function() {
+            $('.draggable').draggable({
+                handle: '.modal-header'
+            });
+        });
+
+        function cerrarModal() {
+            $('#editModal').modal('hide');
+        }
     </script>
 
 

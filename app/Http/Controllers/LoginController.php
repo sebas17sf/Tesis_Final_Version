@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UsuariosSession;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\RecuperarContrasena;
 use App\Models\Role;
+use Illuminate\Support\Facades\Http;
 
 
 use Illuminate\Support\Facades\Session;
@@ -39,6 +41,31 @@ class LoginController extends Controller
             Auth::login($user);
 
             session()->regenerate();
+
+            $existingSession = UsuariosSession::where('UserID', $user->UserID)
+                ->where('ip_address', $request->ip())
+                ->where('user_agent', $request->userAgent())
+                ->first();
+
+                if (!$existingSession) {
+                    $session = new UsuariosSession();
+                    $session->UserID = $user->UserID;
+                    $session->session_id = session()->getId();
+                    $session->start_time = now();
+                    
+                     $response = Http::get('https://api.ipify.org?format=json');
+                
+                     if ($response->successful()) {
+                        $ipAddress = $response->json('ip');
+                        $session->ip_address = $ipAddress;
+                    } else {
+                         $session->ip_address = $request->ip();
+                    }
+                
+                    $session->user_agent = $request->userAgent();
+                    $session->save();
+                }
+                
 
             $token = Str::random(60);
 

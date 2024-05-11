@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="\img\logos\logo_tesis.png" alt="logo">
-    
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -43,12 +43,12 @@
                     <nav class="nav">
                         <ul class="nav-list">
                             <a href="{{ route('estudiantes.create') }}" class="p-element">
-                            <div class="icon-sidebar-item">
-                                        <i class="material-icons">check_circle</i>
-                                        </div>
-                                        <div class="name-sidebar-item">
-                                        <li>Registro Estudiantes</li>
-                                        </div>
+                                <div class="icon-sidebar-item">
+                                    <i class="material-icons">check_circle</i>
+                                </div>
+                                <div class="name-sidebar-item">
+                                    <li>Registro Estudiantes</li>
+                                </div>
                             </a>
                     </nav>
                 </div>
@@ -60,42 +60,43 @@
                 </span>
             </div>
     </section>
-   <!-- SIDEBAR -->
-   <section class="content-navbar dimension-nav">
-    <!-- Toggle sidebar -->
-    <div class="icon-menu-sidebar" onclick="triggerToggleSidebar()">
-        <i class='bx bx-menu-alt-left'
-            [ngClass]="{'bx-menu': sidebarHidden,'bx-menu-alt-left': !sidebarHidden}"></i>
-    </div>
-    <!-- contenido -->
-    <main class="navbar">
-        <button class="profile-icon dropdown" id="profile-button">
-
-            <div class="name-profile">
-                <span><?php echo Auth::user()->NombreUsuario; ?></span>
-            </div>
-            <div class="icon-profile">
-                <img src="../img/default/user.svg">
-            </div>
-        </button>
-        <!-- Aquí agregamos el contenedor del menú desplegable -->
-        <div class="popup-menu-profile">
-            <div class="container">
-                <a href="#" class="change_module">
-                    <i class="fa-regular fa-rectangle-vertical-history"></i>
-                    <span>Cambiar modulo</span>
-                </a>
-                <a class="logout" href="{{ route('logout') }}">
-                    <i class="fa-sharp fa-regular fa-arrow-up-left-from-circle fontawesome"></i>
-                    <span>Cerrar sesión</span>
-                </a>
-
-            </div>
+    <!-- SIDEBAR -->
+    <section class="content-navbar dimension-nav">
+        <!-- Toggle sidebar -->
+        <div class="icon-menu-sidebar" onclick="triggerToggleSidebar()">
+            <i class='bx bx-menu-alt-left'
+                [ngClass]="{'bx-menu': sidebarHidden,'bx-menu-alt-left': !sidebarHidden}"></i>
         </div>
-    </main>
+        <!-- contenido -->
+        <main class="navbar">
+            <button class="profile-icon dropdown" id="profile-button">
 
-</section>
-<button id="btn_top" *ngIf="showScrollButton" (click)="scrollToTop()"><i class='bx bxs-chevrons-up'></i></button>
+                <div class="name-profile">
+                    <span><?php echo Auth::user()->NombreUsuario; ?></span>
+                </div>
+                <div class="icon-profile">
+                    <img src="../img/default/user.svg">
+                </div>
+            </button>
+            <!-- Aquí agregamos el contenedor del menú desplegable -->
+            <div class="popup-menu-profile">
+                <div class="container">
+                    <a href="#" class="change_module">
+                        <i class="fa-regular fa-rectangle-vertical-history"></i>
+                        <span>Cambiar modulo</span>
+                    </a>
+                    
+                    <a class="logout" href="{{ route('logout') }}">
+                        <i class="fa-sharp fa-regular fa-arrow-up-left-from-circle fontawesome"></i>
+                        <span>Cerrar sesión</span>
+                    </a>
+
+                </div>
+            </div>
+        </main>
+
+    </section>
+    <button id="btn_top" *ngIf="showScrollButton" (click)="scrollToTop()"><i class='bx bxs-chevrons-up'></i></button>
 
     <!-- CONTENEDOR -->
     <section class="content-views dimension-content" [ngClass]="{'dimension-content-hidden': sidebarHidden}">
@@ -129,7 +130,7 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <!-- Box Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    integrity="sha384-gL5q2wHNwpg9voDwmz1onh73oSJ8lFvZEydTHpw4M4okQ7N8qI+v5h0zitOykKdp" crossorigin="anonymous">
+        integrity="sha384-gL5q2wHNwpg9voDwmz1onh73oSJ8lFvZEydTHpw4M4okQ7N8qI+v5h0zitOykKdp" crossorigin="anonymous">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </body>
 

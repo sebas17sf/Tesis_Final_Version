@@ -14,28 +14,35 @@
         <h4>Docente Participante</h4>
         <table>
             <tr>
-                <td>{{ $docenteParticipante->Apellidos }} {{ $docenteParticipante->Nombres }}</td>
+                <td>
+                    @if ($docenteParticipante)
+                        {{ $docenteParticipante->Apellidos }} {{ $docenteParticipante->Nombres }}
+                    @else
+                        <p>No hay docentes participantes</p>
+                    @endif
+                </td>
+
                 <td>
                     <form action="{{ route('director_vinculacion.asignarEstudiantes') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="docente_id" value="{{ $docenteParticipante->id }}">
+                        <input type="hidden" name="docente_id" value="{{ optional($docenteParticipante)->id }}">
                         @if ($estudiantesAsignados->isNotEmpty())
                             <select name="estudiante">
                                 @foreach ($estudiantesAsignados as $asignacion)
                                     <option value="{{ $asignacion->estudiante->EstudianteID }}">
-                                        {{ $asignacion->estudiante->Nombres }}</option>
+                                        {{ $asignacion->estudiante->Nombres }}
+                                    </option>
                                 @endforeach
                             </select>
                             <button class="button" type="submit">Asignar</button>
-
                         @else
                             <input class="input" type="text" value="No hay estudiantes disponibles" disabled>
                         @endif
-
-                     </form>
+                    </form>
                 </td>
             </tr>
         </table>
+
 
         @if ($participantesAdicionales->isNotEmpty())
             <h4>Participantes Adicionales</h4>
@@ -55,12 +62,11 @@
                                         @endforeach
                                     </select>
                                     <button class="button" type="submit">Asignar</button>
-
                                 @else
                                     <input class="input" type="text" value="No hay estudiantes disponibles" disabled>
                                 @endif
 
-                             </form>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

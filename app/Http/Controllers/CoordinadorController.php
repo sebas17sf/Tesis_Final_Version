@@ -19,6 +19,8 @@ use App\Models\ParticipanteAdicional;
 use App\Models\PracticaI;
 use App\Models\PracticaII;
 
+use Illuminate\Support\Facades\Auth;
+use App\Models\UsuariosSession;
 use App\Models\Empresa;
 use App\Models\AsignacionProyecto;
 
@@ -903,6 +905,70 @@ class CoordinadorController extends Controller
             }
         }
     }
+
+    public function cambiarCredencialesUsuario()
+    {
+        $usuario = Auth::user();
+        $userSessions = UsuariosSession::where('UserID', $usuario->UserID)->get();
+
+        foreach ($userSessions as $session) {
+            $session->browser = $this->getBrowserFromUserAgent($session->user_agent);
+        }
+
+        return view('coordinador.cambiarCredencialesUsuario', compact('usuario', 'userSessions'));
+    }
+    private function getBrowserFromUserAgent($userAgent)
+    {
+        if (strpos($userAgent, 'OPR') !== false) {
+            return 'Opera';
+        } elseif (strpos($userAgent, 'Edg') !== false) {
+            return 'Microsoft Edge';
+        } elseif (strpos($userAgent, 'Chrome') !== false) {
+            return 'Chrome';
+        } elseif (strpos($userAgent, 'Firefox') !== false) {
+            return 'Firefox';
+        } elseif (strpos($userAgent, 'Safari') !== false) {
+            return 'Safari';
+        } elseif (strpos($userAgent, 'MSIE') !== false) {
+            return 'Internet Explorer';
+        } else {
+            return 'Desconocido';
+        }
+    }
+    
+    
+
+    
+
+    public function actualizarCredenciales(Request $request)
+    {
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+            'password_confirmation' => 'required',
+            'nombre' => 'required',
+        ]);
+
+        if ($request->password !== $request->password_confirmation) {
+            return redirect()->back()->with('error', 'Las contraseñas no coinciden')->withInput();
+        }
+
+        //////las credenciales deben ser minimo de 6 caracteres
+        if (strlen($request->password) < 6) {
+            return redirect()->back()->with('error', 'La contraseña debe tener al menos 6 caracteres')->withInput();
+        }
+
+        $usuario = Auth::user();
+
+        $usuario->CorreoElectronico = $request->email;
+        $usuario->NombreUsuario = $request->nombre;
+        $usuario->Contrasena = bcrypt($request->password);
+
+        $usuario->save();
+
+        return redirect()->route('coordinador.index')->with('success', 'Credenciales actualizadas exitosamente');
+    }
+
 
 
 

@@ -14,6 +14,7 @@ use App\Models\ParticipanteAdicional;
 use App\Models\Estudiante;
 use App\Models\AsignacionEstudiantesDirector;
 use App\Models\NotasEstudiante;
+use App\Models\UsuariosSession;
 
 class ParticipanteVinculacionController extends Controller
 {
@@ -190,36 +191,64 @@ class ParticipanteVinculacionController extends Controller
     }
 
 
-    public function configuracion()
+    ////////////////////////////cambiar credenciales
+    public function cambiarCredencialesUsuario()
     {
-        return view('ParticipanteVinculacion.configuracion');
+        $usuario = Auth::user();
+        $userSessions = UsuariosSession::where('UserID', $usuario->UserID)->get();
+
+        foreach ($userSessions as $session) {
+            $session->browser = $this->getBrowserFromUserAgent($session->user_agent);
+        }
+
+        return view('ParticipanteVinculacion.cambiarCredencialesUsuario', compact('usuario', 'userSessions'));
     }
-
-    public function actualizarConfiguracion(Request $request, $id)
+    private function getBrowserFromUserAgent($userAgent)
     {
-        // Obtener el ID del usuario autenticado
-        $id = Auth::user()->UserID;
-
-
-        // Validar los datos del formulario
+        if (strpos($userAgent, 'OPR') !== false) {
+            return 'Opera';
+        } elseif (strpos($userAgent, 'Edg') !== false) {
+            return 'Microsoft Edge';
+        } elseif (strpos($userAgent, 'Chrome') !== false) {
+            return 'Chrome';
+        } elseif (strpos($userAgent, 'Firefox') !== false) {
+            return 'Firefox';
+        } elseif (strpos($userAgent, 'Safari') !== false) {
+            return 'Safari';
+        } elseif (strpos($userAgent, 'MSIE') !== false) {
+            return 'Internet Explorer';
+        } else {
+            return 'Desconocido';
+        }
+    }
+    
+    public function actualizarCredenciales(Request $request)
+    {
         $request->validate([
-            'nombre' => 'required|string|max:255',
-            'apellido' => 'required|string|max:255',
-            'contrasena' => 'required|string|min:6',
+            'email' => 'required',
+            'password' => 'required',
+            'password_confirmation' => 'required',
+            'nombre' => 'required',
         ]);
 
-        // Buscar al usuario por su ID
-        $user = Usuario::find($id);
+        if ($request->password !== $request->password_confirmation) {
+            return redirect()->back()->with('error', 'Las contraseñas no coinciden')->withInput();
+        }
 
+        //////las credenciales deben ser minimo de 6 caracteres
+        if (strlen($request->password) < 6) {
+            return redirect()->back()->with('error', 'La contraseña debe tener al menos 6 caracteres')->withInput();
+        }
 
-        // Actualizar los datos del usuario
-        $user->update([
-            'Nombre' => $request->nombre,
-            'Apellido' => $request->apellido,
-            'Contrasena' => bcrypt($request->contrasena),
-        ]);
+        $usuario = Auth::user();
 
-        return redirect()->route('ParticipanteVinculacion.index')->with('success', 'Perfil actualizado con éxito');
+        $usuario->CorreoElectronico = $request->email;
+        $usuario->NombreUsuario = $request->nombre;
+        $usuario->Contrasena = bcrypt($request->password);
+
+        $usuario->save();
+
+        return redirect()->route('ParticipanteVinculacion.index')->with('success', 'Credenciales actualizadas exitosamente');
     }
 
 
