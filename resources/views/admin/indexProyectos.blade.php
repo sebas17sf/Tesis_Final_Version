@@ -30,7 +30,6 @@
 
 
     <section class="contenedor_registro_genero">
-        <section>
             <h6><b>Listado de Proyectos</b></h6>
             <hr>
 
@@ -225,14 +224,14 @@
                                     </li>
                                 @endif
                             </ul>
+        </nav>
                     </div>
 
                 </div>
-
-
+        </div>
+        
             </div>
         </section>
-
         <hr>
         <section>
             <div class="container">
@@ -297,7 +296,6 @@
 
             </div>
         </section>
-    </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>

@@ -90,11 +90,11 @@
                     <label for="Carrera">Carrera:</label>
                     <select class="form-control input input-select" id="Carrera" name="Carrera" required>
                         <option value="">Seleccione su Carrera</option>
-                        <option value="Ingeniería en Tecnologías de la información">Ingeniería en Tecnologías de la
+                        <option value="Ingeniería en Tecnologías de la información">Tecnologías de la
                             información
                         </option>
-                        <option value="Ingeniería en Agropecuaria">Ingeniería en Agropecuaria</option>
-                        <option value="Ingeniería en Biotecnologia">Ingeniería en Biotecnologia</option>
+                        <option value="Ingeniería en Agropecuaria">Agropecuaria</option>
+                        <option value="Ingeniería en Biotecnologia">Biotecnologia</option>
                     </select>
                 </div>
 
@@ -111,10 +111,9 @@
                     <label for="Departamento">Departamento:</label>
                     <select class="form-control input input-select" id="Departamento" name="Departamento" required>
                         <option value="">Seleccione su Departamento</option>
-                        <option value="Ciencias de la Computación">DCCO - Departamento de Computación</option>
+                        <option value="Ciencias de la Computación">DCCO - Ciencias de la Computación</option>
                         <option value="Ciencias Exactas">DCEX - Ciencias Exactas</option>
-                        <option value="Ciencias de la Vida y Agricultura">DCVA - Departamento de Ciencias de la Vida y
-                            Agricultura</option>
+                        <option value="Ciencias de la Vida y Agricultura">DCVA - Ciencias de la Vida y Agricultura</option>
                     </select>
                 </div>
             </div>
