@@ -17,7 +17,7 @@
  --}}
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
     
-    @vite(['../resources/scss/app.scss', 'resources/js/app.js'])
+    @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
     <style>
         body {
