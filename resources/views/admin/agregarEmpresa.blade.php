@@ -135,15 +135,34 @@
                             </div>
                         </div>
                         <div class="col-md-6">
+
+                           {{--  <div>
+                                <label for="input_file">Archivo del período <span class="requerido">*</span></label>
+                                <div class="input input_file">
+                                  <span id="fileText"><i class="fa-solid fa-arrow-up-from-bracket"></i> {{fileText}}</span>
+                                  <span class="remove-icon"
+                                    title="Eliminar archivo">✖</span>
+                                </div>
+                                <input style="display: none;" formControlName="filePeriodo"  id="input_file" type="file"
+                                 >
+                               
+                                <div class="contenedor_campo_requerido">
+                                 
+                                  <div>
+                                    El archivo del período es requerido.
+                                  </div>
+                                
+                                </div>
+                            
+                              </div> --}}
+
                             <div class="form-group">
                                 <label for="cartaCompromiso">Carta Compromiso (PDF):</label>
                                 <div class="input input_file">
-                                    <span id="fileText"><i class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí
-                                        para
-                                        subirel documento</span>
-                                    <input type="file" class="form-control-file input input_file" id="cartaCompromiso"
-                                        name="cartaCompromiso">
-                                    <span title="Eliminar archivo" class="remove-icon">✖</span>
+                                    <span id="fileText" class="fileText"><i class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir el documento</span>
+                                    <input type="file" class="form-control-file input input_file"  id="cartaCompromiso"
+                                        name="cartaCompromiso" onchange="displayFileName(this)">
+                                    <span title="Eliminar archivo" onclick="removeFile(this)" class="remove-icon">✖</span>
                                 </div>
                             </div>
                         </div>
@@ -151,12 +170,12 @@
                             <div class="form-group">
                                 <label for="convenio">Convenio (PDF):</label>
                                 <div class="input input_file">
-                                    <span id="fileText"><i class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí
+                                    <span id="fileText" class="fileText"><i class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí
                                         para
                                         subirel documento</span>
                                     <input type="file" class="form-control-file input input_file" id="convenio"
-                                        name="convenio">
-                                    <span title="Eliminar archivo" class="remove-icon">✖</span>
+                                        name="convenio" onchange="displayFileName(this)">
+                                    <span title="Eliminar archivo" onclick="removeFile(this)" class="remove-icon">✖</span>
                                 </div>
                             </div>
 
@@ -277,27 +296,24 @@
                                                 </td>
 
                                                 <td>
-                                                    <form
-                                                        action="{{ route('admin.eliminarEmpresa', ['id' => $empresa->id]) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-link p-0">
-                                                            <i class="material-icons text-muted"
-                                                                style="font-size: 1.5em;">delete</i>
-                                                        </button>
-                                                    </form>
-
-                                                    <form
-                                                        action="{{ route('admin.editarEmpresa', ['id' => $empresa->id]) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('GET')
-                                                        <button type="submit" class="btn btn-link p-0">
-                                                            <i class="material-icons text-muted"
-                                                                style="font-size: 1.5em;">edit</i>
-                                                        </button>
-                                                    </form>
+                                                    <div class="btn-group" role="group">
+                                                        <form action="{{ route('admin.eliminarEmpresa', ['id' => $empresa->id]) }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-link p-0">
+                                                                <i class="material-icons text-muted" style="font-size: 1.5em;">delete</i>
+                                                            </button>
+                                                        </form>
+                                                    
+                                                        <form action="{{ route('admin.editarEmpresa', ['id' => $empresa->id]) }}" method="POST">
+                                                            @csrf
+                                                            @method('GET')
+                                                            <button type="submit" class="btn btn-link p-0">
+                                                                <i class="material-icons text-muted" style="font-size: 1.5em;">edit</i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                    
 
                                                 </td>
 
@@ -395,6 +411,9 @@
 
 
 @endsection
+
+
+
 
 {{-- <style>
     table {

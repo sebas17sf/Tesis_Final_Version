@@ -13,8 +13,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="../css/admin/admin.css">
-    @vite(['resources/scss/app.scss', 'resources/js/app.js'])
+   {{--  <link rel="stylesheet" href="../css/admin/admin.css">
+ --}}
+    <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
+    
+    @vite(['../resources/scss/app.scss', 'resources/js/app.js'])
 
     <style>
         body {
@@ -38,8 +41,8 @@
             z-index: 1050 !important;
         }
     </style>
-    <script src="../js/menu.js"></script>
-
+   {{--  <script src="../js/menu.js"></script> --}}
+    <script src="{{ asset('js/menu.js') }}"></script>
 </head>
 
 <body>
@@ -205,8 +208,8 @@
         integrity="sha384-gL5q2wHNwpg9voDwmz1onh73oSJ8lFvZEydTHpw4M4okQ7N8qI+v5h0zitOykKdp" crossorigin="anonymous">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
+  {{--   <script src="../js/input_file.js"></script> --}}
+    <script src="{{ asset('js/input_file.js') }}"></script>
 </body>
 
 </html>
