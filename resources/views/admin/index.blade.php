@@ -697,9 +697,6 @@
 
                             </div>
                         </div>
-                        <div class="col-md-6">
-
-                        </div>
                         <div class="col-md-12">
                             <div class="form-group col-md-6">
                             
@@ -800,7 +797,7 @@
             }, 500);
         });
     </script>
-
+<script>
         $(document).ready(function() {
             $('#editarPeriodoForm').submit(function(event) {
                 event.preventDefault();
