@@ -31,96 +31,96 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'CorreoElectronico' => 'required|email',
-            'Contrasena' => 'required',
-        ]);
+        try {
+            $credentials = $request->validate([
+                'CorreoElectronico' => 'required|email',
+                'Contrasena' => 'required',
+            ]);
 
-        $user = Usuario::where('CorreoElectronico', $credentials['CorreoElectronico'])->first();
+            $user = Usuario::where('CorreoElectronico', $credentials['CorreoElectronico'])->first();
 
-        if ($user && (password_verify($credentials['Contrasena'], $user->Contrasena) || $user->Contrasena === $credentials['Contrasena'])) {
-            Auth::login($user);
+            if ($user && (password_verify($credentials['Contrasena'], $user->Contrasena) || $user->Contrasena === $credentials['Contrasena'])) {
+                Auth::login($user);
 
-            $userAgent = $request->userAgent();
-            $response = Http::get('https://api.ipify.org?format=json');
-
-            if ($response->successful()) {
-                $ipAddress = $response->json('ip');
-            } else {
-                $ipAddress = $request->ip();
-            }
-
-            $geoIpResponse = Http::get("https://ipinfo.io/{$ipAddress}/json");
-
-            if ($geoIpResponse->successful()) {
-                $geoData = $geoIpResponse->json();
-                $locality = $geoData['city'] . ', ' . $geoData['region'] . ', ' . $geoData['country'];
-                $locality .= ', ' . $geoData['loc'];
-            } else {
-                $locality = 'Desconocida';
-            }
-
-
-
-            $existingSession = UsuariosSession::where('UserID', $user->UserID)
-                ->where('user_agent', $userAgent)
-                ->where('ip_address', $ipAddress)
-                ->first();
-
-
-            if ($existingSession) {
-                $existingSession->update(['start_time' => now()]);
-            } else {
-                $session = new UsuariosSession();
-                $session->UserID = $user->UserID;
-                $session->session_id = session()->getId();
-                $session->start_time = now();
-                $session->user_agent = $request->userAgent();
-                $session->locality = $locality;
-
-
+                $userAgent = $request->userAgent();
                 $response = Http::get('https://api.ipify.org?format=json');
+
                 if ($response->successful()) {
-                    $ip = $response->json()['ip'];
-                    $session->ip_address = $ip;
+                    $ipAddress = $response->json('ip');
                 } else {
-                    $session->ip_address = $request->ip();
+                    $ipAddress = $request->ip();
                 }
 
-                $session->save();
-            }
+                $geoIpResponse = Http::get("https://ipinfo.io/{$ipAddress}/json");
 
-            session()->regenerate();
-
-            $token = Str::random(60);
-
-            $user->token = hash('sha256', $token);
-            $user->save();
-
-            $userRole = Role::find($user->role_id);
-
-            if ($userRole->Tipo === 'Administrador') {
-                return redirect()->route('admin.index')->with('token', $token);
-            } elseif ($user->Estado === 'activo') {
-                if ($userRole->Tipo === 'Director-Departamento' || $user->Estado === 'Director-Carrera') {
-                    return redirect()->route('director.indexProyectos')->with('token', $token);
-                } elseif ($userRole->Tipo === 'Vinculacion') {
-                    return redirect()->route('coordinador.index')->with('token', $token);
-                } elseif ($userRole->Tipo === 'DirectorVinculacion') {
-                    return redirect()->route('director_vinculacion.index')->with('token', $token);
-                } elseif ($userRole->Tipo === 'ParticipanteVinculacion') {
-                    return redirect()->route('ParticipanteVinculacion.index')->with('token', $token);
+                if ($geoIpResponse->successful()) {
+                    $geoData = $geoIpResponse->json();
+                    $locality = $geoData['city'] . ', ' . $geoData['region'] . ', ' . $geoData['country'];
+                    $locality .= ', ' . $geoData['loc'];
                 } else {
-                    return back()->withErrors([
-                        'CorreoElectronico' => 'Su estado no permite el acceso en este momento.',
-                    ]);
+                    $locality = 'Desconocida';
+                }
+
+                $existingSession = UsuariosSession::where('UserID', $user->UserID)
+                    ->where('user_agent', $userAgent)
+                    ->where('ip_address', $ipAddress)
+                    ->first();
+
+                if ($existingSession) {
+                    $existingSession->update(['start_time' => now()]);
+                } else {
+                    $session = new UsuariosSession();
+                    $session->UserID = $user->UserID;
+                    $session->session_id = session()->getId();
+                    $session->start_time = now();
+                    $session->user_agent = $request->userAgent();
+                    $session->locality = $locality;
+
+                    $response = Http::get('https://api.ipify.org?format=json');
+                    if ($response->successful()) {
+                        $ip = $response->json()['ip'];
+                        $session->ip_address = $ip;
+                    } else {
+                        $session->ip_address = $request->ip();
+                    }
+
+                    $session->save();
+                }
+
+                session()->regenerate();
+
+                $token = Str::random(60);
+
+                $user->token = hash('sha256', $token);
+                $user->save();
+
+                $userRole = Role::find($user->role_id);
+
+                if ($userRole->Tipo === 'Administrador') {
+                    return redirect()->route('admin.index')->with('token', $token);
+                } elseif ($user->Estado === 'activo') {
+                    if ($userRole->Tipo === 'Director-Departamento' || $user->Estado === 'Director-Carrera') {
+                        return redirect()->route('director.indexProyectos')->with('token', $token);
+                    } elseif ($userRole->Tipo === 'Vinculacion') {
+                        return redirect()->route('coordinador.index')->with('token', $token);
+                    } elseif ($userRole->Tipo === 'DirectorVinculacion') {
+                        return redirect()->route('director_vinculacion.index')->with('token', $token);
+                    } elseif ($userRole->Tipo === 'ParticipanteVinculacion') {
+                        return redirect()->route('ParticipanteVinculacion.index')->with('token', $token);
+                    } else {
+                        return back()->withErrors([
+                            'CorreoElectronico' => 'Su estado no permite el acceso en este momento.',
+                        ]);
+                    }
+                } else {
+                    return redirect()->route('estudiantes.create')->with('token', $token);
                 }
             } else {
-                return redirect()->route('estudiantes.create')->with('token', $token);
+                throw new \Exception('Las credenciales proporcionadas no coinciden con nuestros registros.');
             }
+        } catch (\Exception $e) {
+            return redirect()->route('login')->with('error', $e->getMessage());
         }
-
-        return redirect()->route('login')->with('error', 'Las credenciales proporcionadas no coinciden con nuestros registros.');
     }
 
 

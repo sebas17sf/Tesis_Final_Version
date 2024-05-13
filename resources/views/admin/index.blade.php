@@ -572,8 +572,8 @@
                         </nav>
                     </div>
 
-                    </div>
                 </div>
+            </div>
         </section>
 
 
@@ -588,20 +588,24 @@
                 <div id="registrarPeriodos" style="display: none;">
                     <form action="{{ route('admin.guardarPeriodo') }}" method="post">
                         @csrf
-                    
+
                         <div class="form-row">
                             <div class="form-group col-md-4">
-                                <label for="periodoInicio"><strong>Ingrese el inicio del Periodo Académico:</strong></label>
-                                <input type="date" id="periodoInicio" name="periodoInicio" class="form-control input" required>
+                                <label for="periodoInicio"><strong>Ingrese el inicio del Periodo
+                                        Académico:</strong></label>
+                                <input type="date" id="periodoInicio" name="periodoInicio" class="form-control input"
+                                    required>
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="periodoFin"><strong>Ingrese el fin del Periodo Académico:</strong></label>
-                                <input type="date" id="periodoFin" name="periodoFin" class="form-control input" required>
+                                <input type="date" id="periodoFin" name="periodoFin" class="form-control input"
+                                    required>
                             </div>
                             <div class="form-group col-md-4">
-                                <label for="numeroPeriodo"><strong>Ingrese el número identificador del periodo:</strong></label>
-                                <input type="text" id="numeroPeriodo" name="numeroPeriodo" placeholder="Ingrese 6 números"
-                                    class="form-control input" pattern="[0-9]{1,6}"
+                                <label for="numeroPeriodo"><strong>Ingrese el número identificador del
+                                        periodo:</strong></label>
+                                <input type="text" id="numeroPeriodo" name="numeroPeriodo"
+                                    placeholder="Ingrese 6 números" class="form-control input" pattern="[0-9]{1,6}"
                                     title="Ingrese un número no negativo de hasta 6 dígitos" required>
                                 <small id="errorNumeroPeriodo" class="form-text text-danger"></small>
                             </div>
@@ -612,17 +616,18 @@
                             </div>
                         </div>
                     </form>
-                    
+
                     <br>
                     <!-- Formulario para agregar NRC Vinculacion -->
                     <h6>NRC Vinculacion</h6>
                     <form class="FormularioNRC" action="{{ route('admin.nrcVinculacion') }}" method="post">
                         @csrf
-                    
+
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="nrc"><strong>Ingrese el NRC:</strong></label>
-                                <input type="text" id="nrc" name="nrc" class="form-control input" placeholder="Ingrese 5 números" required>
+                                <input type="text" id="nrc" name="nrc" class="form-control input"
+                                    placeholder="Ingrese 5 números" required>
                                 <small id="errorNRC" class="form-text text-danger"></small>
                             </div>
                             <div class="form-group col-lg-6">
@@ -645,7 +650,7 @@
                             </div>
                         </div>
                     </form>
-                    
+
                     <br>
                     <!-- Formulario para agregar NRC Practicas 1 -->
 
@@ -654,108 +659,115 @@
                         @csrf
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                            
-                                    <label for="nrc"><strong>Ingrese el NRC:</strong></label>
-                                    <input type="text" id="nrc" name="nrc" class="form-control input"
-                                        placeholder="Ingrese 5 números" required>
-                                    <small id="errorNRC" class="form-text text-danger"></small>
-                             </div>
+
+                                <label for="nrc"><strong>Ingrese el NRC:</strong></label>
+                                <input type="text" id="nrc" name="nrc" class="form-control input"
+                                    placeholder="Ingrese 5 números" required>
+                                <small id="errorNRC" class="form-text text-danger"></small>
                             </div>
-                            <div class="form-group col-md-6">
-                               
-                                    <label for="periodo"><strong>Seleccione el período:</strong></label>
-                                    <select id="periodo" name="periodo" class="form-control input_select input" required>
-                                        <option value="">Seleccione un período</option>
-                                        @foreach ($periodos as $periodo)
-                                            <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} - {{ $periodo->Periodo }}</option>
-                                        @endforeach
-                                    </select>
-                                    <small id="errorPeriodo" class="form-text text-danger"></small>
-                                </div>
-                           
                         </div>
+                        <div class="form-group col-md-6">
+
+                            <label for="periodo"><strong>Seleccione el período:</strong></label>
+                            <select id="periodo" name="periodo" class="form-control input_select input" required>
+                                <option value="">Seleccione un período</option>
+                                @foreach ($periodos as $periodo)
+                                    <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} -
+                                        {{ $periodo->Periodo }}</option>
+                                @endforeach
+                            </select>
+                            <small id="errorPeriodo" class="form-text text-danger"></small>
+                        </div>
+
+
                         <div class="row">
                             <div class="col-md-6">
                                 <button type="submit" class="button efects_button">Guardar NRC</button>
                             </div>
                         </div>
                     </form>
-                    
+
                     <br>
                     <!-- Elementos agregados (Periodos y Cohortes) -->
                     <div class="row align-items-center">
                         <div class="form-group col-md-6">
-                           
-                                <label for="periodo"><strong>Periodos Agregados:</strong></label>
-                                <select id="selectPeriodo" class="form-control input_select input">
-                                    <option value="">Seleccionar Periodo</option>
-                                    @foreach ($periodos as $periodo)
-                                        <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} {{ $periodo->Periodo }}</option>
-                                    @endforeach
-                                </select>
+
+                            <label for="periodo"><strong>Periodos Agregados:</strong></label>
+                            <select id="selectPeriodo" class="form-control input_select input">
+                                <option value="" data-inicio="" data-fin="" data-numero="">Seleccionar Periodo
+                                </option>
+                                @foreach ($periodos as $periodo)
+                                    <option value="{{ $periodo->id }}" data-inicio="{{ $periodo->PeriodoInicio }}"
+                                        data-fin="{{ $periodo->PeriodoFin }}"
+                                        data-numero="{{ $periodo->numeroPeriodo }}">
+                                        {{ $periodo->numeroPeriodo }} {{ $periodo->Periodo }}
+                                    </option>
+                                @endforeach
+                            </select>
 
 
-                            </div>
+
                         </div>
-                        <div class="col-md-12">
-                            <div class="form-group col-md-6">
-                            
-                                    <form id="editarPeriodoForm" method="GET">
-                                        @csrf
-                                        <button type="submit" class="button">Editar</button>
-                                    </form>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group col-md-6">
+
+                            <form id="editarPeriodoForm" method="GET">
+                                @csrf
+                                <button type="submit" class="button">Editar</button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Modal para peridoo-------------------------------- -->
+
+            <div class="modal" tabindex="-1" role="dialog" id="editModal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Editar Periodo</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form class="formulario" method="POST"
+                                action="{{ route('admin.actualizarPeriodo', ['id' => $periodo->id]) }}">
+                                @csrf
+                                @method('PUT')
+
+                                <div class="form-group">
+                                    <label for="periodoInicio">Fecha de Inicio:</label>
+                                    <input type="date" name="periodoInicio" class="form-control input"
+                                        value="{{ $periodo->PeriodoInicio }}" required>
                                 </div>
-                           
+
+                                <div class="form-group">
+                                    <label for="periodoFin">Fecha de Fin:</label>
+                                    <input type="date" name="periodoFin" class="form-control input"
+                                        value="{{ $periodo->PeriodoFin }}" required>
+                                </div>
+
+                                <div class="form-group ">
+                                    <label for="numeroPeriodo">Ingrese el numero identificador del periodo:</label>
+                                    <input type="text" name="numeroPeriodo" id="numeroPeriodo"
+                                        class="form-control input" value="{{ $periodo->numeroPeriodo }}" required>
+                                    <small id="numeroPeriodoError" class="form-text text-danger"></small>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="button" onclick="cerrarModal()">Cerrar</button>
+                                    <button type="submit" class="button">Guardar Cambios</button>
+                                </div>
+
+                            </form>
                         </div>
                     </div>
                 </div>
-
-
-                <!-- Modal para peridoo-------------------------------- -->
-
-                <div class="modal" tabindex="-1" role="dialog" id="editModal">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Editar Periodo</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form class="formulario" method="POST"
-                                    action="{{ route('admin.actualizarPeriodo', ['id' => $periodo->id]) }}">
-                                    @csrf
-                                    @method('PUT')
-
-                                    <div class="form-group">
-                                        <label for="periodoInicio">Fecha de Inicio:</label>
-                                        <input type="date" name="periodoInicio" class="form-control input"
-                                            value="{{ $periodo->PeriodoInicio }}" required>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="periodoFin">Fecha de Fin:</label>
-                                        <input type="date" name="periodoFin" class="form-control input"
-                                            value="{{ $periodo->PeriodoFin }}" required>
-                                    </div>
-
-                                    <div class="form-group ">
-                                        <label for="numeroPeriodo">Ingrese el numero identificador del periodo:</label>
-                                        <input type="text" name="numeroPeriodo" id="numeroPeriodo"
-                                            class="form-control input" value="{{ $periodo->numeroPeriodo }}" required>
-                                        <small id="numeroPeriodoError" class="form-text text-danger"></small>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="button" onclick="cerrarModal()">Cerrar</button>
-                                        <button type="submit" class="button">Guardar Cambios</button>
-                                    </div>
-
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            </div>
 
             </div>
         </section>
@@ -764,8 +776,8 @@
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
             $("#toggleFormBtn8").click(function() {
@@ -796,14 +808,13 @@
                 });
             }, 500);
         });
-    </script>
-<script>
+
+
         $(document).ready(function() {
             $('#editarPeriodoForm').submit(function(event) {
                 event.preventDefault();
 
                 var periodoId = $('#selectPeriodo').val();
-
                 var inicio = $('#selectPeriodo option:selected').data('inicio');
                 var fin = $('#selectPeriodo option:selected').data('fin');
                 var numero = $('#selectPeriodo option:selected').data('numero');
@@ -816,6 +827,7 @@
                 $('#editModal').modal('show');
             });
         });
+
 
         $(document).ready(function() {
             $('.draggable').draggable({

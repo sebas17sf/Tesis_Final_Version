@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Proyecto;
 use App\Models\Usuario;
+use App\Models\ActividadEstudiante;
 use Illuminate\Support\Collection;
 use App\Models\AsignacionProyecto;
 use App\Models\ParticipanteAdicional;
@@ -20,46 +21,46 @@ class ParticipanteVinculacionController extends Controller
 {
 
     public function index(Request $request)
-{
-    $elementosPorPagina = $request->input('elementosPorPagina', 10);
+    {
+        $elementosPorPagina = $request->input('elementosPorPagina', 10);
 
-    $correoParticipante = Auth::user()->CorreoElectronico;
-    $participante = ProfesUniversidad::where('Correo', $correoParticipante)->first();
-    $proyectosEnEjecucion = null;
-    $proyectosTerminados = null;
+        $correoParticipante = Auth::user()->CorreoElectronico;
+        $participante = ProfesUniversidad::where('Correo', $correoParticipante)->first();
+        $proyectosEnEjecucion = null;
+        $proyectosTerminados = null;
 
-    if ($participante) {
-        $participanteID = $participante->id;
+        if ($participante) {
+            $participanteID = $participante->id;
 
-        // Buscar si el docente ha sido un participante adicional
-        $participanteAdicional = ParticipanteAdicional::where('ParticipanteID', $participanteID)->first();
+            // Buscar si el docente ha sido un participante adicional
+            $participanteAdicional = ParticipanteAdicional::where('ParticipanteID', $participanteID)->first();
 
-        // Obtener proyectos terminados en los que el docente participa como principal
-        $proyectosTerminadosQuery = Proyecto::where('id_docenteParticipante', $participanteID)
-            ->where('Estado', 'Terminado')
-            ->orderBy('created_at', 'desc');
+            // Obtener proyectos terminados en los que el docente participa como principal
+            $proyectosTerminadosQuery = Proyecto::where('id_docenteParticipante', $participanteID)
+                ->where('Estado', 'Terminado')
+                ->orderBy('created_at', 'desc');
 
-        // Si el docente ha sido un participante adicional, agregar sus proyectos terminados
-        if ($participanteAdicional) {
-            $proyectosTerminadosQuery->orWhereIn('ProyectoID', function ($query) use ($participanteID) {
-                $query->select('ProyectoID')->from('participantesAdicionales')->where('ParticipanteID', $participanteID);
-            });
+            // Si el docente ha sido un participante adicional, agregar sus proyectos terminados
+            if ($participanteAdicional) {
+                $proyectosTerminadosQuery->orWhereIn('ProyectoID', function ($query) use ($participanteID) {
+                    $query->select('ProyectoID')->from('participantesAdicionales')->where('ParticipanteID', $participanteID);
+                });
+            }
+
+            // Obtener proyectos en ejecución en los que el docente participa como principal
+            $proyectosEnEjecucionQuery = Proyecto::where('id_docenteParticipante', $participanteID)
+                ->where('Estado', 'Ejecucion')
+                ->orderBy('created_at', 'desc');
+
+            $proyectosEnEjecucion = $proyectosEnEjecucionQuery->paginate($elementosPorPagina);
+            $proyectosTerminados = $proyectosTerminadosQuery->paginate($elementosPorPagina);
         }
 
-        // Obtener proyectos en ejecución en los que el docente participa como principal
-        $proyectosEnEjecucionQuery = Proyecto::where('id_docenteParticipante', $participanteID)
-            ->where('Estado', 'Ejecucion')
-            ->orderBy('created_at', 'desc');
-
-        $proyectosEnEjecucion = $proyectosEnEjecucionQuery->paginate($elementosPorPagina);
-        $proyectosTerminados = $proyectosTerminadosQuery->paginate($elementosPorPagina);
+        return view('ParticipanteVinculacion.index', compact('proyectosEnEjecucion', 'proyectosTerminados'));
     }
 
-    return view('ParticipanteVinculacion.index', compact('proyectosEnEjecucion', 'proyectosTerminados'));
-}
 
-    
-    
+
 
 
 
@@ -80,9 +81,11 @@ class ParticipanteVinculacionController extends Controller
             // Obtener el participante (profesor) por su correo electrónico
             $participante = ProfesUniversidad::where('Correo', $correoParticipante)->first();
 
+
             if ($participante) {
                 // Obtener los proyectos asociados al participante
                 $proyectos = Proyecto::where('id_docenteParticipante', $participante->id)->pluck('ProyectoID');
+
 
                 // Verificar si hay docentes adicionales asociados al proyecto
                 $docentesAdicionales = ParticipanteAdicional::whereIn('ProyectoID', $proyectos)->exists();
@@ -117,11 +120,26 @@ class ParticipanteVinculacionController extends Controller
                 $estudiantes = Estudiante::whereIn('EstudianteID', $todosEstudiantes)
                     ->whereDoesntHave('notas')
                     ->get();
+
+
+
+
             }
+
+            $actividadesEstudiantes = ActividadEstudiante::join('asignacionEstudiantesDirector', 'actividades_estudiante.EstudianteID', '=', 'asignacionEstudiantesDirector.EstudianteID')
+                ->join('proyectos', 'asignacionEstudiantesDirector.IDProyecto', '=', 'proyectos.ProyectoID')
+                ->where('proyectos.id_docenteParticipante', $participante->id)
+                ->where('Proyectos.Estado', 'Ejecucion')
+                ->select('actividades_estudiante.*')
+                ->get();
+
+
         }
 
 
-        return view('ParticipanteVinculacion.estudiantes', compact('estudiantes', 'estudiantesConNotas'));
+
+
+        return view('ParticipanteVinculacion.estudiantes', compact('estudiantes', 'estudiantesConNotas', 'actividadesEstudiantes'));
     }
 
 
@@ -221,7 +239,7 @@ class ParticipanteVinculacionController extends Controller
             return 'Desconocido';
         }
     }
-    
+
     public function actualizarCredenciales(Request $request)
     {
         $request->validate([

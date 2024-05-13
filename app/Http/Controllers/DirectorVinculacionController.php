@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Proyecto;
 use App\Models\Usuario;
 use App\Models\UsuariosSession;
+use App\Models\ActividadEstudiante;
 
 use App\Models\AsignacionEstudiantesDirector;
 use App\Models\ProfesUniversidad;
@@ -47,7 +48,7 @@ class DirectorVinculacionController extends Controller
     }
 
 
-    ////////////funcion para repartir los estudiantes 
+    ////////////funcion para repartir los estudiantes
     public function repartoEstudiantes()
     {
         $correoAutenticado = Auth::user()->CorreoElectronico;
@@ -92,10 +93,18 @@ class DirectorVinculacionController extends Controller
             $asignacionesEstudiantesDirector->load('estudiante');
         }
 
+        $actividadesEstudiantes = ActividadEstudiante::join('asignacionEstudiantesDirector', 'asignacionEstudiantesDirector.EstudianteID', '=', 'actividades_estudiante.EstudianteID')
+            ->join('Proyectos', 'asignacionEstudiantesDirector.IDProyecto', '=', 'Proyectos.ProyectoID')
+            ->select('actividades_estudiante.*')
+            ->where('Proyectos.id_directorProyecto', $directorProyecto->id)
+            ->where('Proyectos.Estado', 'Ejecucion')
+            ->get();
 
 
 
-        return view('director_vinculacion.repartoEstudiantes', compact('directorProyecto', 'estudiantesAsignados', 'docenteParticipante', 'participantesAdicionales', 'asignacionesEstudiantesDirector'));
+
+
+        return view('director_vinculacion.repartoEstudiantes', compact('directorProyecto', 'estudiantesAsignados', 'docenteParticipante', 'participantesAdicionales', 'asignacionesEstudiantesDirector', 'actividadesEstudiantes'));
     }
 
 
@@ -432,7 +441,7 @@ class DirectorVinculacionController extends Controller
             return 'Desconocido';
         }
     }
-    
+
     public function actualizarCredenciales(Request $request)
     {
         $request->validate([

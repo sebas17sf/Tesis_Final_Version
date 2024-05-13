@@ -52,7 +52,16 @@
                             </a>
                             <a href="{{ route('director_vinculacion.estudiantes') }}" class="p-element">
                                 <div class="icon-sidebar-item">
-                                    <i class="material-icons">people</i>
+                                    <i class="material-icons">spellcheck</i>
+                                </div>
+                                <div class="name-sidebar-item">
+                                    <li>Calificar Estudiantes</li>
+                                </div>
+                            </a>
+
+                            <a href="{{ route('director.repartoEstudiantes') }}" class="p-element">
+                                <div class="icon-sidebar-item">
+                                    <i class="material-icons">supervisor_account</i>
                                 </div>
                                 <div class="name-sidebar-item">
                                     <li>Estudiantes</li>
@@ -67,15 +76,8 @@
                                     <li>Documentacion</li>
                                 </div>
                             </a>
-                            <a href="{{ route('director.repartoEstudiantes') }}" class="p-element">
-                                <div class="icon-sidebar-item">
-                                    <i class="material-icons">assignment_turned_in</i>
-                                </div>
-                                <div class="name-sidebar-item">
-                                    <li>Reparto de Estudiantes</li>
-                                </div>
-                            </a>
-                          
+
+
                         </ul>
                     </nav>
                 </div>
@@ -114,7 +116,7 @@
                         <span>Cambiar modulo</span>
                     </a>
 
-                    <a href="{{route('director_vinculacion.cambio-credenciales')}}" class="change_password">
+                    <a href="{{ route('director_vinculacion.cambio-credenciales') }}" class="change_password">
                         <i class="far fa-cog"></i>
                         <span>Configuracion</span>
                     </a>

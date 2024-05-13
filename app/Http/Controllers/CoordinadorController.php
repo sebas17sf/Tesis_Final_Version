@@ -145,13 +145,17 @@ class CoordinadorController extends Controller
         $directorUserExists = Usuario::where('CorreoElectronico', $director->Correo)->exists();
 
         if (!$directorUserExists) {
+            $cedulaDirector = $director->Cedula;
+            $nombreDirector = $director->Nombres;
+            $contrasenaDirector = substr($nombreDirector, 0, 2) . $cedulaDirector . '$';
+
             Usuario::create([
                 'NombreUsuario' => $director->Usuario,
                 'Nombre' => $director->Nombres,
                 'Apellido' => $director->Apellidos,
                 'CorreoElectronico' => $director->Correo,
                 'FechaNacimiento' => now(),
-                'Contrasena' => bcrypt('123'),
+                'Contrasena' => bcrypt($contrasenaDirector),
                 'Estado' => 'activo',
                 'role_id' => $directorRoleId,
             ]);
@@ -161,20 +165,23 @@ class CoordinadorController extends Controller
             $participanteUserExists = Usuario::where('CorreoElectronico', $participante->Correo)->exists();
 
             if (!$participanteUserExists) {
+                $cedula = $participante->Cedula;
+                $nombre = $participante->Nombres;
+                $contrasena = substr($nombre, 0, 2) . $cedula . '$';
+                dd($contrasena);
                 Usuario::create([
                     'NombreUsuario' => $participante->Usuario,
                     'Nombre' => $participante->Nombres,
                     'Apellido' => $participante->Apellidos,
                     'CorreoElectronico' => $participante->Correo,
                     'FechaNacimiento' => now(),
-                    'Contrasena' => bcrypt('123'),
+                    'Contrasena' => bcrypt($contrasena),
                     'Estado' => 'activo',
                     'role_id' => $participanteRoleId,
                 ]);
             }
         }
 
-        // Crear el nuevo proyecto
         $proyecto = Proyecto::create([
             'id_directorProyecto' => $director->id,
             'id_docenteParticipante' => $participantes->first()->id,
@@ -191,7 +198,6 @@ class CoordinadorController extends Controller
 
         $proyecto->save();
 
-        // Crear participantes adicionales
         foreach ($participantes->slice(1) as $participante) {
             ParticipanteAdicional::create([
                 'ProyectoID' => $proyecto->ProyectoID,
@@ -199,7 +205,7 @@ class CoordinadorController extends Controller
             ]);
         }
 
-        return redirect()->route('coordinador.index')->with('success', 'Proyecto agregado correctamente');
+        return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto agregado correctamente');
     }
 
 
@@ -851,47 +857,47 @@ class CoordinadorController extends Controller
 
     ///////////////Descargar evidencias//////////////////////
     public function descargarEvidencias($ProyectoID)
-{
-    $proyecto = Proyecto::find($ProyectoID);
-    
-    // Obtener los estudiantes asignados al proyecto
-    $estudiantesAsignados = $proyecto->asignacionesEstudiantesDirectores
-        ->where('IDProyecto', $ProyectoID)
-        ->pluck('EstudianteID')
-        ->toArray();
-    
-    $estudiantesAsignados = Estudiante::whereIn('EstudianteID', $estudiantesAsignados)->get();
-    
-    // Inicializar el objeto ZipStream
-    $zip = new ZipStream();
+    {
+        $proyecto = Proyecto::find($ProyectoID);
 
-    try {
-        // Iterar sobre los estudiantes y sus actividades
-        foreach ($estudiantesAsignados as $estudiante) {
-            if ($estudiante->actividades()->exists()) {
-                foreach ($estudiante->actividades as $actividad) {
-                    if ($actividad->evidencias) {
-                        $decodedEvidencia = base64_decode($actividad->evidencias);
-                        $tempFileName = 'evidencia_' . $estudiante->EstudianteID . '_' . $actividad->ID_Actividades . '.png';
-                        
-                        // Agregar el archivo al ZIP
-                        $zip->addFile($decodedEvidencia, $tempFileName);
+        // Obtener los estudiantes asignados al proyecto
+        $estudiantesAsignados = $proyecto->asignacionesEstudiantesDirectores
+            ->where('IDProyecto', $ProyectoID)
+            ->pluck('EstudianteID')
+            ->toArray();
+
+        $estudiantesAsignados = Estudiante::whereIn('EstudianteID', $estudiantesAsignados)->get();
+
+        // Inicializar el objeto ZipStream
+        $zip = new ZipStream();
+
+        try {
+            // Iterar sobre los estudiantes y sus actividades
+            foreach ($estudiantesAsignados as $estudiante) {
+                if ($estudiante->actividades()->exists()) {
+                    foreach ($estudiante->actividades as $actividad) {
+                        if ($actividad->evidencias) {
+                            $decodedEvidencia = base64_decode($actividad->evidencias);
+                            $tempFileName = 'evidencia_' . $estudiante->EstudianteID . '_' . $actividad->ID_Actividades . '.png';
+
+                            // Agregar el archivo al ZIP
+                            $zip->addFile($decodedEvidencia, $tempFileName);
+                        }
                     }
                 }
             }
+
+            // Finalizar el ZIP y enviar como descarga
+            $zip->finish();
+
+        } catch (\Exception $e) {
+            // Manejar errores
+            \Log::error('Error al crear o descargar las evidencias: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Ocurrió un error al descargar las evidencias: ' . $e->getMessage());
         }
-
-        // Finalizar el ZIP y enviar como descarga
-        $zip->finish();
-
-    } catch (\Exception $e) {
-        // Manejar errores
-        \Log::error('Error al crear o descargar las evidencias: ' . $e->getMessage());
-        return redirect()->back()->with('error', 'Ocurrió un error al descargar las evidencias: ' . $e->getMessage());
     }
-}
-    
-    
+
+
 
 
 
@@ -935,10 +941,10 @@ class CoordinadorController extends Controller
             return 'Desconocido';
         }
     }
-    
-    
 
-    
+
+
+
 
     public function actualizarCredenciales(Request $request)
     {

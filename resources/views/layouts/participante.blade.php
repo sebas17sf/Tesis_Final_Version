@@ -52,10 +52,10 @@
                             </a>
                             <a href="{{ route('ParticipanteVinculacion.estudiantes') }}" class="p-element">
                                 <div class="icon-sidebar-item">
-                                    <i class="material-icons">people</i>
+                                    <i class="material-icons">spellcheck</i>
                                 </div>
                                 <div class="name-sidebar-item">
-                                    <li>Estudiantes</li>
+                                    <li>Calificar Estudiantes</li>
                                 </div>
                             </a>
 

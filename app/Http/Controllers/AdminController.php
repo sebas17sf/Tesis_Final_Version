@@ -415,8 +415,7 @@ class AdminController extends Controller
                 'Estado' => 'activo',
                 'role_id' => $directorRoleId,
             ]);
-            dd($contrasenaDirector);
-        }
+         }
 
         foreach ($participantes as $participante) {
             $participanteUserExists = Usuario::where('CorreoElectronico', $participante->Correo)->exists();
