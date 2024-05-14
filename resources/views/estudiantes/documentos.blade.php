@@ -24,50 +24,53 @@
     @endif
 
     <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h6 class="card-title"><i>Generar Acta de Designación de Estudiantes</i></h>
-                        <hr>
-                        <form action="{{ route('generar-documento') }}" method="post">
-                            @csrf
-                            <button type="submit" class="btn btn-light btn-block">
-                                <i class="fas fa-file-excel"></i> Generar
-                            </button>
-                        </form>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 d-flex">
+                    <div class="card mb-4 w-100">
+                        <div class="card-body d-flex flex-column">
+                            <h6 class="card-title flex-grow-1"><i>Generar Acta de Designación de Estudiantes</i></h6>
+                            <hr>
+                            <form action="{{ route('generar-documento') }}" method="post">
+                                @csrf
+                                <button type="submit" class="btn btn-success btn-block mt-auto">
+                                    <i class="fas fa-file-excel"></i> Generar
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h6 class="card-title"><i>Generar Carta de Compromiso de Estudiante</i></h6>
-                        <hr>
-                        <form action="{{ route('generar-documento-cartaCompromiso') }}" method="post">
-                            @csrf
-                            <button type="submit" class="btn btn-light btn-block">
-                                <i class="fas fa-file-excel"></i> Generar
-                            </button>
-                        </form>
+                <div class="col-md-4 d-flex">
+                    <div class="card mb-4 w-100">
+                        <div class="card-body d-flex flex-column">
+                            <h6 class="card-title flex-grow-1"><i>Generar Carta de Compromiso de Estudiante</i></h6>
+                            <hr>
+                            <form action="{{ route('generar-documento-cartaCompromiso') }}" method="post">
+                                @csrf
+                                <button type="submit" class="btn btn-success btn-block mt-auto">
+                                    <i class="fas fa-file-excel"></i> Generar
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h6 class="card-title"><i>Generar Número de Horas de Estudiantes</i></h6>
-                        <hr>
-                        <form action="{{ route('generar-documento-numeroHoras') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-light btn-block">
-                                <i class="fas fa-file-excel"></i> Generar
-                            </button>
-                        </form>
+                <div class="col-md-4 d-flex">
+                    <div class="card mb-4 w-100">
+                        <div class="card-body d-flex flex-column">
+                            <h6 class="card-title flex-grow-1"><i>Generar Número de Horas de Estudiantes</i></h6>
+                            <hr>
+                            <form action="{{ route('generar-documento-numeroHoras') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-success btn-block mt-auto">
+                                    <i class="fas fa-file-excel"></i> Generar
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        
 
         <button id="toggleFormBtn" class="btn btn-light btn-block">Registrar actividad</button>
 <br>
@@ -106,6 +109,25 @@
                                         <input type="file" id="evidencias" name="evidencias"
                                             accept="image/jpeg, image/jpg, image/png" class="form-control-file input" required>
                                     </div>
+
+
+
+                                  {{-- 
+                                 
+                                            <div class="card-body d-flex flex-column">
+                                                <h6 class="card-title flex-grow-1"><i>Generar Carta de Compromiso de Estudiante</i></h6>
+                                                <hr>
+                                                <form action="{{ route('generar-documento-cartaCompromiso') }}" method="post">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-success btn-block mt-auto">
+                                                        <i class="fas fa-file-excel"></i> Generar
+                                                    </button>
+                                                </form>
+                                            </div> --}}
+                                 
+                           
+
+
                                 </div>
 
                                 <div class="form-group">

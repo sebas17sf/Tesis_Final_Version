@@ -46,8 +46,8 @@
         </div>
         <div class="table-container mat-elevation-z8">
         <div id="tablaDocentes">
-            <table class="table mat-mdc-row">
-                <tbody class="ng-star-inserted"">
+           {{--  <table class="table mat-mdc-row">
+                <tbody class="ng-star-inserted">
                     <tr>
                         <th>Nombres:</th>
                         <td>{{ strtoupper($estudiante->Nombres) }}</td>
@@ -78,7 +78,76 @@
                     </tr>
                     <!-- Agrega aquí más campos con íconos si es necesario -->
                 </tbody>
-            </table>
+            </table> --}}
+
+
+            <div class="container">
+                <div class="row mb-2">
+                    <div class="col-3 font-weight-bold">Nombres:</div>
+                    <div class="col input-group">
+                        <input type="text" class="form-control" value="{{ strtoupper($estudiante->Nombres) }}" readonly>
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-3 font-weight-bold">Apellidos:</div>
+                    <div class="col input-group">
+                        <input type="text" class="form-control" value="{{ strtoupper($estudiante->Apellidos) }}" readonly>
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-3 font-weight-bold">ESPE ID:</div>
+                    <div class="col input-group">
+                        <input type="text" class="form-control" value="{{ strtoupper($estudiante->espe_id) }}" readonly>
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-3 font-weight-bold">Celular:</div>
+                    <div class="col input-group">
+                        <input type="text" class="form-control" value="{{ strtoupper($estudiante->celular) }}" readonly>
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-3 font-weight-bold">Cédula:</div>
+                    <div class="col input-group">
+                        <input type="text" class="form-control" value="{{ strtoupper($estudiante->cedula) }}" readonly>
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-3 font-weight-bold">Cohorte:</div>
+                    <div class="col input-group">
+                        <input type="text" class="form-control" value="{{ strtoupper($periodo->numeroPeriodo) }}" readonly>
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-3 font-weight-bold">Departamento:</div>
+                    <div class="col input-group">
+                        <input type="text" class="form-control" value="{{ strtoupper($estudiante->Departamento) }}" readonly>
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-building"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
         </div>
         </div>
         
