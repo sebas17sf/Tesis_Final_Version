@@ -2,10 +2,13 @@
 
 @section('title', 'Panel de Director')
 
+@section('title_component', 'Proyectos')
+
 @section('content')
     <div class="container">
- 
-        <h4>Listado de Proyectos</h4>
+ <br>
+        <h6><b>Listado de Proyectos</b></h6>
+        <hr>
         <div class="d-flex">
         <form method="GET" action="{{ route('director.indexProyectos') }}" class="mr-3">
             <label for="elementosPorPagina">Estudiantes a visualizar:</label>
