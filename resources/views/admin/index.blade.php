@@ -653,32 +653,29 @@
 
                     <br>
                     <!-- Formulario para agregar NRC Practicas 1 -->
-
                     <h6>NRC Practicas preprofesinales 1</h6>
                     <form class="FormularioNRCPracticas1" action="{{ route('admin.nrcPracticas1') }}" method="post">
                         @csrf
                         <div class="form-row">
                             <div class="form-group col-md-6">
-
                                 <label for="nrc"><strong>Ingrese el NRC:</strong></label>
                                 <input type="text" id="nrc" name="nrc" class="form-control input"
                                     placeholder="Ingrese 5 números" required>
                                 <small id="errorNRC" class="form-text text-danger"></small>
                             </div>
-                        </div>
-                        <div class="form-group col-md-6">
 
-                            <label for="periodo"><strong>Seleccione el período:</strong></label>
-                            <select id="periodo" name="periodo" class="form-control input_select input" required>
-                                <option value="">Seleccione un período</option>
-                                @foreach ($periodos as $periodo)
-                                    <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} -
-                                        {{ $periodo->Periodo }}</option>
-                                @endforeach
-                            </select>
-                            <small id="errorPeriodo" class="form-text text-danger"></small>
+                            <div class="form-group col-md-6">
+                                <label for="periodo"><strong>Seleccione el período:</strong></label>
+                                <select id="periodo" name="periodo" class="form-control input_select input" required>
+                                    <option value="">Seleccione un período</option>
+                                    @foreach ($periodos as $periodo)
+                                        <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} -
+                                            {{ $periodo->Periodo }}</option>
+                                    @endforeach
+                                </select>
+                                <small id="errorPeriodo" class="form-text text-danger"></small>
+                            </div>
                         </div>
-
 
                         <div class="row">
                             <div class="col-md-6">
@@ -689,6 +686,8 @@
 
                     <br>
                     <!-- Elementos agregados (Periodos y Cohortes) -->
+                    <h6>Editar Periodo</h6>
+
                     <div class="row align-items-center">
                         <div class="form-group col-md-6">
 
