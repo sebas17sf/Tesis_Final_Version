@@ -39,9 +39,10 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="contenedor_botones">
-                            <a href="{{ route('admin.agregarProyecto') }}" class="btn btn_nuevo3" id="button3">
-                                <i class="fa-solid fa-plus"></i> Proyecto
-                            </a>
+                            <button onclick="location.href='{{ route('admin.agregarProyecto') }}';" class="button"
+                                id="button3">
+                                Agregar Proyecto
+                            </button>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -232,7 +233,7 @@
             </div>
         </div>
 
-       {{--  </div> --}}
+        {{--  </div> --}}
     </section>
     <hr>
     <section>
@@ -326,5 +327,3 @@
 
 
 @endsection
-
-
