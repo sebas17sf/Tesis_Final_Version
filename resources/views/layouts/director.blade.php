@@ -1,64 +1,167 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="hydrated">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="\img\logos\logo_tesis.png" alt="logo">
+    <meta name=" viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
-    <!-- Agrega el enlace al archivo CSS de Bootstrap -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="css/director/director.css">
+    <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
     <style>
         body {
             overflow-x: hidden;
         }
     </style>
+        <script src="{{ asset('js/menu.js') }}"></script>
 </head>
 <body>
 <header>
-    <!-- Barra de navegación en el lado izquierdo -->
+   <!-- Barra de navegación en el lado izquierdo -->
+   <section class="content-sidebar " _ngcontent-ng-c4160891441>
+
+<div class="content scroll-small">
     <div class="sidebar">
-    <div class="logo-container">
-    <img src="/plantillas/favicon.jpg" alt="Logo ESPE" class="logo-image">
-    </div>
-    <div class="sidebar-links">
-
-        <a href="{{ route('director.indexProyectos') }}">
-            <i class="material-icons">library_books</i> Proyectos
+        <a class="logo_site">
+            <div class="img_logo">
+                <img src="\img\logos\logo_tesis.png" alt="logo">
+            </div>
+            <div class="title-text">
+                <p>Gestion Academica</p>
+            </div>
         </a>
-        <a href="{{ route('director.estudiantesAprobados') }}">
-            <i class="material-icons">people</i> Estudiantes
+        <div class="links_site">
+                    <nav class="nav">
+                        <ul class="nav-list">
+
+        <a class="p-element" href="{{ route('director.indexProyectos') }}">
+        <div class="icon-sidebar-item">
+        <i class="material-icons">library_books</i> 
+                                </div>
+                                <div class="name-sidebar-item">
+                                    <li>Proyectos</li>
+                                </div>
         </a>
-        <a href="{{ route('director.practicas') }}">
-            <i class="material-icons">business</i> Prácticas
-        </a>
-
-        <a href="{{ route('logout') }}" class="logout-btn">
-            <i class="material-icons">exit_to_app</i> Cerrar Sesión
-            </a>
-    </div>
-    </div>
-</header>
-
-<!-- Contenido principal -->
-<div class="content">
-    <main class="container py-4">
-        <!-- Contenido específico de la página -->
-        @yield('content')
-    </main>
-</div>
-
-<footer class="footer">
-        <div class="container">
-            <span>© 202 Universidad de las Fuerzas Armadas ESPE - Todos los derechos reservados</span>
+        <a class="p-element" href="{{ route('director.estudiantesAprobados') }}">
+        <div class="icon-sidebar-item">
+            <i class="material-icons">people</i> 
         </div>
-    </footer>
+        <div class="name-sidebar-item">
+            <li>Estudiantes</li>
+        </div>
+        </a>
+        <a class="p-element" href="{{ route('director.practicas') }}">
+            <div class="icon-sidebar-item">
+            <i class="material-icons">business</i> 
+            </div>
+            <div class="name-sidebar-item">
+                <li>Prácticas</li>
+            </div>
+        </a>
+            </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="content-autors">
+                <span class="autors1">
+                    <i>Designed by Sebastian Flores & Karen Cueva.</i>
+                </span>
+            </div>
+        </div>
+        </div>
+    </section>
+    
+ <!-- SIDEBAR -->
+ <section class="content-navbar dimension-nav">
+        <!-- Toggle sidebar -->
+        <div class="icon-menu-sidebar" onclick="triggerToggleSidebar()">
+            <i class='bx bx-menu-alt-left'
+                [ngClass]="{'bx-menu': sidebarHidden,'bx-menu-alt-left': !sidebarHidden}"></i>
+        </div>
+        <!-- contenido -->
+        <main class="navbar">
+            <button class="profile-icon dropdown" id="profile-button">
 
-<!-- Agrega los scripts de Bootstrap al final del cuerpo del documento -->
+                <div class="name-profile">
+                    <span><?php echo Auth::user()->NombreUsuario; ?></span>
+                </div>
+                <div class="icon-profile">
+                    <img src="../img/default/user.svg">
+                </div>
+            </button>
+            <!-- Aquí agregamos el contenedor del menú desplegable -->
+            <div class="popup-menu-profile">
+                <div class="container">
+                    <a href="#" class="change_module">
+                        <i class="fa-regular fa-rectangle-vertical-history"></i>
+                        <span>Cambiar modulo</span>
+                    </a>
+
+                    <a href="{{route('admin.cambio-credenciales')}}" class="change_password">
+                        <i class="far fa-cog"></i>
+                        <span>Configuracion</span>
+                    </a>
+
+                    <a class="logout" href="{{ route('logout') }}">
+                        <i class="fa-sharp fa-regular fa-arrow-up-left-from-circle fontawesome"></i>
+                        <span>Cerrar sesión</span>
+                    </a>
+
+                </div>
+            </div>
+        </main>
+
+    </section>
+    <button id="btn_top" *ngIf="showScrollButton" (click)="scrollToTop()"><i class='bx bxs-chevrons-up'></i></button>
+
+    <!-- CONTENEDOR -->
+    <section class="content-views dimension-content">
+        <!-- Title component -->
+        <div class="title-component">
+            <span class="title-content">@yield('title_component')</span>
+            <div class="divisor-title"></div>
+        </div>
+        <!-- Contenido principal -->
+        <div class="views">
+            <!-- Contenido específico de la página -->
+            @yield('content')
+        </div>
+
+        {{--   <button id="btn_top" ><i class='bx bxs-chevrons-up'></i></button> --}}
+
+    </section>
+
+<!-- Scripts de jQuery y Popper.js -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <!-- Script de Bootstrap 4.5.2 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Script de Bootstrap 5.3.0 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('js/plantilla/styles.js') }}" type="module"></script>
+    <script src="{{ asset('js/plantilla/vendor.js') }}" type="module"></script>
+    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    <script src="{{ asset('js/admin/general.js') }}"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <!-- Box Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        integrity="sha384-gL5q2wHNwpg9voDwmz1onh73oSJ8lFvZEydTHpw4M4okQ7N8qI+v5h0zitOykKdp" crossorigin="anonymous">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  {{--   <script src="../js/input_file.js"></script> --}}
+    <script src="{{ asset('js/input_file.js') }}"></script>
 </body>
 </html>
