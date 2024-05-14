@@ -29,11 +29,7 @@ button {
 
 }
 /* CSS */
-.custom-form {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
+
 
 .form-column {
     flex-basis: calc(50% - 10px); /* Tamaño de cada columna, menos el espacio entre ellas */
