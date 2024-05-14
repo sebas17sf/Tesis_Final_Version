@@ -312,7 +312,7 @@
                                             class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
 
 
-                                            <th>N°</th>
+                                            <th class="columna-numero">N°</th>
                                             <th>Nombres</th>
                                             <th>Cédula de Identidad</th>
                                             <th>Correo Electrónico</th>

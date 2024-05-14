@@ -187,3 +187,35 @@ tr:hover {
     clear: both;
 }
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table,
+th,
+td {
+    font-size: 14px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+body,
+input,
+select,
+th,
+td,
+label,
+button,
+table {
+    background-color: #F5F5F5;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+
+}
+.columna-numero {
+    padding: 0 5px !important;
+}
