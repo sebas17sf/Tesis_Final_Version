@@ -165,7 +165,7 @@
                 <div>
                     <span><b>Docentes agregados</b></span>
                     <button type="button" class="button" data-toggle="modal" data-target="#modalAgregarMaestro">
-                        <i class=""> Agregar Docentes</i>
+                        Agregar Docentes
                     </button>
                     <hr>
 

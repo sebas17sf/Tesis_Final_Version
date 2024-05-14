@@ -219,3 +219,12 @@ table {
 .columna-numero {
     padding: 0 5px !important;
 }
+.body,
+table.table,
+tr,
+td,
+th {
+    font-size: 12px;
+    text-align: center;
+    /* Centra el texto en las celdas de datos */
+}

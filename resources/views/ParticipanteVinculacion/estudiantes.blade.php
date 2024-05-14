@@ -1,5 +1,6 @@
 @extends('layouts.participante')
 
+@section('title_component', 'Calificaciones de Estudiante')
 
 @section('content')
     @if (session('success'))
@@ -25,14 +26,20 @@
     @endif
 
     <div class="container" style="overflow-x: auto;">
-        <h4>Estudiantes por calificar</h4>
+    <br>
+        <h6><b>Estudiantes por calificar</b></h6>
+        <hr>
 
         <!-- Formulario de calificación -->
         <form method="post" action="{{ route('guardar-notas') }}">
             @csrf
-            <table class="table">
-                <thead>
-                    <tr>
+            <div class="contenedor_tabla">
+                <div class="table-container mat-elevation-z8">
+
+                    <div id="tablaDocentes">
+                        <table class="mat-mdc-table">
+                            <thead class="ng-star-inserted">
+                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                         <th>Nombres</th>
                         <th>Espe ID</th>
                         <th>Carrera</th>
@@ -74,6 +81,9 @@
 
                 </tbody>
             </table>
+            </div>
+        </div>
+    </div>
             <br>
             <button type="submit" class="btn btn-sm btn-secondary">Guardar Calificaciones</button>
         </form>
@@ -154,7 +164,7 @@
 
     <hr>
 
-    <h4>Control de actividades de los estudiantes</h4>
+    <h6><b>Control de actividades de los estudiantes</b></h6>
 
     <div class="container mt-5">
         <div class="d-flex flex-wrap">
@@ -177,17 +187,17 @@
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h4 class="modal-title" id="modalActividad{{ $estudianteId }}Label">
-                                        {{ $estudiante->Apellidos }} {{ $estudiante->Nombres }}</h4>
+                                    <h5 class="modal-title" id="modalActividad{{ $estudianteId }}Label">
+                                        {{ $estudiante->Apellidos }} {{ $estudiante->Nombres }}</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <h5>Actividades registradas del estudiante</h5>
+                                    <h6><b>Actividades registradas del estudiante</b></h6>
                                     <table class="table">
                                         <thead>
-                                            <tr>
+                                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                                 <th>Fecha</th>
                                                 <th>Actividades</th>
                                                 <th>Numero de Horas</th>
@@ -241,13 +251,6 @@
     td {
         font-size: 14px;
         border: 1px solid #ddd;
-    }
-
-    th {
-        border: 1px solid #70a1ff;
-        background-color: #eaf5ff;
-        text-align: center;
-        /* Centra el texto en las celdas del encabezado */
     }
 
     .wide-cell {
