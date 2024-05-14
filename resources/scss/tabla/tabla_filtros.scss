@@ -230,10 +230,15 @@
         box-shadow: none !important;
   
         td,
+
+
+        
+
         th {
           width: 200px;
           min-width: 150px;
           font-size: fonts.$form-input;
+          
         }
   
         th {
@@ -250,6 +255,13 @@
         .mat-mdc-header-row {
           height: 40px;
         }
+
+        .tamanio {
+          width: 200px;
+          min-width: 450px;
+          font-size: fonts.$form-input;
+          padding: .5rem !important;
+        } 
   
         // Body
         .mat-mdc-row {

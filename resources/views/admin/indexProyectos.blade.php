@@ -87,8 +87,8 @@
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                         <th>Nombre del director del proyecto</th>
                                         <th>Nombres Docentes participantes</th>
-                                        <th>Nombre del proyecto</th>
-                                        <th>Descripción</th>
+                                        <th class="tamanio">Nombre del proyecto</th>
+                                        <th class="tamanio">Descripción</th>
                                         <th>Correo del director</th>
                                         <th>Correos de Docentes participantes</th>
                                         <th>Departamento del director</th>
@@ -114,7 +114,7 @@
                                             <tr>
                                                 <td>{{ strtoupper($proyecto->director->Apellidos) }}
                                                     {{ strtoupper($proyecto->director->Nombres) }}</td>
-                                                <td>
+                                                <td >
                                                     {{ strtoupper($proyecto->docenteParticipante->Apellidos) }}
                                                     {{ strtoupper($proyecto->docenteParticipante->Nombres) }}
                                                     @foreach ($proyecto->participantesAdicionales as $participanteAdicional)
@@ -125,7 +125,7 @@
                                                 </td>
                                                 <td style="word-wrap: break-word; text-align: justify;">
                                                     {{ strtoupper($proyecto->NombreProyecto) }}</td>
-                                                <td>{{ strtoupper($proyecto->DescripcionProyecto) }}</td>
+                                                <td style="word-wrap: break-word; text-align: justify;">{{ strtoupper($proyecto->DescripcionProyecto) }}</td>
                                                 <td>{{ strtoupper($proyecto->director->Correo) }}</td>
                                                 <td>
                                                     {{ strtoupper($proyecto->docenteParticipante->Correo) }}

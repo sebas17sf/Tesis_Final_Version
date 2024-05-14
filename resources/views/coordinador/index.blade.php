@@ -99,7 +99,7 @@
                                         {{ strtoupper($participanteAdicional->Nombres) }}
                                     @endforeach
                                 </td>
-                                <td style="word-wrap: break-word; text-align: justify;">
+                                <td >
                                     {{ strtoupper($proyecto->NombreProyecto) }}</td>
                                 <td>{{ strtoupper($proyecto->DescripcionProyecto) }}</td>
                                 <td>{{ strtoupper($proyecto->director->Correo) }}</td>
