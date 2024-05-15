@@ -53,7 +53,7 @@
                 </select>
             </div>
 
-            <div id="profesores-participantes"></div>  
+            <div id="profesores-participantes"></div>
 
             <button type="button" class="button2" onclick="agregarProfesor()">Agregar más docentes participantes</button>
 
@@ -117,22 +117,22 @@
 
             <div class="form-group">
                 <label for="Estado">Estado:</label>
-                <select name="Estado" class="form-control input-select" required>
+                <select name="Estado" class="form-control input-select input" required>
                     <option value="Ejecucion">En Ejecución</option>
                     <option value="Terminado">Terminado</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-secondary">Agregar Proyecto</button>
+            <button type="submit" class="button">Agregar Proyecto</button>
         </form>
     </div>
 
 
     <script>
         let contador = 1; // Contador para generar IDs únicos
-    
+
         function agregarProfesor() {
             contador++;
-    
+
             const divProfesor = document.createElement('div');
             divProfesor.innerHTML = `
                 <div class="form-group">
@@ -147,14 +147,14 @@
                 </div>
                 <button type="button" class="button2" onclick="eliminarProfesor(this)">Eliminar este participante</button>
             `;
-    
+
             document.getElementById('profesores-participantes').appendChild(divProfesor);
         }
-    
+
         function eliminarProfesor(element) {
             const divProfesor = element.parentNode;
             divProfesor.parentNode.removeChild(divProfesor);
         }
     </script>
-    
+
 @endsection
