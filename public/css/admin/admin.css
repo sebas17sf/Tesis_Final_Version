@@ -207,12 +207,11 @@ input,
 select,
 th,
 td,
-label,
 button,
 table {
     background-color: #F5F5F5;
     font-family: Arial, sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.5;
 
 }
@@ -220,11 +219,9 @@ table {
     padding: 0 5px !important;
 }
 .body,
-table.table,
 tr,
-td,
-th {
-    font-size: 12px;
+td{
+    font-size: 13px;
     text-align: center;
     /* Centra el texto en las celdas de datos */
 }

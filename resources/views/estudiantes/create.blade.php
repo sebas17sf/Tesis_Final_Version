@@ -35,41 +35,11 @@
                     placeholder="Ingrese sus Nombres" pattern="[A-Za-zÁ-úñÑ\s]+"
                     title="Ingrese solo letras (sin caracteres especiales)">
             </div>
-
-            <div class="form-group">
-                <label for="Apellidos"> Apellidos:</label>
-                <input id="Apellidos" type="text" class="form-control input" name="Apellidos" required
-                    placeholder="Ingrese sus Apellidos" pattern="[A-Za-zÁ-úñÑ\s]+"
-                    title="Ingrese solo letras (sin caracteres especiales)">
-            </div>
-
             <div class="form-group">
                 <label for="espe_id"> ESPE ID:</label>
                 <input id="espe_id" type="text" class="form-control input" name="espe_id" required
                     placeholder="Ingrese su ESPE ID">
             </div>
-        </div>
-
-        <div class="col-md-4">
-            <!-- Segunda columna -->
-            <div class="form-group">
-                <label for="celular">Celular:</label>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text input">+593</span>
-                    </div>
-                    <input id="celular" type="text" class="form-control input" name="celular" required
-                        pattern="[0-9]{10}" placeholder="Ingrese su número de celular">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="cedula">Cédula:</label>
-                <input id="cedula" type="text" class="form-control input" name="cedula" required pattern="[0-9]{10}"
-                    title="Ingrese un número de cédula válido (10 dígitos)"
-                    placeholder="Ingrese su número de cédula (10 dígitos)">
-            </div>
-
             <div class="form-group">
                 <label for="Cohorte"> Cohorte:</label>
                 <select class="form-control input input-select" id="Cohorte" name="Cohorte" required>
@@ -80,20 +50,27 @@
                 </select>
             </div>
         </div>
+          
 
         <div class="col-md-4">
-            <!-- Tercera columna -->
+            <!-- Segunda columna -->
             <div class="form-group">
-                <label for="Periodo">Periodo:</label>
-                <select class="form-control input input-select" id="Periodo" name="Periodo" required>
-                    <option value="">Seleccione su Periodo</option>
-                    @foreach ($periodos as $periodo)
-                    <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} {{ $periodo->Periodo }}
-                    </option>
-                    @endforeach
-                </select>
+                <label for="Apellidos"> Apellidos:</label>
+                <input id="Apellidos" type="text" class="form-control input" name="Apellidos" required
+                    placeholder="Ingrese sus Apellidos" pattern="[A-Za-zÁ-úñÑ\s]+"
+                    title="Ingrese solo letras (sin caracteres especiales)">
             </div>
-
+            
+            <div class="form-group">
+                <label for="celular">Celular:</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text input">+593</span>
+                    </div>
+                    <input id="celular" type="text" class="form-control input" name="celular" required
+                        pattern="[0-9]{10}" placeholder="Ingrese su número de celular">
+                </div>
+            </div>
             <div class="form-group">
                 <label for="Carrera">Carrera:</label>
                 <select class="form-control input input-select" id="Carrera" name="Carrera" required>
@@ -105,6 +82,32 @@
                     <option value="Ingeniería en Biotecnologia">Biotecnologia</option>
                 </select>
             </div>
+            
+        </div>
+            
+
+          
+
+        <div class="col-md-4">
+            <!-- Tercera columna -->
+            <div class="form-group">
+                <label for="cedula">Cédula:</label>
+                <input id="cedula" type="text" class="form-control input" name="cedula" required pattern="[0-9]{10}"
+                    title="Ingrese un número de cédula válido (10 dígitos)"
+                    placeholder="Ingrese su número de cédula (10 dígitos)">
+            </div>
+            <div class="form-group">
+                <label for="Periodo">Periodo:</label>
+                <select class="form-control input input-select" id="Periodo" name="Periodo" required>
+                    <option value="">Seleccione su Periodo</option>
+                    @foreach ($periodos as $periodo)
+                    <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} {{ $periodo->Periodo }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+            
+          
 
             <div class="form-group">
                 <label for="Provincia">Localidad:</label>

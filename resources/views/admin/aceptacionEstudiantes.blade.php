@@ -319,13 +319,13 @@
                                             <th>ESPE ID</th>
                                             <th>Período de Ingreso</th>
                                             <th>Período de Vinculación</th>
-                                            <th>Actividades Macro</th>
+                                            <th class="tamanio">Actividades Macro</th>
                                             <th>Docente Participante</th>
                                             <th>Fecha de Inicio</th>
                                             <th>Fecha de Fin</th>
                                             <th>Total de Horas</th>
                                             <th>Director del Proyecto</th>
-                                            <th>Nombre del Proyecto</th>
+                                            <th class="tamanio">Nombre del Proyecto</th>
                                         </tr>
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
