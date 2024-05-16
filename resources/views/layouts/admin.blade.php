@@ -64,15 +64,15 @@
                         <ul class="nav-list">
                             <a class="p-element" href="{{ route('admin.index') }}">
                                 <div class="icon-sidebar-item">
-                                    <i class="material-icons">assignment</i>
-                                </div>
+                                <i class="fa-solid fa-grid-horizontal"></i>                                
+                            </div>
                                 <div class="name-sidebar-item">
                                     <li>Panel Administrativo</li>
                                 </div>
                             </a>
                             <a href="{{ route('admin.indexProyectos') }}" class="p-element">
                                 <div class="icon-sidebar-item">
-                                    <i class="material-icons">library_books</i>
+                                <i class="fa-solid fa-layer-plus"></i>
                                 </div>
                                 <div class="name-sidebar-item">
                                     <li>Proyectos</li>
@@ -89,8 +89,8 @@
                             </a>
                             <a class="p-element submenu" class="p-element">
                                 <div class="icon-sidebar-item">
-                                    <i class="material-icons">business</i>
-                                </div>
+                                <i class="fa-solid fa-building"></i>
+                                                            </div>
                                 <div class="name-sidebar-item">
                                     <li>Prácticas</li>
                                 </div>
@@ -99,15 +99,15 @@
                             <div class="item-list" id="sublista">
                                 <a class="p-element mb-1" href="{{ route('admin.agregarEmpresa') }}">
                                     <div class="icon-sidebar-item">
-                                        <i class="material-icons">add_business</i>
-                                    </div>
+                                    <i class="fa-solid fa-grid-2-plus"></i>
+                                                                    </div>
                                     <div class="name-sidebar-item">
                                         <li>Agregar-Empresa</li>
                                     </div>
                                 </a>
                                 <a class="p-element" href="{{ route('admin.aceptarFaseI') }}">
                                     <div class="icon-sidebar-item">
-                                        <i class="material-icons">check_circle</i>
+                                    <i class="fa-solid fa-circle-check"></i>
                                     </div>
                                     <div class="name-sidebar-item">
                                         <li>Aprobar-Practicas</li>

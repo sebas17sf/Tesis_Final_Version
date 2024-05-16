@@ -60,22 +60,28 @@
                         @csrf
                         @method('PUT')
 
-                        <div class="form-group">
-                            <label for="nombre">
-                                <i class="material-icons">person</i> Nombres
-                            </label>
-                            <input type="text" name="nombre" id="nombre" class="form-control" value="{{ Auth::user()->Nombre }}">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="nombre">
+                                        <i class="material-icons">person</i> Nombres
+                                    </label>
+                                    <input type="text" name="nombre" id="nombre" class="form-control" value="{{ Auth::user()->Nombre }}">
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="apellido">
+                                        <i class="material-icons">person</i> Apellidos
+                                    </label>
+                                    <input type="text" name="apellido" id="apellido" class="form-control" value="{{ Auth::user()->Apellido }}">
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="apellido">
-                                <i class="material-icons">person</i> Apellidos
-                            </label>
-                            <input type="text" name="apellido" id="apellido" class="form-control" value="{{ Auth::user()->Apellido }}">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="contrasena">
+                            <label for="contrasena" >
                                 <i class="material-icons">lock</i> Nueva Contraseña
                             </label>
                             <input type="password" name="contrasena" id="contrasena" class="form-control">
