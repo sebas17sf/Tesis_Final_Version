@@ -45,7 +45,7 @@ body {
                             <a href="{{ route('estudiantes.index') }}"
                             class="p-element">
                                 <div class="icon-sidebar-item">
-                                    <i class="material-icons">assignment</i>
+                                <i class="fa-regular fa-address-card"></i>
                                 </div>
                                 <div class="name-sidebar-item">
                                     <li>Información</li>

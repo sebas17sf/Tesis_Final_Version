@@ -33,7 +33,7 @@
 
             <div class="form-group">
                 <label for="DirectorProyecto">Director del Proyecto:</label>
-                <select name="DirectorProyecto" class="form-control input input select" required>
+                <select name="DirectorProyecto" class="form-control input input_select " required>
                     <option value="">Seleccionar Director</option>
                     @foreach ($profesores as $profesor)
                         <option value="{{ $profesor->id }}">Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
@@ -44,7 +44,7 @@
 
             <div class="form-group">
                 <label for="ProfesorParticipante">Profesor Participante:</label>
-                <select name="ProfesorParticipante[]" class="form-control input input-select" required>
+                <select name="ProfesorParticipante[]" class="form-control input input_select" required>
                     <option value="">Seleccionar Profesor Participante</option>
                     @foreach ($profesores as $profesor)
                         <option value="{{ $profesor->id }}">Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
@@ -60,7 +60,7 @@
 
             <div class="form-group">
                 <label for="nrc">Vinculacion NRC:</label>
-                <select name="nrc" class="form-control input input-select" required>
+                <select name="nrc" class="form-control input input_select" required>
                     <option value="">Seleccionar NRC</option>
                     @foreach ($nrcs as $nrc)
                         <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
@@ -92,7 +92,7 @@
 
             <div class="form-group">
                 <label for="DepartamentoTutor">Departamento:</label>
-                <select name="DepartamentoTutor" class="form-control input input-select" required>
+                <select name="DepartamentoTutor" class="form-control input input_select" required>
                     <option value="Ciencias de la Computación">DCCO - Departamento de Computación</option>
                     <option value="Ciencias Exactas">DCEX - Ciencias Exactas</option>
                     <option value="Ciencias de la Vida y Agricultura">DCVA - Departamento de Ciencias de la Vida y
@@ -117,7 +117,7 @@
 
             <div class="form-group">
                 <label for="Estado">Estado:</label>
-                <select name="Estado" class="form-control input-select input" required>
+                <select name="Estado" class="form-control input input_select" required>
                     <option value="Ejecucion">En Ejecución</option>
                     <option value="Terminado">Terminado</option>
                 </select>
