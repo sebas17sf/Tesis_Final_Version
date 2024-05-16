@@ -37,26 +37,29 @@
             <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                 <!-- Botones -->
                 <div class="row">
-    <div class="col-md-12 d-flex align-items-center">
-        <form method="POST" action="{{ route('coordinador.reportesProyectos') }}" class="form-inline mr-2 d-flex align-items-center">
-            @csrf
-            <div class="form-group mr-2 d-flex align-items-center">
-                <label for="estado" class="mr-2">Estado del Proyecto:</label>
-                <select name="estado" id="estado" class="form-control input input-select mr-2">
-                    <option value="">Todos</option>
-                    <option value="Ejecucion">En Ejecución</option>
-                    <option value="Terminado">Terminado</option>
-                </select>
-            </div>
-            <button type="submit" class="button3 efects_button btn_excel mr-2" pTooltip="Excel" tooltipPosition="top">
-                <i class="fa-solid fa-file-excel"></i>
-            </button>
-            <button type="button" onclick="location.href='{{ route('admin.agregarProyecto') }}';" class="button3 efects_button btn_1" id="button3">
-                <i class="fa-solid fa-plus"></i>
-            </button>
-        </form>
-    </div>
-</div>
+                    <div class="col-md-12 d-flex align-items-center">
+                        <form method="POST" action="{{ route('coordinador.reportesProyectos') }}"
+                            class="form-inline mr-2 d-flex align-items-center">
+                            @csrf
+                            <div class="form-group mr-2 d-flex align-items-center">
+                                <label for="estado" class="mr-2">Estado del Proyecto:</label>
+                                <select name="estado" id="estado" class="form-control input input-select mr-2">
+                                    <option value="">Todos</option>
+                                    <option value="Ejecucion">En Ejecución</option>
+                                    <option value="Terminado">Terminado</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="button3 efects_button btn_excel mr-2" pTooltip="Excel"
+                                tooltipPosition="top">
+                                <i class="fa-solid fa-file-excel"></i>
+                            </button>
+                            <button type="button" onclick="location.href='{{ route('admin.agregarProyecto') }}';"
+                                class="button3 efects_button btn_1" id="button3">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
 
                 <!-- Buscador -->
                 <div class="contenedor_buscador">

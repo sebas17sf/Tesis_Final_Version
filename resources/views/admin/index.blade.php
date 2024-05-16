@@ -44,7 +44,20 @@
             });
         </script>
     @endif
+<style>
+    .modal-backdrop {
+    display: none !important; /* Oculta el fondo oscuro */
+}
 
+/* Para permitir el movimiento del modal */
+.modal-static {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+    </style>
 
     @if (session('errorMaestro'))
         <script>
@@ -164,7 +177,7 @@
             <div class="contenedor_registro_genero ">
                 <div>
                     <span><b>Docentes agregados</b></span>
-                    <button type="button" class="button" data-toggle="modal" data-target="#modalAgregarMaestro">
+                    <button type="button" class="button" data-toggle="modal" data-backdrop="false" data-target="#modalAgregarMaestro">
                         Agregar Docentes
                     </button>
                     <hr>
@@ -862,10 +875,12 @@
 
 
         $(document).ready(function() {
-            $('.draggable').draggable({
+            $('#modalAgregarMaestro').draggable({
                 handle: '.modal-header'
             });
         });
+
+
 
         function cerrarModal() {
             $('#editModal').modal('hide');
