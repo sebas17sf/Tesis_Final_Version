@@ -39,17 +39,25 @@
                             <div class="form-group">
                                 <label for="nombreEmpresa">Nombre de la Empresa:</label>
                                 <input type="text" class="form-control input" id="nombreEmpresa" name="nombreEmpresa"
-                                    placeholder="Ingrese el Nombre de la Empresa" required>
+                                    placeholder="Ingrese el Nombre de la Empresa" required pattern="[A-Za-zÁ-úñÑ\s]+"
+                                    title="Ingrese solo letras (sin caracteres numéricos)">
+                                <span id="error-message-nombre" style="color: red; display: none;">Debe ingresar solo
+                                    caracteres</span>
                             </div>
+
+
                         </div>
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="rucEmpresa">RUC de la Empresa:</label>
                                 <input type="text" class="form-control input" id="rucEmpresa" name="rucEmpresa"
                                     placeholder="Ingrese RUC (13 dígitos)" required pattern="[0-9]{13}"
                                     title="Ingrese 13 dígitos numéricos">
+                                <span id="error-message-ruc" style="color: red; display: none;">RUC no válido</span>
                             </div>
                         </div>
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="provincia">Provincia:</label>
@@ -116,7 +124,9 @@
                                 <label for="telefonoContacto">Teléfono del contacto de la Empresa:</label>
                                 <input type="text" class="form-control input" id="telefonoContacto"
                                     name="telefonoContacto" placeholder="Ingrese el celular de la Empresa (10 dígitos)"
-                                    required pattern="[0-9]{10}" title="Ingrese 10 dígitos numéricos">
+                                    required pattern="09[0-9]{8}" title="Ingrese 10 dígitos numéricos">
+                                <span id="error-message-telefono" style="color: red; display: none;">Número de teléfono no
+                                    válido</span>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -136,7 +146,7 @@
                         </div>
                         <div class="col-md-6">
 
-                           {{--  <div>
+                            {{--  <div>
                                 <label for="input_file">Archivo del período <span class="requerido">*</span></label>
                                 <div class="input input_file">
                                   <span id="fileText"><i class="fa-solid fa-arrow-up-from-bracket"></i> {{fileText}}</span>
@@ -145,24 +155,27 @@
                                 </div>
                                 <input style="display: none;" formControlName="filePeriodo"  id="input_file" type="file"
                                  >
-                               
+
                                 <div class="contenedor_campo_requerido">
-                                 
+
                                   <div>
                                     El archivo del período es requerido.
                                   </div>
-                                
+
                                 </div>
-                            
+
                               </div> --}}
 
                             <div class="form-group">
                                 <label for="cartaCompromiso">Carta Compromiso (PDF):</label>
                                 <div class="input input_file">
-                                    <span id="fileText" class="fileText"><i class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir el documento</span>
-                                    <input type="file" class="form-control-file input input_file"  id="cartaCompromiso"
+                                    <span id="fileText" class="fileText"><i
+                                            class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir el
+                                        documento</span>
+                                    <input type="file" class="form-control-file input input_file" id="cartaCompromiso"
                                         name="cartaCompromiso" onchange="displayFileName(this)">
-                                    <span title="Eliminar archivo" onclick="removeFile(this)" class="remove-icon">✖</span>
+                                    <span title="Eliminar archivo" onclick="removeFile(this)"
+                                        class="remove-icon">✖</span>
                                 </div>
                             </div>
                         </div>
@@ -170,12 +183,14 @@
                             <div class="form-group">
                                 <label for="convenio">Convenio (PDF):</label>
                                 <div class="input input_file">
-                                    <span id="fileText" class="fileText"><i class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí
+                                    <span id="fileText" class="fileText"><i
+                                            class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí
                                         para
                                         subirel documento</span>
                                     <input type="file" class="form-control-file input input_file" id="convenio"
                                         name="convenio" onchange="displayFileName(this)">
-                                    <span title="Eliminar archivo" onclick="removeFile(this)" class="remove-icon">✖</span>
+                                    <span title="Eliminar archivo" onclick="removeFile(this)"
+                                        class="remove-icon">✖</span>
                                 </div>
                             </div>
 
@@ -297,23 +312,29 @@
 
                                                 <td>
                                                     <div class="btn-group" role="group">
-                                                        <form action="{{ route('admin.eliminarEmpresa', ['id' => $empresa->id]) }}" method="POST">
+                                                        <form
+                                                            action="{{ route('admin.eliminarEmpresa', ['id' => $empresa->id]) }}"
+                                                            method="POST">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-link p-0">
-                                                                <i class="material-icons text-muted" style="font-size: 1.5em;">delete</i>
+                                                                <i class="material-icons text-muted"
+                                                                    style="font-size: 1.5em;">delete</i>
                                                             </button>
                                                         </form>
-                                                    
-                                                        <form action="{{ route('admin.editarEmpresa', ['id' => $empresa->id]) }}" method="POST">
+
+                                                        <form
+                                                            action="{{ route('admin.editarEmpresa', ['id' => $empresa->id]) }}"
+                                                            method="POST">
                                                             @csrf
                                                             @method('GET')
                                                             <button type="submit" class="btn btn-link p-0">
-                                                                <i class="material-icons text-muted" style="font-size: 1.5em;">edit</i>
+                                                                <i class="material-icons text-muted"
+                                                                    style="font-size: 1.5em;">edit</i>
                                                             </button>
                                                         </form>
                                                     </div>
-                                                    
+
 
                                                 </td>
 

@@ -53,7 +53,7 @@
                         <ul class="nav-list">
                             <a class="p-element" href="{{ route('admin.index') }}">
                                 <div class="icon-sidebar-item">
-                                <i class="fa-solid fa-grid-horizontal"></i>                                
+                                <i class="fa-solid fa-grid-horizontal"></i>
                             </div>
                                 <div class="name-sidebar-item">
                                     <li>Panel Administrativo</li>
@@ -187,6 +187,8 @@
     <script src="{{ asset('js/plantilla/vendor.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
     <script src="{{ asset('js/admin/general.js') }}"></script>
+    <script src="{{ asset('js/admin/empresa.js') }}"></script>
+
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
