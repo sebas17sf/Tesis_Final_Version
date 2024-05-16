@@ -51,7 +51,7 @@
             <button type="submit" class="button3 efects_button btn_excel mr-2" pTooltip="Excel" tooltipPosition="top">
                 <i class="fa-solid fa-file-excel"></i>
             </button>
-            <button type="button" onclick="location.href='{{ route('admin.agregarProyecto') }}';" class="button3 efects_button btn_nuevo1" id="button3">
+            <button type="button" onclick="location.href='{{ route('admin.agregarProyecto') }}';" class="button3 efects_button btn_1" id="button3">
                 <i class="fa-solid fa-plus"></i>
             </button>
         </form>

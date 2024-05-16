@@ -22,6 +22,14 @@ $shadow-oro: #17181c;
 
 
 // Color de botones
+// Color de botones
+$btns: #3c68e3;
+$btn-color-1: $btns;
+$btn-color-2: darken($btns, 10);
+$btn-color-3: darken($btns, 20);
+$btn-color-4: darken($btns, 30);
+$btn-color-5: darken($btns, 40);
+$btn-color-6: darken($btns, 50);
 
 $btns: #3c68e3;
 $btn-color-enviar: $btns;
