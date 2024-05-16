@@ -25,7 +25,7 @@ class CreateEstudiantesTable extends Migration
             $table->string('Departamento')->nullable();
             $table->string('Estado')->nullable();
             $table->string('comentario')->nullable();
-        
+
             // Definir las relaciones con las tablas Cohorte y Periodo
             $table->foreign('id_periodo')->references('id')->on('periodo')->nullable();
         });
