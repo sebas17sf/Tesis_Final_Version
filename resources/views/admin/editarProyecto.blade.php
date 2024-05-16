@@ -23,20 +23,24 @@
                     <option value="">Seleccionar Director</option>
                     @foreach ($profesores as $profesor)
                         <option value="{{ $profesor->id }}"
-                            {{ $proyecto->DirectorProyecto === $profesor->id ? 'selected' : '' }}>
-                            {{ $profesor->Apellidos }} {{ $profesor->Nombres }}
-                            {{ $profesor->Departamento }} {{ $profesor->Correo }} </option>
+                            {{ $proyecto->id_directorProyecto === $profesor->id ? 'selected' : '' }}>
+                            {{ $profesor->Apellidos }} {{ $profesor->Nombres }} {{ $profesor->Departamento }}
+                            {{ $profesor->Correo }}
+                        </option>
                     @endforeach
                 </select>
             </div>
+
 
             <div class="form-group">
                 <label for="ProfesorParticipante">Profesor Participante:</label>
                 <select name="ProfesorParticipante[]" class="form-control input input-select" required>
                     <option value="">Seleccionar Profesor Participante</option>
                     @foreach ($profesores as $profesor)
-                        <option value="{{ $profesor->id }}"> {{ $profesor->Apellidos }} {{ $profesor->Nombres }}
-                            {{ $profesor->Departamento }} {{ $profesor->Correo }} </option>
+                        <option value="{{ $profesor->id }}" {{ $profesor->id ? 'selected' : '' }}>
+                            {{ $profesor->Apellidos }} {{ $profesor->Nombres }} {{ $profesor->Departamento }}
+                            {{ $profesor->Correo }}
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -52,7 +56,10 @@
                 <select name="nrc" class="form-control input input-select" required>
                     <option value="">Seleccionar NRC</option>
                     @foreach ($nrcs as $nrc)
-                        <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
+                        <option value="{{ $nrc->id }}"
+                            {{ $proyecto->id_nrc_vinculacion === $nrc->id ? 'selected' : '' }}>
+                            {{ $nrc->nrc }}
+                        </option>
                     @endforeach
                 </select>
             </div>

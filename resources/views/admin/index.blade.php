@@ -268,7 +268,7 @@
                                 <button class="button3 efects_button btn_filtro" pTooltip="Filtros" tooltipPosition="top"><i
                                         class="fa-solid fa-filter-list"></i></button>
 
-                            
+
                                 <button class="button3 efects_button btn_delete_filter" pTooltip="Eliminar filtros" tooltipPosition="top"><i
                                         class="fa-sharp fa-solid fa-filter-circle-xmark"></i></button> --}}
 
@@ -586,103 +586,136 @@
                 </button>
                 <hr>
                 <div id="registrarPeriodos" style="display: none;">
-                    <form action="{{ route('admin.guardarPeriodo') }}" method="post">
-                        @csrf
+                    <!-- ------------------------------Agregar periodo----------------------------------------------------- -->
+                    <div>
+                        <button type="button" class="button" data-toggle="modal" data-target="#modalAgregarPeriodo">
+                            Agregar Periodo
+                        </button>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label for="periodoInicio"><strong>Ingrese el inicio del Periodo
-                                        Académico:</strong></label>
-                                <input type="date" id="periodoInicio" name="periodoInicio" class="form-control input"
-                                    required>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="periodoFin"><strong>Ingrese el fin del Periodo Académico:</strong></label>
-                                <input type="date" id="periodoFin" name="periodoFin" class="form-control input"
-                                    required>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="numeroPeriodo"><strong>Ingrese el número identificador del
-                                        periodo:</strong></label>
-                                <input type="text" id="numeroPeriodo" name="numeroPeriodo"
-                                    placeholder="Ingrese 6 números" class="form-control input" pattern="[0-9]{1,6}"
-                                    title="Ingrese un número no negativo de hasta 6 dígitos" required>
-                                <small id="errorNumeroPeriodo" class="form-text text-danger"></small>
+
+                    </div>
+
+                    <div class="modal fade" id="modalAgregarPeriodo" tabindex="-1" role="dialog"
+                        aria-labelledby="modalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <span class="modal-title" id="modalLabel">
+                                        <p>Agregar Periodo</p>
+                                    </span>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{ route('admin.guardarPeriodo') }}" method="post">
+                                        @csrf
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-4">
+                                                <label for="periodoInicio"><strong>Ingrese el inicio del Periodo
+                                                        Académico:</strong></label>
+                                                <input type="date" id="periodoInicio" name="periodoInicio"
+                                                    class="form-control input" required>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label for="periodoFin"><strong>Ingrese el fin del Periodo
+                                                        Académico:</strong></label>
+                                                <input type="date" id="periodoFin" name="periodoFin"
+                                                    class="form-control input" required>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label for="numeroPeriodo"><strong>Ingrese el número identificador del
+                                                        periodo:</strong></label>
+                                                <input type="text" id="numeroPeriodo" name="numeroPeriodo"
+                                                    placeholder="Ingrese 6 números" class="form-control input"
+                                                    pattern="[0-9]{1,6}"
+                                                    title="Ingrese un número no negativo de hasta 6 dígitos" required>
+                                                <small id="errorNumeroPeriodo" class="form-text text-danger"></small>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="button" data-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="button">Guardar Periodo</button>
+                                        </div>
+                                    </form>
+                                </div>
+
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <button type="submit" class="button efects_button">Guardar Periodo Académico</button>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
+
+
 
                     <br>
                     <!-- Formulario para agregar NRC Vinculacion -->
-                    <h6>NRC Vinculacion</h6>
-                    <form class="FormularioNRC" action="{{ route('admin.nrcVinculacion') }}" method="post">
-                        @csrf
 
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="nrc"><strong>Ingrese el NRC:</strong></label>
-                                <input type="text" id="nrc" name="nrc" class="form-control input"
-                                    placeholder="Ingrese 5 números" required>
-                                <small id="errorNRC" class="form-text text-danger"></small>
-                            </div>
-                            <div class="form-group col-lg-6">
+                    <div>
+                        <button type="button" class="button" data-toggle="modal" data-target="#modalAgregarNRC">
+                            Agregar NRC
+                        </button>
+                        <hr>
 
-                                <div class="form-group">
-                                    <label for="periodo"><strong>Seleccione el período:</strong></label>
-                                    <select id="periodo" name="periodo" class="form-control input_select input"
-                                        required>
-                                        <option value="">Seleccione un período</option>
-                                        @foreach ($periodos as $periodo)
-                                            <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} -
-                                                {{ $periodo->Periodo }}</option>
-                                        @endforeach
-                                    </select>
-                                    <small id="errorPeriodo" class="form-text text-danger"></small>
+                    </div>
+
+                    <div class="modal fade" id="modalAgregarNRC" tabindex="-1" role="dialog"
+                        aria-labelledby="modalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <span class="modal-title" id="modalLabel">
+                                        <p>Agregar NRC Vinculacion - Practicas preprofesionales</p>
+                                    </span>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <button type="submit" class="button efects_button">Guardar NRC</button>
+                                <div class="modal-body">
+                                    <form class="FormularioNRC" action="{{ route('admin.nrcVinculacion') }}"
+                                        method="post">
+                                        @csrf
+
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label for="nrc"><strong>Ingrese el NRC:</strong></label>
+                                                <input type="text" id="nrc" name="nrc"
+                                                    class="form-control input" placeholder="Ingrese 5 números" required>
+                                                <small id="errorNRC" class="form-text text-danger"></small>
+                                            </div>
+                                            <div class="form-group col-lg-6">
+
+                                                <div class="form-group">
+                                                    <label for="periodo"><strong>Seleccione el período:</strong></label>
+                                                    <select id="periodo" name="periodo"
+                                                        class="form-control input_select input" required>
+                                                        <option value="">Seleccione un período</option>
+                                                        @foreach ($periodos as $periodo)
+                                                            <option value="{{ $periodo->id }}">
+                                                                {{ $periodo->numeroPeriodo }} -
+                                                                {{ $periodo->Periodo }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <small id="errorPeriodo" class="form-text text-danger"></small>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="button" data-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="button">Guardar NRC</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+
                             </div>
                         </div>
-                    </form>
+                    </div>
+
 
                     <br>
-                    <!-- Formulario para agregar NRC Practicas 1 -->
-                    <h6>NRC Practicas preprofesinales 1</h6>
-                    <form class="FormularioNRCPracticas1" action="{{ route('admin.nrcPracticas1') }}" method="post">
-                        @csrf
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="nrc"><strong>Ingrese el NRC:</strong></label>
-                                <input type="text" id="nrc" name="nrc" class="form-control input"
-                                    placeholder="Ingrese 5 números" required>
-                                <small id="errorNRC" class="form-text text-danger"></small>
-                            </div>
 
-                            <div class="form-group col-md-6">
-                                <label for="periodo"><strong>Seleccione el período:</strong></label>
-                                <select id="periodo" name="periodo" class="form-control input_select input" required>
-                                    <option value="">Seleccione un período</option>
-                                    @foreach ($periodos as $periodo)
-                                        <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} -
-                                            {{ $periodo->Periodo }}</option>
-                                    @endforeach
-                                </select>
-                                <small id="errorPeriodo" class="form-text text-danger"></small>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <button type="submit" class="button efects_button">Guardar NRC</button>
-                            </div>
-                        </div>
-                    </form>
+                    <!-- ----------------------------------------------------------------------------------- -->
 
                     <br>
                     <!-- Elementos agregados (Periodos y Cohortes) -->

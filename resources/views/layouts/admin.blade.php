@@ -16,7 +16,7 @@
    {{--  <link rel="stylesheet" href="../css/admin/admin.css">
  --}}
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
-    
+
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
     <style>
@@ -24,22 +24,11 @@
             overflow-x: hidden;
         }
 
-        .modal-content {
-            cursor: move;
-        }
 
-        .modal-backdrop.show {
-            opacity: 0 !important;
-            pointer-events: none !important;
-        }
 
-        .modal-backdrop {
-            z-index: auto !important;
-        }
 
-        .modal {
-            z-index: 1050 !important;
-        }
+
+
     </style>
    {{--  <script src="../js/menu.js"></script> --}}
     <script src="{{ asset('js/menu.js') }}"></script>
@@ -210,6 +199,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   {{--   <script src="../js/input_file.js"></script> --}}
     <script src="{{ asset('js/input_file.js') }}"></script>
+    <script>
+        var token = "{{ session('token') }}";
+        if (token) {
+            localStorage.setItem('token', token);
+         }
+    </script>
 </body>
 
 </html>

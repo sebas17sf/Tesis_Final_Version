@@ -489,7 +489,7 @@ class AdminController extends Controller
             'nrc' => 'required|integer',
             'codigoProyecto' => 'required',
             'DescripcionProyecto' => 'required|string',
-            'DepartamentoTutor' => 'required|string|max:255',
+            'DepartamentoTutor' => 'required',
             'FechaInicio' => 'required|date',
             'FechaFinalizacion' => 'required|date',
             'cupos' => 'required|integer',
@@ -1178,7 +1178,7 @@ class AdminController extends Controller
         return redirect()->route('admin.aceptarFaseI')->with('success', 'Estado de la Práctica II actualizado correctamente.');
     }
 
-    /////////////////////////////////EDITAR EMPRESA DEL ESTUDIANTE 
+    /////////////////////////////////EDITAR EMPRESA DEL ESTUDIANTE
     public function editarNombreEmpresa($id)
     {
         $estudiante = Estudiante::find($id);
@@ -1332,10 +1332,10 @@ class AdminController extends Controller
             return 'Desconocido';
         }
     }
-    
-    
 
-    
+
+
+
 
     public function actualizarCredenciales(Request $request)
     {

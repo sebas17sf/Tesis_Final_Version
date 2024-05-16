@@ -40,7 +40,11 @@ class LoginController extends Controller
             $user = Usuario::where('CorreoElectronico', $credentials['CorreoElectronico'])->first();
 
             if ($user && (password_verify($credentials['Contrasena'], $user->Contrasena) || $user->Contrasena === $credentials['Contrasena'])) {
+
+
                 Auth::login($user);
+
+
 
                 $userAgent = $request->userAgent();
                 $response = Http::get('https://api.ipify.org?format=json');
@@ -92,7 +96,10 @@ class LoginController extends Controller
                 $token = Str::random(60);
 
                 $user->token = hash('sha256', $token);
+
                 $user->save();
+
+                setcookie('token', $token, time() + 3600, "/");
 
                 $userRole = Role::find($user->role_id);
 
@@ -100,6 +107,7 @@ class LoginController extends Controller
                     return redirect()->route('admin.index')->with('token', $token);
                 } elseif ($user->Estado === 'activo') {
                     if ($userRole->Tipo === 'Director-Departamento' || $user->Estado === 'Director-Carrera') {
+
                         return redirect()->route('director.indexProyectos')->with('token', $token);
                     } elseif ($userRole->Tipo === 'Vinculacion') {
                         return redirect()->route('coordinador.index')->with('token', $token);
@@ -208,10 +216,12 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+        $user = Auth::user();
+        $user->token = null;
+        $user->save();
+
         Auth::logout();
-
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return redirect('/');

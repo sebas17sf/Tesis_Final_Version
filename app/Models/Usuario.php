@@ -23,7 +23,7 @@ class Usuario extends Model implements Authenticatable
         'FechaNacimiento',
         'CorreoElectronico',
         'Contrasena',
-         'token',
+        'token',
         'token_expires_at',
         'Estado',
         'role_id'
@@ -34,40 +34,40 @@ class Usuario extends Model implements Authenticatable
 
 
 
- // Implementación de la función getAuthIdentifierName
- public function getAuthIdentifierName()
- {
-     return 'UserID'; // Nombre de la columna que es clave primaria en la tabla
- }
+    // Implementación de la función getAuthIdentifierName
+    public function getAuthIdentifierName()
+    {
+        return 'UserID'; // Nombre de la columna que es clave primaria en la tabla
+    }
 
- // Implementación de la función getAuthIdentifier
- public function getAuthIdentifier()
- {
-     return $this->getKey(); // Devuelve la clave primaria del usuario
- }
+    // Implementación de la función getAuthIdentifier
+    public function getAuthIdentifier()
+    {
+        return $this->getKey(); // Devuelve la clave primaria del usuario
+    }
 
- // Implementación de la función getAuthPassword
- public function getAuthPassword()
- {
-     return $this->Contrasena; // Nombre de la columna que almacena la contraseña
- }
+    // Implementación de la función getAuthPassword
+    public function getAuthPassword()
+    {
+        return $this->Contrasena; // Nombre de la columna que almacena la contraseña
+    }
 
- public function getRememberToken()
- {
-     return $this->remember_token; // Nombre de la columna que almacena el token
- }
+    public function getRememberToken()
+    {
+        return $this->remember_token; // Nombre de la columna que almacena el token
+    }
 
- // Implementación de la función setRememberToken
- public function setRememberToken($value)
- {
-     $this->remember_token = $value; // Nombre de la columna que almacena el token
- }
+    // Implementación de la función setRememberToken
+    public function setRememberToken($value)
+    {
+        $this->remember_token = $value; // Nombre de la columna que almacena el token
+    }
 
- // Implementación de la función getRememberTokenName
- public function getRememberTokenName()
- {
-     return 'remember_token'; // Nombre de la columna que almacena el token
- }
+    // Implementación de la función getRememberTokenName
+    public function getRememberTokenName()
+    {
+        return 'remember_token'; // Nombre de la columna que almacena el token
+    }
 
 
 
@@ -91,5 +91,5 @@ class Usuario extends Model implements Authenticatable
 
 
 
-   
+
 }
