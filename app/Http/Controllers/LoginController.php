@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\RecuperarContrasena;
 use App\Models\Role;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Socialite\Facades\Socialite;
 
 
@@ -128,6 +129,7 @@ class LoginController extends Controller
                 throw new \Exception('Las credenciales proporcionadas no coinciden con nuestros registros.');
             }
         } catch (\Exception $e) {
+            ////muestrame el error
             return redirect()->route('login')->with('error', $e->getMessage());
         }
     }
@@ -239,7 +241,13 @@ class LoginController extends Controller
     public function githubCallback()
     {
         try {
-            $githubUser = Socialite::driver('github')->user();
+             $cacheKey = 'github_user_' . session('github_id');
+            if (Cache::has($cacheKey)) {
+                $githubUser = Cache::get($cacheKey);
+            } else {
+                $githubUser = Socialite::driver('github')->user();
+                Cache::put($cacheKey, $githubUser, 60);
+            }
 
             $user = Usuario::where('github_id', $githubUser->id)->first();
 
@@ -250,43 +258,35 @@ class LoginController extends Controller
                     'CorreoElectronico' => $githubUser->email,
                     'Estado' => 'activo',
                     'role_id' => Role::where('Tipo', 'Estudiante')->first()->id,
-
                 ]);
             }
 
             Auth::login($user, true);
 
-
             $token = Str::random(60);
-
             $user->token = hash('sha256', $token);
-
             $user->save();
 
             $userRole = $user->role;
 
             if ($userRole->Tipo === 'Administrador') {
                 return redirect()->route('admin.index')->with('token', $token);
-            } elseif ($user->Estado === 'activo') {
-                if ($userRole->Tipo === 'Director-Departamento' || $userRole->Tipo === 'Director-Carrera') {
-                    return redirect()->route('director.indexProyectos')->with('token', $token);
-                } elseif ($userRole->Tipo === 'Vinculacion') {
-                    return redirect()->route('coordinador.index')->with('token', $token);
-                } elseif ($userRole->Tipo === 'DirectorVinculacion') {
-                    return redirect()->route('director_vinculacion.index')->with('token', $token);
-                } elseif ($userRole->Tipo === 'ParticipanteVinculacion') {
-                    return redirect()->route('ParticipanteVinculacion.index')->with('token', $token);
-                } else {
-                    return back()->withErrors([
-                        'CorreoElectronico' => 'Su estado no permite el acceso en este momento.',
-                    ]);
-                }
+            } elseif ($userRole->Tipo === 'Director-Departamento' || $userRole->Tipo === 'Director-Carrera') {
+                return redirect()->route('director.indexProyectos')->with('token', $token);
+            } elseif ($userRole->Tipo === 'Vinculacion') {
+                return redirect()->route('coordinador.index')->with('token', $token);
+            } elseif ($userRole->Tipo === 'DirectorVinculacion') {
+                return redirect()->route('director_vinculacion.index')->with('token', $token);
+            } elseif ($userRole->Tipo === 'ParticipanteVinculacion') {
+                return redirect()->route('ParticipanteVinculacion.index')->with('token', $token);
             } else {
                 return redirect()->route('estudiantes.create')->with('token', $token);
             }
         } catch (\Exception $e) {
-            return redirect()->route('login')->with('error', $e->getMessage());
+            return redirect()->route('login')->with('error', 'Ocurrió un error al iniciar sesión con GitHub.');
         }
+
+
     }
 
 
