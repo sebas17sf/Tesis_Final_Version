@@ -74,7 +74,7 @@
                                         <span class="input-group-text input">+593</span>
                                     </div>
                                     <input id="celular" type="text" class="form-control input" name="celular" required
-                                        pattern="[0-9]{9}" placeholder="Ingrese su número de celular">
+                                         placeholder="Ingrese su número de celular">
                                 </div>
                                 <span id="error-message-cell" style="color: red; display: none;">Número de celular no
                                     válido</span>

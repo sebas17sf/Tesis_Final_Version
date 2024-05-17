@@ -13,12 +13,14 @@ class CreateUsuariosTable extends Migration
             $table->string('NombreUsuario');
             $table->string('CorreoElectronico')->unique();
             $table->string('Contrasena');
-            $table->date('FechaNacimiento');
-            $table->string('Estado');
+             $table->string('Estado');
             $table->string('token')->nullable();
             $table->timestamp('token_expires_at')->nullable();
-            $table->unsignedBigInteger('role_id'); 
-            $table->foreign('role_id')->references('id')->on('roles');  
+            $table->string('google_id')->nullable();
+            $table->string('github_id')->nullable();
+            $table->rememberToken();
+            $table->unsignedBigInteger('role_id');
+            $table->foreign('role_id')->references('id')->on('roles');
             $table->timestamps();
         });
     }

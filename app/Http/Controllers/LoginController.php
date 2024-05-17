@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\RecuperarContrasena;
 use App\Models\Role;
 use Illuminate\Support\Facades\Http;
+use Laravel\Socialite\Facades\Socialite;
 
 
 use Illuminate\Support\Facades\Session;
@@ -228,6 +229,65 @@ class LoginController extends Controller
     }
 
 
+    ///////////iniciar con gith
+    public function githubRedirect()
+    {
+        return Socialite::driver('github')->redirect();
+    }
+
+
+    public function githubCallback()
+    {
+        try {
+            $githubUser = Socialite::driver('github')->user();
+
+            $user = Usuario::where('github_id', $githubUser->id)->first();
+
+            if (!$user) {
+                $user = Usuario::create([
+                    'github_id' => $githubUser->id,
+                    'NombreUsuario' => $githubUser->nickname,
+                    'CorreoElectronico' => $githubUser->email,
+                    'Estado' => 'activo',
+                    'role_id' => Role::where('Tipo', 'Estudiante')->first()->id,
+
+                ]);
+            }
+
+            Auth::login($user, true);
+
+
+            $token = Str::random(60);
+
+            $user->token = hash('sha256', $token);
+
+            $user->save();
+
+            $userRole = $user->role;
+
+            if ($userRole->Tipo === 'Administrador') {
+                return redirect()->route('admin.index')->with('token', $token);
+            } elseif ($user->Estado === 'activo') {
+                if ($userRole->Tipo === 'Director-Departamento' || $userRole->Tipo === 'Director-Carrera') {
+                    return redirect()->route('director.indexProyectos')->with('token', $token);
+                } elseif ($userRole->Tipo === 'Vinculacion') {
+                    return redirect()->route('coordinador.index')->with('token', $token);
+                } elseif ($userRole->Tipo === 'DirectorVinculacion') {
+                    return redirect()->route('director_vinculacion.index')->with('token', $token);
+                } elseif ($userRole->Tipo === 'ParticipanteVinculacion') {
+                    return redirect()->route('ParticipanteVinculacion.index')->with('token', $token);
+                } else {
+                    return back()->withErrors([
+                        'CorreoElectronico' => 'Su estado no permite el acceso en este momento.',
+                    ]);
+                }
+            } else {
+                return redirect()->route('estudiantes.create')->with('token', $token);
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('login')->with('error', $e->getMessage());
+        }
+    }
 
 
 }

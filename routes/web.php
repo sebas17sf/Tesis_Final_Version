@@ -11,6 +11,8 @@ use App\Http\Controllers\DocumentoController;
 use App\Http\Controllers\DirectorVinculacionController;
 use App\Http\Controllers\ParticipanteVinculacionController;
 use App\Http\Controllers\DocumentosVinculacion;
+use Laravel\Socialite\Facades\Socialite;
+
 
 
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
@@ -339,4 +341,42 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/respaldo', [AdminController::class, 'backup'])->name('admin.respaldo');
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 });
+
+//////////////////////////////////////////////////ruta github
+
+
+Route::get('/auth/github/redirect', [LoginController::class, 'githubRedirect'])->name('github.redirect');
+
+
+Route::get('auth/github/callback', [LoginController::class, 'githubCallback']) ->name('github.callback');
+
+
+
+
+
+
+
+ 

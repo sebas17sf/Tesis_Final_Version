@@ -59,11 +59,6 @@
                         <input type="email" class="input form_input" id="CorreoElectronico" name="CorreoElectronico" placeholder="Ingrese su correo eléctronico" required>
                     </div>
 
-                    <div>
-                        <!-- Campo de fecha de nacimiento -->
-                        <label class="description" for="FechaNacimiento">Fecha de Nacimiento</label>
-                        <input type="date" class="input form_input" id="FechaNacimiento" name="FechaNacimiento" placeholder="Ingrese su fecha de nacimiento" required>
-                    </div>
 
                     <div>
                         <!-- Campo de contraseña -->

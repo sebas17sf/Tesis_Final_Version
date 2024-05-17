@@ -20,12 +20,14 @@ class Usuario extends Model implements Authenticatable
     // Campos que pueden ser llenados en masa (en el proceso de registro)
     protected $fillable = [
         'NombreUsuario',
-        'FechaNacimiento',
-        'CorreoElectronico',
+         'CorreoElectronico',
         'Contrasena',
         'token',
         'token_expires_at',
         'Estado',
+        'github_id',
+        'google_id',
+        'remember_token',
         'role_id'
     ];
 

@@ -27,30 +27,31 @@
 
                 <!-- Boton registrarse -->
                 <div class="button_container_register">
-                    <a href="{{ route('register') }}" class="boton_registro button1" type="button">Regístrate <i class="fa-regular fa-angles-right"></i></a>
+                    <a href="{{ route('register') }}" class="boton_registro button1" type="button">Regístrate <i
+                            class="fa-regular fa-angles-right"></i></a>
                 </div>
 
                 @if (session('success'))
-                        <script>
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Éxito',
-                                text: '{{ session('success') }}',
-                                confirmButtonText: 'Ok'
-                            });
-                        </script>
-                    @endif
+                    <script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Éxito',
+                            text: '{{ session('success') }}',
+                            confirmButtonText: 'Ok'
+                        });
+                    </script>
+                @endif
 
-                    @if (session('error'))
-                        <script>
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: '{{ session('error') }}',
-                                confirmButtonText: 'Ok'
-                            });
-                        </script>
-                    @endif
+                @if (session('error'))
+                    <script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: '{{ session('error') }}',
+                            confirmButtonText: 'Ok'
+                        });
+                    </script>
+                @endif
 
 
                 <form class="switch_container" action="{{ route('login') }}" method="POST">
@@ -62,11 +63,13 @@
                     @csrf
                     <!-- Campo de correo electrónico -->
                     <label class="description" for="CorreoElectronico">Correo Electrónico</label>
-                    <input class="input form_input" type="email" id="CorreoElectronico" name="CorreoElectronico" required placeholder="Ingrese su correo eléctronico">
+                    <input class="input form_input" type="email" id="CorreoElectronico" name="CorreoElectronico"
+                        required placeholder="Ingrese su correo eléctronico">
 
                     <!-- Campo de contraseña -->
                     <label class="description" for="Contrasena">Contraseña</label>
-                    <input class="input form_input" type="password" id="Contrasena" name="Contrasena" placeholder="Ingrese su contraseña" required>
+                    <input class="input form_input" type="password" id="Contrasena" name="Contrasena"
+                        placeholder="Ingrese su contraseña" required>
 
                     <!-- Olvido la contraseña -->
                     <div class="olvidar_contraseña">
@@ -86,15 +89,31 @@
                     </div>
 
                     <!-- Boton de google -->
-                    <a href="#" class="btn_google">
+                    <div class="row">
+                    <a href=" " class="btn_google">
                         <img src="\img\logos\google.png" alt="Google Icon" width="20">
                         <span>Continuar con Google</span>
                     </a>
 
+                    <a href="/auth/github/redirect" class="btn_google">
+                        <img src="/img/logos/github.png" alt="GitHub Icon" width="20">
+                        <span>Continuar con GitHub</span>
+                    </a>
+
+                    </div>
+                     <!-- Botón de GitHub -->
+
+
                 </form>
 
+
+
+
             </div>
+
+
         </div>
+
     </section>
 
 
