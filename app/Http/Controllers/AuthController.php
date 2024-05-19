@@ -32,7 +32,6 @@ class AuthController extends Controller
         $user = new Usuario;
         $user->NombreUsuario = $request->NombreUsuario;
         $user->CorreoElectronico = $request->CorreoElectronico;
-        $user->FechaNacimiento = $request->FechaNacimiento;
         $user->Contrasena = bcrypt($request->Contrasena);
         $user->role_id = $estudianteRoleId;
     
