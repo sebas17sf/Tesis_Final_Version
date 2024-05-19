@@ -167,9 +167,12 @@
             a {
               @include items-sidebar-styles;
               height: 30px;
-
+           
               .icon-sidebar-item {
-                height: 30px;
+                height: 23px;
+                padding: 5px;
+                margin-right: 1px;
+
               }
             }
           }
@@ -200,7 +203,8 @@
   border-radius: 0px 0px 20px 0px;
   background: colors.$bg;
   text-align: center;
-  opacity: 1; /* Cambiar opacity a 1 o eliminar esta línea */
+  opacity: 1;
+  /* Cambiar opacity a 1 o eliminar esta línea */
   z-index: 1000;
   transition: all 5s ease;
 
@@ -264,13 +268,20 @@
             transition: all 0.3s ease;
           }
 
-          .item-list {
+          .item-list.show {
             padding-left: 0px;
             margin-left: 0px;
 
             a {
               @include items-sidebar-styles-retraido;
               /*  transform: scale(0.8); */
+              width: 85%;
+              padding: 2px;
+              margin: 0 auto;
+           
+              transform-origin: top left;
+            
+              transition: transform 0.3s ease; 
             }
           }
         }
