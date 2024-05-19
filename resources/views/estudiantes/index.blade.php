@@ -31,8 +31,8 @@
     <div class="contenedor_botones">
     
         <form action="{{ route('estudiantes.certificadoMatricula') }}" method="get">
-            <button type="submit" class="button3 efects_button btn_copy" tooltipPosition="top">
-                <i class="material-icons">cloud_download</i> 
+            <button type="submit" class="button3 efects_button btn_pdf " tooltipPosition="top">
+            <i class="fa-solid fa-file-pdf"></i>
             </button>
         </form>
 <!-- Botón de edición con ícono -->

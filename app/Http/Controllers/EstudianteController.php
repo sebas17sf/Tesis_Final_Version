@@ -32,32 +32,29 @@ class EstudianteController extends Controller
     public function create()
     {
          $periodos = Periodo::all();
-        // Verifica si el usuario autenticado es un estudiante y ya tiene información registrada
-        if (Auth::check() && Auth::user()->estudiante) {
-            // Si es un estudiante con información registrada, redirige a la página index
-            return redirect()->route('estudiantes.index')->with('token', Session::get('user_token'));
+         if (Auth::check() && Auth::user()->estudiante) {
+             return redirect()->route('estudiantes.index')->with('token', Session::get('user_token'));
         }
 
 
-        // Si no es un estudiante o no tiene información registrada, muestra la página create
-        return view('estudiantes.create', compact( 'periodos'));
+         return view('estudiantes.create', compact( 'periodos'));
     }
 
     public function store(Request $request)
     {
         // Valida los datos del formulario antes de intentar crear el estudiante
         $validatedData = $request->validate([
-            'Nombres' => 'required|string|max:255',
-            'Apellidos' => 'required|string|max:255',
-            'espe_id' => 'required|string|max:255',
-            'celular' => 'required|string',
-            'cedula' => 'required|string|max:11',
-            'Cohorte' => 'required',
-            'Periodo' => 'required',
-            'Carrera' => 'required|string|max:255',
-            'Provincia' => 'required|string|max:255',
-            'Departamento' => 'required|string|max:255',
-        ]);
+            'Nombres' => '',
+            'Apellidos' => '',
+            'espe_id' => '',
+            'celular' => '',
+            'cedula' => '',
+            'Cohorte' => '',
+            'Periodo' => '',
+            'Carrera' => '',
+            'Provincia' => '',
+         ]);
+
 
         // Obtén el UserID del usuario autenticado
         $userId = Auth::id();
@@ -91,8 +88,7 @@ class EstudianteController extends Controller
             'Carrera' => $validatedData['Carrera'],
             'Correo' => $CorreoElectronico,
             'Provincia' => $validatedData['Provincia'],
-            'Departamento' => $validatedData['Departamento'],
-            'comentario' => 'Sin comentarios',
+             'comentario' => 'Sin comentarios',
             'Estado' => 'En proceso de revisión'
         ]);
 
@@ -204,15 +200,15 @@ class EstudianteController extends Controller
 
          $actividades = ActividadesPracticas::where('EstudianteID', $estudiante->EstudianteID)->get();
 
- 
+
 
         // Verifica si el usuario autenticado es un estudiante y su estado es "Aprobado-practicas"
         if ($estudiante && $estudiante->Estado === 'Aprobado-practicas') {
             $correoEstudiante = $estudiante->Usuario->CorreoElectronico;
             $empresas = Empresa::all();
-         
+
             $practicaPendiente = PracticaI::where('EstudianteID', $estudiante->EstudianteID)->where('Estado', 'En ejecucion')->first();
-             $totalHoras = $actividades->sum('horas'); 
+             $totalHoras = $actividades->sum('horas');
 
              $estadoPractica = PracticaI::where('EstudianteID', $estudiante->EstudianteID)->where('Estado', 'Terminado')->first();
 
@@ -278,18 +274,18 @@ class EstudianteController extends Controller
             'HoraSalida' => 'required',
             'AreaConocimiento' => 'required',
         ]);
- 
+
 
          $userId = Auth::id();
 
          $estudiante = Estudiante::where('UserID', $userId)->first();
- 
+
          if ($estudiante) {
             PracticaI::create([
-                'EstudianteID' => $estudiante->EstudianteID,  
-                'tipoPractica' => $validatedData['Practicas'],  
-                'IDEmpresa' => $validatedData['Empresa'],  
-                'ID_tutorAcademico' => $validatedData['ID_tutorAcademico'],  
+                'EstudianteID' => $estudiante->EstudianteID,
+                'tipoPractica' => $validatedData['Practicas'],
+                'IDEmpresa' => $validatedData['Empresa'],
+                'ID_tutorAcademico' => $validatedData['ID_tutorAcademico'],
                 'id_nrc_practicas1' => $validatedData['nrc'],
                 'CedulaTutorEmpresarial' => $validatedData['CedulaTutorEmpresarial'],
                 'NombreTutorEmpresarial' => $validatedData['NombreTutorEmpresarial'],
@@ -304,9 +300,9 @@ class EstudianteController extends Controller
                 'HoraEntrada' => $validatedData['HoraEntrada'],
                 'HoraSalida' => $validatedData['HoraSalida'],
                 'AreaConocimiento' => $validatedData['AreaConocimiento'],
-                'Estado' => 'PracticaI'  
+                'Estado' => 'PracticaI'
             ]);
-  
+
             return redirect()->route('estudiantes.index')->with('success', 'Práctica guardada exitosamente');
         }
 
@@ -385,7 +381,7 @@ class EstudianteController extends Controller
         'fecha' => 'required|date',
         'actividades' => 'required|string',
         'horas' => 'required|integer',
-        'evidencias' => 'required|file|mimes:jpeg,jpg,png|max:500000',  
+        'evidencias' => 'required|file|mimes:jpeg,jpg,png|max:500000',
         'nombre_actividad' => 'required|string',
     ]);
 
@@ -428,7 +424,7 @@ class EstudianteController extends Controller
     ////eliminar actividad
     public function eliminarActividad($id)
     {
-        $actividad = ActividadEstudiante::findOrFail($id); 
+        $actividad = ActividadEstudiante::findOrFail($id);
         $actividad->delete();
 
         return redirect()->route('estudiantes.documentos')->with('success', 'Actividad eliminada exitosamente.');
@@ -441,17 +437,17 @@ class EstudianteController extends Controller
 
         return view('estudiantes.documentos', compact('actividad'));
     }
-    
+
     public function updateActividad(Request $request, $id)
 {
- 
+
     $actividad = ActividadEstudiante::findOrFail($id);
 
     if ($request->hasFile('evidencias')) {
         $evidencia = $request->file('evidencias');
 
-        
-        $maxFileSize = 500000;  
+
+        $maxFileSize = 500000;
         if ($evidencia->getSize() > $maxFileSize) {
             return redirect()->back()->with('error', 'La imagen es muy pesada. El tamaño máximo permitido es de 500 KB.');
         }
@@ -472,7 +468,7 @@ class EstudianteController extends Controller
     }
 }
 
-    
+
 
 
     public function configuracion()
@@ -551,31 +547,31 @@ class EstudianteController extends Controller
             'funcion',
         ]);
 
- 
-      
+
+
         $evidencia = $request->file('evidencia');
-    
+
         try {
             if ($evidencia) {
-                $maxFileSize = 500000; 
+                $maxFileSize = 500000;
                 if ($evidencia->getSize() > $maxFileSize) {
                     return redirect()->back()->with('error', 'La imagen es muy pesada. El tamaño máximo permitido es de 500 KB.');
                 }
-    
+
                  $img = Image::make($evidencia)->encode('jpg', 75);
                 $datosActividad['evidencia'] = base64_encode($img->encoded);
             }
-    
+
             $datosActividad['IDPracticasI'] = $request->PracticasI;
 
             ActividadesPracticas::create($datosActividad);
-    
+
             return redirect()->back()->with('success', 'Actividad guardada exitosamente.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Ha ocurrido un error al guardar la actividad: ' . $e->getMessage());
         }
     }
-    
+
 
     /////////eliminar actividad practica 1
     public function eliminarActividadPracticas1($id)
@@ -609,12 +605,12 @@ class EstudianteController extends Controller
             'departamento',
             'funcion',
         ]);
-       
+
         $evidencia = $request->file('evidencia');
 
         try {
             if ($evidencia) {
-                $maxFileSize = 500000; 
+                $maxFileSize = 500000;
                 if ($evidencia->getSize() > $maxFileSize) {
                     return redirect()->back()->with('error', 'La imagen es muy pesada. El tamaño máximo permitido es de 500 KB.');
                 }
@@ -623,11 +619,11 @@ class EstudianteController extends Controller
                 $datosActividad['evidencia'] = base64_encode($img->encoded);
             }
 
-         
-  
+
+
 
             $actividad->update($datosActividad);
- 
+
             return redirect()->back()->with('success', 'Actividad actualizada exitosamente.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Ha ocurrido un error al actualizar la actividad: ' . $e->getMessage());
@@ -663,10 +659,10 @@ class EstudianteController extends Controller
             return 'Desconocido';
         }
     }
-    
-    
 
-    
+
+
+
 
     public function actualizarCredenciales(Request $request)
     {

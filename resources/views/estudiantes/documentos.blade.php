@@ -33,8 +33,8 @@
                             <hr>
                             <form action="{{ route('generar-documento') }}" method="post">
                                 @csrf
-                                <button type="submit" class="btn btn-success btn-block mt-auto">
-                                    <i class="fas fa-file-excel"></i> Generar
+                                <button type="submit" class="button1 btn_word btn-block mt-auto ">
+                                <i class="fa-solid fa-file-word"></i> Generar
                                 </button>
                             </form>
                         </div>
@@ -47,8 +47,8 @@
                             <hr>
                             <form action="{{ route('generar-documento-cartaCompromiso') }}" method="post">
                                 @csrf
-                                <button type="submit" class="btn btn-success btn-block mt-auto">
-                                    <i class="fas fa-file-excel"></i> Generar
+                                <button type="submit" class="button1 btn_word btn-block">
+                                <i class="fa-solid fa-file-word"></i> Generar
                                 </button>
                             </form>
                         </div>

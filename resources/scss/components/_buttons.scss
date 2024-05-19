@@ -251,6 +251,13 @@
   @include button-style(colors.$btn-color-delete-filtro);
 }
 
+.btn_word {
+  @include button-style(colors.$btn-color-word);
+}
+
+.btn_pdf {
+  @include button-style(colors.$btn-color-pdf);
+}
 
 // xd
 .btn_enviar1 {
@@ -320,7 +327,9 @@
 .btn_cancelar2 {
   @include button-style2(colors.$btn-color-cancelar);
 }
-
+.btn_word_2 {
+  @include button-style2(colors.$btn-color-word);
+}
 // ===============================================
 // Color de botones (hueco - contorno - relleno)
 // ===============================================
@@ -362,6 +371,9 @@
 
 .btn_cancelar3 {
   @include button-style3(colors.$btn-color-cancelar);
+}
+.btn_word_3 {
+  @include button-style3(colors.$btn-color-word);
 }
 
 // ===============================================
@@ -410,7 +422,9 @@
 .btn_cancelar4 {
   @include button-style4(colors.$btn-color-cancelar);
 }
-
+.btn_word_4 {
+  @include button-style4(colors.$btn-color-word);
+}
 // ===============================================
 // Color de botones para paginacion
 // ===============================================
@@ -507,4 +521,7 @@
 
 .btn_1 {
   @include button-style(colors.$btn-color-1);
+}
+.btn_3 {
+  @include button-style(colors.$btn-color-3);
 }

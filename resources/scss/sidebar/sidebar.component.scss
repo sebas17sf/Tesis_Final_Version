@@ -154,6 +154,10 @@
           }
 
           .item-list {
+            display: none;
+          }
+
+          .item-list.show {
             display: grid;
             gap: 3px;
             padding-left: 5px;

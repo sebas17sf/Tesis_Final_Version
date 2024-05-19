@@ -169,7 +169,7 @@
         <br>
         <form action="{{ route('admin.respaldo') }}" method="POST">
             @csrf
-            <button type="submit" class="button">Respaldar Base de Datos</button>
+            <button type="submit" class="button1">Respaldar Base de Datos</button>
         </form>
         <br>
         <section>
@@ -177,9 +177,7 @@
             <div class="contenedor_registro_genero ">
                 <div>
                     <span><b>Docentes agregados</b></span>
-                    <button type="button" class="button" data-toggle="modal" data-backdrop="false" data-target="#modalAgregarMaestro">
-                        Agregar Docentes
-                    </button>
+                    
                     <hr>
 
                 </div>
@@ -265,7 +263,9 @@
                         <!-- Botones -->
                         <div class="contenedor_botones">
 
-
+                        <button type="button" class="button3 efects_button btn_primary"data-toggle="modal" data-target="#modalAgregarMaestro">
+                    <i class="fa-solid fa-plus"></i>
+                                    </button>
                             <form action="{{ route('admin.reportesDocentes') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="button3 efects_button btn_excel" pTooltip="Excel"
@@ -531,7 +531,7 @@
                                     <form method="GET" action="{{ route('admin.index') }}">
                                         <select class="form-control page-item" class="input" name="perPage"
                                             id="perPage" onchange="this.form.submit()">
-                                            <option value="10" @if ($perPage == 10) selected @endif>10
+                                            <option value="3" @if ($perPage == 3) selected @endif>3
                                             </option>
                                             <option value="20" @if ($perPage == 20) selected @endif>20
                                             </option>
@@ -601,7 +601,7 @@
                 <div id="registrarPeriodos" style="display: none;">
                     <!-- ------------------------------Agregar periodo----------------------------------------------------- -->
                     <div>
-                        <button type="button" class="button" data-toggle="modal" data-target="#modalAgregarPeriodo">
+                        <button type="button" class="button1" data-toggle="modal" data-target="#modalAgregarPeriodo">
                             Agregar Periodo
                         </button>
 
@@ -664,7 +664,7 @@
                     <!-- Formulario para agregar NRC Vinculacion -->
 
                     <div>
-                        <button type="button" class="button" data-toggle="modal" data-target="#modalAgregarNRC">
+                        <button type="button" class="button1" data-toggle="modal" data-target="#modalAgregarNRC">
                             Agregar NRC
                         </button>
                         <hr>
@@ -820,6 +820,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

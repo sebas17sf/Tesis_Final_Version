@@ -90,7 +90,7 @@
                         <i class="fa-regular fa-rectangle-vertical-history"></i>
                         <span>Cambiar modulo</span>
                     </a>
-                    
+
                     <a class="logout" href="{{ route('logout') }}">
                         <i class="fa-sharp fa-regular fa-arrow-up-left-from-circle fontawesome"></i>
                         <span>Cerrar sesión</span>
@@ -130,6 +130,7 @@
     <script src="{{ asset('js/plantilla/styles.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/vendor.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    <script src="{{ asset('js/estudiante/general.js') }}" ></script>
      <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <!-- Box Icons -->

@@ -31,7 +31,7 @@ $(document).ready(function () {
         }
     });
 
-    
+
     $("#toggleFormBtn2").click(function (event) {
         event.preventDefault();
         $("#registrarPeriodos").toggle();
@@ -85,7 +85,7 @@ $(document).ready(function () {
         var errorElement = document.getElementById('errorNRC');
         var formulario = document.querySelector('.FormularioNRC');
         var hayErrores = false; // Bandera para indicar si hay errores
-    
+
         if (nrc === '') {
             errorElement.textContent = '';
             hayErrores = true; // Hay un error
@@ -98,7 +98,7 @@ $(document).ready(function () {
         } else {
             errorElement.textContent = '';
         }
-    
+
         // Evitar que se envíe el formulario si hay errores
         formulario.addEventListener('submit', function(event) {
             if (hayErrores) {
@@ -106,13 +106,13 @@ $(document).ready(function () {
             }
         });
     }
-    
+
     document.getElementById('nrc').addEventListener('input', validarNRC);
-    
-    
-    
-    
-    
+
+
+
+
+
 
 });
 
