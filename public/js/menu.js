@@ -62,38 +62,45 @@ document.addEventListener('DOMContentLoaded', function () {
   var elementosHydrated = document.querySelectorAll('.hydrated');
   elementosHydrated[0].setAttribute('style', `--title-length:${elementosTitleContent[0].textContent.length};`)
 
-  $("#sublista").hide();
   // Selecciona todos los elementos con la clase p-element
-  var pElements = document.querySelectorAll('.p-element');
+  var pElements = $('.p-element');
+  var submenu = $('.submenu');
+  var sublista = $('.sublista');
   var segmentoRuta = window.location.pathname.split('/').pop();
 
+  $('.p-element').on('click', function () {
+    $('.p-element').removeClass('active-section');
+    $(this).addClass('active-section');
+  });
 
-
-  pElements.forEach(function (element, i) {
-    element.addEventListener('click', function () {
-
-      pElements.forEach(function (item) {
-        item.classList.remove('active-section');
-      });
-      this.classList.add('active-section');
-    });
-
-
-    var hrefValor = element.getAttribute('href');
+  pElements.each(function(i, element) {
+    var hrefValor = $(element).attr('href');
     var segmentoElementoMenu = null;
 
     if (hrefValor != null) {
-      segmentoElementoMenu = hrefValor.split('/').pop()
+        segmentoElementoMenu = hrefValor.split('/').pop();
     }
-
 
     if (segmentoElementoMenu === segmentoRuta) {
-      pElements[i].classList.add('active-section');
-
+        $(element).addClass('active-section');
+        if ($(element).hasClass('subitem')) {
+          submenu.addClass('active-section');
+           sublista.addClass('show'); 
+        }
     } else {
-      pElements[i].classList.remove('active-section');
+        $(element).removeClass('active-section');
     }
-  });
+});
+
+$('.submenu').on('click', function() {
+  $(this).next('.sublista').toggleClass('show');
+});
+
+$('.sublista .p-element').on('click', function() {
+  $('.sublista .p-element').removeClass('active-section');
+  $(this).addClass('active-section');
+});
+
 
   // Obtén una referencia al botón profile-icon y al menú emergente popup-menu-profile
   var profileButton = document.getElementById('profile-button');
@@ -138,27 +145,6 @@ document.addEventListener('DOMContentLoaded', function () {
       new bootstrap.Tooltip(tooltipTrigger);
     });
   }
-
-  var submenus = document.querySelectorAll('.submenu');
-  var itemList = document.getElementById('sublista');
-  submenus.forEach(function (submenu) {
-    submenu.addEventListener('mouseover', function () {
-
-      if (itemList.classList.contains('show')) {
-        $("#sublista").hide();
-        itemList.classList.remove('show');
-        itemList.classList.add('hide');
-      } else {
-        $("#sublista").show();
-        itemList.classList.remove('hide');
-        itemList.classList.add('show');
-
-      }
-
-
-    });
-  });
-
 
   window.addEventListener('scroll', function () {
     var boton = document.getElementById('btn_top');

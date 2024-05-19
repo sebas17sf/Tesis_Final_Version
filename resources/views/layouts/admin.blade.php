@@ -8,12 +8,15 @@
     <title>@yield('title')</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  {{--   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-   {{--  <link rel="stylesheet" href="../css/admin/admin.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    {{--  <link rel="stylesheet" href="../css/admin/admin.css">
  --}}
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
 
@@ -24,19 +27,14 @@
             overflow-x: hidden;
         }
 
-
-
-
-
-
     </style>
-   {{--  <script src="../js/menu.js"></script> --}}
+    {{--  <script src="../js/menu.js"></script> --}}
     <script src="{{ asset('js/menu.js') }}"></script>
 </head>
 
 <body>
     <!-- Barra de navegación en el lado izquierdo -->
-    <section class="content-sidebar " _ngcontent-ng-c4160891441>
+    <section class="content-sidebar" _ngcontent-ng-c4160891441>
 
         <div class="content scroll-small">
             <div class="sidebar">
@@ -53,15 +51,15 @@
                         <ul class="nav-list">
                             <a class="p-element" href="{{ route('admin.index') }}">
                                 <div class="icon-sidebar-item">
-                                <i class="fa-solid fa-grid-horizontal"></i>
-                            </div>
+                                    <i class="fa-solid fa-grid-horizontal"></i>
+                                </div>
                                 <div class="name-sidebar-item">
                                     <li>Panel Administrativo</li>
                                 </div>
                             </a>
                             <a href="{{ route('admin.indexProyectos') }}" class="p-element">
                                 <div class="icon-sidebar-item">
-                                <i class="fa-solid fa-layer-plus"></i>
+                                    <i class="fa-solid fa-layer-plus"></i>
                                 </div>
                                 <div class="name-sidebar-item">
                                     <li>Proyectos</li>
@@ -76,27 +74,27 @@
                                     <li>Estudiantes</li>
                                 </div>
                             </a>
-                            <a class="p-element submenu" class="p-element">
+                            <a class="p-element submenu">
                                 <div class="icon-sidebar-item">
-                                <i class="fa-solid fa-building"></i>
-                                                            </div>
+                                    <i class="fa-solid fa-building"></i>
+                                </div>
                                 <div class="name-sidebar-item">
                                     <li>Prácticas</li>
                                 </div>
                             </a>
 
-                            <div class="item-list" id="sublista">
-                                <a class="p-element mb-1" href="{{ route('admin.agregarEmpresa') }}">
+                            <div class="item-list sublista">
+                                <a class="p-element mb-1 subitem" href="{{ route('admin.agregarEmpresa') }}">
                                     <div class="icon-sidebar-item">
-                                    <i class="fa-solid fa-grid-2-plus"></i>
-                                                                    </div>
+                                        <i class="fa-solid fa-grid-2-plus"></i>
+                                    </div>
                                     <div class="name-sidebar-item">
                                         <li>Agregar-Empresa</li>
                                     </div>
                                 </a>
-                                <a class="p-element" href="{{ route('admin.aceptarFaseI') }}">
+                                <a class="p-element subitem" href="{{ route('admin.aceptarFaseI') }}">
                                     <div class="icon-sidebar-item">
-                                    <i class="fa-solid fa-circle-check"></i>
+                                        <i class="fa-solid fa-circle-check"></i>
                                     </div>
                                     <div class="name-sidebar-item">
                                         <li>Aprobar-Practicas</li>
@@ -142,7 +140,7 @@
                         <span>Cambiar modulo</span>
                     </a>
 
-                    <a href="{{route('admin.cambio-credenciales')}}" class="change_password">
+                    <a href="{{ route('admin.cambio-credenciales') }}" class="change_password">
                         <i class="far fa-cog"></i>
                         <span>Configuracion</span>
                     </a>
@@ -182,7 +180,7 @@
     <!-- Script de Bootstrap 5.3.0 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {{--   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
     <script src="{{ asset('js/plantilla/styles.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/vendor.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
@@ -195,17 +193,17 @@
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
     <!-- Box Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-        integrity="sha384-gL5q2wHNwpg9voDwmz1onh73oSJ8lFvZEydTHpw4M4okQ7N8qI+v5h0zitOykKdp" crossorigin="anonymous">
+  {{--   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        crossorigin="anonymous"> --}}
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  {{--   <script src="../js/input_file.js"></script> --}}
+    {{--  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+    {{--   <script src="../js/input_file.js"></script> --}}
     <script src="{{ asset('js/input_file.js') }}"></script>
     <script>
         var token = "{{ session('token') }}";
         if (token) {
             localStorage.setItem('token', token);
-         }
+        }
     </script>
 </body>
 
