@@ -646,7 +646,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="button" data-dismiss="modal">Cerrar</button>
-                                            <button type="button" class="button">Guardar Periodo</button>
+                                            <button type="submit" class="button">Guardar Periodo</button>
                                         </div>
                                     </form>
                                 </div>
@@ -700,7 +700,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="button" data-dismiss="modal">Cerrar</button>
-                                        <button type="button" class="button">Guardar NRC</button>
+                                        <button type="submit" class="button">Guardar NRC</button>
                                     </div>
                                 </form>
 
@@ -725,12 +725,12 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                {{--  <div class="row align-items-center"> --}}
                                 <div class="form-group col-md-12">
-                                    <label for="periodo"><strong>Periodos Agregados (Selecione el periodo a editar):</strong></label>
+                                    <label for="periodo"><strong>Periodos Agregados (Seleccione el periodo a
+                                            editar):</strong></label>
                                     <select id="selectPeriodo" class="form-control input_select input">
-                                        <option value="" data-inicio="" data-fin="" data-numero="">
-                                            Seleccionar Periodo</option>
+                                        <option value="" data-inicio="" data-fin="" data-numero="">Seleccionar
+                                            Periodo</option>
                                         @foreach ($periodos as $periodo)
                                             <option value="{{ $periodo->id }}"
                                                 data-inicio="{{ $periodo->PeriodoInicio }}"
@@ -741,7 +741,6 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                {{--  </div> --}}
                                 <div class="col-md-12" hidden>
                                     <div class="form-group col-md-6">
                                         <form id="editarPeriodoForm" method="GET">
@@ -750,57 +749,39 @@
                                         </form>
                                     </div>
                                 </div>
-
-
-
                                 <div class="col-md-12" id="desplegarEditarPeriodo">
-
                                     <form class="formulario" method="POST"
                                         action="{{ route('admin.actualizarPeriodo', ['id' => $periodo->id]) }}">
                                         @csrf
                                         @method('PUT')
-
                                         <div class="form-group">
                                             <label for="periodoInicio">Fecha de Inicio:</label>
                                             <input type="date" name="periodoInicio" class="form-control input"
                                                 value="{{ $periodo->PeriodoInicio }}" required>
                                         </div>
-
                                         <div class="form-group">
                                             <label for="periodoFin">Fecha de Fin:</label>
                                             <input type="date" name="periodoFin" class="form-control input"
                                                 value="{{ $periodo->PeriodoFin }}" required>
                                         </div>
-
-                                        <div class="form-group ">
+                                        <div class="form-group">
                                             <label for="numeroPeriodo">Ingrese el numero identificador del periodo:</label>
                                             <input type="text" name="numeroPeriodo" id="numeroPeriodo"
                                                 class="form-control input" value="{{ $periodo->numeroPeriodo }}"
                                                 required>
                                             <small id="numeroPeriodoError" class="form-text text-danger"></small>
                                         </div>
-
-
                                         <div class="button-group">
-                                            <button type="button" class="button" onclick="cerrarModal()">Cerrar</button>
+                                            <button type="button" class="button" data-dismiss="modal">Cerrar</button>
                                             <button type="submit" class="button">Guardar Cambios</button>
                                         </div>
-
-
-
-                                        {{-- <div class="modal-footer">
-                                            <button type="button" class="button" onclick="cerrarModal()">Cerrar</button>
-                                            <button type="submit" class="button">Guardar Cambios</button>
-                                        </div> --}}
-
                                     </form>
-
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
+
 
                 <!-- Modal para peridoo-------------------------------- -->
 
@@ -924,11 +905,6 @@
             });
         });
 
-
-
-        function cerrarModal() {
-            $('#editarPeriodoModal').modal('hide');
-        }
     </script>
 
 
