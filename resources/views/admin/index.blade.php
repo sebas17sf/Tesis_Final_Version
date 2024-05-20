@@ -44,7 +44,20 @@
             });
         </script>
     @endif
+<style>
+    .modal-backdrop {
+    display: none !important; /* Oculta el fondo oscuro */
+}
 
+/* Para permitir el movimiento del modal */
+.modal-static {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+    </style>
 
     @if (session('errorMaestro'))
         <script>
@@ -863,10 +876,12 @@
 
 
         $(document).ready(function() {
-            $('.draggable').draggable({
+            $('#modalAgregarMaestro').draggable({
                 handle: '.modal-header'
             });
         });
+
+
 
         function cerrarModal() {
             $('#editModal').modal('hide');

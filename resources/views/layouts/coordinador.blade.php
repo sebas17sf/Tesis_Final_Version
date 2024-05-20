@@ -21,8 +21,8 @@
             overflow-x: hidden;
         }
     </style>
-       <script src="{{ asset('js/menu.js') }}"></script>
-   {{--  <script src="../js/menu.js"></script> --}}
+    <script src="{{ asset('js/menu.js') }}"></script>
+    {{--  <script src="../js/menu.js"></script> --}}
 </head>
 
 
@@ -58,7 +58,7 @@
                                         <li>Proyectos-Estudiantes</li>
                                     </div>
                                 </a>
-                                <a class="p-element" href="{{ route('coordinador.estudiantesAprobados') }}" >
+                                <a class="p-element" href="{{ route('coordinador.estudiantesAprobados') }}">
                                     <div class="icon-sidebar-item">
                                         <i class="material-icons">people</i>
                                     </div>
@@ -67,32 +67,31 @@
                                     </div>
                                 </a>
                                 <a class="p-element submenu" class="p-element">
-                                <div class="icon-sidebar-item">
-                                    <i class="material-icons">business</i>
-                                </div>
-                                <div class="name-sidebar-item">
-                                    <li>Prácticas</li>
-                                </div>
-                            </a>
-                                    <div class="item-list" id="sublista">
-                                        <a class="p-element mb-1" href="{{ route('coordinador.agregarEmpresa') }}">
-                                            <div class="icon-sidebar-item">
-                                                <i class="material-icons">add_business</i>
-                                            </div>
-                                            <div class="name-sidebar-item">
-                                                <li>Agregar-Empresa</li>
-                                            </div>
-                                        </a>
-                                        <a class="p-element" href="{{ route('coordinador.aceptarFaseI') }}"
-                                            >
-                                            <div class="icon-sidebar-item">
-                                                <i class="material-icons">check_circle</i>
-                                            </div>
-                                            <div class="name-sidebar-item">
-                                                <li> Aprobar-Fase I </li>
-                                            </div>
-                                        </a>
+                                    <div class="icon-sidebar-item">
+                                        <i class="material-icons">business</i>
                                     </div>
+                                    <div class="name-sidebar-item">
+                                        <li>Prácticas</li>
+                                    </div>
+                                </a>
+                                <div class="item-list sublista">
+                                    <a class="p-element mb-1 subitem" href="{{ route('coordinador.agregarEmpresa') }}">
+                                        <div class="icon-sidebar-item">
+                                            <i class="material-icons">add_business</i>
+                                        </div>
+                                        <div class="name-sidebar-item">
+                                            <li>Agregar-Empresa</li>
+                                        </div>
+                                    </a>
+                                    <a class="p-element subitem" href="{{ route('coordinador.aceptarFaseI') }}">
+                                        <div class="icon-sidebar-item">
+                                            <i class="material-icons">check_circle</i>
+                                        </div>
+                                        <div class="name-sidebar-item">
+                                            <li> Aprobar-Fase I </li>
+                                        </div>
+                                    </a>
+                                </div>
 
                         </ul>
                     </nav>
@@ -106,8 +105,8 @@
         </div>
         </div>
     </section>
-   <!-- SIDEBAR -->
-   <section class="content-navbar dimension-nav">
+    <!-- SIDEBAR -->
+    <section class="content-navbar dimension-nav">
         <!-- Toggle sidebar -->
         <div class="icon-menu-sidebar" onclick="triggerToggleSidebar()">
             <i class='bx bx-menu-alt-left'
@@ -132,7 +131,7 @@
                         <span>Cambiar modulo</span>
                     </a>
 
-                    <a href="{{route('coordinador.cambio-credenciales')}}" class="change_password">
+                    <a href="{{ route('coordinador.cambio-credenciales') }}" class="change_password">
                         <i class="far fa-cog"></i>
                         <span>Configuracion</span>
                     </a>
@@ -153,7 +152,7 @@
     <section class="content-views dimension-content">
         <!-- Title component -->
         <div class="title-component">
-        <span class="title-content">@yield('title_component')</span>
+            <span class="title-content">@yield('title_component')</span>
             <div class="divisor-title"></div>
         </div>
         <!-- Contenido principal -->
@@ -177,14 +176,14 @@
     <script src="{{ asset('js/plantilla/styles.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/vendor.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
-     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
     <!-- Box Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-        integrity="sha384-gL5q2wHNwpg9voDwmz1onh73oSJ8lFvZEydTHpw4M4okQ7N8qI+v5h0zitOykKdp" crossorigin="anonymous">
+    {{--   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        integrity="sha384-gL5q2wHNwpg9voDwmz1onh73oSJ8lFvZEydTHpw4M4okQ7N8qI+v5h0zitOykKdp" crossorigin="anonymous"> --}}
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </body>
 
