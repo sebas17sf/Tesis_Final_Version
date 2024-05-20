@@ -598,14 +598,10 @@
             </div>
         </section>
 
-
-        <br>
-
         <section>
 
             <div class="container">
 
-                <hr>
                 <div id="registrarPeriodos" style="display: none;">
                     <!-- ------------------------------Agregar periodo----------------------------------------------------- -->
 

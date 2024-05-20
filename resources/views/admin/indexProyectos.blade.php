@@ -340,7 +340,7 @@
 
 
 
-                    <button type="submit" class="button">Asignar Proyecto</button>
+                    <button type="submit" class="button1">Asignar Proyecto</button>
                 </form>
             </div>
         </div>

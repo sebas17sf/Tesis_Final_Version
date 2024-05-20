@@ -198,7 +198,7 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <button type="submit" class="button efects_button">Guardar Empresa</button>
+                                <button type="submit" class="button1 efects_button">Guardar Empresa</button>
                             </div>
 
                         </div>
