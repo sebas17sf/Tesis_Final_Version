@@ -1,28 +1,25 @@
-/* document.addEventListener('DOMContentLoaded', function () {
-
-  activarMenu();
-}); */
-
 function triggerToggleSidebar() {
+
   var contentSidebar = document.querySelector('.content-sidebar');
-
-
   var elementosAutores = document.querySelectorAll('.content-autors');
+  var viewsActive = document.querySelector('.views');
+  var contentViews = document.querySelector('.content-views');
+  var contentNavbar = document.querySelector('.content-navbar');
 
-
+  var menuState = localStorage.getItem('menuState') === 'expanded' ? 'collapsed' : 'expanded';
+  localStorage.setItem('menuState', menuState);
   // Si la clase dimension-nav-hidden está presente en contentSidebar, la elimina; de lo contrario, la añade
   if (contentSidebar.classList.contains('content-sidebar-hidden')) {
     contentSidebar.classList.remove('content-sidebar-hidden');
     elementosAutores[0].setAttribute('style', `opacity: 1;`)
-    localStorage.setItem('sidebar', false);
-
+    /*     localStorage.setItem('menuState', 'expanded'); */
   } else {
     contentSidebar.classList.add('content-sidebar-hidden');
     elementosAutores[0].removeAttribute('style');
-    localStorage.setItem('sidebar', true);
+    /*   localStorage.setItem('menuState', 'collapsed'); */
   }
 
-  var contentNavbar = document.querySelector('.content-navbar');
+
 
   contentNavbar.classList.add('dimension-nav');
   // Si la clase dimension-nav-hidden está presente en contentNavbar, la elimina; de lo contrario, la añade
@@ -32,7 +29,7 @@ function triggerToggleSidebar() {
     contentNavbar.classList.add('dimension-nav-hidden');
   }
 
-  var contentViews = document.querySelector('.content-views');
+
   contentViews.classList.add('dimension-content');
   // Si la clase dimension-nav-hidden está presente en contentNavbar, la elimina; de lo contrario, la añade
   if (contentViews.classList.contains('dimension-content-hidden')) {
@@ -40,9 +37,6 @@ function triggerToggleSidebar() {
   } else {
     contentViews.classList.add('dimension-content-hidden');
   }
-
-
-  var viewsActive = document.querySelector('.views');
 
   // Si la clase dimension-nav-hidden está presente en contentNavbar, la elimina; de lo contrario, la añade
   if (viewsActive.classList.contains('views-active')) {
@@ -52,12 +46,19 @@ function triggerToggleSidebar() {
   }
 
 }
-
-
 document.addEventListener('DOMContentLoaded', function () {
 
-
+  /* var menuState = localStorage.getItem('menuState') === 'collapsed' ? 'collapsed' : 'expanded';
+  localStorage.setItem('menuState', menuState); */
   //agregar linea de los titulos
+  var contentSidebar = document.querySelector('.content-sidebar');
+  if (contentSidebar.classList.contains('content-sidebar-hidden')) {
+    localStorage.setItem('menuState', 'collapsed');
+  } else {
+    localStorage.setItem('menuState', 'expanded');
+  }
+
+
   var elementosTitleContent = document.querySelectorAll('.title-content');
   var elementosHydrated = document.querySelectorAll('.hydrated');
   elementosHydrated[0].setAttribute('style', `--title-length:${elementosTitleContent[0].textContent.length};`)
@@ -73,33 +74,33 @@ document.addEventListener('DOMContentLoaded', function () {
     $(this).addClass('active-section');
   });
 
-  pElements.each(function(i, element) {
+  pElements.each(function (i, element) {
     var hrefValor = $(element).attr('href');
     var segmentoElementoMenu = null;
 
     if (hrefValor != null) {
-        segmentoElementoMenu = hrefValor.split('/').pop();
+      segmentoElementoMenu = hrefValor.split('/').pop();
     }
 
     if (segmentoElementoMenu === segmentoRuta) {
-        $(element).addClass('active-section');
-        if ($(element).hasClass('subitem')) {
-          submenu.addClass('active-section');
-           sublista.addClass('show'); 
-        }
+      $(element).addClass('active-section');
+      if ($(element).hasClass('subitem')) {
+        submenu.addClass('active-section');
+        sublista.addClass('show');
+      }
     } else {
-        $(element).removeClass('active-section');
+      $(element).removeClass('active-section');
     }
-});
+  });
 
-$('.submenu').on('click', function() {
-  $(this).next('.sublista').toggleClass('show');
-});
+  $('.submenu').on('click', function () {
+    $(this).next('.sublista').toggleClass('show');
+  });
 
-$('.sublista .p-element').on('click', function() {
-  $('.sublista .p-element').removeClass('active-section');
-  $(this).addClass('active-section');
-});
+  $('.sublista .p-element').on('click', function () {
+    $('.sublista .p-element').removeClass('active-section');
+    $(this).addClass('active-section');
+  });
 
 
   // Obtén una referencia al botón profile-icon y al menú emergente popup-menu-profile

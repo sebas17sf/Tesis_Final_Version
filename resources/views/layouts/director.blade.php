@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="\img\logos\logo_tesis.png" alt="logo">
     <meta name=" viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title')</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -21,13 +22,13 @@
             overflow-x: hidden;
         }
     </style>
-    <script src="{{ asset('js/menu.js') }}"></script>
+   
 </head>
 
 <body>
     <header>
         <!-- Barra de navegación en el lado izquierdo -->
-        <section class="content-sidebar " _ngcontent-ng-c4160891441>
+        <section class="content-sidebar {{ session('menuState') == 'collapsed' ? 'content-sidebar-hidden' : '' }}" _ngcontent-ng-c4160891441>
 
             <div class="content scroll-small">
                 <div class="sidebar">
@@ -81,9 +82,9 @@
         </section>
 
         <!-- SIDEBAR -->
-        <section class="content-navbar dimension-nav">
+        <section class="content-navbar dimension-nav {{ session('menuState') == 'collapsed' ? 'dimension-nav-hidden' : '' }}">
             <!-- Toggle sidebar -->
-            <div class="icon-menu-sidebar" onclick="triggerToggleSidebar()">
+            <div class="icon-menu-sidebar" onclick="toggleSidebar()">
                 <i class='bx bx-menu-alt-left'
                     [ngClass]="{'bx-menu': sidebarHidden,'bx-menu-alt-left': !sidebarHidden}"></i>
             </div>
@@ -125,14 +126,14 @@
                 class='bx bxs-chevrons-up'></i></button>
 
         <!-- CONTENEDOR -->
-        <section class="content-views dimension-content">
+        <section class="content-views dimension-content {{ session('menuState') == 'collapsed' ? 'dimension-content-hidden' : '' }}">
             <!-- Title component -->
             <div class="title-component">
                 <span class="title-content">@yield('title_component')</span>
                 <div class="divisor-title"></div>
             </div>
             <!-- Contenido principal -->
-            <div class="views">
+            <div class="views {{ session('menuState') == 'collapsed' ? 'views-active' : '' }}">
                 <!-- Contenido específico de la página -->
                 @yield('content')
             </div>
@@ -164,8 +165,39 @@
         integrity="sha384-gL5q2wHNwpg9voDwmz1onh73oSJ8lFvZEydTHpw4M4okQ7N8qI+v5h0zitOykKdp" crossorigin="anonymous"> --}}
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        {{--   <script src="../js/input_file.js"></script> --}}
         <script src="{{ asset('js/input_file.js') }}"></script>
+
+        <script>
+            function toggleSidebar() {
+                var menuState = localStorage.getItem('menuState') === 'expanded' ? 'collapsed' : 'expanded';
+    
+                // Enviar una solicitud AJAX al controlador para actualizar el estado del menú
+                $.ajax({
+                    url: '{{ route('toggle-menu') }}', // Ruta que apunta al controlador MenuController
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        menuState: menuState
+                    },
+                    success: function(response) {
+                        console.log('Estado del menú actualizado:', response.menuState);
+                        // Actualizar el estado del menú en el localStorage si es necesario
+                        localStorage.setItem('menuState', response.menuState);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error al actualizar el estado del menú:', error);
+                    }
+                });
+    
+    
+                triggerToggleSidebar();
+    
+            }
+        </script>
+    
+        <script src="{{ asset('js/menu.js') }}"></script>
 </body>
 
 </html>
