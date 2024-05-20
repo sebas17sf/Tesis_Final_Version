@@ -53,6 +53,7 @@ class EstudianteController extends Controller
             'Periodo' => '',
             'Carrera' => '',
             'Provincia' => '',
+            'Departamento' => '',
          ]);
 
 
@@ -87,6 +88,7 @@ class EstudianteController extends Controller
             'id_periodo' => $validatedData['Periodo'], // Utiliza el ID de periodo proporcionado en el formulario
             'Carrera' => $validatedData['Carrera'],
             'Correo' => $CorreoElectronico,
+            'Departamento' => $validatedData['Departamento'],
             'Provincia' => $validatedData['Provincia'],
              'comentario' => 'Sin comentarios',
             'Estado' => 'En proceso de revisión'

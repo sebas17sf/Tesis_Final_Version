@@ -74,7 +74,7 @@
                                         <span class="input-group-text input">+593</span>
                                     </div>
                                     <input id="celular" type="text" class="form-control input" name="celular" required
-                                         placeholder="Ingrese su número de celular">
+                                        placeholder="Ingrese su número de celular">
                                 </div>
                                 <span id="error-message-cell" style="color: red; display: none;">Número de celular no
                                     válido</span>
@@ -119,6 +119,17 @@
                                 </select>
                             </div>
 
+                            <div class="form-group">
+                                <label for="Departamento"><i class="material-icons">location_city</i> Departamento:</label>
+                                <select class="form-control input input-select" id="Departamento" name="Departamento"
+                                    required>
+                                    <option value="Ciencias de la Computación">DCCO - Departamento de Computación</option>
+                                    <option value="Ciencias Exactas">DCEX - Ciencias Exactas</option>
+                                    <option value="Ciencias de la Vida y Agricultura">DCVA - Departamento de Ciencias de la
+                                        Vida y
+                                        Agricultura</option>
+                                </select>
+                            </div>
 
 
                             <div class="form-group">
