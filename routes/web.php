@@ -11,6 +11,7 @@ use App\Http\Controllers\DocumentoController;
 use App\Http\Controllers\DirectorVinculacionController;
 use App\Http\Controllers\ParticipanteVinculacionController;
 use App\Http\Controllers\DocumentosVinculacion;
+use App\Http\Controllers\MenuController;
 use Laravel\Socialite\Facades\Socialite;
 
 
@@ -41,11 +42,13 @@ Route::post('/reset-password/{correoElectronico}', [LoginController::class, 'cam
     ->name('restablecer-contrasena');
 ///funcion para cerrar la sesion del usuario
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-
+Route::post('/toggle-menu', [MenuController::class, 'toggleMenuState'])->name('toggle-menu');
 
 //////Protecion para los accesos importantes
 
 Route::middleware(['auth'])->group(function () {
+    //Ruta para controlar el menu expandido a comprimido
+   
     // Ruta para mostrar el formulario de ingreso de datos del Estudiante
     Route::get('/estudiantes/create', [EstudianteController::class, 'create'])->name('estudiantes.create');
 
