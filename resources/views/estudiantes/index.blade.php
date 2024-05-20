@@ -31,8 +31,8 @@
         <div class="table-container mat-elevation-z8">
             <div id="tablaDocentes">
 
-                <div class="container mt-4">
-                    <div class="card">
+                <div class="container mt-3">
+                    <div class="card" style="max-width: 750px; margin: auto;">
                         <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div></div>
@@ -219,8 +219,8 @@
             <form method="POST" action="{{ route('estudiantes.resend', ['estudiante' => $estudiante->EstudianteID]) }}">
                 @csrf
                 <div class="text-center">
-                    <button type="submit" class="btn btn-sm btn-secondary">
-                        <i class="material-icons">send</i> Reenviar Información
+                    <button type="submit" class="button1 ">
+                    <i class="fa-solid fa-paper-plane-top"></i>  Reenviar Información
                     </button>
                 </div>
             </form>
