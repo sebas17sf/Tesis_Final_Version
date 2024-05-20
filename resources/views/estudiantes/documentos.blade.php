@@ -31,9 +31,9 @@
                         <div class="card-body d-flex flex-column">
                             <h6 class="card-title flex-grow-1"><i>Generar Acta de Designación de Estudiantes</i></h6>
                             <hr>
-                            <form action="{{ route('generar-documento') }}" method="post">
+                            <form action="{{ route('generar-documento') }}" method="post" class="d-flex justify-content-center">
                                 @csrf
-                                <button type="submit" class="button1 btn_word btn-block mt-auto ">
+                                <button type="submit" class="button1 btn_word efects_button ">
                                 <i class="fa-solid fa-file-word"></i> Generar
                                 </button>
                             </form>
@@ -45,9 +45,9 @@
                         <div class="card-body d-flex flex-column">
                             <h6 class="card-title flex-grow-1"><i>Generar Carta de Compromiso de Estudiante</i></h6>
                             <hr>
-                            <form action="{{ route('generar-documento-cartaCompromiso') }}" method="post">
+                            <form action="{{ route('generar-documento-cartaCompromiso') }}" method="post" class="d-flex justify-content-center">
                                 @csrf
-                                <button type="submit" class="button1 btn_word btn-block">
+                                <button type="submit" class="button1 btn_word efects_button">
                                 <i class="fa-solid fa-file-word"></i> Generar
                                 </button>
                             </form>
@@ -59,9 +59,9 @@
                         <div class="card-body d-flex flex-column">
                             <h6 class="card-title flex-grow-1"><i>Generar Número de Horas de Estudiantes</i></h6>
                             <hr>
-                            <form action="{{ route('generar-documento-numeroHoras') }}" method="POST">
+                            <form action="{{ route('generar-documento-numeroHoras') }}" method="POST" class="d-flex justify-content-center">
                                 @csrf
-                                <button type="submit" class="btn btn-success btn-block mt-auto">
+                                <button type="submit" class="button1 btn_excel efects_button">
                                     <i class="fas fa-file-excel"></i> Generar
                                 </button>
                             </form>
@@ -101,11 +101,7 @@
                                     <label for="evidencias"><strong>Resultados de la actividad
                                             (evidencias):</strong></label>
                                     <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="material-icons">cloud_upload</i>
-                                            </span>
-                                        </div>
+                                    
                                         <input type="file" id="evidencias" name="evidencias"
                                             accept="image/jpeg, image/jpg, image/png" class="form-control-file input" required>
                                     </div>
@@ -297,11 +293,11 @@
                     </div>
 
                 </div>
-                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="agregarCampo()"><i
-                        class="material-icons">add</i></button>
-                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="eliminarCampo()"><i
-                        class="material-icons">delete</i></button>
-
+                <div class="d-flex">
+                    <button type="button" class="button3 efects_button btn_primary mr-2" onclick="agregarCampo()"> <i class="fa-solid fa-plus"></i></button>
+                    <button type="button" class="button3 efects_button btn_eliminar1" onclick="eliminarCampo()"><i class='bx bx-trash'></i></button>
+                </div>
+<br>
                 <table>
                     <tr>
                         <td>
