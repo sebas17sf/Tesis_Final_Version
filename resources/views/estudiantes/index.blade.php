@@ -35,79 +35,98 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center">
-                                <div> <!-- Puedes agregar algún contenido adicional aquí si es necesario --></div>
+                                <div></div>
                                 <div class="d-flex">
-                                    <form action="{{ route('estudiantes.certificadoMatricula') }}" method="get" class="mr-2">
-                                        <button type="submit" class="button3 efects_button btn_pdf " tooltipPosition="top">
+                                    <form action="{{ route('estudiantes.certificadoMatricula') }}" method="get"
+                                        class="mr-2">
+                                        <button type="submit" class="button3 efects_button btn_pdf" tooltipPosition="top">
                                             <i class="fa-solid fa-file-pdf"></i>
                                         </button>
                                     </form>
                                     <a href="{{ route('estudiantes.edit', ['estudiante' => $estudiante->EstudianteID]) }}"
-                                       class="button3 efects_button btn_filtro" tooltipPosition="top">
+                                        class="button3 efects_button btn_filtro" tooltipPosition="top">
                                         <i class="material-icons">edit</i>
                                     </a>
                                 </div>
                             </div>
                         </div>
+
                         <div class="card-body">
-                            <div class="table-responsive-sm">
-                                <div class="row mb-2">
-                                    <div class="col-3 font-weight-bold">Nombres:</div>
-                                    <div class="col input-group">
+
+                            <div class="form-group row">
+                                <div for="inputEmail3" class="col-sm-2 font-weight-bold">Nombres:</div>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
                                         <label class="form-control">{{ strtoupper($estudiante->Nombres) }}</label>
+
                                         <div class="input-group-append">
                                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row mb-2">
-                                    <div class="col-3 font-weight-bold">Apellidos:</div>
-                                    <div class="col input-group">
+                            </div>
+                            <div class="form-group row">
+                                <div for="inputEmail3" class="col-sm-2 font-weight-bold">Apellidos:</div>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
                                         <label class="form-control">{{ strtoupper($estudiante->Apellidos) }}</label>
                                         <div class="input-group-append">
                                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row mb-2">
-                                    <div class="col-3 font-weight-bold">ESPE ID:</div>
-                                    <div class="col input-group">
+                            </div>
+
+                            <div class="form-group row">
+                                <div for="inputEmail3" class="col-sm-2 font-weight-bold">ESPE ID:</div>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
                                         <label class="form-control">{{ strtoupper($estudiante->espe_id) }}</label>
                                         <div class="input-group-append">
                                             <span class="input-group-text"><i class="fas fa-id-card"></i></span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row mb-2">
-                                    <div class="col-3 font-weight-bold">Celular:</div>
-                                    <div class="col input-group">
+                            </div>
+                            <div class="form-group row">
+                                <div for="inputEmail3" class="col-sm-2 font-weight-bold">Celular:</div>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
                                         <label class="form-control">{{ strtoupper($estudiante->celular) }}</label>
                                         <div class="input-group-append">
                                             <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row mb-2">
-                                    <div class="col-3 font-weight-bold">Cédula:</div>
-                                    <div class="col input-group">
+                            </div>
+
+                            <div class="form-group row">
+                                <div for="inputEmail3" class="col-sm-2 font-weight-bold">Cédula:</div>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
                                         <label class="form-control">{{ strtoupper($estudiante->cedula) }}</label>
                                         <div class="input-group-append">
                                             <span class="input-group-text"><i class="fas fa-id-card"></i></span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row mb-2">
-                                    <div class="col-3 font-weight-bold">Cohorte:</div>
-                                    <div class="col input-group">
+                            </div>
+                            <div class="form-group row">
+                                <div for="inputEmail3" class="col-sm-2 font-weight-bold">Cohorte:</div>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
                                         <label class="form-control">{{ strtoupper($periodo->numeroPeriodo) }}</label>
                                         <div class="input-group-append">
                                             <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row mb-2">
-                                    <div class="col-3 font-weight-bold">Departamento:</div>
-                                    <div class="col input-group">
+                            </div>
+
+                            <div class="form-group row">
+                                <div for="inputEmail3" class="col-sm-2 font-weight-bold">Departamento:</div>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
                                         <label class="form-control">{{ strtoupper($estudiante->Departamento) }}</label>
                                         <div class="input-group-append">
                                             <span class="input-group-text"><i class="fas fa-building"></i></span>
@@ -115,45 +134,60 @@
                                     </div>
                                 </div>
                             </div>
+
+
+
                         </div>
+                        <style>
+                            .form-group {
+                                margin-bottom: 0.2rem;
+                            }
+                        </style>
+
+
                     </div>
                 </div>
-                
+
                 <!-- Styles -->
                 <style>
                     .input-group-text {
-                        width: 40px; /* Set a fixed width for all icon boxes */
-                        height: 38px; /* Set a fixed height for all icon boxes */
+                        width: 40px;
+                        /* Set a fixed width for all icon boxes */
+                        height: 38px;
+                        /* Set a fixed height for all icon boxes */
                         display: flex;
                         justify-content: center;
                         align-items: center;
                     }
-                
+
                     @media (max-width: 576px) {
                         .table-responsive-sm {
                             overflow-x: auto;
                         }
-                
+
                         .font-weight-bold {
                             white-space: nowrap;
                         }
-                
+
                         .form-control {
-                            min-width: 120px; /* Adjust this as necessary */
+                            min-width: 120px;
+                            /* Adjust this as necessary */
                         }
                     }
-                
+
                     .contenedor_botones {
                         display: flex;
-                        gap: 10px; /* Adjust the gap between buttons as needed */
+                        gap: 10px;
+                        /* Adjust the gap between buttons as needed */
                     }
-                
-                    .contenedor_botones form, .contenedor_botones a {
+
+                    .contenedor_botones form,
+                    .contenedor_botones a {
                         display: flex;
                         align-items: center;
                     }
                 </style>
-                
+
 
 
             </div>
