@@ -202,19 +202,24 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
+
                     <th>Proyecto</th>
+                    <th>Codigo Proyecto</th>
                     <th>Director</th>
                     <th>Participantes</th>
                     <th>Fecha Asignación</th>
                     <th>Estudiantes</th>
+                    <th>Periodo</th>
+                    <th>NRC</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($asignacionesAgrupadas as $grupo)
                     <tr>
-                        <td>{{ $grupo->first()->AsignacionID }}</td>
                         <td>{{ $grupo->first()->proyecto->NombreProyecto }}</td>
+                        <td>{{ $grupo->first()->proyecto->codigoProyecto }}</td>
                         <td>{{ $grupo->first()->director->Nombres }}</td>
                         <td>
                             @php
@@ -228,7 +233,11 @@
                                 {{ $asignacion->estudiante->Nombres }}<br>
                             @endforeach
                         </td>
-                    </tr>
+                        <td>{{ $grupo->first()->periodo->numeroPeriodo }}</td>
+                        <td>{{ $grupo->first()->nrcVinculacion->nrc }}</td>
+                        <td>{{ $grupo->first()->FechaInicio }}</td>
+                        <td>{{ $grupo->first()->FechaFinalizacion }}</td>
+                     </tr>
                 @endforeach
             </tbody>
         </table>
