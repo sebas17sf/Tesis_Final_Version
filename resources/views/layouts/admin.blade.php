@@ -235,16 +235,13 @@
     {{--   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
         crossorigin="anonymous"> --}}
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-<<<<<<< HEAD
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
      <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
   {{--   <script src="../js/input_file.js"></script> --}}
-=======
     {{--  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
     {{--   <script src="../js/input_file.js"></script> --}}
->>>>>>> 31ace86d04cb7df688d917c4496a37e15de0b954
+
     <script src="{{ asset('js/input_file.js') }}"></script>
     <script>
         var token = "{{ session('token') }}";
