@@ -85,8 +85,7 @@
         <section class="content-navbar dimension-nav {{ session('menuState') == 'collapsed' ? 'dimension-nav-hidden' : '' }}">
             <!-- Toggle sidebar -->
             <div class="icon-menu-sidebar" onclick="toggleSidebar()">
-                <i class='bx bx-menu-alt-left'
-                    [ngClass]="{'bx-menu': sidebarHidden,'bx-menu-alt-left': !sidebarHidden}"></i>
+                <i class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
             </div>
             <!-- contenido -->
             <main class="navbar">
