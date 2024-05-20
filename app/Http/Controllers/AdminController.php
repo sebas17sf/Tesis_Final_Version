@@ -12,10 +12,10 @@ use App\Mail\EstudianteNegado;
 use App\Models\AsignacionProyecto;
 use App\Models\Empresa;
 use App\Models\Role;
+use Illuminate\Support\Facades\DB;
 
-use App\Models\AsignacionEstudiantesDirector;
 
-use App\Models\ParticipanteAdicional;
+
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
@@ -324,6 +324,19 @@ class AdminController extends Controller
             ->whereNotIn('EstudianteID', AsignacionProyecto::pluck('EstudianteID')->toArray())
             ->get();
 
+        ///////////// quiero obtener tods las asignacionesProyectos
+        $asignacionesAgrupadas = AsignacionProyecto::with('estudiante')
+        ->with('proyecto')
+        ->with('director')
+        ->with('docenteParticipante')
+        ->get()
+        ->groupBy(function ($item) {
+            return $item->ProyectoID . '_' . $item->IdPeriodo . '_' . $item->DirectorID . '_' . $item->ParticipanteID;
+        });
+
+
+
+
 
 
 
@@ -335,6 +348,7 @@ class AdminController extends Controller
             'perPage' => $perPage,
             'profesores' => $profesores,
             'nrcs' => $nrcs,
+            'asignacionesAgrupadas' => $asignacionesAgrupadas,
             'periodos' => $periodos,
             'search' => $search,
         ]);
@@ -441,6 +455,10 @@ class AdminController extends Controller
                 $usuario->save();
             }
         }
+
+        //////actualizar el UserID de ProfesUniversidad con el ID de Usuario creado
+        $profesor->UserID = Usuario::where('CorreoElectronico', $profesor->Correo)->value('id');
+        $profesor->save();
     }
 
     /////eliminar proyecto
@@ -515,7 +533,7 @@ class AdminController extends Controller
     public function guardarMaestro(Request $request)
     {
         try {
-             $existente = ProfesUniversidad::where(function ($query) use ($request) {
+            $existente = ProfesUniversidad::where(function ($query) use ($request) {
                 $query->where('Nombres', $request->nombres)
                     ->where('Apellidos', $request->apellidos);
             })->exists();
@@ -523,10 +541,10 @@ class AdminController extends Controller
             if ($existente) {
                 $mensaje = 'Ya existe un maestro con los mismos nombres y apellidos.';
 
-                 return redirect()->back()->with('errorMaestro', $mensaje);
+                return redirect()->back()->with('errorMaestro', $mensaje);
             }
 
-             $existenteCorreo = ProfesUniversidad::where('Correo', $request->correo)->exists();
+            $existenteCorreo = ProfesUniversidad::where('Correo', $request->correo)->exists();
             $existenteCedula = ProfesUniversidad::where('Cedula', $request->cedula)->exists();
 
             if ($existenteCorreo) {
@@ -538,10 +556,10 @@ class AdminController extends Controller
             }
 
             if ($existenteCorreo || $existenteCedula) {
-                 return redirect()->back()->with('errorMaestro', $mensaje);
+                return redirect()->back()->with('errorMaestro', $mensaje);
             }
 
-             $request->validate([
+            $request->validate([
                 'nombres' => 'required',
                 'apellidos' => 'required',
                 'correo' => 'required',
@@ -550,7 +568,7 @@ class AdminController extends Controller
                 'espe_id' => 'required',
             ]);
 
-             $usuario = explode('@', $request->correo)[0];
+            $usuario = explode('@', $request->correo)[0];
             ProfesUniversidad::create([
                 'Nombres' => $request->nombres,
                 'Usuario' => $usuario,
@@ -561,9 +579,9 @@ class AdminController extends Controller
                 'espe_id' => $request->espe_id,
             ]);
 
-             return redirect()->route('admin.index')->with('success', 'Docente creado con éxito');
+            return redirect()->route('admin.index')->with('success', 'Docente creado con éxito');
         } catch (\Exception $e) {
-             return redirect()->back()->with('error', 'No se pudo crear el Docente. Por favor, verifica los datos e intenta de nuevo.');
+            return redirect()->back()->with('error', 'No se pudo crear el Docente. Por favor, verifica los datos e intenta de nuevo.');
         }
     }
 
