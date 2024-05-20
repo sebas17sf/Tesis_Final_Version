@@ -10,10 +10,10 @@ class Periodo extends Model
     use HasFactory;
 
     protected $table = 'periodo';
-    protected $primaryKey = 'id'; 
+    protected $primaryKey = 'id';
 
     protected $fillable = [
-        'Periodo', 
+        'Periodo',
         'PeriodoInicio',
         'PeriodoFin',
         'numeroPeriodo'
@@ -23,6 +23,11 @@ class Periodo extends Model
     public function estudiantes()
     {
         return $this->hasMany(Estudiante::class, 'id_periodo', 'id');
+    }
+
+    public function asignacionProyectos()
+    {
+        return $this->hasMany(AsignacionProyecto::class, 'IdPeriodo', 'id');
     }
 
 }

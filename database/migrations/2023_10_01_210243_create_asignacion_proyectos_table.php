@@ -16,12 +16,19 @@ return new class extends Migration
             $table->unsignedBigInteger('EstudianteID');
             $table->unsignedBigInteger('ProyectoID');
             $table->unsignedBigInteger('DirectorID');
+            $table->unsignedBigInteger('ParticipanteID');
+            $table->unsignedBigInteger('IdPeriodo');
+            $table->unsignedBigInteger('id_nrc_vinculacion');
+             $table->date('FechaInicio');
+             $table->date('FechaFinalizacion');
              $table->date('FechaAsignacion');
             $table->timestamps();
-
             $table->foreign('EstudianteID')->references('EstudianteID')->on('estudiantes');
             $table->foreign('ProyectoID')->references('ProyectoID')->on('proyectos');
+            $table->foreign('id_nrc_vinculacion')->references('id')->on('nrc_vinculacion');
             $table->foreign('DirectorID')->references('id')->on('profesUniversidad');
+            $table->foreign('ParticipanteID')->references('id')->on('profesUniversidad');
+            $table->foreign('IdPeriodo')->references('id')->on('periodo');
          });
     }
 

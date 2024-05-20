@@ -6,11 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-   
+
     public function up(): void
     {
         Schema::create('profesUniversidad', function (Blueprint $table) {
-            $table->id(); 
+            $table->id();
+            $table->unsignedBigInteger('UserID')->nullable();
+            $table->foreign('UserID')->references('UserID')->on('usuarios')->nullable();
             $table->string('Apellidos');
             $table->string('Nombres');
             $table->string('Correo');
@@ -18,7 +20,7 @@ return new class extends Migration
             $table->string('Cedula');
             $table->string('espe_id')->nullable();
             $table->string('Departamento');
-            $table->timestamps(); 
+            $table->timestamps();
         });
     }
 
