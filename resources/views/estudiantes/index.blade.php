@@ -29,7 +29,7 @@
     <div class="contenedor_general mat-elevation-z8 ">
     <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
     <div class="contenedor_botones">
-    
+
         <form action="{{ route('estudiantes.certificadoMatricula') }}" method="get">
             <button type="submit" class="button3 efects_button btn_pdf " tooltipPosition="top">
             <i class="fa-solid fa-file-pdf"></i>
@@ -39,7 +39,7 @@
 
             <a href="{{ route('estudiantes.edit', ['estudiante' => $estudiante->EstudianteID]) }}"
                 class="button3 efects_button btn_filtro" tooltipPosition="top">
-                <i class="material-icons">edit</i> 
+                <i class="material-icons">edit</i>
             </a>
 
         </div>
@@ -146,11 +146,11 @@
                     </div>
                 </div>
             </div>
-            
+
 
         </div>
         </div>
-        
+
 
 
         <!-- Estado y botón de reenvío de información con ícono -->
@@ -196,7 +196,6 @@
                         <tr>
                             <th>Nombre del Proyecto</th>
                             <th>Docente Director</th>
-                            <th>Docente Participante</th>
                             <th>Descripción del Proyecto</th>
                             <th>Fecha de Asignación</th>
                             <th>Fecha de Inicio</th>
@@ -206,13 +205,11 @@
                     <tbody>
                         <tr>
                             <td>{{ strtoupper($asignacionProyecto->proyecto->NombreProyecto) }}</td>
-                            <td>{{ strtoupper($asignacionProyecto->proyecto->director->Nombres . ' ' . $asignacionProyecto->proyecto->director->Apellidos) }}
-                            </td>
-                            <td>{{ strtoupper($asignacionProyecto->proyecto->docenteParticipante->Nombres . ' ' . $asignacionProyecto->proyecto->docenteParticipante->Apellidos) }}
-                            </td>
+                            <td>{{ strtoupper($asignacionProyecto->director->Nombres . ' ' . $asignacionProyecto->director->Apellidos) }}
+
                             <td>{{ strtoupper($asignacionProyecto->proyecto->DescripcionProyecto) }}</td>
                             <td>{{ $asignacionProyecto->FechaAsignacion }}</td>
-                            <td>{{ $asignacionProyecto->proyecto->FechaInicio }}</td>
+                            <td>{{ $asignacionProyecto->FechaInicio }}</td>
                             <td>{{ $asignacionProyecto->proyecto->Estado }}</td>
                         </tr>
 

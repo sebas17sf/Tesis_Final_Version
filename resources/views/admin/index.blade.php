@@ -167,10 +167,21 @@
             </div>
         </section>
         <br>
-        <form action="{{ route('admin.respaldo') }}" method="POST">
-            @csrf
-            <button type="submit" class="button1">Respaldar Base de Datos</button>
-        </form>
+        <div class="d-flex  justify-content-center">
+            <form action="{{ route('admin.respaldo') }}" method="POST" class="mr-2">
+                @csrf
+                <button type="submit" class="button1">Respaldar Base de Datos</button>
+            </form>
+            <button type="button" class="button1 mr-2" data-toggle="modal" data-target="#modalAgregarNRC">
+                Agregar NRC
+            </button>
+            <button type="button" class="button1 mr-2" data-toggle="modal" data-target="#modalAgregarPeriodo">
+                Agregar Periodo
+            </button>
+            <button type="button" class="button1" data-toggle="modal" data-target="#editarPeriodoModal">
+                        Editar Periodo
+                    </button>
+        </div>
         <br>
         <section>
             <!-- Archivos de notas -->
@@ -235,11 +246,11 @@
                                                     pertenece:</strong></label>
                                             <select id="departamento" name="departamento"
                                                 class="form-control input_select input" required>
-                                                <option value="Ciencias de la Computación">Departamento de Ciencias de
+                                                <option value="Ciencias de la Computación">Ciencias de la
                                                     Computación</option>
-                                                <option value="Ciencias de la Vida">Departamento de Ciencias de la Vida
+                                                <option value="Ciencias de la Vida">Ciencias de la Vida
                                                 </option>
-                                                <option value="Ciencias Exactas">Departamento de Ciencias Exactas</option>
+                                                <option value="Ciencias Exactas">Ciencias Exactas</option>
                                             </select>
                                         </div>
                                     </div>
@@ -253,10 +264,7 @@
                     </div>
                 </div>
 
-
                 <!--------------------------------------- -->
-
-
 
                 <div class="mat-elevation-z8 contenedor_general">
                     <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
@@ -595,18 +603,10 @@
         <section>
 
             <div class="container">
-                <button id="toggleFormBtn2" class="btn btn-outline-secondary btn-block">Agregar Cohoerte/Periodo/NRC
-                </button>
+    
                 <hr>
                 <div id="registrarPeriodos" style="display: none;">
                     <!-- ------------------------------Agregar periodo----------------------------------------------------- -->
-                    <div>
-                        <button type="button" class="button1" data-toggle="modal" data-target="#modalAgregarPeriodo">
-                            Agregar Periodo
-                        </button>
-
-
-                    </div>
 
                     <div class="modal fade" id="modalAgregarPeriodo" tabindex="-1" role="dialog"
                         aria-labelledby="modalLabel" aria-hidden="true">
@@ -657,17 +657,6 @@
                             </div>
                         </div>
                     </div>
-
-
-
-                    <br>
-                    <!-- Formulario para agregar NRC Vinculacion -->
-
-                    <div>
-                        <button type="button" class="button1" data-toggle="modal" data-target="#modalAgregarNRC">
-                            Agregar NRC
-                        </button>
-                        <hr>
 
                     </div>
 
@@ -725,59 +714,58 @@
                         </div>
                     </div>
 
-
-                    <br>
-
                     <!-- ----------------------------------------------------------------------------------- -->
+                </button>
+                    <!-- EDITAR PERIODO -->
 
-                    <br>
-                    <!-- Elementos agregados (Periodos y Cohortes) -->
-                    <h6>Editar Periodo</h6>
-
-                    <div class="row align-items-center">
-                        <div class="form-group col-md-6">
-
-                            <label for="periodo"><strong>Periodos Agregados:</strong></label>
-                            <select id="selectPeriodo" class="form-control input_select input">
-                                <option value="" data-inicio="" data-fin="" data-numero="">Seleccionar Periodo
-                                </option>
-                                @foreach ($periodos as $periodo)
-                                    <option value="{{ $periodo->id }}" data-inicio="{{ $periodo->PeriodoInicio }}"
-                                        data-fin="{{ $periodo->PeriodoFin }}"
-                                        data-numero="{{ $periodo->numeroPeriodo }}">
-                                        {{ $periodo->numeroPeriodo }} {{ $periodo->Periodo }}
-                                    </option>
-                                @endforeach
-                            </select>
-
-
-
+                    <div class="modal fade" id="editarPeriodoModal" tabindex="-1" role="dialog" aria-labelledby="editarPeriodoModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editarPeriodoModalLabel">Editar Periodo</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row align-items-center">
+                                            <div class="form-group col-md-6">
+                                                    <label for="periodo"><strong>Periodos Agregados:</strong></label>
+                                                    <select id="selectPeriodo" class="form-control input_select input">
+                                                            <option value="" data-inicio="" data-fin="" data-numero="">Seleccionar Periodo</option>
+                                                            @foreach ($periodos as $periodo)
+                                                                    <option value="{{ $periodo->id }}" data-inicio="{{ $periodo->PeriodoInicio }}"
+                                                                            data-fin="{{ $periodo->PeriodoFin }}"
+                                                                            data-numero="{{ $periodo->numeroPeriodo }}">
+                                                                            {{ $periodo->numeroPeriodo }} {{ $periodo->Periodo }}
+                                                                    </option>
+                                                            @endforeach
+                                                    </select>
+                                            </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                            <div class="form-group col-md-6">
+                                                    <form id="editarPeriodoForm" method="GET">
+                                                            @csrf
+                                                            <button type="submit" class="button">Editar</button>
+                                                    </form>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        <div class="form-group col-md-6">
-
-                            <form id="editarPeriodoForm" method="GET">
-                                @csrf
-                                <button type="submit" class="button">Editar</button>
-                            </form>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
 
             <!-- Modal para peridoo-------------------------------- -->
 
-            <div class="modal" tabindex="-1" role="dialog" id="editModal">
+            <div class="modal fade" tabindex="-1" role="dialog" id="editModal" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Editar Periodo</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                         </div>
                         <div class="modal-body">
                             <form class="formulario" method="POST"

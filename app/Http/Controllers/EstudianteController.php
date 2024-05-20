@@ -386,7 +386,7 @@ class EstudianteController extends Controller
     ]);
 
     $estudiante = Auth::user()->estudiante;
-    $asignaciones = $estudiante->asignacionesEstudiantesDirectores;
+    $asignaciones = $estudiante->asignaciones;
 
     if (!$asignaciones->count()) {
         return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');

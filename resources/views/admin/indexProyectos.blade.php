@@ -37,26 +37,29 @@
             <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                 <!-- Botones -->
                 <div class="row">
-    <div class="col-md-12 d-flex align-items-center">
-        <form method="POST" action="{{ route('coordinador.reportesProyectos') }}" class="form-inline mr-2 d-flex align-items-center">
-            @csrf
-            <div class="form-group mr-2">
-                <label for="estado" class="mr-2">Estado del Proyecto:</label>
-                <select name="estado" id="estado" class="form-control input input-select mr-2">
-                    <option value="">Todos</option>
-                    <option value="Ejecucion">En Ejecución</option>
-                    <option value="Terminado">Terminado</option>
-                </select>
-            </div>
-            <button type="submit" class="button3 efects_button btn_excel mr-2" pTooltip="Excel" tooltipPosition="top">
-                <i class="fa-solid fa-file-excel"></i>
-            </button>
-            <button type="button" onclick="location.href='{{ route('admin.agregarProyecto') }}';" class="button3 efects_button btn_primary" id="button3">
-                <i class="fa-solid fa-plus"></i>
-            </button>
-        </form>
-    </div>
-</div>
+                    <div class="col-md-12 d-flex align-items-center">
+                        <form method="POST" action="{{ route('coordinador.reportesProyectos') }}"
+                            class="form-inline mr-2 d-flex align-items-center">
+                            @csrf
+                            <div class="form-group mr-2">
+                                <label for="estado" class="mr-2">Estado del Proyecto:</label>
+                                <select name="estado" id="estado" class="form-control input input-select mr-2">
+                                    <option value="">Todos</option>
+                                    <option value="Ejecucion">En Ejecución</option>
+                                    <option value="Terminado">Terminado</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="button3 efects_button btn_excel mr-2" pTooltip="Excel"
+                                tooltipPosition="top">
+                                <i class="fa-solid fa-file-excel"></i>
+                            </button>
+                            <button type="button" onclick="location.href='{{ route('admin.agregarProyecto') }}';"
+                                class="button3 efects_button btn_primary" id="button3">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
 
                 <!-- Buscador -->
                 <div class="contenedor_buscador">
@@ -78,19 +81,10 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th>Nombre del director del proyecto</th>
-                                    <th>Nombres Docentes participantes</th>
                                     <th class="tamanio">Nombre del proyecto</th>
                                     <th class="tamanio">Descripción</th>
-                                    <th>Correo del director</th>
-                                    <th>Correos de Docentes participantes</th>
-                                    <th>Departamento del director</th>
+                                    <th>Departamento</th>
                                     <th>Código del Proyecto Social</th>
-                                    <th>NRC</th>
-                                    <th>Periodo</th>
-                                    <th>Fecha de inicio</th>
-                                    <th>Fecha de finalización</th>
-                                    <th>Cupos</th>
                                     <th>Estado del proyecto</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -105,29 +99,11 @@
                                 @else
                                     @foreach ($proyectos as $proyecto)
                                         <tr>
-                                            <td>{{ strtoupper($proyecto->director->Apellidos) }}
-                                                {{ strtoupper($proyecto->director->Nombres) }}</td>
-                                            <td>
-                                                {{ strtoupper($proyecto->docenteParticipante->Apellidos) }}
-                                                {{ strtoupper($proyecto->docenteParticipante->Nombres) }}
-                                                @foreach ($proyecto->participantesAdicionales as $participanteAdicional)
-                                                    <br>
-                                                    {{ strtoupper($participanteAdicional->Apellidos) }}
-                                                    {{ strtoupper($participanteAdicional->Nombres) }}
-                                                @endforeach
-                                            </td>
                                             <td style="word-wrap: break-word; text-align: justify;">
                                                 {{ strtoupper($proyecto->NombreProyecto) }}</td>
                                             <td style="word-wrap: break-word; text-align: justify;">
                                                 {{ strtoupper($proyecto->DescripcionProyecto) }}</td>
-                                            <td>{{ strtoupper($proyecto->director->Correo) }}</td>
-                                            <td>
-                                                {{ strtoupper($proyecto->docenteParticipante->Correo) }}
-                                                @foreach ($proyecto->participantesAdicionales as $participanteAdicional)
-                                                    <br>
-                                                    {{ strtoupper($participanteAdicional->Correo) }}
-                                                @endforeach
-                                            </td>
+
                                             <td>{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
                                             <td>
                                                 @if (empty($proyecto->codigoProyecto))
@@ -136,11 +112,6 @@
                                                     {{ strtoupper($proyecto->codigoProyecto) }}
                                                 @endif
                                             </td>
-                                            <td>{{ strtoupper($proyecto->nrcs->nrc) }}</td>
-                                            <td>{{ strtoupper($proyecto->nrcs->periodo->numeroPeriodo) }}</td>
-                                            <td>{{ strtoupper($proyecto->FechaInicio) }}</td>
-                                            <td>{{ strtoupper($proyecto->FechaFinalizacion) }}</td>
-                                            <td>{{ strtoupper($proyecto->cupos) }}</td>
                                             <td>{{ strtoupper($proyecto->Estado) }}</td>
                                             <td>
                                                 <div class="contenedor_botones">
@@ -228,11 +199,11 @@
     </section>
     <hr>
     <section>
+
         <div class="container">
             <button id="toggleFormBtn3" class="btn btn-outline-secondary btn-block">Asignar estudiante</button>
             <div id="asignarEstudiante" style="display: none;">
-
-                <HR>
+                <hr>
                 <h6><b>Asignar Proyecto</b></h6>
                 <hr>
                 <form method="POST" action="{{ route('admin.guardarAsignacion') }}">
@@ -245,13 +216,8 @@
                                 <select name="proyecto_id" id="proyecto_id" class="form-control input input-select">
                                     <option value="">Seleccione un proyecto</option>
                                     @foreach ($proyectosDisponibles as $proyecto)
-                                        @if ($proyecto->cupos > 0)
-                                            <option value="{{ $proyecto->ProyectoID }}">
-                                                {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }} -
-                                                Cupos disponibles: {{ $proyecto->cupos }} -
-                                                {{ $proyecto->DepartamentoTutor }}
-                                            </option>
-                                        @endif
+                                        <option value="{{ $proyecto->ProyectoID }}">{{ $proyecto->NombreProyecto }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -259,11 +225,51 @@
                     </div>
 
                     <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="DirectorProyecto">Director del Proyecto:</label>
+                                <select name="DirectorProyecto" class="form-control input input-select" required>
+                                    <option value="">Seleccionar Director</option>
+                                    @foreach ($profesores as $profesor)
+                                        <option value="{{ $profesor->id }}">
+                                            Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
+                                            Departamento: {{ $profesor->Departamento }} -
+                                            Correo: {{ $profesor->Correo }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="ProfesorParticipante">Profesor Participante:</label>
+                                <select name="ProfesorParticipante" class="form-control input input-select" required>
+                                    <option value="">Seleccionar Profesor Participante</option>
+                                    @foreach ($profesores as $profesor)
+                                        <option value="{{ $profesor->id }}">
+                                            Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
+                                            Departamento: {{ $profesor->Departamento }} -
+                                            Correo: {{ $profesor->Correo }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="estudiante_id"><strong> Estudiante Aprobado:</strong></label>
-                                <select name="estudiante_id" id="estudiante_id" class="form-control input input-select">
-                                    <option value="">Seleccione un estudiante</option>
+                                <label for="estudiante_id"><strong>Estudiante Aprobado:</strong></label>
+                                <select name="estudiante_id[]" id="estudiante_id" class="form-control input input-select"
+                                    multiple="multiple">
                                     @foreach ($estudiantesAprobados as $estudiante)
                                         <option value="{{ $estudiante->EstudianteID }}">
                                             {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} -
@@ -274,6 +280,39 @@
                             </div>
                         </div>
 
+
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="nrc">Vinculacion NRC:</label>
+                                <select name="nrc" class="form-control input input-select" required>
+                                    <option value="">Seleccionar NRC</option>
+                                    @foreach ($nrcs as $nrc)
+                                        <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="FechaInicio">Fecha de Inicio:</label>
+                                <input type="date" name="FechaInicio" class="form-control input" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="FechaFinalizacion">Fecha de Finalización:</label>
+                                <input type="date" name="FechaFinalizacion" class="form-control input" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="fecha_asignacion"><strong>Fecha de Asignación:</strong></label>
@@ -281,18 +320,37 @@
                                     class="form-control input" value="{{ now()->toDateString() }}">
                             </div>
                         </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="periodo_id"><strong>Periodo:</strong></label>
+                                <select name="periodo_id" id="periodo_id" class="form-control input input-select">
+                                    <option value="">Seleccione un periodo</option>
+                                    @foreach ($periodos as $periodo)
+                                        <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }}
+                                            {{ $periodo->Periodo }}</option>
+                                    @endforeach
+                                </select>
+
+                            </div>
+                        </div>
+
+
                     </div>
 
-                    <button type="submit" class="button efects_button">Asignar Proyecto</button>
+
+
+                    <button type="submit" class="button">Asignar Proyecto</button>
                 </form>
-
             </div>
-
         </div>
+
     </section>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -314,6 +372,54 @@
             }, 500);
         });
     </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#estudiante_id').select2({
+                placeholder: "Seleccione un estudiante",
+                closeOnSelect: false,
+                width: 'resolve',
+                templateResult: formatState,
+                templateSelection: formatSelection,
+                escapeMarkup: function(markup) {
+                    return markup;
+                }
+            }).on('select2:select', function(e) {
+                var element = e.params.data.element;
+                var $element = $(element);
+                $element.detach();
+                $(this).append($element).trigger('change');
+            }).on('select2:unselect', function(e) {
+                var element = e.params.data.element;
+                var $element = $(element);
+                $element.detach();
+                $(this).append($element).trigger('change');
+            });
+
+            function formatState(state) {
+                if (!state.id) {
+                    return state.text;
+                }
+                var $state = $(
+                    '<span><input type="checkbox" class="checkbox-item"  style="margin-right: 8px;" />' + state
+                    .text + '</span>'
+                );
+                return $state;
+            }
+
+            function formatSelection(state) {
+                if (!state.id) {
+                    return state.text;
+                }
+                var $state = $(
+                    '<span>' + state.text + '</span>'
+                );
+                return $state;
+            }
+        });
+    </script>
+
+
 
 
 

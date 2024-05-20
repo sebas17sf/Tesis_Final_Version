@@ -14,17 +14,11 @@ class Proyecto extends Model
     protected $primaryKey = 'ProyectoID';
 
     protected $fillable = [
-        'id_directorProyecto',
-        'id_docenteParticipante',
-        'id_nrc_vinculacion',
         'NombreProyecto',
         'DescripcionProyecto',
         'CorreoElectronicoTutor',
         'DepartamentoTutor',
-        'FechaInicio',
-        'codigoProyecto',
-        'FechaFinalizacion',
-        'cupos',
+         'codigoProyecto',
         'Estado',
     ];
 
