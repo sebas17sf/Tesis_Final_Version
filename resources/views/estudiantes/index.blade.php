@@ -27,135 +27,177 @@
         </script>
     @endif
     <div class="contenedor_general mat-elevation-z8 ">
-    <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
-    <div class="contenedor_botones">
 
-        <form action="{{ route('estudiantes.certificadoMatricula') }}" method="get">
-            <button type="submit" class="button3 efects_button btn_pdf " tooltipPosition="top">
-            <i class="fa-solid fa-file-pdf"></i>
-            </button>
-        </form>
-<!-- Botón de edición con ícono -->
-
-            <a href="{{ route('estudiantes.edit', ['estudiante' => $estudiante->EstudianteID]) }}"
-                class="button3 efects_button btn_filtro" tooltipPosition="top">
-                <i class="material-icons">edit</i>
-            </a>
-
-        </div>
-        </div>
         <div class="table-container mat-elevation-z8">
-        <div id="tablaDocentes">
-           {{--  <table class="table mat-mdc-row">
-                <tbody class="ng-star-inserted">
-                    <tr>
-                        <th>Nombres:</th>
-                        <td>{{ strtoupper($estudiante->Nombres) }}</td>
-                    </tr>
-                    <tr>
-                        <th>Apellidos:</th>
-                        <td>{{ strtoupper($estudiante->Apellidos) }}</td>
-                    </tr>
-                    <tr>
-                        <th>ESPE ID:</th>
-                        <td>{{ strtoupper($estudiante->espe_id) }}</td>
-                    </tr>
-                    <tr>
-                        <th>Celular:</th>
-                        <td>{{ strtoupper($estudiante->celular) }}</td>
-                    </tr>
-                    <tr>
-                        <th>Cédula:</th>
-                        <td>{{ strtoupper($estudiante->cedula) }}</td>
-                    </tr>
-                    <tr>
-                        <th>Cohorte:</th>
-                        <td>{{ strtoupper($periodo->numeroPeriodo) }}</td>
-                    </tr>
-                    <tr>
-                        <th>Departamento:</th>
-                        <td>{{ strtoupper($estudiante->Departamento) }}</td>
-                    </tr>
-                    <!-- Agrega aquí más campos con íconos si es necesario -->
-                </tbody>
-            </table> --}}
+            <div id="tablaDocentes">
+
+                <div class="container mt-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div></div>
+                                <div class="d-flex">
+                                    <form action="{{ route('estudiantes.certificadoMatricula') }}" method="get"
+                                        class="mr-2">
+                                        <button type="submit" class="button3 efects_button btn_pdf" tooltipPosition="top">
+                                            <i class="fa-solid fa-file-pdf"></i>
+                                        </button>
+                                    </form>
+                                    <a href="{{ route('estudiantes.edit', ['estudiante' => $estudiante->EstudianteID]) }}"
+                                        class="button3 efects_button btn_filtro" tooltipPosition="top">
+                                        <i class="material-icons">edit</i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="form-group row">
+                                <div for="inputEmail3" class="col-sm-2 font-weight-bold">Nombres:</div>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <label class="form-control">{{ strtoupper($estudiante->Nombres) }}</label>
+
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div for="inputEmail3" class="col-sm-2 font-weight-bold">Apellidos:</div>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <label class="form-control">{{ strtoupper($estudiante->Apellidos) }}</label>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div for="inputEmail3" class="col-sm-2 font-weight-bold">ESPE ID:</div>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <label class="form-control">{{ strtoupper($estudiante->espe_id) }}</label>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div for="inputEmail3" class="col-sm-2 font-weight-bold">Celular:</div>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <label class="form-control">{{ strtoupper($estudiante->celular) }}</label>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div for="inputEmail3" class="col-sm-2 font-weight-bold">Cédula:</div>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <label class="form-control">{{ strtoupper($estudiante->cedula) }}</label>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div for="inputEmail3" class="col-sm-2 font-weight-bold">Cohorte:</div>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <label class="form-control">{{ strtoupper($periodo->numeroPeriodo) }}</label>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div for="inputEmail3" class="col-sm-2 font-weight-bold">Departamento:</div>
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <label class="form-control">{{ strtoupper($estudiante->Departamento) }}</label>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text"><i class="fas fa-building"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
 
-            <div class="container">
-                <div class="row mb-2">
-                    <div class="col-3 font-weight-bold">Nombres:</div>
-                    <div class="col input-group">
-                        <input type="text" class="form-control" value="{{ strtoupper($estudiante->Nombres) }}" readonly>
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+
                         </div>
+                        <style>
+                            .form-group {
+                                margin-bottom: 0.2rem;
+                            }
+                        </style>
+
+
                     </div>
                 </div>
-                <div class="row mb-2">
-                    <div class="col-3 font-weight-bold">Apellidos:</div>
-                    <div class="col input-group">
-                        <input type="text" class="form-control" value="{{ strtoupper($estudiante->Apellidos) }}" readonly>
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-user"></i></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-3 font-weight-bold">ESPE ID:</div>
-                    <div class="col input-group">
-                        <input type="text" class="form-control" value="{{ strtoupper($estudiante->espe_id) }}" readonly>
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-3 font-weight-bold">Celular:</div>
-                    <div class="col input-group">
-                        <input type="text" class="form-control" value="{{ strtoupper($estudiante->celular) }}" readonly>
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-3 font-weight-bold">Cédula:</div>
-                    <div class="col input-group">
-                        <input type="text" class="form-control" value="{{ strtoupper($estudiante->cedula) }}" readonly>
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-3 font-weight-bold">Cohorte:</div>
-                    <div class="col input-group">
-                        <input type="text" class="form-control" value="{{ strtoupper($periodo->numeroPeriodo) }}" readonly>
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-3 font-weight-bold">Departamento:</div>
-                    <div class="col input-group">
-                        <input type="text" class="form-control" value="{{ strtoupper($estudiante->Departamento) }}" readonly>
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-building"></i></span>
-                        </div>
-                    </div>
-                </div>
+
+                <!-- Styles -->
+                <style>
+                    .input-group-text {
+                        width: 40px;
+                        /* Set a fixed width for all icon boxes */
+                        height: 38px;
+                        /* Set a fixed height for all icon boxes */
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+
+                    @media (max-width: 576px) {
+                        .table-responsive-sm {
+                            overflow-x: auto;
+                        }
+
+                        .font-weight-bold {
+                            white-space: nowrap;
+                        }
+
+                        .form-control {
+                            min-width: 120px;
+                            /* Adjust this as necessary */
+                        }
+                    }
+
+                    .contenedor_botones {
+                        display: flex;
+                        gap: 10px;
+                        /* Adjust the gap between buttons as needed */
+                    }
+
+                    .contenedor_botones form,
+                    .contenedor_botones a {
+                        display: flex;
+                        align-items: center;
+                    }
+                </style>
+
+
+
             </div>
-
-
         </div>
-        </div>
-
-
 
         <!-- Estado y botón de reenvío de información con ícono -->
         <div class="mt-4">
-            <h6><b><div class="icon-sidebar-item">Estado-Aprobación</div></b></h6>
+            <h6><b>
+                    <div class="icon-sidebar-item">Estado-Aprobación</div>
+                </b></h6>
             <hr>
             <table class="table custom-table">
                 <tbody>
@@ -226,7 +268,6 @@
 
     </div>
 
-</div>
+    </div>
 
 @endsection
-

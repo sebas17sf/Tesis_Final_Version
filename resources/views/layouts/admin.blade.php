@@ -15,16 +15,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<<<<<<< HEAD
+
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-   {{--  <link rel="stylesheet" href="../css/admin/admin.css">
-=======
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     {{--  <link rel="stylesheet" href="../css/admin/admin.css">
->>>>>>> 31ace86d04cb7df688d917c4496a37e15de0b954
+
  --}}
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
@@ -34,9 +32,6 @@
             overflow-x: hidden;
         }
     </style>
-    {{--  <script src="../js/menu.js"></script> --}}
-
-
 
 </head>
 
@@ -127,8 +122,7 @@
     <section class="content-navbar dimension-nav {{ session('menuState') == 'collapsed' ? 'dimension-nav-hidden' : '' }}">
         <!-- Toggle sidebar -->
         <div class="icon-menu-sidebar" onclick="toggleSidebar()">
-            <i class='bx bx-menu-alt-left'
-                [ngClass]="{'bx-menu': sidebarHidden,'bx-menu-alt-left': !sidebarHidden}"></i>
+            <i class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
         </div>
         <!-- contenido -->
         <main class="navbar">
@@ -182,35 +176,6 @@
 
     </section>
 
-
-    <script>
-     /*    document.addEventListener('DOMContentLoaded', function() {
-
-            var contentSidebar = document.querySelector('.content-sidebar');
-            var elementosAutores = document.querySelectorAll('.content-autors');
-            var viewsActive = document.querySelector('.views');
-            var contentViews = document.querySelector('.content-views');
-            var contentNavbar = document.querySelector('.content-navbar');
-
-            if (localStorage.getItem('menuState') == 'expanded') {
-
-                elementosAutores[0].setAttribute('style', `opacity: 1;`)
-                contentSidebar.classList.remove('content-sidebar-hidden');
-                contentNavbar.classList.remove('dimension-nav-hidden');
-                contentViews.classList.remove('dimension-content-hidden');
-                viewsActive.classList.remove('views-active');
-
-            } else {
-                console.log("cerrar");
-                contentSidebar.classList.add('content-sidebar-hidden');
-                contentNavbar.classList.add('dimension-nav-hidden');
-                contentViews.classList.add('dimension-content-hidden');
-                viewsActive.classList.add('views-active');
-            }
-
-
-        }); */
-    </script>
     <!-- Scripts de jQuery y Popper.js -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
@@ -237,10 +202,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-  {{--   <script src="../js/input_file.js"></script> --}}
-    {{--  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
-    {{--   <script src="../js/input_file.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script src="{{ asset('js/input_file.js') }}"></script>
     <script>
@@ -249,8 +211,6 @@
             localStorage.setItem('token', token);
         }
     </script>
-
-
 
     <script>
         function toggleSidebar() {
@@ -267,16 +227,15 @@
                     menuState: menuState
                 },
                 success: function(response) {
-                    console.log('Estado del menú enviado:',menuState);
-                    console.log('Estado del menú actualizado:', response.menuState);
+                 /*    console.log('Estado del menú enviado:',menuState);
+                    console.log('Estado del menú actualizado:', response.menuState); */
                     // Actualizar el estado del menú en el localStorage si es necesario
                     //localStorage.setItem('menuState', response.menuState);
                 },
                 error: function(xhr, status, error) {
-                    console.error('Error al actualizar el estado del menú:', error);
+                 /*    console.error('Error al actualizar el estado del menú:', error); */
                 }
             });
-
 
             triggerToggleSidebar();
 

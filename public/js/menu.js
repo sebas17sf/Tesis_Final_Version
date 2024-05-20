@@ -6,6 +6,8 @@ function triggerToggleSidebar() {
   var contentViews = document.querySelector('.content-views');
   var contentNavbar = document.querySelector('.content-navbar');
 
+  var menuIcono = document.querySelector('.menu-icono');
+
   var menuState = localStorage.getItem('menuState') === 'expanded' ? 'collapsed' : 'expanded';
   localStorage.setItem('menuState', menuState);
   // Si la clase dimension-nav-hidden está presente en contentSidebar, la elimina; de lo contrario, la añade
@@ -13,13 +15,18 @@ function triggerToggleSidebar() {
     contentSidebar.classList.remove('content-sidebar-hidden');
     elementosAutores[0].setAttribute('style', `opacity: 1;`)
     /*     localStorage.setItem('menuState', 'expanded'); */
+    menuIcono.classList.remove('bx-menu-alt-left');
+    menuIcono.classList.add('bx-menu');
+
   } else {
     contentSidebar.classList.add('content-sidebar-hidden');
     elementosAutores[0].removeAttribute('style');
+    /*   menuIcono.classList.add('bx-menu-alt-left'); */
+
+    menuIcono.classList.remove('bx-menu');
+    menuIcono.classList.add('bx-menu-alt-left');
     /*   localStorage.setItem('menuState', 'collapsed'); */
   }
-
-
 
   contentNavbar.classList.add('dimension-nav');
   // Si la clase dimension-nav-hidden está presente en contentNavbar, la elimina; de lo contrario, la añade
@@ -47,17 +54,20 @@ function triggerToggleSidebar() {
 
 }
 document.addEventListener('DOMContentLoaded', function () {
-
-  /* var menuState = localStorage.getItem('menuState') === 'collapsed' ? 'collapsed' : 'expanded';
-  localStorage.setItem('menuState', menuState); */
-  //agregar linea de los titulos
   var contentSidebar = document.querySelector('.content-sidebar');
+  var menuIcono = document.querySelector('.menu-icono');
+
   if (contentSidebar.classList.contains('content-sidebar-hidden')) {
     localStorage.setItem('menuState', 'collapsed');
+  
+
+    menuIcono.classList.remove('bx-menu');
+    menuIcono.classList.add('bx-menu-alt-left');
   } else {
     localStorage.setItem('menuState', 'expanded');
+    menuIcono.classList.remove('bx-menu-alt-left');
+    menuIcono.classList.add('bx-menu');
   }
-
 
   var elementosTitleContent = document.querySelectorAll('.title-content');
   var elementosHydrated = document.querySelectorAll('.hydrated');
@@ -77,11 +87,9 @@ document.addEventListener('DOMContentLoaded', function () {
   pElements.each(function (i, element) {
     var hrefValor = $(element).attr('href');
     var segmentoElementoMenu = null;
-
     if (hrefValor != null) {
       segmentoElementoMenu = hrefValor.split('/').pop();
     }
-
     if (segmentoElementoMenu === segmentoRuta) {
       $(element).addClass('active-section');
       if ($(element).hasClass('subitem')) {
@@ -101,20 +109,15 @@ document.addEventListener('DOMContentLoaded', function () {
     $('.sublista .p-element').removeClass('active-section');
     $(this).addClass('active-section');
   });
-
-
   // Obtén una referencia al botón profile-icon y al menú emergente popup-menu-profile
   var profileButton = document.getElementById('profile-button');
   var popupMenu = document.querySelector('.popup-menu-profile');
-
   // Agrega un controlador de eventos de clic al botón profile-icon
   profileButton.addEventListener('click', function (event) {
     // Evita que el clic en el botón cierre el menú
     event.stopPropagation();
-
     // Verifica si el menú emergente está visible
     var isVisible = popupMenu.style.display === 'block';
-
     // Cambia la visibilidad del menú emergente
     if (isVisible) {
       popupMenu.style.display = 'none'; // Oculta el menú emergente si está visible
@@ -184,21 +187,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 function activarMenu() {
-
   //finde agregar linea de los titulos
-
   //verificar si el menu esta expandido o no
   var contentSidebar = document.querySelector('.content-sidebar');
   var contentNavbar = document.querySelector('.content-navbar');
   var contentViews = document.querySelector('.content-views');
   var viewsActive = document.querySelector('.views');
   var sidebarEstado = localStorage.getItem('sidebar');
-  console.log(sidebarEstado);
   if (sidebarEstado == 'true') {
     contentSidebar.classList.add('content-sidebar-hidden');
     contentNavbar.classList.add('dimension-nav-hidden');
     viewsActive.classList.add('views-active');
     contentViews.classList.add('dimension-content-hidden');
   }
-
 }

@@ -133,7 +133,7 @@
                     </div>
 
                     <div class="button-container">
-                        <button type="submit" class="button efects_button">Guardar Datos</button>
+                        <button type="submit" class="button1 efects_button">Guardar Datos</button>
                     </div>
                     <br>
                 </form>

@@ -380,10 +380,10 @@
 
 
 
-                <button type="submit" class="button">Asignar Proyecto</button>
-            </form>
+                    <button type="submit" class="button">Asignar Proyecto</button>
+                </form>
+            </div>
         </div>
-    </div>
 
 
 
