@@ -6,6 +6,8 @@ function triggerToggleSidebar() {
   var contentViews = document.querySelector('.content-views');
   var contentNavbar = document.querySelector('.content-navbar');
 
+  var menuIcono = document.querySelector('.menu-icono');
+
   var menuState = localStorage.getItem('menuState') === 'expanded' ? 'collapsed' : 'expanded';
   localStorage.setItem('menuState', menuState);
   // Si la clase dimension-nav-hidden está presente en contentSidebar, la elimina; de lo contrario, la añade
@@ -13,13 +15,18 @@ function triggerToggleSidebar() {
     contentSidebar.classList.remove('content-sidebar-hidden');
     elementosAutores[0].setAttribute('style', `opacity: 1;`)
     /*     localStorage.setItem('menuState', 'expanded'); */
+    menuIcono.classList.remove('bx-menu-alt-left');
+    menuIcono.classList.add('bx-menu');
+
   } else {
     contentSidebar.classList.add('content-sidebar-hidden');
     elementosAutores[0].removeAttribute('style');
+    /*   menuIcono.classList.add('bx-menu-alt-left'); */
+
+    menuIcono.classList.remove('bx-menu');
+    menuIcono.classList.add('bx-menu-alt-left');
     /*   localStorage.setItem('menuState', 'collapsed'); */
   }
-
-
 
   contentNavbar.classList.add('dimension-nav');
   // Si la clase dimension-nav-hidden está presente en contentNavbar, la elimina; de lo contrario, la añade
@@ -48,10 +55,18 @@ function triggerToggleSidebar() {
 }
 document.addEventListener('DOMContentLoaded', function () {
   var contentSidebar = document.querySelector('.content-sidebar');
+  var menuIcono = document.querySelector('.menu-icono');
+
   if (contentSidebar.classList.contains('content-sidebar-hidden')) {
     localStorage.setItem('menuState', 'collapsed');
+  
+
+    menuIcono.classList.remove('bx-menu');
+    menuIcono.classList.add('bx-menu-alt-left');
   } else {
     localStorage.setItem('menuState', 'expanded');
+    menuIcono.classList.remove('bx-menu-alt-left');
+    menuIcono.classList.add('bx-menu');
   }
 
   var elementosTitleContent = document.querySelectorAll('.title-content');
