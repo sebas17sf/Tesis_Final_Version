@@ -19,8 +19,14 @@ class AsignacionProyecto extends Model
     protected $fillable = [
         'EstudianteID',
         'ProyectoID',
-        'DirectorID', 
+        'DirectorID',
          'FechaAsignacion',
+        'ParticipanteID',
+        'IdPeriodo',
+        'id_nrc_vinculacion',
+        'FechaInicio',
+        'FechaFinalizacion'
+
 
     ];
 
@@ -31,7 +37,7 @@ class AsignacionProyecto extends Model
     {
         return $this->belongsTo(Estudiante::class, 'EstudianteID', 'EstudianteID');
     }
-    
+
     public function proyecto()
     {
         return $this->belongsTo(Proyecto::class, 'ProyectoID', 'ProyectoID');
@@ -39,11 +45,21 @@ class AsignacionProyecto extends Model
 
     public function director()
     {
-        return $this->belongsTo(ProfesUniversidad::class, 'id_directorProyecto');
+        return $this->belongsTo(ProfesUniversidad::class, 'DirectorID', 'id');
      }
 
     public function docenteParticipante()
     {
-        return $this->belongsTo(ProfesUniversidad::class, 'id_docenteParticipante');
+        return $this->belongsTo(ProfesUniversidad::class, 'ParticipanteID', 'id');
+    }
+
+    public function periodo()
+    {
+        return $this->belongsTo(Periodo::class, 'IdPeriodo', 'id');
+    }
+
+    public function nrcVinculacion()
+    {
+        return $this->belongsTo(NrcVinculacion::class, 'id_nrc_vinculacion', 'id');
     }
 }

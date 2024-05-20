@@ -45,14 +45,13 @@
                                         <th class="tamanio">Nombre del proyecto</th>
                                         <th>Director</th>
                                         <th class="tamanio">Actividades a realizar</th>
-                                        <th>Nombre del profesor participante</th>
-                                        <th>Correo del tutor</th>
-                                        <th>Correo del profesor participante</th>
-                                        <th>Departamento</th>
+                                         <th>Correo</th>
+                                         <th>Departamento</th>
                                         <th>Fecha de inicio</th>
                                         <th>Fecha fin</th>
-                                        <th>Cupos</th>
-                                        <th>Estado del proyecto</th>
+                                        <th>Periodo</th>
+                                        <th>NRC</th>
+
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
@@ -65,33 +64,20 @@
                                         @foreach ($proyectosEjecucion as $proyecto)
                                             <tr>
                                                 <td style="word-wrap: break-word; text-align: justify;">
-                                                    {{ $proyecto->NombreProyecto }}</td>
+                                                    {{ $proyecto->proyecto->NombreProyecto }}</td>
                                                 <td>{{ strtoupper($proyecto->director->Apellidos) }}
                                                     {{ strtoupper($proyecto->director->Nombres) }}</td>
                                                 <td style="word-wrap: break-word; text-align: justify;">
-                                                    {{ $proyecto->DescripcionProyecto }}</td>
-                                                <td>
-                                                    {{ strtoupper($proyecto->docenteParticipante->Apellidos) }}
-                                                    {{ strtoupper($proyecto->docenteParticipante->Nombres) }}
-                                                    @foreach ($proyecto->participantesAdicionales as $participanteAdicional)
-                                                        <br>
-                                                        {{ strtoupper($participanteAdicional->Apellidos) }}
-                                                        {{ strtoupper($participanteAdicional->Nombres) }}
-                                                    @endforeach
-                                                </td>
+                                                    {{ $proyecto->proyecto->DescripcionProyecto }}</td>
+
                                                 <td>{{ $proyecto->director->Correo }}</td>
-                                                <td>
-                                                    {{ $proyecto->docenteParticipante->Correo }}
-                                                    @foreach ($proyecto->participantesAdicionales as $participanteAdicional)
-                                                        <br>
-                                                        {{ $participanteAdicional->Correo }}
-                                                    @endforeach
-                                                </td>
-                                                <td>{{ $proyecto->DepartamentoTutor }}</td>
+
+                                                <td>{{ $proyecto->proyecto->DepartamentoTutor }}</td>
                                                 <td>{{ $proyecto->FechaInicio }}</td>
                                                 <td>{{ $proyecto->FechaFinalizacion }}</td>
-                                                <td>{{ $proyecto->cupos }}</td>
-                                                <td>{{ $proyecto->Estado }}</td>
+                                                <td>{{ $proyecto->Periodo->numeroPeriodo }}</td>
+                                                <td>{{ $proyecto->nrcVinculacion->nrc }}</td>
+
                                             </tr>
                                         @endforeach
                                         @endif
@@ -113,9 +99,9 @@
                                         <option value="50" {{ $elementosPorPaginaTerminados == 50 ? 'selected' : '' }}>50</option>
                                         <option value="100" {{ $elementosPorPaginaTerminados == 100 ? 'selected' : '' }}>100</option>
                                     </select>
-                                </form>              
+                                </form>
                             </li>
-                         
+
                         </ul>
                     </nav>
                 </div> --}}

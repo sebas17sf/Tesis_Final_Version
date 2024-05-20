@@ -31,42 +31,7 @@
         <form method="POST" action="{{ route('admin.crearProyecto') }}">
             @csrf
 
-            <div class="form-group">
-                <label for="DirectorProyecto">Director del Proyecto:</label>
-                <select name="DirectorProyecto" class="form-control input input_select " required>
-                    <option value="">Seleccionar Director</option>
-                    @foreach ($profesores as $profesor)
-                        <option value="{{ $profesor->id }}">Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
-                            Departamento: {{ $profesor->Departamento }} - Correo: {{ $profesor->Correo }} </option>
-                    @endforeach
-                </select>
-            </div>
 
-            <div class="form-group">
-                <label for="ProfesorParticipante">Profesor Participante:</label>
-                <select name="ProfesorParticipante[]" class="form-control input input_select" required>
-                    <option value="">Seleccionar Profesor Participante</option>
-                    @foreach ($profesores as $profesor)
-                        <option value="{{ $profesor->id }}">Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
-                            Departamento: {{ $profesor->Departamento }} - Correo: {{ $profesor->Correo }} </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div id="profesores-participantes"></div>
-
-            <button type="button" class="button2" onclick="agregarProfesor()">Agregar más docentes participantes</button>
-
-
-            <div class="form-group">
-                <label for="nrc">Vinculacion NRC:</label>
-                <select name="nrc" class="form-control input input_select" required>
-                    <option value="">Seleccionar NRC</option>
-                    @foreach ($nrcs as $nrc)
-                        <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
-                    @endforeach
-                </select>
-            </div>
 
             <div class="form-group">
                 <label for="codigoProyecto">Ingrese código del proyecto:</label>
@@ -99,21 +64,6 @@
                         Agricultura</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label for="FechaInicio">Fecha de Inicio:</label>
-                <input type="date" name="FechaInicio" class="form-control input" required>
-            </div>
-            <div class="form-group">
-                <label for="FechaFinalizacion">Fecha de Finalización:</label>
-                <input type="date" name="FechaFinalizacion" class="form-control input" required>
-            </div>
-
-            <div class="form-group">
-                <label for="cupos">Cupos:</label>
-                <input type="number" name="cupos" class="form-control input"
-                    placeholder="Ingrese los Cupos para este proyecto" required min="1" max="10">
-            </div>
-
 
             <div class="form-group">
                 <label for="Estado">Estado:</label>
@@ -127,34 +77,5 @@
     </div>
 
 
-    <script>
-        let contador = 1; // Contador para generar IDs únicos
-
-        function agregarProfesor() {
-            contador++;
-
-            const divProfesor = document.createElement('div');
-            divProfesor.innerHTML = `
-                <div class="form-group">
-                    <label for="ProfesorParticipante">Profesor Participante:</label>
-                    <select name="ProfesorParticipante[]" class="form-control input input-select" required>
-                        <option value="">Seleccionar Profesor Participante</option>
-                        @foreach ($profesores as $profesor)
-                            <option value="{{ $profesor->id }}">Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
-                                Departamento: {{ $profesor->Departamento }} - Correo: {{ $profesor->Correo }} </option>
-                        @endforeach
-                    </select>
-                </div>
-                <button type="button" class="button2" onclick="eliminarProfesor(this)">Eliminar este participante</button>
-            `;
-
-            document.getElementById('profesores-participantes').appendChild(divProfesor);
-        }
-
-        function eliminarProfesor(element) {
-            const divProfesor = element.parentNode;
-            divProfesor.parentNode.removeChild(divProfesor);
-        }
-    </script>
 
 @endsection
