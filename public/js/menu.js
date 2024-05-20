@@ -48,9 +48,17 @@ function triggerToggleSidebar() {
 }
 document.addEventListener('DOMContentLoaded', function () {
 
-  var menuState = localStorage.getItem('menuState') === 'expanded' ? 'collapsed' : 'expanded';
-  localStorage.setItem('menuState', menuState);
+  /* var menuState = localStorage.getItem('menuState') === 'collapsed' ? 'collapsed' : 'expanded';
+  localStorage.setItem('menuState', menuState); */
   //agregar linea de los titulos
+  var contentSidebar = document.querySelector('.content-sidebar');
+  if (contentSidebar.classList.contains('content-sidebar-hidden')) {
+    localStorage.setItem('menuState', 'collapsed');
+  } else {
+    localStorage.setItem('menuState', 'expanded');
+  }
+
+
   var elementosTitleContent = document.querySelectorAll('.title-content');
   var elementosHydrated = document.querySelectorAll('.hydrated');
   elementosHydrated[0].setAttribute('style', `--title-length:${elementosTitleContent[0].textContent.length};`)

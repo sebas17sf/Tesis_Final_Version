@@ -18,14 +18,15 @@
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 </head>
 <style>
-body {
-    overflow-x: hidden;
-}
+    body {
+        overflow-x: hidden;
+    }
 </style>
 
 <body>
     <!-- Barra de navegación en el lado izquierdo -->
-    <section class="content-sidebar {{ session('menuState') == 'collapsed' ? 'content-sidebar-hidden' : '' }}" _ngcontent-ng-c4160891441>
+    <section class="content-sidebar {{ session('menuState') == 'collapsed' ? 'content-sidebar-hidden' : '' }}"
+        _ngcontent-ng-c4160891441>
 
         <div class="content scroll-small">
             <div class="sidebar">
@@ -40,18 +41,16 @@ body {
                 <div class="links_site">
                     <nav class="nav">
                         <ul class="nav-list">
-                            <a href="{{ route('estudiantes.index') }}"
-                            class="p-element">
+                            <a href="{{ route('estudiantes.index') }}" class="p-element">
                                 <div class="icon-sidebar-item">
-                                <i class="fa-regular fa-address-card"></i>
+                                    <i class="fa-regular fa-address-card"></i>
                                 </div>
                                 <div class="name-sidebar-item">
                                     <li>Información</li>
                                 </div>
                             </a>
 
-                            <a href="{{ route('estudiantes.documentos') }}"
-                            class="p-element">
+                            <a href="{{ route('estudiantes.documentos') }}" class="p-element">
                                 <div class="icon-sidebar-item">
                                     <i class="material-icons">people_alt</i>
                                 </div>
@@ -59,8 +58,7 @@ body {
                                     <li>Servicio Comunitario</li>
                                 </div>
                             </a>
-                            <a href="{{ route('estudiantes.practica1') }}"
-                            class="p-element">
+                            <a href="{{ route('estudiantes.practica1') }}" class="p-element">
                                 <div class="icon-sidebar-item">
                                     <i class="material-icons">work</i>
                                 </div>
@@ -81,7 +79,8 @@ body {
         </div>
     </section>
     <!-- SIDEBAR -->
-    <section class="content-navbar dimension-nav {{ session('menuState') == 'collapsed' ? 'dimension-nav-hidden' : '' }}">
+    <section
+        class="content-navbar dimension-nav {{ session('menuState') == 'collapsed' ? 'dimension-nav-hidden' : '' }}">
         <!-- Toggle sidebar -->
         <div class="icon-menu-sidebar" onclick="toggleSidebar()">
             <i class='bx bx-menu-alt-left'
@@ -105,11 +104,11 @@ body {
                         <span>Cambiar modulo</span>
                     </a>
 
-                    <a href="{{route('estudiantes.cambio-credenciales')}}" class="change_password">
+                    <a href="{{ route('estudiantes.cambio-credenciales') }}" class="change_password">
                         <i class="far fa-cog"></i>
                         <span>Configuracion</span>
                     </a>
-                    
+
                     <a class="logout" href="{{ route('logout') }}">
                         <i class="fa-sharp fa-regular fa-arrow-up-left-from-circle fontawesome"></i>
                         <span>Cerrar sesión</span>
@@ -122,7 +121,8 @@ body {
     </section>
     <button id="btn_top" *ngIf="showScrollButton" onclick="scrollToTop()"><i class='bx bxs-chevrons-up'></i></button>
     <!-- CONTENEDOR -->
-    <section class="content-views dimension-content {{ session('menuState') == 'collapsed' ? 'dimension-content-hidden' : '' }}">
+    <section
+        class="content-views dimension-content {{ session('menuState') == 'collapsed' ? 'dimension-content-hidden' : '' }}">
         <!-- Title component -->
         <div class="title-component">
             <span class="title-content">@yield('title_component')</span>
@@ -148,10 +148,10 @@ body {
     <script src="{{ asset('js/plantilla/styles.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/vendor.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
-     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <!-- Box Icons -->
-  
+
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <script>
@@ -186,6 +186,6 @@ body {
 
     <script src="{{ asset('js/menu.js') }}"></script>
 
-    </body>
+</body>
 
-    </html>
+</html>

@@ -256,9 +256,10 @@
                     menuState: menuState
                 },
                 success: function(response) {
+                    console.log('Estado del menú enviado:',menuState);
                     console.log('Estado del menú actualizado:', response.menuState);
                     // Actualizar el estado del menú en el localStorage si es necesario
-                    localStorage.setItem('menuState', response.menuState);
+                    //localStorage.setItem('menuState', response.menuState);
                 },
                 error: function(xhr, status, error) {
                     console.error('Error al actualizar el estado del menú:', error);
