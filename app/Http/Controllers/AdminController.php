@@ -634,6 +634,7 @@ class AdminController extends Controller
                 'correo' => 'required|email|max:255',
                 'cedula' => 'required|string|min:10',
                 'departamento' => 'required|string',
+                'espe_id' => 'required',
             ]);
 
             // Encontrar el maestro que se va a editar
@@ -650,6 +651,7 @@ class AdminController extends Controller
                 'Correo' => $request->correo,
                 'Cedula' => $request->cedula,
                 'Departamento' => $request->departamento,
+                'espe_id' => $request->espe_id,
             ]);
 
             return redirect()->route('admin.index')->with('success', 'Maestro actualizado con éxito.');

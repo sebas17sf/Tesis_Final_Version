@@ -363,7 +363,6 @@
 
 
                                                                 <div class="tooltip-container">
-                                                                    <span class="tooltip-text">Editar</span>
                                                                     <button type="button"
                                                                         class="button3 efects_button btn_editar3"
                                                                         data-toggle="modal"
@@ -525,20 +524,15 @@
                                                                 method="POST">
                                                                 @csrf
                                                                 @method('DELETE')
-<<<<<<< HEAD
+
                                                                 <input type="hidden" name="id"
                                                                     value="{{ $profesor->id }}">
                                                                 <button type="submit"
                                                                     class="button3 efects_button btn_eliminar3"><i
                                                                         class='bx bx-trash'></i></button>
-=======
-                                                                <div class="tooltip-container">
-                                                                    <span class="tooltip-text">Eliminar</span>
-                                                                    <button type="submit"
-                                                                        class="button3 efects_button btn_eliminar3"><i
-                                                                            class='bx bx-trash'></i></button>
-                                                                </div>
->>>>>>> d41f02069603c69bf7db165b26913c31de518823
+
+
+
                                                             </form>
                                                         </div>
                             </div>
