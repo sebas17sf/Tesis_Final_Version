@@ -49,14 +49,20 @@
                                     <option value="Terminado">Terminado</option>
                                 </select>
                             </div>
-                            <button type="submit" class="button3 efects_button btn_excel mr-2" pTooltip="Excel"
-                                tooltipPosition="top">
-                                <i class="fa-solid fa-file-excel"></i>
-                            </button>
-                            <button type="button" onclick="location.href='{{ route('admin.agregarProyecto') }}';"
-                                class="button3 efects_button btn_primary" id="button3">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
+                            <div class="tooltip-container">
+                                <span class="tooltip-text">Excel</span>
+                                <button type="submit" class="button3 efects_button btn_excel mr-2" pTooltip="Excel"
+                                    tooltipPosition="top">
+                                    <i class="fa-solid fa-file-excel"></i>
+                                </button>
+                            </div>
+                            <div class="tooltip-container">
+                                <span class="tooltip-text">Agregar</span>
+                                <button type="button" onclick="location.href='{{ route('admin.agregarProyecto') }}';"
+                                    class="button3 efects_button btn_primary" id="button3">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -116,21 +122,26 @@
                                             <td>
                                                 <div class="contenedor_botones">
                                                     <div class="btn-group  shadow-0">
-
-                                                        <a href="{{ route('admin.editarProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
-                                                            type="button" class="button3 efects_button btn_editar3">
-                                                            <i class="bx bx-edit-alt"></i>
-                                                        </a>
+                                                        <div class="tooltip-container">
+                                                            <span class="tooltip-text">Editar</span>
+                                                            <a href="{{ route('admin.editarProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
+                                                                type="button" class="button3 efects_button btn_editar3">
+                                                                <i class="bx bx-edit-alt"></i>
+                                                            </a>
+                                                        </div>
                                                         <form class="btn-group shadow-1"
                                                             action="{{ route('admin.deleteProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
                                                             method="POST">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit"
-                                                                class="button3 efects_button btn_eliminar3"
-                                                                onclick="return confirm('¿Estás seguro de eliminar este proyecto?')">
-                                                                <i class="bx bx-trash"></i>
-                                                            </button>
+                                                            <div class="tooltip-container">
+                                                                <span class="tooltip-text">Eliminar</span>
+                                                                <button type="submit"
+                                                                    class="button3 efects_button btn_eliminar3"
+                                                                    onclick="return confirm('¿Estás seguro de eliminar este proyecto?')">
+                                                                    <i class="bx bx-trash"></i>
+                                                                </button>
+                                                            </div>
                                                         </form>
                                                     </div>
                                             </td>
@@ -223,7 +234,11 @@
                         <td>{{ $grupo->first()->director->Nombres }}</td>
                         <td>
                             @php
-                                $participantes = $grupo->pluck('docenteParticipante')->unique('id')->pluck('Nombres')->implode('<br>');
+                                $participantes = $grupo
+                                    ->pluck('docenteParticipante')
+                                    ->unique('id')
+                                    ->pluck('Nombres')
+                                    ->implode('<br>');
                             @endphp
                             {!! $participantes !!}
                         </td>
@@ -237,155 +252,155 @@
                         <td>{{ $grupo->first()->nrcVinculacion->nrc }}</td>
                         <td>{{ $grupo->first()->FechaInicio }}</td>
                         <td>{{ $grupo->first()->FechaFinalizacion }}</td>
-                     </tr>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
 
 
 
-    {{--  </div> --}}
-</section>
-<hr>
-<section>
+        {{--  </div> --}}
+    </section>
+    <hr>
+    <section>
 
-    <div class="container">
-        <button id="toggleFormBtn3" class="btn btn-outline-secondary btn-block">Asignar estudiante</button>
-        <div id="asignarEstudiante" style="display: none;">
-            <hr>
-            <h6><b>Asignar Proyecto</b></h6>
-            <hr>
-            <form method="POST" action="{{ route('admin.guardarAsignacion') }}">
-                @csrf
+        <div class="container">
+            <button id="toggleFormBtn3" class="btn btn-outline-secondary btn-block">Asignar estudiante</button>
+            <div id="asignarEstudiante" style="display: none;">
+                <hr>
+                <h6><b>Asignar Proyecto</b></h6>
+                <hr>
+                <form method="POST" action="{{ route('admin.guardarAsignacion') }}">
+                    @csrf
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="proyecto_id"><strong>Proyecto Disponible:</strong></label>
-                            <select name="proyecto_id" id="proyecto_id" class="form-control input input-select">
-                                <option value="">Seleccione un proyecto</option>
-                                @foreach ($proyectosDisponibles as $proyecto)
-                                    <option value="{{ $proyecto->ProyectoID }}">{{ $proyecto->NombreProyecto }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="DirectorProyecto">Director del Proyecto:</label>
-                            <select name="DirectorProyecto" class="form-control input input-select" required>
-                                <option value="">Seleccionar Director</option>
-                                @foreach ($profesores as $profesor)
-                                    <option value="{{ $profesor->id }}">
-                                        Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
-                                        Departamento: {{ $profesor->Departamento }} -
-                                        Correo: {{ $profesor->Correo }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="ProfesorParticipante">Profesor Participante:</label>
-                            <select name="ProfesorParticipante" class="form-control input input-select" required>
-                                <option value="">Seleccionar Profesor Participante</option>
-                                @foreach ($profesores as $profesor)
-                                    <option value="{{ $profesor->id }}">
-                                        Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
-                                        Departamento: {{ $profesor->Departamento }} -
-                                        Correo: {{ $profesor->Correo }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-
-                    </div>
-                </div>
-
-                <br>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="estudiante_id"><strong>Estudiante Aprobado:</strong></label>
-                            <select name="estudiante_id[]" id="estudiante_id" class="form-control input input-select"
-                                multiple="multiple">
-                                @foreach ($estudiantesAprobados as $estudiante)
-                                    <option value="{{ $estudiante->EstudianteID }}">
-                                        {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} -
-                                        {{ $estudiante->Departamento }}
-                                    </option>
-                                @endforeach
-                            </select>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="proyecto_id"><strong>Proyecto Disponible:</strong></label>
+                                <select name="proyecto_id" id="proyecto_id" class="form-control input input-select">
+                                    <option value="">Seleccione un proyecto</option>
+                                    @foreach ($proyectosDisponibles as $proyecto)
+                                        <option value="{{ $proyecto->ProyectoID }}">{{ $proyecto->NombreProyecto }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
 
-
-
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="nrc">Vinculacion NRC:</label>
-                            <select name="nrc" class="form-control input input-select" required>
-                                <option value="">Seleccionar NRC</option>
-                                @foreach ($nrcs as $nrc)
-                                    <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="FechaInicio">Fecha de Inicio:</label>
-                            <input type="date" name="FechaInicio" class="form-control input" required>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="DirectorProyecto">Director del Proyecto:</label>
+                                <select name="DirectorProyecto" class="form-control input input-select" required>
+                                    <option value="">Seleccionar Director</option>
+                                    @foreach ($profesores as $profesor)
+                                        <option value="{{ $profesor->id }}">
+                                            Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
+                                            Departamento: {{ $profesor->Departamento }} -
+                                            Correo: {{ $profesor->Correo }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="FechaFinalizacion">Fecha de Finalización:</label>
-                            <input type="date" name="FechaFinalizacion" class="form-control input" required>
-                        </div>
-                    </div>
-                </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="ProfesorParticipante">Profesor Participante:</label>
+                                <select name="ProfesorParticipante" class="form-control input input-select" required>
+                                    <option value="">Seleccionar Profesor Participante</option>
+                                    @foreach ($profesores as $profesor)
+                                        <option value="{{ $profesor->id }}">
+                                            Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
+                                            Departamento: {{ $profesor->Departamento }} -
+                                            Correo: {{ $profesor->Correo }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="fecha_asignacion"><strong>Fecha de Asignación:</strong></label>
-                            <input type="date" name="fecha_asignacion" id="fecha_asignacion"
-                                class="form-control input" value="{{ now()->toDateString() }}">
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="periodo_id"><strong>Periodo:</strong></label>
-                            <select name="periodo_id" id="periodo_id" class="form-control input input-select">
-                                <option value="">Seleccione un periodo</option>
-                                @foreach ($periodos as $periodo)
-                                    <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }}
-                                        {{ $periodo->Periodo }}</option>
-                                @endforeach
-                            </select>
 
                         </div>
                     </div>
 
+                    <br>
 
-                </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="estudiante_id"><strong>Estudiante Aprobado:</strong></label>
+                                <select name="estudiante_id[]" id="estudiante_id" class="form-control input input-select"
+                                    multiple="multiple">
+                                    @foreach ($estudiantesAprobados as $estudiante)
+                                        <option value="{{ $estudiante->EstudianteID }}">
+                                            {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} -
+                                            {{ $estudiante->Departamento }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="nrc">Vinculacion NRC:</label>
+                                <select name="nrc" class="form-control input input-select" required>
+                                    <option value="">Seleccionar NRC</option>
+                                    @foreach ($nrcs as $nrc)
+                                        <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="FechaInicio">Fecha de Inicio:</label>
+                                <input type="date" name="FechaInicio" class="form-control input" required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="FechaFinalizacion">Fecha de Finalización:</label>
+                                <input type="date" name="FechaFinalizacion" class="form-control input" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="fecha_asignacion"><strong>Fecha de Asignación:</strong></label>
+                                <input type="date" name="fecha_asignacion" id="fecha_asignacion"
+                                    class="form-control input" value="{{ now()->toDateString() }}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="periodo_id"><strong>Periodo:</strong></label>
+                                <select name="periodo_id" id="periodo_id" class="form-control input input-select">
+                                    <option value="">Seleccione un periodo</option>
+                                    @foreach ($periodos as $periodo)
+                                        <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }}
+                                            {{ $periodo->Periodo }}</option>
+                                    @endforeach
+                                </select>
+
+                            </div>
+                        </div>
+
+
+                    </div>
 
 
 
@@ -401,79 +416,79 @@
 
 
 
-</section>
-<link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
-<script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </section>
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    var delayTimer;
-    $('#formBusquedaProyectos input[name="search"]').on('keyup', function() {
-        clearTimeout(delayTimer);
-        var query = $(this).val();
-        delayTimer = setTimeout(function() {
-            $.ajax({
-                url: '{{ route('admin.indexProyectos') }}',
-                type: 'GET',
-                data: {
-                    search: query
-                },
-                success: function(response) {
-                    $('#tablaProyectos').html($(response).find('#tablaProyectos').html());
-                }
-            });
-        }, 500);
-    });
-</script>
-
-<script>
-    $(document).ready(function() {
-        $('#estudiante_id').select2({
-            placeholder: "Seleccione un estudiante",
-            closeOnSelect: false,
-            width: 'resolve',
-            templateResult: formatState,
-            templateSelection: formatSelection,
-            escapeMarkup: function(markup) {
-                return markup;
-            }
-        }).on('select2:select', function(e) {
-            var element = e.params.data.element;
-            var $element = $(element);
-            $element.detach();
-            $(this).append($element).trigger('change');
-        }).on('select2:unselect', function(e) {
-            var element = e.params.data.element;
-            var $element = $(element);
-            $element.detach();
-            $(this).append($element).trigger('change');
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var delayTimer;
+        $('#formBusquedaProyectos input[name="search"]').on('keyup', function() {
+            clearTimeout(delayTimer);
+            var query = $(this).val();
+            delayTimer = setTimeout(function() {
+                $.ajax({
+                    url: '{{ route('admin.indexProyectos') }}',
+                    type: 'GET',
+                    data: {
+                        search: query
+                    },
+                    success: function(response) {
+                        $('#tablaProyectos').html($(response).find('#tablaProyectos').html());
+                    }
+                });
+            }, 500);
         });
+    </script>
 
-        function formatState(state) {
-            if (!state.id) {
-                return state.text;
-            }
-            var $state = $(
-                '<span><input type="checkbox" class="checkbox-item"  style="margin-right: 8px;" />' + state
-                .text + '</span>'
-            );
-            return $state;
-        }
+    <script>
+        $(document).ready(function() {
+            $('#estudiante_id').select2({
+                placeholder: "Seleccione un estudiante",
+                closeOnSelect: false,
+                width: 'resolve',
+                templateResult: formatState,
+                templateSelection: formatSelection,
+                escapeMarkup: function(markup) {
+                    return markup;
+                }
+            }).on('select2:select', function(e) {
+                var element = e.params.data.element;
+                var $element = $(element);
+                $element.detach();
+                $(this).append($element).trigger('change');
+            }).on('select2:unselect', function(e) {
+                var element = e.params.data.element;
+                var $element = $(element);
+                $element.detach();
+                $(this).append($element).trigger('change');
+            });
 
-        function formatSelection(state) {
-            if (!state.id) {
-                return state.text;
+            function formatState(state) {
+                if (!state.id) {
+                    return state.text;
+                }
+                var $state = $(
+                    '<span><input type="checkbox" class="checkbox-item"  style="margin-right: 8px;" />' + state
+                    .text + '</span>'
+                );
+                return $state;
             }
-            var $state = $(
-                '<span>' + state.text + '</span>'
-            );
-            return $state;
-        }
-    });
-</script>
+
+            function formatSelection(state) {
+                if (!state.id) {
+                    return state.text;
+                }
+                var $state = $(
+                    '<span>' + state.text + '</span>'
+                );
+                return $state;
+            }
+        });
+    </script>
 
 
 

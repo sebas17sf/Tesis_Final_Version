@@ -7,22 +7,22 @@
 
 @section('content')
 
-<style>
-    .button5 {
-    /* height: 20px; */
-    padding: 9px;
-    letter-spacing: 1.15px;
-    font-weight: 700;
-    font-size: 0.75em;
-    color: var(--white);
-    background-color: #40456c;
-    border: none;
-    outline: none;
-    box-shadow: 2px 2px 5px #d1d9e6, -2px -2px 5px #f9f9f9;
-    transition: all 0.3s ease-in;
-    width: 120px;
-    border-radius: 10px;
-}
+    <style>
+        .button5 {
+            /* height: 20px; */
+            padding: 9px;
+            letter-spacing: 1.15px;
+            font-weight: 700;
+            font-size: 0.75em;
+            color: var(--white);
+            background-color: #40456c;
+            border: none;
+            outline: none;
+            box-shadow: 2px 2px 5px #d1d9e6, -2px -2px 5px #f9f9f9;
+            transition: all 0.3s ease-in;
+            width: 120px;
+            border-radius: 10px;
+        }
     </style>
     <section class="contenedor_agregar_periodo">
         <h6><b>Estudiantes en Proceso de Revisión</b></h6>
@@ -277,10 +277,14 @@
 
                     <form action="{{ route('coordinador.reportesVinculacion') }}" method="post">
                         @csrf
-                        <button type="submit" class="button3 efects_button btn_excel">
-                            <i class="fas fa-file-excel"></i>
-                        </button>
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Excel</span>
+                            <button type="submit" class="button3 efects_button btn_excel">
+                                <i class="fas fa-file-excel"></i>
+                            </button>
+                        </div>
                     </form>
+
 
                     <form action="{{ route('admin.estudiantes') }}" method="GET">
                         @csrf

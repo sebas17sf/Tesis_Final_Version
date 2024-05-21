@@ -51,13 +51,17 @@
                                             <option value="Terminado">Terminado</option>
                                         </select>
                                     </div>
-                                    <button type="submit" class="button3 efects_button btn_excel mr-2" pTooltip="Excel"
-                                        tooltipPosition="top">
-                                        <i class="fa-solid fa-file-excel"></i>
-                                    </button>
+                                    <div class="tooltip-container">
+                                        <span class="tooltip-text">Excel</span>
+                                        <button type="submit" class="button3 efects_button btn_excel mr-2" pTooltip="Excel"
+                                            tooltipPosition="top">
+                                            <i class="fa-solid fa-file-excel"></i>
+                                        </button>
+                                    </div>
                                 </form>
 
-                                <a href="{{ route('coordinador.agregarProyecto') }}" class="btn btn-outline-secondary btn-sm">
+                                <a href="{{ route('coordinador.agregarProyecto') }}"
+                                    class="btn btn-outline-secondary btn-sm">
                                     <i class="fa-solid fa-plus"></i>
                                 </a>
 
@@ -70,7 +74,7 @@
                     <!-- Buscador -->
                     <div class="contenedor_buscador">
                         <div>
-                           {{--  <form id="formBusquedaDocentes">
+                            {{--  <form id="formBusquedaDocentes">
                                 <input type="text" class="input" name="search" value="{{ $search }}" matInput
                                     placeholder="Buscar proyectos...">
                                 <i class='bx bx-search-alt'></i>
@@ -128,7 +132,8 @@
                                                 </td>
                                                 <td style="word-wrap: break-word; text-align: justify;">
                                                     {{ strtoupper($proyecto->NombreProyecto) }}</td>
-                                                <td style="word-wrap: break-word; text-align: justify;">{{ strtoupper($proyecto->DescripcionProyecto) }}</td>
+                                                <td style="word-wrap: break-word; text-align: justify;">
+                                                    {{ strtoupper($proyecto->DescripcionProyecto) }}</td>
                                                 <td>{{ strtoupper($proyecto->director->Correo) }}</td>
                                                 <td>
                                                     {{ strtoupper($proyecto->docenteParticipante->Correo) }}
@@ -153,28 +158,38 @@
                                                 <td>{{ strtoupper($proyecto->Estado) }}</td>
                                                 <td>
                                                     <div class="btn-group" role="group">
-                                                        <a href="{{ route('coordinador.editarProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
-                                                           class="button3 efects_button btn_editar3 mr-2">
-                                                            <i class="material-icons">edit</i>
-                                                        </a>
-                                                
-                                                        <form action="{{ route('coordinador.deleteProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
-                                                              method="POST" style="display: inline;">
+                                                        <div class="tooltip-container">
+                                                            <span class="tooltip-text">Editar</span>
+                                                            <a href="{{ route('coordinador.editarProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
+                                                                class="button3 efects_button btn_editar3 mr-2">
+                                                                <i class="material-icons">edit</i>
+                                                            </a>
+                                                        </div>
+
+                                                        <form
+                                                            action="{{ route('coordinador.deleteProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
+                                                            method="POST" style="display: inline;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="button3 efects_button btn_eliminar3 mr-2"
+                                                            <div class="tooltip-container">
+                                                                <span class="tooltip-text">Eliminar</span>
+                                                                <button type="submit"
+                                                                    class="button3 efects_button btn_eliminar3 mr-2"
                                                                     onclick="return confirm('¿Estás seguro de eliminar este proyecto?')">
-                                                                <i class="material-icons">delete</i>
-                                                            </button>
+                                                                    <i class="material-icons">delete</i>
+                                                                </button>
+                                                            </div>
                                                         </form>
-                                                
-                                                        <a href="{{ route('coordinador.descargarEvidencias', ['ProyectoID' => $proyecto->ProyectoID]) }}"
-                                                           class="button3 efects_button btn_copy">
-                                                            <i class="material-icons">download</i>
-                                                        </a>
+                                                        <div class="tooltip-container">
+                                                            <span class="tooltip-text">Descargar</span>
+                                                            <a href="{{ route('coordinador.descargarEvidencias', ['ProyectoID' => $proyecto->ProyectoID]) }}"
+                                                                class="button3 efects_button btn_copy">
+                                                                <i class="material-icons">download</i>
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </td>
-                                                
+
 
                                             </tr>
                                         @endforeach
@@ -206,31 +221,32 @@
                                 </li>
 
                                 @if ($proyectos->onFirstPage())
-                                <li class="page-item disabled">
-                                    <span class="page-link">Anterior</span>
-                                </li>
-                            @else
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $proyectos->previousPageUrl() }}"
-                                        aria-label="Anterior">Anterior</a>
-                                </li>
-                            @endif
-            
-                            @for ($i = 1; $i <= $proyectos->lastPage(); $i++)
-                                <li class="page-item {{ $proyectos->currentPage() == $i ? 'active' : '' }}">
-                                    <a class="page-link" href="{{ $proyectos->url($i) }}">{{ $i }}</a>
-                                </li>
-                            @endfor
-            
-                            @if ($proyectos->hasMorePages())
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $proyectos->nextPageUrl() }}" aria-label="Siguiente">Siguiente</a>
-                                </li>
-                            @else
-                                <li class="page-item disabled">
-                                    <span class="page-link">Siguiente</span>
-                                </li>
-                            @endif
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Anterior</span>
+                                    </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $proyectos->previousPageUrl() }}"
+                                            aria-label="Anterior">Anterior</a>
+                                    </li>
+                                @endif
+
+                                @for ($i = 1; $i <= $proyectos->lastPage(); $i++)
+                                    <li class="page-item {{ $proyectos->currentPage() == $i ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $proyectos->url($i) }}">{{ $i }}</a>
+                                    </li>
+                                @endfor
+
+                                @if ($proyectos->hasMorePages())
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $proyectos->nextPageUrl() }}"
+                                            aria-label="Siguiente">Siguiente</a>
+                                    </li>
+                                @else
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Siguiente</span>
+                                    </li>
+                                @endif
 
                             </ul>
                         </nav>
@@ -250,7 +266,7 @@
     <div class="container" style="overflow-x: auto;">
 
 
-        
+
 
 
     </div>

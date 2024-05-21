@@ -391,6 +391,8 @@
   }
 
 
+
+
 }
 
 // Iluminaror de los items del sidebar
@@ -429,3 +431,48 @@
   @include active-section-style;
   background-color: rgba(colors.$primary, 0.8);
 }
+
+       /* Estilos para el contenedor del tooltip */
+       .tooltip-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .tooltip-text {
+        display: inline-block;
+        position: absolute;
+        background-color: #4b5563;
+        padding: 12px 15px;
+        border-radius: 5px;
+        bottom: 125%;
+        /* Posiciona el tooltip arriba del contenedor */
+        left: 50%;
+        /* Centra el tooltip horizontalmente */
+        transform: translateX(-50%);
+        /* Ajusta el centrado del tooltip */
+        opacity: 0;
+        visibility: hidden;
+        font-size: 17px;
+        letter-spacing: .5px;
+        color: white;
+        transition: all ease-out 120ms;
+    }
+
+    .tooltip-text::before {
+        content: '';
+        display: block;
+        position: absolute;
+        bottom: -5px;
+        /* Ajusta la posición de la flecha */
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+        width: 10px;
+        height: 10px;
+        background-color: inherit;
+    }
+
+    /* Mostrar el tooltip cuando se pasa el ratón sobre el contenedor */
+    .tooltip-container:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
+    }

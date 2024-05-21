@@ -271,21 +271,32 @@
                         <!-- Botones -->
                         <div class="contenedor_botones">
 
-                            <button type="button" class="button3 efects_button btn_primary"data-toggle="modal"
-                                data-target="#modalAgregarMaestro">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
-                            <form action="{{ route('admin.reportesDocentes') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="button3 efects_button btn_excel" pTooltip="Excel"
-                                    tooltipPosition="top">
-                                    <i class="fa-solid fa-file-excel"></i>
+
+
+                            <div class="tooltip-container">
+                                <span class="tooltip-text">Agregar</span>
+                                <button type="button" class="button3 efects_button btn_primary"data-toggle="modal"
+                                    data-target="#modalAgregarMaestro">
+                                    <i class="fa-solid fa-plus"></i>
                                 </button>
-                            </form>
 
-                            <button class="button3 efects_button btn_copy" pTooltip="Copiar" tooltipPosition="top"><i
-                                    class="fa-solid fa-copy"></i></button>
+                            </div>
+                            <div class="tooltip-container">
+                                <span class="tooltip-text">Excel</span>
+                                <form action="{{ route('admin.reportesDocentes') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="button3 efects_button btn_excel">
+                                        <i class="fa-solid fa-file-excel"></i>
+                                    </button>
 
+                                </form>
+                            </div>
+                            <div class="tooltip-container">
+                                <span class="tooltip-text">Copiar</span>
+                                <button class="button3 efects_button btn_copy" pTooltip="Copiar" tooltipPosition="top"><i
+                                        class="fa-solid fa-copy"></i></button>
+
+                            </div>
                             {{-- //DESCOMENTAR PARA ACTIVAR LOS OTROS BOTONES
                                 <button class="button3 efects_button btn_filtro" pTooltip="Filtros" tooltipPosition="top"><i
                                         class="fa-solid fa-filter-list"></i></button>
@@ -351,14 +362,15 @@
 
 
 
-
-                                                                <button type="button"
-                                                                    class="button3 efects_button btn_editar3"
-                                                                    data-toggle="modal"
-                                                                    data-target="#modalEditarMaestro{{ $profesor->id }}">
-                                                                    <i class="bx bx-edit-alt"></i>
-                                                                </button>
-
+                                                                <div class="tooltip-container">
+                                                                    <span class="tooltip-text">Editar</span>
+                                                                    <button type="button"
+                                                                        class="button3 efects_button btn_editar3"
+                                                                        data-toggle="modal"
+                                                                        data-target="#modalEditarMaestro{{ $profesor->id }}">
+                                                                        <i class="bx bx-edit-alt"></i>
+                                                                    </button>
+                                                                </div>
 
 
                                                                 <!---Modal para editar Docentes--------------------------------------------------->
@@ -517,9 +529,12 @@
                                                                 method="POST">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <button type="submit"
-                                                                    class="button3 efects_button btn_eliminar3"><i
-                                                                        class='bx bx-trash'></i></button>
+                                                                <div class="tooltip-container">
+                                                                    <span class="tooltip-text">Eliminar</span>
+                                                                    <button type="submit"
+                                                                        class="button3 efects_button btn_eliminar3"><i
+                                                                            class='bx bx-trash'></i></button>
+                                                                </div>
                                                             </form>
                                                         </div>
                             </div>
@@ -904,7 +919,6 @@
                 handle: '.modal-header'
             });
         });
-
     </script>
 
 
