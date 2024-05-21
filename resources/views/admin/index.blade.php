@@ -507,16 +507,14 @@
 
 
                                                                 <!-------------------------------------------------------------------------------->
-
-
-
-
                                                             </div>
                                                             <form class="btn-group shadow-1"
                                                                 action="{{ route('admin.eliminarMaestro', ['id' => $profesor->id]) }}"
                                                                 method="POST">
                                                                 @csrf
                                                                 @method('DELETE')
+                                                                <input type="hidden" name="id"
+                                                                    value="{{ $profesor->id }}">
                                                                 <button type="submit"
                                                                     class="button3 efects_button btn_eliminar3"><i
                                                                         class='bx bx-trash'></i></button>
@@ -904,7 +902,6 @@
                 handle: '.modal-header'
             });
         });
-
     </script>
 
 

@@ -591,7 +591,7 @@ class AdminController extends Controller
             $maestro = ProfesUniversidad::find($id);
 
             if (!$maestro) {
-                return redirect()->route('admin.index')->with('error', 'Maestro no encontrado.');
+                return redirect()->route('admin.index')->with('error', 'Docente no encontrado.');
             }
 
             $proyectosRelacionados = Proyecto::where('id_directorProyecto', $maestro->id)
@@ -600,14 +600,14 @@ class AdminController extends Controller
 
             if ($proyectosRelacionados->count() > 0) {
                 session(['maestro_con_proyectos' => true]);
-                return redirect()->route('admin.index')->with('error', 'El maestro tiene proyectos asignados. No se puede eliminar.');
+                return redirect()->route('admin.index')->with('error', 'El Docente tiene proyectos asignados. No se puede eliminar.');
             }
 
             $maestro->delete();
 
-            return redirect()->route('admin.index')->with('success', 'Maestro eliminado con éxito.');
+            return redirect()->route('admin.index')->with('success', 'Docente eliminado con éxito.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'No se pudo eliminar el maestro. Por favor, verifica los datos e intenta de nuevo.');
+            return redirect()->back()->with('error', 'No se pudo eliminar el Docente. Por favor, verifica los datos e intenta de nuevo.');
         }
     }
 
