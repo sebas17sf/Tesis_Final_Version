@@ -221,13 +221,15 @@
                             <i class="fas fa-file-excel"></i>
                         </button>
                     </form> --}}
-
-                        <form action="{{ route('coordinador.reportesEmpresas') }}" method="post">
-                            @csrf
-                            <button type="submit" class="button3 efects_button btn_excel">
-                                <i class="fas fa-file-excel"></i>
-                            </button>
-                        </form>
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Excel</span>
+                            <form action="{{ route('coordinador.reportesEmpresas') }}" method="post">
+                                @csrf
+                                <button type="submit" class="button3 efects_button btn_excel">
+                                    <i class="fas fa-file-excel"></i>
+                                </button>
+                            </form>
+                        </div>
 
                         {{-- <form action="{{ route('admin.estudiantes') }}" method="GET">
                             @csrf

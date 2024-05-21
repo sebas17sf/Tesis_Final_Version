@@ -201,15 +201,20 @@
                                                 method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="button3 efects_button btn_eliminar3"> <i
-                                                        class="material-icons">delete</i></button>
+                                                <div class="tooltip-container">
+                                                    <span class="tooltip-text">Eliminar</span>
+                                                    <button type="submit" class="button3 efects_button btn_eliminar3"> <i
+                                                            class="material-icons">delete</i></button>
+                                                </div>
                                             </form>
-
-                                            <button type="button" class="button3 efects_button btn_editar3"
-                                                data-toggle="modal"
-                                                data-target="#modalEditarActividad{{ $actividad->id }}">
-                                                <i class="material-icons">edit</i>
-                                            </button>
+                                            <div class="tooltip-container">
+                                                <span class="tooltip-text">Editar</span>
+                                                <button type="button" class="button3 efects_button btn_editar3"
+                                                    data-toggle="modal"
+                                                    data-target="#modalEditarActividad{{ $actividad->id }}">
+                                                    <i class="material-icons">edit</i>
+                                                </button>
+                                            </div>
 
                                             <!-- Modal para editar actividad -->
                                             <div class="modal fade" id="modalEditarActividad{{ $actividad->id }}"

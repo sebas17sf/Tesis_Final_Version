@@ -31,10 +31,11 @@
                         <div class="card-body d-flex flex-column">
                             <h6 class="card-title flex-grow-1"><i>Generar Acta de Designación de Estudiantes</i></h6>
                             <hr>
-                            <form action="{{ route('generar-documento') }}" method="post" class="d-flex justify-content-center">
+                            <form action="{{ route('generar-documento') }}" method="post"
+                                class="d-flex justify-content-center">
                                 @csrf
                                 <button type="submit" class="button1 btn_word efects_button ">
-                                <i class="fa-solid fa-file-word"></i> Generar
+                                    <i class="fa-solid fa-file-word"></i> Generar
                                 </button>
                             </form>
                         </div>
@@ -45,10 +46,11 @@
                         <div class="card-body d-flex flex-column">
                             <h6 class="card-title flex-grow-1"><i>Generar Carta de Compromiso de Estudiante</i></h6>
                             <hr>
-                            <form action="{{ route('generar-documento-cartaCompromiso') }}" method="post" class="d-flex justify-content-center">
+                            <form action="{{ route('generar-documento-cartaCompromiso') }}" method="post"
+                                class="d-flex justify-content-center">
                                 @csrf
                                 <button type="submit" class="button1 btn_word efects_button">
-                                <i class="fa-solid fa-file-word"></i> Generar
+                                    <i class="fa-solid fa-file-word"></i> Generar
                                 </button>
                             </form>
                         </div>
@@ -59,7 +61,8 @@
                         <div class="card-body d-flex flex-column">
                             <h6 class="card-title flex-grow-1"><i>Generar Número de Horas de Estudiantes</i></h6>
                             <hr>
-                            <form action="{{ route('generar-documento-numeroHoras') }}" method="POST" class="d-flex justify-content-center">
+                            <form action="{{ route('generar-documento-numeroHoras') }}" method="POST"
+                                class="d-flex justify-content-center">
                                 @csrf
                                 <button type="submit" class="button1 btn_excel efects_button">
                                     <i class="fas fa-file-excel"></i> Generar
@@ -70,10 +73,10 @@
                 </div>
             </div>
         </div>
-        
+
 
         <button id="toggleFormBtn" class="btn btn-light btn-block">Registrar actividad</button>
-<br>
+        <br>
         <div id="registroActividades" style="display: none;">
             <div class="row">
                 <div class="col-md-12">
@@ -101,14 +104,15 @@
                                     <label for="evidencias"><strong>Resultados de la actividad
                                             (evidencias):</strong></label>
                                     <div class="input-group">
-                                    
+
                                         <input type="file" id="evidencias" name="evidencias"
-                                            accept="image/jpeg, image/jpg, image/png" class="form-control-file input" required>
+                                            accept="image/jpeg, image/jpg, image/png" class="form-control-file input"
+                                            required>
                                     </div>
 
 
 
-                                  {{-- 
+                                    {{-- 
                                  
                                             <div class="card-body d-flex flex-column">
                                                 <h6 class="card-title flex-grow-1"><i>Generar Carta de Compromiso de Estudiante</i></h6>
@@ -120,16 +124,16 @@
                                                     </button>
                                                 </form>
                                             </div> --}}
-                                 
-                           
+
+
 
 
                                 </div>
 
                                 <div class="form-group">
                                     <label for="nombre_actividad"><strong>Asigne Nombre de la actividad:</strong></label>
-                                    <input type="text" id="nombre_actividad" name="nombre_actividad" class="form-control input"
-                                        required>
+                                    <input type="text" id="nombre_actividad" name="nombre_actividad"
+                                        class="form-control input" required>
                                 </div>
                                 <button type="submit" class="btn btn-light btn-block">Guardar Actividad</button>
                             </form>
@@ -205,8 +209,8 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="numero_horas">Número de Horas</label>
-                                                            <input type="number" class="form-control input" id="numero_horas"
-                                                                name="numero_horas"
+                                                            <input type="number" class="form-control input"
+                                                                id="numero_horas" name="numero_horas"
                                                                 value="{{ $actividad->numero_horas }}">
                                                         </div>
                                                         <div class="form-group">
@@ -253,7 +257,8 @@
                 <div class="form-group">
                     <label for="nombreComunidad"><strong>Nombre de la Comunidad o Comunidades
                             Beneficiarias:</strong></label>
-                    <input type="text" id="nombreComunidad" name="nombreComunidad" class="form-control input" required>
+                    <input type="text" id="nombreComunidad" name="nombreComunidad" class="form-control input"
+                        required>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-3">
@@ -294,10 +299,18 @@
 
                 </div>
                 <div class="d-flex">
-                    <button type="button" class="button3 efects_button btn_primary mr-2" onclick="agregarCampo()"> <i class="fa-solid fa-plus"></i></button>
-                    <button type="button" class="button3 efects_button btn_eliminar1" onclick="eliminarCampo()"><i class='bx bx-trash'></i></button>
+                    <div class="tooltip-container">
+                        <span class="tooltip-text">Agregar</span>
+                        <button type="button" class="button3 efects_button btn_primary mr-2" onclick="agregarCampo()">
+                            <i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <div class="tooltip-container">
+                        <span class="tooltip-text">Eliminar</span>
+                        <button type="button" class="button3 efects_button btn_eliminar1" onclick="eliminarCampo()"><i
+                                class='bx bx-trash'></i></button>
+                    </div>
                 </div>
-<br>
+                <br>
                 <table>
                     <tr>
                         <td>
@@ -349,6 +362,6 @@
     <script src="{{ asset('js/documentosEstudiantes.js') }}"></script>
 
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/fontawesome.min.css">
+{{--     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/fontawesome.min.css"> --}}
 @endsection
