@@ -553,7 +553,7 @@
                                     <form method="GET" action="{{ route('admin.index') }}">
                                         <select class="form-control page-item" class="input" name="perPage"
                                             id="perPage" onchange="this.form.submit()">
-                                            <option value="3" @if ($perPage == 3) selected @endif>3
+                                            <option value="3" @if ($perPage == 10) selected @endif>10
                                             </option>
                                             <option value="20" @if ($perPage == 20) selected @endif>20
                                             </option>
