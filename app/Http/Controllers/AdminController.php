@@ -594,8 +594,12 @@ class AdminController extends Controller
                 return redirect()->route('admin.index')->with('error', 'Docente no encontrado.');
             }
 
-            $proyectosRelacionados = Proyecto::where('id_directorProyecto', $maestro->id)
-                ->orWhere('id_docenteParticipante', $maestro->id)
+            $proyectosRelacionados = AsignacionProyecto::where('DirectorID', $maestro->id)
+                ->orWhere('DirectorID', $maestro->id)
+                ->get();
+
+             $proyectosRelacionados = AsignacionProyecto::where('ParticipanteID', $maestro->id)
+                ->orWhere('ParticipanteID', $maestro->id)
                 ->get();
 
             if ($proyectosRelacionados->count() > 0) {
@@ -607,7 +611,7 @@ class AdminController extends Controller
 
             return redirect()->route('admin.index')->with('success', 'Docente eliminado con éxito.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'No se pudo eliminar el Docente. Por favor, verifica los datos e intenta de nuevo.');
+            return redirect()->back()->with('error', 'No se pudo eliminar el Docente. Por favor, verifica los datos e intenta de nuevo.'. $e->getMessage());
         }
     }
 
