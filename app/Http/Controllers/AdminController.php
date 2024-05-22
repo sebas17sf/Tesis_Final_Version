@@ -331,7 +331,7 @@ class AdminController extends Controller
         ->with('docenteParticipante')
         ->get()
         ->groupBy(function ($item) {
-            return $item->ProyectoID . '_' . $item->IdPeriodo . '_' . $item->DirectorID . '_' . $item->ParticipanteID;
+            return $item->ProyectoID . '_' . $item->IdPeriodo . '_' . $item->DirectorID;
         });
 
 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="\img\logos\logo_tesis.png" alt="logo">
+    <link rel="icon" type="image/x-icon" href="/img/logos/logo_tesis.png" alt="logo">
     <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -19,7 +19,6 @@
     <section class="global_contenedor">
         <div class="main1" id="main1">
             <div class="switch">
-
                 <div class="switch_circle"></div>
                 <div class="switch_circle switch_circle_t"></div>
                 <div class="switch_circle switch_circle_t2"></div>
@@ -32,39 +31,36 @@
                 </div>
 
                 @if (session('success'))
-                    <script>
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Éxito',
-                            text: '{{ session('success') }}',
-                            confirmButtonText: 'Ok'
-                        });
-                    </script>
+                <script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Éxito',
+                        text: '{{ session('success') }}',
+                        confirmButtonText: 'Ok'
+                    });
+                </script>
                 @endif
 
                 @if (session('error'))
-                    <script>
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: '{{ session('error') }}',
-                            confirmButtonText: 'Ok'
-                        });
-                    </script>
+                <script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: '{{ session('error') }}',
+                        confirmButtonText: 'Ok'
+                    });
+                </script>
                 @endif
 
-
                 <form class="switch_container" action="{{ route('login') }}" method="POST">
-
-                    <img class="logo_login" src="\img\logos\logo_tesis.png" alt="Logo">
+                    <img class="logo_login" src="/img/logos/logo_tesis.png" alt="Logo">
                     <h3 class="title" id="sesionTitulo">INICIAR SESIÓN</h3>
-
 
                     @csrf
                     <!-- Campo de correo electrónico -->
                     <label class="description" for="CorreoElectronico">Correo Electrónico</label>
                     <input class="input form_input" type="email" id="CorreoElectronico" name="CorreoElectronico"
-                        required placeholder="Ingrese su correo eléctronico">
+                        required placeholder="Ingrese su correo electrónico">
 
                     <!-- Campo de contraseña -->
                     <label class="description" for="Contrasena">Contraseña</label>
@@ -90,37 +86,27 @@
 
                     <!-- Boton de google -->
                     <div class="row">
-                    <a href=" " class="btn_google">
-                        <img src="\img\logos\google.png" alt="Google Icon" width="20">
-                        <span>Continuar con Google</span>
-                    </a>
+                        <a href=" " class="btn_google">
+                            <img src="/img/logos/google.png" alt="Google Icon" width="20">
+                            <span>Continuar con Google</span>
+                        </a>
 
-                    <a href="/auth/github/redirect" class="btn_google">
-                        <img src="/img/logos/github.png" alt="GitHub Icon" width="20">
-                        <span>Continuar con GitHub</span>
-                    </a>
-
+                        <a href="/auth/github/redirect" class="btn_google">
+                            <img src="/img/logos/github.png" alt="GitHub Icon" width="20">
+                            <span>Continuar con GitHub</span>
+                        </a>
                     </div>
-                     <!-- Botón de GitHub -->
-
-
+                    <!-- Botón de GitHub -->
                 </form>
-
-
-
-
             </div>
-
-
         </div>
-
     </section>
-
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+
     <script>
         let clickCount = 0;
 
@@ -130,9 +116,7 @@
                 Swal.fire({
                     icon: 'info',
                     title: 'Mensaje especial',
-                    html: '<div>El creador de esta Tesis: Sebastian Flores es Team GODZILLA</div><img src="https://media.tenor.com/amLCd4kVrX4AAAAi/team-godzilla.gif" alt="Godzilla" style="width: 200px; height: 200px;">',
-                    imageWidth: 200,
-                    imageHeight: 200
+                    html: '<div>El creador de esta Tesis: Sebastian Flores es Team GODZILLA</div><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUlAv_HkJ-_Y4yS98xgQn0AsBRDqamQUCWFKtkm99Lm_lRNXau70V8fiTLM92mXbJQov8&usqp=CAU" alt="Godzilla" style="width: 200px; height: 200px;">'
                 });
                 clickCount = 0;
             }
@@ -143,8 +127,6 @@
             sessionTitle.addEventListener('click', handleClick);
         });
     </script>
-
-
 </body>
 
 </html>
