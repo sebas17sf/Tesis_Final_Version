@@ -38,17 +38,10 @@
                 <!-- Botones -->
                 <div class="row">
                     <div class="col-md-12 d-flex align-items-center">
+                        <!-- Formulario para exportar a Excel -->
                         <form method="POST" action="{{ route('coordinador.reportesProyectos') }}"
                             class="form-inline mr-2 d-flex align-items-center">
                             @csrf
-                            <div class="form-group mr-2">
-                                <label for="estado" class="mr-2">Estado del Proyecto:</label>
-                                <select name="estado" id="estado" class="form-control input input-select mr-2">
-                                    <option value="">Todos</option>
-                                    <option value="Ejecucion">En Ejecución</option>
-                                    <option value="Terminado">Terminado</option>
-                                </select>
-                            </div>
                             <div class="tooltip-container">
                                 <span class="tooltip-text">Excel</span>
                                 <button type="submit" class="button3 efects_button btn_excel mr-2" pTooltip="Excel"
@@ -56,16 +49,35 @@
                                     <i class="fa-solid fa-file-excel"></i>
                                 </button>
                             </div>
-                            <div class="tooltip-container">
-                                <span class="tooltip-text">Agregar</span>
-                                <button type="button" onclick="location.href='{{ route('admin.agregarProyecto') }}';"
-                                    class="button3 efects_button btn_primary" id="button3">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                            </div>
                         </form>
+
+                        <!-- Botón para agregar proyecto -->
+                        <div class="tooltip-container mr-2">
+                            <span class="tooltip-text">Agregar</span>
+                            <button type="button" onclick="location.href='{{ route('admin.agregarProyecto') }}';"
+                                class="button3 efects_button btn_primary" id="button3">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+
+                        <!-- Selector de estado del proyecto -->
+                        <div class="form-group mr-2">
+                            <label for="estado" class="mr-2">Estado del Proyecto:</label>
+                            <form method="GET" action="{{ route('admin.indexProyectos') }}">
+                                <select name="estado" id="estado" class="form-control input input-select"
+                                    onchange="this.form.submit()">
+                                    <option value="">Todos</option>
+                                    <option value="Ejecucion" {{ old('estado') == 'Ejecucion' ? 'selected' : '' }}>En
+                                        Ejecución</option>
+                                    <option value="Terminado" {{ old('estado') == 'Terminado' ? 'selected' : '' }}>Terminado
+                                    </option>
+                                </select>
+                            </form>
+                        </div>
+
                     </div>
                 </div>
+
 
                 <!-- Buscador -->
                 <div class="contenedor_buscador">
@@ -83,7 +95,7 @@
             <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
 
-                    <div id="tablaDocentes">
+                    <div id="tablaProyectos">
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
