@@ -282,21 +282,29 @@
 
                             </div>
                             <div class="tooltip-container">
-                                <span class="tooltip-text">Excel</span>
-                                <form action="{{ route('admin.reportesDocentes') }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="button3 efects_button btn_excel">
-                                        <i class="fa-solid fa-file-excel"></i>
-                                    </button>
+    <span class="tooltip-text">Excel</span>
+    <form id="reportForm" action="{{ route('admin.reportesDocentes') }}" method="POST" onsubmit="submitForm(event)">
+        @csrf
+        <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+            <span id="loadingIcon" style="display: none;">
+                <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+            </span>
+            <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+        </button>
+    </form>
+</div>
 
-                                </form>
-                            </div>
-                            <div class="tooltip-container">
-                                <span class="tooltip-text">Copiar</span>
-                                <button class="button3 efects_button btn_copy" pTooltip="Copiar" tooltipPosition="top"><i
-                                        class="fa-solid fa-copy"></i></button>
+<!-- Copiar -->
+<div class="tooltip-container">
+    <span class="tooltip-text">Copiar</span>
+<button class="button3 efects_button btn_copy" onclick="copyDataToClipboard(event)" pTooltip="Copiar" tooltipPosition="top">
+    <i class="fa-solid fa-copy" id="icon"></i>
+</button>
 
-                            </div>
+        </div>
+
+
+
                             {{-- //DESCOMENTAR PARA ACTIVAR LOS OTROS BOTONES
                                 <button class="button3 efects_button btn_filtro" pTooltip="Filtros" tooltipPosition="top"><i
                                         class="fa-solid fa-filter-list"></i></button>
@@ -327,7 +335,7 @@
 
                             <div id="tablaDocentes">
                                 <table class="mat-mdc-table">
-                                    <thead class="ng-star-inserted">
+                                    <thead class="ng-star-inserted" id="professorsTable">
                                         <tr
                                             class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                             <th>Nombre</th>
@@ -849,7 +857,7 @@
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
-
+    <script src="js\admin\acciones.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -917,6 +925,7 @@
                 handle: '.modal-header'
             });
         });
+       
     </script>
 
 
