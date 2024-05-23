@@ -219,112 +219,111 @@
 
 
         </div>
-<hr>
+        <hr>
         <h6><b>Listado de asignaciones</b></h6>
-<br>
+        <br>
         <div class="contenedor_tabla">
-                        <div class="table-container mat-elevation-z8">
+            <div class="table-container mat-elevation-z8">
 
-                            <div id="tablaDocentes">
-                                <table class="mat-mdc-table">
-                                    <thead class="ng-star-inserted" id="professorsTable">
-                                        <tr
-                                            class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                            <th class="tamanio"> NOMBRE DE PROYECTO</th>
-                    <th>CODIGO DE PROYECTO</th>
-                    <th>DIRECTOR</th>
-                    <th>DOCENTES PARTICIPANTES</th>
-                    <th>FECHA ASIGNACION</th>
-                    <th>ESTUDIANTES</th>
-                    <th>PERIODO</th>
-                    <th>NRC</th>
-                    <th>FECHA INICIO</th>
-                    <th>FECHA FIN</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($asignacionesAgrupadas as $grupo)
-                    <tr>
-                        <td>{{ $grupo->first()->proyecto->NombreProyecto }}</td>
-                        <td>{{ $grupo->first()->proyecto->codigoProyecto }}</td>
-                        <td>{{ $grupo->first()->director->Nombres }}</td>
-                        <td>
-                            @php
-                                $participantes = $grupo
-                                    ->pluck('docenteParticipante')
-                                    ->unique('id')
-                                    ->pluck('Nombres')
-                                    ->implode('<br>');
-                            @endphp
-                            {!! $participantes !!}
-                        </td>
-                        <td>{{ $grupo->first()->FechaAsignacion }}</td>
-                        <td>
-                            @foreach ($grupo as $asignacion)
-                                {{ $asignacion->estudiante->Nombres }}<br>
+                <div id="tablaDocentes">
+                    <table class="mat-mdc-table">
+                        <thead class="ng-star-inserted" id="professorsTable">
+                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                <th class="tamanio"> NOMBRE DE PROYECTO</th>
+                                <th>CODIGO DE PROYECTO</th>
+                                <th>DIRECTOR</th>
+                                <th>DOCENTES PARTICIPANTES</th>
+                                <th>FECHA ASIGNACION</th>
+                                <th>ESTUDIANTES</th>
+                                <th>PERIODO</th>
+                                <th>NRC</th>
+                                <th>FECHA INICIO</th>
+                                <th>FECHA FIN</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($asignacionesAgrupadas as $grupo)
+                                <tr>
+                                    <td>{{ $grupo->first()->proyecto->NombreProyecto }}</td>
+                                    <td>{{ $grupo->first()->proyecto->codigoProyecto }}</td>
+                                    <td>{{ $grupo->first()->director->Nombres }}</td>
+                                    <td>
+                                        @php
+                                            $participantes = $grupo
+                                                ->pluck('docenteParticipante')
+                                                ->unique('id')
+                                                ->pluck('Nombres')
+                                                ->implode('<br>');
+                                        @endphp
+                                        {!! $participantes !!}
+                                    </td>
+                                    <td>{{ $grupo->first()->FechaAsignacion }}</td>
+                                    <td>
+                                        @foreach ($grupo as $asignacion)
+                                            {{ $asignacion->estudiante->Nombres }}<br>
+                                        @endforeach
+                                    </td>
+                                    <td>{{ $grupo->first()->periodo->numeroPeriodo }}</td>
+                                    <td>{{ $grupo->first()->nrcVinculacion->nrc }}</td>
+                                    <td>{{ $grupo->first()->FechaInicio }}</td>
+                                    <td>{{ $grupo->first()->FechaFinalizacion }}</td>
+                                </tr>
                             @endforeach
-                        </td>
-                        <td>{{ $grupo->first()->periodo->numeroPeriodo }}</td>
-                        <td>{{ $grupo->first()->nrcVinculacion->nrc }}</td>
-                        <td>{{ $grupo->first()->FechaInicio }}</td>
-                        <td>{{ $grupo->first()->FechaFinalizacion }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-        </div>
-        </div>
-        <div class="paginator-container">
-                    <nav aria-label="...">
-
-                        <ul class="pagination">
-                            <li class="page-item mx-3">
-                                <form method="GET" action="{{ route('admin.indexProyectos') }}">
-                                    <select class="form-control page-item" class="input" name="perPage" id="perPage"
-                                        onchange="this.form.submit()">
-                                        <option value="10" @if ($perPage == 10) selected @endif>10
-                                        </option>
-                                        <option value="20" @if ($perPage == 20) selected @endif>20
-                                        </option>
-                                        <option value="50" @if ($perPage == 50) selected @endif>50
-                                        </option>
-                                        <option value="100" @if ($perPage == 100) selected @endif>100
-                                        </option>
-                                    </select>
-                                </form>
-                            </li>
-                            @if ($proyectos->onFirstPage())
-                                <li class="page-item disabled">
-                                    <span class="page-link">Anterior</span>
-                                </li>
-                            @else
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $proyectos->previousPageUrl() }}"
-                                        aria-label="Anterior">Anterior</a>
-                                </li>
-                            @endif
-
-                            @for ($i = 1; $i <= $proyectos->lastPage(); $i++)
-                                <li class="page-item {{ $proyectos->currentPage() == $i ? 'active' : '' }}">
-                                    <a class="page-link" href="{{ $proyectos->url($i) }}">{{ $i }}</a>
-                                </li>
-                            @endfor
-
-                            @if ($proyectos->hasMorePages())
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $proyectos->nextPageUrl() }}"
-                                        aria-label="Siguiente">Siguiente</a>
-                                </li>
-                            @else
-                                <li class="page-item disabled">
-                                    <span class="page-link">Siguiente</span>
-                                </li>
-                            @endif
-                        </ul>
-                    </nav>
+                        </tbody>
+                    </table>
                 </div>
-</div>
-       </div> 
+            </div>
+            <div class="paginator-container">
+                <nav aria-label="...">
+
+                    <ul class="pagination">
+                        <li class="page-item mx-3">
+                            <form method="GET" action="{{ route('admin.indexProyectos') }}">
+                                <select class="form-control page-item" class="input" name="perPage" id="perPage"
+                                    onchange="this.form.submit()">
+                                    <option value="10" @if ($perPage == 10) selected @endif>10
+                                    </option>
+                                    <option value="20" @if ($perPage == 20) selected @endif>20
+                                    </option>
+                                    <option value="50" @if ($perPage == 50) selected @endif>50
+                                    </option>
+                                    <option value="100" @if ($perPage == 100) selected @endif>100
+                                    </option>
+                                </select>
+                            </form>
+                        </li>
+                        @if ($proyectos->onFirstPage())
+                            <li class="page-item disabled">
+                                <span class="page-link">Anterior</span>
+                            </li>
+                        @else
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $proyectos->previousPageUrl() }}"
+                                    aria-label="Anterior">Anterior</a>
+                            </li>
+                        @endif
+
+                        @for ($i = 1; $i <= $proyectos->lastPage(); $i++)
+                            <li class="page-item {{ $proyectos->currentPage() == $i ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $proyectos->url($i) }}">{{ $i }}</a>
+                            </li>
+                        @endfor
+
+                        @if ($proyectos->hasMorePages())
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $proyectos->nextPageUrl() }}"
+                                    aria-label="Siguiente">Siguiente</a>
+                            </li>
+                        @else
+                            <li class="page-item disabled">
+                                <span class="page-link">Siguiente</span>
+                            </li>
+                        @endif
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
     </section>
     <hr>
     <section>
