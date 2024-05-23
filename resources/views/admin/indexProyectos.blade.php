@@ -105,9 +105,9 @@
                                 @else
                                     @foreach ($proyectos as $proyecto)
                                         <tr>
-                                            <td style="word-wrap: break-word; text-align: justify;">
+                                            <td style="word-wrap: break-word; text-align: justify; padding: 5px 8px;">
                                                 {{ strtoupper($proyecto->NombreProyecto) }}</td>
-                                            <td style="word-wrap: break-word; text-align: justify;">
+                                            <td style="word-wrap: break-word; text-align: justify; padding: 5px 8px;">
                                                 {{ strtoupper($proyecto->DescripcionProyecto) }}</td>
 
                                             <td>{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
@@ -312,7 +312,7 @@
                     </nav>
                 </div>
 </div>
-       </div> 
+      
     </section>
     <hr>
     <section>

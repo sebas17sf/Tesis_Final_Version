@@ -23,7 +23,7 @@ label {
   border: 1px solid transparent;
   padding-left: 25px;
   padding-right: 25px;
-  font-size: fonts.$form-input;
+  font-size: fonts.$form-input !important;
   letter-spacing: 0.15px;
   outline: none;
   background-color: colors.$bg_elements;

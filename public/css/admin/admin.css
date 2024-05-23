@@ -195,31 +195,45 @@ table {
 table,
 th,
 td {
-    font-size: 14px;
+    font-size: 13px;
 }
 
 th {
     background-color: #f2f2f2;
 }
 
-body,
-select,
-th,
-td,
-table {
-    background-color: #F5F5F5;
-    font-family: Arial, sans-serif;
-    font-size: 13px;
-    line-height: 1.5;
 
-}
 .columna-numero {
     padding: 0 5px !important;
 }
 .body,
-tr,
+
 td{
-    font-size: 13px;
+    font-size: 11px;
     text-align: center;
     /* Centra el texto en las celdas de datos */
+}
+.mat-mdc-table td {
+    vertical-align: middle; /* Alineación vertical del texto en las celdas */
+}
+
+.acciones-container {
+    display: flex;
+    gap: 4px; /* Espacio entre los botones */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+}
+
+.acciones-container button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px; /* Ajusta el padding según sea necesario */
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.acciones-container button i {
+    font-size: 16px; /* Ajusta el tamaño del icono según sea necesario */
 }
