@@ -13,8 +13,9 @@
 } */
 /* Estilo para las filas cuando no se está pasando el cursor */
 tr:hover {
-    background-color: #f5f5f5; /* Cambia el color de fondo cuando se pasa el cursor */
-  }
+    background-color: #f5f5f5;
+    /* Cambia el color de fondo cuando se pasa el cursor */
+}
 
 /* Estilo para el botón "Cerrar Sesión" */
 .logout-btn {
@@ -134,40 +135,53 @@ tr:hover {
 
 /* Estilos para el contenedor del menú desplegable */
 .popup-menu-container {
-    display: none; /* Por defecto, el menú está oculto */
-    position: absolute; /* Posición absoluta para que esté sobre el resto del contenido */
-    top: 100%; /* Coloca el menú debajo del botón de perfil */
-    right: 0; /* Alinea el menú a la derecha del botón */
-    background-color: #fff; /* Fondo blanco */
-    border: 1px solid #ccc; /* Borde del menú */
-    border-radius: 5px; /* Bordes redondeados */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra */
-    z-index: 1000; /* Asegura que el menú esté por encima del resto del contenido */
-  }
-  
-  /* Estilos para el menú desplegable cuando está activo */
-  .popup-menu-container.active {
-    display: block; /* Muestra el menú */
-  }
-  
-  /* Estilos para los enlaces del menú */
-  .popup-menu-container a {
+    display: none;
+    /* Por defecto, el menú está oculto */
+    position: absolute;
+    /* Posición absoluta para que esté sobre el resto del contenido */
+    top: 100%;
+    /* Coloca el menú debajo del botón de perfil */
+    right: 0;
+    /* Alinea el menú a la derecha del botón */
+    background-color: #fff;
+    /* Fondo blanco */
+    border: 1px solid #ccc;
+    /* Borde del menú */
+    border-radius: 5px;
+    /* Bordes redondeados */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Sombra */
+    z-index: 1000;
+    /* Asegura que el menú esté por encima del resto del contenido */
+}
+
+/* Estilos para el menú desplegable cuando está activo */
+.popup-menu-container.active {
+    display: block;
+    /* Muestra el menú */
+}
+
+/* Estilos para los enlaces del menú */
+.popup-menu-container a {
     display: block;
     padding: 10px;
     text-decoration: none;
-    color: #333; /* Color del texto */
-  }
-  
-  .popup-menu-container a:hover {
-    background-color: #f0f0f0; /* Cambia el color de fondo al pasar el mouse */
-  }
-  
-  /* Estilos para el botón de perfil */
-  .profile-icon {
-    position: relative; /* Posición relativa para alinear correctamente el menú desplegable */
-  }
-  
-  .pagination {
+    color: #333;
+    /* Color del texto */
+}
+
+.popup-menu-container a:hover {
+    background-color: #f0f0f0;
+    /* Cambia el color de fondo al pasar el mouse */
+}
+
+/* Estilos para el botón de perfil */
+.profile-icon {
+    position: relative;
+    /* Posición relativa para alinear correctamente el menú desplegable */
+}
+
+.pagination {
     background-color: #eaf5ff;
     padding: 10px;
     border-radius: 5px;
@@ -176,8 +190,10 @@ tr:hover {
 
 /* Establecer el ancho del sidebar */
 .content-sidebar {
-    width: 280px; /* Puedes ajustar este valor según tus necesidades */
-    float: left; /* Alinear a la izquierda */
+    width: 280px;
+    /* Puedes ajustar este valor según tus necesidades */
+    float: left;
+    /* Alinear a la izquierda */
 }
 
 /* Limpiar flotantes */
@@ -187,11 +203,11 @@ tr:hover {
     clear: both;
 }
 
-table {
+/* table {
     width: 100%;
     border-collapse: collapse;
-}
-
+} */
+/* 
 table,
 th,
 td {
@@ -208,7 +224,7 @@ th,
 td,
 button,
 table {
-    background-color: #F5F5F5;
+    background-color: #f5f5f5;
     font-family: Arial, sans-serif;
     font-size: 13px;
     line-height: 1.5;
@@ -222,5 +238,5 @@ tr,
 td{
     font-size: 13px;
     text-align: center;
-    /* Centra el texto en las celdas de datos */
-}
+  
+} */

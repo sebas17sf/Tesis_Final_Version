@@ -28,9 +28,9 @@
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
     <style>
-        body {
+       /*  body {
             overflow-x: hidden;
-        }
+        } */
     </style>
 
 </head>

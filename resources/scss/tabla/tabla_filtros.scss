@@ -186,7 +186,7 @@
       min-height: $tamañoTabla620;
     }
 
-    .table-container div{
+    .table-container{
       height: $tamañoTabla - 555px;
 
       @media (max-width: 620px) {
@@ -219,9 +219,9 @@
     display: grid;
     border-radius: 5px;
     border: 1px solid rgba(colors.$gray, 0.3);
-   /*  overflow-x: auto; */
+  /*  overflow-x: auto; */
   
-    .table-container div {
+    .table-container  {
     /*  overflow-x: auto;  */
       box-shadow: none !important;
       text-align: center;
@@ -261,6 +261,13 @@
           min-width: 450px;
           padding: .5rem !important;
         } 
+
+       /*  .tamanio_center {
+          width: 100px;
+          min-width: 150px;
+          padding: .5rem !important;
+          text-align: center;
+        }  */
   
         // Body
         .mat-mdc-row {

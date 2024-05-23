@@ -185,7 +185,7 @@
         <br>
         <section>
             <!-- Archivos de notas -->
-            <div class="contenedor_registro_genero ">
+          
                 <div>
                     <span><b>Docentes agregados</b></span>
 
@@ -351,25 +351,25 @@
                                                         {{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Nombres)) }}
                                                     </td>
                                                     <td>{{ $profesor->Correo }}</td>
-                                                    <td>{{ $profesor->Usuario }}</td>
-                                                    <td>{{ $profesor->Cedula }}</td>
+                                                    <td class="tamanio_center">{{ $profesor->Usuario }}</td>
+                                                    <td class="tamanio_center">{{ $profesor->Cedula }}</td>
                                                     <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $profesor->Departamento)) }}
                                                     </td>
-                                                    <td>{{ $profesor->espe_id }}</td>
+                                                    <td class="tamanio_center">{{ $profesor->espe_id }}</td>
                                                     <td>
                                                         <div class="contenedor_botones">
                                                             <div class="btn-group  shadow-0">
 
 
 
-                                                                <div class="tooltip-container">
-                                                                    <button type="button"
-                                                                        class="button3 efects_button btn_editar3"
-                                                                        data-toggle="modal"
-                                                                        data-target="#modalEditarMaestro{{ $profesor->id }}">
-                                                                        <i class="bx bx-edit-alt"></i>
-                                                                    </button>
-                                                                </div>
+
+                                                                <button type="button"
+                                                                    class="button3 efects_button btn_editar3"
+                                                                    data-toggle="modal"
+                                                                    data-target="#modalEditarMaestro{{ $profesor->id }}">
+                                                                    <i class="bx bx-edit-alt"></i>
+                                                                </button>
+
 
 
                                                                 <!---Modal para editar Docentes--------------------------------------------------->
@@ -608,7 +608,7 @@
                     </div>
 
                 </div>
-            </div>
+           
         </section>
 
         <section>
@@ -848,7 +848,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
-    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    {{--    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script> --}}
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
