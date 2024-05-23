@@ -282,26 +282,28 @@
 
                             </div>
                             <div class="tooltip-container">
-    <span class="tooltip-text">Excel</span>
-    <form id="reportForm" action="{{ route('admin.reportesDocentes') }}" method="POST" onsubmit="submitForm(event)">
-        @csrf
-        <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
-            <span id="loadingIcon" style="display: none;">
-                <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
-            </span>
-            <i class="fa-solid fa-file-excel" id="excelIcon"></i>
-        </button>
-    </form>
-</div>
+                                <span class="tooltip-text">Excel</span>
+                                <form id="reportForm" action="{{ route('admin.reportesDocentes') }}" method="POST"
+                                    onsubmit="submitForm(event)">
+                                    @csrf
+                                    <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+                                        <span id="loadingIcon" style="display: none;">
+                                            <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+                                        </span>
+                                        <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                                    </button>
+                                </form>
+                            </div>
 
-<!-- Copiar -->
-<div class="tooltip-container">
-    <span class="tooltip-text">Copiar</span>
-<button class="button3 efects_button btn_copy" onclick="copyDataToClipboard(event)" pTooltip="Copiar" tooltipPosition="top">
-    <i class="fa-solid fa-copy" id="icon"></i>
-</button>
+                            <!-- Copiar -->
+                            <div class="tooltip-container">
+                                <span class="tooltip-text">Copiar</span>
+                                <button class="button3 efects_button btn_copy" onclick="copyDataToClipboard(event)"
+                                    pTooltip="Copiar" tooltipPosition="top">
+                                    <i class="fa-solid fa-copy" id="icon"></i>
+                                </button>
 
-        </div>
+                            </div>
 
 
 
@@ -932,7 +934,6 @@
                 handle: '.modal-header'
             });
         });
-
     </script>
 
 
