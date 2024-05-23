@@ -99,12 +99,12 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio">Nombre del proyecto</th>
-                                    <th class="tamanio">Descripción</th>
-                                    <th>Departamento</th>
-                                    <th>Código del Proyecto Social</th>
-                                    <th>Estado del proyecto</th>
-                                    <th>Acciones</th>
+                                    <th class="tamanio">NOMBRE DEL PROYECTO</th>
+                                    <th class="tamanio">DESCRIPCION</th>
+                                    <th>DEPARTAMENTO</th>
+                                    <th>CODIGO DEL PROYECTO SOCIAL</th>
+                                    <th>ESTADO DEL PROYECTO</th>
+                                    <th>ACCIONES</th>
                                 </tr>
                             </thead>
                             <tbody class="mdc-data-table__content ng-star-inserted">
@@ -219,23 +219,27 @@
 
 
         </div>
-
+<hr>
         <h6><b>Listado de asignaciones</b></h6>
+<br>
+        <div class="contenedor_tabla">
+                        <div class="table-container mat-elevation-z8">
 
-        <table class="table">
-            <thead>
-                <tr>
-
-                    <th>Proyecto</th>
-                    <th>Codigo Proyecto</th>
-                    <th>Director</th>
-                    <th>Participantes</th>
-                    <th>Fecha Asignación</th>
-                    <th>Estudiantes</th>
-                    <th>Periodo</th>
+                            <div id="tablaDocentes">
+                                <table class="mat-mdc-table">
+                                    <thead class="ng-star-inserted" id="professorsTable">
+                                        <tr
+                                            class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                            <th class="tamanio"> NOMBRE DE PROYECTO</th>
+                    <th>CODIGO DE PROYECTO</th>
+                    <th>DIRECTOR</th>
+                    <th>DOCENTES PARTICIPANTES</th>
+                    <th>FECHA ASIGNACION</th>
+                    <th>ESTUDIANTES</th>
+                    <th>PERIODO</th>
                     <th>NRC</th>
-                    <th>Fecha Inicio</th>
-                    <th>Fecha Fin</th>
+                    <th>FECHA INICIO</th>
+                    <th>FECHA FIN</th>
                 </tr>
             </thead>
             <tbody>
@@ -268,10 +272,59 @@
                 @endforeach
             </tbody>
         </table>
+        </div>
+        </div>
+        <div class="paginator-container">
+                    <nav aria-label="...">
 
+                        <ul class="pagination">
+                            <li class="page-item mx-3">
+                                <form method="GET" action="{{ route('admin.indexProyectos') }}">
+                                    <select class="form-control page-item" class="input" name="perPage" id="perPage"
+                                        onchange="this.form.submit()">
+                                        <option value="10" @if ($perPage == 10) selected @endif>10
+                                        </option>
+                                        <option value="20" @if ($perPage == 20) selected @endif>20
+                                        </option>
+                                        <option value="50" @if ($perPage == 50) selected @endif>50
+                                        </option>
+                                        <option value="100" @if ($perPage == 100) selected @endif>100
+                                        </option>
+                                    </select>
+                                </form>
+                            </li>
+                            @if ($proyectos->onFirstPage())
+                                <li class="page-item disabled">
+                                    <span class="page-link">Anterior</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $proyectos->previousPageUrl() }}"
+                                        aria-label="Anterior">Anterior</a>
+                                </li>
+                            @endif
 
+                            @for ($i = 1; $i <= $proyectos->lastPage(); $i++)
+                                <li class="page-item {{ $proyectos->currentPage() == $i ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $proyectos->url($i) }}">{{ $i }}</a>
+                                </li>
+                            @endfor
 
-        {{--  </div> --}}
+                            @if ($proyectos->hasMorePages())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $proyectos->nextPageUrl() }}"
+                                        aria-label="Siguiente">Siguiente</a>
+                                </li>
+                            @else
+                                <li class="page-item disabled">
+                                    <span class="page-link">Siguiente</span>
+                                </li>
+                            @endif
+                        </ul>
+                    </nav>
+                </div>
+</div>
+       </div> 
     </section>
     <hr>
     <section>
