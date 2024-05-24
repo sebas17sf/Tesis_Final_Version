@@ -120,7 +120,8 @@
                                         <tr>
                                             <td style="word-wrap: break-word; text-align: justify;">
                                                 {{ strtoupper($proyecto->NombreProyecto) }}</td>
-                                            <td>{{ strtoupper($proyecto->director->Apellidos) }} {{ strtoupper($proyecto->director->Nombres) }} </td>
+                                            <td>{{ strtoupper($proyecto->director->Apellidos) }}
+                                                {{ strtoupper($proyecto->director->Nombres) }} </td>
                                             <td style="word-wrap: break-word; text-align: justify;">
                                                 {{ strtoupper($proyecto->DescripcionProyecto) }}</td>
 
@@ -248,7 +249,7 @@
                                 <tr>
                                     <td>{{ $grupo->first()->proyecto->NombreProyecto }}</td>
                                     <td>{{ $grupo->first()->proyecto->codigoProyecto }}</td>
-                                    <td>{{ $grupo->first()->director->Nombres }}</td>
+                                    <td>{{ $grupo->first()->proyecto->director->Apellidos }}</td>
                                     <td>
                                         @php
                                             $participantes = $grupo
@@ -347,7 +348,8 @@
                                     <option value="">Seleccione un proyecto</option>
                                     @foreach ($proyectosDisponibles as $proyecto)
                                         <option value="{{ $proyecto->ProyectoID }}">
-                                            {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }}  {{ $proyecto->codigoProyecto }}
+                                            {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }}
+                                            {{ $proyecto->codigoProyecto }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -360,9 +362,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="ProfesorParticipante">Profesor Participante:</label>
+                                <label for="ProfesorParticipante">Docente Participante:</label>
                                 <select name="ProfesorParticipante" class="form-control input input-select" required>
-                                    <option value="">Seleccionar Profesor Participante</option>
+                                    <option value="">Seleccionar Docente Participante</option>
                                     @foreach ($profesores as $profesor)
                                         <option value="{{ $profesor->id }}">
                                             Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
@@ -401,57 +403,42 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="nrc">Vinculacion NRC:</label>
-                                <select name="nrc" class="form-control input input-select" required>
+                                <select name="nrc" id="nrc" class="form-control input input-select" required>
                                     <option value="">Seleccionar NRC</option>
                                     @foreach ($nrcs as $nrc)
-                                        <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
+                                        <option value="{{ $nrc->id }}" data-periodo="{{ $nrc->periodo->numeroPeriodo}} {{ $nrc->periodo->Periodo }}">
+                                            {{ $nrc->nrc }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="periodo">Periodo:</label>
+                                <input type="text" id="periodo" class="form-control input" readonly>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="FechaInicio">Fecha de Inicio:</label>
+                                <label for="FechaInicio">Fecha de Inicio de intervencio en el proyecto:</label>
                                 <input type="date" name="FechaInicio" class="form-control input" required>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="FechaFinalizacion">Fecha de Finalización:</label>
+                                <label for="FechaFinalizacion">Fecha de Fin de intervencion en el proyecto:</label>
                                 <input type="date" name="FechaFinalizacion" class="form-control input" required>
                             </div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="fecha_asignacion"><strong>Fecha de Asignación:</strong></label>
-                                <input type="date" name="fecha_asignacion" id="fecha_asignacion"
-                                    class="form-control input" value="{{ now()->toDateString() }}">
-                            </div>
-                        </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="periodo_id"><strong>Periodo:</strong></label>
-                                <select name="periodo_id" id="periodo_id" class="form-control input input-select">
-                                    <option value="">Seleccione un periodo</option>
-                                    @foreach ($periodos as $periodo)
-                                        <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }}
-                                            {{ $periodo->Periodo }}</option>
-                                    @endforeach
-                                </select>
-
-                            </div>
-                        </div>
-
-
-                    </div>
 
 
 
@@ -540,6 +527,19 @@
             }
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const nrcSelect = document.getElementById('nrc');
+            const periodoInput = document.getElementById('periodo');
+
+            nrcSelect.addEventListener('change', function () {
+                const selectedOption = nrcSelect.options[nrcSelect.selectedIndex];
+                const periodo = selectedOption.getAttribute('data-periodo');
+                periodoInput.value = periodo ? periodo : '';
+            });
+        });
+    </script>
+
 
 
 

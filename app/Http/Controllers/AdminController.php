@@ -334,11 +334,10 @@ class AdminController extends Controller
         ///////////// quiero obtener tods las asignacionesProyectos
         $asignacionesAgrupadas = AsignacionProyecto::with('estudiante')
             ->with('proyecto')
-            ->with('director')
-            ->with('docenteParticipante')
+             ->with('docenteParticipante')
             ->get()
             ->groupBy(function ($item) {
-                return $item->ProyectoID . '_' . $item->IdPeriodo . '_' . $item->DirectorID;
+                return $item->ProyectoID . '_' . $item->IdPeriodo;
             });
 
 
@@ -519,41 +518,32 @@ class AdminController extends Controller
             'proyecto_id' => 'required',
             'estudiante_id' => 'required|array',
             'estudiante_id.*' => 'numeric',
-            'fecha_asignacion' => 'required',
-            'DirectorProyecto' => 'required',
             'ProfesorParticipante' => 'required',
-            'periodo_id' => 'required',
             'nrc' => 'required',
             'FechaInicio' => 'required',
             'FechaFinalizacion' => 'required',
         ]);
 
-        $this->actualizarUsuarioYRol($request->DirectorProyecto, 'DirectorVinculacion');
-        $this->actualizarUsuarioYRol($request->ProfesorParticipante, 'ParticipanteVinculacion');
 
+        $nrc = NrcVinculacion::where('id', $request->nrc)->first();
 
         foreach ($request->estudiante_id as $estudianteID) {
             AsignacionProyecto::create([
                 'ProyectoID' => $request->proyecto_id,
                 'EstudianteID' => $estudianteID,
-                'DirectorID' => $request->DirectorProyecto,
                 'ParticipanteID' => $request->ProfesorParticipante,
-                'FechaAsignacion' => $request->fecha_asignacion,
-                'IdPeriodo' => $request->periodo_id,
+                'FechaAsignacion' => now(),
+                'IdPeriodo' => $nrc->id_periodo,
                 'id_nrc_vinculacion' => $request->nrc,
                 'FechaInicio' => $request->FechaInicio,
                 'FechaFinalizacion' => $request->FechaFinalizacion,
             ]);
         }
-
+        $this->actualizarUsuarioYRol($request->ProfesorParticipante, 'ParticipanteVinculacion');
 
         return redirect()->route('admin.indexProyectos')->with('success', 'Estudiante asignado correctamente');
 
     }
-
-
-
-
 
     public function guardarMaestro(Request $request)
     {
