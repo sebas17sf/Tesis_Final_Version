@@ -15,10 +15,14 @@ return new class extends Migration {
     {
         Schema::create('proyectos', function (Blueprint $table) {
             $table->id('ProyectoID');
+            $table->unsignedBigInteger('DirectorID')->nullable();
+            $table->foreign('DirectorID')->references('id')->on('profesUniversidad');
             $table->text('NombreProyecto');
             $table->string('codigoProyecto')->nullable();
             $table->text('DescripcionProyecto');
             $table->string('DepartamentoTutor');
+            $table->Date('FechaInicio');
+            $table->Date('FechaFinalizacion');
              $table->string('Estado');
             $table->timestamps();
         });

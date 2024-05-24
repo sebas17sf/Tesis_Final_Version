@@ -100,6 +100,7 @@
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                     <th class="tamanio">NOMBRE DEL PROYECTO</th>
+                                    <th class="tamanio">DIRECTOR</th>
                                     <th class="tamanio">DESCRIPCION</th>
                                     <th>DEPARTAMENTO</th>
                                     <th>CODIGO DEL PROYECTO SOCIAL</th>
@@ -119,6 +120,7 @@
                                         <tr>
                                             <td style="word-wrap: break-word; text-align: justify;">
                                                 {{ strtoupper($proyecto->NombreProyecto) }}</td>
+                                            <td>{{ strtoupper($proyecto->director->Apellidos) }} {{ strtoupper($proyecto->director->Nombres) }} </td>
                                             <td style="word-wrap: break-word; text-align: justify;">
                                                 {{ strtoupper($proyecto->DescripcionProyecto) }}</td>
 
@@ -344,7 +346,8 @@
                                 <select name="proyecto_id" id="proyecto_id" class="form-control input input-select">
                                     <option value="">Seleccione un proyecto</option>
                                     @foreach ($proyectosDisponibles as $proyecto)
-                                        <option value="{{ $proyecto->ProyectoID }}">{{ $proyecto->NombreProyecto }}
+                                        <option value="{{ $proyecto->ProyectoID }}">
+                                            {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }}  {{ $proyecto->codigoProyecto }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -352,23 +355,7 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="DirectorProyecto">Director del Proyecto:</label>
-                                <select name="DirectorProyecto" class="form-control input input-select" required>
-                                    <option value="">Seleccionar Director</option>
-                                    @foreach ($profesores as $profesor)
-                                        <option value="{{ $profesor->id }}">
-                                            Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
-                                            Departamento: {{ $profesor->Departamento }} -
-                                            Correo: {{ $profesor->Correo }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+
 
                     <div class="row">
                         <div class="col-md-12">

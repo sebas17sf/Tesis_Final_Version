@@ -292,7 +292,9 @@ class AdminController extends Controller
 
         $periodos = Periodo::all();
         $nrcs = NrcVinculacion::all();
-        $profesores = ProfesUniversidad::all();
+
+        /////////mostrar los profesores que no tienen un DirectorID en la tabla proyectos
+        $profesores = ProfesUniversidad::whereNotIn('id', Proyecto::pluck('DirectorID')->toArray())->get();
 
         $perPage = $request->input('perPage', 10);
         $search = $request->input('search');
@@ -304,7 +306,7 @@ class AdminController extends Controller
 
         $query = Proyecto::query();
 
-         if ($search) {
+        if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('NombreProyecto', 'LIKE', '%' . $search . '%')
                     ->orWhere('DescripcionProyecto', 'LIKE', '%' . $search . '%')
@@ -340,12 +342,6 @@ class AdminController extends Controller
             });
 
 
-
-
-
-
-
-
         return view('admin.indexProyectos', [
             'proyectos' => $proyectos,
             'proyectosDisponibles' => $proyectosDisponibles,
@@ -363,38 +359,54 @@ class AdminController extends Controller
 
     public function crearProyectoForm()
     {
-        return view('admin.agregarProyecto');
+        $profesores = ProfesUniversidad::all();
+
+        return view('admin.agregarProyecto', compact('profesores'));
     }
 
 
     ///////////////////////guardar proyectos
 
+
+
     public function crearProyecto(Request $request)
     {
-        $validatedData = $request->validate([
-            'NombreProyecto' => 'required',
-            'DescripcionProyecto' => 'required|string',
-            'DepartamentoTutor' => 'required',
-            'codigoProyecto' => 'required',
-            'Estado' => 'required',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'NombreProyecto' => 'required',
+                'DirectorProyecto' => 'required',
+                'DescripcionProyecto' => 'required|string',
+                'DepartamentoTutor' => 'required',
+                'codigoProyecto' => 'required',
+                'FechaInicio' => 'required',
+                'FechaFinalizacion' => 'required|after:FechaInicio',
+                'Estado' => 'required',
+            ], [
+                'FechaFinalizacion.after' => 'La fecha de finalización debe ser posterior a la fecha de inicio',
+            ]);
+
+            $proyecto = Proyecto::create([
+                'DirectorID' => $validatedData['DirectorProyecto'],
+                'NombreProyecto' => $validatedData['NombreProyecto'],
+                'DescripcionProyecto' => $validatedData['DescripcionProyecto'],
+                'DepartamentoTutor' => $validatedData['DepartamentoTutor'],
+                'codigoProyecto' => $validatedData['codigoProyecto'],
+                'Estado' => $validatedData['Estado'],
+                'FechaInicio' => $validatedData['FechaInicio'],
+                'FechaFinalizacion' => $validatedData['FechaFinalizacion'],
+            ]);
+
+            $this->actualizarUsuarioYRol($validatedData['DirectorProyecto'], 'DirectorVinculacion');
+
+            $proyecto->save();
 
 
-        $proyecto = Proyecto::create([
-            'NombreProyecto' => $validatedData['NombreProyecto'],
-            'DescripcionProyecto' => $validatedData['DescripcionProyecto'],
-            'DepartamentoTutor' => $validatedData['DepartamentoTutor'],
-            'codigoProyecto' => $validatedData['codigoProyecto'],
-            'Estado' => $validatedData['Estado'],
-        ]);
-
-        $proyecto->save();
-
-
-
-
-        return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto agregado correctamente');
+            return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto agregado correctamente');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Hubo un error al crear el proyecto: ' . $e->getMessage());
+        }
     }
+
 
 
 
@@ -406,7 +418,7 @@ class AdminController extends Controller
 
         $profesores = ProfesUniversidad::all();
 
-        $proyecto = Proyecto::with(['director', 'docenteParticipante'])->findOrFail($ProyectoID);
+        $proyecto = Proyecto::findOrFail($ProyectoID);
         return view('admin.editarProyecto', compact('proyecto', 'nrcs', 'profesores'));
     }
 
@@ -414,23 +426,31 @@ class AdminController extends Controller
     public function editProyecto(Request $request, $ProyectoID)
     {
         $validatedData = $request->validate([
+            'DirectorProyecto' => 'required',
             'NombreProyecto' => 'required',
             'codigoProyecto' => 'required',
             'DescripcionProyecto' => 'required|string',
             'DepartamentoTutor' => 'required',
-            'Estado' => 'required|string|max:255',
+            'FechaInicio' => 'required',
+            'FechaFinalizacion' => 'required|after:FechaInicio',
+            'Estado' => 'required',
+        ], [
+            'FechaFinalizacion.after' => 'La fecha de finalización debe ser posterior a la fecha de inicio',
         ]);
 
-        // Obtén el proyecto existente
         $proyecto = Proyecto::findOrFail($ProyectoID);
 
-        // Actualizar los datos del proyecto
+        $proyecto->DirectorID = $validatedData['DirectorProyecto'];
         $proyecto->NombreProyecto = $validatedData['NombreProyecto'];
         $proyecto->DescripcionProyecto = $validatedData['DescripcionProyecto'];
         $proyecto->DepartamentoTutor = $validatedData['DepartamentoTutor'];
         $proyecto->codigoProyecto = $validatedData['codigoProyecto'];
+        $proyecto->FechaInicio = $validatedData['FechaInicio'];
+        $proyecto->FechaFinalizacion = $validatedData['FechaFinalizacion'];
         $proyecto->Estado = $validatedData['Estado'];
         $proyecto->save();
+
+        $this->actualizarUsuarioYRol($validatedData['DirectorProyecto'], 'DirectorVinculacion');
 
         return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto actualizado correctamente');
     }
@@ -462,7 +482,7 @@ class AdminController extends Controller
         }
 
         //////actualizar el UserID de ProfesUniversidad con el ID de Usuario creado
-        $profesor->UserID = Usuario::where('CorreoElectronico', $profesor->Correo)->value('id');
+        $profesor->UserID = Usuario::where('CorreoElectronico', $profesor->Correo)->value('UserID');
         $profesor->save();
     }
 
@@ -677,7 +697,7 @@ class AdminController extends Controller
             'periodoFin.required' => 'La fecha de fin del período es requerida.',
             'periodoFin.after' => 'La fecha de fin del período debe ser posterior a la fecha de inicio.',
             'numeroPeriodo.unique' => 'El codigo de período ya existe.',
-         ]);
+        ]);
 
 
 
@@ -741,7 +761,7 @@ class AdminController extends Controller
 
         $periodo = Periodo::find($id);
 
-         $periodoExistente = Periodo::where('numeroPeriodo', $request->numeroPeriodo)->first();
+        $periodoExistente = Periodo::where('numeroPeriodo', $request->numeroPeriodo)->first();
 
         if ($periodoExistente) {
             return redirect()->route('admin.index')->with('error', 'El codigo de período ingresado ya existe.');
@@ -1105,26 +1125,26 @@ class AdminController extends Controller
 
     ///////agregar nrc
     public function GuardarNRC(Request $request)
-{
-    $request->validate([
-        'nrc' => 'required|numeric|digits:5|unique:nrc_vinculacion,nrc',
-        'periodo' => 'required|exists:periodo,id',
-    ], [
-        'nrc.required' => 'El NRC es obligatorio.',
-        'nrc.numeric' => 'El NRC debe ser un número.',
-        'nrc.digits' => 'El NRC debe tener exactamente 5 dígitos.',
-        'nrc.unique' => 'El NRC ingresado ya existe.',
-        'periodo.required' => 'El período es obligatorio.',
-        'periodo.exists' => 'El período seleccionado no es válido.',
-    ]);
+    {
+        $request->validate([
+            'nrc' => 'required|numeric|digits:5|unique:nrc_vinculacion,nrc',
+            'periodo' => 'required|exists:periodo,id',
+        ], [
+            'nrc.required' => 'El NRC es obligatorio.',
+            'nrc.numeric' => 'El NRC debe ser un número.',
+            'nrc.digits' => 'El NRC debe tener exactamente 5 dígitos.',
+            'nrc.unique' => 'El NRC ingresado ya existe.',
+            'periodo.required' => 'El período es obligatorio.',
+            'periodo.exists' => 'El período seleccionado no es válido.',
+        ]);
 
-    NrcVinculacion::create([
-        'nrc' => $request->nrc,
-        'id_periodo' => $request->periodo,
-    ]);
+        NrcVinculacion::create([
+            'nrc' => $request->nrc,
+            'id_periodo' => $request->periodo,
+        ]);
 
-    return redirect()->route('admin.index')->with('success', 'NRC guardado con éxito.');
-}
+        return redirect()->route('admin.index')->with('success', 'NRC guardado con éxito.');
+    }
 
 
 

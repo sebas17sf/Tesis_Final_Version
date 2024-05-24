@@ -14,11 +14,14 @@ class Proyecto extends Model
     protected $primaryKey = 'ProyectoID';
 
     protected $fillable = [
+        'DirectorID',
         'NombreProyecto',
         'DescripcionProyecto',
         'CorreoElectronicoTutor',
         'DepartamentoTutor',
-         'codigoProyecto',
+        'codigoProyecto',
+        'FechaInicio',
+        'FechaFinalizacion',
         'Estado',
     ];
 
@@ -34,27 +37,12 @@ class Proyecto extends Model
 
     public function director()
     {
-        return $this->belongsTo(ProfesUniversidad::class, 'id_directorProyecto');
+        return $this->belongsTo(ProfesUniversidad::class, 'DirectorID', 'id');
     }
 
-    public function docenteParticipante()
-    {
-        return $this->belongsTo(ProfesUniversidad::class, 'id_docenteParticipante');
-    }
 
-    public function nrcs()
-    {
-        return $this->belongsTo(NrcVinculacion::class, 'id_nrc_vinculacion');
-    }
 
-    public function participantesAdicionales()
-    {
-        return $this->belongsToMany(ProfesUniversidad::class, 'participantesAdicionales', 'ProyectoID', 'ParticipanteID');
-    }
 
-    public function asignacionesEstudiantesDirectores()
-    {
-        return $this->hasMany(AsignacionEstudiantesDirector::class, 'IDProyecto');
-    }
+
 
 }

@@ -16,6 +16,11 @@
             @csrf
             @method('PUT')
 
+            <div class="form-group">
+                <label for="codigoProyecto">Ingrese código del proyecto:</label>
+                <input type="text" value="{{ $proyecto->codigoProyecto }}" name="codigoProyecto"
+                    class="form-control input" placeholder="Ingrese el código del proyecto. Si no, déjelo vacío">
+            </div>
 
             <div class="form-group">
                 <label for="DirectorProyecto">Director del Proyecto:</label>
@@ -23,21 +28,7 @@
                     <option value="">Seleccionar Director</option>
                     @foreach ($profesores as $profesor)
                         <option value="{{ $profesor->id }}"
-                            {{ $proyecto->id_directorProyecto === $profesor->id ? 'selected' : '' }}>
-                            {{ $profesor->Apellidos }} {{ $profesor->Nombres }} {{ $profesor->Departamento }}
-                            {{ $profesor->Correo }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-
-            <div class="form-group">
-                <label for="ProfesorParticipante">Profesor Participante:</label>
-                <select name="ProfesorParticipante[]" class="form-control input input-select" required>
-                    <option value="">Seleccionar Profesor Participante</option>
-                    @foreach ($profesores as $profesor)
-                        <option value="{{ $profesor->id }}" {{ $profesor->id ? 'selected' : '' }}>
+                            {{ $proyecto->DirectorID === $profesor->id ? 'selected' : '' }}>
                             {{ $profesor->Apellidos }} {{ $profesor->Nombres }} {{ $profesor->Departamento }}
                             {{ $profesor->Correo }}
                         </option>
@@ -51,24 +42,9 @@
                     value="{{ $proyecto->NombreProyecto }}" required>
             </div>
 
-            <div class="form-group">
-                <label for="nrc">Vinculacion NRC:</label>
-                <select name="nrc" class="form-control input input-select" required>
-                    <option value="">Seleccionar NRC</option>
-                    @foreach ($nrcs as $nrc)
-                        <option value="{{ $nrc->id }}"
-                            {{ $proyecto->id_nrc_vinculacion === $nrc->id ? 'selected' : '' }}>
-                            {{ $nrc->nrc }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
 
-            <div class="form-group">
-                <label for="codigoProyecto">Ingrese código del proyecto:</label>
-                <input type="text" value="{{ $proyecto->codigoProyecto }}" name="codigoProyecto"
-                    class="form-control input" placeholder="Ingrese el código del proyecto. Si no, déjelo vacío">
-            </div>
+
+
 
             <div class="form-group">
                 <label for="DescripcionProyecto">Descripción del Proyecto:</label>
@@ -89,11 +65,6 @@
                 </select>
             </div>
 
-            <div class="form-group">
-                <label for="cupos">Cupos:</label>
-                <input type="number" class="form-control input" id="cupos" name="cupos"
-                    value="{{ $proyecto->cupos }}" required>
-            </div>
 
             <div class="form-group">
                 <label for="FechaInicio">Fecha de Inicio:</label>

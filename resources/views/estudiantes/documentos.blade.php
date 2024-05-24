@@ -112,8 +112,8 @@
 
 
 
-                                    {{-- 
-                                 
+                                    {{--
+
                                             <div class="card-body d-flex flex-column">
                                                 <h6 class="card-title flex-grow-1"><i>Generar Carta de Compromiso de Estudiante</i></h6>
                                                 <hr>
@@ -343,7 +343,7 @@
 
 
 
-                <button type="submit" class="btn btn-light btn-block">Crear Informe</button>
+                <button type="submit" class="button">Crear Informe</button>
             </form>
 
         </div>
