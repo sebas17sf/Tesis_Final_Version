@@ -288,6 +288,8 @@ class AdminController extends Controller
     /////////////////////////////visualizar proyectos
     public function indexProyectos(Request $request)
     {
+        $estadoProyecto = $request->input('estado');
+
         $periodos = Periodo::all();
         $nrcs = NrcVinculacion::all();
         $profesores = ProfesUniversidad::all();
@@ -300,10 +302,9 @@ class AdminController extends Controller
             $perPage = 10;
         }
 
-        $query = Proyecto::with(['director', 'docenteParticipante', 'nrcs', 'participantesAdicionales']);
+        $query = Proyecto::query();
 
-        // Apply search if a search term is provided
-        if ($search) {
+         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('NombreProyecto', 'LIKE', '%' . $search . '%')
                     ->orWhere('DescripcionProyecto', 'LIKE', '%' . $search . '%')
@@ -311,6 +312,10 @@ class AdminController extends Controller
                     ->orWhere('DepartamentoTutor', 'LIKE', '%' . $search . '%')
                     ->orWhere('codigoProyecto', 'LIKE', '%' . $search . '%');
             });
+        }
+
+        if ($estadoProyecto) {
+            $query->where('Estado', $estadoProyecto);
         }
 
         // Get paginated projects
@@ -326,13 +331,13 @@ class AdminController extends Controller
 
         ///////////// quiero obtener tods las asignacionesProyectos
         $asignacionesAgrupadas = AsignacionProyecto::with('estudiante')
-        ->with('proyecto')
-        ->with('director')
-        ->with('docenteParticipante')
-        ->get()
-        ->groupBy(function ($item) {
-            return $item->ProyectoID . '_' . $item->IdPeriodo . '_' . $item->DirectorID;
-        });
+            ->with('proyecto')
+            ->with('director')
+            ->with('docenteParticipante')
+            ->get()
+            ->groupBy(function ($item) {
+                return $item->ProyectoID . '_' . $item->IdPeriodo . '_' . $item->DirectorID;
+            });
 
 
 
@@ -598,7 +603,7 @@ class AdminController extends Controller
                 ->orWhere('DirectorID', $maestro->id)
                 ->get();
 
-             $proyectosRelacionados = AsignacionProyecto::where('ParticipanteID', $maestro->id)
+            $proyectosRelacionados = AsignacionProyecto::where('ParticipanteID', $maestro->id)
                 ->orWhere('ParticipanteID', $maestro->id)
                 ->get();
 
@@ -611,7 +616,7 @@ class AdminController extends Controller
 
             return redirect()->route('admin.index')->with('success', 'Docente eliminado con éxito.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'No se pudo eliminar el Docente. Por favor, verifica los datos e intenta de nuevo.'. $e->getMessage());
+            return redirect()->back()->with('error', 'No se pudo eliminar el Docente. Por favor, verifica los datos e intenta de nuevo.' . $e->getMessage());
         }
     }
 
@@ -666,8 +671,15 @@ class AdminController extends Controller
         $request->validate([
             'periodoInicio' => 'required|date',
             'periodoFin' => 'required|date|after:periodoInicio',
-            'numeroPeriodo' => 'required',
-        ]);
+            'numeroPeriodo' => 'unique:periodo|required',
+        ], [
+            'periodoInicio.required' => 'La fecha de inicio del período es requerida.',
+            'periodoFin.required' => 'La fecha de fin del período es requerida.',
+            'periodoFin.after' => 'La fecha de fin del período debe ser posterior a la fecha de inicio.',
+            'numeroPeriodo.unique' => 'El codigo de período ya existe.',
+         ]);
+
+
 
         $periodoExistente = Periodo::where('numeroPeriodo', $request->numeroPeriodo)->first();
 
@@ -711,32 +723,38 @@ class AdminController extends Controller
         $request->validate([
             'periodoInicio' => 'required|date',
             'periodoFin' => 'required|date|after:periodoInicio',
-            'numeroPeriodo' => 'required',
+            'numeroPeriodo' => 'unique:periodo|required',
+        ], [
+            'periodoInicio.required' => 'La fecha de inicio del período es requerida.',
+            'periodoFin.required' => 'La fecha de fin del período es requerida.',
+            'periodoFin.after' => 'La fecha de fin del período debe ser posterior a la fecha de inicio.',
+            'numeroPeriodo.unique' => 'El codigo de período ya existe.',
         ]);
 
-        // Obtén las fechas del formulario
         $fechaInicio = \Carbon\Carbon::parse($request->periodoInicio);
         $fechaFin = \Carbon\Carbon::parse($request->periodoFin);
 
-        // Formatea las fechas en el formato deseado (MESaño)
         $periodoInicio = strtoupper($fechaInicio->format('M')) . $fechaInicio->format('Y');
         $periodoFin = strtoupper($fechaFin->format('M')) . $fechaFin->format('y');
 
-        // Combina las fechas para formar el período académico
         $periodoAcademico = $periodoInicio . '-' . $periodoFin;
 
-        // Obtén el período académico por su ID
         $periodo = Periodo::find($id);
+
+         $periodoExistente = Periodo::where('numeroPeriodo', $request->numeroPeriodo)->first();
+
+        if ($periodoExistente) {
+            return redirect()->route('admin.index')->with('error', 'El codigo de período ingresado ya existe.');
+        }
 
         if (!$periodo) {
             return redirect()->route('admin.index')->with('error', 'El período académico no existe.');
         }
 
-        // Actualiza los datos del período
-        $periodo->Periodo = $periodoAcademico; // Actualiza el nombre del período académico
-        $periodo->PeriodoInicio = $fechaInicio; // Actualiza la fecha de inicio
-        $periodo->PeriodoFin = $fechaFin; // Actualiza la fecha de fin
-        $periodo->numeroPeriodo = $request->numeroPeriodo; // Actualiza el número de período
+        $periodo->Periodo = $periodoAcademico;
+        $periodo->PeriodoInicio = $fechaInicio;
+        $periodo->PeriodoFin = $fechaFin;
+        $periodo->numeroPeriodo = $request->numeroPeriodo;
         $periodo->save();
 
         return redirect()->route('admin.index')->with('success', 'Período académico actualizado con éxito.');
@@ -1087,47 +1105,27 @@ class AdminController extends Controller
 
     ///////agregar nrc
     public function GuardarNRC(Request $request)
-    {
-        $request->validate([
-            'nrc' => 'required|numeric|digits:5',
-            'periodo' => 'required',
-        ]);
+{
+    $request->validate([
+        'nrc' => 'required|numeric|digits:5|unique:nrc_vinculacion,nrc',
+        'periodo' => 'required|exists:periodo,id',
+    ], [
+        'nrc.required' => 'El NRC es obligatorio.',
+        'nrc.numeric' => 'El NRC debe ser un número.',
+        'nrc.digits' => 'El NRC debe tener exactamente 5 dígitos.',
+        'nrc.unique' => 'El NRC ingresado ya existe.',
+        'periodo.required' => 'El período es obligatorio.',
+        'periodo.exists' => 'El período seleccionado no es válido.',
+    ]);
 
-        $nrcExistente = NrcVinculacion::where('nrc', $request->nrc)->first();
+    NrcVinculacion::create([
+        'nrc' => $request->nrc,
+        'id_periodo' => $request->periodo,
+    ]);
 
-        if ($nrcExistente) {
-            return redirect()->route('admin.index')->with('error', 'El NRC ingresado ya existe.');
-        }
+    return redirect()->route('admin.index')->with('success', 'NRC guardado con éxito.');
+}
 
-        NrcVinculacion::create([
-            'nrc' => $request->nrc,
-            'id_periodo' => $request->periodo,
-        ]);
-
-        return redirect()->route('admin.index')->with('success', 'NRC guardado con éxito.');
-    }
-
-    //////////////////////agregar nrc practicas 1
-    public function GuardarNRCPracticas1(Request $request)
-    {
-        $request->validate([
-            'nrc' => 'required|numeric|digits:5',
-            'periodo' => 'required',
-        ]);
-
-        $nrcExistente = NrcPracticas1::where('nrc', $request->nrc)->first();
-
-        if ($nrcExistente) {
-            return redirect()->route('admin.index')->with('error', 'El NRC ingresado ya existe.');
-        }
-
-        NrcPracticas1::create([
-            'nrc' => $request->nrc,
-            'id_periodo' => $request->periodo,
-        ]);
-
-        return redirect()->route('admin.index')->with('success', 'NRC guardado con éxito.');
-    }
 
 
     ///////////////////////sacar resplado de BD y sistema

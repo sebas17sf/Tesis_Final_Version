@@ -838,43 +838,44 @@ class DocumentoController extends Controller
 
 
             $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-            $sheet->setCellValue('B' . ($filaInicio + $index), $proyecto->NombreProyecto);
+            /////Pasr a mayusculas NombreProyecto
+            $sheet->setCellValue('B' . ($filaInicio + $index), strtoupper($proyecto->NombreProyecto));
 
             $sheet->getStyle('B' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
 
             $sheet->setCellValue('C' . ($filaInicio + $index), $proyecto->codigoProyecto);
-            $sheet->setCellValue('I' . ($filaInicio + $index), $proyecto->FechaInicio);
-            $sheet->setCellValue('J' . ($filaInicio + $index), $proyecto->FechaFinalizacion);
-            $sheet->setCellValue('G' . ($filaInicio + $index), $proyecto->DepartamentoTutor);
+            //$sheet->setCellValue('' . ($filaInicio + $index), $proyecto->FechaInicio);
+            //$sheet->setCellValue('' . ($filaInicio + $index), $proyecto->FechaFinalizacion);
+            $sheet->setCellValue('E' . ($filaInicio + $index), $proyecto->DepartamentoTutor);
 
-            $nombreDirector = $director ? $director->Nombres . ' ' . $director->Apellidos : 'No especificado';
-            $sheet->setCellValue('E' . ($filaInicio + $index), $nombreDirector);
-
-
-            $nombreParticipante = $participante ? $participante->Nombres . ' ' . $participante->Apellidos : 'No especificado';
-            if ($nombresParticipantesAdicionales) {
-                $nombreParticipante .= "\n" . $nombresParticipantesAdicionales;
-            }
-
-            $sheet->setCellValue('F' . ($filaInicio + $index), $nombreParticipante);
-            $sheet->getStyle('F' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
+            //$nombreDirector = $director ? $director->Nombres . ' ' . $director->Apellidos : 'No especificado';
+            //$sheet->setCellValue('' . ($filaInicio + $index), $nombreDirector);
 
 
-            $sheet->setCellValue('F' . ($filaInicio + $index), $nombreParticipante);
-            $sheet->getStyle('F' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
+            ///$nombreParticipante = $participante ? $participante->Nombres . ' ' . $participante->Apellidos : 'No especificado';
+            ///if ($nombresParticipantesAdicionales) {
+                //$nombreParticipante .= "\n" . $nombresParticipantesAdicionales;
+            //}
 
-            $nrcValue = $nrc ? $nrc->nrc : 'No especificado';
-            $sheet->setCellValue('K' . ($filaInicio + $index), $nrcValue);
+            ///$sheet->setCellValue('' . ($filaInicio + $index), $nombreParticipante);
+            //$sheet->getStyle('' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
 
-            $sheet->setCellValue('L' . ($filaInicio + $index), $proyecto->Estado);
+
+           /// $sheet->setCellValue('' . ($filaInicio + $index), $nombreParticipante);
+            //$sheet->getStyle('' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
+
+            //$nrcValue = $nrc ? $nrc->nrc : 'No especificado';
+            //$sheet->setCellValue('' . ($filaInicio + $index), $nrcValue);
+
+            $sheet->setCellValue('F' . ($filaInicio + $index), $proyecto->Estado);
 
             // Ajustar automáticamente la altura de la fila para la descripción del proyecto
             $sheet->getStyle('D' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
             $sheet->setCellValue('D' . ($filaInicio + $index), $proyecto->DescripcionProyecto);
 
             // Obtener el periodo del NRC
-            $periodo = $nrc ? $nrc->periodo->numeroPeriodo : 'No especificado';
-            $sheet->setCellValue('H' . ($filaInicio + $index), $periodo);
+            ////$periodo = $nrc ? $nrc->periodo->numeroPeriodo : 'No especificado';
+            ///$sheet->setCellValue('H' . ($filaInicio + $index), $periodo);
 
             $contador++;
         }

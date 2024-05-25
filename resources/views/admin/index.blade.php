@@ -282,26 +282,28 @@
 
                             </div>
                             <div class="tooltip-container">
-    <span class="tooltip-text">Excel</span>
-    <form id="reportForm" action="{{ route('admin.reportesDocentes') }}" method="POST" onsubmit="submitForm(event)">
-        @csrf
-        <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
-            <span id="loadingIcon" style="display: none;">
-                <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
-            </span>
-            <i class="fa-solid fa-file-excel" id="excelIcon"></i>
-        </button>
-    </form>
-</div>
+                                <span class="tooltip-text">Excel</span>
+                                <form id="reportForm" action="{{ route('admin.reportesDocentes') }}" method="POST"
+                                    onsubmit="submitForm(event)">
+                                    @csrf
+                                    <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+                                        <span id="loadingIcon" style="display: none;">
+                                            <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+                                        </span>
+                                        <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                                    </button>
+                                </form>
+                            </div>
 
-<!-- Copiar -->
-<div class="tooltip-container">
-    <span class="tooltip-text">Copiar</span>
-<button class="button3 efects_button btn_copy" onclick="copyDataToClipboard(event)" pTooltip="Copiar" tooltipPosition="top">
-    <i class="fa-solid fa-copy" id="icon"></i>
-</button>
+                            <!-- Copiar -->
+                            <div class="tooltip-container">
+                                <span class="tooltip-text">Copiar</span>
+                                <button class="button3 efects_button btn_copy" onclick="copyDataToClipboard(event)"
+                                    pTooltip="Copiar" tooltipPosition="top">
+                                    <i class="fa-solid fa-copy" id="icon"></i>
+                                </button>
 
-        </div>
+                            </div>
 
 
 
@@ -619,8 +621,6 @@
             <div class="container">
 
                 <div id="registrarPeriodos" style="display: none;">
-                    <!-- ------------------------------Agregar periodo----------------------------------------------------- -->
-
                     <div class="modal fade" id="modalAgregarPeriodo" tabindex="-1" role="dialog"
                         aria-labelledby="modalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -642,13 +642,20 @@
                                                 <label for="periodoInicio"><strong>Ingrese el inicio del Periodo
                                                         Académico:</strong></label>
                                                 <input type="date" id="periodoInicio" name="periodoInicio"
-                                                    class="form-control input" required>
+                                                    class="form-control input" value="{{ old('periodoInicio') }}"
+                                                    required>
+                                                @error('periodoInicio')
+                                                    <small class="form-text text-danger">{{ $message }}</small>
+                                                @enderror
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label for="periodoFin"><strong>Ingrese el fin del Periodo
                                                         Académico:</strong></label>
                                                 <input type="date" id="periodoFin" name="periodoFin"
-                                                    class="form-control input" required>
+                                                    class="form-control input" value="{{ old('periodoFin') }}" required>
+                                                @error('periodoFin')
+                                                    <small class="form-text text-danger">{{ $message }}</small>
+                                                @enderror
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label for="numeroPeriodo"><strong>Ingrese el número identificador del
@@ -656,8 +663,11 @@
                                                 <input type="text" id="numeroPeriodo" name="numeroPeriodo"
                                                     placeholder="Ingrese 6 números" class="form-control input"
                                                     pattern="[0-9]{1,6}"
-                                                    title="Ingrese un número no negativo de hasta 6 dígitos" required>
-                                                <small id="errorNumeroPeriodo" class="form-text text-danger"></small>
+                                                    title="Ingrese un número no negativo de hasta 6 dígitos"
+                                                    value="{{ old('numeroPeriodo') }}" required>
+                                                @error('numeroPeriodo')
+                                                    <small class="form-text text-danger">{{ $message }}</small>
+                                                @enderror
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -666,12 +676,11 @@
                                         </div>
                                     </form>
                                 </div>
-
                             </div>
                         </div>
                     </div>
-
                 </div>
+
 
                 <div class="modal fade" id="modalAgregarNRC" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
                     aria-hidden="true">
@@ -693,38 +702,39 @@
                                         <div class="form-group col-md-6">
                                             <label class="label" for="nrc"><strong>Ingrese el NRC:</strong></label>
                                             <input type="text" id="nrc" name="nrc"
-                                                class="form-control input " placeholder="Ingrese 5 números" required>
-                                            <small id="errorNRC" class="form-text text-danger"></small>
+                                                class="form-control input" placeholder="Ingrese 5 números"
+                                                value="{{ old('nrc') }}" required>
+                                            @error('nrc')
+                                                <small class="form-text text-danger">{{ $message }}</small>
+                                            @enderror
                                         </div>
                                         <div class="form-group col-lg-6">
-
-                                            <div class="form-group">
-                                                <label for="periodo"><strong>Seleccione el período:</strong></label>
-                                                <select id="periodo" name="periodo"
-                                                    class="form-control input input_select " required>
-                                                    <option value="">Seleccione un período</option>
-                                                    @foreach ($periodos as $periodo)
-                                                        <option value="{{ $periodo->id }}">
-                                                            {{ $periodo->numeroPeriodo }} -
-                                                            {{ $periodo->Periodo }}</option>
-                                                    @endforeach
-                                                </select>
-                                                <small id="errorPeriodo" class="form-text text-danger"></small>
-                                            </div>
+                                            <label for="periodo"><strong>Seleccione el período:</strong></label>
+                                            <select id="periodo" name="periodo" class="form-control input_select input"
+                                                required>
+                                                <option value="">Seleccione un período</option>
+                                                @foreach ($periodos as $periodo)
+                                                    <option value="{{ $periodo->id }}"
+                                                        {{ old('periodo') == $periodo->id ? 'selected' : '' }}>
+                                                        {{ $periodo->numeroPeriodo }} - {{ $periodo->Periodo }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('periodo')
+                                                <small class="form-text text-danger">{{ $message }}</small>
+                                            @enderror
                                         </div>
-
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="button" data-dismiss="modal">Cerrar</button>
                                         <button type="submit" class="button">Guardar NRC</button>
                                     </div>
                                 </form>
-
                             </div>
-
                         </div>
                     </div>
                 </div>
+
 
                 <!-- ----------------------------------------------------------------------------------- -->
                 </button>
@@ -909,7 +919,6 @@
                 $('#editarPeriodoModal').find('input[name="periodoFin"]').val(fin);
                 $('#editarPeriodoModal').find('input[name="numeroPeriodo"]').val(numero);
 
-                /*   $('#editModal').modal('show'); */
             });
         });
 
@@ -919,8 +928,6 @@
                 handle: '.modal-header'
             });
         });
-
-       
     </script>
 
 
