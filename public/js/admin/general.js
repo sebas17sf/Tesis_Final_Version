@@ -100,7 +100,7 @@ $(document).ready(function () {
         }
 
         // Evitar que se envíe el formulario si hay errores
-        formulario.addEventListener('submit', function(event) {
+        formulario.addEventListener('submit', function (event) {
             if (hayErrores) {
                 event.preventDefault(); // Evitar el envío del formulario
             }
@@ -110,6 +110,18 @@ $(document).ready(function () {
     document.getElementById('nrc').addEventListener('input', validarNRC);
 
 
+
+    var selectedValue = localStorage.getItem('selectedEstado');
+
+    if (selectedValue) {
+        document.getElementById('estado').value = selectedValue;
+    }
+
+    document.getElementById('estado').addEventListener('change', function () {
+        var selectedOption = this.value;
+        localStorage.setItem('selectedEstado', selectedOption);
+        this.form.submit();
+    });
 
 
 
@@ -279,4 +291,5 @@ function verificarEstado() {
         // Si el estado no es "Negado", no se muestra el Sweet Alert
     }
 }
+
 

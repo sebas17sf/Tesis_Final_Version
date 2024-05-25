@@ -222,7 +222,6 @@ body,
 select,
 th,
 td,
-button,
 table {
     background-color: #f5f5f5;
     font-family: Arial, sans-serif;
@@ -238,5 +237,5 @@ tr,
 td{
     font-size: 13px;
     text-align: center;
-  
-} */
+    /* Centra el texto en las celdas de datos */
+}

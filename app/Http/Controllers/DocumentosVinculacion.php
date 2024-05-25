@@ -13,6 +13,7 @@ use PhpOffice\PhpSpreadsheet\RichText\RichText;
 use PhpOffice\PhpSpreadsheet\RichText\TextRun;
 use App\Models\DirectorVinculacion;
 use App\Models\AsignacionEstudiantesDirector;
+use App\Models\Periodo;
 use Mpdf\Mpdf;
 use App\Models\Estudiante;
 
@@ -31,19 +32,24 @@ class DocumentosVinculacion extends Controller
         $correoUsuario = $usuario->CorreoElectronico;
         $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
         // Obtener la relación AsignacionEstudiantesDirector para este ParticipanteVinculacion
-        $asignacionProyecto = AsignacionEstudiantesDirector::where('ParticipanteID', $participanteVinculacion->id)->first();
+        $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)->first();
 
 
         ///obtener la id del director de AsiignacionProyecto
-        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->IDProyecto)->first();
+        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
         if ($proyecto->Estado != 'Ejecucion') {
             return redirect()->back()->with('error', 'No tiene Proyectos en ejecucion.');
         }
 
         ////buscar en profesores universidad
-        $Director = ProfesUniversidad::where('id', $proyecto->id_directorProyecto)->first();
+        $Director = ProfesUniversidad::where('id', $proyecto->DirectorID)->first();
         // Obtener los estudiantes asignados a este proyecto
-        $estudiantes = AsignacionEstudiantesDirector::where('IDProyecto', $proyecto->ProyectoID)->get();
+
+        $estudiantes = AsignacionProyecto::where('ProyectoID', $proyecto->ProyectoID)
+            ->whereHas('estudiante', function ($query) {
+                $query->where('estado', 'Aprobado');
+            })
+            ->get();
         if ($estudiantes->isEmpty()) {
             return redirect()->back()->with('error', 'No hay estudiantes asignados a este proyecto.');
         }
@@ -167,17 +173,16 @@ class DocumentosVinculacion extends Controller
         $correoUsuario = $usuario->CorreoElectronico;
         $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
         // Obtener la relación AsignacionProyecto para este ParticipanteVinculacion
-        $asignacionProyecto = AsignacionEstudiantesDirector::where('ParticipanteID', $participanteVinculacion->id)->first();
+        $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)->first();
 
-        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->IDProyecto)->first();
+        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
 
         if ($proyecto->Estado != 'Ejecucion') {
             return redirect()->back()->with('error', 'No tiene Proyectos en ejecucion.');
         }
         // Obtener los estudiantes asignados a este proyecto
-        $Director = ProfesUniversidad::where('id', $proyecto->id_directorProyecto)->first();
+        $Director = ProfesUniversidad::where('id', $proyecto->DirectorID)->first();
 
-        $estudiantes = AsignacionEstudiantesDirector::where('IDProyecto', $proyecto->ProyectoID)->get();
 
         $hojaCalculo = $spreadsheet->getActiveSheet();
 
@@ -275,20 +280,24 @@ class DocumentosVinculacion extends Controller
         $correoUsuario = $usuario->CorreoElectronico;
         $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
         // Obtener la relación AsignacionProyecto para este ParticipanteVinculacion
-        $asignacionProyecto = AsignacionEstudiantesDirector::where('ParticipanteID', $participanteVinculacion->id)->first();
+        $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)->first();
 
         ///obtener la id del director de AsiignacionProyecto
-        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->IDProyecto)->first();
+        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
 
         if ($proyecto->Estado != 'Ejecucion') {
             return redirect()->back()->with('error', 'No tiene Proyectos en ejecucion.');
         }
         // Obtener los estudiantes asignados a este proyecto
-        $estudiantes = AsignacionEstudiantesDirector::where('IDProyecto', $proyecto->ProyectoID)->get();
+        $estudiantes = AsignacionProyecto::where('ProyectoID', $proyecto->ProyectoID)
+            ->whereHas('estudiante', function ($query) {
+                $query->where('estado', 'Aprobado');
+            })
+            ->get();
         if ($estudiantes->isEmpty()) {
             return redirect()->back()->with('error', 'No hay estudiantes asignados a este proyecto.');
         }
-        $Director = ProfesUniversidad::where('id', $proyecto->id_directorProyecto)->first();
+        $Director = ProfesUniversidad::where('id', $proyecto->DirectorID)->first();
 
 
         $hojaCalculo = $spreadsheet->getActiveSheet();
@@ -414,7 +423,7 @@ class DocumentosVinculacion extends Controller
         $writer->save($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
 
-       
+
 
 
     }

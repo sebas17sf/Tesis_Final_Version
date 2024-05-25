@@ -23,14 +23,14 @@
         </script>
     @endif
 
- 
+
 
 
 
     <div class="container" style="overflow-x: auto;">
 
-       
-        
+
+
 
 
         <h4>Estudiantes por calificar</h4>
@@ -48,7 +48,7 @@
                             <th>Espe ID</th>
                             <th>Carrera</th>
                             <th>Departamento</th>
-                            <th>Informe de Servicio Comunitario</th>
+                            <th>Informe de Servicio Comunitario 30%</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -62,12 +62,13 @@
                                 <td>
                                     <input type="hidden" name="estudiante_id[]" value="{{ $estudiante->EstudianteID }}">
                                     <input type="text" name="informe_servicio[]"
-                                        value="{{ $estudiante->notas->first()->Informe }}">
+                                        value="{{ $estudiante->notas->first()->Informe !== 'Pendiente' ? $estudiante->notas->first()->Informe : '' }}">
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+
                 <br>
                 <button type="submit" class="btn btn-primary">Guardar Informe</button>
             </form>
@@ -78,7 +79,7 @@
             <p>No hay estudiantes calificados en este momento.</p>
         @else
             <table>
-                 <thead>
+                <thead>
                     <tr>
                         <th>Nombres</th>
                         <th>Espe ID</th>
@@ -92,6 +93,7 @@
                         <th>Capacidad de liderazgo</th>
                         <th>Asistencia</th>
                         <th>Informe de Servicio</th>
+                        <th>Nota Final</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -140,6 +142,22 @@
                                 @foreach ($estudiante->notas as $nota)
                                     {{ $nota->Informe }}<br>
                                 @endforeach
+                            </td>
+                            <td>
+                                @php
+                                    $notaTotal = $estudiante->notas->sum(function ($nota) {
+                                        return $nota->Tareas +
+                                            $nota->Resultados_Alcanzados +
+                                            $nota->Conocimientos +
+                                            $nota->Adaptabilidad +
+                                            $nota->Aplicacion +
+                                            $nota->Capacidad_liderazgo +
+                                            $nota->Asistencia +
+                                            $nota->Informe;
+                                    });
+                                    $notaFinal = ($notaTotal * 20) / 100;
+                                @endphp
+                                {{ $notaFinal }}
                             </td>
                         </tr>
                     @endforeach

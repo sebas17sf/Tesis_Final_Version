@@ -19,8 +19,7 @@ class AsignacionProyecto extends Model
     protected $fillable = [
         'EstudianteID',
         'ProyectoID',
-        'DirectorID',
-         'FechaAsignacion',
+        'FechaAsignacion',
         'ParticipanteID',
         'IdPeriodo',
         'id_nrc_vinculacion',
@@ -43,10 +42,6 @@ class AsignacionProyecto extends Model
         return $this->belongsTo(Proyecto::class, 'ProyectoID', 'ProyectoID');
     }
 
-    public function director()
-    {
-        return $this->belongsTo(ProfesUniversidad::class, 'DirectorID', 'id');
-     }
 
     public function docenteParticipante()
     {

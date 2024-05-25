@@ -237,20 +237,19 @@
                         <th>Docente Director</th>
                         <th>Descripción del Proyecto</th>
                         <th>Fecha de Asignación</th>
-                        <th>Fecha de Inicio</th>
-                        <th>Estado actual del Proyecto</th>
-                    </tr>
+                        <th>Periodo</th>
+                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>{{ strtoupper($asignacionProyecto->proyecto->NombreProyecto) }}</td>
-                        <td>{{ strtoupper($asignacionProyecto->director->Nombres . ' ' . $asignacionProyecto->director->Apellidos) }}
+                        <td>{{ strtoupper($asignacionProyecto->proyecto->director->Nombres . ' ' . $asignacionProyecto->proyecto->director->Apellidos) }}
 
                         <td>{{ strtoupper($asignacionProyecto->proyecto->DescripcionProyecto) }}</td>
                         <td>{{ $asignacionProyecto->FechaAsignacion }}</td>
-                        <td>{{ $asignacionProyecto->FechaInicio }}</td>
-                        <td>{{ $asignacionProyecto->proyecto->Estado }}</td>
-                    </tr>
+                        <td>{{ strtoupper($asignacionProyecto->periodo->numeroPeriodo) }}</td>
+
+                     </tr>
 
                 </tbody>
             </table>

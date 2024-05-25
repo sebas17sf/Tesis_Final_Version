@@ -33,6 +33,7 @@
 
 
 
+
             <div class="form-group">
                 <label for="codigoProyecto">Ingrese código del proyecto:</label>
                 <input type="text" name="codigoProyecto" class="form-control input"
@@ -40,7 +41,23 @@
             </div>
 
 
-
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="DirectorProyecto">Director del Proyecto:</label>
+                        <select name="DirectorProyecto" class="form-control input input-select" required>
+                            <option value="">Seleccionar Director</option>
+                            @foreach ($profesores as $profesor)
+                                <option value="{{ $profesor->id }}">
+                                    Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
+                                    Departamento: {{ $profesor->Departamento }} -
+                                    Correo: {{ $profesor->Correo }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
 
 
 
@@ -63,6 +80,16 @@
                     <option value="Ciencias de la Vida y Agricultura">DCVA - Departamento de Ciencias de la Vida y
                         Agricultura</option>
                 </select>
+            </div>
+
+            <div class="form-group">
+                <label for="FechaInicio">Fecha de Inicio:</label>
+                <input type="date" name="FechaInicio" class="form-control input" required>
+            </div>
+
+            <div class="form-group">
+                <label for="FechaFinalizacion">Fecha de Fin:</label>
+                <input type="date" name="FechaFinalizacion" class="form-control input" required>
             </div>
 
             <div class="form-group">

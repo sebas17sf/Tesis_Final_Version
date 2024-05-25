@@ -70,14 +70,7 @@
                                 </div>
                             </a>
 
-                            <a href="{{ route('director_vinculacion.documentos') }}" class="p-element">
-                                <div class="icon-sidebar-item">
-                                    <i class="material-icons">assignment_turned_in</i>
-                                </div>
-                                <div class="name-sidebar-item">
-                                    <li>Documentacion</li>
-                                </div>
-                            </a>
+
 
 
                         </ul>
@@ -163,7 +156,7 @@
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-  
+
     <script>
         function toggleSidebar() {
             var menuState = localStorage.getItem('menuState') === 'expanded' ? 'collapsed' : 'expanded';

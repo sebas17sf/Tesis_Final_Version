@@ -38,17 +38,10 @@
                 <!-- Botones -->
                 <div class="row">
                     <div class="col-md-12 d-flex align-items-center">
+                        <!-- Formulario para exportar a Excel -->
                         <form method="POST" action="{{ route('coordinador.reportesProyectos') }}"
                             class="form-inline mr-2 d-flex align-items-center">
                             @csrf
-                            <div class="form-group mr-2">
-                                <label for="estado" class="mr-2">Estado del Proyecto:</label>
-                                <select name="estado" id="estado" class="form-control input input-select mr-2">
-                                    <option value="">Todos</option>
-                                    <option value="Ejecucion">En Ejecución</option>
-                                    <option value="Terminado">Terminado</option>
-                                </select>
-                            </div>
                             <div class="tooltip-container">
                                 <span class="tooltip-text">Excel</span>
                                 <button type="submit" class="button3 efects_button btn_excel mr-2" pTooltip="Excel"
@@ -56,16 +49,35 @@
                                     <i class="fa-solid fa-file-excel"></i>
                                 </button>
                             </div>
-                            <div class="tooltip-container">
-                                <span class="tooltip-text">Agregar</span>
-                                <button type="button" onclick="location.href='{{ route('admin.agregarProyecto') }}';"
-                                    class="button3 efects_button btn_primary" id="button3">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                            </div>
                         </form>
+
+                        <!-- Botón para agregar proyecto -->
+                        <div class="tooltip-container mr-2">
+                            <span class="tooltip-text">Agregar</span>
+                            <button type="button" onclick="location.href='{{ route('admin.agregarProyecto') }}';"
+                                class="button3 efects_button btn_primary" id="button3">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+
+                        <!-- Selector de estado del proyecto -->
+                        <div class="form-group mr-2">
+                            <label for="estado" class="mr-2">Estado del Proyecto:</label>
+                            <form method="GET" action="{{ route('admin.indexProyectos') }}">
+                                <select name="estado" id="estado" class="form-control input input-select"
+                                    onchange="this.form.submit()">
+                                    <option value="">Todos</option>
+                                    <option value="Ejecucion" {{ old('estado') == 'Ejecucion' ? 'selected' : '' }}>En
+                                        Ejecución</option>
+                                    <option value="Terminado" {{ old('estado') == 'Terminado' ? 'selected' : '' }}>Terminado
+                                    </option>
+                                </select>
+                            </form>
+                        </div>
+
                     </div>
                 </div>
+
 
                 <!-- Buscador -->
                 <div class="contenedor_buscador">
@@ -83,16 +95,17 @@
             <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
 
-                    <div id="tablaDocentes">
+                    <div id="tablaProyectos">
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio">Nombre del proyecto</th>
-                                    <th class="tamanio">Descripción</th>
-                                    <th>Departamento</th>
-                                    <th>Código del Proyecto Social</th>
-                                    <th>Estado del proyecto</th>
-                                    <th>Acciones</th>
+                                    <th class="tamanio">NOMBRE DEL PROYECTO</th>
+                                    <th class="tamanio">DIRECTOR</th>
+                                    <th class="tamanio">DESCRIPCION</th>
+                                    <th>DEPARTAMENTO</th>
+                                    <th>CODIGO DEL PROYECTO SOCIAL</th>
+                                    <th>ESTADO DEL PROYECTO</th>
+                                    <th>ACCIONES</th>
                                 </tr>
                             </thead>
                             <tbody class="mdc-data-table__content ng-star-inserted">
@@ -107,6 +120,8 @@
                                         <tr>
                                             <td style="word-wrap: break-word; text-align: justify;">
                                                 {{ strtoupper($proyecto->NombreProyecto) }}</td>
+                                            <td>{{ strtoupper($proyecto->director->Apellidos) }}
+                                                {{ strtoupper($proyecto->director->Nombres) }} </td>
                                             <td style="word-wrap: break-word; text-align: justify;">
                                                 {{ strtoupper($proyecto->DescripcionProyecto) }}</td>
 
@@ -207,59 +222,111 @@
 
 
         </div>
-
+        <hr>
         <h6><b>Listado de asignaciones</b></h6>
+        <br>
+        <div class="contenedor_tabla">
+            <div class="table-container mat-elevation-z8">
 
-        <table class="table">
-            <thead>
-                <tr>
-
-                    <th>Proyecto</th>
-                    <th>Codigo Proyecto</th>
-                    <th>Director</th>
-                    <th>Participantes</th>
-                    <th>Fecha Asignación</th>
-                    <th>Estudiantes</th>
-                    <th>Periodo</th>
-                    <th>NRC</th>
-                    <th>Fecha Inicio</th>
-                    <th>Fecha Fin</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($asignacionesAgrupadas as $grupo)
-                    <tr>
-                        <td>{{ $grupo->first()->proyecto->NombreProyecto }}</td>
-                        <td>{{ $grupo->first()->proyecto->codigoProyecto }}</td>
-                        <td>{{ $grupo->first()->director->Nombres }}</td>
-                        <td>
-                            @php
-                                $participantes = $grupo
-                                    ->pluck('docenteParticipante')
-                                    ->unique('id')
-                                    ->pluck('Nombres')
-                                    ->implode('<br>');
-                            @endphp
-                            {!! $participantes !!}
-                        </td>
-                        <td>{{ $grupo->first()->FechaAsignacion }}</td>
-                        <td>
-                            @foreach ($grupo as $asignacion)
-                                {{ $asignacion->estudiante->Nombres }}<br>
+                <div id="tablaDocentes">
+                    <table class="mat-mdc-table">
+                        <thead class="ng-star-inserted" id="professorsTable">
+                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                <th class="tamanio"> NOMBRE DE PROYECTO</th>
+                                <th>CODIGO DE PROYECTO</th>
+                                <th>DIRECTOR</th>
+                                <th>DOCENTES PARTICIPANTES</th>
+                                <th>FECHA ASIGNACION</th>
+                                <th>ESTUDIANTES</th>
+                                <th>PERIODO</th>
+                                <th>NRC</th>
+                                <th>FECHA INICIO</th>
+                                <th>FECHA FIN</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($asignacionesAgrupadas as $grupo)
+                                <tr>
+                                    <td>{{ $grupo->first()->proyecto->NombreProyecto }}</td>
+                                    <td>{{ $grupo->first()->proyecto->codigoProyecto }}</td>
+                                    <td>{{ $grupo->first()->proyecto->director->Apellidos }}</td>
+                                    <td>
+                                        @php
+                                            $participantes = $grupo
+                                                ->pluck('docenteParticipante')
+                                                ->unique('id')
+                                                ->pluck('Nombres')
+                                                ->implode('<br>');
+                                        @endphp
+                                        {!! $participantes !!}
+                                    </td>
+                                    <td>{{ $grupo->first()->FechaAsignacion }}</td>
+                                    <td>
+                                        @foreach ($grupo as $asignacion)
+                                            {{ $asignacion->estudiante->Nombres }}<br>
+                                        @endforeach
+                                    </td>
+                                    <td>{{ $grupo->first()->periodo->numeroPeriodo }}</td>
+                                    <td>{{ $grupo->first()->nrcVinculacion->nrc }}</td>
+                                    <td>{{ $grupo->first()->FechaInicio }}</td>
+                                    <td>{{ $grupo->first()->FechaFinalizacion }}</td>
+                                </tr>
                             @endforeach
-                        </td>
-                        <td>{{ $grupo->first()->periodo->numeroPeriodo }}</td>
-                        <td>{{ $grupo->first()->nrcVinculacion->nrc }}</td>
-                        <td>{{ $grupo->first()->FechaInicio }}</td>
-                        <td>{{ $grupo->first()->FechaFinalizacion }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="paginator-container">
+                <nav aria-label="...">
 
+                    <ul class="pagination">
+                        <li class="page-item mx-3">
+                            <form method="GET" action="{{ route('admin.indexProyectos') }}">
+                                <select class="form-control page-item" class="input" name="perPage" id="perPage"
+                                    onchange="this.form.submit()">
+                                    <option value="10" @if ($perPage == 10) selected @endif>10
+                                    </option>
+                                    <option value="20" @if ($perPage == 20) selected @endif>20
+                                    </option>
+                                    <option value="50" @if ($perPage == 50) selected @endif>50
+                                    </option>
+                                    <option value="100" @if ($perPage == 100) selected @endif>100
+                                    </option>
+                                </select>
+                            </form>
+                        </li>
+                        @if ($proyectos->onFirstPage())
+                            <li class="page-item disabled">
+                                <span class="page-link">Anterior</span>
+                            </li>
+                        @else
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $proyectos->previousPageUrl() }}"
+                                    aria-label="Anterior">Anterior</a>
+                            </li>
+                        @endif
 
+                        @for ($i = 1; $i <= $proyectos->lastPage(); $i++)
+                            <li class="page-item {{ $proyectos->currentPage() == $i ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $proyectos->url($i) }}">{{ $i }}</a>
+                            </li>
+                        @endfor
 
-        {{--  </div> --}}
+                        @if ($proyectos->hasMorePages())
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $proyectos->nextPageUrl() }}"
+                                    aria-label="Siguiente">Siguiente</a>
+                            </li>
+                        @else
+                            <li class="page-item disabled">
+                                <span class="page-link">Siguiente</span>
+                            </li>
+                        @endif
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
     </section>
     <hr>
     <section>
@@ -280,7 +347,9 @@
                                 <select name="proyecto_id" id="proyecto_id" class="form-control input input-select">
                                     <option value="">Seleccione un proyecto</option>
                                     @foreach ($proyectosDisponibles as $proyecto)
-                                        <option value="{{ $proyecto->ProyectoID }}">{{ $proyecto->NombreProyecto }}
+                                        <option value="{{ $proyecto->ProyectoID }}">
+                                            {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }}
+                                            {{ $proyecto->codigoProyecto }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -288,30 +357,14 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="DirectorProyecto">Director del Proyecto:</label>
-                                <select name="DirectorProyecto" class="form-control input input-select" required>
-                                    <option value="">Seleccionar Director</option>
-                                    @foreach ($profesores as $profesor)
-                                        <option value="{{ $profesor->id }}">
-                                            Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
-                                            Departamento: {{ $profesor->Departamento }} -
-                                            Correo: {{ $profesor->Correo }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+
 
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="ProfesorParticipante">Profesor Participante:</label>
+                                <label for="ProfesorParticipante">Docente Participante:</label>
                                 <select name="ProfesorParticipante" class="form-control input input-select" required>
-                                    <option value="">Seleccionar Profesor Participante</option>
+                                    <option value="">Seleccionar Docente Participante</option>
                                     @foreach ($profesores as $profesor)
                                         <option value="{{ $profesor->id }}">
                                             Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
@@ -350,57 +403,42 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="nrc">Vinculacion NRC:</label>
-                                <select name="nrc" class="form-control input input-select" required>
+                                <select name="nrc" id="nrc" class="form-control input input-select" required>
                                     <option value="">Seleccionar NRC</option>
                                     @foreach ($nrcs as $nrc)
-                                        <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
+                                        <option value="{{ $nrc->id }}" data-periodo="{{ $nrc->periodo->numeroPeriodo}} {{ $nrc->periodo->Periodo }}">
+                                            {{ $nrc->nrc }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="periodo">Periodo:</label>
+                                <input type="text" id="periodo" class="form-control input" readonly>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="FechaInicio">Fecha de Inicio:</label>
+                                <label for="FechaInicio">Fecha de Inicio de intervencio en el proyecto:</label>
                                 <input type="date" name="FechaInicio" class="form-control input" required>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="FechaFinalizacion">Fecha de Finalización:</label>
+                                <label for="FechaFinalizacion">Fecha de Fin de intervencion en el proyecto:</label>
                                 <input type="date" name="FechaFinalizacion" class="form-control input" required>
                             </div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="fecha_asignacion"><strong>Fecha de Asignación:</strong></label>
-                                <input type="date" name="fecha_asignacion" id="fecha_asignacion"
-                                    class="form-control input" value="{{ now()->toDateString() }}">
-                            </div>
-                        </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="periodo_id"><strong>Periodo:</strong></label>
-                                <select name="periodo_id" id="periodo_id" class="form-control input input-select">
-                                    <option value="">Seleccione un periodo</option>
-                                    @foreach ($periodos as $periodo)
-                                        <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }}
-                                            {{ $periodo->Periodo }}</option>
-                                    @endforeach
-                                </select>
-
-                            </div>
-                        </div>
-
-
-                    </div>
 
 
 
@@ -489,6 +527,19 @@
             }
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const nrcSelect = document.getElementById('nrc');
+            const periodoInput = document.getElementById('periodo');
+
+            nrcSelect.addEventListener('change', function () {
+                const selectedOption = nrcSelect.options[nrcSelect.selectedIndex];
+                const periodo = selectedOption.getAttribute('data-periodo');
+                periodoInput.value = periodo ? periodo : '';
+            });
+        });
+    </script>
+
 
 
 
