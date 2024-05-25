@@ -101,8 +101,8 @@
                                             class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                             <th>Nombre del director del proyecto</th>
                                             <th>Nombres Docentes participantes</th>
-                                            <th class="tamanio">Nombre del proyecto</th>
-                                            <th class="tamanio">Descripción</th>
+                                            <th class="size_">Nombre del proyecto</th>
+                                            <th class="size_">Descripción</th>
                                             <th>Correo del director</th>
                                             <th>Correos de Docentes participantes</th>
                                             <th>Departamento del director</th>

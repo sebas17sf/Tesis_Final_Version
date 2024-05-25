@@ -99,9 +99,9 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio">NOMBRE DEL PROYECTO</th>
-                                    <th class="tamanio">DIRECTOR</th>
-                                    <th class="tamanio">DESCRIPCION</th>
+                                    <th class="size_">NOMBRE DEL PROYECTO</th>
+                                    <th class="size_">DIRECTOR</th>
+                                    <th class="size_">DESCRIPCION</th>
                                     <th>DEPARTAMENTO</th>
                                     <th>CODIGO DEL PROYECTO SOCIAL</th>
                                     <th>ESTADO DEL PROYECTO</th>
@@ -221,7 +221,7 @@
             </div>
 
 
-        </div>
+      
         <hr>
         <h6><b>Listado de asignaciones</b></h6>
         <br>
@@ -232,7 +232,7 @@
                     <table class="mat-mdc-table">
                         <thead class="ng-star-inserted" id="professorsTable">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                <th class="tamanio"> NOMBRE DE PROYECTO</th>
+                                <th class="size_"> NOMBRE DE PROYECTO</th>
                                 <th>CODIGO DE PROYECTO</th>
                                 <th>DIRECTOR</th>
                                 <th>DOCENTES PARTICIPANTES</th>
@@ -326,7 +326,7 @@
                 </nav>
             </div>
         </div>
-
+    </div>
     </section>
     <hr>
     <section>

@@ -222,6 +222,7 @@ body,
 select,
 th,
 td,
+button,
 table {
     background-color: #f5f5f5;
     font-family: Arial, sans-serif;
@@ -237,5 +238,26 @@ tr,
 td{
     font-size: 13px;
     text-align: center;
-    /* Centra el texto en las celdas de datos */
+  
+} */
+
+/* Botenes para buscar */
+.button5 {
+    /* height: 20px; */
+    padding: 9px;
+    letter-spacing: 1.15px;
+    font-weight: 700;
+    font-size: 0.75em;
+    color: var(--white);
+    background-color: #40456c;
+    border: none;
+    outline: none;
+    box-shadow: 2px 2px 5px #d1d9e6, -2px -2px 5px #f9f9f9;
+    transition: all 0.3s ease-in;
+    width: 120px;
+    border-radius: 10px;
 }
+
+
+
+

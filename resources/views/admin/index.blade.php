@@ -357,15 +357,15 @@
                                         @else
                                             @foreach ($profesores as $profesor)
                                                 <tr>
-                                                    <td>{{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Apellidos)) }}
+                                                    <td class="medium_size">{{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Apellidos)) }}
                                                         {{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Nombres)) }}
                                                     </td>
                                                     <td>{{ $profesor->Correo }}</td>
-                                                    <td class="tamanio_center">{{ $profesor->Usuario }}</td>
-                                                    <td class="tamanio_center">{{ $profesor->Cedula }}</td>
-                                                    <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $profesor->Departamento)) }}
+                                                    <td class="center_size">{{ $profesor->Usuario }}</td>
+                                                    <td class="center_size">{{ $profesor->Cedula }}</td>
+                                                    <td class="medium_size">{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $profesor->Departamento)) }}
                                                     </td>
-                                                    <td class="tamanio_center">{{ $profesor->espe_id }}</td>
+                                                    <td class="center_size">{{ $profesor->espe_id }}</td>
                                                     <td>
                                                         <div class="contenedor_botones">
                                                             <div class="btn-group  shadow-0">
