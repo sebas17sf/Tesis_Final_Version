@@ -175,6 +175,9 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/participante-vinculacion/{id}/actualizar-notas', [ParticipanteVinculacionController::class, 'editarNotas'])->name('actualizar-notas');
 
 
+    //////////matriz vinculacion de DocumentosVinculacion
+    Route::post('/reporte/matriz-vinculacion', [DocumentosVinculacion::class, 'matrizVinculacion'])->name('reporte.matrizVinculacion');
+
 
     ///ruta para los documentos del participante
     Route::get('/participante-vinculacion/documentos', [DocumentosVinculacion::class, 'documentos'])->name('ParticipanteVinculacion.documentos');
