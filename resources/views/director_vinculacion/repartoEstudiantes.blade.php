@@ -1,79 +1,29 @@
 @extends('layouts.directorVinculacion')
 
 @section('content')
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: '{{ session('success') }}',
+                confirmButtonText: 'Ok'
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '{{ session('error') }}',
+                confirmButtonText: 'Ok'
+            });
+        </script>
+    @endif
     <div class="container">
-        <h4>Asignacion de estudiantes</h4>
 
-        <h4>Director de Proyecto</h4>
-        <table>
-            <tr>
-                <td>{{ $directorProyecto->Apellidos }} {{ $directorProyecto->Nombres }}</td>
-            </tr>
-        </table>
-
-        <h4>Docente Participante</h4>
-        <table>
-            <tr>
-                <td>
-                    @if ($docenteParticipante)
-                        {{ $docenteParticipante->Apellidos }} {{ $docenteParticipante->Nombres }}
-                    @else
-                        <p>No hay docentes participantes</p>
-                    @endif
-                </td>
-
-                <td>
-                    <form action="{{ route('director_vinculacion.asignarEstudiantes') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="docente_id" value="{{ optional($docenteParticipante)->id }}">
-                        @if ($estudiantesAsignados->isNotEmpty())
-                            <select name="estudiante">
-                                @foreach ($estudiantesAsignados as $asignacion)
-                                    <option value="{{ $asignacion->estudiante->EstudianteID }}">
-                                        {{ $asignacion->estudiante->Nombres }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <button class="button" type="submit">Asignar</button>
-                        @else
-                            <input class="input" type="text" value="No hay estudiantes disponibles" disabled>
-                        @endif
-                    </form>
-                </td>
-            </tr>
-        </table>
-
-
-        @if ($participantesAdicionales->isNotEmpty())
-            <h4>Participantes Adicionales</h4>
-            <table>
-                @foreach ($participantesAdicionales as $participanteAdicional)
-                    <tr>
-                        <td>{{ $participanteAdicional->Apellidos }} {{ $participanteAdicional->Nombres }}</td>
-                        <td>
-                            <form action="{{ route('director_vinculacion.asignarEstudiantes') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="docente_id" value="{{ $participanteAdicional->id }}">
-                                @if ($estudiantesAsignados->isNotEmpty())
-                                    <select name="estudiante">
-                                        @foreach ($estudiantesAsignados as $asignacion)
-                                            <option value="{{ $asignacion->estudiante->EstudianteID }}">
-                                                {{ $asignacion->estudiante->Nombres }}</option>
-                                        @endforeach
-                                    </select>
-                                    <button class="button" type="submit">Asignar</button>
-                                @else
-                                    <input class="input" type="text" value="No hay estudiantes disponibles" disabled>
-                                @endif
-
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </table>
-        @endif
-
-        <hr>
 
         <h4>Estudiantes Asignados a Docentes</h4>
 
@@ -86,18 +36,11 @@
             </tr>
             @foreach ($asignacionesEstudiantesDirector as $asignacion)
                 <tr>
-                    <td>{{ $asignacion->estudiante->Nombres }}</td>
-                    <td>{{ $asignacion->participante->Apellidos }} {{ $asignacion->participante->Nombres }}</td>
+                    <td>{{ $asignacion->estudiante->Apellidos }} {{ $asignacion->estudiante->Nombres }}</td>
+                    <td>{{ $asignacion->docenteParticipante->Nombres }} {{ $asignacion->docenteParticipante->Apellidos }}
+                    </td>
                     <td>{{ $asignacion->proyecto->NombreProyecto }}</td>
                     <td>
-                        <form
-                            action="{{ route('director_vinculacion.desasignarEstudiantes', ['EstudianteID' => $asignacion->EstudianteID]) }}"
-                            method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <input type="hidden" name="estudiante_id" value="{{ $asignacion->EstudianteID }}">
-                            <button class="button" type="submit">Desasignar</button>
-                        </form>
 
                         <form id="eliminarEstudianteForm_{{ $asignacion->EstudianteID }}"
                             action="{{ route('director_vinculacion.eliminarEstudiante', ['EstudianteID' => $asignacion->EstudianteID]) }}"
@@ -117,6 +60,12 @@
                 </tr>
             @endforeach
         </table>
+        <br>
+        <form action="{{ route('director_vinculacion.cerrarProcesoEstudiantes') }}" method="POST">
+            @csrf
+            <button type="submit" class="button">Finalizar actividades de los estudiantes</button>
+        </form>
+
 
         <hr>
 
@@ -193,9 +142,6 @@
 
 
     </div>
-
-
-
 @endsection
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
