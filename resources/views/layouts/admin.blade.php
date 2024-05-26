@@ -167,7 +167,7 @@
             <div class="divisor-title"></div>
         </div>
         <!-- Contenido principal -->
-        <div class="views {{ session('menuState') == 'collapsed' ? 'views-active' : '' }}"> 
+        <div class="views {{ session('menuState') == 'collapsed' ? 'views-active' : '' }}">
             <!-- Contenido específico de la página -->
             @yield('content')
         </div>
@@ -177,6 +177,7 @@
     </section>
 
     <!-- Scripts de jQuery y Popper.js -->
+    <script src="js\admin\index.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <!-- Script de Bootstrap 4.5.2 -->
@@ -243,6 +244,8 @@
     </script>
 
     <script src="{{ asset('js/menu.js') }}"></script>
+
+
 </body>
 
 </html>

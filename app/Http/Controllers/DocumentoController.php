@@ -187,8 +187,8 @@ class DocumentoController extends Controller
             $proyecto = $asignacion->proyecto;
             if ($proyecto) {
                 $nombresProyectos[] = $proyecto->NombreProyecto;
-                $apellidosProfesores[] = $proyecto->asignaciones->first()->director->Apellidos;
-                $nombresProfesores[] = $proyecto->asignaciones->first()->director->Nombres;
+                $apellidosProfesores[] = $proyecto->asignaciones->first()->proyecto->director->Apellidos;
+                $nombresProfesores[] = $proyecto->asignaciones->first()->proyecto->director->Nombres;
                 $apellidosAsignados[] = $proyecto->asignaciones->first()->docenteParticipante->Apellidos;
                 $nombresAsignados[] = $proyecto->asignaciones->first()->docenteParticipante->Nombres;
 
@@ -294,7 +294,7 @@ class DocumentoController extends Controller
             ->join('asignacionProyectos', 'estudiantes.EstudianteID', '=', 'asignacionProyectos.EstudianteID')
             ->join('proyectos', 'asignacionProyectos.ProyectoID', '=', 'proyectos.ProyectoID')
             ->join('usuarios', 'estudiantes.UserID', '=', 'usuarios.UserID')
-            ->join('profesUniversidad as director', 'asignacionProyectos.DirectorID', '=', 'director.id')
+            ->join('profesUniversidad as director', 'proyectos.DirectorID', '=', 'director.id')
             ->join('profesUniversidad as participante', 'asignacionProyectos.ParticipanteID', '=', 'participante.id')
             ->select(
                 'estudiantes.Apellidos',
@@ -479,7 +479,7 @@ class DocumentoController extends Controller
         $datosEstudiantes = DB::table('estudiantes')
             ->join('asignacionProyectos', 'estudiantes.EstudianteID', '=', 'asignacionProyectos.EstudianteID')
             ->join('proyectos', 'asignacionProyectos.ProyectoID', '=', 'proyectos.ProyectoID')
-            ->join('ProfesUniversidad as director', 'asignacionProyectos.DirectorID', '=', 'director.id')
+            ->join('ProfesUniversidad as director', 'proyectos.DirectorID', '=', 'director.id')
             ->join('ProfesUniversidad as participante', 'asignacionProyectos.ParticipanteID', '=', 'participante.id')
             ->select(
                 'estudiantes.Apellidos',

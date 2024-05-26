@@ -48,7 +48,7 @@ Route::post('/toggle-menu', [MenuController::class, 'toggleMenuState'])->name('t
 
 Route::middleware(['auth'])->group(function () {
     //Ruta para controlar el menu expandido a comprimido
-   
+
     // Ruta para mostrar el formulario de ingreso de datos del Estudiante
     Route::get('/estudiantes/create', [EstudianteController::class, 'create'])->name('estudiantes.create');
 
@@ -148,6 +148,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
+
     ///ruta para guardar guardarPracticas del estudiante
     Route::post('/estudiantes/guardar-practicas', [EstudianteController::class, 'guardarPracticas'])->name('guardarPracticas');
 
@@ -170,6 +171,14 @@ Route::middleware(['auth'])->group(function () {
 
     ///rutas para guardar las notas del estudiante, participante
     Route::post('/participante-vinculacion/guardar-notas', [ParticipanteVinculacionController::class, 'guardarNotas'])->name('guardar-notas');
+      ///ruta para actualizar las notas del estudiante
+    Route::put('/participante-vinculacion/{id}/actualizar-notas', [ParticipanteVinculacionController::class, 'editarNotas'])->name('actualizar-notas');
+
+
+    //////////matriz vinculacion de DocumentosVinculacion
+    Route::post('/reporte/matriz-vinculacion', [DocumentosVinculacion::class, 'matrizVinculacion'])->name('reporte.matrizVinculacion');
+
+
     ///ruta para los documentos del participante
     Route::get('/participante-vinculacion/documentos', [DocumentosVinculacion::class, 'documentos'])->name('ParticipanteVinculacion.documentos');
 
@@ -210,6 +219,8 @@ Route::middleware(['auth'])->group(function () {
 
     ///actualizarInforme del director
     Route::post('/director-vinculacion/actualizar-informe', [DirectorVinculacionController::class, 'actualizarInforme'])->name('director_vinculacion.actualizarInforme');
+    /////actualizarNota de estudiante update
+    Route::put('/director-vinculacion/actualizar-nota/{id}', [DirectorVinculacionController::class, 'actualizarNota'])->name('director_vinculacion.actualizarNota');
 
     ////descargarEvidencias del coordinador
     Route::get('/coordinador/descargar-evidencias/{ProyectoID}', [CoordinadorController::class, 'descargarEvidencias'])->name('coordinador.descargarEvidencias');
@@ -221,6 +232,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/director-vinculacion/generar-informe-director', [DirectorVinculacionController::class, 'generarInformeDirector'])->name('director_vinculacion.generarInformeDirector');
 
     route::get('/director/estudiantes-repartidos', [DirectorVinculacionController::class, 'repartoEstudiantes'])->name('director.repartoEstudiantes');
+
+/////cerrarProcesoEstudiantes
+    Route::post('/director-vinculacion/cerrar-proceso-estudiantes', [DirectorVinculacionController::class, 'cerrarProcesoEstudiantes'])->name('director_vinculacion.cerrarProcesoEstudiantes');
 
     //////asignarEstudiantes del director vinculacion
     Route::post('/director-vinculacion/asignar-estudiantes', [DirectorVinculacionController::class, 'asignarEstudiantes'])->name('director_vinculacion.asignarEstudiantes');
@@ -382,4 +396,3 @@ Route::get('auth/github/callback', [LoginController::class, 'githubCallback']) -
 
 
 
- 

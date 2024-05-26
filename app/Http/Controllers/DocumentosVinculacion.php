@@ -13,6 +13,7 @@ use PhpOffice\PhpSpreadsheet\RichText\RichText;
 use PhpOffice\PhpSpreadsheet\RichText\TextRun;
 use App\Models\DirectorVinculacion;
 use App\Models\AsignacionEstudiantesDirector;
+use App\Models\Periodo;
 use Mpdf\Mpdf;
 use App\Models\Estudiante;
 
@@ -31,19 +32,24 @@ class DocumentosVinculacion extends Controller
         $correoUsuario = $usuario->CorreoElectronico;
         $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
         // Obtener la relación AsignacionEstudiantesDirector para este ParticipanteVinculacion
-        $asignacionProyecto = AsignacionEstudiantesDirector::where('ParticipanteID', $participanteVinculacion->id)->first();
+        $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)->first();
 
 
         ///obtener la id del director de AsiignacionProyecto
-        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->IDProyecto)->first();
+        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
         if ($proyecto->Estado != 'Ejecucion') {
             return redirect()->back()->with('error', 'No tiene Proyectos en ejecucion.');
         }
 
         ////buscar en profesores universidad
-        $Director = ProfesUniversidad::where('id', $proyecto->id_directorProyecto)->first();
+        $Director = ProfesUniversidad::where('id', $proyecto->DirectorID)->first();
         // Obtener los estudiantes asignados a este proyecto
-        $estudiantes = AsignacionEstudiantesDirector::where('IDProyecto', $proyecto->ProyectoID)->get();
+
+        $estudiantes = AsignacionProyecto::where('ProyectoID', $proyecto->ProyectoID)
+            ->whereHas('estudiante', function ($query) {
+                $query->where('estado', 'Aprobado');
+            })
+            ->get();
         if ($estudiantes->isEmpty()) {
             return redirect()->back()->with('error', 'No hay estudiantes asignados a este proyecto.');
         }
@@ -167,17 +173,16 @@ class DocumentosVinculacion extends Controller
         $correoUsuario = $usuario->CorreoElectronico;
         $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
         // Obtener la relación AsignacionProyecto para este ParticipanteVinculacion
-        $asignacionProyecto = AsignacionEstudiantesDirector::where('ParticipanteID', $participanteVinculacion->id)->first();
+        $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)->first();
 
-        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->IDProyecto)->first();
+        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
 
         if ($proyecto->Estado != 'Ejecucion') {
             return redirect()->back()->with('error', 'No tiene Proyectos en ejecucion.');
         }
         // Obtener los estudiantes asignados a este proyecto
-        $Director = ProfesUniversidad::where('id', $proyecto->id_directorProyecto)->first();
+        $Director = ProfesUniversidad::where('id', $proyecto->DirectorID)->first();
 
-        $estudiantes = AsignacionEstudiantesDirector::where('IDProyecto', $proyecto->ProyectoID)->get();
 
         $hojaCalculo = $spreadsheet->getActiveSheet();
 
@@ -275,20 +280,24 @@ class DocumentosVinculacion extends Controller
         $correoUsuario = $usuario->CorreoElectronico;
         $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
         // Obtener la relación AsignacionProyecto para este ParticipanteVinculacion
-        $asignacionProyecto = AsignacionEstudiantesDirector::where('ParticipanteID', $participanteVinculacion->id)->first();
+        $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)->first();
 
         ///obtener la id del director de AsiignacionProyecto
-        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->IDProyecto)->first();
+        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
 
         if ($proyecto->Estado != 'Ejecucion') {
             return redirect()->back()->with('error', 'No tiene Proyectos en ejecucion.');
         }
         // Obtener los estudiantes asignados a este proyecto
-        $estudiantes = AsignacionEstudiantesDirector::where('IDProyecto', $proyecto->ProyectoID)->get();
+        $estudiantes = AsignacionProyecto::where('ProyectoID', $proyecto->ProyectoID)
+            ->whereHas('estudiante', function ($query) {
+                $query->where('estado', 'Aprobado');
+            })
+            ->get();
         if ($estudiantes->isEmpty()) {
             return redirect()->back()->with('error', 'No hay estudiantes asignados a este proyecto.');
         }
-        $Director = ProfesUniversidad::where('id', $proyecto->id_directorProyecto)->first();
+        $Director = ProfesUniversidad::where('id', $proyecto->DirectorID)->first();
 
 
         $hojaCalculo = $spreadsheet->getActiveSheet();
@@ -414,12 +423,82 @@ class DocumentosVinculacion extends Controller
         $writer->save($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
 
-       
+
 
 
     }
 
 
+
+    //////////////////////////////////////////////////////MATRIZ VINCULACION/////////////////////////////////////////////////////////////////////////////////
+
+    public function MatrizVinculacion()
+    {
+
+        $plantillaPath = public_path('Plantillas/Reporte-MatrizVinculacion.xlsx');
+        $spreadsheet = IOFactory::load($plantillaPath);
+
+        $hojaCalculo = $spreadsheet->getActiveSheet();
+
+        if ($hojaCalculo == null) {
+            return redirect()->back()->with('error', 'No se pudo cargar la plantilla');
+        }
+
+        $asignacionProyecto = AsignacionProyecto::all();
+        if ($asignacionProyecto->isEmpty()) {
+            return redirect()->back()->with('error', 'No hay proyectos asignados');
+        }
+
+        $filaInicio = 9;
+        $cantidadFilas = count($asignacionProyecto);
+        $hojaCalculo->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
+        $asignacionProyecto = $asignacionProyecto->sortBy('ProyectoID');
+
+        foreach ($asignacionProyecto as $index => $asignacion) {
+            $filaActual = $filaInicio + $index;
+             $proyecto = Proyecto::where('ProyectoID', $asignacion->ProyectoID)->first();
+             $participante = ProfesUniversidad::where('id', $asignacion->ParticipanteID)->first();
+            $director = ProfesUniversidad::where('id', $proyecto->DirectorID)->first();
+            $periodo = Periodo::where('id', $asignacion->IdPeriodo)->first();
+
+
+
+
+              $hojaCalculo->getColumnDimension('I')->setAutoSize(true);
+            $hojaCalculo->getColumnDimension('O')->setAutoSize(true);
+            $hojaCalculo->getColumnDimension('J')->setAutoSize(true);
+            $hojaCalculo->getColumnDimension('K')->setAutoSize(true);
+            $hojaCalculo->getColumnDimension('L')->setAutoSize(true);
+            $hojaCalculo->getColumnDimension('M')->setAutoSize(true);
+            $hojaCalculo->getColumnDimension('N')->setAutoSize(true);
+            $hojaCalculo->getColumnDimension('O')->setAutoSize(true);
+            $hojaCalculo->getColumnDimension('A')->setAutoSize(true);
+
+
+            $hojaCalculo->setCellValue("I$filaActual", $proyecto->NombreProyecto);
+            $hojaCalculo->setCellValue("K$filaActual", $director->Apellidos . ' ' . $director->Nombres);
+            $hojaCalculo->setCellValue("L$filaActual", $participante->Apellidos . ' ' . $participante->Nombres);
+            $hojaCalculo->setCellValue("M$filaActual", $proyecto->FechaInicio);
+            $hojaCalculo->setCellValue("J$filaActual", $proyecto->DescripcionProyecto);
+            $hojaCalculo->setCellValue("N$filaActual", $proyecto->FechaFinalizacion);
+            $hojaCalculo->setCellValue("O$filaActual", $proyecto->DepartamentoTutor);
+            $hojaCalculo->setCellValue("F$filaActual", $periodo->numeroPeriodo);
+
+            $hojaCalculo->setCellValue("A$filaActual", $asignacion->estudiante->Apellidos . ' ' . $asignacion->estudiante->Nombres);
+            $hojaCalculo->setCellValue("C$filaActual", $asignacion->estudiante->cedula);
+            $hojaCalculo->setCellValue("B$filaActual", $asignacion->estudiante->espe_id);
+            $hojaCalculo->setCellValue("D$filaActual", $asignacion->estudiante->usuario->CorreoElectronico);
+            $hojaCalculo->setCellValue("E$filaActual", $asignacion->estudiante->Cohorte);
+
+
+        }
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $nombreArchivo = "Reporte-MatrizVinculacion.xlsx";
+        $writer->save($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+
+    }
 
 
 

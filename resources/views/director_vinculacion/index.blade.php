@@ -45,12 +45,12 @@
                                         <th class="tamanio">Nombre del proyecto</th>
                                         <th>Director</th>
                                         <th class="tamanio">Actividades a realizar</th>
-                                         <th>Correo</th>
-                                         <th>Departamento</th>
+                                        <th>Correo</th>
+                                        <th>Departamento</th>
                                         <th>Fecha de inicio</th>
                                         <th>Fecha fin</th>
                                         <th>Periodo</th>
-                                        <th>NRC</th>
+
 
                                     </tr>
                                 </thead>
@@ -64,23 +64,23 @@
                                         @foreach ($proyectosEjecucion as $proyecto)
                                             <tr>
                                                 <td style="word-wrap: break-word; text-align: justify;">
-                                                    {{ $proyecto->proyecto->NombreProyecto }}</td>
+                                                    {{ $proyecto->NombreProyecto }}</td>
                                                 <td>{{ strtoupper($proyecto->director->Apellidos) }}
                                                     {{ strtoupper($proyecto->director->Nombres) }}</td>
                                                 <td style="word-wrap: break-word; text-align: justify;">
-                                                    {{ $proyecto->proyecto->DescripcionProyecto }}</td>
+                                                    {{ $proyecto->DescripcionProyecto }}</td>
 
                                                 <td>{{ $proyecto->director->Correo }}</td>
 
-                                                <td>{{ $proyecto->proyecto->DepartamentoTutor }}</td>
+                                                <td>{{ $proyecto->DepartamentoTutor }}</td>
                                                 <td>{{ $proyecto->FechaInicio }}</td>
                                                 <td>{{ $proyecto->FechaFinalizacion }}</td>
-                                                <td>{{ $proyecto->Periodo->numeroPeriodo }}</td>
-                                                <td>{{ $proyecto->nrcVinculacion->nrc }}</td>
-
+                                                @foreach ($proyecto->asignaciones as $asignacion)
+                                                    <td>{{ $asignacion->periodo->numeroPeriodo }}</td>
+                                                @endforeach
                                             </tr>
                                         @endforeach
-                                        @endif
+                                    @endif
                                 </tbody>
                             </table>
 
@@ -111,7 +111,7 @@
         @else
             <p>No hay proyectos en ejecución.</p>
         @endif
-       {{--  </div> --}}
+        {{--  </div> --}}
 
 
         <div class="mat-elevation-z8 contenedor_general">
@@ -131,9 +131,7 @@
                                         <th class="tamanio">Nombre del proyecto</th>
                                         <th>Director</th>
                                         <th class="tamanio">Actividades a realizar</th>
-                                        <th>Nombre del profesor participante</th>
-                                        <th>Correo del tutor</th>
-                                        <th>Correo del profesor participante</th>
+                                        <th>Correo</th>
                                         <th>Departamento</th>
                                         <th>Fecha de inicio</th>
                                         <th>Fecha fin</th>
@@ -148,10 +146,7 @@
                                             <td>{{ strtoupper($proyecto->director->Apellidos) }}
                                                 {{ strtoupper($proyecto->director->Nombres) }}</td>
                                             <td>{{ $proyecto->DescripcionProyecto }}</td>
-                                            <td>{{ strtoupper($proyecto->docenteParticipante->Apellidos) }}
-                                                {{ strtoupper($proyecto->docenteParticipante->Nombres) }}</td>
                                             <td>{{ $proyecto->director->Correo }}</td>
-                                            <td>{{ $proyecto->docenteParticipante->Correo }}</td>
                                             <td>{{ $proyecto->DepartamentoTutor }}</td>
                                             <td>{{ $proyecto->FechaInicio }}</td>
                                             <td>{{ $proyecto->FechaFinalizacion }}</td>

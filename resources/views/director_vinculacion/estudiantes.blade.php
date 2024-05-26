@@ -23,14 +23,14 @@
         </script>
     @endif
 
- 
+
 
 
 
     <div class="container" style="overflow-x: auto;">
 
-       
-        
+
+
 
 
         <h4>Estudiantes por calificar</h4>
@@ -48,7 +48,8 @@
                             <th>Espe ID</th>
                             <th>Carrera</th>
                             <th>Departamento</th>
-                            <th>Informe de Servicio Comunitario</th>
+                            <th>Informe de Servicio Comunitario 30%</th>
+
                             <th></th>
                         </tr>
                     </thead>
@@ -61,13 +62,14 @@
                                 <td>{{ $estudiante->Departamento }}</td>
                                 <td>
                                     <input type="hidden" name="estudiante_id[]" value="{{ $estudiante->EstudianteID }}">
-                                    <input type="text" name="informe_servicio[]"
-                                        value="{{ $estudiante->notas->first()->Informe }}">
+                                    <input type="text" name="informe_servicio[]" value="{{ $estudiante->notas->first()->Informe !== 'Pendiente' ? $estudiante->notas->first()->Informe : '' }}" required>
+                                    <small class="form-text text-danger" style="display: none;"></small>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+
                 <br>
                 <button type="submit" class="btn btn-primary">Guardar Informe</button>
             </form>
@@ -78,7 +80,7 @@
             <p>No hay estudiantes calificados en este momento.</p>
         @else
             <table>
-                 <thead>
+                <thead>
                     <tr>
                         <th>Nombres</th>
                         <th>Espe ID</th>
@@ -92,6 +94,8 @@
                         <th>Capacidad de liderazgo</th>
                         <th>Asistencia</th>
                         <th>Informe de Servicio</th>
+                        <th>Nota Final</th>
+                        <th>Editar Notas</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -141,12 +145,76 @@
                                     {{ $nota->Informe }}<br>
                                 @endforeach
                             </td>
+                            <td>
+                                @php
+                                    $notaTotal = $estudiante->notas->sum(function ($nota) {
+                                        return $nota->Tareas +
+                                            $nota->Resultados_Alcanzados +
+                                            $nota->Conocimientos +
+                                            $nota->Adaptabilidad +
+                                            $nota->Aplicacion +
+                                            $nota->Capacidad_liderazgo +
+                                            $nota->Asistencia +
+                                            $nota->Informe;
+                                    });
+                                    $notaFinal = ($notaTotal * 20) / 100;
+                                @endphp
+                                {{ $notaFinal }}
+                            </td>
+
+                            <td>
+                                <button class="btn btn-sm btn-secondary" data-toggle="modal"
+                                data-target="#modalEditarInforme{{ $estudiante->EstudianteID }}">Editar</button>
+
+                                <div class="modal fade" id="modalEditarInforme{{ $estudiante->EstudianteID }}" tabindex="-1" role="dialog" aria-labelledby="modalEditarInforme{{ $estudiante->EstudianteID }}Label" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <form method="post" action="{{ route('director_vinculacion.actualizarNota', ['id' => $estudiante->EstudianteID]) }}">
+                                                @csrf
+                                                @method('PUT')
+
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title"
+                                                        id="modalEditarNota{{ $estudiante->EstudianteID }}Label">
+                                                        Nota de Informe {{ $estudiante->Apellidos }}
+                                                        {{ $estudiante->Nombres }}</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    <input type="hidden" name="estudiante_id" value="{{ $estudiante->EstudianteID }}">
+                                                    <div class="form-group">
+                                                        <label for="nota_servicio">Informe de Servicio Comunitario</label>
+                                                        <input type="text" class="input" name="nota_servicio" value="{{ $estudiante->notas->first()->Informe }}" required>
+                                                        <small class="form-text text-danger" style="display: none;"></small>
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="button" data-dismiss="modal">Cerrar</button>
+                                                    <button type="submit" class="button">Guardar</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+
+
+
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         @endif
     </div>
+
+    <script src="{{ asset('js/ParticipanteDirectorVinculacion/notas.js') }}"></script>
+
 @endsection
 
 <style>

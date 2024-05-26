@@ -54,7 +54,7 @@
                                 <input type="text" class="form-control input" id="rucEmpresa" name="rucEmpresa"
                                     placeholder="Ingrese RUC (13 dígitos)" required pattern="[0-9]{13}"
                                     title="Ingrese 13 dígitos numéricos">
-                                <span id="error-message-ruc" style="color: red; display: none;">RUC no válido</span>
+                                <span id="error-message-rucEmpresa" style="color: red;"></span>
                             </div>
                         </div>
 
@@ -146,25 +146,7 @@
                         </div>
                         <div class="col-md-6">
 
-                            {{--  <div>
-                                <label for="input_file">Archivo del período <span class="requerido">*</span></label>
-                                <div class="input input_file">
-                                  <span id="fileText"><i class="fa-solid fa-arrow-up-from-bracket"></i> {{fileText}}</span>
-                                  <span class="remove-icon"
-                                    title="Eliminar archivo">✖</span>
-                                </div>
-                                <input style="display: none;" formControlName="filePeriodo"  id="input_file" type="file"
-                                 >
 
-                                <div class="contenedor_campo_requerido">
-
-                                  <div>
-                                    El archivo del período es requerido.
-                                  </div>
-
-                                </div>
-
-                              </div> --}}
 
                             <div class="form-group">
                                 <label for="cartaCompromiso">Carta Compromiso (PDF):</label>
@@ -215,12 +197,7 @@
                     <p>No hay empresas agregadas.</p>
                 @else
                     <div class="contenedor_acciones_tabla">
-                        {{--   <form action="{{ route('coordinador.reportesVinculacion') }}" method="post">
-                        @csrf
-                        <button type="submit" class="button3 efects_button btn_excel">
-                            <i class="fas fa-file-excel"></i>
-                        </button>
-                    </form> --}}
+
                         <div class="tooltip-container">
                             <span class="tooltip-text">Excel</span>
                             <form action="{{ route('coordinador.reportesEmpresas') }}" method="post">

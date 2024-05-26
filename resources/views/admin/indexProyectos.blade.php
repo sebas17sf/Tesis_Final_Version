@@ -100,6 +100,7 @@
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                     <th class="tamanio">NOMBRE DEL PROYECTO</th>
+                                    <th class="tamanio">DIRECTOR</th>
                                     <th class="tamanio">DESCRIPCION</th>
                                     <th>DEPARTAMENTO</th>
                                     <th>CODIGO DEL PROYECTO SOCIAL</th>
@@ -119,7 +120,9 @@
                                         <tr>
                                             <td style="word-wrap: break-word; text-align: justify; padding: 5px 8px;">
                                                 {{ strtoupper($proyecto->NombreProyecto) }}</td>
-                                            <td style="word-wrap: break-word; text-align: justify; padding: 5px 8px;">
+                                            <td>{{ strtoupper($proyecto->director->Apellidos) }}
+                                                {{ strtoupper($proyecto->director->Nombres) }} </td>
+                                            <td style="word-wrap: break-word; text-align: justify;">
                                                 {{ strtoupper($proyecto->DescripcionProyecto) }}</td>
 
                                             <td>{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
@@ -221,8 +224,27 @@
         </div>
         <hr>
         <h6><b>Listado de asignaciones</b></h6>
-        <br>
+        <hr>
+
+        <div class="tooltip-container">
+            <span class="tooltip-text">Excel</span>
+            <form id="reportForm" action="{{ route('reporte.matrizVinculacion') }}" method="POST"
+                onsubmit="submitForm(event)">
+                @csrf
+                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+                    <span id="loadingIcon" style="display: none;">
+                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+                    </span>
+                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                </button>
+            </form>
+            <br>
+        </div>
+
+
+
         <div class="contenedor_tabla">
+
             <div class="table-container mat-elevation-z8">
 
                 <div id="tablaDocentes">
@@ -246,7 +268,7 @@
                                 <tr>
                                     <td>{{ $grupo->first()->proyecto->NombreProyecto }}</td>
                                     <td>{{ $grupo->first()->proyecto->codigoProyecto }}</td>
-                                    <td>{{ $grupo->first()->director->Nombres }}</td>
+                                    <td>{{ $grupo->first()->proyecto->director->Apellidos }}</td>
                                     <td>
                                         @php
                                             $participantes = $grupo
@@ -344,7 +366,9 @@
                                 <select name="proyecto_id" id="proyecto_id" class="form-control input input-select">
                                     <option value="">Seleccione un proyecto</option>
                                     @foreach ($proyectosDisponibles as $proyecto)
-                                        <option value="{{ $proyecto->ProyectoID }}">{{ $proyecto->NombreProyecto }}
+                                        <option value="{{ $proyecto->ProyectoID }}">
+                                            {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }}
+                                            {{ $proyecto->codigoProyecto }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -352,30 +376,14 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="DirectorProyecto">Director del Proyecto:</label>
-                                <select name="DirectorProyecto" class="form-control input input-select" required>
-                                    <option value="">Seleccionar Director</option>
-                                    @foreach ($profesores as $profesor)
-                                        <option value="{{ $profesor->id }}">
-                                            Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
-                                            Departamento: {{ $profesor->Departamento }} -
-                                            Correo: {{ $profesor->Correo }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+
 
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="ProfesorParticipante">Profesor Participante:</label>
+                                <label for="ProfesorParticipante">Docente Participante:</label>
                                 <select name="ProfesorParticipante" class="form-control input input-select" required>
-                                    <option value="">Seleccionar Profesor Participante</option>
+                                    <option value="">Seleccionar Docente Participante</option>
                                     @foreach ($profesores as $profesor)
                                         <option value="{{ $profesor->id }}">
                                             Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
@@ -414,57 +422,42 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="nrc">Vinculacion NRC:</label>
-                                <select name="nrc" class="form-control input input-select" required>
+                                <select name="nrc" id="nrc" class="form-control input input-select" required>
                                     <option value="">Seleccionar NRC</option>
                                     @foreach ($nrcs as $nrc)
-                                        <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
+                                        <option value="{{ $nrc->id }}" data-periodo="{{ $nrc->periodo->numeroPeriodo}} {{ $nrc->periodo->Periodo }}">
+                                            {{ $nrc->nrc }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="periodo">Periodo:</label>
+                                <input type="text" id="periodo" class="form-control input" readonly>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="FechaInicio">Fecha de Inicio:</label>
+                                <label for="FechaInicio">Fecha de Inicio de intervencio en el proyecto:</label>
                                 <input type="date" name="FechaInicio" class="form-control input" required>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="FechaFinalizacion">Fecha de Finalización:</label>
+                                <label for="FechaFinalizacion">Fecha de Fin de intervencion en el proyecto:</label>
                                 <input type="date" name="FechaFinalizacion" class="form-control input" required>
                             </div>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="fecha_asignacion"><strong>Fecha de Asignación:</strong></label>
-                                <input type="date" name="fecha_asignacion" id="fecha_asignacion"
-                                    class="form-control input" value="{{ now()->toDateString() }}">
-                            </div>
-                        </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="periodo_id"><strong>Periodo:</strong></label>
-                                <select name="periodo_id" id="periodo_id" class="form-control input input-select">
-                                    <option value="">Seleccione un periodo</option>
-                                    @foreach ($periodos as $periodo)
-                                        <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }}
-                                            {{ $periodo->Periodo }}</option>
-                                    @endforeach
-                                </select>
-
-                            </div>
-                        </div>
-
-
-                    </div>
 
 
 
@@ -553,6 +546,19 @@
             }
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const nrcSelect = document.getElementById('nrc');
+            const periodoInput = document.getElementById('periodo');
+
+            nrcSelect.addEventListener('change', function () {
+                const selectedOption = nrcSelect.options[nrcSelect.selectedIndex];
+                const periodo = selectedOption.getAttribute('data-periodo');
+                periodoInput.value = periodo ? periodo : '';
+            });
+        });
+    </script>
+
 
 
 

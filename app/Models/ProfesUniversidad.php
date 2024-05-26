@@ -10,6 +10,7 @@ class ProfesUniversidad extends Model
     use HasFactory;
     protected $table = 'profesUniversidad';
     protected $fillable = [
+        'UserID',
         'Apellidos',
         'Nombres',
         'Correo',
