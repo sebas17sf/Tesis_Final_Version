@@ -15,6 +15,8 @@ use App\Models\DirectorVinculacion;
 use App\Models\AsignacionEstudiantesDirector;
 use App\Models\Periodo;
 use Mpdf\Mpdf;
+
+use DateTime;
 use App\Models\Estudiante;
 
 class DocumentosVinculacion extends Controller
@@ -456,15 +458,20 @@ class DocumentosVinculacion extends Controller
 
         foreach ($asignacionProyecto as $index => $asignacion) {
             $filaActual = $filaInicio + $index;
-             $proyecto = Proyecto::where('ProyectoID', $asignacion->ProyectoID)->first();
-             $participante = ProfesUniversidad::where('id', $asignacion->ParticipanteID)->first();
+            $proyecto = Proyecto::where('ProyectoID', $asignacion->ProyectoID)->first();
+            $participante = ProfesUniversidad::where('id', $asignacion->ParticipanteID)->first();
             $director = ProfesUniversidad::where('id', $proyecto->DirectorID)->first();
+
+
+
+
+
             $periodo = Periodo::where('id', $asignacion->IdPeriodo)->first();
 
 
 
 
-              $hojaCalculo->getColumnDimension('I')->setAutoSize(true);
+            $hojaCalculo->getColumnDimension('I')->setAutoSize(true);
             $hojaCalculo->getColumnDimension('O')->setAutoSize(true);
             $hojaCalculo->getColumnDimension('J')->setAutoSize(true);
             $hojaCalculo->getColumnDimension('K')->setAutoSize(true);
@@ -499,6 +506,110 @@ class DocumentosVinculacion extends Controller
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ///////////////////////////////////prueba de carga de matriz para generar datos
+
+    public function import(Request $request)
+    {
+        $spreadsheet = IOFactory::load($request->file('file'));
+        $worksheet = $spreadsheet->getActiveSheet();
+        $rows = $worksheet->toArray();
+
+        $dataRows = array_slice($rows, 1);
+
+        foreach ($dataRows as $row) {
+            if (!empty($row[0]) && !empty($row[1]) && !empty($row[2]) && !empty($row[3]) && !empty($row[4]) && !empty($row[5]) && !empty($row[6])) {
+                $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
+
+                Estudiante::updateOrCreate(
+                    [
+                        'espe_id' => $row[0],
+                        'cedula' => $row[1],
+                    ],
+                    [
+                        'Correo' => $row[2],
+                        'Apellidos' => $row[3],
+                        'Nombres' => $row[4],
+                        'Cohorte' => $row[5],
+                        'id_periodo' => $periodo ? $periodo->id : null,
+                        'Carrera' => 'Ingeniería en Tecnologías de la información',
+                        'Departamento' => 'Ciencias de la Computación',
+                        'comentario' => 'Importado desde Excel',
+                    ]
+                );
+            }
+        }
+
+        foreach ($dataRows as $row) {
+            $participante = null;
+            if (!empty($row[7]) && !empty($row[8])  && !empty($row[6]) && !empty($row[9]) && !empty($row[10]) && !empty($row[11]) && !empty($row[21])) {
+                $estudiante = Estudiante::where('espe_id', $row[0])->first();
+                $proyecto = Proyecto::where('NombreProyecto', $row[24])->first();
+                $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
+                $nombreCompleto = $row[8];
+                $partesNombre = explode(" ", $nombreCompleto);
+                if (count($partesNombre) >= 2) {
+                    $apellido = trim($partesNombre[0]);
+                    $nombre = trim($partesNombre[1]);
+
+                    $participante = ProfesUniversidad::where('Apellidos', 'like', '%' . $nombre . '%')
+                        ->where('Nombres', 'like', '%' . $apellido . '%')
+                        ->first();
+                }
+                $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[9]);
+                if ($fechaInicio) {
+                    $fechaInicioFormatted = $fechaInicio->format('Y-m-d');
+                } else {
+                    $fechaInicioFormatted = null;
+                }
+                $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $row[10]);
+                if ($fechaFinalizacion) {
+                    $fechaFinalizacionFormatted = $fechaFinalizacion->format('Y-m-d');
+                } else {
+                    $fechaFinalizacionFormatted = null;
+                }
+
+                AsignacionProyecto::updateOrCreate(
+                    [
+                        'EstudianteID' => $estudiante ? $estudiante->EstudianteID : null,
+                        'ProyectoID' => $proyecto ? $proyecto->ProyectoID : null,
+                        'ParticipanteID' => $participante ?  $participante->id : null,
+                        'IdPeriodo' => $periodo ? $periodo->id : null,
+                    ],
+                    [
+                        'FechaInicio' => $fechaInicioFormatted,
+                        'FechaFinalizacion' => $fechaFinalizacionFormatted,
+                        'FechaAsignacion' => now(),
+                    ]
+                );
+            }
+        }
+
+        return back()->with('success', 'Datos importados con éxito!');
+    }
+
+
 
 
 

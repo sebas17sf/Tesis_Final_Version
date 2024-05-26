@@ -294,8 +294,9 @@ class AdminController extends Controller
         $periodos = Periodo::all();
         $nrcs = NrcVinculacion::all();
 
-        /////////mostrar los profesores que no tienen un DirectorID en la tabla proyectos
-        $profesores = ProfesUniversidad::whereNotIn('id', Proyecto::pluck('DirectorID')->toArray())->get();
+        /////////mostrar los profesores que no son directores en proyectos
+        $profesores = ProfesUniversidad::all();
+
 
         $perPage = $request->input('perPage', 10);
         $search = $request->input('search');

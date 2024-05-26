@@ -802,19 +802,25 @@ class DocumentoController extends Controller
 
         $estado = $request->input('estado');
 
-        $query = Proyecto::with([
-            'director:id,Apellidos,Nombres',
-            'docenteParticipante:id,Apellidos,Nombres',
-            'nrcs:id,nrc,id_periodo',
-            'nrcs.periodo:id,Periodo',
-        ])->orderBy('NombreProyecto', 'asc');
+        $query = DB::table('proyectos')
+            ->select(
+                'proyectos.NombreProyecto',
+                'proyectos.codigoProyecto',
+                'proyectos.FechaInicio',
+                'proyectos.FechaFinalizacion',
+                'proyectos.DepartamentoTutor',
+                'proyectos.Estado',
+                'proyectos.DescripcionProyecto',
+                'proyectos.DirectorID',
+             )
+            ->orderBy('proyectos.NombreProyecto', 'asc');
+
 
         if ($estado) {
             $query->where('Estado', $estado);
         }
 
         $datosProyectos = $query->get();
-
 
         $sheet = $spreadsheet->getActiveSheet();
 
@@ -827,14 +833,8 @@ class DocumentoController extends Controller
 
         // Bucle para reemplazar los valores en la plantilla
         foreach ($datosProyectos as $index => $proyecto) {
-            $director = ProfesUniversidad::find($proyecto->id_directorProyecto);
-            $participante = ProfesUniversidad::find($proyecto->id_docenteParticipante);
-            $nrc = NrcVinculacion::find($proyecto->id_nrc_vinculacion);
+            $director = ProfesUniversidad::find($proyecto->DirectorID);
 
-            $participantesAdicionales = $proyecto->participantesAdicionales;
-            $nombresParticipantesAdicionales = $participantesAdicionales->map(function ($participante) {
-                return $participante->Nombres . ' ' . $participante->Apellidos;
-            })->join(', ');
 
 
             $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
