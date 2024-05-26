@@ -31,7 +31,7 @@
 
     <section >
         <div class="contenedor_registro_genero "> 
-        <h6><b>Listado de Proyectos</b></h6>
+        <h3><b>Listado de Proyectos</b></h3>
         <hr>
 
         <div class="mat-elevation-z8 contenedor_general">
@@ -45,7 +45,7 @@
                             @csrf
                             <div class="tooltip-container">
                                 <span class="tooltip-text">Excel</span>
-                                <button type="submit" class="button3 efects_button btn_excel mr-2" pTooltip="Excel"
+                                <button type="submit" class="button3 efects_button btn_excel" pTooltip="Excel"
                                     tooltipPosition="top">
                                     <i class="fa-solid fa-file-excel"></i>
                                 </button>
@@ -63,9 +63,9 @@
 
                         <!-- Selector de estado del proyecto -->
                         <div class="form-group mr-2">
-                            <label for="estado" class="mr-2">Estado del Proyecto:</label>
+                            <label for="estado" class="mr-2"> Estado del Proyecto:</label>
                             <form method="GET" action="{{ route('admin.indexProyectos') }}">
-                                <select name="estado" id="estado" class="form-control input input-select"
+                                <select name="estado" id="estado" class="form-control input input_select"
                                     onchange="this.form.submit()">
                                     <option value="">Todos</option>
                                     <option value="Ejecucion" {{ old('estado') == 'Ejecucion' ? 'selected' : '' }}>En
@@ -223,9 +223,9 @@
             </div>
             </div>
 
-   </div>
+   
         <hr>
-        <h6><b>Listado de asignaciones</b></h6>
+        <h3><b>Listado de asignaciones</b></h3>
         <hr>
 
         <div class="tooltip-container">
@@ -356,7 +356,7 @@
             <button id="toggleFormBtn3" class="btn btn-outline-secondary btn-block">Asignar estudiante</button>
             <div id="asignarEstudiante" style="display: none;">
                 <hr>
-                <h6><b>Asignar Proyecto</b></h6>
+                <h3><b>Asignar Proyecto</b></h3>
                 <hr>
                 <form method="POST" action="{{ route('admin.guardarAsignacion') }}">
                     @csrf
@@ -365,7 +365,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="proyecto_id"><strong>Proyecto Disponible:</strong></label>
-                                <select name="proyecto_id" id="proyecto_id" class="form-control input input-select">
+                                <select name="proyecto_id" id="proyecto_id" class="form-control input input_select">
                                     <option value="">Seleccione un proyecto</option>
                                     @foreach ($proyectosDisponibles as $proyecto)
                                         <option value="{{ $proyecto->ProyectoID }}">
@@ -384,7 +384,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="ProfesorParticipante">Docente Participante:</label>
-                                <select name="ProfesorParticipante" class="form-control input input-select" required>
+                                <select name="ProfesorParticipante" class="form-control input input_select" required>
                                     <option value="">Seleccionar Docente Participante</option>
                                     @foreach ($profesores as $profesor)
                                         <option value="{{ $profesor->id }}">
@@ -406,7 +406,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="estudiante_id"><strong>Estudiante Aprobado:</strong></label>
-                                <select name="estudiante_id[]" id="estudiante_id" class="form-control input input-select"
+                                <select name="estudiante_id[]" id="estudiante_id" class="form-control input input_select"
                                     multiple="multiple">
                                     @foreach ($estudiantesAprobados as $estudiante)
                                         <option value="{{ $estudiante->EstudianteID }}">
@@ -424,7 +424,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="nrc">Vinculacion NRC:</label>
-                                <select name="nrc" id="nrc" class="form-control input input-select" required>
+                                <select name="nrc" id="nrc" class="form-control input input_select" required>
                                     <option value="">Seleccionar NRC</option>
                                     @foreach ($nrcs as $nrc)
                                         <option value="{{ $nrc->id }}" data-periodo="{{ $nrc->periodo->numeroPeriodo}} {{ $nrc->periodo->Periodo }}">
