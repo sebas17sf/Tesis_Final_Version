@@ -11,8 +11,7 @@
             Swal.fire({
                 icon: 'success',
                 title: 'Éxito',
-                text: '{{ session('
-                                                                        success ') }}',
+                text: '{{ session('success ') }}',
                 confirmButtonText: 'Ok'
             });
         </script>
@@ -38,8 +37,7 @@
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: '{{ session('
-                                                                        error ') }}',
+                text: '{{ session('error ') }}',
                 confirmButtonText: 'Ok'
             });
         </script>
@@ -64,8 +62,7 @@
             Swal.fire({
                 icon: 'error',
                 title: 'Error al agregar el docente',
-                html: '{{ session('
-                                                                        errorMaestro ') }}',
+                html: '{{ session('errorMaestro') }}',
                 confirmButtonText: 'Ok'
             });
         </script>
@@ -74,90 +71,111 @@
         <section>
             <div class="mat-elevation-z8 contenedor_general">
                 @if ($profesoresPendientes->isEmpty())
-                    <p>No hay Docentes pendientes.</p>
+                    <p>No existen usuarios administrativos.</p>
                 @else
-                    <!-- Tabla -->
                     <div class="contenedor_tabla">
                         <div class="table-container mat-elevation-z8">
                             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
                                 <thead>
                                     <tr>
-                                        <th mat-header-cell *matHeaderCellDef>ID</th>
-                                        <th mat-header-cell *matHeaderCellDef>Nombre</th>
-                                        <th mat-header-cell *matHeaderCellDef>Apellido</th>
-                                        <th mat-header-cell *matHeaderCellDef>Correo Electrónico</th>
+                                        <th mat-header-cell *matHeaderCellDef>Tipo</th>
+                                        <th mat-header-cell *matHeaderCellDef>Usuario</th>
+                                        <th mat-header-cell *matHeaderCellDef>Correo</th>
                                         <th mat-header-cell *matHeaderCellDef>Estado Actual</th>
-                                        <th mat-header-cell *matHeaderCellDef>Actualizar Estado</th>
+                                        <th mat-header-cell *matHeaderCellDef>Modificar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($profesoresPendientes as $profesor)
                                         <tr>
-                                            <td>{{ $profesor->UserID }}</td>
-                                            <td>{{ strtoupper($profesor->Nombre) }}</td>
-                                            <td>{{ strtoupper($profesor->Apellido) }}</td>
+                                            <td>{{ strtoupper($profesor->NombreUsuario) }}</td>
+                                            <td>{{ strtoupper($profesor->NombreUsuario) }}</td>
                                             <td>{{ $profesor->CorreoElectronico }}</td>
                                             <td>{{ $profesor->Estado }}</td>
                                             <td>
-                                                <form action="{{ route('admin.updateEstado', ['id' => $profesor->UserID]) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <select name="nuevoEstado">
-                                                        <option value="Vinculacion">Vinculación</option>
-                                                        <option value="Director-Departamento">Director-Departamento</option>
-                                                        <option value="Negado">Negado</option>
-                                                    </select>
-                                                    <button type="submit">Actualizar</button>
-                                                </form>
+                                                <!-- Botón de Editar -->
+                                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                    data-target="#editModal{{ $profesor->id }}">
+                                                    Editar
+                                                </button>
                                             </td>
                                         </tr>
+
+                                        <!-- Modal para Editar Profesor -->
+                                        <div class="modal fade" id="editModal{{ $profesor->id }}" tabindex="-1"
+                                            role="dialog" aria-labelledby="editModalLabel{{ $profesor->id }}"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <form method="POST" action="{{ route('admin.updateEstado', ['id' => $profesor->UserID]) }}">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="editModalLabel{{ $profesor->id }}">
+                                                                Editar Profesor</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <label for="NombreUsuario{{ $profesor->id }}">Nombre de
+                                                                    Usuario</label>
+                                                                <input type="text" class="form-control"
+                                                                    id="NombreUsuario{{ $profesor->id }}"
+                                                                    name="NombreUsuario"
+                                                                    value="{{ $profesor->NombreUsuario }}" required
+                                                                    disabled>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="CorreoElectronico{{ $profesor->id }}">Correo
+                                                                    Electrónico</label>
+                                                                <input type="email" class="form-control"
+                                                                    id="CorreoElectronico{{ $profesor->id }}"
+                                                                    name="CorreoElectronico"
+                                                                    value="{{ $profesor->CorreoElectronico }}" required
+                                                                    disabled>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="Estado{{ $profesor->id }}">Estado</label>
+                                                                <select class="form-control" id="Estado{{ $profesor->id }}"
+                                                                    name="Estado" required>
+                                                                    <option value="activo"
+                                                                        {{ $profesor->Estado == 'Activo' ? 'selected' : '' }}>
+                                                                        Activo</option>
+                                                                    <option value="inactivo"
+                                                                        {{ $profesor->Estado == 'Inactivo' ? 'selected' : '' }}>
+                                                                        Inactivo</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="password{{ $profesor->id }}">Cambiar
+                                                                    Contraseña</label>
+                                                                <input type="password" class="form-control"
+                                                                    id="password{{ $profesor->id }}" name="password"
+                                                                    required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Cerrar</button>
+                                                            <button type="submit" class="btn btn-primary">Guardar
+                                                                Cambios</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endforeach
                                 </tbody>
                             </table>
+
                         </div>
                     </div>
                 @endif
 
-                @if ($profesoresConPermisos->isEmpty())
-                    <p>No hay Docentes con permisos concedidos.</p>
-                @else
-                    <h4>Permisos Concedidos</h4>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Correo Electrónico</th>
-                                <th>Estado Actual</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($profesoresConPermisos as $profesor)
-                                <tr>
-                                    <td>{{ $profesor->UserID }}</td>
-                                    <td>{{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Nombre)) }}
-                                    </td>
-                                    <td>{{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Apellido)) }}
-                                    </td>
-                                    <td>{{ $profesor->CorreoElectronico }}</td>
-                                    <td>{{ $profesor->Estado }}</td>
-                                    <td>
-                                        <form action="{{ route('admin.deletePermission', ['id' => $profesor->UserID]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"> <i class="material-icons">clear</i></button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
 
-                @endif
 
                 @if (session('permisosConcedidos'))
                     <div class="alert alert-success">
@@ -167,6 +185,9 @@
 
             </div>
         </section>
+
+
+
         <br>
         <div class="d-flex  justify-content-center">
             <form action="{{ route('admin.respaldo') }}" method="POST" class="mr-2">
@@ -211,8 +232,8 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-4">
                                             <label for="nombres"><strong>Ingrese Nombres:</strong></label>
-                                            <input type="text" id="nombres" name="nombres" class="form-control input"
-                                                placeholder="Ingrese los dos Nombres" required>
+                                            <input type="text" id="nombres" name="nombres"
+                                                class="form-control input" placeholder="Ingrese los dos Nombres" required>
                                             <small id="nombresError" class="form-text text-danger"
                                                 style="display: none;"></small>
 
@@ -220,16 +241,18 @@
 
                                         <div class="form-group col-md-4">
                                             <label for="apellidos"><strong>Ingrese Apellidos:</strong></label>
-                                            <input type="text" id="apellidos" name="apellidos" class="form-control input"
-                                                placeholder="Ingrese los dos Apellidos" required>
+                                            <input type="text" id="apellidos" name="apellidos"
+                                                class="form-control input" placeholder="Ingrese los dos Apellidos"
+                                                required>
                                             <small id="apellidosError" class="form-text text-danger"
                                                 style="display: none;"></small>
                                         </div>
 
                                         <div class="form-group col-md-4">
                                             <label for="correo"><strong>Ingrese Correo:</strong></label>
-                                            <input type="email" id="correo" name="correo" class="form-control input"
-                                                placeholder="Ingrese el Correo Electrónico" required>
+                                            <input type="email" id="correo" name="correo"
+                                                class="form-control input" placeholder="Ingrese el Correo Electrónico"
+                                                required>
                                             <small id="correoError" class="form-text text-danger"
                                                 style="display: none;"></small>
                                             @error('correo')
@@ -241,9 +264,9 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-4">
                                             <label for="cedula"><strong>Ingrese la Cédula:</strong></label>
-                                            <input type="text" id="cedula" name="cedula" class="form-control input"
-                                                placeholder="Ingrese Cédula (10 dígitos)" pattern="\d{10}"
-                                                title="Debe ingresar exactamente 10 números" required>
+                                            <input type="text" id="cedula" name="cedula"
+                                                class="form-control input" placeholder="Ingrese Cédula (10 dígitos)"
+                                                pattern="\d{10}" title="Debe ingresar exactamente 10 números" required>
                                             <small id="cedulaError" class="form-text text-danger"
                                                 style="display: none;"></small>
                                             @error('cedula')
@@ -507,7 +530,9 @@
                                                                                                 class="form-control input"
                                                                                                 value="{{ $profesor->Cedula }}"
                                                                                                 required>
-                                                                                                <small id="cedulaHelp" class="form-text text-danger" style="display: none;"></small>
+                                                                                            <small id="cedulaHelp"
+                                                                                                class="form-text text-danger"
+                                                                                                style="display: none;"></small>
 
 
                                                                                             @error('cedula')

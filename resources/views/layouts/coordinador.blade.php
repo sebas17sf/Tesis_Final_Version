@@ -56,14 +56,7 @@
                                 <div class="name-sidebar-item">
                                     <li>Proyectos</li>
                                 </div>
-                                <a class="p-element" href="{{ route('coordinador.proyectosEstudiantes') }}">
-                                    <div class="icon-sidebar-item">
-                                        <i class="material-icons">assignment_ind</i>
-                                    </div>
-                                    <div class="name-sidebar-item">
-                                        <li>Proyectos-Estudiantes</li>
-                                    </div>
-                                </a>
+
                                 <a class="p-element" href="{{ route('coordinador.estudiantesAprobados') }}">
                                     <div class="icon-sidebar-item">
                                         <i class="material-icons">people</i>
@@ -186,7 +179,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-    
+
     <script>
         function toggleSidebar() {
             var menuState = localStorage.getItem('menuState') === 'expanded' ? 'collapsed' : 'expanded';
@@ -218,8 +211,11 @@
     </script>
 
     <script src="{{ asset('js/menu.js') }}"></script>
+    <script src="{{ asset('js/admin/general.js') }}"></script>
+    <script src="{{ asset('js/admin/empresa.js') }}"></script>
 
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
 </body>
 
 </html>

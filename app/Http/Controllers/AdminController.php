@@ -70,14 +70,14 @@ class AdminController extends Controller
                 $profesores = $query->paginate($perPage);
 
                 $periodos = Periodo::all();
-                $profesorRoleId = Role::where('Tipo', 'Profesor')->value('id');
+                $profesorRoleId = Role::where('Tipo', 'Vinculacion')->value('id');
 
 
-                $profesoresPendientes = Usuario::where('role_id', $profesorRoleId)->where('Estado', 'Pendiente')->get();
+                $profesoresPendientes = Usuario::where('role_id', $profesorRoleId)->get();
 
                 // Consulta para obtener los profesores con permisos
                 $profesoresConPermisos = Usuario::where('role_id', $profesorRoleId)
-                    ->whereIn('Estado', ['Vinculacion', 'Lector', 'Director-Departamento'])
+                    ->whereIn('Estado', ['Vinculacion', 'Practicas', 'Director-Departamento'])
                     ->get();
 
 
@@ -98,23 +98,24 @@ class AdminController extends Controller
     ////actualizar permisos
     public function updateEstado(Request $request, $id)
     {
-        // Validar el nuevo estado
         $request->validate([
-            'nuevoEstado' => 'required|in:Vinculacion,Director-Departamento,Director-Carrera,Negado',
+            'Estado' => 'required',
+            'password' => 'required',
         ]);
 
-        // Actualizar el estado del profesor
-        $profesor = Usuario::find($id);
-        $profesor->Estado = $request->nuevoEstado;
-        $profesor->save();
+        $usuario = Usuario::findOrFail($id);
 
-        // Si el estado es "Negado", eliminar al profesor de la base de datos
-        if ($request->nuevoEstado === 'Negado') {
-            $profesor->delete();
+        if (!$usuario) {
+            return redirect()->route('admin.index')->with('error', 'Usuario no encontrado');
         }
+
+        $usuario->Estado = $request->input('Estado');
+        $usuario->Contrasena = bcrypt($request->input('password'));
+        $usuario->save();
 
         return redirect()->route('admin.index')->with('success', 'Estado actualizado correctamente');
     }
+
 
 
 
@@ -294,8 +295,7 @@ class AdminController extends Controller
         $periodos = Periodo::all();
         $nrcs = NrcVinculacion::all();
 
-        /////////mostrar los profesores que no son directores en proyectos
-        $profesores = ProfesUniversidad::all();
+         $profesores = ProfesUniversidad::all();
 
 
         $perPage = $request->input('perPage', 10);
