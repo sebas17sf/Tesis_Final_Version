@@ -7,12 +7,12 @@
   display: grid;
   border-radius: 5px;
   border: 1px solid rgba(colors.$gray, 0.3);
-  min-height: 470px !important;
+  min-height: 500px !important;
 
   .table-container {
     overflow-x: auto;
     box-shadow: none !important;
-    height: 345px !important;
+    height: 430px !important;
     table {
       width: 100%;
       box-shadow: none !important;
@@ -22,7 +22,7 @@
         width: 200px;
         min-width: 150px;
         font-size: fonts.$form-input;
-       
+        padding: 0 5px;
       }
 
       th {

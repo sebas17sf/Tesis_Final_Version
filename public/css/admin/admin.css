@@ -206,13 +206,7 @@ th {
 .columna-numero {
     padding: 0 5px !important;
 }
-.body,
 
-td{
-    font-size: 11px;
-    text-align: center;
-    /* Centra el texto en las celdas de datos */
-}
 .mat-mdc-table td {
     vertical-align: middle; /* Alineación vertical del texto en las celdas */
 }

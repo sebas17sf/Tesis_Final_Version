@@ -29,7 +29,8 @@
     @endif
 
 
-    <section class="contenedor_registro_genero">
+    <section >
+        <div class="contenedor_registro_genero "> 
         <h6><b>Listado de Proyectos</b></h6>
         <hr>
 
@@ -88,11 +89,11 @@
                         </form>
                     </div>
                 </div>
-            </div>
+           
+</div>
 
 
-
-            <div class="contenedor_tabla">
+        <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
 
                     <div id="tablaProyectos">
@@ -168,6 +169,7 @@
                         @endif
                     </div>
                 </div>
+                
                 <div class="paginator-container">
                     <nav aria-label="...">
 
@@ -219,9 +221,9 @@
                 </div>
 
             </div>
+            </div>
 
-
-        </div>
+   </div>
         <hr>
         <h6><b>Listado de asignaciones</b></h6>
         <hr>
