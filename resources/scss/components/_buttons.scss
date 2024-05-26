@@ -49,6 +49,13 @@
 
 }
 
+.button1_1 {
+  @include buttons-style;
+  @include buttons-style2;
+  width: 250px;
+  border-radius: 5px;
+
+}
 // ===============================================
 // Boton para icono y texto (pequeño)
 // ===============================================

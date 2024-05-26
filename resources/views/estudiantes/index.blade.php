@@ -62,8 +62,14 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label for="Nombres" class="col-sm-4 font-weight-bold"><i class="fas fa-user"></i>
-                                            Nombres:</label>
+                                        <label for="Nombres" class="col-sm-4 font-weight-bold">
+                                        <div class="icon-sidebar-item">
+                                            <i class="fas fa-user"></i>
+                                            </div>
+                                            <div class="icon-sidebar-item">
+                                            Nombres:
+                                        </div>
+                                        </label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                 <label class="form-control">{{ strtoupper($estudiante->Nombres) }}</label>
@@ -71,8 +77,14 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="Apellidos" class="col-sm-4 font-weight-bold"><i class="fas fa-user"></i>
-                                            Apellidos:</label>
+                                        <label for="Apellidos" class="col-sm-4 font-weight-bold">
+                                        <div class="icon-sidebar-item">
+                                            <i class="fas fa-user"></i>
+                                            </div>
+                                            <div class="icon-sidebar-item">
+                                            Apellidos:
+                                        </div>
+                                        </label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                 <label class="form-control">{{ strtoupper($estudiante->Apellidos) }}</label>
@@ -80,8 +92,14 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="espe_id" class="col-sm-4 font-weight-bold"><i
-                                                class="fas fa-id-card"></i> ESPE ID:</label>
+                                        <label for="espe_id" class="col-sm-4 font-weight-bold">
+                                        <div class="icon-sidebar-item">
+                                            <i class="fas fa-id-card"></i> 
+                                        </div>
+                                        <div class="icon-sidebar-item">    
+                                            ESPE ID:
+                                        </div>
+                                        </label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                 <label class="form-control">{{ strtoupper($estudiante->espe_id) }}</label>
@@ -89,8 +107,14 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="celular" class="col-sm-4 font-weight-bold"><i
-                                                class="fas fa-mobile-alt"></i> Celular:</label>
+                                        <label for="celular" class="col-sm-4 font-weight-bold">
+                                        <div class="icon-sidebar-item">
+                                        <i class="fas fa-mobile-alt"></i> 
+                                        </div>
+                                        <div class="icon-sidebar-item">
+                                        Celular:
+                                    </div>
+                                    </label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                 <label class="form-control">{{ strtoupper($estudiante->celular) }}</label>
@@ -101,8 +125,14 @@
 
                                 <div class="col-md-6">
                                     <div class="form-group row">
-                                        <label for="cedula" class="col-sm-4 font-weight-bold"><i
-                                                class="fas fa-id-card"></i> Cédula:</label>
+                                        <label for="cedula" class="col-sm-4 font-weight-bold">
+                                        <div class="icon-sidebar-item">    
+                                        <i  class="fas fa-id-card"></i>
+                                        </div>
+                                        <div class="icon-sidebar-item">
+                                        Cédula:
+                                    </div>
+                                    </label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                 <label class="form-control">{{ strtoupper($estudiante->cedula) }}</label>
@@ -110,8 +140,14 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="Cohorte" class="col-sm-4 font-weight-bold"><i
-                                                class="fas fa-calendar-alt"></i> Cohorte:</label>
+                                        <label for="Cohorte" class="col-sm-4 font-weight-bold">
+                                        <div class="icon-sidebar-item">    
+                                        <i class="fas fa-calendar-alt"></i> 
+                                        </div>
+                                        <div class="icon-sidebar-item">
+                                        Cohorte:
+                                    </div>
+                                    </label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                 <label
@@ -120,8 +156,30 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="Departamento" class="col-sm-4 font-weight-bold"><i
-                                                class="fas fa-building"></i> Departamento:</label>
+                                        <label for="Departamento" class="col-sm-4 font-weight-bold">
+                                        <div class="icon-sidebar-item">
+                                            <i class="fa-solid fa-envelope"></i>
+                                            </div>
+                                            <div class="icon-sidebar-item">
+                                         Correo:
+                                        </div> 
+                                        </label>
+                                        <div class="col-sm-8">
+                                            <div class="input-group">
+                                                <label
+                                                    class="form-control label">{{ ($estudiante->Correo) }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="Departamento" class="col-sm-4 font-weight-bold">
+                                        <div class="icon-sidebar-item">
+                                        <i class="fas fa-building"></i>
+                                        </div>
+                                        <div class="icon-sidebar-item">
+                                        Departamento:
+                                    </div>
+                                    </label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                 <label
@@ -135,66 +193,18 @@
                     </div>
 
 
-                    <style>
-                        .form-group {
-                            margin-bottom: 0.2rem;
-                        }
-                    </style>
-
-
                 </div>
             </div>
 
-            <!-- Styles -->
-            <style>
-                .input-group-text {
-                    width: 40px;
-                    /* Set a fixed width for all icon boxes */
-                    height: 38px;
-                    /* Set a fixed height for all icon boxes */
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-
-                @media (max-width: 576px) {
-                    .table-responsive-sm {
-                        overflow-x: auto;
-                    }
-
-                    .font-weight-bold {
-                        white-space: nowrap;
-                    }
-
-                    .form-control {
-                        min-width: 120px;
-                        /* Adjust this as necessary */
-                    }
-                }
-
-                .contenedor_botones {
-                    display: flex;
-                    gap: 10px;
-                    /* Adjust the gap between buttons as needed */
-                }
-
-                .contenedor_botones form,
-                .contenedor_botones a {
-                    display: flex;
-                    align-items: center;
-                }
-            </style>
-
-
-
         </div>
     </div>
-
+    <section class="contenedor_agregar_periodo">
     <!-- Estado y botón de reenvío de información con ícono -->
+    <div class="formulario agregar_">
     <div class="mt-4">
-        <h6><b>
+        <h4><b>
                 <div class="icon-sidebar-item">Estado-Aprobación</div>
-            </b></h6>
+            </b></h4>
         <hr>
         <table class="table custom-table">
             <tbody>
@@ -224,10 +234,11 @@
 
 
     </div>
-
+</div>
+</section>
     <!-- Sección para mostrar la información del proyecto asignado -->
     <div class="mt-4">
-        <h6><b>Proyecto Asignado</b></h6>
+        <h4><b>Proyecto Asignado</b></h4>
         <hr>
         @if ($asignacionProyecto)
             <table class="table custom-table">
