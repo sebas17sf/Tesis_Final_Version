@@ -349,13 +349,13 @@
                                     <thead class="ng-star-inserted" id="professorsTable">
                                         <tr
                                             class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                            <th>Nombre</th>
-                                            <th>Correo</th>
-                                            <th>Usuario</th>
-                                            <th>Cédula</th>
-                                            <th>Departamento</th>
+                                            <th>NOMBRE</th>
+                                            <th>CORREO</th>
+                                            <th>USUARIO</th>
+                                            <th>CEDULA</th>
+                                            <th>DEPARTAMENTO</th>
                                             <th>ID ESPE</th>
-                                            <th>Acciones</th>
+                                            <th>ACCIONES</th>
                                         </tr>
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
@@ -738,7 +738,7 @@
 
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
-                                            <label for="nrc"><strong>Ingrese el NRC:</strong></label>
+                                            <label class="label" for="nrc"><strong>Ingrese el NRC:</strong></label>
                                             <input type="text" id="nrc" name="nrc"
                                                 class="form-control input" placeholder="Ingrese 5 números"
                                                 value="{{ old('nrc') }}" required>
@@ -778,7 +778,6 @@
                 <!-- ----------------------------------------------------------------------------------- -->
                 </button>
                 <!-- EDITAR PERIODO -->
-
                 <div class="modal fade" id="editarPeriodoModal" tabindex="-1" role="dialog"
                     aria-labelledby="editarPeriodoModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -793,7 +792,7 @@
                                 <div class="form-group col-md-12">
                                     <label for="periodo"><strong>Periodos Agregados (Seleccione el periodo a
                                             editar):</strong></label>
-                                    <select id="selectPeriodo" class="form-control input_select input">
+                                    <select id="selectPeriodo" class="form-control input input_select ">
                                         <option value="" data-inicio="" data-fin="" data-numero="">Seleccionar
                                             Periodo</option>
                                         @foreach ($periodos as $periodo)

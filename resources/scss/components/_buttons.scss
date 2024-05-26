@@ -71,13 +71,13 @@
 .button3 {
   @include buttons-style2;
   display: grid;
-  width: 35px;
-  height: 32px;
+  width: 34px;
+  height: 30px;
   justify-content: center;
   align-items: center;
   border-radius: 5px;
   font-size: fonts.$icon-size;
-  font-size: 1.5em !important;
+
 }
 
 // ===============================================
