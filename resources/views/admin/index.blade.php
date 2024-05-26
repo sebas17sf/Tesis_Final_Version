@@ -400,7 +400,7 @@
                                                     <td>{{ $profesor->espe_id }}</td>
                                                     <td>
                                                         <div class="contenedor_botones">
-                                                            <div class="btn-group  shadow-0">
+                                                            <div class="btn-group  shadow-1">
 
                                                                 <div class="tooltip-container">
                                                                     <button type="button"
@@ -410,7 +410,7 @@
                                                                         <i class="bx bx-edit-alt"></i>
                                                                     </button>
                                                                 </div>
-
+      
                                                                 <!---Modal para editar Docentes--------------------------------------------------->
 
                                                                 <div class="modal fade"

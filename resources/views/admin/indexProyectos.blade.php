@@ -370,7 +370,7 @@
     <section>
 
         <div class="container">
-            <button id="toggleFormBtn3" class="btn btn-outline-secondary btn-block">Asignar estudiante</button>
+           <center> <button id="toggleFormBtn3" class="button1_1 efects_button">Asignar estudiante</button></center>
             <div id="asignarEstudiante" style="display: none;">
                 <hr>
                 <h3><b>Asignar Proyecto</b></h3>
