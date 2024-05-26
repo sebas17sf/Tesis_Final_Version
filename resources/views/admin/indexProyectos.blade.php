@@ -120,8 +120,15 @@
                                         <tr>
                                             <td style="word-wrap: break-word; text-align: justify;">
                                                 {{ strtoupper($proyecto->NombreProyecto) }}</td>
-                                            <td>{{ strtoupper($proyecto->director->Apellidos) }}
-                                                {{ strtoupper($proyecto->director->Nombres) }} </td>
+                                            <td>
+                                                @if ($proyecto->director)
+                                                    {{ strtoupper($proyecto->director->Apellidos) }}
+                                                    {{ strtoupper($proyecto->director->Nombres) }}
+                                                @else
+                                                    Director no asignado
+                                                @endif
+                                            </td>
+
                                             <td style="word-wrap: break-word; text-align: justify;">
                                                 {{ strtoupper($proyecto->DescripcionProyecto) }}</td>
 
@@ -226,20 +233,29 @@
         <h6><b>Listado de asignaciones</b></h6>
         <hr>
 
-        <div class="tooltip-container">
-            <span class="tooltip-text">Excel</span>
-            <form id="reportForm" action="{{ route('reporte.matrizVinculacion') }}" method="POST"
-                onsubmit="submitForm(event)">
+        <div class="row">
+            <div class="tooltip-container">
+                <span class="tooltip-text">Matriz de Vinculacion</span>
+                <form id="reportForm" action="{{ route('reporte.matrizVinculacion') }}" method="POST"
+                    onsubmit="submitForm(event)">
+                    @csrf
+                    <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+                        <span id="loadingIcon" style="display: none;">
+                            <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+                        </span>
+                        <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                    </button>
+                </form>
+                <br>
+            </div>
+
+            <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
-                    <span id="loadingIcon" style="display: none;">
-                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
-                    </span>
-                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
-                </button>
+                <input type="file" name="file" required>
+                <button type="submit">Importar Archivo</button>
             </form>
-            <br>
         </div>
+
 
 
 
@@ -266,9 +282,9 @@
                         <tbody>
                             @foreach ($asignacionesAgrupadas as $grupo)
                                 <tr>
-                                    <td>{{ $grupo->first()->proyecto->NombreProyecto }}</td>
-                                    <td>{{ $grupo->first()->proyecto->codigoProyecto }}</td>
-                                    <td>{{ $grupo->first()->proyecto->director->Apellidos }}</td>
+                                    <td>{{ $grupo->first()->proyecto->NombreProyecto ?? '' }}</td>
+                                    <td>{{ $grupo->first()->proyecto->codigoProyecto ?? '' }}</td>
+                                    <td>{{ $grupo->first()->proyecto->director->Apellidos ?? '' }}</td>
                                     <td>
                                         @php
                                             $participantes = $grupo
@@ -279,21 +295,22 @@
                                         @endphp
                                         {!! $participantes !!}
                                     </td>
-                                    <td>{{ $grupo->first()->FechaAsignacion }}</td>
+                                    <td>{{ $grupo->first()->FechaAsignacion ?? '' }}</td>
                                     <td>
                                         @foreach ($grupo as $asignacion)
-                                            {{ $asignacion->estudiante->Nombres }}<br>
+                                            {{ $asignacion->estudiante->Nombres ?? '' }}<br>
                                         @endforeach
                                     </td>
-                                    <td>{{ $grupo->first()->periodo->numeroPeriodo }}</td>
-                                    <td>{{ $grupo->first()->nrcVinculacion->nrc }}</td>
-                                    <td>{{ $grupo->first()->FechaInicio }}</td>
-                                    <td>{{ $grupo->first()->FechaFinalizacion }}</td>
+                                    <td>{{ $grupo->first()->periodo->numeroPeriodo ?? '' }}</td>
+                                    <td>{{ $grupo->first()->nrcVinculacion->nrc ?? '' }}</td>
+                                    <td>{{ $grupo->first()->FechaInicio ?? '' }}</td>
+                                    <td>{{ $grupo->first()->FechaFinalizacion ?? '' }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
+
             </div>
             <div class="paginator-container">
                 <nav aria-label="...">
@@ -367,7 +384,9 @@
                                     <option value="">Seleccione un proyecto</option>
                                     @foreach ($proyectosDisponibles as $proyecto)
                                         <option value="{{ $proyecto->ProyectoID }}">
-                                            {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }}
+                                            @if ($proyecto->director)
+                                                {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }}
+                                            @endif
                                             {{ $proyecto->codigoProyecto }}
                                         </option>
                                     @endforeach
@@ -425,7 +444,8 @@
                                 <select name="nrc" id="nrc" class="form-control input input-select" required>
                                     <option value="">Seleccionar NRC</option>
                                     @foreach ($nrcs as $nrc)
-                                        <option value="{{ $nrc->id }}" data-periodo="{{ $nrc->periodo->numeroPeriodo}} {{ $nrc->periodo->Periodo }}">
+                                        <option value="{{ $nrc->id }}"
+                                            data-periodo="{{ $nrc->periodo->numeroPeriodo }} {{ $nrc->periodo->Periodo }}">
                                             {{ $nrc->nrc }}</option>
                                     @endforeach
                                 </select>
@@ -547,11 +567,11 @@
         });
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const nrcSelect = document.getElementById('nrc');
             const periodoInput = document.getElementById('periodo');
 
-            nrcSelect.addEventListener('change', function () {
+            nrcSelect.addEventListener('change', function() {
                 const selectedOption = nrcSelect.options[nrcSelect.selectedIndex];
                 const periodo = selectedOption.getAttribute('data-periodo');
                 periodoInput.value = periodo ? periodo : '';

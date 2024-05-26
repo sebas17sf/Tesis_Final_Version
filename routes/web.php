@@ -179,6 +179,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/reporte/matriz-vinculacion', [DocumentosVinculacion::class, 'matrizVinculacion'])->name('reporte.matrizVinculacion');
 
 
+    //////////////creacion de matriz de excel para los datos
+    Route::post('/import', [DocumentosVinculacion::class, 'import'])->name('import');
+
+
     ///ruta para los documentos del participante
     Route::get('/participante-vinculacion/documentos', [DocumentosVinculacion::class, 'documentos'])->name('ParticipanteVinculacion.documentos');
 
