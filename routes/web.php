@@ -77,9 +77,7 @@ Route::middleware(['auth'])->group(function () {
     //ruta para el administrador
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     ////Actualziar estado del usuario profesor
-    Route::put('/admin/{id}/updateEstado', [AdminController::class, 'updateEstado'])->name('admin.updateEstado');
-    ///eliminar un profesor que este negado
-    Route::put('/admin/{id}/updateEstado', [AdminController::class, 'updateEstado'])->name('admin.updateEstado');
+    Route::put('/admin/usuario{id}', [AdminController::class, 'updateEstado'])->name('admin.updateEstado');
     ///borrar los permisos concedidos
     Route::delete('/admin/{id}/deletePermission', [AdminController::class, 'deletePermission'])->name('admin.deletePermission');
 
