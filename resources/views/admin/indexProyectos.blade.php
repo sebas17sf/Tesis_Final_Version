@@ -90,7 +90,7 @@
                         </form>
                     </div>
                 </div>
-           
+
 </div>
 
 
@@ -177,7 +177,7 @@
                         @endif
                     </div>
                 </div>
-                
+
                 <div class="paginator-container">
                     <nav aria-label="...">
 
@@ -298,21 +298,25 @@
                                 <tr>
                                     <td style="text-transform: uppercase; text-align: justify; padding: 5px 8px;">{{ $grupo->first()->proyecto->NombreProyecto ?? '' }}</td>
                                     <td>{{ $grupo->first()->proyecto->codigoProyecto ?? '' }}</td>
-                                    <td style="text-transform: uppercase; text-align: left;">{{ $grupo->first()->proyecto->director->Apellidos ?? '' }}</td>
+
+                                    <td style="text-transform: uppercase; text-align: left;">{{ $grupo->first()->proyecto->director->Apellidos ?? '' }} {{ $grupo->first()->proyecto->director->Nombres ?? '' }}</td>
                                     <td style="text-transform: uppercase; text-align: left;">
+
                                         @php
                                             $participantes = $grupo
                                                 ->pluck('docenteParticipante')
                                                 ->unique('id')
-                                                ->pluck('Nombres')
-                                                ->implode('<br>');
+                                                ->pluck('Nombres', 'Apellidos')
+                                                 ->implode('<br>');
                                         @endphp
                                         {!! $participantes !!}
                                     </td>
                                     <td>{{ $grupo->first()->FechaAsignacion ?? '' }}</td>
-                                    <td style="text-transform: uppercase; text-align: left;">
+
+                                    <td style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
+
                                         @foreach ($grupo as $asignacion)
-                                            {{ $asignacion->estudiante->Nombres ?? '' }}<br>
+                                        {{ $asignacion->estudiante->Apellidos ?? '' }} {{ $asignacion->estudiante->Nombres ?? '' }}<br>
                                         @endforeach
                                     </td>
                                     <td>{{ $grupo->first()->periodo->numeroPeriodo ?? '' }}</td>
