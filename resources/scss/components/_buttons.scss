@@ -52,7 +52,7 @@
 .button1_1 {
   @include buttons-style;
   @include buttons-style2;
-  width: 250px;
+  width: 330px;
   border-radius: 5px;
 
 }
@@ -78,7 +78,7 @@
 .button3 {
   @include buttons-style2;
   display: grid;
-  width: 34px;
+  width: 30px;
   height: 30px;
   justify-content: center;
   align-items: center;

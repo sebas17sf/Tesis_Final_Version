@@ -67,25 +67,29 @@
             });
         </script>
     @endif
+    <br>
     <section class="contenedor_agregar_periodo">
         <section>
             <div class="mat-elevation-z8 contenedor_general">
                 @if ($profesoresPendientes->isEmpty())
                     <p>No existen usuarios administrativos.</p>
                 @else
-                    <div class="contenedor_tabla">
-                        <div class="table-container mat-elevation-z8">
-                            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-                                <thead>
-                                    <tr>
-                                        <th mat-header-cell *matHeaderCellDef>Tipo</th>
-                                        <th mat-header-cell *matHeaderCellDef>Usuario</th>
-                                        <th mat-header-cell *matHeaderCellDef>Correo</th>
-                                        <th mat-header-cell *matHeaderCellDef>Estado Actual</th>
-                                        <th mat-header-cell *matHeaderCellDef>Modificar</th>
+                <div class="contenedor_tabla">
+                <div class="table-container mat-elevation-z8">
+
+                    <div id="tablaProyectos">
+                        <table class="mat-mdc-table">
+                            <thead class="ng-star-inserted">
+                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                              
+                                        <th mat-header-cell *matHeaderCellDef>TIPO</th>
+                                        <th mat-header-cell *matHeaderCellDef>USUARIO</th>
+                                        <th mat-header-cell *matHeaderCellDef>CORREO</th>
+                                        <th mat-header-cell *matHeaderCellDef>ESTADO ACTUAL</th>
+                                        <th mat-header-cell *matHeaderCellDef>MODIFICAR</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="mdc-data-table__content ng-star-inserted">
                                     @foreach ($profesoresPendientes as $profesor)
                                         <tr>
                                             <td>{{ strtoupper($profesor->NombreUsuario) }}</td>
@@ -94,9 +98,9 @@
                                             <td>{{ $profesor->Estado }}</td>
                                             <td>
                                                 <!-- Botón de Editar -->
-                                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                <button type="button" class="button3 efects_button btn_editar3" data-toggle="modal"
                                                     data-target="#editModal{{ $profesor->id }}">
-                                                    Editar
+                                                    <i class="bx bx-edit-alt"></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -173,6 +177,70 @@
 
                         </div>
                     </div>
+                    <div class="paginator-container">
+                            <nav aria-label="...">
+
+                                <ul class="pagination">
+                                    <li class="page-item mx-3">
+                                        <form method="GET" action="{{ route('admin.index') }}">
+                                            <select class="form-control page-item" class="input" name="perPage"
+                                                id="perPage" onchange="this.form.submit()">
+                                                <option value="3" @if ($perPage == 10) selected @endif>10
+                                                </option>
+                                                <option value="20" @if ($perPage == 20) selected @endif>20
+                                                </option>
+                                                <option value="50" @if ($perPage == 50) selected @endif>
+                                                    50
+                                                </option>
+                                                <option value="100" @if ($perPage == 100) selected @endif>
+                                                    100
+                                                </option>
+                                            </select>
+                                        </form>
+                                    </li>
+
+                                    @if ($profesores->onFirstPage())
+                                        <li class="page-item disabled">
+                                            <span class="page-link">Anterior</span>
+                                        </li>
+                                    @else
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ $profesores->previousPageUrl() }}"
+                                                aria-label="Anterior">Anterior</a>
+                                        </li>
+                                    @endif
+
+                                    @foreach ($profesores->getUrlRange(1, $profesores->lastPage()) as $page => $url)
+                                        @if ($page == $profesores->currentPage())
+                                            <li class="page-item active">
+                                                <span class="page-link">{{ $page }}</span>
+                                            </li>
+                                        @else
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+
+                                    @if ($profesores->hasMorePages())
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ $profesores->nextPageUrl() }}"
+                                                aria-label="Siguiente">Siguiente</a>
+                                        </li>
+                                    @else
+                                        <li class="page-item disabled">
+                                            <span class="page-link">Siguiente</span>
+                                        </li>
+                                    @endif
+
+                                </ul>
+                            </nav>
+                        </div>
+
+                    </div>
+
+    
+        
                 @endif
 
 
@@ -184,6 +252,7 @@
                 @endif
 
             </div>
+            
         </section>
 
 
@@ -388,7 +457,7 @@
                                         @else
                                             @foreach ($profesores as $profesor)
                                                 <tr>
-                                                    <td>{{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Apellidos)) }}
+                                                    <td style="word-wrap: break-word; text-align: left; padding: 5px 8px;">{{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Apellidos)) }}
                                                         {{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Nombres)) }}
                                                     </td>
                                                     <td>{{ $profesor->Correo }}</td>

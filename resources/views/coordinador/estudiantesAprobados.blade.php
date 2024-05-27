@@ -2,19 +2,12 @@
 
 @section('title', 'Estudiantes Aprobados')
 
+@section('title_component', 'Estudiantes Aprobados')
+
 @section('content')
 
     <div class="container">
-        <h5>Seguimiento Estudiantes</h5>
-        <form method="GET" action="{{ route('coordinador.estudiantesAprobados') }}">
-            <label for="elementosPorPaginaDepartamento">Elementos por página:</label>
-            <select name="elementosPorPaginaDepartamento" onchange="this.form.submit()">
-                <option value="10" {{ request('elementosPorPaginaDepartamento') == 10 ? 'selected' : '' }}>10</option>
-                <option value="20" {{ request('elementosPorPaginaDepartamento') == 20 ? 'selected' : '' }}>20</option>
-                <option value="50" {{ request('elementosPorPaginaDepartamento') == 50 ? 'selected' : '' }}>50</option>
-                <option value="100" {{ request('elementosPorPaginaDepartamento') == 100 ? 'selected' : '' }}>100</option>
-            </select>
-        </form>
+       
 
 
         <form method="GET" action="{{ route('coordinador.estudiantesAprobados') }}">
@@ -23,9 +16,16 @@
         </form>
 
 
-        <h6>Departamento DCCO</h6>
-        <div style="overflow-x: auto;">
-            <table class="table">
+        <h4><b>Departamento DCCO</b></h4>
+        <hr>
+        <div class="contenedor_tabla">
+                <div class="table-container mat-elevation-z8">
+
+                    <div id="tablaProyectos">
+                        <table class="mat-mdc-table">
+                            <thead class="ng-star-inserted">
+                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                    
                 <thead>
                     <tr>
                         <th>Estudiante</th>
@@ -64,8 +64,29 @@
                 </tbody>
             </table>
 
+            </div>
+            </div>
+            </div>
+            <div class="paginator-container">
+                    <nav aria-label="...">
 
-            <h6>Departamento DCEX</h6>
+                        <ul class="pagination">
+                            <li class="page-item mx-3">
+                            <form method="GET" action="{{ route('coordinador.estudiantesAprobados') }}">
+            <label for="elementosPorPaginaDepartamento">Elementos por página:</label>
+            <select name="elementosPorPaginaDepartamento" onchange="this.form.submit()">
+                <option value="10" {{ request('elementosPorPaginaDepartamento') == 10 ? 'selected' : '' }}>10</option>
+                <option value="20" {{ request('elementosPorPaginaDepartamento') == 20 ? 'selected' : '' }}>20</option>
+                <option value="50" {{ request('elementosPorPaginaDepartamento') == 50 ? 'selected' : '' }}>50</option>
+                <option value="100" {{ request('elementosPorPaginaDepartamento') == 100 ? 'selected' : '' }}>100</option>
+            </select>
+        </form>
+        </li>
+        </ul>
+        </nav>
+        </div>
+            <h4><b>Departamento DCEX</b></h4>
+            <hr>
             <table class="table">
                 <thead>
                     <tr>
@@ -105,11 +126,16 @@
                 </tbody>
             </table>
 
-            <h6>Departamento DCVA</h6>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Estudiante</th>
+            <h4><b>Departamento DCVA</b></h4>
+            <hr>
+            <div class="contenedor_tabla">
+                <div class="table-container mat-elevation-z8">
+
+                    <div id="tablaProyectos">
+                        <table class="mat-mdc-table">
+                            <thead class="ng-star-inserted">
+                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                     <th>Estudiante</th>
                         <th>ID ESPE</th>
                         <th>Carrera</th>
                         <th>Celular</th>
@@ -144,7 +170,9 @@
                     @endforeach
                 </tbody>
             </table>
-
+</div>
+</div>
+</div>
 
 
 
@@ -168,7 +196,7 @@
             Sociedad</button>
         <br>
         <div id="verEstudiantes" style="display: none;">
-            <h6>Estudiantes culminados Vinculacion a la sociedad</h6>
+            <h4>Estudiantes culminados Vinculacion a la sociedad</h4>
             <div class="d-flex">
                 <form method="GET" action="{{ route('coordinador.estudiantesAprobados') }}" class="mr-3">
                     <label for="elementosPorPagina">Estudiantes a visualizar:</label>

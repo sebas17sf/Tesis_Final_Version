@@ -230,12 +230,18 @@
             </div>
             </div>
 
-
+        </section>
+        <section >
+        <div class="contenedor_registro_genero "> 
+        <h4><b>Listado de asignaciones</b></h4>
         <hr>
-        <h3><b>Listado de asignaciones</b></h3>
-        <hr>
 
-        <div class="row">
+        <div class="mat-elevation-z8 contenedor_general">
+            <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+                <!-- Botones -->
+                <div class="row">
+                    <div class="col-md-12 d-flex align-items-center">
+
             <div class="tooltip-container">
                 <span class="tooltip-text">Matriz de Vinculacion</span>
                 <form id="reportForm" action="{{ route('reporte.matrizVinculacion') }}" method="POST"
@@ -258,23 +264,23 @@
             </form>
         </div>
 
+</div>
+</div>
 
 
+<div class="contenedor_tabla">
+                <div class="table-container mat-elevation-z8">
 
-        <div class="contenedor_tabla">
-
-            <div class="table-container mat-elevation-z8">
-
-                <div id="tablaDocentes">
-                    <table class="mat-mdc-table">
-                        <thead class="ng-star-inserted" id="professorsTable">
-                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                <th class="tamanio"> NOMBRE DE PROYECTO</th>
+                    <div id="tablaProyectos">
+                        <table class="mat-mdc-table">
+                            <thead class="ng-star-inserted">
+                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                    <th class="tamanio"> NOMBRE DE PROYECTO</th>
                                 <th>CODIGO DE PROYECTO</th>
-                                <th>DIRECTOR</th>
-                                <th>DOCENTES PARTICIPANTES</th>
+                                <th class="tamanio1">DIRECTOR</th>
+                                <th class="tamanio1">DOCENTES PARTICIPANTES</th>
                                 <th>FECHA ASIGNACION</th>
-                                <th>ESTUDIANTES</th>
+                                <th class="tamanio1">ESTUDIANTES</th>
                                 <th>PERIODO</th>
                                 <th>NRC</th>
                                 <th>FECHA INICIO</th>
@@ -284,10 +290,10 @@
                         <tbody>
                             @foreach ($asignacionesAgrupadas as $grupo)
                                 <tr>
-                                    <td>{{ $grupo->first()->proyecto->NombreProyecto ?? '' }}</td>
+                                    <td style="text-transform: uppercase; text-align: justify; padding: 5px 8px;">{{ $grupo->first()->proyecto->NombreProyecto ?? '' }}</td>
                                     <td>{{ $grupo->first()->proyecto->codigoProyecto ?? '' }}</td>
-                                    <td>{{ $grupo->first()->proyecto->director->Apellidos ?? '' }}</td>
-                                    <td>
+                                    <td style="text-transform: uppercase; text-align: left;">{{ $grupo->first()->proyecto->director->Apellidos ?? '' }}</td>
+                                    <td style="text-transform: uppercase; text-align: left;">
                                         @php
                                             $participantes = $grupo
                                                 ->pluck('docenteParticipante')
@@ -298,7 +304,7 @@
                                         {!! $participantes !!}
                                     </td>
                                     <td>{{ $grupo->first()->FechaAsignacion ?? '' }}</td>
-                                    <td>
+                                    <td style="text-transform: uppercase; text-align: left;">
                                         @foreach ($grupo as $asignacion)
                                             {{ $asignacion->estudiante->Nombres ?? '' }}<br>
                                         @endforeach
@@ -314,6 +320,7 @@
                 </div>
 
             </div>
+            
             <div class="paginator-container">
                 <nav aria-label="...">
 
@@ -370,7 +377,7 @@
     <section>
 
         <div class="container">
-            <button id="toggleFormBtn3" class="btn btn-outline-secondary btn-block">Asignar estudiante</button>
+            <center><button id="toggleFormBtn3" class="button1_1 efects_button">Asignar estudiante</button></center>
             <div id="asignarEstudiante" style="display: none;">
                 <hr>
                 <h3><b>Asignar Proyecto</b></h3>
