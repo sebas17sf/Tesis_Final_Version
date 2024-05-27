@@ -45,83 +45,6 @@ $(document).ready(function () {
     });
 
 
-    function validarNumeroPeriodo() {
-        var numeroPeriodo = this.value.trim();
-        var errorElement = document.getElementById('numeroPeriodoError');
-        var formulario = document.querySelector('.formulario');
-
-        if (numeroPeriodo === '') {
-            errorElement.textContent = '';
-            return;
-        }
-
-        if (isNaN(numeroPeriodo)) {
-            errorElement.textContent = 'Ingrese un número válido.';
-            formulario.onsubmit = function () {
-                return false; // Evita que se envíe el formulario
-            }
-        } else if (parseInt(numeroPeriodo) <= 0) {
-            errorElement.textContent = 'El número no puede ser negativo.';
-            formulario.onsubmit = function () {
-                return false; // Evita que se envíe el formulario
-            }
-        } else if (numeroPeriodo.length > 6) {
-            errorElement.textContent = 'El número no puede tener más de 6 dígitos.';
-            formulario.onsubmit = function () {
-                return false; // Evita que se envíe el formulario
-            }
-        } else {
-            errorElement.textContent = '';
-            formulario.onsubmit = function () {
-                return true; // Permite que se envíe el formulario
-            }
-        }
-    }
-
-    document.getElementById('numeroPeriodo').addEventListener('input', validarNumeroPeriodo);
-
-    function validarNRC() {
-        var nrc = this.value.trim();
-        var errorElement = document.getElementById('errorNRC');
-        var formulario = document.querySelector('.FormularioNRC');
-        var hayErrores = false; // Bandera para indicar si hay errores
-
-        if (nrc === '') {
-            errorElement.textContent = '';
-            hayErrores = true; // Hay un error
-        } else if (parseInt(nrc) <= 0) {
-            errorElement.textContent = 'El NRC debe ser un número positivo y mayor que cero.';
-            hayErrores = true; // Hay un error
-        } else if (!/^\d{5}$/.test(nrc)) {
-            errorElement.textContent = 'Debe ingresar exactamente 5 números.';
-            hayErrores = true; // Hay un error
-        } else {
-            errorElement.textContent = '';
-        }
-
-        // Evitar que se envíe el formulario si hay errores
-        formulario.addEventListener('submit', function (event) {
-            if (hayErrores) {
-                event.preventDefault(); // Evitar el envío del formulario
-            }
-        });
-    }
-
-    document.getElementById('nrc').addEventListener('input', validarNRC);
-
-
-
-    var selectedValue = localStorage.getItem('selectedEstado');
-
-    if (selectedValue) {
-        document.getElementById('estado').value = selectedValue;
-    }
-
-    document.getElementById('estado').addEventListener('change', function () {
-        var selectedOption = this.value;
-        localStorage.setItem('selectedEstado', selectedOption);
-        this.form.submit();
-    });
 
 
 
@@ -184,45 +107,7 @@ document.getElementById('numeroPeriodo').addEventListener('input', function () {
     }
 });
 
-document.getElementById('cohorte').addEventListener('input', function () {
-    var cohorte = this.value.trim();
-    var errorElement = document.getElementById('errorCohorte');
 
-    if (cohorte === '') {
-        errorElement.textContent = '';
-        return;
-    }
-
-    if (isNaN(cohorte)) {
-        errorElement.textContent = 'Ingrese un número válido.';
-    } else if (parseInt(cohorte) < 0) {
-        errorElement.textContent = 'El número no puede ser negativo.';
-    } else if (cohorte.length !== 6) {
-        errorElement.textContent = 'Debe ingresar exactamente 6 números.';
-    } else {
-        errorElement.textContent = '';
-    }
-});
-
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('nrc').addEventListener('input', function (event) {
-        var input = event.target;
-        var value = input.value.trim();
-
-        if (isNaN(value)) {
-            input.setCustomValidity('Ingrese un número válido');
-            document.getElementById('errorNRC').textContent = 'Ingrese un número válido';
-        } else if (parseInt(value) < 0) {
-            input.setCustomValidity('Ingrese un número no negativo');
-            document.getElementById('errorNRC').textContent = 'Ingrese un número no negativo';
-        } else {
-            input.setCustomValidity('');
-            document.getElementById('errorNRC').textContent = '';
-        }
-    });
-});
 
 /////////////////////////Busqueda tiempo real/////////////////////////
 $(document).ready(function () {

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ProyectoID');
              $table->unsignedBigInteger('ParticipanteID');
             $table->unsignedBigInteger('IdPeriodo');
-            $table->unsignedBigInteger('id_nrc_vinculacion');
+            $table->unsignedBigInteger('id_nrc_vinculacion')->nullable();
              $table->date('FechaInicio');
              $table->date('FechaFinalizacion');
              $table->date('FechaAsignacion');

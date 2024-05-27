@@ -26,15 +26,40 @@
         body {
             overflow-x: hidden;
         }
+
+
+        .button5 {
+            /* height: 20px; */
+            padding: 9px;
+            letter-spacing: 1.15px;
+            font-weight: 700;
+            font-size: 0.75em;
+            color: var(--white);
+            background-color: #40456c;
+            border: none;
+            outline: none;
+            box-shadow: 2px 2px 5px #d1d9e6, -2px -2px 5px #f9f9f9;
+            transition: all 0.3s ease-in;
+            width: 120px;
+            border-radius: 10px;
+        }
+
+
+        .contenedor_general .pagination {
+            background-color: #fff;
+            padding: 2px;
+            border-radius: 5px;
+        }
     </style>
-   {{--  <script src="{{ asset('js/menu.js') }}"></script> --}}
+    {{--  <script src="{{ asset('js/menu.js') }}"></script> --}}
     {{--  <script src="../js/menu.js"></script> --}}
 </head>
 
 
 <body>
     <!-- Barra de navegación en el lado izquierdo -->
-    <section class="content-sidebar {{ session('menuState') == 'collapsed' ? 'content-sidebar-hidden' : '' }}" _ngcontent-ng-c4160891441>
+    <section class="content-sidebar {{ session('menuState') == 'collapsed' ? 'content-sidebar-hidden' : '' }}"
+        _ngcontent-ng-c4160891441>
 
         <div class="content scroll-small">
             <div class="sidebar">
@@ -56,14 +81,7 @@
                                 <div class="name-sidebar-item">
                                     <li>Proyectos</li>
                                 </div>
-                                <a class="p-element" href="{{ route('coordinador.proyectosEstudiantes') }}">
-                                    <div class="icon-sidebar-item">
-                                        <i class="material-icons">assignment_ind</i>
-                                    </div>
-                                    <div class="name-sidebar-item">
-                                        <li>Proyectos-Estudiantes</li>
-                                    </div>
-                                </a>
+
                                 <a class="p-element" href="{{ route('coordinador.estudiantesAprobados') }}">
                                     <div class="icon-sidebar-item">
                                         <i class="material-icons">people</i>
@@ -112,10 +130,12 @@
         </div>
     </section>
     <!-- SIDEBAR -->
-    <section class="content-navbar dimension-nav {{ session('menuState') == 'collapsed' ? 'dimension-nav-hidden' : '' }}">
+    <section
+        class="content-navbar dimension-nav {{ session('menuState') == 'collapsed' ? 'dimension-nav-hidden' : '' }}">
         <!-- Toggle sidebar -->
         <div class="icon-menu-sidebar" onclick="toggleSidebar()">
-            <i class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
+            <i
+                class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
         </div>
         <!-- contenido -->
         <main class="navbar">
@@ -154,7 +174,8 @@
     <button id="btn_top" *ngIf="showScrollButton" (click)="scrollToTop()"><i class='bx bxs-chevrons-up'></i></button>
 
     <!-- CONTENEDOR -->
-    <section class="content-views dimension-content {{ session('menuState') == 'collapsed' ? 'dimension-content-hidden' : '' }}">
+    <section
+        class="content-views dimension-content {{ session('menuState') == 'collapsed' ? 'dimension-content-hidden' : '' }}">
         <!-- Title component -->
         <div class="title-component">
             <span class="title-content">@yield('title_component')</span>
@@ -186,7 +207,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-    
+
     <script>
         function toggleSidebar() {
             var menuState = localStorage.getItem('menuState') === 'expanded' ? 'collapsed' : 'expanded';
@@ -218,8 +239,11 @@
     </script>
 
     <script src="{{ asset('js/menu.js') }}"></script>
+    <script src="{{ asset('js/admin/general.js') }}"></script>
+    <script src="{{ asset('js/admin/empresa.js') }}"></script>
 
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
 </body>
 
 </html>

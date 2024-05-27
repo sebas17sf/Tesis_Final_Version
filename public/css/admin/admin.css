@@ -227,37 +227,34 @@ table {
     background-color: #f5f5f5;
     font-family: Arial, sans-serif;
     font-size: 13px;
-    line-height: 1.5;
-
 }
+
+
 .columna-numero {
     padding: 0 5px !important;
 }
-.body,
-tr,
-td{
-    font-size: 13px;
-    text-align: center;
-  
-} */
 
-/* Botenes para buscar */
-.button5 {
-    /* height: 20px; */
-    padding: 9px;
-    letter-spacing: 1.15px;
-    font-weight: 700;
-    font-size: 0.75em;
-    color: var(--white);
-    background-color: #40456c;
-    border: none;
-    outline: none;
-    box-shadow: 2px 2px 5px #d1d9e6, -2px -2px 5px #f9f9f9;
-    transition: all 0.3s ease-in;
-    width: 120px;
-    border-radius: 10px;
+.mat-mdc-table td {
+    vertical-align: middle; /* Alineación vertical del texto en las celdas */
+
+
+.acciones-container {
+    display: flex;
+    gap: 4px; /* Espacio entre los botones */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
 }
 
+.acciones-container button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px; /* Ajusta el padding según sea necesario */
+    border: none;
+    background: none;
+    cursor: pointer;
+}
 
-
-
+.acciones-container button i {
+    font-size: 16px; /* Ajusta el tamaño del icono según sea necesario */
+}

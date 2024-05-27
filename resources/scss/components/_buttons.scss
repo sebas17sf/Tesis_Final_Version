@@ -49,6 +49,13 @@
 
 }
 
+.button1_1 {
+  @include buttons-style;
+  @include buttons-style2;
+  width: 330px;
+  border-radius: 5px;
+
+}
 // ===============================================
 // Boton para icono y texto (pequeño)
 // ===============================================
@@ -71,13 +78,13 @@
 .button3 {
   @include buttons-style2;
   display: grid;
-  width: 35px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   justify-content: center;
   align-items: center;
   border-radius: 5px;
   font-size: fonts.$icon-size;
-  font-size: 1.5em !important;
+
 }
 
 // ===============================================

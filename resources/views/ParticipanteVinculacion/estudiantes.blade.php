@@ -26,7 +26,7 @@
     @endif
 
     <div class="container" style="overflow-x: auto;">
-    <br>
+        <br>
         <h6><b>Estudiantes por calificar</b></h6>
         <hr>
 
@@ -40,50 +40,61 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                        <th>Nombres</th>
-                        <th>Espe ID</th>
-                        <th>Carrera</th>
-                        <th>Departamento</th>
-                        <th>Cumple con las tareas planificadas. Sobre 10%</th>
-                        <th>Resultados Alcanzados. Sobre 10%</th>
-                        <th>Demuestra conocimientos en el área de práctica pre profesional. Sobre 10%</th>
-                        <th>Adaptabilidad e Integración al sistema de trabajo del proyecto. Sobre 10%</th>
-                        <th>Aplicación y manejo de destrezas y habilidades acordes al perfil profesional</th>
-                        <th>Demuestra capacidad de liderazgo y de trabajo en equipo. Sobre 10%</th>
-                        <th>Asiste puntualmente. Sobre 10%</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($estudiantes as $estudiante)
-                        <tr>
-                            <td class="wide-cell">{{ $estudiante->Apellidos }} {{ $estudiante->Nombres }}</td>
-                            <td>{{ $estudiante->espe_id }}</td>
-                            <td>{{ $estudiante->Carrera }}</td>
-                            <td>{{ $estudiante->Departamento }}</td>
-                            <td><input type="number" name="cumple_tareas[]" value="" min="1" max="10"
-                                    step="0.01" required></td>
-                            <td><input type="number" name="resultados_alcanzados[]" value="" min="1"
-                                    max="10" step="0.01" required></td>
-                            <td><input type="number" name="conocimientos_area[]" value="" min="1"
-                                    max="10" step="0.01" required></td>
-                            <td><input type="number" name="adaptabilidad[]" value="" min="1" max="10"
-                                    step="0.01" required></td>
-                            <td><input type="number" name="Aplicacion[]" value="" min="1" max="10"
-                                    step="0.01" required></td>
-                            <td><input type="number" name="capacidad_liderazgo[]" value="" min="1"
-                                    max="10" step="0.01" required></td>
-                            <td><input type="number" name="asistencia_puntual[]" value="" min="1"
-                                    max="10" step="0.01" required></td>
-                            <td><input type="hidden" name="estudiante_id[]" value="{{ $estudiante->EstudianteID }}"></td>
-                        </tr>
-                    @endforeach
+                                    <th>Nombres</th>
+                                    <th>Espe ID</th>
+                                    <th>Carrera</th>
+                                    <th>Departamento</th>
+                                    <th>Cumple con las tareas planificadas. Sobre 10%</th>
+                                    <th>Resultados Alcanzados. Sobre 10%</th>
+                                    <th>Demuestra conocimientos en el área de práctica pre profesional. Sobre 10%</th>
+                                    <th>Adaptabilidad e Integración al sistema de trabajo del proyecto. Sobre 10%</th>
+                                    <th>Aplicación y manejo de destrezas y habilidades acordes al perfil profesional</th>
+                                    <th>Demuestra capacidad de liderazgo y de trabajo en equipo. Sobre 10%</th>
+                                    <th>Asiste puntualmente. Sobre 10%</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($estudiantes as $estudiante)
+                                    <tr>
+                                        <td class="wide-cell">{{ $estudiante->Apellidos }} {{ $estudiante->Nombres }}</td>
+                                        <td>{{ $estudiante->espe_id }}</td>
+                                        <td>{{ $estudiante->Carrera }}</td>
+                                        <td>{{ $estudiante->Departamento }}</td>
+                                        <td><input type="number" name="cumple_tareas[]" value="" min="1"
+                                                max="10" step="0.01" required><small class="form-text text-danger"
+                                                style="display: none;"></small></td>
+                                        <td><input type="number" name="resultados_alcanzados[]" value=""
+                                                min="1" max="10" step="0.01" required><small
+                                                class="form-text text-danger" style="display: none;"></small></td>
+                                        <td><input type="number" name="conocimientos_area[]" value="" min="1"
+                                                max="10" step="0.01" required><small class="form-text text-danger"
+                                                style="display: none;"></small></td>
+                                        <td><input type="number" name="adaptabilidad[]" value="" min="1"
+                                                max="10" step="0.01" required><small class="form-text text-danger"
+                                                style="display: none;"></small></td>
+                                        <td><input type="number" name="Aplicacion[]" value="" min="1"
+                                                max="10" step="0.01" required><small class="form-text text-danger"
+                                                style="display: none;"></small></td>
+                                        <td><input type="number" name="capacidad_liderazgo[]" value="" min="1"
+                                                max="10" step="0.01" required><small class="form-text text-danger"
+                                                style="display: none;"></small></td>
+                                        <td><input type="number" name="asistencia_puntual[]" value="" min="1"
+                                                max="10" step="0.01" required><small class="form-text text-danger"
+                                                style="display: none;"></small></td>
+                                        <td><input type="hidden" name="estudiante_id[]"
+                                                value="{{ $estudiante->EstudianteID }}"></td>
+                                    </tr>
+                                @endforeach
 
-                </tbody>
-            </table>
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
             <br>
             <button type="submit" class="btn btn-sm btn-secondary">Guardar Calificaciones</button>
         </form>
@@ -106,6 +117,7 @@
                         <th>Capacidad de liderazgo</th>
                         <th>Asistencia puntual</th>
                         <th>Informe de Servicio Comunitario</th>
+                        <th>Editar nota</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -155,6 +167,145 @@
                                     {{ $nota->Informe }}<br>
                                 @endforeach
                             </td>
+
+                            <td>
+                                <button class="btn btn-sm btn-secondary" data-toggle="modal"
+                                    data-target="#modalEditarNota{{ $estudiante->EstudianteID }}">Editar</button>
+
+                                <!-- Modal -->
+                                <div class="modal fade
+                                    "
+                                    id="modalEditarNota{{ $estudiante->EstudianteID }}" tabindex="-1" role="dialog"
+                                    aria-labelledby="modalEditarNota{{ $estudiante->EstudianteID }}Label"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <form method="post"
+                                                action="{{ route('actualizar-notas', ['id' => $estudiante->EstudianteID]) }}">
+                                                @csrf
+                                                @method('PUT')
+
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title"
+                                                        id="modalEditarNota{{ $estudiante->EstudianteID }}Label">
+                                                        Editar Nota de {{ $estudiante->Apellidos }}
+                                                        {{ $estudiante->Nombres }}</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div
+                                                    class="modal-body
+                                                    ">
+                                                    <input type="hidden" name="estudiante_id"
+                                                        value="{{ $estudiante->EstudianteID }}">
+                                                    <div
+                                                        class="form-group
+                                                        ">
+                                                        <label for="tareas">Cumple con las tareas planificadas. Sobre
+                                                            10%</label>
+                                                        <input type="number" name="tareas" class="form-control"
+                                                            value="{{ $estudiante->notas->first()->Tareas }}"
+                                                            min="1" max="10" step="0.01" required>
+                                                        <small class="form-text text-danger" style="display: none;">El
+                                                            valor debe estar entre 0 y 10.</small>
+
+                                                    </div>
+                                                    <div
+                                                        class="form-group
+                                                        ">
+                                                        <label for="resultados_alcanzados">Resultados Alcanzados. Sobre
+                                                            10%</label>
+                                                        <input type="number" name="resultados_alcanzados"
+                                                            class="form-control"
+                                                            value="{{ $estudiante->notas->first()->Resultados_Alcanzados }}"
+                                                            min="1" max="10" step="0.01" required>
+                                                        <small class="form-text text-danger" style="display: none;">El
+                                                            valor debe estar entre 0 y 10.</small>
+
+                                                    </div>
+                                                    <div
+                                                        class="form-group
+                                                        ">
+                                                        <label for="conocimientos_area">Demuestra conocimientos en el área
+                                                            de práctica pre profesional. Sobre 10%</label>
+                                                        <input type="number" name="conocimientos_area"
+                                                            class="form-control"
+                                                            value="{{ $estudiante->notas->first()->Conocimientos }}"
+                                                            min="1" max="10" step="0.01" required>
+                                                        <small class="form-text text-danger" style="display: none;">El
+                                                            valor debe estar entre 0 y 10.</small>
+
+                                                    </div>
+                                                    <div
+                                                        class="form-group
+                                                        ">
+                                                        <label for="adaptabilidad">Adaptabilidad e Integración al sistema
+                                                            de trabajo del proyecto. Sobre 10%</label>
+                                                        <input type="number" name="adaptabilidad" class="form-control"
+                                                            value="{{ $estudiante->notas->first()->Adaptabilidad }}"
+                                                            min="1" max="10" step="0.01" required>
+                                                        <small class="form-text text-danger" style="display: none;">El
+                                                            valor debe estar entre 0 y 10.</small>
+
+                                                    </div>
+                                                    <div
+                                                        class="form-group
+                                                        ">
+                                                        <label for="Aplicacion">Aplicación y manejo de destrezas y
+                                                            habilidades acordes al perfil profesional</label>
+                                                        <input type="number" name="Aplicacion" class="form-control"
+                                                            value="{{ $estudiante->notas->first()->Aplicacion }}"
+                                                            min="1" max="10" step="0.01" required>
+                                                        <small class="form-text text-danger" style="display: none;">El
+                                                            valor debe estar entre 0 y 10.</small>
+
+                                                    </div>
+                                                    <div
+                                                        class="form-group
+                                                        ">
+                                                        <label for="capacidad_liderazgo">Demuestra capacidad de liderazgo y
+                                                            de trabajo en equipo. Sobre 10%</label>
+                                                        <input type="number" name="capacidad_liderazgo"
+                                                            class="form-control"
+                                                            value="{{ $estudiante->notas->first()->Capacidad_liderazgo }}"
+                                                            min="1" max="10" step="0.01" required>
+                                                        <small class="form-text text-danger" style="display: none;">El
+                                                            valor debe estar entre 0 y 10.</small>
+
+                                                    </div>
+                                                    <div
+                                                        class="form-group
+                                                        ">
+                                                        <label for="asistencia_puntual">Asiste puntualmente. Sobre
+                                                            10%</label>
+                                                        <input type="number" name="asistencia_puntual"
+                                                            class="form-control"
+                                                            value="{{ $estudiante->notas->first()->Asistencia }}"
+                                                            min="1" max="10" step="0.01" required>
+                                                        <small class="form-text text-danger" style="display: none;">El
+                                                            valor debe estar entre 0 y 10.</small>
+
+                                                    </div>
+
+                                                </div>
+                                                <div
+                                                    class="modal-footer
+                                                    ">
+                                                    <button type="button" class="button"
+                                                        data-dismiss="modal">Cerrar</button>
+                                                    <button type="submit" class="button">Guardar
+                                                        Cambios</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -197,7 +348,8 @@
                                     <h6><b>Actividades registradas del estudiante</b></h6>
                                     <table class="table">
                                         <thead>
-                                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                            <tr
+                                                class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                                 <th>Fecha</th>
                                                 <th>Actividades</th>
                                                 <th>Numero de Horas</th>
@@ -232,6 +384,10 @@
             @endforeach
         </div>
     </div>
+
+    <script src="{{ asset('js/ParticipanteDirectorVinculacion/notas.js') }}"></script>
+
+
 
 
 

@@ -27,67 +27,36 @@
         </script>
     @endif
 
-
-
-    <div class="container">
-        <br>
-        <br>
-        <h4 class="mb-4 text-center"><i class="material-icons">edit</i> Editar Datos del Estudiante</h4>
+    <div class="mat-elevation-z8 contenedor_general">
+    <div class="container mt-3">
+        <h3 class="text-center"><b>Editar Datos del Estudiante</b></h3>
         <hr>
 
+        <div class="container-fluid">
 
-        <form method="POST" action="{{ route('estudiantes.update', ['estudiante' => $estudiante->EstudianteID]) }}">
-            @csrf
-            @method('PUT')
-
+<form method="POST" action="{{ route('estudiantes.update', ['estudiante' => $estudiante->EstudianteID]) }}" class="custom-form">
+    @csrf
+    @method('PUT')
+    <div class="row">
+        <div class="col-md-4">
+            <!-- Primera columna -->
             <div class="form-group">
-                <label for="Nombres"><i class="material-icons">person</i> Nombres:</label>
-                <input id="Nombres" type="text" class="form-control" name="Nombres" value="{{ $estudiante->Nombres }}"
-                    required autofocus>
+                <label for="Nombres">Nombres:</label>
+                <input id="Nombres" type="text" class="form-control input" name="Nombres" value="{{ $estudiante->Nombres }}" required autofocus placeholder="Ingrese sus Nombres" pattern="[A-Za-zÁ-úñÑ\s]+" title="Ingrese solo letras (sin caracteres especiales)">
+                <span id="error-message-name" style="color: red; display: none;">Debe ingresar solo caracteres</span>
             </div>
-
             <div class="form-group">
-                <label for="Apellidos"><i class="material-icons">person</i> Apellidos:</label>
-                <input id="Apellidos" type="text" class="form-control" name="Apellidos"
-                    value="{{ $estudiante->Apellidos }}" required>
-            </div>
-
-            <div class="form-group">
-                <label for="espe_id"><i class="material-icons">info</i> ESPE ID:</label>
-                <input id="espe_id" type="text" class="form-control" name="espe_id" value="{{ $estudiante->espe_id }}"
-                    required>
-            </div>
-
-            <div class="form-group">
-                <label for="celular"><i class="material-icons">phone</i> Celular:</label>
+                <label for="celular">Celular:</label>
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text">+593</span>
+                        <span class="input-group-text input">+593</span>
                     </div>
-                    <input id="celular" type="text" class="form-control" name="celular"
-                        value="{{ $estudiante->celular }}" required pattern="[0-9]{10}">
+                    <input id="celular" type="text" class="form-control input" name="celular" value="{{ $estudiante->celular }}" required placeholder="Ingrese su número de celular">
                 </div>
+                <span id="error-message-cell" style="color: red; display: none;">Número de celular no válido</span>
             </div>
-
             <div class="form-group">
-                <label for="cedula"><i class="material-icons">credit_card</i> Cédula:</label>
-                <input id="cedula" type="text" class="form-control" name="cedula" value="{{ $estudiante->cedula }}"
-                    required>
-            </div>
-
-
-
-            <div class="form-group">
-                <label for="Cohorte"><i class="material-icons">event_note</i> Cohorte:</label>
-                <select class="form-control input input-select" id="Cohorte" name="Cohorte" required>
-                    @foreach ($periodos as $periodo)
-                        <option value="{{ $periodo->numeroPeriodo }}">{{ $periodo->numeroPeriodo }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="Periodo"><i class="material-icons">event_note</i> Periodo:</label>
+                <label for="Periodo">Periodo:</label>
                 <select class="form-control input input-select" id="Periodo" name="Periodo" required>
                     @foreach ($periodos as $periodo)
                         <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} {{ $periodo->Periodo }}
@@ -95,63 +64,80 @@
                     @endforeach
                 </select>
             </div>
-            
+        </div>
+
+        <div class="col-md-4">
+            <!-- Segunda columna -->
             <div class="form-group">
-                <label for="Carrera"><i class="material-icons">school</i> Carrera:</label>
-                <select class="form-control" id="Carrera" name="Carrera" required>
-                    <option value="Ingeniería en Tecnologías de la información"
-                        @if ($estudiante->Carrera == 'Ingeniería en Tecnologías de la información') selected @endif>Ingeniería en Tecnologías de la información
-                    </option>
-                    <option value="Ingeniería en Agropecuaria" @if ($estudiante->Carrera == 'Ingeniería en Agropecuaria') selected @endif>Ingeniería
-                        en Agropecuaria</option>
-                    <option value="Ingeniería en Biotecnologia" @if ($estudiante->Carrera == 'Ingeniería en Biotecnologia') selected @endif>Ingeniería
-                        en Biotecnologia</option>
+                <label for="Apellidos">Apellidos:</label>
+                <input id="Apellidos" type="text" class="form-control input" name="Apellidos" value="{{ $estudiante->Apellidos }}" required placeholder="Ingrese sus Apellidos" pattern="[A-Za-zÁ-úñÑ\s]+" title="Ingrese solo letras (sin caracteres especiales)">
+                <span id="error-message-apellidos" style="color: red; display: none;">Debe ingresar solo caracteres</span>
+            </div>
+            <div class="form-group">
+                <label for="Carrera">Carrera:</label>
+                <select class="form-control input input_select" id="Carrera" name="Carrera" required>
+                    <option value="">Seleccione su Carrera</option>
+                    <option value="Ingeniería en Tecnologías de la información" @if ($estudiante->Carrera == 'Ingeniería en Tecnologías de la información') selected @endif>Ingeniería en Tecnologías de la información</option>
+                    <option value="Ingeniería en Agropecuaria" @if ($estudiante->Carrera == 'Ingeniería en Agropecuaria') selected @endif>Ingeniería en Agropecuaria</option>
+                    <option value="Ingeniería en Biotecnologia" @if ($estudiante->Carrera == 'Ingeniería en Biotecnologia') selected @endif>Ingeniería en Biotecnologia</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="Provincia"><i class="material-icons">location_city</i> Provincia:</label>
-                <select class="form-control" id="Provincia" name="Provincia" required>
-                    <option value="Santo Domingo" @if ($estudiante->Provincia == 'Santo Domingo de los Tsáchilas') selected @endif>Santo Domingo de los
-                        Tsáchilas</option>
+                <label for="Departamento">Departamento:</label>
+                <select class="form-control input input_select" id="Departamento" name="Departamento" required>
+                    <option value="">Seleccione su Departamento</option>
+                    <option value="Ciencias de la Computación" @if ($estudiante->Departamento == 'Ciencias de la Computación') selected @endif>DCCO - Ciencias de la Computación</option>
+                    <option value="Ciencias Exactas" @if ($estudiante->Departamento == 'Ciencias Exactas') selected @endif>DCEX - Ciencias Exactas</option>
+                    <option value="Ciencias de la Vida y Agricultura" @if ($estudiante->Departamento == 'Ciencias de la Vida y Agricultura') selected @endif>DCVA - Ciencias de la Vida y Agricultura</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <!-- Tercera columna con dos sub-columnas -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="espe_id">ESPE ID:</label>
+                        <input id="espe_id" type="text" class="form-control input" name="espe_id" value="{{ $estudiante->espe_id }}" required placeholder="Ingrese su ESPE ID">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="Cohorte">Cohorte:</label>
+                        <select class="form-control input input_select" id="Cohorte" name="Cohorte" required >
+                            <option value="">Seleccione su Cohorte</option>
+                            @foreach ($periodos as $periodo)
+                                <option value="{{ $periodo->numeroPeriodo }}" @if ($periodo->numeroPeriodo == $estudiante->Cohorte) selected @endif>{{ $periodo->numeroPeriodo }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="cedula">Cédula:</label>
+                <input id="cedula" type="text" class="form-control input" name="cedula" value="{{ $estudiante->cedula }}" required pattern="[0-9]{10}" title="Ingrese un número de cédula válido (10 dígitos)" placeholder="Ingrese su número de cédula (10 dígitos)">
+                <span id="error-message" style="color: red; display: none;">Cédula no válida</span>
+            </div>
+
+            <div class="form-group">
+                <label for="Provincia">Localidad:</label>
+                <select class="form-control input input_select" id="Provincia" name="Provincia" required>
+                    <option value="">Seleccione su Localidad</option>
+                    <option value="Santo Domingo" @if ($estudiante->Provincia == 'Santo Domingo') selected @endif>Santo Domingo</option>
                     <option value="Luz de America" @if ($estudiante->Provincia == 'Luz de America') selected @endif>Luz de America</option>
                 </select>
             </div>
-
-
-            <div class="form-group">
-                <label for="Departamento"><i class="material-icons">school</i> Departamento:</label>
-                <select class="form-control" id="Departamento" name="Departamento" required>
-                    <option value="Ciencias de la Computacion" @if ($estudiante->Departamento == 'DCCO') selected @endif>DCCO -
-                        Departamento de Computación</option>
-                    <option value="Ciencias Exactas" @if ($estudiante->Departamento == 'DCEX') selected @endif>DCEX - Ciencias
-                        Exactas</option>
-                    <option value="Ciencias de la Vida y Agricultura" @if ($estudiante->Departamento == 'DCVA') selected @endif>DCVA
-                        - Departamento de Ciencias de la Vida y Agricultura</option>
-                </select>
-            </div>
-
-            <button type="submit" class="btn btn-sm btn-secondary"><i class="material-icons">save</i> Guardar
-                Cambios</button>
-        </form>
-
+        </div>
     </div>
-    <style>
-        .custom-form {
-            max-width: 500px;
-            /* Ancho máximo del formulario */
-            margin: 0 auto;
-            /* Centrar horizontalmente */
-            padding: 20px;
-            /* Espaciado interior */
-            border: 1px solid #ccc;
-            /* Borde del formulario */
-        }
 
-        .custom-form h2 {
-            text-align: center;
-            /* Alinear al centro */
-            margin-bottom: 20px;
-            /* Espaciado inferior */
-        }
-    </style>
+    <div class="button-container text-center">
+        <button type="submit" class="button1 efects_button">Guardar Datos</button>
+    </div>
+    <br>
+</form>
+</div>
+</div>
+</div>   
 @endsection

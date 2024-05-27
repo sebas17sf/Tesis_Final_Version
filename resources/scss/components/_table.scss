@@ -21,13 +21,13 @@
       th {
         width: 200px;
         min-width: 150px;
-        font-size: fonts.$form-input;
+        font-size: 13px;
         padding: .5rem !important;
       }
 
       th {
         position: sticky;
-        font-size: fonts.$text-p;
+        font-size: 13px;
         font-weight: bold;
         top: 0;
         background: linear-gradient(to bottom, colors.$white, colors.$white),

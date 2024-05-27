@@ -63,9 +63,9 @@ function copyDataToClipboard(event) {
 function toggleIcon(icon, isCheck) {
     if (isCheck) {
         icon.classList.remove('fa-regular', 'fa-copy');
-        icon.classList.add('fa-solid', 'fa-check');
+        icon.classList.add('fa-solid', 'fa-circle-check');
     } else {
-        icon.classList.remove('fa-solid', 'fa-check');
+        icon.classList.remove('fa-solid', 'fa-circle-check');
         icon.classList.add('fa-regular', 'fa-copy');
     }
 }

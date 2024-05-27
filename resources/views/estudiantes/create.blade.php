@@ -7,7 +7,7 @@
 
     <div class="mat-elevation-z8 contenedor_general">
         <div class="container mt-3">
-            <h6 class="text-center"><b>Ingresar Datos del Estudiante</b></h6>
+            <h3 class="text-center"><b>Ingresar Datos del Estudiante</b></h3>
             <hr>
 
             @if (session('success'))
@@ -46,7 +46,7 @@
             </div>
             <div class="form-group">
                 <label for="Periodo">Periodo:</label>
-                <select class="form-control input input-select" id="Periodo" name="Periodo" required>
+                <select class="form-control input input_select" id="Periodo" name="Periodo" required>
                     <option value="">Seleccione su Periodo</option>
                     @foreach ($periodos as $periodo)
                         <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} {{ $periodo->Periodo }}</option>
@@ -64,7 +64,7 @@
             </div>
             <div class="form-group">
                 <label for="Carrera">Carrera:</label>
-                <select class="form-control input input-select" id="Carrera" name="Carrera" required>
+                <select class="form-control input input_select" id="Carrera" name="Carrera" required>
                     <option value="">Seleccione su Carrera</option>
                     <option value="Ingeniería en Tecnologías de la información">Tecnologías de la información</option>
                     <option value="Ingeniería en Agropecuaria">Agropecuaria</option>
@@ -73,7 +73,7 @@
             </div>
             <div class="form-group">
                                 <label for="Departamento">Departamento:</label>
-                                <select class="form-control input input-select" id="Departamento" name="Departamento"
+                                <select class="form-control input input_select" id="Departamento" name="Departamento"
                                     required>
                                     <option value="">Seleccione su Departamento</option>
                                     <option value="Ciencias de la Computación">DCCO - Ciencias de la Computación</option>
@@ -97,7 +97,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="Cohorte">Cohorte:</label>
-                        <select class="form-control input input-select" id="Cohorte" name="Cohorte" required>
+                        <select class="form-control input input_select" id="Cohorte" name="Cohorte" required>
                             <option value="">Seleccione su Cohorte</option>
                             @foreach ($periodos as $periodo)
                                 <option value="{{ $periodo->numeroPeriodo }}">{{ $periodo->numeroPeriodo }}</option>
@@ -115,7 +115,7 @@
 
             <div class="form-group">
                 <label for="Provincia">Localidad:</label>
-                <select class="form-control input input-select" id="Provincia" name="Provincia" required>
+                <select class="form-control input input_select" id="Provincia" name="Provincia" required>
                     <option value="">Seleccione su Localidad</option>
                     <option value="Santo Domingo">Santo Domingo</option>
                     <option value="Luz de America">Luz de America</option>

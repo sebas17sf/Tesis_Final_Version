@@ -29,7 +29,7 @@
                 <div class="col-md-4 d-flex">
                     <div class="card mb-4 w-100">
                         <div class="card-body d-flex flex-column">
-                            <h6 class="card-title flex-grow-1"><i>Generar Acta de Designación de Estudiantes</i></h6>
+                            <h4 class="card-title flex-grow-1"><i>Generar Acta de Designación de Estudiantes</i></h4>
                             <hr>
                             <form action="{{ route('generar-documento') }}" method="post"
                                 class="d-flex justify-content-center">
@@ -44,7 +44,7 @@
                 <div class="col-md-4 d-flex">
                     <div class="card mb-4 w-100">
                         <div class="card-body d-flex flex-column">
-                            <h6 class="card-title flex-grow-1"><i>Generar Carta de Compromiso de Estudiante</i></h6>
+                            <h4 class="card-title flex-grow-1"><i>Generar Carta de Compromiso de Estudiante</i></h4>
                             <hr>
                             <form action="{{ route('generar-documento-cartaCompromiso') }}" method="post"
                                 class="d-flex justify-content-center">
@@ -59,7 +59,7 @@
                 <div class="col-md-4 d-flex">
                     <div class="card mb-4 w-100">
                         <div class="card-body d-flex flex-column">
-                            <h6 class="card-title flex-grow-1"><i>Generar Número de Horas de Estudiantes</i></h6>
+                            <h4 class="card-title flex-grow-1"><i>Generar Número de Horas de Estudiantes</i></h4>
                             <hr>
                             <form action="{{ route('generar-documento-numeroHoras') }}" method="POST"
                                 class="d-flex justify-content-center">
@@ -75,7 +75,8 @@
         </div>
 
 
-        <button id="toggleFormBtn" class="btn btn-light btn-block">Registrar actividad</button>
+        <center><button id="toggleFormBtn" class="button1_1 efects_button">Registrar actividad</button></center>
+
         <br>
         <div id="registroActividades" style="display: none;">
             <div class="row">
@@ -83,7 +84,7 @@
                     <div class="card">
 
                         <div class="card-body">
-                            <h6 class="card-title"><b>Registro de Actividades</b></h6>
+                            <h4 class="card-title"><b>Registro de Actividades</b></h4>
                             <hr>
                             <form action="{{ route('estudiantes.guardarActividad') }}" method="post"
                                 enctype="multipart/form-data">
@@ -115,7 +116,7 @@
                                     {{--
 
                                             <div class="card-body d-flex flex-column">
-                                                <h6 class="card-title flex-grow-1"><i>Generar Carta de Compromiso de Estudiante</i></h6>
+                                                <h4 class="card-title flex-grow-1"><i>Generar Carta de Compromiso de Estudiante</i></h4>
                                                 <hr>
                                                 <form action="{{ route('generar-documento-cartaCompromiso') }}" method="post">
                                                     @csrf
@@ -125,9 +126,6 @@
                                                 </form>
                                             </div> --}}
 
-
-
-
                                 </div>
 
                                 <div class="form-group">
@@ -135,7 +133,7 @@
                                     <input type="text" id="nombre_actividad" name="nombre_actividad"
                                         class="form-control input" required>
                                 </div>
-                                <button type="submit" class="btn btn-light btn-block">Guardar Actividad</button>
+                                <center><button type="submit" class="button1">Guardar Actividad</button></center>
                             </form>
                         </div>
 
@@ -145,7 +143,7 @@
             </div>
 
             <div class="mt-4">
-                <h6 class="text-center"><b>Actividades Registradas</b></h6>
+                <h4 class="text-center"><b>Actividades Registradas</b></h4>
                 <hr>
                 <table class="table table-bordered">
                     <thead>
@@ -248,9 +246,12 @@
         </div>
 
 
+
+        <center><button id="toggleFormBtn2" class="button1_1 efects_button">Crear Informe de Servicio a la comunidad</button></center>
         <br>
-        <button id="toggleFormBtn2" class="btn btn-light btn-block">Crear Informe</button>
-        <br>
+
+
+
         <div id="registroInforme" style="display: none;">
             <form action="{{ route('estudiantes.generarInforme') }}" method="post">
                 @csrf
@@ -343,7 +344,7 @@
 
 
 
-                <button type="submit" class="button">Crear Informe</button>
+                <button type="submit" class="button1">Crear Informe</button>
             </form>
 
         </div>
@@ -351,9 +352,8 @@
 
 
     </div>
-    </div>
 
-
+</div>
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

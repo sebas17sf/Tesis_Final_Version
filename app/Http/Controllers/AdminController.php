@@ -12,6 +12,7 @@ use App\Mail\EstudianteNegado;
 use App\Models\AsignacionProyecto;
 use App\Models\Empresa;
 use App\Models\Role;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\DB;
 
 
@@ -69,14 +70,14 @@ class AdminController extends Controller
                 $profesores = $query->paginate($perPage);
 
                 $periodos = Periodo::all();
-                $profesorRoleId = Role::where('Tipo', 'Profesor')->value('id');
+                $profesorRoleId = Role::where('Tipo', 'Vinculacion')->value('id');
 
 
-                $profesoresPendientes = Usuario::where('role_id', $profesorRoleId)->where('Estado', 'Pendiente')->get();
+                $profesoresPendientes = Usuario::where('role_id', $profesorRoleId)->get();
 
                 // Consulta para obtener los profesores con permisos
                 $profesoresConPermisos = Usuario::where('role_id', $profesorRoleId)
-                    ->whereIn('Estado', ['Vinculacion', 'Lector', 'Director-Departamento'])
+                    ->whereIn('Estado', ['Vinculacion', 'Practicas', 'Director-Departamento'])
                     ->get();
 
 
@@ -97,23 +98,24 @@ class AdminController extends Controller
     ////actualizar permisos
     public function updateEstado(Request $request, $id)
     {
-        // Validar el nuevo estado
         $request->validate([
-            'nuevoEstado' => 'required|in:Vinculacion,Director-Departamento,Director-Carrera,Negado',
+            'Estado' => 'required',
+            'password' => 'required',
         ]);
 
-        // Actualizar el estado del profesor
-        $profesor = Usuario::find($id);
-        $profesor->Estado = $request->nuevoEstado;
-        $profesor->save();
+        $usuario = Usuario::findOrFail($id);
 
-        // Si el estado es "Negado", eliminar al profesor de la base de datos
-        if ($request->nuevoEstado === 'Negado') {
-            $profesor->delete();
+        if (!$usuario) {
+            return redirect()->route('admin.index')->with('error', 'Usuario no encontrado');
         }
+
+        $usuario->Estado = $request->input('Estado');
+        $usuario->Contrasena = bcrypt($request->input('password'));
+        $usuario->save();
 
         return redirect()->route('admin.index')->with('success', 'Estado actualizado correctamente');
     }
+
 
 
 
@@ -293,8 +295,8 @@ class AdminController extends Controller
         $periodos = Periodo::all();
         $nrcs = NrcVinculacion::all();
 
-        /////////mostrar los profesores que no tienen un DirectorID en la tabla proyectos
-        $profesores = ProfesUniversidad::whereNotIn('id', Proyecto::pluck('DirectorID')->toArray())->get();
+         $profesores = ProfesUniversidad::all();
+
 
         $perPage = $request->input('perPage', 10);
         $search = $request->input('search');
@@ -334,7 +336,7 @@ class AdminController extends Controller
         ///////////// quiero obtener tods las asignacionesProyectos
         $asignacionesAgrupadas = AsignacionProyecto::with('estudiante')
             ->with('proyecto')
-             ->with('docenteParticipante')
+            ->with('docenteParticipante')
             ->get()
             ->groupBy(function ($item) {
                 return $item->ProyectoID . '_' . $item->IdPeriodo;
@@ -545,42 +547,21 @@ class AdminController extends Controller
 
     }
 
+
     public function guardarMaestro(Request $request)
     {
         try {
-            $existente = ProfesUniversidad::where(function ($query) use ($request) {
-                $query->where('Nombres', $request->nombres)
-                    ->where('Apellidos', $request->apellidos);
-            })->exists();
-
-            if ($existente) {
-                $mensaje = 'Ya existe un maestro con los mismos nombres y apellidos.';
-
-                return redirect()->back()->with('errorMaestro', $mensaje);
-            }
-
-            $existenteCorreo = ProfesUniversidad::where('Correo', $request->correo)->exists();
-            $existenteCedula = ProfesUniversidad::where('Cedula', $request->cedula)->exists();
-
-            if ($existenteCorreo) {
-                $mensaje = 'El correo ya está registrado en Docentes.';
-            }
-
-            if ($existenteCedula) {
-                $mensaje .= ' La cédula ya está registrada en Docentes.';
-            }
-
-            if ($existenteCorreo || $existenteCedula) {
-                return redirect()->back()->with('errorMaestro', $mensaje);
-            }
-
             $request->validate([
                 'nombres' => 'required',
                 'apellidos' => 'required',
-                'correo' => 'required',
-                'cedula' => 'required',
+                'correo' => 'required|email|unique:profesUniversidad,Correo',
+                'cedula' => 'required|digits:10|unique:profesUniversidad,Cedula',
                 'departamento' => 'required',
-                'espe_id' => 'required',
+                'espe_id' => 'required|unique:profesUniversidad,espe_id',
+            ], [
+                'correo.unique' => 'El correo electrónico ya está en uso.',
+                'cedula.unique' => 'La cédula ya está en uso.',
+                'espe_id.unique' => 'El ID de la especialidad ya está en uso.',
             ]);
 
             $usuario = explode('@', $request->correo)[0];
@@ -595,10 +576,17 @@ class AdminController extends Controller
             ]);
 
             return redirect()->route('admin.index')->with('success', 'Docente creado con éxito');
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'No se pudo crear el Docente. Por favor, verifica los datos e intenta de nuevo.');
         }
     }
+
+
+
+
+
 
     public function eliminarMaestro(Request $request, $id)
     {
@@ -609,13 +597,18 @@ class AdminController extends Controller
                 return redirect()->route('admin.index')->with('error', 'Docente no encontrado.');
             }
 
-            $proyectosRelacionados = AsignacionProyecto::where('DirectorID', $maestro->id)
+            $proyectosRelacionados = Proyecto::where('DirectorID', $maestro->id)
                 ->orWhere('DirectorID', $maestro->id)
                 ->get();
 
-            $proyectosRelacionados = AsignacionProyecto::where('ParticipanteID', $maestro->id)
-                ->orWhere('ParticipanteID', $maestro->id)
-                ->get();
+            $participante = AsignacionProyecto::where('ParticipanteID', $maestro->id)->first();
+
+            if ($participante) {
+                session(['maestro_con_proyectos' => true]);
+                return redirect()->route('admin.index')->with('error', 'El Docente tiene proyectos asignados. No se puede eliminar.');
+            }
+
+
 
             if ($proyectosRelacionados->count() > 0) {
                 session(['maestro_con_proyectos' => true]);
@@ -642,24 +635,25 @@ class AdminController extends Controller
     public function actualizarMaestro(Request $request, $id)
     {
         try {
-            // Validar los datos de edición
             $request->validate([
-                'nombres' => 'required|string|max:255',
-                'apellidos' => 'required|string|max:255',
-                'correo' => 'required|email|max:255',
-                'cedula' => 'required|string|min:10',
-                'departamento' => 'required|string',
-                'espe_id' => 'required',
+                'nombres' => 'required',
+                'apellidos' => 'required',
+                'correo' => 'required|email|unique:profesUniversidad,Correo,' . $id,
+                'cedula' => 'required|digits:10|unique:profesUniversidad,Cedula,' . $id,
+                'departamento' => 'required',
+                'espe_id' => 'required|unique:profesUniversidad,espe_id,' . $id,
+            ], [
+                'correo.unique' => 'El correo electrónico ya está en uso.',
+                'cedula.unique' => 'La cédula ya está en uso.',
+                'espe_id.unique' => 'El ID ya está en uso.',
             ]);
 
-            // Encontrar el maestro que se va a editar
             $maestro = ProfesUniversidad::find($id);
 
             if (!$maestro) {
                 return redirect()->route('admin.index')->with('error', 'Maestro no encontrado.');
             }
 
-            // Actualizar los datos del maestro en la base de datos
             $maestro->update([
                 'Nombres' => $request->nombres,
                 'Apellidos' => $request->apellidos,
@@ -670,6 +664,8 @@ class AdminController extends Controller
             ]);
 
             return redirect()->route('admin.index')->with('success', 'Maestro actualizado con éxito.');
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'No se pudo actualizar el maestro. Por favor, verifica los datos e intenta de nuevo.');
         }

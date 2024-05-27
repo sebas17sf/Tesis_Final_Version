@@ -8,6 +8,7 @@ use App\Models\estudiantesvinculacion;
 use App\Models\Estudiante;
 use ZipArchive;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Periodo;
 
 use App\Models\Usuario;
 use App\Models\ProfesUniversidad;
@@ -33,7 +34,13 @@ class CoordinadorController extends Controller
 {
     public function index(Request $request)
     {
+        $estadoProyecto = $request->input('estado');
+
+        $periodos = Periodo::all();
         $nrcs = NrcVinculacion::all();
+
+         $profesores = ProfesUniversidad::all();
+
 
         $perPage = $request->input('perPage', 10);
         $search = $request->input('search');
@@ -43,23 +50,20 @@ class CoordinadorController extends Controller
             $perPage = 10;
         }
 
-        $query = Proyecto::with(['director', 'docenteParticipante', 'nrcs', 'participantesAdicionales']);
+        $query = Proyecto::query();
 
-        // Apply search if a search term is provided
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->where('NombreProyecto', 'LIKE', '%' . $search . '%')
                     ->orWhere('DescripcionProyecto', 'LIKE', '%' . $search . '%')
                     ->orWhere('Estado', 'LIKE', '%' . $search . '%')
-                    ->orWhereHas('director', function ($directorQuery) use ($search) {
-                        $directorQuery->where('Nombres', 'LIKE', '%' . $search . '%')
-                            ->orWhere('Apellidos', 'LIKE', '%' . $search . '%');
-                    })
-                    ->orWhereHas('docenteParticipante', function ($participanteQuery) use ($search) {
-                        $participanteQuery->where('Nombres', 'LIKE', '%' . $search . '%')
-                            ->orWhere('Apellidos', 'LIKE', '%' . $search . '%');
-                    });
+                    ->orWhere('DepartamentoTutor', 'LIKE', '%' . $search . '%')
+                    ->orWhere('codigoProyecto', 'LIKE', '%' . $search . '%');
             });
+        }
+
+        if ($estadoProyecto) {
+            $query->where('Estado', $estadoProyecto);
         }
 
         // Get paginated projects
@@ -70,11 +74,17 @@ class CoordinadorController extends Controller
 
 
         $estudiantesAprobados = Estudiante::where('Estado', 'Aprobado')
-            ->whereNotIn('EstudianteID', AsignacionEstudiantesDirector::pluck('EstudianteID')->toArray())
+            ->whereNotIn('EstudianteID', AsignacionProyecto::pluck('EstudianteID')->toArray())
             ->get();
 
-
-
+        ///////////// quiero obtener tods las asignacionesProyectos
+        $asignacionesAgrupadas = AsignacionProyecto::with('estudiante')
+            ->with('proyecto')
+            ->with('docenteParticipante')
+            ->get()
+            ->groupBy(function ($item) {
+                return $item->ProyectoID . '_' . $item->IdPeriodo;
+            });
 
 
         return view('coordinador.index', [
@@ -82,7 +92,10 @@ class CoordinadorController extends Controller
             'proyectosDisponibles' => $proyectosDisponibles,
             'estudiantesAprobados' => $estudiantesAprobados,
             'perPage' => $perPage,
+            'profesores' => $profesores,
             'nrcs' => $nrcs,
+            'asignacionesAgrupadas' => $asignacionesAgrupadas,
+            'periodos' => $periodos,
             'search' => $search,
         ]);
     }

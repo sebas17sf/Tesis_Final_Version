@@ -21,8 +21,8 @@ return new class extends Migration {
             $table->string('codigoProyecto')->nullable();
             $table->text('DescripcionProyecto');
             $table->string('DepartamentoTutor');
-            $table->Date('FechaInicio');
-            $table->Date('FechaFinalizacion');
+            $table->Date('FechaInicio')->nullable();;
+            $table->Date('FechaFinalizacion')->nullable();;
              $table->string('Estado');
             $table->timestamps();
         });

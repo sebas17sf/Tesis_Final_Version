@@ -9,7 +9,7 @@
 
   
     <section class="contenedor_agregar_periodo">
-        <h6><b>Estudiantes en Proceso de Revisión</b></h6>
+        <h4><b>Estudiantes en Proceso de Revisión</b></h4>
         <hr>
         <section>
             <div class="mat-elevation-z8 contenedor_general">
@@ -104,7 +104,7 @@
             </div>
         </section>
         <br>
-        <h6><b>Seguimiento Estudiantes</b></h6>
+        <h4><b>Seguimiento Estudiantes</b></h4>
         <hr>
         <section>
             <div class="mat-elevation-z8 contenedor_general">
@@ -252,7 +252,7 @@
             </div>
         </section>
         <br>
-        <h6><b>Estudiantes culminados Vinculación a la sociedad</b></h6>
+        <h4><b>Estudiantes culminados Vinculación a la sociedad</b></h4>
         <hr>
         <section>
             <div class="mat-elevation-z8 contenedor_general">

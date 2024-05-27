@@ -91,7 +91,7 @@ class ParticipanteVinculacionController extends Controller
 
                 // Obtener los estudiantes con estado Aprobado asociados a los proyectos de AsignacionProyecto
                 $todosEstudiantes = AsignacionProyecto::whereIn('ParticipanteID', [$participante->id])
-                     ->whereHas('estudiante', function ($query) {
+                    ->whereHas('estudiante', function ($query) {
                         $query->where('Estado', 'Aprobado');
                     })
                     ->pluck('EstudianteID');
@@ -116,7 +116,7 @@ class ParticipanteVinculacionController extends Controller
 
             $actividadesEstudiantes = ActividadEstudiante::join('asignacionProyectos', 'actividades_estudiante.EstudianteID', '=', 'asignacionProyectos.EstudianteID')
                 ->join('proyectos', 'asignacionProyectos.ProyectoID', '=', 'proyectos.ProyectoID')
-                 ->select('actividades_estudiante.*')
+                ->select('actividades_estudiante.*')
                 ->get();
 
 
@@ -193,6 +193,42 @@ class ParticipanteVinculacionController extends Controller
         // Puedes redirigir a una página de éxito o hacer cualquier otra acción necesaria
         return redirect()->route('ParticipanteVinculacion.estudiantes')->with('success', 'Notas guardadas exitosamente.');
     }
+
+    //////editar notas
+    public function editarNotas(Request $request, $id)
+    {
+        $rules = [
+            'tareas' => 'required|numeric|min:1|max:10',
+            'resultados_alcanzados' => 'required|numeric|min:1|max:10',
+            'conocimientos_area' => 'required|numeric|min:1|max:10',
+            'adaptabilidad' => 'required|numeric|min:1|max:10',
+            'Aplicacion' => 'required|numeric|min:1|max:10',
+            'capacidad_liderazgo' => 'required|numeric|min:1|max:10',
+            'asistencia_puntual' => 'required|numeric|min:1|max:10',
+        ];
+
+        $messages = [
+            'required' => 'El campo :attribute es obligatorio.',
+            'numeric' => 'El campo :attribute debe ser un número.',
+            'min' => 'El campo :attribute debe ser mayor que :min.',
+            'max' => 'El campo :attribute debe ser menor que :max.',
+        ];
+
+        $this->validate($request, $rules, $messages);
+
+        $nota = NotasEstudiante::where('EstudianteID', $id)->first();
+        $nota->Tareas = $request->input('tareas');
+        $nota->Resultados_Alcanzados = $request->input('resultados_alcanzados');
+        $nota->Conocimientos = $request->input('conocimientos_area');
+        $nota->Adaptabilidad = $request->input('adaptabilidad');
+        $nota->Aplicacion = $request->input('Aplicacion');
+        $nota->Capacidad_liderazgo = $request->input('capacidad_liderazgo');
+        $nota->Asistencia = $request->input('asistencia_puntual');
+         $nota->save();
+
+        return redirect()->route('ParticipanteVinculacion.estudiantes')->with('success', 'Notas actualizadas exitosamente.');
+    }
+
 
 
     ////////////////////////////cambiar credenciales
