@@ -7,23 +7,7 @@
 
 @section('content')
 
-    <style>
-        .button5 {
-            /* height: 20px; */
-            padding: 9px;
-            letter-spacing: 1.15px;
-            font-weight: 700;
-            font-size: 0.75em;
-            color: var(--white);
-            background-color: #40456c;
-            border: none;
-            outline: none;
-            box-shadow: 2px 2px 5px #d1d9e6, -2px -2px 5px #f9f9f9;
-            transition: all 0.3s ease-in;
-            width: 120px;
-            border-radius: 10px;
-        }
-    </style>
+  
     <section class="contenedor_agregar_periodo">
         <h4><b>Estudiantes en Proceso de Revisión</b></h4>
         <hr>
@@ -323,13 +307,13 @@
                                             <th>ESPE ID</th>
                                             <th>Período de Ingreso</th>
                                             <th>Período de Vinculación</th>
-                                            <th class="tamanio">Actividades Macro</th>
+                                            <th class="size_">Actividades Macro</th>
                                             <th>Docente Participante</th>
                                             <th>Fecha de Inicio</th>
                                             <th>Fecha de Fin</th>
                                             <th>Total de Horas</th>
                                             <th>Director del Proyecto</th>
-                                            <th class="tamanio">Nombre del Proyecto</th>
+                                            <th class="size_">Nombre del Proyecto</th>
                                         </tr>
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">

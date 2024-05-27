@@ -64,9 +64,9 @@ body {
   font-family: "Roboto", sans-serif;
 }
 //Quitar scroll de la pante superior de la vista
-body {
+ body {
   overflow-x: hidden;
-}
+} 
 
 /* .content-views {
   margin-left: 20px; //Igual al ancho del sidebar 
@@ -360,4 +360,20 @@ hr {
     color:white;
     text-decoration: none !important;
   }
+}
+
+.button5 {
+  /* height: 20px; */
+  padding: 9px;
+  letter-spacing: 1.15px;
+  font-weight: 700;
+  font-size: 0.75em;
+  color: var(--white);
+  background-color: #40456c;
+  border: none;
+  outline: none;
+  box-shadow: 2px 2px 5px #d1d9e6, -2px -2px 5px #f9f9f9;
+  transition: all 0.3s ease-in;
+  width: 120px;
+  border-radius: 10px;
 }

@@ -42,9 +42,9 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th class="tamanio">Nombre del proyecto</th>
+                                        <th class="size_">Nombre del proyecto</th>
                                         <th>Director</th>
-                                        <th class="tamanio">Actividades a realizar</th>
+                                        <th class="size_">Actividades a realizar</th>
                                         <th>Correo</th>
                                         <th>Departamento</th>
                                         <th>Fecha de inicio</th>
@@ -128,9 +128,9 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th class="tamanio">Nombre del proyecto</th>
+                                        <th class="size_">Nombre del proyecto</th>
                                         <th>Director</th>
-                                        <th class="tamanio">Actividades a realizar</th>
+                                        <th class="size_">Actividades a realizar</th>
                                         <th>Correo</th>
                                         <th>Departamento</th>
                                         <th>Fecha de inicio</th>

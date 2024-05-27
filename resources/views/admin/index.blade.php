@@ -276,7 +276,7 @@
         <br>
         <section>
             <!-- Archivos de notas -->
-            <div class="contenedor_registro_genero ">
+          
                 <div>
                     <span><b>Docentes agregados</b></span>
 
@@ -461,11 +461,11 @@
                                                         {{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Nombres)) }}
                                                     </td>
                                                     <td>{{ $profesor->Correo }}</td>
-                                                    <td>{{ $profesor->Usuario }}</td>
-                                                    <td>{{ $profesor->Cedula }}</td>
-                                                    <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $profesor->Departamento)) }}
+                                                    <td class="center_size">{{ $profesor->Usuario }}</td>
+                                                    <td class="center_size">{{ $profesor->Cedula }}</td>
+                                                    <td class="medium_size">{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $profesor->Departamento)) }}
                                                     </td>
-                                                    <td>{{ $profesor->espe_id }}</td>
+                                                    <td class="center_size">{{ $profesor->espe_id }}</td>
                                                     <td>
                                                         <div class="contenedor_botones">
                                                             <div class="btn-group  shadow-1">
@@ -735,14 +735,13 @@
                                         </li>
                                     @endif
 
-                                </ul>
+                            </ul>
                             </nav>
                         </div>
 
                     </div>
-
                 </div>
-            </div>
+           
         </section>
 
         <section>
@@ -944,6 +943,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+<script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    <script src="js\admin\acciones.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
