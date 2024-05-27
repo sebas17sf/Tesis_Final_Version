@@ -337,6 +337,7 @@ class AdminController extends Controller
         $asignacionesAgrupadas = AsignacionProyecto::with('estudiante')
             ->with('proyecto')
             ->with('docenteParticipante')
+            ->with('periodo')
             ->get()
             ->groupBy(function ($item) {
                 return $item->ProyectoID . '_' . $item->IdPeriodo;

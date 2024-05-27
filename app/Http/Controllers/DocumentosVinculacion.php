@@ -549,8 +549,8 @@ class DocumentosVinculacion extends Controller
                     ],
                     [
                         'Correo' => $row[2],
-                        'Apellidos' => $row[3],
-                        'Nombres' => $row[4],
+                        'Apellidos' => $row[4],
+                        'Nombres' => $row[3],
                         'Cohorte' => $row[5],
                         'id_periodo' => $periodo ? $periodo->id : null,
                         'Carrera' => 'Ingeniería en Tecnologías de la información',
@@ -562,11 +562,13 @@ class DocumentosVinculacion extends Controller
         }
 
         foreach ($dataRows as $row) {
+
             $participante = null;
-            if (!empty($row[7]) && !empty($row[8])  && !empty($row[6]) && !empty($row[9]) && !empty($row[10]) && !empty($row[11]) && !empty($row[21])) {
+            if (!empty($row[7]) && !empty($row[8]) && !empty($row[6]) && !empty($row[9]) && !empty($row[10]) && !empty($row[11]) && !empty($row[21])) {
                 $estudiante = Estudiante::where('espe_id', $row[0])->first();
                 $proyecto = Proyecto::where('NombreProyecto', $row[24])->first();
                 $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
+
                 $nombreCompleto = $row[8];
                 $partesNombre = explode(" ", $nombreCompleto);
                 if (count($partesNombre) >= 2) {
@@ -590,21 +592,32 @@ class DocumentosVinculacion extends Controller
                     $fechaFinalizacionFormatted = null;
                 }
 
-                AsignacionProyecto::updateOrCreate(
-                    [
-                        'EstudianteID' => $estudiante ? $estudiante->EstudianteID : null,
-                        'ProyectoID' => $proyecto ? $proyecto->ProyectoID : null,
-                        'ParticipanteID' => $participante ?  $participante->id : null,
-                        'IdPeriodo' => $periodo ? $periodo->id : null,
-                    ],
-                    [
+                 $asignacionExistente = AsignacionProyecto::where('EstudianteID', $estudiante ? $estudiante->EstudianteID : null)
+                    ->where('ProyectoID', $proyecto ? $proyecto->ProyectoID : null)
+                    ->where('ParticipanteID', $participante ? $participante->id : null)
+                    ->where('IdPeriodo', $periodo ? $periodo->id : null)
+                    ->first();
+
+                if ($asignacionExistente) {
+                     $asignacionExistente->update([
                         'FechaInicio' => $fechaInicioFormatted,
                         'FechaFinalizacion' => $fechaFinalizacionFormatted,
                         'FechaAsignacion' => now(),
-                    ]
-                );
+                    ]);
+                } else {
+                     AsignacionProyecto::create([
+                        'EstudianteID' => $estudiante ? $estudiante->EstudianteID : null,
+                        'ProyectoID' => $proyecto ? $proyecto->ProyectoID : null,
+                        'ParticipanteID' => $participante ? $participante->id : null,
+                        'IdPeriodo' => $periodo->id,
+                        'FechaInicio' => $fechaInicioFormatted,
+                        'FechaFinalizacion' => $fechaFinalizacionFormatted,
+                        'FechaAsignacion' => now(),
+                    ]);
+                }
             }
         }
+
 
         return back()->with('success', 'Datos importados con éxito!');
     }
