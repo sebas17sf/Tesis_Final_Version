@@ -27,7 +27,7 @@
             </script>
         @endif
         <section>
-            <h6><b>Agregar nueva empresa</b></h6>
+
 
             <div class="container">
                 <form action="{{ route('admin.guardarEmpresa') }}" method="POST" enctype="multipart/form-data">
@@ -189,7 +189,7 @@
             </div>
         </section>
         <br>
-        <h6><b>Listado de Empresas Agregadas</b></h6>
+        <h4><b>Listado de Empresas Agregadas</b></h4>
         <hr>
         <section>
             <div class="mat-elevation-z8 contenedor_general">

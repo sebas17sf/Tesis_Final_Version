@@ -348,3 +348,16 @@ hr {
   transition: all 0.3s;
 }
 
+.tamanio1{
+  .form-control{
+    height: auto !important;
+  }
+}
+
+.btn_color{
+  text-decoration: underline !important;
+  :hover{
+    color:white;
+    text-decoration: none !important;
+  }
+}

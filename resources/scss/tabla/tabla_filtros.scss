@@ -92,7 +92,7 @@
   .contenedor_botones {
       display: flex;
       gap: 10px;
-
+      padding: 5px 0;
       @media (max-width: 700px) {
           justify-content: center;
 

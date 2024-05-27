@@ -50,7 +50,7 @@
                                     <div class="tooltip-container">
                                         <span class="tooltip-text">Editar</span>
                                         <a href="{{ route('estudiantes.edit', ['estudiante' => $estudiante->EstudianteID]) }}"
-                                            class="button3 efects_button btn_filtro" tooltipPosition="top">
+                                            class="button3 efects_button btn_filtro btn_color" tooltipPosition="top">
                                             <i class="material-icons">edit</i>
                                         </a>
                                     </div>
@@ -58,7 +58,7 @@
                             </div>
                         </div>
 
-                        <div class="card-body">
+                        <div class="card-body tamanio1">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group row">
