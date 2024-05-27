@@ -75,72 +75,55 @@
         </div>
 
 
-        <center><button id="toggleFormBtn" class="button1_1 efects_button">Registrar actividad</button></center>
+<!-- Button to trigger modal -->
+<center><button id="toggleFormBtn" class="button1_1 efects_button" data-toggle="modal" data-target="#registroActividadesModal">Registrar actividad</button></center>
+<div class="contenedor_list_filtros">
 
-        <br>
-        <div id="registroActividades" style="display: none;">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-
-                        <div class="card-body">
-                            <h4 class="card-title"><b>Registro de Actividades</b></h4>
-                            <hr>
-                            <form action="{{ route('estudiantes.guardarActividad') }}" method="post"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <div class="form-group">
-                                    <label for="fecha"><strong>Fecha:</strong></label>
-                                    <input type="date" id="fecha" name="fecha" class="form-control input" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="actividades"><strong>Actividades a realizar:</strong></label>
-                                    <textarea id="actividades" name="actividades" class="form-control input" rows="4" required></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="horas"><strong>Número de horas:</strong></label>
-                                    <input type="number" id="horas" name="horas" class="form-control input" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="evidencias"><strong>Resultados de la actividad
-                                            (evidencias):</strong></label>
-                                    <div class="input-group">
-
-                                        <input type="file" id="evidencias" name="evidencias"
-                                            accept="image/jpeg, image/jpg, image/png" class="form-control-file input"
-                                            required>
-                                    </div>
-
-
-
-                                    {{--
-
-                                            <div class="card-body d-flex flex-column">
-                                                <h4 class="card-title flex-grow-1"><i>Generar Carta de Compromiso de Estudiante</i></h4>
-                                                <hr>
-                                                <form action="{{ route('generar-documento-cartaCompromiso') }}" method="post">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-success btn-block mt-auto">
-                                                        <i class="fas fa-file-excel"></i> Generar
-                                                    </button>
-                                                </form>
-                                            </div> --}}
-
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="nombre_actividad"><strong>Asigne Nombre de la actividad:</strong></label>
-                                    <input type="text" id="nombre_actividad" name="nombre_actividad"
-                                        class="form-control input" required>
-                                </div>
-                                <center><button type="submit" class="button1">Guardar Actividad</button></center>
-                            </form>
-                        </div>
-
-
-                    </div>
-                </div>
+      
+<!-- Modal -->
+<div class="modal fade" id="registroActividadesModal" tabindex="-1" role="dialog" aria-labelledby="registroActividadesModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registroActividadesModalLabel">Registro de Actividades</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            <div class="modal-body">
+                <form action="{{ route('estudiantes.guardarActividad') }}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label for="fecha"><strong>Fecha:</strong></label>
+                        <input type="date" id="fecha" name="fecha" class="form-control input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="actividades"><strong>Actividades a realizar:</strong></label>
+                        <textarea id="actividades" name="actividades" class="form-control input" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="horas"><strong>Número de horas:</strong></label>
+                        <input type="number" id="horas" name="horas" class="form-control input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="evidencias"><strong>Resultados de la actividad (evidencias):</strong></label>
+                        <div class="input-group input_file">
+                            <span id="fileText" class="fileText input input_file"><i class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir el documento</span>
+                            <input type="file" id="evidencias" name="evidencias" accept="image/jpeg, image/jpg, image/png" class="form-control-file input input_file" required onchange="displayFileName(this)">
+                            <span title="Eliminar archivo" onclick="removeFile(this)" class="remove-icon">✖</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre_actividad"><strong>Asigne Nombre de la actividad:</strong></label>
+                        <input type="text" id="nombre_actividad" name="nombre_actividad" class="form-control input" required>
+                    </div>
+                    <center><button type="submit" class="button1">Guardar Actividad</button></center>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+        </div>
 
             <div class="mt-4">
                 <h4 class="text-center"><b>Actividades Registradas</b></h4>
@@ -243,7 +226,7 @@
                 </table>
             </div>
 
-        </div>
+
 
 
 
@@ -356,12 +339,16 @@
 </div>
 
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
-    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
-    <script src="{{ asset('js/documentosEstudiantes.js') }}"></script>
 
-
-{{--     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/fontawesome.min.css"> --}}
-@endsection
+    @endsection
+    <script>
+    $(document).ready(function() {
+        $('#registroActividadesModal .modal-dialog').draggable({
+            handle: ".modal-header"
+        });
+    
+        $('#registroActividadesModal').modal({
+            backdrop: false
+        });
+    });
+    </script>

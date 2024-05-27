@@ -28,7 +28,7 @@
         @if ($proyectosEjecucion->isNotEmpty())
 
 
-            <h6><b>Proyecto en Ejecución</b></h6>
+            <h4><b>Proyecto en Ejecución</b></h4>
             <hr>
 
             <div class="mat-elevation-z8 contenedor_general">
@@ -116,7 +116,7 @@
 
         <div class="mat-elevation-z8 contenedor_general">
             @if ($proyectosTerminados->isNotEmpty())
-                <h6><b>Proyectos Terminados</b></h6>
+                <h4><b>Proyectos Terminados</b></h4>
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
 

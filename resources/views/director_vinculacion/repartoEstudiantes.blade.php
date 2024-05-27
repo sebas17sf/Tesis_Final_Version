@@ -63,7 +63,7 @@
         <br>
         <form action="{{ route('director_vinculacion.cerrarProcesoEstudiantes') }}" method="POST">
             @csrf
-            <button type="submit" class="button">Finalizar actividades de los estudiantes</button>
+            <button type="submit" class="button1_1">Finalizar actividades de los estudiantes</button>
         </form>
 
 
