@@ -122,16 +122,16 @@
                                         <tr>
                                             <td style="word-wrap: break-word; text-align: justify; padding: 5px 8px;">
                                                 {{ strtoupper($proyecto->NombreProyecto) }}</td>
-                                            <td>
+                                            <td style="word-wrap: break-word; text-align: left;">
                                                 @if ($proyecto->director)
                                                     {{ strtoupper($proyecto->director->Apellidos) }}
                                                     {{ strtoupper($proyecto->director->Nombres) }}
                                                 @else
-                                                    Director no asignado
+                                                    DIRECTOR NO ASIGNADO
                                                 @endif
                                             </td>
 
-                                            <td style="word-wrap: break-word; text-align: justify;">
+                                            <td style="word-wrap: break-word; text-align: justify; padding: 5px 8px;">
                                                 {{ strtoupper($proyecto->DescripcionProyecto) }}</td>
 
                                             <td>{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
