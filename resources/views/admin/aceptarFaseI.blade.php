@@ -24,7 +24,7 @@
     @endif
 
     <section class="contenedor_agregar_periodo">
-        <h6><b>Estudiantes a realizar Prácticas</b></h6>
+        <h4><b>Estudiantes a realizar Prácticas</b></h4>
         <hr>
         <section>
             <div class="mat-elevation-z8 contenedor_general">
@@ -157,7 +157,7 @@
         </section>
 
         <br>
-        <h6><b>Estudiantes Practica I</b></h6>
+        <h4><b>Estudiantes Practica I</b></h4>
         <hr>
         <section>
             <div class="mat-elevation-z8 contenedor_general">
@@ -240,7 +240,7 @@
 
 
         <br>
-        <h6><b>Estudiantes Practica II<b></h6>
+        <h4><b>Estudiantes Practica II<b></h4>
         <hr>
         <section>
             <div class="mat-elevation-z8 contenedor_general">
