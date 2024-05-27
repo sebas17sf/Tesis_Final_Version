@@ -26,15 +26,40 @@
         body {
             overflow-x: hidden;
         }
+
+
+        .button5 {
+            /* height: 20px; */
+            padding: 9px;
+            letter-spacing: 1.15px;
+            font-weight: 700;
+            font-size: 0.75em;
+            color: var(--white);
+            background-color: #40456c;
+            border: none;
+            outline: none;
+            box-shadow: 2px 2px 5px #d1d9e6, -2px -2px 5px #f9f9f9;
+            transition: all 0.3s ease-in;
+            width: 120px;
+            border-radius: 10px;
+        }
+
+
+        .contenedor_general .pagination {
+            background-color: #fff;
+            padding: 2px;
+            border-radius: 5px;
+        }
     </style>
-   {{--  <script src="{{ asset('js/menu.js') }}"></script> --}}
+    {{--  <script src="{{ asset('js/menu.js') }}"></script> --}}
     {{--  <script src="../js/menu.js"></script> --}}
 </head>
 
 
 <body>
     <!-- Barra de navegación en el lado izquierdo -->
-    <section class="content-sidebar {{ session('menuState') == 'collapsed' ? 'content-sidebar-hidden' : '' }}" _ngcontent-ng-c4160891441>
+    <section class="content-sidebar {{ session('menuState') == 'collapsed' ? 'content-sidebar-hidden' : '' }}"
+        _ngcontent-ng-c4160891441>
 
         <div class="content scroll-small">
             <div class="sidebar">
@@ -105,10 +130,12 @@
         </div>
     </section>
     <!-- SIDEBAR -->
-    <section class="content-navbar dimension-nav {{ session('menuState') == 'collapsed' ? 'dimension-nav-hidden' : '' }}">
+    <section
+        class="content-navbar dimension-nav {{ session('menuState') == 'collapsed' ? 'dimension-nav-hidden' : '' }}">
         <!-- Toggle sidebar -->
         <div class="icon-menu-sidebar" onclick="toggleSidebar()">
-            <i class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
+            <i
+                class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
         </div>
         <!-- contenido -->
         <main class="navbar">
@@ -147,7 +174,8 @@
     <button id="btn_top" *ngIf="showScrollButton" (click)="scrollToTop()"><i class='bx bxs-chevrons-up'></i></button>
 
     <!-- CONTENEDOR -->
-    <section class="content-views dimension-content {{ session('menuState') == 'collapsed' ? 'dimension-content-hidden' : '' }}">
+    <section
+        class="content-views dimension-content {{ session('menuState') == 'collapsed' ? 'dimension-content-hidden' : '' }}">
         <!-- Title component -->
         <div class="title-component">
             <span class="title-content">@yield('title_component')</span>
