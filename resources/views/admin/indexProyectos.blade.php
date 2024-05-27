@@ -30,7 +30,7 @@
 
 
     <section >
-        <div class="contenedor_registro_genero "> 
+        <div class="contenedor_registro_genero ">
         <h3><b>Listado de Proyectos</b></h3>
         <hr>
 
@@ -89,7 +89,7 @@
                         </form>
                     </div>
                 </div>
-           
+
 </div>
 
 
@@ -176,7 +176,7 @@
                         @endif
                     </div>
                 </div>
-                
+
                 <div class="paginator-container">
                     <nav aria-label="...">
 
@@ -230,7 +230,7 @@
             </div>
             </div>
 
-   
+
         <hr>
         <h3><b>Listado de asignaciones</b></h3>
         <hr>
@@ -286,21 +286,21 @@
                                 <tr>
                                     <td>{{ $grupo->first()->proyecto->NombreProyecto ?? '' }}</td>
                                     <td>{{ $grupo->first()->proyecto->codigoProyecto ?? '' }}</td>
-                                    <td>{{ $grupo->first()->proyecto->director->Apellidos ?? '' }}</td>
+                                    <td>{{ $grupo->first()->proyecto->director->Apellidos ?? '' }} {{ $grupo->first()->proyecto->director->Nombres ?? '' }}</td>
                                     <td>
                                         @php
                                             $participantes = $grupo
                                                 ->pluck('docenteParticipante')
                                                 ->unique('id')
-                                                ->pluck('Nombres')
-                                                ->implode('<br>');
+                                                ->pluck('Nombres', 'Apellidos')
+                                                 ->implode('<br>');
                                         @endphp
                                         {!! $participantes !!}
                                     </td>
                                     <td>{{ $grupo->first()->FechaAsignacion ?? '' }}</td>
-                                    <td>
+                                    <td style="white-space: nowrap; overflow: hidden;">
                                         @foreach ($grupo as $asignacion)
-                                            {{ $asignacion->estudiante->Nombres ?? '' }}<br>
+                                        {{ $asignacion->estudiante->Apellidos ?? '' }} {{ $asignacion->estudiante->Nombres ?? '' }}<br>
                                         @endforeach
                                     </td>
                                     <td>{{ $grupo->first()->periodo->numeroPeriodo ?? '' }}</td>
