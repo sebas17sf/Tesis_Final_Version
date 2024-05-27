@@ -365,18 +365,17 @@
                     </div>
 
                     <div class="contenedor_tabla">
-                        <div class="table-container mat-elevation-z8">
+                <div class="table-container mat-elevation-z8">
 
-                            <div id="tablaDocentes">
-                                <table class="mat-mdc-table">
-                                    <thead class="ng-star-inserted" id="professorsTable">
-                                        <tr
-                                            class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                            <th>NOMBRE</th>
+                    <div id="tablaProyectos">
+                        <table class="mat-mdc-table">
+                            <thead class="ng-star-inserted">
+                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                            <th class="tamanio1">NOMBRE</th>
                                             <th>CORREO</th>
                                             <th>USUARIO</th>
                                             <th>CEDULA</th>
-                                            <th>DEPARTAMENTO</th>
+                                            <th class="tamanio1">DEPARTAMENTO</th>
                                             <th>ID ESPE</th>
                                             <th>ACCIONES</th>
                                         </tr>

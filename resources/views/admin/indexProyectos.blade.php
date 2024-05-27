@@ -101,7 +101,7 @@
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                     <th class="tamanio">NOMBRE DEL PROYECTO</th>
-                                    <th class="tamanio">DIRECTOR</th>
+                                    <th>DIRECTOR</th>
                                     <th class="tamanio">DESCRIPCION</th>
                                     <th>DEPARTAMENTO</th>
                                     <th>CODIGO DEL PROYECTO SOCIAL</th>
