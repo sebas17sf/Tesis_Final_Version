@@ -276,9 +276,12 @@ class DirectorVinculacionController extends Controller
         $correoDirector = $Director->CorreoElectronico;
         $Director = ProfesUniversidad::where('Correo', $correoDirector)->first();
         // Obtener la relación AsignacionProyecto para este DirectorVinculación
-        $asignacion = AsignacionProyecto::where('ParticipanteID', $Director->id)->first();
-        // Obtener el proyecto de la asignación
-        $proyecto = Proyecto::find($asignacion->ProyectoID);
+        $asignacion = AsignacionProyecto::where('ParticipanteID', $Director->id)
+        ->whereHas('estudiante', function ($query) {
+            $query->where('Estado', 'Aprobado');
+        })
+        ->first();
+         $proyecto = Proyecto::find($asignacion->ProyectoID);
 
         $plantilla->setValue('NombreProyecto', $proyecto->NombreProyecto);
         $plantilla->setValue('Objetivos', $request->input('Objetivos'));

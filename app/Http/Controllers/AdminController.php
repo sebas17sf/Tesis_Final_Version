@@ -330,8 +330,10 @@ class AdminController extends Controller
 
 
         $estudiantesAprobados = Estudiante::where('Estado', 'Aprobado')
-            ->whereNotIn('EstudianteID', AsignacionProyecto::pluck('EstudianteID')->toArray())
-            ->get();
+        ->whereDoesntHave('asignaciones')
+        ->get();
+
+
 
         ///////////// quiero obtener tods las asignacionesProyectos
         $asignacionesAgrupadas = AsignacionProyecto::with('estudiante')
@@ -340,7 +342,7 @@ class AdminController extends Controller
             ->with('periodo')
             ->get()
             ->groupBy(function ($item) {
-                return $item->ProyectoID . '_' . $item->IdPeriodo;
+                return $item->ProyectoID . '_' . $item->IdPeriodo . "_" . $item->ParticipanteID;
             });
 
 

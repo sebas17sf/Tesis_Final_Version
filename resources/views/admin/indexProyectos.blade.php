@@ -350,14 +350,9 @@
                                                 {{ $grupo->first()->proyecto->director->Nombres ?? '' }}</td>
                                             <td style="text-transform: uppercase; text-align: left;">
 
-                                                @php
-                                                    $participantes = $grupo
-                                                        ->pluck('docenteParticipante')
-                                                        ->unique('id')
-                                                        ->pluck('Nombres', 'Apellidos')
-                                                        ->implode('<br>');
-                                                @endphp
-                                                {!! $participantes !!}
+                                                     {{ $grupo->first()->docenteParticipante->Apellidos ?? '' }}
+                                                    {{ $grupo->first()->docenteParticipante->Nombres ?? '' }}<br>
+
                                             </td>
                                             <td>{{ $grupo->first()->FechaAsignacion ?? '' }}</td>
 
@@ -370,7 +365,7 @@
                                                 @endforeach
                                             </td>
                                             <td>{{ $grupo->first()->periodo->numeroPeriodo ?? '' }}</td>
-                                            <td>{{ $grupo->first()->nrcVinculacion->nrc ?? '' }}</td>
+                                            <td>{{ $grupo->first()->nrcVinculacion->nrc ?? 'No requeria de NRC' }}</td>
                                             <td>{{ $grupo->first()->FechaInicio ?? '' }}</td>
                                             <td>{{ $grupo->first()->FechaFinalizacion ?? '' }}</td>
                                         </tr>
