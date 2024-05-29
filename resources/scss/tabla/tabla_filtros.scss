@@ -8,6 +8,7 @@
 .contenedor_general {
   display: grid;
   gap: 5px;
+  border-radius: 5px;
   box-shadow: none;
 
   // Estilos para el contenedor de filtros
@@ -270,6 +271,11 @@
           width: 200px;
           min-width: 420px;
           padding: .5rem !important;
+        } 
+        .tamanio {
+          width: 90px;
+          min-width: 350px;
+          padding: .3rem !important;
         } 
         .tamanio1 {
           width: 90px;

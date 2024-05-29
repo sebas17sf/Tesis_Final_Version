@@ -177,65 +177,7 @@
 
                         </div>
                     </div>
-                    <div class="paginator-container">
-                            <nav aria-label="...">
-
-                                <ul class="pagination">
-                                    <li class="page-item mx-3">
-                                        <form method="GET" action="{{ route('admin.index') }}">
-                                            <select class="form-control page-item" class="input" name="perPage"
-                                                id="perPage" onchange="this.form.submit()">
-                                                <option value="3" @if ($perPage == 10) selected @endif>10
-                                                </option>
-                                                <option value="20" @if ($perPage == 20) selected @endif>20
-                                                </option>
-                                                <option value="50" @if ($perPage == 50) selected @endif>
-                                                    50
-                                                </option>
-                                                <option value="100" @if ($perPage == 100) selected @endif>
-                                                    100
-                                                </option>
-                                            </select>
-                                        </form>
-                                    </li>
-
-                                    @if ($profesores->onFirstPage())
-                                        <li class="page-item disabled">
-                                            <span class="page-link">Anterior</span>
-                                        </li>
-                                    @else
-                                        <li class="page-item">
-                                            <a class="page-link" href="{{ $profesores->previousPageUrl() }}"
-                                                aria-label="Anterior">Anterior</a>
-                                        </li>
-                                    @endif
-
-                                    @foreach ($profesores->getUrlRange(1, $profesores->lastPage()) as $page => $url)
-                                        @if ($page == $profesores->currentPage())
-                                            <li class="page-item active">
-                                                <span class="page-link">{{ $page }}</span>
-                                            </li>
-                                        @else
-                                            <li class="page-item">
-                                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                                            </li>
-                                        @endif
-                                    @endforeach
-
-                                    @if ($profesores->hasMorePages())
-                                        <li class="page-item">
-                                            <a class="page-link" href="{{ $profesores->nextPageUrl() }}"
-                                                aria-label="Siguiente">Siguiente</a>
-                                        </li>
-                                    @else
-                                        <li class="page-item disabled">
-                                            <span class="page-link">Siguiente</span>
-                                        </li>
-                                    @endif
-
-                                </ul>
-                            </nav>
-                        </div>
+                   
 
                     </div>
 
