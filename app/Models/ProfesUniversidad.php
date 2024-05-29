@@ -60,6 +60,11 @@ class ProfesUniversidad extends Model
         return $this->hasMany(AsignacionProyecto::class, 'DirectorID');
     }
 
+     public function usuario()
+    {
+        return $this->belongsTo(User::class, 'UserID');
+    }
+
 
 
 }
