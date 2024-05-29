@@ -173,10 +173,8 @@
                                     data-target="#modalEditarNota{{ $estudiante->EstudianteID }}">Editar</button>
 
                                 <!-- Modal -->
-                                <div class="modal fade
-                                    "
-                                    id="modalEditarNota{{ $estudiante->EstudianteID }}" tabindex="-1" role="dialog"
-                                    aria-labelledby="modalEditarNota{{ $estudiante->EstudianteID }}Label"
+                                <div class="modal fade" id="modalEditarNota{{ $estudiante->EstudianteID }}" tabindex="-1"
+                                    role="dialog" aria-labelledby="modalEditarNota{{ $estudiante->EstudianteID }}Label"
                                     aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -189,119 +187,101 @@
                                                     <h5 class="modal-title"
                                                         id="modalEditarNota{{ $estudiante->EstudianteID }}Label">
                                                         Editar Nota de {{ $estudiante->Apellidos }}
-                                                        {{ $estudiante->Nombres }}</h5>
+                                                        {{ $estudiante->Nombres }}
+                                                    </h5>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
-                                                <div
-                                                    class="modal-body
-                                                    ">
+                                                <div class="modal-body">
                                                     <input type="hidden" name="estudiante_id"
                                                         value="{{ $estudiante->EstudianteID }}">
-                                                    <div
-                                                        class="form-group
-                                                        ">
+
+                                                    <div class="form-group">
                                                         <label for="tareas">Cumple con las tareas planificadas. Sobre
                                                             10%</label>
                                                         <input type="number" name="tareas" class="form-control"
-                                                            value="{{ $estudiante->notas->first()->Tareas }}"
+                                                            value="{{ optional($estudiante->notas->first())->Tareas }}"
                                                             min="1" max="10" step="0.01" required>
                                                         <small class="form-text text-danger" style="display: none;">El
                                                             valor debe estar entre 0 y 10.</small>
-
                                                     </div>
-                                                    <div
-                                                        class="form-group
-                                                        ">
+
+                                                    <div class="form-group">
                                                         <label for="resultados_alcanzados">Resultados Alcanzados. Sobre
                                                             10%</label>
                                                         <input type="number" name="resultados_alcanzados"
                                                             class="form-control"
-                                                            value="{{ $estudiante->notas->first()->Resultados_Alcanzados }}"
+                                                            value="{{ optional($estudiante->notas->first())->Resultados_Alcanzados }}"
                                                             min="1" max="10" step="0.01" required>
                                                         <small class="form-text text-danger" style="display: none;">El
                                                             valor debe estar entre 0 y 10.</small>
-
                                                     </div>
-                                                    <div
-                                                        class="form-group
-                                                        ">
+
+                                                    <div class="form-group">
                                                         <label for="conocimientos_area">Demuestra conocimientos en el área
                                                             de práctica pre profesional. Sobre 10%</label>
                                                         <input type="number" name="conocimientos_area"
                                                             class="form-control"
-                                                            value="{{ $estudiante->notas->first()->Conocimientos }}"
+                                                            value="{{ optional($estudiante->notas->first())->Conocimientos }}"
                                                             min="1" max="10" step="0.01" required>
                                                         <small class="form-text text-danger" style="display: none;">El
                                                             valor debe estar entre 0 y 10.</small>
-
                                                     </div>
-                                                    <div
-                                                        class="form-group
-                                                        ">
+
+                                                    <div class="form-group">
                                                         <label for="adaptabilidad">Adaptabilidad e Integración al sistema
                                                             de trabajo del proyecto. Sobre 10%</label>
                                                         <input type="number" name="adaptabilidad" class="form-control"
-                                                            value="{{ $estudiante->notas->first()->Adaptabilidad }}"
+                                                            value="{{ optional($estudiante->notas->first())->Adaptabilidad }}"
                                                             min="1" max="10" step="0.01" required>
                                                         <small class="form-text text-danger" style="display: none;">El
                                                             valor debe estar entre 0 y 10.</small>
-
                                                     </div>
-                                                    <div
-                                                        class="form-group
-                                                        ">
+
+                                                    <div class="form-group">
                                                         <label for="Aplicacion">Aplicación y manejo de destrezas y
                                                             habilidades acordes al perfil profesional</label>
                                                         <input type="number" name="Aplicacion" class="form-control"
-                                                            value="{{ $estudiante->notas->first()->Aplicacion }}"
+                                                            value="{{ optional($estudiante->notas->first())->Aplicacion }}"
                                                             min="1" max="10" step="0.01" required>
                                                         <small class="form-text text-danger" style="display: none;">El
                                                             valor debe estar entre 0 y 10.</small>
-
                                                     </div>
-                                                    <div
-                                                        class="form-group
-                                                        ">
+
+                                                    <div class="form-group">
                                                         <label for="capacidad_liderazgo">Demuestra capacidad de liderazgo y
                                                             de trabajo en equipo. Sobre 10%</label>
                                                         <input type="number" name="capacidad_liderazgo"
                                                             class="form-control"
-                                                            value="{{ $estudiante->notas->first()->Capacidad_liderazgo }}"
+                                                            value="{{ optional($estudiante->notas->first())->Capacidad_liderazgo }}"
                                                             min="1" max="10" step="0.01" required>
                                                         <small class="form-text text-danger" style="display: none;">El
                                                             valor debe estar entre 0 y 10.</small>
-
                                                     </div>
-                                                    <div
-                                                        class="form-group
-                                                        ">
+
+                                                    <div class="form-group">
                                                         <label for="asistencia_puntual">Asiste puntualmente. Sobre
                                                             10%</label>
                                                         <input type="number" name="asistencia_puntual"
                                                             class="form-control"
-                                                            value="{{ $estudiante->notas->first()->Asistencia }}"
+                                                            value="{{ optional($estudiante->notas->first())->Asistencia }}"
                                                             min="1" max="10" step="0.01" required>
                                                         <small class="form-text text-danger" style="display: none;">El
                                                             valor debe estar entre 0 y 10.</small>
-
                                                     </div>
-
                                                 </div>
-                                                <div
-                                                    class="modal-footer
-                                                    ">
+                                                <div class="modal-footer">
                                                     <button type="button" class="button"
                                                         data-dismiss="modal">Cerrar</button>
-                                                    <button type="submit" class="button">Guardar
-                                                        Cambios</button>
+                                                    <button type="submit" class="button">Guardar Cambios</button>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
+
 
 
 

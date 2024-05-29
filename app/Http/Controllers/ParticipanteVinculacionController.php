@@ -35,16 +35,26 @@ class ParticipanteVinculacionController extends Controller
             // Buscar si el docente ha sido un participante adicional
             $participanteAdicional = ParticipanteAdicional::where('ParticipanteID', $participanteID)->first();
 
-            // Obtener el proyecto asociado al participante en AsignacionProyecto con los datos del proyecto
-            $proyectosEnEjecucionQuery = Proyecto::join('asignacionProyecto', 'proyectos.ProyectoID', '=', 'asignacionProyecto.ProyectoID')
-                ->where('asignacionProyecto.ParticipanteID', $participanteID)
-                ->where('proyectos.Estado', 'Ejecucion')
-                ->select('proyectos.*');
+            // Obtener el proyecto asociado al participante en AsignacionProyecto
+            $proyectosEnEjecucion = AsignacionProyecto::where('ParticipanteID', $participanteID)
+            ->whereHas('proyecto', function ($query) {
+                $query->where('Estado', 'Ejecucion');
+            })
+            ->whereHas('estudiante', function ($query) {
+                $query->where('Estado', 'Aprobado');
+            })
+            ->with(['proyecto', 'estudiante'])
+            ->distinct('ProyectoID')
+            ->get();
 
-            $proyectosTerminadosQuery = Proyecto::join('asignacionProyecto', 'proyectos.ProyectoID', '=', 'asignacionProyecto.ProyectoID')
-                ->where('asignacionProyecto.ParticipanteID', $participanteID)
-                ->where('proyectos.Estado', 'Terminado')
-                ->select('proyectos.*');
+            $proyectosTerminados = AsignacionProyecto::where('ParticipanteID', $participanteID)
+            ->whereHas('proyecto', function ($query) {
+                $query->where('Estado', 'Terminado');
+            })
+            ->with('proyecto')
+            ->get();
+
+
 
 
 

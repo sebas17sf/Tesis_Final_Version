@@ -29,8 +29,8 @@
         <h6><b>Proyecto en Ejecución</b></h6>
         <hr>
 
-        @if ($proyectosEnEjecucion->isNotEmpty())
-            <div class="contenedor_tabla">
+        @if ($proyectosEnEjecucion && $proyectosEnEjecucion->isNotEmpty())
+        <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
 
                     <table class="mat-mdc-table">
@@ -43,19 +43,17 @@
                                 <th>Departamento</th>
                                 <th>Fecha de inicio</th>
                                 <th>Fecha fin</th>
-                                <th>Cupos</th>
-                                <th>Estado del proyecto</th>
                             </tr>
                         </thead>
                         <tbody class="mdc-data-table__content ng-star-inserted">
                             @foreach ($proyectosEnEjecucion as $proyecto)
                                 <tr>
-                                    <td>{{ $proyecto->NombreProyecto }}</td>
-                                    <td>{{ strtoupper($proyecto->director->Apellidos) }}
-                                        {{ strtoupper($proyecto->director->Nombres) }}</td>
-                                    <td>{{ $proyecto->DescripcionProyecto }}</td>
+                                    <td>{{ $proyecto->proyecto->NombreProyecto }}</td>
+                                    <td>{{ strtoupper($proyecto->proyecto->director->Apellidos ?? "No asignado") }}
+                                        {{ strtoupper($proyecto->proyecto->director->Nombres ?? "No asignado") }}</td>
+                                    <td>{{ $proyecto->proyecto->DescripcionProyecto }}</td>
                                     <td>{{ $proyecto->docenteParticipante->Correo }}</td>
-                                    <td>{{ $proyecto->DepartamentoTutor }}</td>
+                                    <td>{{ $proyecto->proyecto->DepartamentoTutor }}</td>
                                     <td>{{ $proyecto->FechaInicio }}</td>
                                     <td>{{ $proyecto->FechaFinalizacion }}</td>
                                     <td>{{ $proyecto->cupos }}</td>
@@ -85,7 +83,7 @@
 
 
     @if ($proyectosTerminados->isNotEmpty())
-        <table class="table table-bordered">
+    <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Nombre del proyecto</th>

@@ -13,7 +13,7 @@ use App\Models\AsignacionProyecto;
 use App\Models\Empresa;
 use App\Models\Role;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 
 
@@ -288,17 +288,19 @@ class AdminController extends Controller
 
 
     /////////////////////////////visualizar proyectos
+
     public function indexProyectos(Request $request)
     {
         $estadoProyecto = $request->input('estado');
 
         $periodos = Periodo::all();
         $nrcs = NrcVinculacion::all();
-
-         $profesores = ProfesUniversidad::all();
-
+        $profesores = ProfesUniversidad::all();
 
         $perPage = $request->input('perPage', 10);
+        $perPage2 = $request->input('perPage2', 10);
+        $page = $request->input('page', 1); // Page for the first pagination
+        $page2 = $request->input('page2', 1); // Page for the second pagination
         $search = $request->input('search');
 
         $validPerPages = [10, 20, 50, 100];
@@ -322,40 +324,51 @@ class AdminController extends Controller
             $query->where('Estado', $estadoProyecto);
         }
 
-        // Get paginated projects
-        $proyectos = $query->paginate($perPage);
+        // First pagination
+        $proyectos = $query->paginate($perPage, ['*'], 'page', $page);
 
-        // Get other necessary data
+        // Obtener otros datos necesarios
         $proyectosDisponibles = Proyecto::where('Estado', 'Ejecucion')->get();
-
-
         $estudiantesAprobados = Estudiante::where('Estado', 'Aprobado')
-            ->whereNotIn('EstudianteID', AsignacionProyecto::pluck('EstudianteID')->toArray())
+            ->whereDoesntHave('asignaciones')
             ->get();
 
-        ///////////// quiero obtener tods las asignacionesProyectos
+        ///////////// Obtener todas las asignacionesProyectos
         $asignacionesAgrupadas = AsignacionProyecto::with('estudiante')
             ->with('proyecto')
             ->with('docenteParticipante')
             ->with('periodo')
             ->get()
             ->groupBy(function ($item) {
-                return $item->ProyectoID . '_' . $item->IdPeriodo;
+                return $item->ProyectoID . '_' . $item->IdPeriodo . "_" . $item->ParticipanteID;
             });
 
+        // Second pagination
+        $total = $asignacionesAgrupadas->count();
+        $paginatedData = $asignacionesAgrupadas->forPage($page2, $perPage);
+        $paginator = new LengthAwarePaginator(
+            $paginatedData,
+            $total,
+            $perPage,
+            $page2,
+            ['path' => route('admin.indexProyectos'), 'pageName' => 'page2']
+        );
 
         return view('admin.indexProyectos', [
             'proyectos' => $proyectos,
             'proyectosDisponibles' => $proyectosDisponibles,
             'estudiantesAprobados' => $estudiantesAprobados,
             'perPage' => $perPage,
+            'perPage2' => $perPage2,
+            'paginator' => $paginator,
             'profesores' => $profesores,
             'nrcs' => $nrcs,
-            'asignacionesAgrupadas' => $asignacionesAgrupadas,
+            'asignacionesAgrupadas' => $paginator,
             'periodos' => $periodos,
             'search' => $search,
         ]);
     }
+
 
     ///////////////////////Vista para crear los proyectos
 

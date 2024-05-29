@@ -186,6 +186,8 @@
 
                             <ul class="pagination">
                                 <li class="page-item mx-3">
+
+
                                     <form method="GET" action="{{ route('admin.indexProyectos') }}">
                                         <select class="form-control page-item" class="input" name="perPage" id="perPage"
                                             onchange="this.form.submit()">
@@ -199,6 +201,9 @@
                                             </option>
                                         </select>
                                     </form>
+
+
+
                                 </li>
                                 @if ($proyectos->onFirstPage())
                                     <li class="page-item disabled">
@@ -227,9 +232,12 @@
                                         <span class="page-link">Siguiente</span>
                                     </li>
                                 @endif
+
                             </ul>
-                        </nav>
-                    </div>
+
+                         </nav>
+
+                     </div>
 
                 </div>
             </div>
@@ -280,14 +288,17 @@
                                 </button>
                             </div>
 
-                            <div class="modal fade" id="modalImportar" tabindex="-1" role="dialog" aria-labelledby="modalImportarLabel" aria-hidden="true">
+                            <div class="modal fade" id="modalImportar" tabindex="-1" role="dialog"
+                                aria-labelledby="modalImportarLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
-                                        <form id="idModalImportar" action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
+                                        <form id="idModalImportar" action="{{ route('import') }}" method="POST"
+                                            enctype="multipart/form-data">
                                             @csrf
                                             <div class="modal-header">
                                                 <h5 class="modal-title">Importar archivo</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
@@ -296,15 +307,20 @@
                                                     <!-- Contenedor de Input de Archivo -->
                                                     <div class="input input_file">
                                                         <span id="fileText" class="fileText">
-                                                            <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
+                                                            <i class="fa fa-upload"></i> Haz clic aquí para subir el
+                                                            documento
                                                         </span>
-                                                        <input type="file" class="form-control-file input input_file" id="file" name="file" onchange="displayFileName(this)" required>
-                                                        <span title="Eliminar archivo" onclick="removeFile(this)" class="remove-icon">✖</span>
+                                                        <input type="file" class="form-control-file input input_file"
+                                                            id="file" name="file"
+                                                            onchange="displayFileName(this)" required>
+                                                        <span title="Eliminar archivo" onclick="removeFile(this)"
+                                                            class="remove-icon">✖</span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button id="cerrar_modal" type="button" class="button" data-dismiss="modal">Cerrar</button>
+                                                <button id="cerrar_modal" type="button" class="button"
+                                                    data-dismiss="modal">Cerrar</button>
                                                 <button type="submit" class="button">Importar Archivo</button>
                                             </div>
                                         </form>
@@ -350,14 +366,9 @@
                                                 {{ $grupo->first()->proyecto->director->Nombres ?? '' }}</td>
                                             <td style="text-transform: uppercase; text-align: left;">
 
-                                                @php
-                                                    $participantes = $grupo
-                                                        ->pluck('docenteParticipante')
-                                                        ->unique('id')
-                                                        ->pluck('Nombres', 'Apellidos')
-                                                        ->implode('<br>');
-                                                @endphp
-                                                {!! $participantes !!}
+                                                {{ $grupo->first()->docenteParticipante->Apellidos ?? '' }}
+                                                {{ $grupo->first()->docenteParticipante->Nombres ?? '' }}<br>
+
                                             </td>
                                             <td>{{ $grupo->first()->FechaAsignacion ?? '' }}</td>
 
@@ -370,7 +381,7 @@
                                                 @endforeach
                                             </td>
                                             <td>{{ $grupo->first()->periodo->numeroPeriodo ?? '' }}</td>
-                                            <td>{{ $grupo->first()->nrcVinculacion->nrc ?? '' }}</td>
+                                            <td>{{ $grupo->first()->nrcVinculacion->nrc ?? 'No requeria de NRC' }}</td>
                                             <td>{{ $grupo->first()->FechaInicio ?? '' }}</td>
                                             <td>{{ $grupo->first()->FechaFinalizacion ?? '' }}</td>
                                         </tr>
@@ -385,40 +396,41 @@
 
                             <ul class="pagination">
                                 <li class="page-item mx-3">
-                                    <form method="GET" action="{{ route('admin.indexProyectos') }}">
-                                        <select class="form-control page-item" class="input" name="perPage"
-                                            id="perPage" onchange="this.form.submit()">
-                                            <option value="10" @if ($perPage == 10) selected @endif>10
+
+                                     <form method="GET" action="{{ route('admin.indexProyectos') }}">
+                                        <select class="form-control page-item" class="input" name="perPage2"
+                                            id="perPage2" onchange="this.form.submit()">
+                                            <option value="10" @if ($perPage2 == 10) selected @endif>10
                                             </option>
-                                            <option value="20" @if ($perPage == 20) selected @endif>20
+                                            <option value="20" @if ($perPage2 == 20) selected @endif>20
                                             </option>
-                                            <option value="50" @if ($perPage == 50) selected @endif>50
+                                            <option value="50" @if ($perPage2 == 50) selected @endif>50
                                             </option>
-                                            <option value="100" @if ($perPage == 100) selected @endif>100
+                                            <option value="100" @if ($perPage2 == 100) selected @endif>100
                                             </option>
                                         </select>
                                     </form>
                                 </li>
-                                @if ($proyectos->onFirstPage())
+                                @if ($paginator->onFirstPage())
                                     <li class="page-item disabled">
                                         <span class="page-link">Anterior</span>
                                     </li>
                                 @else
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $proyectos->previousPageUrl() }}"
+                                        <a class="page-link" href="{{ $paginator->previousPageUrl() }}"
                                             aria-label="Anterior">Anterior</a>
                                     </li>
                                 @endif
 
-                                @for ($i = 1; $i <= $proyectos->lastPage(); $i++)
-                                    <li class="page-item {{ $proyectos->currentPage() == $i ? 'active' : '' }}">
-                                        <a class="page-link" href="{{ $proyectos->url($i) }}">{{ $i }}</a>
+                                @for ($i = 1; $i <= $paginator->lastPage(); $i++)
+                                    <li class="page-item {{ $paginator->currentPage() == $i ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $paginator->url($i) }}">{{ $i }}</a>
                                     </li>
                                 @endfor
 
-                                @if ($proyectos->hasMorePages())
+                                @if ($paginator->hasMorePages())
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $proyectos->nextPageUrl() }}"
+                                        <a class="page-link" href="{{ $paginator->nextPageUrl() }}"
                                             aria-label="Siguiente">Siguiente</a>
                                     </li>
                                 @else
@@ -658,16 +670,16 @@
                 '<i class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir el documento'; // Reset the text
         }
 
-        $('#modalImportar').on('hidden.bs.modal', function () {
-        console.log('Modal hidden'); // Verifica si el evento se dispara en la consola
-        // Restablece el formulario
-        $('#idModalImportar')[0].reset();
-        // Limpia cualquier contenido adicional si es necesario
-        $('#idModalImportar').find('.form-group').removeClass('has-error');
-        $('#idModalImportar').find('.help-block').text('');
-        // Llama a la función para remover el archivo si es necesario
-        removeFile();
-    });
+        $('#modalImportar').on('hidden.bs.modal', function() {
+            console.log('Modal hidden'); // Verifica si el evento se dispara en la consola
+            // Restablece el formulario
+            $('#idModalImportar')[0].reset();
+            // Limpia cualquier contenido adicional si es necesario
+            $('#idModalImportar').find('.form-group').removeClass('has-error');
+            $('#idModalImportar').find('.help-block').text('');
+            // Llama a la función para remover el archivo si es necesario
+            removeFile();
+        });
     </script>
 
 

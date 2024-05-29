@@ -34,12 +34,17 @@ class DocumentosVinculacion extends Controller
         $correoUsuario = $usuario->CorreoElectronico;
         $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
         // Obtener la relación AsignacionEstudiantesDirector para este ParticipanteVinculacion
-        $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)->first();
+        $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)
+        ->whereHas('estudiante', function ($query) {
+            $query->where('Estado', 'Aprobado');
+        })
+        ->first();
+
 
 
         ///obtener la id del director de AsiignacionProyecto
         $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
-        if ($proyecto->Estado != 'Ejecucion') {
+         if ($proyecto->Estado != 'Ejecucion') {
             return redirect()->back()->with('error', 'No tiene Proyectos en ejecucion.');
         }
 
@@ -175,7 +180,11 @@ class DocumentosVinculacion extends Controller
         $correoUsuario = $usuario->CorreoElectronico;
         $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
         // Obtener la relación AsignacionProyecto para este ParticipanteVinculacion
-        $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)->first();
+        $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)
+        ->whereHas('estudiante', function ($query) {
+            $query->where('Estado', 'Aprobado');
+        })
+        ->first();
 
         $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
 
@@ -198,8 +207,7 @@ class DocumentosVinculacion extends Controller
 
         //Obtener datos del director y particpante
         $nombreParticipanteCompleto = $participanteVinculacion->Apellidos . ' ' . $participanteVinculacion->Nombres;
-        $nombreDirectorCompleto = $Director->Apellidos . ' ' . $Director->Nombres;
-        $cedulaParticipante = $participanteVinculacion->Cedula;
+         $cedulaParticipante = $participanteVinculacion->Cedula;
         $cedulaDirector = $Director->Cedula;
         $correoParticipante = $participanteVinculacion->Correo;
         $correoDirector = $Director->Correo;
@@ -234,31 +242,31 @@ class DocumentosVinculacion extends Controller
 
         $hojaCalculo->mergeCells('I13:K13');
         ///llenar las celdas
-        $hojaCalculo->setCellValue("B17", $nombreDirector);
-        $hojaCalculo->getStyle("B17")->getFont()->setSize(14);
-        $hojaCalculo->getStyle("B17")->getFont()->setName("Calibri");
-        $hojaCalculo->getStyle("B17")->getFont()->setBold(true);
-        $hojaCalculo->getStyle("B17")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        $hojaCalculo->setCellValue("C3", $departamentoDirector);
 
-        $hojaCalculo->setCellValue("C8", $nombreParticipanteCompleto);
-        $hojaCalculo->setCellValue("D8", $cedulaParticipante);
-        $hojaCalculo->setCellValue("C7", $nombreDirectorCompleto);
-        $hojaCalculo->setCellValue("D7", $cedulaDirector);
-        $hojaCalculo->setCellValue("E8", $correoParticipante);
-        $hojaCalculo->setCellValue("E7", $correoDirector);
-        $hojaCalculo->setCellValue("F7", $sede);
-        $hojaCalculo->setCellValue("F8", $sede);
-        $hojaCalculo->setCellValue("G7", $departamentosDirector);
-        $hojaCalculo->setCellValue("G8", $departamentosParticipante);
+
+        $hojaCalculo->setCellValue("C7", $nombreParticipanteCompleto);
+        $hojaCalculo->setCellValue("D7", $cedulaParticipante);
+
+        $hojaCalculo->setCellValue("E7", $correoParticipante);
+         $hojaCalculo->setCellValue("F7", $sede);
+         $hojaCalculo->setCellValue("G7", $departamentosParticipante);
+
+         /////departamento directo
+        $hojaCalculo->setCellValue("C3", $departamentosDirector);
+
         $hojaCalculo->setCellValue("H7", $fechaInicio);
         $hojaCalculo->setCellValue("I7", $fechaFin);
-        $hojaCalculo->setCellValue("H8", $fechaInicio);
-        $hojaCalculo->setCellValue("I8", $fechaFin);
+
         $hojaCalculo->setCellValue("J7", $NumeroHoras);
-        $hojaCalculo->setCellValue("J8", $NumeroHoras);
+
+
         $hojaCalculo->setCellValue("B7", $nombreProyecto);
-        $hojaCalculo->setCellValue("B12", "Fecha: $fechaFormateada");
+        $hojaCalculo->getStyle("B7")->getAlignment()->setWrapText(true);
+        $hojaCalculo->getRowDimension(7)->setRowHeight(-1);
+
+
+
+         $hojaCalculo->setCellValue("B12", "Fecha: $fechaFormateada");
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $nombreArchivo = "1.3-Número-Horas-Docentes.xlsx";
@@ -282,7 +290,11 @@ class DocumentosVinculacion extends Controller
         $correoUsuario = $usuario->CorreoElectronico;
         $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
         // Obtener la relación AsignacionProyecto para este ParticipanteVinculacion
-        $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)->first();
+        $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)
+        ->whereHas('estudiante', function ($query) {
+            $query->where('Estado', 'Aprobado');
+        })
+        ->first();
 
         ///obtener la id del director de AsiignacionProyecto
         $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
