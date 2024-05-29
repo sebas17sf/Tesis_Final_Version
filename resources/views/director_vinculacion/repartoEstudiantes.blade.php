@@ -27,13 +27,22 @@
 
         <h4>Estudiantes Asignados a Docentes</h4>
 
-        <table>
-            <tr>
-                <th>Estudiante</th>
+        <div class="contenedor_tabla">
+                <div class="table-container mat-elevation-z8">
+
+                    <div id="tablaProyectos">
+                        <table class="mat-mdc-table">
+                            <thead class="ng-star-inserted">
+                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                              
+                                        <th>Estudiante</th>
                 <th>Docente asignado</th>
                 <th>Proyecto</th>
                 <th>Acciones</th>
             </tr>
+        </thead>
+        <tbody class="mdc-data-table__content ng-star-inserted">
+
             @foreach ($asignacionesEstudiantesDirector as $asignacion)
                 <tr>
                     <td>{{ $asignacion->estudiante->Apellidos }} {{ $asignacion->estudiante->Nombres }}</td>
@@ -58,8 +67,12 @@
 
                     </td>
                 </tr>
+        </tbody>
             @endforeach
         </table>
+        </div>
+        </div>
+        </div>
         <br>
         <form action="{{ route('director_vinculacion.cerrarProcesoEstudiantes') }}" method="POST">
             @csrf
@@ -183,38 +196,3 @@
 </script>
 
 
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        padding: 4px 8px;
-    }
-
-    table,
-    th,
-    td {
-        font-size: 14px;
-        padding: 4px 8px;
-        border: 1px solid #ddd;
-    }
-
-    th {
-        border: 1px solid #70a1ff;
-        background-color: #eaf5ff;
-    }
-
-    .wide-cell {
-        max-width: 200px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .body,
-    table,
-    tr,
-    td,
-    th {
-        font-size: 12px;
-    }
-</style>

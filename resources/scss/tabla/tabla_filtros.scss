@@ -6,10 +6,7 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 .contenedor_general {
-  display: grid;
-  gap: 5px;
-  border-radius: 5px;
-  box-shadow: none;
+
 
   // Estilos para el contenedor de filtros
   .contenedor_list_filtros {
@@ -170,61 +167,7 @@
     }
   }
 
-  // Estilos para el contenedor de la tabla
-  $tamañoTabla: 535px;
-  $tamañoTabla620: $tamañoTabla + 100px;
-
-  .contenedor_tabla {
-    max-height: $tamañoTabla;
-    min-height: none;
-    display: grid;
-    border-radius: 5px;
-    border: 1px solid rgba(colors.$gray, 0.3);
-
-    @media (max-width: 620px) {
-      max-height: $tamañoTabla620;
-      min-height: $tamañoTabla620;
-    }
-
-    @media (max-width: 460px) {
-      max-height: $tamañoTabla620;
-      min-height: $tamañoTabla620;
-    }
-
-    .table-container {
-      height: $tamañoTabla - 555px;
-      box-shadow: none !important;
-      text-align: left;
-
-      @media (max-width: 620px) {
-        height: $tamañoTabla620 - (50px * 2);
-      }
-
-      @media (max-width: 450px) {
-        height: $tamañoTabla620 - (50px * 3);
-      }
-
-      table {
-        width: 100%;
-        box-shadow: none !important;
-        border-collapse: collapse; // Ensure borders don't double up
-
-        .mat-mdc-row {
-          height: 5px;
-        }
-
-
-        td {
-
-          height: 30px;
-          border: 0.5px solid rgba(240, 240, 240, 10);
-        }
-
-      }
-
-    }
-  }
-
+  
 
   .contenedor_tabla {
     display: grid;
@@ -240,11 +183,10 @@
         width: 100%;
         box-shadow: none !important;
   
-        td,
-        th {
+        td {
           width: 200px;
           min-width: 150px;
-          font-size: 13px;
+          font-size: 11px;
           padding: 0.4rem;
           border-bottom: 1px solid rgba(240, 240, 240, 1); // Add bottom border
           border-top: none;
@@ -274,7 +216,7 @@
         } 
         .tamanio {
           width: 90px;
-          min-width: 350px;
+          min-width: 370px;
           padding: .3rem !important;
         } 
         .tamanio1 {

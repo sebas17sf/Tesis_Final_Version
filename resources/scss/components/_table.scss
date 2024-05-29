@@ -15,20 +15,18 @@
  /*    height: 345px !important; */
     table {
       width: 100%;
-      box-shadow: none !important;
 
-      td,
-      th {
+      td{
         width: 200px;
         min-width: 150px;
-        font-size: 13px;
+        font-size: 10px;
         padding: .5rem !important;
       }
 
       th {
         position: sticky;
         font-size: 13px;
-        font-weight: bold;
+        font-weight: bold !important;
         top: 0;
         background: linear-gradient(to bottom, colors.$white, colors.$white),
         linear-gradient(to bottom, rgba(colors.$primary, 0.3), rgba(colors.$primary, 0.2));
@@ -48,7 +46,43 @@
       }
     }
   }
+  .table-container-1 {
+    overflow-x: auto;
+    box-shadow: none !important;
+ /*    height: 345px !important; */
+    table {
+      width: 100%;
 
+      td{
+        width: 200px;
+        min-width: 150px;
+        font-size: 10px;
+        padding: .5rem !important;
+      }
+
+      th {
+        position: sticky;
+        font-size: 13px;
+        font-weight: bold !important;
+        top: 0;
+        background: linear-gradient(to bottom, colors.$white, colors.$white),
+        linear-gradient(to bottom, rgba(colors.$primary, 0.3), rgba(colors.$primary, 0.2));
+        background-blend-mode: multiply;
+        text-align: center;       
+      }
+
+      .mat-mdc-header-row {
+        height: 40px;
+      }
+
+      .mat-mdc-row {
+        transition: all 0.1s;
+        &:hover {
+          background-color: rgba(colors.$primary, .05);
+        }
+      }
+    }
+  }
   .paginator-container {
 
   

@@ -5,6 +5,8 @@
 
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+// @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 .contenedor_general {
   display: grid;
   gap: 5px;
@@ -82,6 +84,9 @@
     display: grid;
     align-items: center;
     grid-template-columns: 1fr 1fr;
+    border: 1px solid rgba(colors.$black, 0.2);
+    border-radius: 10px;
+    padding: 5px 10px;
     gap: 10px;
 
     @media (max-width: 700px) {
@@ -104,6 +109,14 @@
       .icon-charge {
         img {
           width: 30px;
+        }
+      }
+
+      .cross {
+        display: grid;
+        justify-content: center;
+        img {
+          width: 20px;
         }
       }
     }
@@ -142,20 +155,20 @@
   }
 
   // Estilos para el contenedor de la tabla
-  $tamañoTabla: 535px;
+  $tamañoTabla: 525px;
   $tamañoTabla620: $tamañoTabla + 100px;
   .contenedor_tabla {
     max-height: $tamañoTabla;
-    min-height: $tamañoTabla;
+    min-height: $tamañoTabla - 25px;
 
     @media (max-width: 620px) {
       max-height: $tamañoTabla620;
-      min-height: $tamañoTabla620;
+      min-height: $tamañoTabla620 - 25px;
     }
 
     @media (max-width: 460px) {
       max-height: $tamañoTabla620;
-      min-height: $tamañoTabla620;
+      min-height: $tamañoTabla620 - 25px;
     }
 
     .table-container {
@@ -183,25 +196,23 @@
 
       .APELLIDO-header,
       .APELLIDO_user-cell {
-        min-width: 130px !important;
+        min-width: 180px !important;
         user-select: text !important;
       }
 
       .NOMBRE-header,
       .NOMBRE-cell {
-        min-width: 130px !important;
+        min-width: 180px !important;
       }
 
       .ID-header,
       .ID-cell {
-        text-align: center;
-        min-width: 100px !important;
+        min-width: 80px !important;
       }
 
       .CEDULA-header,
       .CEDULA-cell {
-        text-align: center;
-        min-width: 100px !important;
+        min-width: 80px !important;
       }
 
       .A_CONOCIMIENTO-header,
@@ -211,50 +222,34 @@
 
       .DEPARTAMENTO-header,
       .DEPARTAMENTO-cell {
-        text-align: center;
-        min-width: 100px !important;
+        min-width: 55px !important;
       }
 
       .CURSO-header,
       .CURSO-cell {
-        text-align: center;
         min-width: 80px !important;
+        text-align: center;
       }
 
       .NRC-header,
-      .NRC-cell {
-        text-align: center;
-        min-width: 80px !important;
-      }
-
+      .NRC-cell,
       .ESTADO-header,
-      .ESTADO-cell {
-        text-align: center;
-        min-width: 80px !important;
-      }
-
+      .ESTADO-cell,
       .PROMEDIO-header,
-      .PROMEDIO-cell {
-        text-align: center;
-        min-width: 80px !important;
-      }
-
+      .PROMEDIO-cell,
       .NOTA1-header,
-      .NOTA1-cell {
-        text-align: center;
-        min-width: 80px !important;
-      }
-
+      .NOTA1-cell,
       .NOTA2-header,
-      .NOTA2-cell {
-        text-align: center;
-        min-width: 80px !important;
-      }
-
+      .NOTA2-cell,
       .NOTA3-header,
       .NOTA3-cell {
         text-align: center;
-        min-width: 80px !important;
+        min-width: 70px !important;
+
+        ::ng-deep .mat-sort-header-container {
+          justify-content: center;
+          text-align: center;
+        }
       }
 
       .DOCENTE-header,
@@ -270,13 +265,32 @@
       .PERIODO-header,
       .PERIODO-cell {
         text-align: center;
-        min-width: 80px !important;
+        min-width: 85px !important;
       }
 
       .GENERO-header,
       .GENERO-cell {
         text-align: center;
-        min-width: 80px !important;
+        min-width: 85px !important;
+      }
+
+      .APELLIDO-header,
+      .NOMBRE-header,
+      .ID-header,
+      .CEDULA-header,
+      .A_CONOCIMIENTO-header,
+      .DEPARTAMENTO-header,
+      .CURSO-header,
+      .MATERIA-header,
+      .DOCENTE-header,
+      .NIVEL-header,
+      .PERIODO-header,
+      .GENERO-header {
+        ::ng-deep .mat-sort-header-content {
+          text-align: center !important;
+          width: 100%;
+          justify-content: center;
+        }
       }
     }
   }

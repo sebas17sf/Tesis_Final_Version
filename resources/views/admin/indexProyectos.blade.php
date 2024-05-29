@@ -282,7 +282,7 @@
                             <!-- Formulario de Importación -->
                             <div class="tooltip-container">
                                 <span class="tooltip-text">Importar archivo</span>
-                                <button type="button" class="button3 efects_button btn_editar3" data-toggle="modal"
+                                <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
                                     data-target="#modalImportar">
                                     <i class="fa fa-upload"></i>
                                 </button>

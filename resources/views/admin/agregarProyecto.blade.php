@@ -98,7 +98,7 @@
                 </div>
             </div>
         </div>
-<br>
+
         <div class="text-center">
             <button type="submit" class="button1 efects_button">Agregar Proyecto</button>
         </div>   

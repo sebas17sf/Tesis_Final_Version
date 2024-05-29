@@ -258,3 +258,8 @@ table {
 .acciones-container button i {
     font-size: 16px; /* Ajusta el tamaño del icono según sea necesario */
 }
+.table1, .table1 td {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px !important;
+    text-align: center;
+}

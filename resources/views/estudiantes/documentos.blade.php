@@ -76,7 +76,6 @@
 
 
 <!-- Button to trigger modal -->
-<center><button id="toggleFormBtn" class="button1_1 efects_button" data-toggle="modal" data-target="#registroActividadesModal">Registrar actividad</button></center>
 <div class="contenedor_list_filtros">
 
       
@@ -126,21 +125,42 @@
         </div>
 
             <div class="mt-4">
-                <h4 class="text-center"><b>Actividades Registradas</b></h4>
-                <hr>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Fecha</th>
-                            <th>Actividades</th>
-                            <th>Número de Horas</th>
-                            <th>Nombre de la Actividad</th>
-                            <th>Evidencias</th>
-                            <th>Acciones</th>
+                <h4><b>Actividades Registradas</b></h4>
+                <div class="mat-elevation-z8">
+                    <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+                        <!-- Botones -->
+                        <div class="contenedor_botones">
+
+                            <div class="tooltip-container">
+                            <button id="toggleFormBtn" class="button1_1 efects_button" data-toggle="modal" data-target="#registroActividadesModal">Registrar actividad</button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                <div class="contenedor_tabla">
+                <div class="table-container mat-elevation-z8">
+
+                    <div id="tablaProyectos">
+                        <table class="mat-mdc-table">
+                            <thead class="ng-star-inserted">
+                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                            <th>FECHA</th>
+                            <th>ACTIVIDADES</th>
+                            <th>NÚMERO DE HORAS</th>
+                            <th>NOMBRE DE ACTIVIDAD</th>
+                            <th>EVIDENCIAS</th>
+                            <th>ACCIONES</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="mdc-data-table__content ng-star-inserted">
+                    @if ($actividadesRegistradas->isEmpty())
+                                            <tr class="noExisteRegistro ng-star-inserted" style="text-align:center">
+                                                <td colspan="6">No se encontraron resultados para la búsqueda.</td>
+                                            </tr>
+                                        @else
                         @foreach ($actividadesRegistradas as $actividad)
+                     
                             <tr>
                                 <td>{{ $actividad->fecha }}</td>
                                 <td>{{ $actividad->actividades }}</td>
@@ -221,15 +241,18 @@
 
 
                             </tr>
-                        @endforeach
+                            @endforeach
+                                        @endif
                     </tbody>
                 </table>
             </div>
+        </div>
+    </div>
+    </div>
 
 
-
-
-
+</div>
+<br>
         <center><button id="toggleFormBtn2" class="button1_1 efects_button">Crear Informe de Servicio a la comunidad</button></center>
         <br>
 

@@ -79,23 +79,28 @@
         @if (count($estudiantesCalificados) === 0)
             <p>No hay estudiantes calificados en este momento.</p>
         @else
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nombres</th>
-                        <th>Espe ID</th>
-                        <th>Carrera</th>
-                        <th>Departamento</th>
-                        <th>Tareas</th>
-                        <th>Resultados Alcanzados</th>
-                        <th>Conocimientos en el área</th>
-                        <th>Adaptabilidad</th>
-                        <th>Aplicación de destrezas y habilidades</th>
-                        <th>Capacidad de liderazgo</th>
-                        <th>Asistencia</th>
-                        <th>Informe de Servicio</th>
-                        <th>Nota Final</th>
-                        <th>Editar Notas</th>
+        <div class="contenedor_tabla">
+                <div class="table-container mat-elevation-z8">
+
+                    <div id="tablaProyectos">
+                        <table class="mat-mdc-table">
+                            <thead class="ng-star-inserted">
+                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                              
+                                        <th>NOMBRES</th>
+                        <th>ESPE ID</th>
+                        <th>CARRERA</th>
+                        <th>DEPARTAMENTO</th>
+                        <th>TAREAS</th>
+                        <th>RESULTADOS ALCANZADOS</th>
+                        <th>CONOCIMIENTOS EN EL ÁREA</th>
+                        <th>ADAPTABILIDAD</th>
+                        <th>APLICACION DE DESTREZAS Y HABILIDADES</th>
+                        <th>CAPACIDAD DE LIDERAZGO</th>
+                        <th>ASISTENCIA</th>
+                        <th>INFORME DE SERVICIO COMINITARIO</th>
+                        <th>NOTA FINAL</th>
+                        <th>EDITAR NOTAS</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -212,43 +217,10 @@
             </table>
         @endif
     </div>
+    </div>
+    </div>
 
     <script src="{{ asset('js/ParticipanteDirectorVinculacion/notas.js') }}"></script>
 
 @endsection
 
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        padding: 4px 8px;
-    }
-
-    table,
-    th,
-    td {
-        font-size: 14px;
-        padding: 4px 8px;
-        border: 1px solid #ddd;
-    }
-
-    th {
-        border: 1px solid #70a1ff;
-        background-color: #eaf5ff;
-    }
-
-    .wide-cell {
-        max-width: 200px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .body,
-    table,
-    tr,
-    td,
-    th {
-        font-size: 12px;
-    }
-</style>

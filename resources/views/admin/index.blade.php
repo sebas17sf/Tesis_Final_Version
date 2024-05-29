@@ -70,7 +70,7 @@
     <br>
     <section class="contenedor_agregar_periodo">
         <section>
-            <div class="mat-elevation-z8 contenedor_general">
+            <div class="mat-elevation-z8">
                 @if ($profesoresPendientes->isEmpty())
                     <p>No existen usuarios administrativos.</p>
                 @else
@@ -92,16 +92,16 @@
                                 <tbody class="mdc-data-table__content ng-star-inserted">
                                     @foreach ($profesoresPendientes as $profesor)
                                         <tr>
-                                            <td>{{ strtoupper($profesor->NombreUsuario) }}</td>
-                                            <td>{{ strtoupper($profesor->NombreUsuario) }}</td>
-                                            <td>{{ $profesor->CorreoElectronico }}</td>
-                                            <td>{{ $profesor->Estado }}</td>
-                                            <td>
+                                            <td class="table1">{{ strtoupper($profesor->NombreUsuario) }}</td>
+                                            <td class="table1">{{ strtoupper($profesor->NombreUsuario) }}</td>
+                                            <td class="table1">{{ $profesor->CorreoElectronico }}</td>
+                                            <td class="table1">{{ $profesor->Estado }}</td>
+                                            <td >
                                                 <!-- Botón de Editar -->
-                                                <button type="button" class="button3 efects_button btn_editar3" data-toggle="modal"
+                                                <center><button type="button" class="button3 efects_button btn_editar3" data-toggle="modal"
                                                     data-target="#editModal{{ $profesor->id }}">
                                                     <i class="bx bx-edit-alt"></i>
-                                                </button>
+                                                </button></center>
                                             </td>
                                         </tr>
 
@@ -178,11 +178,8 @@
                         </div>
                     </div>
                    
-
                     </div>
 
-    
-        
                 @endif
 
 

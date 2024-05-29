@@ -42,14 +42,14 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th class="size_">Nombre del proyecto</th>
-                                        <th>Director</th>
-                                        <th class="size_">Actividades a realizar</th>
-                                        <th>Correo</th>
-                                        <th>Departamento</th>
-                                        <th>Fecha de inicio</th>
-                                        <th>Fecha fin</th>
-                                        <th>Periodo</th>
+                                        <th class="size_">NOMBRE DEL PROYECTO</th>
+                                        <th>DIRECTOR</th>
+                                        <th class="size_">ACTIVIDADES A REALIZAR</th>
+                                        <th>CORREO</th>
+                                        <th>DEPARTAMENTO</th>
+                                        <th>FECHA INICIO</th>
+                                        <th>FECHA FIN</th>
+                                        <th>PERIODO</th>
 
 
                                     </tr>
@@ -128,24 +128,24 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th class="size_">Nombre del proyecto</th>
-                                        <th>Director</th>
-                                        <th class="size_">Actividades a realizar</th>
-                                        <th>Correo</th>
-                                        <th>Departamento</th>
-                                        <th>Fecha de inicio</th>
-                                        <th>Fecha fin</th>
-                                        <th>Cupos</th>
-                                        <th>Estado del proyecto</th>
+                                        <th class="tamanio">NOMBRE DEL PROYECTO</th>
+                                        <th>DIRECTOR</th>
+                                        <th class="tamanio">ACTIVIDADES A REALIZAR</th>
+                                        <th>CORREO</th>
+                                        <th>DEPARTAMENTO</th>
+                                        <th>FECHA INICIO</th>
+                                        <th>FECHA FIN</th>
+                                        <th>CUPOS</th>
+                                        <th>ESTADO DEL PROYECTO</th>
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
                                     @foreach ($proyectosTerminados as $proyecto)
-                                        <tr>
-                                            <td>{{ $proyecto->NombreProyecto }}</td>
+                                        <tr >
+                                            <td style="word-wrap: break-word; text-align: justify; padding: 5px 8px;">{{ $proyecto->NombreProyecto }}</td>
                                             <td>{{ strtoupper($proyecto->director->Apellidos) }}
                                                 {{ strtoupper($proyecto->director->Nombres) }}</td>
-                                            <td>{{ $proyecto->DescripcionProyecto }}</td>
+                                            <td style="word-wrap: break-word; text-align: justify; padding: 5px 8px;">{{ $proyecto->DescripcionProyecto }}</td>
                                             <td>{{ $proyecto->director->Correo }}</td>
                                             <td>{{ $proyecto->DepartamentoTutor }}</td>
                                             <td>{{ $proyecto->FechaInicio }}</td>
@@ -156,11 +156,11 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            {{ $proyectosTerminados->links('vendor.pagination.proyectosDirectorVinculacion') }}
 
 
                         </div>
                     </div>
+                    
                     <div class="paginator-container">
                         <nav aria-label="...">
 
@@ -189,6 +189,7 @@
 
 
                                 </li>
+                                {{ $proyectosTerminados->links('vendor.pagination.proyectosDirectorVinculacion') }}
 
                             </ul>
                         </nav>

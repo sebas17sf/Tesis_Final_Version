@@ -103,7 +103,7 @@
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                         <th class="tamanio">NOMBRE DEL PROYECTO</th>
-                                        <th class="tamanio">DIRECTOR</th>
+                                        <th class="tamanio1">DIRECTOR</th>
                                         <th class="tamanio">DESCRIPCION</th>
                                         <th>DEPARTAMENTO</th>
                                         <th>CODIGO DEL PROYECTO SOCIAL</th>
@@ -123,7 +123,7 @@
                                             <tr>
                                                 <td style="word-wrap: break-word; text-align: justify; padding: 5px 8px;">
                                                     {{ strtoupper($proyecto->NombreProyecto) }}</td>
-                                                <td>
+                                                <td style="word-wrap: break-word; text-align: left;">
                                                     @if ($proyecto->director)
                                                         {{ strtoupper($proyecto->director->Apellidos) }}
                                                         {{ strtoupper($proyecto->director->Nombres) }}
@@ -135,7 +135,7 @@
                                                 <td style="word-wrap: break-word; text-align: justify;">
                                                     {{ strtoupper($proyecto->DescripcionProyecto) }}</td>
 
-                                                <td>{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
+                                                <td style="word-wrap: break-word; text-align: left;">{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
                                                 <td>
                                                     @if (empty($proyecto->codigoProyecto))
                                                         {{ strtoupper('No requiere código de proyecto') }}
