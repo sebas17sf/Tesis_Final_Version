@@ -31,7 +31,7 @@
 
     <section>
         <div class="contenedor_registro_genero ">
-            <h3><b>Listado de Proyectos</b></h3>
+            <h4><b>Listado de Proyectos</b></h4>
             <hr>
 
             <div class="mat-elevation-z8 contenedor_general">
@@ -87,6 +87,7 @@
                             <form id="formBusquedaProyectos">
                                 <input type="text" class="input" name="search" value="{{ $search }}" matInput
                                     placeholder="Buscar proyectos...">
+                                <i class='bx bx-search-alt'></i>
                             </form>
                         </div>
                     </div>
@@ -103,7 +104,7 @@
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                         <th class="tamanio">NOMBRE DEL PROYECTO</th>
-                                        <th class="tamanio1">DIRECTOR</th>
+                                        <th>DIRECTOR</th>
                                         <th class="tamanio">DESCRIPCION</th>
                                         <th>DEPARTAMENTO</th>
                                         <th>CODIGO DEL PROYECTO SOCIAL</th>
@@ -128,14 +129,14 @@
                                                         {{ strtoupper($proyecto->director->Apellidos) }}
                                                         {{ strtoupper($proyecto->director->Nombres) }}
                                                     @else
-                                                        Director no asignado
+                                                        DIRECTOR NO ASIGNADO
                                                     @endif
                                                 </td>
 
-                                                <td style="word-wrap: break-word; text-align: justify;">
+                                                <td style="word-wrap: break-word; text-align: justify; padding: 5px 8px;">
                                                     {{ strtoupper($proyecto->DescripcionProyecto) }}</td>
 
-                                                <td style="word-wrap: break-word; text-align: left;">{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
+                                                <td>{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
                                                 <td>
                                                     @if (empty($proyecto->codigoProyecto))
                                                         {{ strtoupper('No requiere código de proyecto') }}
@@ -147,7 +148,7 @@
                                                 <td>
                                                     <div class="contenedor_botones">
                                                         <div class="btn-group  shadow-0">
-                                                            <div class="tooltip-container mx-2">
+                                                            <div class="tooltip-container">
                                                                 <span class="tooltip-text">Editar</span>
                                                                 <a href="{{ route('coordinador.editarProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
                                                                     type="button"
@@ -185,6 +186,8 @@
 
                             <ul class="pagination">
                                 <li class="page-item mx-3">
+
+
                                     <form method="GET" action="{{ route('coordinador.index') }}">
                                         <select class="form-control page-item" class="input" name="perPage" id="perPage"
                                             onchange="this.form.submit()">
@@ -198,6 +201,9 @@
                                             </option>
                                         </select>
                                     </form>
+
+
+
                                 </li>
                                 @if ($proyectos->onFirstPage())
                                     <li class="page-item disabled">
@@ -226,50 +232,28 @@
                                         <span class="page-link">Siguiente</span>
                                     </li>
                                 @endif
+
                             </ul>
+
                         </nav>
+
                     </div>
 
                 </div>
             </div>
-
     </section>
+    <br>
+    <style>
+
+
+
+    </style>
     <section>
         <div class="contenedor_registro_genero ">
             <h4><b>Listado de asignaciones</b></h4>
             <hr>
 
             <div class="mat-elevation-z8 contenedor_general">
-                {{-- <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
-                    <!-- Botones -->
-                    <div class="row">
-                        <div class="col-md-12 d-flex align-items-center">
-
-                            <div class="tooltip-container">
-                                <span class="tooltip-text">Matriz de Vinculacion</span>
-                                <form id="reportForm" action="{{ route('reporte.matrizVinculacion') }}" method="POST"
-                                    onsubmit="submitForm(event)">
-                                    @csrf
-                                    <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
-                                        <span id="loadingIcon" style="display: none;">
-                                            <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
-                                        </span>
-                                        <i class="fa-solid fa-file-excel" id="excelIcon"></i>
-                                    </button>
-                                </form>
-                                <br>
-                            </div>
-
-                            <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <input type="file" name="file" required>
-                                <button type="submit">Importar Archivo</button>
-                            </form>
-                        </div>
-
-                    </div>
-                </div> --}}
-
 
                 <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                     <!-- Fila de Botones -->
@@ -282,20 +266,23 @@
                             <form id="reportForm" action="{{ route('reporte.matrizVinculacion') }}" method="POST"
                                 onsubmit="submitForm(event)">
                                 @csrf
-                                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
-                                    <span id="loadingIcon" style="display: none;">
-                                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
-                                    </span>
-                                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
-                                </button>
+                                <div class="tooltip-container mx-2">
+                                    <span class="tooltip-text">Matriz de Vinculacion</span>
+                                    <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+                                        <span id="loadingIcon" style="display: none;">
+                                            <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+                                        </span>
+                                        <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                                    </button>
+                                </div>
                             </form>
 
 
 
                             <!-- Formulario de Importación -->
-                            <div class="tooltip-container mx-2">
+                            <div class="tooltip-container">
                                 <span class="tooltip-text">Importar archivo</span>
-                                <button type="button" class="button3 efects_button btn_editar3" data-toggle="modal"
+                                <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
                                     data-target="#modalImportar">
                                     <i class="fa fa-upload"></i>
                                 </button>
@@ -350,8 +337,8 @@
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
 
-                        <div id="tablaProyectos">
-                            <table class="mat-mdc-table">
+                        <div id="tablaAsignaciones">
+                            <table id="tablaAsignaciones" class="mat-mdc-table">
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
@@ -360,7 +347,7 @@
                                         <th class="tamanio1">DIRECTOR</th>
                                         <th class="tamanio1">DOCENTES PARTICIPANTES</th>
                                         <th>FECHA ASIGNACION</th>
-                                        <th class="tamanio1">ESTUDIANTES</th>
+                                        <th class="tamanio">ESTUDIANTES</th>
                                         <th>PERIODO</th>
                                         <th>NRC</th>
                                         <th>FECHA INICIO</th>
@@ -373,26 +360,28 @@
                                             <td style="text-transform: uppercase; text-align: justify; padding: 5px 8px;">
                                                 {{ $grupo->first()->proyecto->NombreProyecto ?? '' }}</td>
                                             <td>{{ $grupo->first()->proyecto->codigoProyecto ?? '' }}</td>
+
                                             <td style="text-transform: uppercase; text-align: left;">
-                                                {{ $grupo->first()->proyecto->director->Apellidos ?? '' }}</td>
+                                                {{ $grupo->first()->proyecto->director->Apellidos ?? '' }}
+                                                {{ $grupo->first()->proyecto->director->Nombres ?? '' }}</td>
                                             <td style="text-transform: uppercase; text-align: left;">
-                                                @php
-                                                    $participantes = $grupo
-                                                        ->pluck('docenteParticipante')
-                                                        ->unique('id')
-                                                        ->pluck('Nombres')
-                                                        ->implode('<br>');
-                                                @endphp
-                                                {!! $participantes !!}
+
+                                                {{ $grupo->first()->docenteParticipante->Apellidos ?? '' }}
+                                                {{ $grupo->first()->docenteParticipante->Nombres ?? '' }}<br>
+
                                             </td>
                                             <td>{{ $grupo->first()->FechaAsignacion ?? '' }}</td>
-                                            <td style="text-transform: uppercase; text-align: left;">
+
+                                            <td
+                                                style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
+
                                                 @foreach ($grupo as $asignacion)
+                                                    {{ $asignacion->estudiante->Apellidos ?? '' }}
                                                     {{ $asignacion->estudiante->Nombres ?? '' }}<br>
                                                 @endforeach
                                             </td>
                                             <td>{{ $grupo->first()->periodo->numeroPeriodo ?? '' }}</td>
-                                            <td>{{ $grupo->first()->nrcVinculacion->nrc ?? '' }}</td>
+                                            <td>{{ $grupo->first()->nrcVinculacion->nrc ?? 'No requeria de NRC' }}</td>
                                             <td>{{ $grupo->first()->FechaInicio ?? '' }}</td>
                                             <td>{{ $grupo->first()->FechaFinalizacion ?? '' }}</td>
                                         </tr>
@@ -402,47 +391,70 @@
                         </div>
 
                     </div>
-
                     <div class="paginator-container">
                         <nav aria-label="...">
+                            <ul class="pagination d-flex align-items-center">
 
-                            <ul class="pagination">
-                                <li class="page-item mx-3">
-                                    <form method="GET" action="{{ route('admin.indexProyectos') }}">
-                                        <select class="form-control page-item" class="input" name="perPage"
-                                            id="perPage" onchange="this.form.submit()">
-                                            <option value="10" @if ($perPage == 10) selected @endif>10
-                                            </option>
-                                            <option value="20" @if ($perPage == 20) selected @endif>20
-                                            </option>
-                                            <option value="50" @if ($perPage == 50) selected @endif>50
-                                            </option>
-                                            <option value="100" @if ($perPage == 100) selected @endif>100
-                                            </option>
-                                        </select>
+                                <li class="page-item mx-3 d-flex align-items-center">
+                                    <form id="filterForm" action="{{ route('coordinador.index') }}" method="GET" class="form-inline" onsubmit="filterFormSubmit(event)">
+                                        <div class="form-group mr-2">
+                                            <label for="profesor" class="sr-only">Profesor</label>
+                                            <select name="profesor" id="profesor" class="form-control" onchange="document.getElementById('filterForm').submit();">
+                                                <option value="">Todos los docentes</option>
+                                                @foreach ($profesores as $profesor)
+                                                    <option value="{{ $profesor->id }}" {{ request('profesor') == $profesor->id ? 'selected' : '' }}>
+                                                        {{ $profesor->Apellidos }} {{ $profesor->Nombres }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group mr-2">
+                                            <label for="periodos" class="sr-only">Períodos</label>
+                                            <select name="periodos" id="periodos" class="form-control" onchange="document.getElementById('filterForm').submit();">
+                                                <option value="">Todos los periodos</option>
+                                                @foreach ($periodos as $periodo)
+                                                    <option value="{{ $periodo->id }}" {{ request('periodos') == $periodo->id ? 'selected' : '' }}>
+                                                        {{ $periodo->numeroPeriodo }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </form>
                                 </li>
-                                @if ($proyectos->onFirstPage())
+
+                                <li class="page-item mx-3 d-flex align-items-center">
+                                    <form method="GET" action="{{ route('coordinador.index') }}" class="form-inline" onsubmit="document.getElementById('tablaAsignaciones').scrollIntoView()">
+                                        <div class="form-group">
+                                            <label for="perPage2" class="sr-only">Items per page</label>
+                                            <select class="form-control page-item" name="perPage2" id="perPage2" onchange="this.form.submit()">
+                                                <option value="10" @if ($perPage2 == 10) selected @endif>10</option>
+                                                <option value="20" @if ($perPage2 == 20) selected @endif>20</option>
+                                                <option value="50" @if ($perPage2 == 50) selected @endif>50</option>
+                                                <option value="100" @if ($perPage2 == 100) selected @endif>100</option>
+                                            </select>
+                                        </div>
+                                    </form>
+                                </li>
+
+                                @if ($paginator->onFirstPage())
                                     <li class="page-item disabled">
                                         <span class="page-link">Anterior</span>
                                     </li>
                                 @else
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $proyectos->previousPageUrl() }}"
-                                            aria-label="Anterior">Anterior</a>
+                                        <a class="page-link" href="{{ $paginator->previousPageUrl() }}#tablaAsignaciones" aria-label="Anterior">Anterior</a>
                                     </li>
                                 @endif
 
-                                @for ($i = 1; $i <= $proyectos->lastPage(); $i++)
-                                    <li class="page-item {{ $proyectos->currentPage() == $i ? 'active' : '' }}">
-                                        <a class="page-link" href="{{ $proyectos->url($i) }}">{{ $i }}</a>
+                                @for ($i = 1; $i <= $paginator->lastPage(); $i++)
+                                    <li class="page-item {{ $paginator->currentPage() == $i ? 'active' : '' }}">
+                                        <a class="page-link" href="{{ $paginator->url($i) }}#tablaAsignaciones">{{ $i }}</a>
                                     </li>
                                 @endfor
 
-                                @if ($proyectos->hasMorePages())
+                                @if ($paginator->hasMorePages())
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $proyectos->nextPageUrl() }}"
-                                            aria-label="Siguiente">Siguiente</a>
+                                        <a class="page-link" href="{{ $paginator->nextPageUrl() }}#tablaAsignaciones" aria-label="Siguiente">Siguiente</a>
                                     </li>
                                 @else
                                     <li class="page-item disabled">
@@ -452,6 +464,8 @@
                             </ul>
                         </nav>
                     </div>
+
+
                 </div>
 
     </section>
@@ -459,121 +473,116 @@
     <section>
 
         <div class="container">
-            <center><button id="toggleFormBtn3" class="button1_1 efects_button">Asignar estudiante</button></center>
+            <center> <button id="toggleFormBtn3" class="button1_1 efects_button">Asignar estudiante</button></center>
             <div id="asignarEstudiante" style="display: none;">
                 <hr>
-                <h3><b>Asignar Proyecto</b></h3>
+                <h4><b>Asignar Proyecto</b></h4>
                 <hr>
                 <form method="POST" action="{{ route('coordinador.guardarAsignacion') }}">
-                    @csrf
+    @csrf
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="proyecto_id"><strong>Proyecto Disponible:</strong></label>
-                                <select name="proyecto_id" id="proyecto_id" class="form-control input input_select">
-                                    <option value="">Seleccione un proyecto</option>
-                                    @foreach ($proyectosDisponibles as $proyecto)
-                                        <option value="{{ $proyecto->ProyectoID }}">
-                                            @if ($proyecto->director)
-                                                {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }}
-                                            @endif
-                                            {{ $proyecto->codigoProyecto }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="proyecto_id"><strong>Proyecto Disponible:</strong></label>
+                <select name="proyecto_id" id="proyecto_id" class="form-control input input_select">
+                    <option value="">Seleccione un proyecto</option>
+                    @foreach ($proyectosDisponibles as $proyecto)
+                        <option value="{{ $proyecto->ProyectoID }}">
+                            @if ($proyecto->director)
+                                {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }}
+                            @endif
+                            {{ $proyecto->codigoProyecto }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="ProfesorParticipante">Docente Participante:</label>
+                <select name="ProfesorParticipante" class="form-control input input_select" required>
+                    <option value="">Seleccionar Docente Participante</option>
+                    @foreach ($profesores as $profesor)
+                        <option value="{{ $profesor->id }}">
+                            Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
+                            Departamento: {{ $profesor->Departamento }} -
+                            Correo: {{ $profesor->Correo }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
 
+    <br>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="ProfesorParticipante">Docente Participante:</label>
-                                <select name="ProfesorParticipante" class="form-control input input_select" required>
-                                    <option value="">Seleccionar Docente Participante</option>
-                                    @foreach ($profesores as $profesor)
-                                        <option value="{{ $profesor->id }}">
-                                            Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
-                                            Departamento: {{ $profesor->Departamento }} -
-                                            Correo: {{ $profesor->Correo }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="estudiante_id"><strong>Estudiante Aprobado:</strong></label>
+                <select name="estudiante_id[]" id="estudiante_id" class="form-control input input_select" multiple="multiple">
+                    @foreach ($estudiantesAprobados as $estudiante)
+                        <option value="{{ $estudiante->EstudianteID }}">
+                            {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} -
+                            {{ $estudiante->Departamento }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
 
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="nrc">Vinculacion NRC:</label>
+                <select name="nrc" id="nrc" class="form-control input input_select" required>
+                    <option value="">Seleccionar NRC</option>
+                    @foreach ($nrcs as $nrc)
+                        <option value="{{ $nrc->id }}" data-periodo="{{ $nrc->periodo->numeroPeriodo }} {{ $nrc->periodo->Periodo }}">
+                            {{ $nrc->nrc }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
 
-                        </div>
-                    </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="periodo">Periodo:</label>
+                <input type="text" id="periodo" class="form-control input" readonly>
+            </div>
+        </div>
+    </div>
 
-                    <br>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="FechaInicio">Fecha de Inicio de intervencion en el proyecto:</label>
+                <input type="date" name="FechaInicio" class="form-control input" required>
+            </div>
+        </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="estudiante_id"><strong>Estudiante Aprobado:</strong></label>
-                                <select name="estudiante_id[]" id="estudiante_id" class="form-control input input_select"
-                                    multiple="multiple">
-                                    @foreach ($estudiantesAprobados as $estudiante)
-                                        <option value="{{ $estudiante->EstudianteID }}">
-                                            {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} -
-                                            {{ $estudiante->Departamento }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="FechaFinalizacion">Fecha de Fin de intervencion en el proyecto:</label>
+                <input type="date" name="FechaFinalizacion" class="form-control input" required>
+            </div>
+        </div>
 
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="periodo"><strong>Periodo:</strong></label>
+                <input type="text" id="periodo" class="form-control input" readonly>
+            </div>
+        </div>
+    </div>
 
+   <center> <button type="submit" class="button1 efects_button">Asignar Proyecto</button></center>
+</form>
 
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="nrc">Vinculacion NRC:</label>
-                                <select name="nrc" id="nrc" class="form-control input input_select" required>
-                                    <option value="">Seleccionar NRC</option>
-                                    @foreach ($nrcs as $nrc)
-                                        <option value="{{ $nrc->id }}"
-                                            data-periodo="{{ $nrc->periodo->numeroPeriodo }} {{ $nrc->periodo->Periodo }}">
-                                            {{ $nrc->nrc }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="periodo">Periodo:</label>
-                                <input type="text" id="periodo" class="form-control input" readonly>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="FechaInicio">Fecha de Inicio de intervencio en el proyecto:</label>
-                                <input type="date" name="FechaInicio" class="form-control input" required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="FechaFinalizacion">Fecha de Fin de intervencion en el proyecto:</label>
-                                <input type="date" name="FechaFinalizacion" class="form-control input" required>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-
-                    <button type="submit" class="button">Asignar Proyecto</button>
-                </form>
             </div>
         </div>
 
@@ -668,10 +677,27 @@
                 periodoInput.value = periodo ? periodo : '';
             });
         });
+
+        function displayFileName(input) {
+            const fileName = input.files[0].name;
+            document.getElementById('fileText').textContent = fileName;
+        }
+
+        function removeFile(span) {
+            const input = span.previousElementSibling;
+            input.value = ""; // Clear the input
+            document.getElementById('fileText').innerHTML =
+                '<i class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir el documento'; // Reset the text
+        }
+
+        $('#modalImportar').on('hidden.bs.modal', function() {
+            console.log('Modal hidden');
+             $('#idModalImportar')[0].reset();
+             $('#idModalImportar').find('.form-group').removeClass('has-error');
+            $('#idModalImportar').find('.help-block').text('');
+             removeFile();
+        });
     </script>
-
-
-
 
 
 

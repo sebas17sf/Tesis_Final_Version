@@ -334,14 +334,31 @@ class AdminController extends Controller
             ->get();
 
         ///////////// Obtener todas las asignacionesProyectos
+
+        $profesorId = request('profesor');
+        $periodoId = request('periodos');
+
         $asignacionesAgrupadas = AsignacionProyecto::with('estudiante')
             ->with('proyecto')
             ->with('docenteParticipante')
             ->with('periodo')
+            ->when($profesorId, function ($query, $profesorId) {
+                return $query->whereHas('docenteParticipante', function ($query) use ($profesorId) {
+                    $query->where('id', $profesorId);
+                });
+            })
+            ->when($periodoId, function ($query, $periodoId) {
+                return $query->whereHas('periodo', function ($query) use ($periodoId) {
+                    $query->where('id', $periodoId);
+                });
+            })
             ->get()
             ->groupBy(function ($item) {
                 return $item->ProyectoID . '_' . $item->IdPeriodo . "_" . $item->ParticipanteID;
             });
+
+
+
 
         // Second pagination
         $total = $asignacionesAgrupadas->count();
