@@ -106,17 +106,10 @@ class CoordinadorController extends Controller
 
     public function crearProyectoForm()
     {
-        // Obtén todos los NRCs
-        $nrcs = NrcVinculacion::all();
-
-        // Filtra los NRCs que ya están asignados a algún proyecto
-        $nrcs = collect($nrcs)->reject(function ($nrc) {
-            return Proyecto::where('id_nrc_vinculacion', $nrc->id)->exists();
-        });
 
         $profesores = ProfesUniversidad::all();
 
-        return view('coordinador.agregarProyecto', compact('profesores', 'nrcs'));
+        return view('coordinador.agregarProyecto', compact('profesores' ));
     }
 
     public function crearProyecto(Request $request)

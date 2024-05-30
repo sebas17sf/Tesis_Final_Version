@@ -235,9 +235,9 @@
 
                             </ul>
 
-                         </nav>
+                        </nav>
 
-                     </div>
+                    </div>
 
                 </div>
             </div>
@@ -337,8 +337,8 @@
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
 
-                        <div id="tablaProyectos">
-                            <table class="mat-mdc-table">
+                        <div id="tablaAsignaciones">
+                            <table id="tablaAsignaciones" class="mat-mdc-table">
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
@@ -393,45 +393,68 @@
                     </div>
                     <div class="paginator-container">
                         <nav aria-label="...">
+                            <ul class="pagination d-flex align-items-center">
 
-                            <ul class="pagination">
-                                <li class="page-item mx-3">
-
-                                     <form method="GET" action="{{ route('admin.indexProyectos') }}">
-                                        <select class="form-control page-item" class="input" name="perPage2"
-                                            id="perPage2" onchange="this.form.submit()">
-                                            <option value="10" @if ($perPage2 == 10) selected @endif>10
-                                            </option>
-                                            <option value="20" @if ($perPage2 == 20) selected @endif>20
-                                            </option>
-                                            <option value="50" @if ($perPage2 == 50) selected @endif>50
-                                            </option>
-                                            <option value="100" @if ($perPage2 == 100) selected @endif>100
-                                            </option>
-                                        </select>
+                                <li class="page-item mx-3 d-flex align-items-center">
+                                    <form id="filterForm" action="{{ route('admin.indexProyectos') }}" method="GET" class="form-inline" onsubmit="filterFormSubmit(event)">
+                                        <div class="form-group mr-2">
+                                            <label for="profesor" class="sr-only">Profesor</label>
+                                            <select name="profesor" id="profesor" class="form-control" onchange="document.getElementById('filterForm').submit();">
+                                                <option value="">Todos los docentes</option>
+                                                @foreach ($profesores as $profesor)
+                                                    <option value="{{ $profesor->id }}" {{ request('profesor') == $profesor->id ? 'selected' : '' }}>
+                                                        {{ $profesor->Apellidos }} {{ $profesor->Nombres }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group mr-2">
+                                            <label for="periodos" class="sr-only">Períodos</label>
+                                            <select name="periodos" id="periodos" class="form-control" onchange="document.getElementById('filterForm').submit();">
+                                                <option value="">Todos los periodos</option>
+                                                @foreach ($periodos as $periodo)
+                                                    <option value="{{ $periodo->id }}" {{ request('periodos') == $periodo->id ? 'selected' : '' }}>
+                                                        {{ $periodo->numeroPeriodo }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </form>
                                 </li>
+
+                                <li class="page-item mx-3 d-flex align-items-center">
+                                    <form method="GET" action="{{ route('admin.indexProyectos') }}" class="form-inline" onsubmit="document.getElementById('tablaAsignaciones').scrollIntoView()">
+                                        <div class="form-group">
+                                            <label for="perPage2" class="sr-only">Items per page</label>
+                                            <select class="form-control page-item" name="perPage2" id="perPage2" onchange="this.form.submit()">
+                                                <option value="10" @if ($perPage2 == 10) selected @endif>10</option>
+                                                <option value="20" @if ($perPage2 == 20) selected @endif>20</option>
+                                                <option value="50" @if ($perPage2 == 50) selected @endif>50</option>
+                                                <option value="100" @if ($perPage2 == 100) selected @endif>100</option>
+                                            </select>
+                                        </div>
+                                    </form>
+                                </li>
+
                                 @if ($paginator->onFirstPage())
                                     <li class="page-item disabled">
                                         <span class="page-link">Anterior</span>
                                     </li>
                                 @else
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $paginator->previousPageUrl() }}"
-                                            aria-label="Anterior">Anterior</a>
+                                        <a class="page-link" href="{{ $paginator->previousPageUrl() }}#tablaAsignaciones" aria-label="Anterior">Anterior</a>
                                     </li>
                                 @endif
 
                                 @for ($i = 1; $i <= $paginator->lastPage(); $i++)
                                     <li class="page-item {{ $paginator->currentPage() == $i ? 'active' : '' }}">
-                                        <a class="page-link" href="{{ $paginator->url($i) }}">{{ $i }}</a>
+                                        <a class="page-link" href="{{ $paginator->url($i) }}#tablaAsignaciones">{{ $i }}</a>
                                     </li>
                                 @endfor
 
                                 @if ($paginator->hasMorePages())
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $paginator->nextPageUrl() }}"
-                                            aria-label="Siguiente">Siguiente</a>
+                                        <a class="page-link" href="{{ $paginator->nextPageUrl() }}#tablaAsignaciones" aria-label="Siguiente">Siguiente</a>
                                     </li>
                                 @else
                                     <li class="page-item disabled">
@@ -441,6 +464,8 @@
                             </ul>
                         </nav>
                     </div>
+
+
                 </div>
 
     </section>
@@ -671,14 +696,11 @@
         }
 
         $('#modalImportar').on('hidden.bs.modal', function() {
-            console.log('Modal hidden'); // Verifica si el evento se dispara en la consola
-            // Restablece el formulario
-            $('#idModalImportar')[0].reset();
-            // Limpia cualquier contenido adicional si es necesario
-            $('#idModalImportar').find('.form-group').removeClass('has-error');
+            console.log('Modal hidden');
+             $('#idModalImportar')[0].reset();
+             $('#idModalImportar').find('.form-group').removeClass('has-error');
             $('#idModalImportar').find('.help-block').text('');
-            // Llama a la función para remover el archivo si es necesario
-            removeFile();
+             removeFile();
         });
     </script>
 
