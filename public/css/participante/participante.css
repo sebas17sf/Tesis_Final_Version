@@ -5,9 +5,7 @@
             font-family: " Arial", sans-serif;
 
         }
-        .table{
-            font-size: 12px;
-        }
+
 
 
         .sidebar {
@@ -218,10 +216,4 @@
         .custom-table {
             border-collapse: collapse;
             width: 100%;
-        }
-
-        td,
-        tr {
-            border: 1px solid #70a1ff;
-            padding: 8px;
         }

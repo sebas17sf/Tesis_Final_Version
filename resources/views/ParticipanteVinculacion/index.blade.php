@@ -1,5 +1,8 @@
 @extends('layouts.participante')
 @section('title_component', 'Lista de Proyectos')
+
+@section('title', 'Proyectos')
+
 @section('content')
     @if (session('success'))
         <script>
@@ -26,7 +29,7 @@
 
     <div class="container" style="overflow-x: auto;">
 <br>
-        <h6><b>Proyecto en Ejecución</b></h6>
+        <h4><b>Proyecto en Ejecución</b></h4>
         <hr>
 
         @if ($proyectosEnEjecucion && $proyectosEnEjecucion->isNotEmpty())
@@ -66,9 +69,9 @@
                     <p>No hay proyectos en ejecución.</p>
         @endif
     </div>
-    </div>
+    
 <br>
-    <h6><b>Proyectos Terminados</b></h6>
+    <h4><b>Proyectos Terminados</b></h4>
     <hr>
     <form method="GET" action="{{ route('ParticipanteVinculacion.index') }}">
         <label for="elementosPorPagina2">Elementos por página:</label>

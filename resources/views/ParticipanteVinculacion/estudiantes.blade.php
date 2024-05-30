@@ -27,7 +27,7 @@
 
     <div class="container" style="overflow-x: auto;">
         <br>
-        <h6><b>Estudiantes por calificar</b></h6>
+        <h4><b>Estudiantes por calificar</b></h4>
         <hr>
 
         <!-- Formulario de calificación -->
@@ -96,16 +96,20 @@
                 </div>
             </div>
             <br>
-            <button type="submit" class="btn btn-sm btn-secondary">Guardar Calificaciones</button>
+            <button type="submit" class="button1 btn_4">Guardar Calificaciones</button>
         </form>
 
         <!-- Estudiantes Calificados -->
         @if (!$estudiantesConNotas->isEmpty())
             <h4>Estudiantes Calificados</h4>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Nombres</th>
+            <div class="contenedor_tabla">
+                <div class="table-container mat-elevation-z8">
+
+                    <div id="tablaDocentes">
+                        <table class="mat-mdc-table">
+                            <thead class="ng-star-inserted">
+                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                    <th>Nombres</th>
                         <th>Espe ID</th>
                         <th>Carrera</th>
                         <th>Departamento</th>
@@ -275,12 +279,10 @@
                                                 <div class="modal-footer">
                                                     <button type="button" class="button"
                                                         data-dismiss="modal">Cerrar</button>
-                                                    <button type="submit" class="button">Guardar Cambios</button>
+                                                    <button type="submit" class="button3">Guardar Cambios</button>
                                                 </div>
                                             </form>
                                         </div>
-                                    </div>
-                                </div>
 
 
 
@@ -293,9 +295,11 @@
         @endif
     </div>
 
+
+    
     <hr>
 
-    <h6><b>Control de actividades de los estudiantes</b></h6>
+    <h4><b>Control de actividades de los estudiantes</b></h4>
 
     <div class="container mt-5">
         <div class="d-flex flex-wrap">
@@ -325,7 +329,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <h6><b>Actividades registradas del estudiante</b></h6>
+                                    <h4><b>Actividades registradas del estudiante</b></h4>
                                     <table class="table">
                                         <thead>
                                             <tr
