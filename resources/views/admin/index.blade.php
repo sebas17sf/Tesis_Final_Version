@@ -348,14 +348,14 @@
                             </div>
 
                             <!-- Copiar -->
-                            <div class="tooltip-container">
+                           <!--<div class="tooltip-container">
                                 <span class="tooltip-text">Copiar</span>
                                 <button class="button3 efects_button btn_copy" onclick="copyDataToClipboard(event)"
                                     pTooltip="Copiar" tooltipPosition="top">
                                     <i class="fa-solid fa-copy" id="icon"></i>
                                 </button>
 
-                            </div>
+                            </div>-->
 
                         </div>
 

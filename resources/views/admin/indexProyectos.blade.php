@@ -454,115 +454,110 @@
                 <h4><b>Asignar Proyecto</b></h4>
                 <hr>
                 <form method="POST" action="{{ route('admin.guardarAsignacion') }}">
-                    @csrf
+    @csrf
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="proyecto_id"><strong>Proyecto Disponible:</strong></label>
-                                <select name="proyecto_id" id="proyecto_id" class="form-control input input_select">
-                                    <option value="">Seleccione un proyecto</option>
-                                    @foreach ($proyectosDisponibles as $proyecto)
-                                        <option value="{{ $proyecto->ProyectoID }}">
-                                            @if ($proyecto->director)
-                                                {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }}
-                                            @endif
-                                            {{ $proyecto->codigoProyecto }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="proyecto_id"><strong>Proyecto Disponible:</strong></label>
+                <select name="proyecto_id" id="proyecto_id" class="form-control input input_select">
+                    <option value="">Seleccione un proyecto</option>
+                    @foreach ($proyectosDisponibles as $proyecto)
+                        <option value="{{ $proyecto->ProyectoID }}">
+                            @if ($proyecto->director)
+                                {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }}
+                            @endif
+                            {{ $proyecto->codigoProyecto }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="ProfesorParticipante">Docente Participante:</label>
+                <select name="ProfesorParticipante" class="form-control input input_select" required>
+                    <option value="">Seleccionar Docente Participante</option>
+                    @foreach ($profesores as $profesor)
+                        <option value="{{ $profesor->id }}">
+                            Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
+                            Departamento: {{ $profesor->Departamento }} -
+                            Correo: {{ $profesor->Correo }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
 
+    <br>
 
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="ProfesorParticipante">Docente Participante:</label>
-                                <select name="ProfesorParticipante" class="form-control input input_select" required>
-                                    <option value="">Seleccionar Docente Participante</option>
-                                    @foreach ($profesores as $profesor)
-                                        <option value="{{ $profesor->id }}">
-                                            Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
-                                            Departamento: {{ $profesor->Departamento }} -
-                                            Correo: {{ $profesor->Correo }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="estudiante_id"><strong>Estudiante Aprobado:</strong></label>
+                <select name="estudiante_id[]" id="estudiante_id" class="form-control input input_select" multiple="multiple">
+                    @foreach ($estudiantesAprobados as $estudiante)
+                        <option value="{{ $estudiante->EstudianteID }}">
+                            {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} -
+                            {{ $estudiante->Departamento }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
 
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="nrc">Vinculacion NRC:</label>
+                <select name="nrc" id="nrc" class="form-control input input_select" required>
+                    <option value="">Seleccionar NRC</option>
+                    @foreach ($nrcs as $nrc)
+                        <option value="{{ $nrc->id }}" data-periodo="{{ $nrc->periodo->numeroPeriodo }} {{ $nrc->periodo->Periodo }}">
+                            {{ $nrc->nrc }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
 
-                        </div>
-                    </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="periodo">Periodo:</label>
+                <input type="text" id="periodo" class="form-control input" readonly>
+            </div>
+        </div>
+    </div>
 
-                    <br>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="FechaInicio">Fecha de Inicio de intervencion en el proyecto:</label>
+                <input type="date" name="FechaInicio" class="form-control input" required>
+            </div>
+        </div>
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="estudiante_id"><strong>Estudiante Aprobado:</strong></label>
-                                <select name="estudiante_id[]" id="estudiante_id" class="form-control input input_select"
-                                    multiple="multiple">
-                                    @foreach ($estudiantesAprobados as $estudiante)
-                                        <option value="{{ $estudiante->EstudianteID }}">
-                                            {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} -
-                                            {{ $estudiante->Departamento }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="FechaFinalizacion">Fecha de Fin de intervencion en el proyecto:</label>
+                <input type="date" name="FechaFinalizacion" class="form-control input" required>
+            </div>
+        </div>
 
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="periodo"><strong>Periodo:</strong></label>
+                <input type="text" id="periodo" class="form-control input" readonly>
+            </div>
+        </div>
+    </div>
 
+   <center> <button type="submit" class="button1 efects_button">Asignar Proyecto</button></center>
+</form>
 
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="nrc">Vinculacion NRC:</label>
-                                <select name="nrc" id="nrc" class="form-control input input_select" required>
-                                    <option value="">Seleccionar NRC</option>
-                                    @foreach ($nrcs as $nrc)
-                                        <option value="{{ $nrc->id }}"
-                                            data-periodo="{{ $nrc->periodo->numeroPeriodo }} {{ $nrc->periodo->Periodo }}">
-                                            {{ $nrc->nrc }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="periodo">Periodo:</label>
-                                <input type="text" id="periodo" class="form-control input" readonly>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="FechaInicio">Fecha de Inicio de intervencio en el proyecto:</label>
-                                <input type="date" name="FechaInicio" class="form-control input" required>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="FechaFinalizacion">Fecha de Fin de intervencion en el proyecto:</label>
-                                <input type="date" name="FechaFinalizacion" class="form-control input" required>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-
-                    <button type="submit" class="button">Asignar Proyecto</button>
-                </form>
             </div>
         </div>
 
