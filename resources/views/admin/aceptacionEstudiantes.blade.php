@@ -252,7 +252,7 @@
             </div>
         </section>
         <br>
-        <h4><b>Estudiantes culminados Vinculación a la sociedad</b></h4>
+        <!--<h4><b>Estudiantes culminados Vinculación a la sociedad</b></h4>
         <hr>
         <section>
             <div class="mat-elevation-z8 contenedor_general">
@@ -419,7 +419,7 @@
 
                 </div>
 
-            </div>
+            </div>-->
         </section>
     </section>
 
