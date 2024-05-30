@@ -91,6 +91,12 @@ class Usuario extends Model implements Authenticatable
         return $this->hasOne(UsuariosSession::class, 'UserID', 'UserID');
     }
 
+    // Relación con la tabla profes_universidad
+    public function profesorUniversidad()
+    {
+        return $this->hasOne(ProfesUniversidad::class, 'UserID', 'UserID');
+    }
+
 
 
 

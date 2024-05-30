@@ -23,13 +23,14 @@
             overflow-x: hidden;
         }
     </style>
-  {{--   <script src="../js/menu.js"></script> --}}
-{{--     <script src="{{ asset('js/menu.js') }}"></script> --}}
+    {{--   <script src="../js/menu.js"></script> --}}
+    {{--     <script src="{{ asset('js/menu.js') }}"></script> --}}
 </head>
 
 <body>
     <!-- Barra de navegación en el lado izquierdo -->
-    <section class="content-sidebar {{ session('menuState') == 'collapsed' ? 'content-sidebar-hidden' : '' }}" _ngcontent-ng-c4160891441>
+    <section class="content-sidebar {{ session('menuState') == 'collapsed' ? 'content-sidebar-hidden' : '' }}"
+        _ngcontent-ng-c4160891441>
 
         <div class="content scroll-small">
             <div class="sidebar">
@@ -86,20 +87,25 @@
         </div>
     </section>
     <!-- SIDEBAR -->
-    <section class="content-navbar dimension-nav {{ session('menuState') == 'collapsed' ? 'dimension-nav-hidden' : '' }}">
+    <section
+        class="content-navbar dimension-nav {{ session('menuState') == 'collapsed' ? 'dimension-nav-hidden' : '' }}">
         <!-- Toggle sidebar -->
         <div class="icon-menu-sidebar" onclick="toggleSidebar()">
-            <i class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
+            <i
+                class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
         </div>
         <!-- contenido -->
         <main class="navbar">
             <button class="profile-icon dropdown" id="profile-button">
 
-                <div class="name-profile">
-                    <span><?php echo Auth::user()->NombreUsuario; ?></span>
-                </div>
-                <div class="icon-profile">
-                    <img src="../img/default/user.svg">
+                <div style="display: flex; align-items: center;">
+                    <span>
+                        {{ explode(' ', Auth::user()->profesorUniversidad->Nombres)[0] }}
+                        {{ explode(' ', Auth::user()->profesorUniversidad->Apellidos)[0] }}
+                    </span>
+                    <div class="icon-profile" style="margin-left: 20px;">
+                        <img src="../img/default/user.svg">
+                    </div>
                 </div>
             </button>
             <!-- Aquí agregamos el contenedor del menú desplegable -->
@@ -127,7 +133,8 @@
     </section>
     <button id="btn_top" *ngIf="showScrollButton" (click)="scrollToTop()"><i class='bx bxs-chevrons-up'></i></button>
     <!-- CONTENEDOR -->
-    <section class="content-views dimension-content {{ session('menuState') == 'collapsed' ? 'dimension-content-hidden' : '' }}">
+    <section
+        class="content-views dimension-content {{ session('menuState') == 'collapsed' ? 'dimension-content-hidden' : '' }}">
         <!-- Title component -->
         <div class="title-component">
             <span class="title-content">@yield('title_component')</span>
