@@ -50,8 +50,8 @@
                                     <div class="tooltip-container">
                                         <span class="tooltip-text">Editar</span>
                                         <a href="{{ route('estudiantes.edit', ['estudiante' => $estudiante->EstudianteID]) }}"
-                                            class="button3 efects_button btn_filtro btn_color" tooltipPosition="top">
-                                            <i class="material-icons">edit</i>
+                                            class="button3 efects_button" tooltipPosition="top">
+                                            <i class="fa-solid fa-pen-to-square"></i>
                                         </a>
                                     </div>
                                 </div>
@@ -206,11 +206,19 @@
                 <div class="icon-sidebar-item">Estado-Aprobación</div>
             </b></h4>
         <hr>
-        <table class="table custom-table">
-            <tbody>
-                <tr>
-                    <th>Verificación</th>
-                    <td>
+        <div class="contenedor_tabla">
+                <div class="table-container mat-elevation-z8">
+
+                    <div id="tablaProyectos">
+                        <table class="mat-mdc-table">
+                            <thead class="ng-star-inserted">
+                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                             <th class="tamanio1 ">VERIFICACIÓN</th>
+                                             <th class="tamanio1">ACCIÓN</th>
+                                             </thead>
+                                    <tbody class="mdc-data-table__content ng-star-inserted">
+                                        <tr>
+                    <td style="word-wrap: break-word; text-align: center;">
                         @if ($estudiante->Estado == 'Aprobado')
                             {{ strtoupper('Vinculacion') }}
                         @elseif ($estudiante->Estado == 'Aprobado-practicas')
@@ -219,11 +227,8 @@
                             {{ strtoupper($estudiante->Estado) }}
                         @endif
                     </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <form method="POST" action="{{ route('estudiantes.resend', ['estudiante' => $estudiante->EstudianteID]) }}">
+                    <td>
+                    <form method="POST" action="{{ route('estudiantes.resend', ['estudiante' => $estudiante->EstudianteID]) }}">
             @csrf
             <div class="text-center">
                 <button type="submit" class="button1 ">
@@ -231,6 +236,14 @@
                 </button>
             </div>
         </form>
+        </td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+    </div>
+      
 
 
     </div>
@@ -241,10 +254,14 @@
         <h4><b>Proyecto Asignado</b></h4>
         <hr>
         @if ($asignacionProyecto)
-            <table class="table custom-table">
-                <thead>
-                    <tr>
-                        <th>Nombre del Proyecto</th>
+        <div class="contenedor_tabla">
+                <div class="table-container mat-elevation-z8">
+
+                    <div id="tablaProyectos">
+                        <table class="mat-mdc-table">
+                            <thead class="ng-star-inserted">
+                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                <th>Nombre del Proyecto</th>
                         <th>Docente Director</th>
                         <th>Descripción del Proyecto</th>
                         <th>Fecha de Asignación</th>
@@ -268,10 +285,6 @@
             <p>Aun no está asignado un Proyecto. Estar pendiente de su asignación.</p>
         @endif
     </div>
-
-
-
-
 
     </div>
 

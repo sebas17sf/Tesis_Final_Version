@@ -2,6 +2,8 @@
 
 @section('title', 'Editar Datos del Estudiante')
 
+@section('title_component', 'Información del Estudiante')
+
 
 @section('content')
 

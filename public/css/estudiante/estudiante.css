@@ -15,18 +15,7 @@
     padding: 8px;
 }
 
-body,
-input,
-select,
-th,
-td,
-button {
-    background-color: #F5F5F5;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    line-height: 1.5;
 
-}
 /* CSS */
 
 
@@ -47,3 +36,21 @@ button {
 }
 
 
+/* Reduce padding and margins for a smaller table */
+.table-sm th, .table-sm td {
+    padding: 0.3rem;
+}
+
+.table-sm th {
+    font-size: 0.875rem;
+}
+
+.table-sm td {
+    font-size: 0.875rem;
+}
+
+/* Adjust the size of buttons within the table */
+.table-sm .button1 {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.875rem;
+}

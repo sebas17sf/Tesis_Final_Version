@@ -125,16 +125,20 @@
         </div>
 
             <div class="mt-4">
-                <h4><b>Actividades Registradas</b></h4>
-                <div class="mat-elevation-z8">
+                
+                <div class="mat-elevation-z8 contenedor_general">
+               
                     <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+                    
+                        <div class="contenedor_botones " >
+                            
+                        <h4><b>Actividades Registradas</b></h4>
                         <!-- Botones -->
-                        <div class="contenedor_botones">
-
                             <div class="tooltip-container">
-                            <button id="toggleFormBtn" class="button1_1 efects_button" data-toggle="modal" data-target="#registroActividadesModal">Registrar actividad</button>
+                            <button id="toggleFormBtn" class="button1 efects_button" data-toggle="modal" data-target="#registroActividadesModal"><i class="fa-solid fa-plus"></i>  Registrar actividad</button>
 
                             </div>
+                        </div>
                         </div>
                     </div>
                     <br>
@@ -155,9 +159,12 @@
                     </thead>
                     <tbody class="mdc-data-table__content ng-star-inserted">
                     @if ($actividadesRegistradas->isEmpty())
-                                            <tr class="noExisteRegistro ng-star-inserted" style="text-align:center">
-                                                <td colspan="6">No se encontraron resultados para la búsqueda.</td>
-                                            </tr>
+
+
+        <tr class="noExisteRegistro ng-star-inserted text-center">
+            <td colspan="6">No se encontraron resultados para la búsqueda.</td>
+        </tr>
+
                                         @else
                         @foreach ($actividadesRegistradas as $actividad)
                      
@@ -256,8 +263,6 @@
         <center><button id="toggleFormBtn2" class="button1_1 efects_button">Crear Informe de Servicio a la comunidad</button></center>
         <br>
 
-
-
         <div id="registroInforme" style="display: none;">
             <form action="{{ route('estudiantes.generarInforme') }}" method="post">
                 @csrf
@@ -345,10 +350,6 @@
                         </td>
                     </tr>
                 </table>
-
-
-
-
 
                 <button type="submit" class="button1">Crear Informe</button>
             </form>
