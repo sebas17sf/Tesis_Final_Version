@@ -81,7 +81,7 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                              
+
                                         <th mat-header-cell *matHeaderCellDef>TIPO</th>
                                         <th mat-header-cell *matHeaderCellDef>USUARIO</th>
                                         <th mat-header-cell *matHeaderCellDef>CORREO</th>
@@ -177,7 +177,7 @@
 
                         </div>
                     </div>
-                   
+
                     </div>
 
                 @endif
@@ -191,7 +191,7 @@
                 @endif
 
             </div>
-            
+
         </section>
 
 
@@ -215,7 +215,7 @@
         <br>
         <section>
             <!-- Archivos de notas -->
-          
+
                 <div>
                     <span><b>Docentes agregados</b></span>
 
@@ -417,7 +417,7 @@
                                                                         <i class="bx bx-edit-alt"></i>
                                                                     </button>
                                                                 </div>
-      
+
                                                                 <!---Modal para editar Docentes--------------------------------------------------->
 
                                                                 <div class="modal fade"
@@ -678,9 +678,11 @@
                             </nav>
                         </div>
 
+                        
+
                     </div>
                 </div>
-           
+
         </section>
 
         <section>

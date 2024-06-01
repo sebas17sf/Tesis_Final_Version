@@ -524,7 +524,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="estudiante_id"><strong>Estudiante Aprobado:</strong></label>
-                <select name="estudiante_id[]" id="estudiante_id" class="form-control input input_select" multiple="multiple">
+                <select name="estudiante_id[]" id="estudiante_seleccion" class="form-control input input_select" multiple="multiple">
                     @foreach ($estudiantesAprobados as $estudiante)
                         <option value="{{ $estudiante->EstudianteID }}">
                             {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} -
@@ -623,7 +623,7 @@
 
     <script>
         $(document).ready(function() {
-            $('#estudiante_id').select2({
+            $('#estudiante_seleccion').select2({
                 placeholder: "Seleccione un estudiante",
                 closeOnSelect: false,
                 width: 'resolve',
@@ -649,7 +649,7 @@
                     return state.text;
                 }
                 var $state = $(
-                    '<span><input type="checkbox" class="checkbox-item"  style="margin-right: 8px;" />' + state
+                    '<span><input type="checkbox" class="checkbox-item "  style="margin-right: 8px;" />' + state
                     .text + '</span>'
                 );
                 return $state;

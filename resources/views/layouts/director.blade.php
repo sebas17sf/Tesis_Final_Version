@@ -22,7 +22,7 @@
             overflow-x: hidden;
         }
     </style>
-   
+
 </head>
 
 <body>
@@ -169,7 +169,7 @@
         <script>
             function toggleSidebar() {
                 var menuState = localStorage.getItem('menuState') === 'expanded' ? 'collapsed' : 'expanded';
-    
+
                 // Enviar una solicitud AJAX al controlador para actualizar el estado del menú
                 $.ajax({
                     url: '{{ route('toggle-menu') }}', // Ruta que apunta al controlador MenuController
@@ -189,13 +189,20 @@
                         console.error('Error al actualizar el estado del menú:', error);
                     }
                 });
-    
-    
+
+
                 triggerToggleSidebar();
-    
+
+            }
+
+        </script>
+        <script>
+            var token = "{{ session('token') }}";
+            if (token) {
+                localStorage.setItem('token', token);
             }
         </script>
-    
+
         <script src="{{ asset('js/menu.js') }}"></script>
 </body>
 

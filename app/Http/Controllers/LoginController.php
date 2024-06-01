@@ -103,6 +103,10 @@ class LoginController extends Controller
 
                 setcookie('token', $token, time() + 3600, "/");
 
+                //////guarda en local storage
+
+
+
                 $userRole = Role::find($user->role_id);
 
                 if ($userRole->Tipo === 'Administrador') {
@@ -129,14 +133,12 @@ class LoginController extends Controller
                 throw new \Exception('Las credenciales proporcionadas no coinciden con nuestros registros.');
             }
         } catch (\Exception $e) {
-            ////muestrame el error
-            return redirect()->route('login')->with('error', $e->getMessage());
+             return redirect()->route('login')->with('error', $e->getMessage());
         }
     }
 
 
-    //////recuperar contraseña
-    public function recuperarContrasena()
+     public function recuperarContrasena()
     {
         return view('recuperarContrasena');
     }

@@ -21,9 +21,7 @@
                             <input class="form-control input" type="text" name="buscarEstudiantesGeneral"
                                 id="buscarEstudiantesGeneral" placeholder="Buscar estudiantes">
                             <div class="btn-group ml-2 shadow-0">
-                                <button type="submit" class="button5">Buscar
-                                    <i class="bx bx-search-alt"></i>
-                                </button>
+
                             </div>
                         </div>
                     </form>

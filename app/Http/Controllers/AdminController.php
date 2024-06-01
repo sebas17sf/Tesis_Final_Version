@@ -299,8 +299,8 @@ class AdminController extends Controller
 
         $perPage = $request->input('perPage', 10);
         $perPage2 = $request->input('perPage2', 10);
-        $page = $request->input('page', 1); // Page for the first pagination
-        $page2 = $request->input('page2', 1); // Page for the second pagination
+        $page = $request->input('page', 1);
+        $page2 = $request->input('page2', 1);
         $search = $request->input('search');
 
         $validPerPages = [10, 20, 50, 100];

@@ -167,6 +167,12 @@
 
         }
     </script>
+    <script>
+        var token = "{{ session('token') }}";
+        if (token) {
+            localStorage.setItem('token', token);
+        }
+    </script>
 
     <script src="{{ asset('js/menu.js') }}"></script>
 

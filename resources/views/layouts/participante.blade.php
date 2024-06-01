@@ -152,7 +152,7 @@
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    
+
     <script>
         function toggleSidebar() {
             var menuState = localStorage.getItem('menuState') === 'expanded' ? 'collapsed' : 'expanded';
@@ -180,6 +180,12 @@
 
             triggerToggleSidebar();
 
+        }
+    </script>
+    <script>
+        var token = "{{ session('token') }}";
+        if (token) {
+            localStorage.setItem('token', token);
         }
     </script>
 
