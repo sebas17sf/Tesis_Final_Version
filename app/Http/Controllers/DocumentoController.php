@@ -50,7 +50,7 @@ class DocumentoController extends Controller
 
         // Obtener el ProyectoID del modelo AsignacionProyecto del estudiante
         $asignacionProyecto = $estudiante->asignaciones->first();
-         if ($asignacionProyecto) {
+        if ($asignacionProyecto) {
             $proyectoID = $asignacionProyecto->ProyectoID;
         } else {
             return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
@@ -69,7 +69,7 @@ class DocumentoController extends Controller
                 'asignacionProyectos.FechaInicio',
                 'proyectos.NombreProyecto',
             )
-             ->where('asignacionProyectos.ProyectoID', '=', $proyectoID)
+            ->where('asignacionProyectos.ProyectoID', '=', $proyectoID)
             ->orderBy('estudiantes.Apellidos', 'asc')
             ->get();
 
@@ -496,7 +496,7 @@ class DocumentoController extends Controller
                 'participante.Nombres as NombreAsignado',
                 'participante.Apellidos as ApellidoAsignado'
             )
-             ->where('asignacionProyectos.ProyectoID', '=', $proyectoID)
+            ->where('asignacionProyectos.ProyectoID', '=', $proyectoID)
             ->orderBy('estudiantes.Apellidos', 'asc')
             ->get();
 
@@ -812,7 +812,7 @@ class DocumentoController extends Controller
                 'proyectos.Estado',
                 'proyectos.DescripcionProyecto',
                 'proyectos.DirectorID',
-             )
+            )
             ->orderBy('proyectos.NombreProyecto', 'asc');
 
 
@@ -854,14 +854,14 @@ class DocumentoController extends Controller
 
             ///$nombreParticipante = $participante ? $participante->Nombres . ' ' . $participante->Apellidos : 'No especificado';
             ///if ($nombresParticipantesAdicionales) {
-                //$nombreParticipante .= "\n" . $nombresParticipantesAdicionales;
+            //$nombreParticipante .= "\n" . $nombresParticipantesAdicionales;
             //}
 
             ///$sheet->setCellValue('' . ($filaInicio + $index), $nombreParticipante);
             //$sheet->getStyle('' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
 
 
-           /// $sheet->setCellValue('' . ($filaInicio + $index), $nombreParticipante);
+            /// $sheet->setCellValue('' . ($filaInicio + $index), $nombreParticipante);
             //$sheet->getStyle('' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
 
             //$nrcValue = $nrc ? $nrc->nrc : 'No especificado';
@@ -886,13 +886,14 @@ class DocumentoController extends Controller
 
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $documentoGeneradoPath = storage_path('app/public/Reporte-Proyectos.xlsx');
-
-        $writer->save($documentoGeneradoPath);
+        $nombreArchivo = 'Reporte-Proyectos.xlsx';
+        $writer->save($nombreArchivo);
 
         // Descargar el documento generado
-        return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
-    }
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+
+      }
+
 
 
     ////////Reporteria de estudiantes//////////
@@ -1437,7 +1438,7 @@ class DocumentoController extends Controller
         $template->setValue('NombresAcademico', $datosEstudiantes->first()->tutorAcademico->Nombres . ' ' . $datosEstudiantes->first()->tutorAcademico->Apellidos);
         $template->setValue('CedulaAcademico', $datosEstudiantes->first()->tutorAcademico->Cedula);
         $template->setValue('CorreoAcademico', $datosEstudiantes->first()->tutorAcademico->Correo);
-         $template->setValue('id_espeAcademico', $datosEstudiantes->first()->tutorAcademico->espe_id);
+        $template->setValue('id_espeAcademico', $datosEstudiantes->first()->tutorAcademico->espe_id);
 
 
 

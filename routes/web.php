@@ -305,8 +305,19 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/coordinador/actualizar-empresa/{id}', [CoordinadorController::class, 'actualizarEmpresa'])->name('coordinador.actualizarEmpresa');
     ////certificadoMatricula del estudiante
     Route::get('/estudiantes/certificado-matricula', [EstudianteController::class, 'certificadoMatricula'])->name('estudiantes.certificadoMatricula');
+
     ////reportesProyectos de DocumentoController para admin y coordinador
-    Route::post('/coordinador/reportes-proyectos', [DocumentoController::class, 'reportesProyectos'])->name('coordinador.reportesProyectos');
+    Route::get('/descargar-reporte', function () {
+        $nombreArchivo = session('nombreArchivo');
+        if (!$nombreArchivo || !file_exists(public_path($nombreArchivo))) {
+            abort(404);
+        }
+
+        return response()->download(public_path($nombreArchivo))->deleteFileAfterSend(true);
+    })->name('coordinador.reportesProyectos');
+
+
+
     //////reportesEstudiantes de DocumentoController para admin y coordinador
     Route::post('/coordinador/reportes-estudiantes', [DocumentoController::class, 'reportesEstudiantes'])->name('coordinador.reportesEstudiantes');
     /////reportesEmpresas de DocumentoController para admin y coordinador

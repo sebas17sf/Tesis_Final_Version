@@ -6,6 +6,19 @@
 
 @section('content')
 
+    @if (session('exito'))
+        <div class="contenedor_alerta success">
+            <div class="icon_alert"><i class="fa-sharp fa-regular fa-check"></i></div>
+            <div class="content_alert">
+                <div class="title">Éxito!</div>
+                <div class="body">{{ session('exito') }}</div>
+            </div>
+            <div class="icon_remove">
+                <button class="button4 btn_3_2"><i class="fa-sharp fa-regular fa-xmark"></i></button>
+            </div>
+        </div>
+    @endif
+
     @if (session('success'))
         <script>
             Swal.fire({
@@ -40,6 +53,12 @@
                     <div class="row">
                         <div class="col-md-12 d-flex align-items-center">
                             <!-- Formulario para exportar a Excel -->
+
+
+
+
+
+
                             <form method="POST" action="{{ route('coordinador.reportesProyectos') }}"
                                 class="form-inline mr-2 d-flex align-items-center">
                                 @csrf
@@ -51,6 +70,10 @@
                                     </button>
                                 </div>
                             </form>
+
+
+
+
 
                             <!-- Botón para agregar proyecto -->
                             <div class="tooltip-container mr-2">
@@ -304,7 +327,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="form-group">
-                                                     <div class="input input_file">
+                                                    <div class="input input_file">
                                                         <span id="fileText" class="fileText">
                                                             <i class="fa fa-upload"></i> Haz clic aquí para subir el
                                                             documento
@@ -395,13 +418,16 @@
                             <ul class="pagination d-flex align-items-center">
 
                                 <li class="page-item mx-3 d-flex align-items-center">
-                                    <form id="filterForm" action="{{ route('admin.indexProyectos') }}" method="GET" class="form-inline" onsubmit="filterFormSubmit(event)">
+                                    <form id="filterForm" action="{{ route('admin.indexProyectos') }}" method="GET"
+                                        class="form-inline" onsubmit="filterFormSubmit(event)">
                                         <div class="form-group mr-2">
                                             <label for="profesor" class="sr-only">Profesor</label>
-                                            <select name="profesor" id="profesor" class="form-control" onchange="document.getElementById('filterForm').submit();">
+                                            <select name="profesor" id="profesor" class="form-control"
+                                                onchange="document.getElementById('filterForm').submit();">
                                                 <option value="">Todos los docentes</option>
                                                 @foreach ($profesores as $profesor)
-                                                    <option value="{{ $profesor->id }}" {{ request('profesor') == $profesor->id ? 'selected' : '' }}>
+                                                    <option value="{{ $profesor->id }}"
+                                                        {{ request('profesor') == $profesor->id ? 'selected' : '' }}>
                                                         {{ $profesor->Apellidos }} {{ $profesor->Nombres }}
                                                     </option>
                                                 @endforeach
@@ -409,10 +435,12 @@
                                         </div>
                                         <div class="form-group mr-2">
                                             <label for="periodos" class="sr-only">Períodos</label>
-                                            <select name="periodos" id="periodos" class="form-control" onchange="document.getElementById('filterForm').submit();">
+                                            <select name="periodos" id="periodos" class="form-control"
+                                                onchange="document.getElementById('filterForm').submit();">
                                                 <option value="">Todos los periodos</option>
                                                 @foreach ($periodos as $periodo)
-                                                    <option value="{{ $periodo->id }}" {{ request('periodos') == $periodo->id ? 'selected' : '' }}>
+                                                    <option value="{{ $periodo->id }}"
+                                                        {{ request('periodos') == $periodo->id ? 'selected' : '' }}>
                                                         {{ $periodo->numeroPeriodo }}
                                                     </option>
                                                 @endforeach
@@ -422,14 +450,21 @@
                                 </li>
 
                                 <li class="page-item mx-3 d-flex align-items-center">
-                                    <form method="GET" action="{{ route('admin.indexProyectos') }}" class="form-inline" onsubmit="document.getElementById('tablaAsignaciones').scrollIntoView()">
+                                    <form method="GET" action="{{ route('admin.indexProyectos') }}"
+                                        class="form-inline"
+                                        onsubmit="document.getElementById('tablaAsignaciones').scrollIntoView()">
                                         <div class="form-group">
                                             <label for="perPage2" class="sr-only">Items per page</label>
-                                            <select class="form-control page-item" name="perPage2" id="perPage2" onchange="this.form.submit()">
-                                                <option value="10" @if ($perPage2 == 10) selected @endif>10</option>
-                                                <option value="20" @if ($perPage2 == 20) selected @endif>20</option>
-                                                <option value="50" @if ($perPage2 == 50) selected @endif>50</option>
-                                                <option value="100" @if ($perPage2 == 100) selected @endif>100</option>
+                                            <select class="form-control page-item" name="perPage2" id="perPage2"
+                                                onchange="this.form.submit()">
+                                                <option value="10" @if ($perPage2 == 10) selected @endif>
+                                                    10</option>
+                                                <option value="20" @if ($perPage2 == 20) selected @endif>
+                                                    20</option>
+                                                <option value="50" @if ($perPage2 == 50) selected @endif>
+                                                    50</option>
+                                                <option value="100" @if ($perPage2 == 100) selected @endif>
+                                                    100</option>
                                             </select>
                                         </div>
                                     </form>
@@ -441,19 +476,22 @@
                                     </li>
                                 @else
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $paginator->previousPageUrl() }}#tablaAsignaciones" aria-label="Anterior">Anterior</a>
+                                        <a class="page-link" href="{{ $paginator->previousPageUrl() }}#tablaAsignaciones"
+                                            aria-label="Anterior">Anterior</a>
                                     </li>
                                 @endif
 
                                 @for ($i = 1; $i <= $paginator->lastPage(); $i++)
                                     <li class="page-item {{ $paginator->currentPage() == $i ? 'active' : '' }}">
-                                        <a class="page-link" href="{{ $paginator->url($i) }}#tablaAsignaciones">{{ $i }}</a>
+                                        <a class="page-link"
+                                            href="{{ $paginator->url($i) }}#tablaAsignaciones">{{ $i }}</a>
                                     </li>
                                 @endfor
 
                                 @if ($paginator->hasMorePages())
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $paginator->nextPageUrl() }}#tablaAsignaciones" aria-label="Siguiente">Siguiente</a>
+                                        <a class="page-link" href="{{ $paginator->nextPageUrl() }}#tablaAsignaciones"
+                                            aria-label="Siguiente">Siguiente</a>
                                     </li>
                                 @else
                                     <li class="page-item disabled">
@@ -478,109 +516,111 @@
                 <h4><b>Asignar Proyecto</b></h4>
                 <hr>
                 <form method="POST" action="{{ route('admin.guardarAsignacion') }}">
-    @csrf
+                    @csrf
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label for="proyecto_id"><strong>Proyecto Disponible:</strong></label>
-                <select name="proyecto_id" id="proyecto_id" class="form-control input input_select">
-                    <option value="">Seleccione un proyecto</option>
-                    @foreach ($proyectosDisponibles as $proyecto)
-                        <option value="{{ $proyecto->ProyectoID }}">
-                            @if ($proyecto->director)
-                                {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }}
-                            @endif
-                            {{ $proyecto->codigoProyecto }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="proyecto_id"><strong>Proyecto Disponible:</strong></label>
+                                <select name="proyecto_id" id="proyecto_id" class="form-control input input_select">
+                                    <option value="">Seleccione un proyecto</option>
+                                    @foreach ($proyectosDisponibles as $proyecto)
+                                        <option value="{{ $proyecto->ProyectoID }}">
+                                            @if ($proyecto->director)
+                                                {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }}
+                                            @endif
+                                            {{ $proyecto->codigoProyecto }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label for="ProfesorParticipante">Docente Participante:</label>
-                <select name="ProfesorParticipante" class="form-control input input_select" required>
-                    <option value="">Seleccionar Docente Participante</option>
-                    @foreach ($profesores as $profesor)
-                        <option value="{{ $profesor->id }}">
-                            Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
-                            Departamento: {{ $profesor->Departamento }} -
-                            Correo: {{ $profesor->Correo }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="ProfesorParticipante">Docente Participante:</label>
+                                <select name="ProfesorParticipante" class="form-control input input_select" required>
+                                    <option value="">Seleccionar Docente Participante</option>
+                                    @foreach ($profesores as $profesor)
+                                        <option value="{{ $profesor->id }}">
+                                            Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
+                                            Departamento: {{ $profesor->Departamento }} -
+                                            Correo: {{ $profesor->Correo }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
-    <br>
+                    <br>
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="estudiante_id"><strong>Estudiante Aprobado:</strong></label>
-                <select name="estudiante_id[]" id="estudiante_seleccion" class="form-control input input_select" multiple="multiple">
-                    @foreach ($estudiantesAprobados as $estudiante)
-                        <option value="{{ $estudiante->EstudianteID }}">
-                            {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} -
-                            {{ $estudiante->Departamento }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="estudiante_id"><strong>Estudiante Aprobado:</strong></label>
+                                <select name="estudiante_id[]" id="estudiante_seleccion"
+                                    class="form-control input input_select" multiple="multiple">
+                                    @foreach ($estudiantesAprobados as $estudiante)
+                                        <option value="{{ $estudiante->EstudianteID }}">
+                                            {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} -
+                                            {{ $estudiante->Departamento }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
 
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="nrc">Vinculacion NRC:</label>
-                <select name="nrc" id="nrc" class="form-control input input_select" required>
-                    <option value="">Seleccionar NRC</option>
-                    @foreach ($nrcs as $nrc)
-                        <option value="{{ $nrc->id }}" data-periodo="{{ $nrc->periodo->numeroPeriodo }} {{ $nrc->periodo->Periodo }}">
-                            {{ $nrc->nrc }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="nrc">Vinculacion NRC:</label>
+                                <select name="nrc" id="nrc" class="form-control input input_select" required>
+                                    <option value="">Seleccionar NRC</option>
+                                    @foreach ($nrcs as $nrc)
+                                        <option value="{{ $nrc->id }}"
+                                            data-periodo="{{ $nrc->periodo->numeroPeriodo }} {{ $nrc->periodo->Periodo }}">
+                                            {{ $nrc->nrc }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
 
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="periodo">Periodo:</label>
-                <input type="text" id="periodo" class="form-control input" readonly>
-            </div>
-        </div>
-    </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="periodo">Periodo:</label>
+                                <input type="text" id="periodo" class="form-control input" readonly>
+                            </div>
+                        </div>
+                    </div>
 
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="FechaInicio">Fecha de Inicio de intervencion en el proyecto:</label>
-                <input type="date" name="FechaInicio" class="form-control input" required>
-            </div>
-        </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="FechaInicio">Fecha de Inicio de intervencion en el proyecto:</label>
+                                <input type="date" name="FechaInicio" class="form-control input" required>
+                            </div>
+                        </div>
 
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="FechaFinalizacion">Fecha de Fin de intervencion en el proyecto:</label>
-                <input type="date" name="FechaFinalizacion" class="form-control input" required>
-            </div>
-        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="FechaFinalizacion">Fecha de Fin de intervencion en el proyecto:</label>
+                                <input type="date" name="FechaFinalizacion" class="form-control input" required>
+                            </div>
+                        </div>
 
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="periodo"><strong>Periodo:</strong></label>
-                <input type="text" id="periodo" class="form-control input" readonly>
-            </div>
-        </div>
-    </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="periodo"><strong>Periodo:</strong></label>
+                                <input type="text" id="periodo" class="form-control input" readonly>
+                            </div>
+                        </div>
+                    </div>
 
-   <center> <button type="submit" class="button1 efects_button">Asignar Proyecto</button></center>
-</form>
+                    <center> <button type="submit" class="button1 efects_button">Asignar Proyecto</button></center>
+                </form>
 
             </div>
         </div>
@@ -691,12 +731,13 @@
 
         $('#modalImportar').on('hidden.bs.modal', function() {
             console.log('Modal hidden');
-             $('#idModalImportar')[0].reset();
-             $('#idModalImportar').find('.form-group').removeClass('has-error');
+            $('#idModalImportar')[0].reset();
+            $('#idModalImportar').find('.form-group').removeClass('has-error');
             $('#idModalImportar').find('.help-block').text('');
-             removeFile();
+            removeFile();
         });
     </script>
+
 
 
 

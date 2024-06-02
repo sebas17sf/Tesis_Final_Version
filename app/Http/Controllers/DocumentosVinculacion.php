@@ -812,6 +812,124 @@ class DocumentosVinculacion extends Controller
 
 
 
+    public function importarPracticas2(Request $request)
+    {
+         $request->validate([
+            'file' => 'required|mimes:xlsx',
+        ]);
+
+        $spreadsheet = IOFactory::load($request->file('file'));
+        $worksheet = $spreadsheet->getActiveSheet();
+        $rows = $worksheet->toArray();
+        $dataRows = array_slice($rows, 2);
+
+        foreach ($dataRows as $row) {
+            $estudiante = Estudiante::where('espe_id', $row[4])
+                ->first();
+            $periodo = Periodo::where('numeroPeriodo', $row[6])
+                ->first();
+
+            if (!$estudiante) {
+                $estudiante = Estudiante::create([
+                    'Nombres' => $row[1],
+                    'Apellidos' => $row[2],
+                    'espe_id' => $row[4],
+                    'Cohorte' => $row[6],
+                    'Carrera' => 'Ingeniería en Tecnologías de la información',
+                    'Departamento' => 'Ciencias de la Computación',
+                    'Correo' => $row[5],
+                    'Cedula' => $row[3],
+                    'id_periodo' => $periodo ? $periodo->id : null,
+                    'comentario' => null,
+                ]);
+            } else {
+                $updateFields = [
+                    'Nombres' => $row[1],
+                    'Apellidos' => $row[2],
+                    'espe_id' => $row[4],
+                    'Cohorte' => $row[6],
+                    'Correo' => $row[5],
+                    'Cedula' => $row[3],
+                ];
+
+                foreach ($updateFields as $key => $value) {
+                    if (is_null($estudiante->$key)) {
+                        $estudiante->$key = $value;
+                    }
+                }
+
+                $estudiante->save();
+            }
+        }
+
+        ////ahora vamos a importar a practicas1
+        foreach ($dataRows as $row) {
+            $estudiante = Estudiante::where('espe_id', $row[4])
+                ->first();
+            $practica1 = PracticaI::where('EstudianteID', $estudiante ? $estudiante->EstudianteID : null)
+                ->first();
+             $empresa = Empresa::where('nombreEmpresa', $row[16])
+                ->first();
+             $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[31])
+                ->first();
+
+             $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[11]);
+            if ($fechaInicio) {
+                 $fechaInicioFormatted = $fechaInicio->format('Y-m-d');
+             } else {
+                $fechaInicioFormatted = null;
+            }
+            $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $row[12]);
+            if ($fechaFinalizacion) {
+                $fechaFinalizacionFormatted = $fechaFinalizacion->format('Y-m-d');
+            } else {
+                $fechaFinalizacionFormatted = null;
+            }
+
+
+            if (!$practica1) {
+                PracticaI::create([
+                    'EstudianteID' => $estudiante ? $estudiante->EstudianteID : null,
+                    'AreaConocimiento' => $row[10],
+                    'FechaInicio' => $fechaInicioFormatted,
+                    'FechaFinalizacion' => $fechaFinalizacionFormatted,
+                    'HorasPlanificadas' => $row[13],
+                    'tipoPractica' => $row[14],
+                    'IDEmpresa' => $empresa ? $empresa->id : null,
+                    'NombreTutorEmpresarial' => $row[25],
+                    'CedulaTutorEmpresarial' => $row[27],
+                    'EmailTutorEmpresarial' => $row[28],
+                    'TelefonoTutorEmpresarial' => $row[29],
+                    'Funcion' => $row[30],
+                    'ID_tutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
+                    'Estado' => 'Finalizado',
+
+
+
+                ]);
+            } else {
+                $practica1->update([
+                    'AreaConocimiento' => $row[10],
+                    'FechaInicio' => $fechaInicioFormatted,
+                    'FechaFinalizacion' => $fechaFinalizacionFormatted,
+                    'HorasPlanificadas' => $row[13],
+                    'tipoPractica' => $row[14],
+                    'IDEmpresa' => $empresa ? $empresa->id : null,
+                    'NombreTutorEmpresarial' => $row[25],
+                    'CedulaTutorEmpresarial' => $row[27],
+                    'EmailTutorEmpresarial' => $row[28],
+                    'TelefonoTutorEmpresarial' => $row[29],
+                    'Funcion' => $row[30],
+                    'ID_tutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
+                    'Estado' => 'Finalizado',
+                    'EstadoAprobacion' => 'Cursando estudios',
+
+                ]);
+            }
+        }
+
+        return redirect()->back()->with('success', 'Estudiantes importados correctamente.');
+    }
 
 
 

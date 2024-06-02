@@ -3,11 +3,12 @@
 @use "components/input";
 @use "components/buttons";
 @use "components/menu_nav";
+@use "components/lateral_alert";
 
 @use "components/scroll";
 @use "Contenedores/history-note.component";
 
-@use "components/table" as table; 
+@use "components/table" as table;
 
 @use "menu-profile/menu-profile.component";
 @use "sidebar/sidebar.component";
@@ -15,8 +16,9 @@
 @use "module/module.scss";
 @use "navbar/app.component";
 @use "deshboard/dashboard.component.scss";
-@use "tabla/tabla_filtros"; 
+@use "tabla/tabla_filtros";
 @use "Contenedores/load-periods.component.scss";
+
 
 // ===============================================
 // Estilos para fontawesome
@@ -66,10 +68,10 @@ body {
 //Quitar scroll de la pante superior de la vista
  body {
   overflow-x: hidden;
-} 
+}
 
 /* .content-views {
-  margin-left: 20px; //Igual al ancho del sidebar 
+  margin-left: 20px; //Igual al ancho del sidebar
 } */
 // Campos requeridos
 .contenedor_campo_requerido {
@@ -130,7 +132,7 @@ body {
 // Sidebar Expandido
 /* .dimension-content {
   margin-top: 50px;
-  left: 220px; 
+  left: 220px;
 
 }
 
@@ -146,7 +148,7 @@ body {
 .dimension-content-hidden {
   left: 60px;
   transition: all 0.3s ease;
-  width: calc(100% - 60px); 
+  width: calc(100% - 60px);
 } */
 
 // Cerrar sesion
@@ -187,7 +189,7 @@ body {
 /* .sidebar a:hover {
     background-color: #55595e;
     color: #ffffff;
-  
+
 } */
 /* Estilo para el texto encima de la imagen */
 
