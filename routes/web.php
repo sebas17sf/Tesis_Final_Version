@@ -177,8 +177,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/reporte/matriz-vinculacion', [DocumentosVinculacion::class, 'matrizVinculacion'])->name('reporte.matrizVinculacion');
 
 
-    //////////////creacion de matriz de excel para los datos
+    //////////////importar de matriz de excel para los datos
     Route::post('/import', [DocumentosVinculacion::class, 'import'])->name('import');
+    /////////////////importar de las empresas
+    Route::post('/import-empresas', [DocumentosVinculacion::class, 'importaEmpresas'])->name('import-empresas');
+    /////////////////////importar practcias 1
+    Route::post('/import-practicas1', [DocumentosVinculacion::class, 'importarPracticas1'])->name('import-practicas1');
 
 
     ///ruta para los documentos del participante

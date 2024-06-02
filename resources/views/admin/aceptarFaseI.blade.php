@@ -169,8 +169,58 @@
                             <i class="fas fa-file-excel"></i> Generar Reporte
                         </button>
                     </form>
-                </div> 
 
+
+                </div>
+
+
+
+                <div class="tooltip-container">
+                    <span class="tooltip-text">Importar archivo</span>
+                    <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
+                        data-target="#modalImportar">
+                        <i class="fa fa-upload"></i>
+                    </button>
+                </div>
+
+                <div class="modal fade" id="modalImportar" tabindex="-1" role="dialog"
+                    aria-labelledby="modalImportarLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form id="idModalImportar" action="{{ route('import-practicas1') }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Importar archivo</h5>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                        aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                         <div class="input input_file">
+                                            <span id="fileText" class="fileText">
+                                                <i class="fa fa-upload"></i> Haz clic aquí para subir el
+                                                documento
+                                            </span>
+                                            <input type="file" class="form-control-file input input_file"
+                                                id="file" name="file"
+                                                onchange="displayFileName(this)" required>
+                                            <span title="Eliminar archivo" onclick="removeFile(this)"
+                                                class="remove-icon">✖</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="cerrar_modal" type="button" class="button"
+                                        data-dismiss="modal">Cerrar</button>
+                                    <button type="submit" class="button">Importar Archivo</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
@@ -201,13 +251,11 @@
                                             <td>{{ strtoupper($practicaI->estudiante->Apellidos) }}
                                                 {{ strtoupper($practicaI->estudiante->Nombres) }}</td>
                                             <td>{{ strtoupper($practicaI->tipoPractica) }}</td>
-                                            <td>{{ strtoupper($practicaI->tutorAcademico->Apellidos) }}
-                                                {{ strtoupper($practicaI->tutorAcademico->Nombres) }}</td>
+                                            <td>{{ strtoupper($practicaI->tutorAcademico->Apellidos ?? 'No por el momento') }}
+                                                {{ strtoupper($practicaI->tutorAcademico->Nombres ?? 'No por el momento') }}</td>
                                             <td>{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
-                                            <td>{{ strtoupper($practicaI->Empresa->nombreEmpresa) }}</td>
-                                            <td>{{ strtoupper($practicaI->nrcPractica->nrc) }}</td>
-                                            <td>{{ strtoupper($practicaI->nrcPractica->periodo->numeroPeriodo) }}</td>
-                
+                                            <td>{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}</td>
+                                            <td>{{ strtoupper($practicaI->nrcPractica->periodo->numeroPeriodo ?? 'No cuenta con NRC') }}</td>
                                             <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
                                             <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                                             <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
@@ -254,8 +302,8 @@
                     </form>
 
 
-                    
-                </div> 
+
+                </div>
 
 
                 <div class="contenedor_tabla">
@@ -321,12 +369,12 @@
         </section>
 
     </section>
-    
 
 
 
 
- 
+
+
 
 @endsection
 

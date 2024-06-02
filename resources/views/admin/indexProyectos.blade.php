@@ -304,8 +304,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="form-group">
-                                                    <!-- Contenedor de Input de Archivo -->
-                                                    <div class="input input_file">
+                                                     <div class="input input_file">
                                                         <span id="fileText" class="fileText">
                                                             <i class="fa fa-upload"></i> Haz clic aquí para subir el
                                                             documento

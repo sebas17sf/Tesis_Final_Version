@@ -13,23 +13,23 @@ return new class extends Migration
     {
         Schema::create('empresas', function (Blueprint $table) {
             $table->id();
-            $table->string('nombreEmpresa');
-            $table->string('rucEmpresa');
-            $table->string('provincia');
-            $table->string('ciudad');
-            $table->string('direccion');
-            $table->string('correo');
-            $table->string('nombreContacto');
-            $table->string('telefonoContacto');
-            $table->string('actividadesMacro');
-            $table->integer('cuposDisponibles'); 
-            $table->binary('cartaCompromiso')->length(1000000);
-            $table->binary('convenio')->length(1000000);
+            $table->string('nombreEmpresa')->nullable();
+            $table->string('rucEmpresa')->nullable();
+            $table->string('provincia')->nullable();
+            $table->string('ciudad')->nullable();
+            $table->string('direccion')->nullable();
+            $table->string('correo')->nullable();
+            $table->string('nombreContacto')->nullable();
+            $table->string('telefonoContacto')->nullable();
+            $table->string('actividadesMacro')->nullable();
+            $table->integer('cuposDisponibles')->nullable();
+            $table->binary('cartaCompromiso')->length(1000000)->nullable();
+            $table->binary('convenio')->length(1000000)->nullable();
             $table->timestamps();
         });
     }
 
-   
+
     public function down(): void
     {
         Schema::dropIfExists('empresas');

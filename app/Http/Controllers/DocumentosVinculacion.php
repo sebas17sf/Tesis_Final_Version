@@ -5,16 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\ProfesUniversidad;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use App\Models\ParticipanteVincunlacion;
 use App\Models\AsignacionProyecto;
 use App\Models\Proyecto;
 use App\Models\NotasEstudiante;
-use PhpOffice\PhpSpreadsheet\RichText\RichText;
-use PhpOffice\PhpSpreadsheet\RichText\TextRun;
-use App\Models\DirectorVinculacion;
-use App\Models\AsignacionEstudiantesDirector;
+use App\Models\Empresa;
 use App\Models\Periodo;
-use Mpdf\Mpdf;
+use App\Models\PracticaI;
+
 
 use DateTime;
 use App\Models\Estudiante;
@@ -35,16 +32,16 @@ class DocumentosVinculacion extends Controller
         $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
         // Obtener la relación AsignacionEstudiantesDirector para este ParticipanteVinculacion
         $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)
-        ->whereHas('estudiante', function ($query) {
-            $query->where('Estado', 'Aprobado');
-        })
-        ->first();
+            ->whereHas('estudiante', function ($query) {
+                $query->where('Estado', 'Aprobado');
+            })
+            ->first();
 
 
 
         ///obtener la id del director de AsiignacionProyecto
         $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
-         if ($proyecto->Estado != 'Ejecucion') {
+        if ($proyecto->Estado != 'Ejecucion') {
             return redirect()->back()->with('error', 'No tiene Proyectos en ejecucion.');
         }
 
@@ -181,10 +178,10 @@ class DocumentosVinculacion extends Controller
         $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
         // Obtener la relación AsignacionProyecto para este ParticipanteVinculacion
         $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)
-        ->whereHas('estudiante', function ($query) {
-            $query->where('Estado', 'Aprobado');
-        })
-        ->first();
+            ->whereHas('estudiante', function ($query) {
+                $query->where('Estado', 'Aprobado');
+            })
+            ->first();
 
         $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
 
@@ -207,7 +204,7 @@ class DocumentosVinculacion extends Controller
 
         //Obtener datos del director y particpante
         $nombreParticipanteCompleto = $participanteVinculacion->Apellidos . ' ' . $participanteVinculacion->Nombres;
-         $cedulaParticipante = $participanteVinculacion->Cedula;
+        $cedulaParticipante = $participanteVinculacion->Cedula;
         $cedulaDirector = $Director->Cedula;
         $correoParticipante = $participanteVinculacion->Correo;
         $correoDirector = $Director->Correo;
@@ -248,10 +245,10 @@ class DocumentosVinculacion extends Controller
         $hojaCalculo->setCellValue("D7", $cedulaParticipante);
 
         $hojaCalculo->setCellValue("E7", $correoParticipante);
-         $hojaCalculo->setCellValue("F7", $sede);
-         $hojaCalculo->setCellValue("G7", $departamentosParticipante);
+        $hojaCalculo->setCellValue("F7", $sede);
+        $hojaCalculo->setCellValue("G7", $departamentosParticipante);
 
-         /////departamento directo
+        /////departamento directo
         $hojaCalculo->setCellValue("C3", $departamentosDirector);
 
         $hojaCalculo->setCellValue("H7", $fechaInicio);
@@ -266,7 +263,7 @@ class DocumentosVinculacion extends Controller
 
 
 
-         $hojaCalculo->setCellValue("B12", "Fecha: $fechaFormateada");
+        $hojaCalculo->setCellValue("B12", "Fecha: $fechaFormateada");
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $nombreArchivo = "1.3-Número-Horas-Docentes.xlsx";
@@ -291,10 +288,10 @@ class DocumentosVinculacion extends Controller
         $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
         // Obtener la relación AsignacionProyecto para este ParticipanteVinculacion
         $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)
-        ->whereHas('estudiante', function ($query) {
-            $query->where('Estado', 'Aprobado');
-        })
-        ->first();
+            ->whereHas('estudiante', function ($query) {
+                $query->where('Estado', 'Aprobado');
+            })
+            ->first();
 
         ///obtener la id del director de AsiignacionProyecto
         $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
@@ -604,20 +601,20 @@ class DocumentosVinculacion extends Controller
                     $fechaFinalizacionFormatted = null;
                 }
 
-                 $asignacionExistente = AsignacionProyecto::where('EstudianteID', $estudiante ? $estudiante->EstudianteID : null)
+                $asignacionExistente = AsignacionProyecto::where('EstudianteID', $estudiante ? $estudiante->EstudianteID : null)
                     ->where('ProyectoID', $proyecto ? $proyecto->ProyectoID : null)
                     ->where('ParticipanteID', $participante ? $participante->id : null)
                     ->where('IdPeriodo', $periodo ? $periodo->id : null)
                     ->first();
 
                 if ($asignacionExistente) {
-                     $asignacionExistente->update([
+                    $asignacionExistente->update([
                         'FechaInicio' => $fechaInicioFormatted,
                         'FechaFinalizacion' => $fechaFinalizacionFormatted,
                         'FechaAsignacion' => now(),
                     ]);
                 } else {
-                     AsignacionProyecto::create([
+                    AsignacionProyecto::create([
                         'EstudianteID' => $estudiante ? $estudiante->EstudianteID : null,
                         'ProyectoID' => $proyecto ? $proyecto->ProyectoID : null,
                         'ParticipanteID' => $participante ? $participante->id : null,
@@ -633,6 +630,187 @@ class DocumentosVinculacion extends Controller
 
         return back()->with('success', 'Datos importados con éxito!');
     }
+
+    //////////////////////////////////////////////AGREGAR EMPRESSAS POR EXCEL//////////////////////////////////////
+
+    public function importaEmpresas(Request $request)
+    {
+        $spreadsheet = IOFactory::load($request->file('file'));
+        $worksheet = $spreadsheet->getActiveSheet();
+        $rows = $worksheet->toArray();
+
+        $dataRows = array_slice($rows, 1);
+
+        foreach ($dataRows as $row) {
+            $nombre = $row[1] ?? null;
+
+            if ($nombre) {
+                $empresa = Empresa::where('nombreEmpresa', $nombre)->first();
+                if ($empresa) {
+                    $empresa->update([
+                        'rucEmpresa' => $row[2] ?? null,
+                        'provincia' => $row[3] ?? null,
+                        'ciudad' => $row[4] ?? null,
+                        'direccion' => $row[5] ?? null,
+                        'correo' => $row[6] ?? null,
+                        'nombreContacto' => $row[7] ?? null,
+                        'telefonoContacto' => $row[8] ?? null,
+                        'actividadesMacro' => $row[9] ?? null,
+                        'cuposDisponibles' => $row[10] ?? null,
+                    ]);
+                }
+            }
+        }
+
+        foreach ($dataRows as $row) {
+            $nombre = $row[1] ?? null;
+
+            if ($nombre) {
+                $empresa = Empresa::where('nombreEmpresa', $nombre)->first();
+                if (!$empresa) {
+                    Empresa::create([
+                        'nombreEmpresa' => $nombre,
+                        'rucEmpresa' => $row[2] ?? null,
+                        'provincia' => $row[3] ?? null,
+                        'ciudad' => $row[4] ?? null,
+                        'direccion' => $row[5] ?? null,
+                        'correo' => $row[6] ?? null,
+                        'nombreContacto' => $row[7] ?? null,
+                        'telefonoContacto' => $row[8] ?? null,
+                        'actividadesMacro' => $row[9] ?? null,
+                        'cuposDisponibles' => null,
+                    ]);
+                }
+            }
+        }
+
+        return back()->with('success', 'Datos importados con éxito!');
+    }
+
+
+
+    ///////////////////////////////IMPORTAR PRACTICAS 1////////////////////////////////////////////////////
+
+    public function importarPracticas1(Request $request)
+    {
+         $request->validate([
+            'file' => 'required|mimes:xlsx',
+        ]);
+
+        $spreadsheet = IOFactory::load($request->file('file'));
+        $worksheet = $spreadsheet->getActiveSheet();
+        $rows = $worksheet->toArray();
+        $dataRows = array_slice($rows, 2);
+
+        foreach ($dataRows as $row) {
+            $estudiante = Estudiante::where('espe_id', $row[4])
+                ->first();
+            $periodo = Periodo::where('numeroPeriodo', $row[6])
+                ->first();
+
+            if (!$estudiante) {
+                $estudiante = Estudiante::create([
+                    'Nombres' => $row[1],
+                    'Apellidos' => $row[2],
+                    'espe_id' => $row[4],
+                    'Cohorte' => $row[6],
+                    'Carrera' => 'Ingeniería en Tecnologías de la información',
+                    'Departamento' => 'Ciencias de la Computación',
+                    'Correo' => $row[5],
+                    'Cedula' => $row[3],
+                    'id_periodo' => $periodo ? $periodo->id : null,
+                    'comentario' => null,
+                ]);
+            } else {
+                $updateFields = [
+                    'Nombres' => $row[1],
+                    'Apellidos' => $row[2],
+                    'espe_id' => $row[4],
+                    'Cohorte' => $row[6],
+                    'Correo' => $row[5],
+                    'Cedula' => $row[3],
+                ];
+
+                foreach ($updateFields as $key => $value) {
+                    if (is_null($estudiante->$key)) {
+                        $estudiante->$key = $value;
+                    }
+                }
+
+                $estudiante->save();
+            }
+        }
+
+        ////ahora vamos a importar a practicas1
+        foreach ($dataRows as $row) {
+            $estudiante = Estudiante::where('espe_id', $row[4])
+                ->first();
+            $practica1 = PracticaI::where('EstudianteID', $estudiante ? $estudiante->EstudianteID : null)
+                ->first();
+             $empresa = Empresa::where('nombreEmpresa', $row[16])
+                ->first();
+             $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[31])
+                ->first();
+
+             $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[11]);
+            if ($fechaInicio) {
+                 $fechaInicioFormatted = $fechaInicio->format('Y-m-d');
+             } else {
+                $fechaInicioFormatted = null;
+            }
+            $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $row[12]);
+            if ($fechaFinalizacion) {
+                $fechaFinalizacionFormatted = $fechaFinalizacion->format('Y-m-d');
+            } else {
+                $fechaFinalizacionFormatted = null;
+            }
+
+
+            if (!$practica1) {
+                PracticaI::create([
+                    'EstudianteID' => $estudiante ? $estudiante->EstudianteID : null,
+                    'AreaConocimiento' => $row[10],
+                    'FechaInicio' => $fechaInicioFormatted,
+                    'FechaFinalizacion' => $fechaFinalizacionFormatted,
+                    'HorasPlanificadas' => $row[13],
+                    'tipoPractica' => $row[14],
+                    'IDEmpresa' => $empresa ? $empresa->id : null,
+                    'NombreTutorEmpresarial' => $row[25],
+                    'CedulaTutorEmpresarial' => $row[27],
+                    'EmailTutorEmpresarial' => $row[28],
+                    'TelefonoTutorEmpresarial' => $row[29],
+                    'Funcion' => $row[30],
+                    'ID_tutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
+                    'Estado' => 'Finalizado',
+
+
+
+                ]);
+            } else {
+                $practica1->update([
+                    'AreaConocimiento' => $row[10],
+                    'FechaInicio' => $fechaInicioFormatted,
+                    'FechaFinalizacion' => $fechaFinalizacionFormatted,
+                    'HorasPlanificadas' => $row[13],
+                    'tipoPractica' => $row[14],
+                    'IDEmpresa' => $empresa ? $empresa->id : null,
+                    'NombreTutorEmpresarial' => $row[25],
+                    'CedulaTutorEmpresarial' => $row[27],
+                    'EmailTutorEmpresarial' => $row[28],
+                    'TelefonoTutorEmpresarial' => $row[29],
+                    'Funcion' => $row[30],
+                    'ID_tutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
+                    'Estado' => 'Finalizado',
+                    'EstadoAprobacion' => 'Cursando estudios',
+
+                ]);
+            }
+        }
+
+        return redirect()->back()->with('success', 'Estudiantes importados correctamente.');
+    }
+
+
 
 
 

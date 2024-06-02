@@ -1015,7 +1015,7 @@ class AdminController extends Controller
         $estudiantesPracticas = PracticaI::with('estudiante')
             ->where(function ($query) {
                 $query->where('Estado', 'En ejecucion')
-                    ->orWhere('Estado', 'Terminado');
+                    ->orWhere('Estado', 'Finalizado');
             })
             ->get();
 
