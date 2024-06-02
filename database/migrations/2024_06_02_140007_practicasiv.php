@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('practicasii', function (Blueprint $table) {
-            $table->id('PracticasII');
+        Schema::create('practicasiv', function (Blueprint $table) {
+            $table->id('PracticasIV');
              $table->unsignedBigInteger('EstudianteID')->nullable();
              $table->unsignedBigInteger('nrc')->nullable();
             $table->foreign('nrc')->references('id')->on('nrc_vinculacion')->nullable();
@@ -45,6 +45,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('practicasii');
+        Schema::dropIfExists('practicasiv');
     }
 };

@@ -6,13 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
-        Schema::create('practicasii', function (Blueprint $table) {
-            $table->id('PracticasII');
+        Schema::create('practicasiii', function (Blueprint $table) {
+            $table->id('PracticasIII');
              $table->unsignedBigInteger('EstudianteID')->nullable();
              $table->unsignedBigInteger('nrc')->nullable();
             $table->foreign('nrc')->references('id')->on('nrc_vinculacion')->nullable();
@@ -40,11 +38,9 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+
     public function down(): void
     {
-        Schema::dropIfExists('practicasii');
+        Schema::dropIfExists('practicasiii');
     }
 };

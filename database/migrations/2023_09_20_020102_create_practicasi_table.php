@@ -13,33 +13,33 @@ return new class extends Migration
     {
         Schema::create('practicasi', function (Blueprint $table) {
             $table->id('PracticasI');
-            $table->unsignedBigInteger('EstudianteID');
-            $table->unsignedBigInteger('id_nrc_practicas1');
-            $table->foreign('id_nrc_practicas1')->references('id')->on('nrc_practicas1');
-            $table->foreign('EstudianteID')->references('EstudianteID')->on('estudiantes');
-            $table->unsignedBigInteger('IDEmpresa');
-            $table->foreign('IDEmpresa')->references('id')->on('empresas');
-            $table->unsignedBigInteger('ID_tutorAcademico');
-            $table->foreign('ID_tutorAcademico')->references('id')->on('profesUniversidad');
-            $table->string('tipoPractica');
-            $table->string('CedulaTutorEmpresarial');
-            $table->string('NombreTutorEmpresarial');
-            $table->string('Funcion');
-            $table->string('TelefonoTutorEmpresarial');
-            $table->string('EmailTutorEmpresarial');
-            $table->string('DepartamentoTutorEmpresarial');
-            $table->string('EstadoAcademico');
-            $table->date('FechaInicio');
-            $table->date('FechaFinalizacion');
-            $table->string('HorasPlanificadas');
-            $table->string('HoraEntrada');
-            $table->string('HoraSalida');
-            $table->string('AreaConocimiento');
-            $table->string('Estado');
+            $table->unsignedBigInteger('EstudianteID')->nullable();
+             $table->unsignedBigInteger('nrc')->nullable();
+            $table->foreign('nrc')->references('id')->on('nrc_vinculacion')->nullable();
+            $table->foreign('EstudianteID')->references('EstudianteID')->on('estudiantes')->nullable();
+            $table->unsignedBigInteger('IDEmpresa')->nullable();
+            $table->foreign('IDEmpresa')->references('id')->on('empresas')->nullable();
+            $table->unsignedBigInteger('ID_tutorAcademico')->nullable();
+            $table->foreign('ID_tutorAcademico')->references('id')->on('profesUniversidad')->nullable();
+            $table->string('tipoPractica')->nullable();
+            $table->string('CedulaTutorEmpresarial')->nullable();
+            $table->string('NombreTutorEmpresarial')->nullable();
+            $table->string('Funcion')->nullable();
+            $table->string('TelefonoTutorEmpresarial')->nullable();
+            $table->string('EmailTutorEmpresarial')->nullable();
+            $table->string('DepartamentoTutorEmpresarial')->nullable();
+            $table->string('EstadoAcademico')->nullable();
+            $table->date('FechaInicio')->nullable();
+            $table->date('FechaFinalizacion')->nullable();
+            $table->string('HorasPlanificadas')->nullable();
+            $table->string('HoraEntrada')->nullable();
+            $table->string('HoraSalida')->nullable();
+            $table->string('AreaConocimiento')->nullable();
+            $table->string('Estado')->nullable();
             $table->timestamps();
         });
     }
- 
+
     public function down(): void
     {
         Schema::dropIfExists('practicasi');

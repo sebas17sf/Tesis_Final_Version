@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\PracticaI;
 use App\Models\PracticaII;
+use App\Models\PracticaIII;
+use App\Models\PracticaIV;
+use App\Models\PracticaV;
 use App\Models\Usuario;
 use App\Models\Estudiante;
 use App\Models\Proyecto;
@@ -14,6 +17,7 @@ use App\Models\Empresa;
 use App\Models\Role;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Pagination\LengthAwarePaginator;
+
 
 
 
@@ -31,8 +35,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\NrcVinculacion;
 use App\Models\UsuariosSession;
-use App\Models\NrcPracticas1;
-use Illuminate\Http\Request;
+ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -1000,7 +1003,7 @@ class AdminController extends Controller
 
 
     //////////////////////////PRACTICAS////////////////////////////////////////
-//ir a la vista de practica 1
+
     public function aceptarFasei()
     {
         $estudiantesConPracticaI = PracticaI::with('estudiante')
@@ -1010,6 +1013,8 @@ class AdminController extends Controller
         $estudiantesConPracticaII = PracticaII::with('estudiante')
             ->where('Estado', 'PracticaII')
             ->get();
+
+
 
 
         $estudiantesPracticas = PracticaI::with('estudiante')
@@ -1022,14 +1027,39 @@ class AdminController extends Controller
         $estudiantesPracticasII = PracticaII::with('estudiante')
             ->where(function ($query) {
                 $query->where('Estado', 'En ejecucion')
-                    ->orWhere('Estado', 'Terminado');
+                    ->orWhere('Estado', 'Finalizado');
+            })
+            ->get();
+
+        $estudiantesPracticasIII = PracticaIII::with('estudiante')
+            ->where(function ($query) {
+                $query->where('Estado', 'En ejecucion')
+                    ->orWhere('Estado', 'Finalizado');
+            })
+            ->get();
+
+        $estudiantesPracticasIV = PracticaIV::with('estudiante')
+            ->where(function ($query) {
+                $query->where('Estado', 'En ejecucion')
+                    ->orWhere('Estado', 'Finalizado');
+            })
+            ->get();
+
+        $estudiantesPracticasV = PracticaV::with('estudiante')
+            ->where(function ($query) {
+                $query->where('Estado', 'En ejecucion')
+                    ->orWhere('Estado', 'Finalizado');
             })
             ->get();
 
 
-        return view('admin.aceptarFaseI', compact('estudiantesConPracticaI', 'estudiantesPracticas', 'estudiantesConPracticaII', 'estudiantesPracticasII'));
+        return view('admin.aceptarFaseI', compact('estudiantesConPracticaI', 'estudiantesPracticas', 'estudiantesConPracticaII', 'estudiantesPracticasII', 'estudiantesPracticasIII', 'estudiantesPracticasIV', 'estudiantesPracticasV'));
 
     }
+
+
+    //////////////////////////////////PRACTICAS//////////////////////////////////////////
+
 
     public function actualizarEstadoEstudiante(Request $request, $id)
     {

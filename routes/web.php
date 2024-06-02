@@ -169,7 +169,7 @@ Route::middleware(['auth'])->group(function () {
 
     ///rutas para guardar las notas del estudiante, participante
     Route::post('/participante-vinculacion/guardar-notas', [ParticipanteVinculacionController::class, 'guardarNotas'])->name('guardar-notas');
-      ///ruta para actualizar las notas del estudiante
+    ///ruta para actualizar las notas del estudiante
     Route::put('/participante-vinculacion/{id}/actualizar-notas', [ParticipanteVinculacionController::class, 'editarNotas'])->name('actualizar-notas');
 
 
@@ -183,6 +183,14 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/import-empresas', [DocumentosVinculacion::class, 'importaEmpresas'])->name('import-empresas');
     /////////////////////importar practcias 1
     Route::post('/import-practicas1', [DocumentosVinculacion::class, 'importarPracticas1'])->name('import-practicas1');
+    ///////////////importar practicas 2
+    Route::post('/import-practicas2', [DocumentosVinculacion::class, 'importarPracticas2'])->name('import-practicas2');
+    ///////////////importar practicas 3
+    Route::post('/import-practicas3', [DocumentosVinculacion::class, 'importarPracticas3'])->name('import-practicas3');
+    ///////////////importar practicas 4
+    Route::post('/import-practicas4', [DocumentosVinculacion::class, 'importarPracticas4'])->name('import-practicas4');
+    ///////////////importar practicas 5
+    Route::post('/import-practicas5', [DocumentosVinculacion::class, 'importarPracticas5'])->name('import-practicas5');
 
 
     ///ruta para los documentos del participante
@@ -239,7 +247,7 @@ Route::middleware(['auth'])->group(function () {
 
     route::get('/director/estudiantes-repartidos', [DirectorVinculacionController::class, 'repartoEstudiantes'])->name('director.repartoEstudiantes');
 
-/////cerrarProcesoEstudiantes
+    /////cerrarProcesoEstudiantes
     Route::post('/director-vinculacion/cerrar-proceso-estudiantes', [DirectorVinculacionController::class, 'cerrarProcesoEstudiantes'])->name('director_vinculacion.cerrarProcesoEstudiantes');
 
     //////asignarEstudiantes del director vinculacion
@@ -287,8 +295,13 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/coordinador/actualizar-nombre-empresa/{id}', [CoordinadorController::class, 'actualizarNombreEmpresa'])->name('coordinador.actualizarNombreEmpresa');
     ///guardarAsignacion del admin
     Route::post('/admin/guardar-asignacion', [AdminController::class, 'guardarAsignacion'])->name('admin.guardarAsignacion');
-    /////aceptarFasei del admin
-    Route::get('/admin/aceptar-fasei', [AdminController::class, 'aceptarFasei'])->name('admin.aceptarFaseI');
+
+    ////PRACTICASSSSSSSSSSSSSSSSSSSS
+    Route::get('/admin/aceptar-practicas', [AdminController::class, 'aceptarFasei'])->name('admin.aceptarFaseI');
+
+
+
+
     ///actualizarEstadoEstudiante del admin
     Route::put('/admin/actualizar-estado-estudiante/{id}', [AdminController::class, 'actualizarEstadoEstudiante'])->name('admin.actualizarEstadoEstudiante');
     ////actualizarEstadoEstudiante2 del admin
@@ -307,14 +320,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/estudiantes/certificado-matricula', [EstudianteController::class, 'certificadoMatricula'])->name('estudiantes.certificadoMatricula');
 
     ////reportesProyectos de DocumentoController para admin y coordinador
-    Route::get('/descargar-reporte', function () {
-        $nombreArchivo = session('nombreArchivo');
-        if (!$nombreArchivo || !file_exists(public_path($nombreArchivo))) {
-            abort(404);
-        }
-
-        return response()->download(public_path($nombreArchivo))->deleteFileAfterSend(true);
-    })->name('coordinador.reportesProyectos');
+    Route::post('/coordinador/reportes-proyectos', [DocumentoController::class, 'reportesProyectos'])->name('coordinador.reportesProyectos');
 
 
 
@@ -405,7 +411,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/auth/github/redirect', [LoginController::class, 'githubRedirect'])->name('github.redirect');
 
 
-Route::get('auth/github/callback', [LoginController::class, 'githubCallback']) ->name('github.callback');
+Route::get('auth/github/callback', [LoginController::class, 'githubCallback'])->name('github.callback');
 
 
 

@@ -17,7 +17,7 @@ class PracticaI extends Model
         'tipoPractica',
         'IDEmpresa',
         'ID_tutorAcademico',
-        'id_nrc_practicas1',
+        'nrc',
         'CedulaTutorEmpresarial',
         'NombreTutorEmpresarial',
         'Funcion',

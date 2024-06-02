@@ -5,11 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PracticaII extends Model
+class PracticaIV extends Model
 {
-    use HasFactory;
-    protected $table = 'practicasii';
-    protected $primaryKey = 'PracticasII';
+    protected $table = 'practicasiv';
+    protected $primaryKey = 'PracticasIV';
 
     protected $fillable = [
         'EstudianteID',
@@ -31,10 +30,9 @@ class PracticaII extends Model
         'HoraSalida',
         'AreaConocimiento',
         'Estado'
-
     ];
-    public $timestamps = true;
 
+    public $timestamps = true;
 
     public function estudiante()
     {

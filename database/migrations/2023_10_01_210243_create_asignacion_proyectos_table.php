@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('asignacionProyectos', function (Blueprint $table) {
             $table->id('AsignacionID');
-            $table->unsignedBigInteger('EstudianteID');
-            $table->unsignedBigInteger('ProyectoID');
-             $table->unsignedBigInteger('ParticipanteID');
-            $table->unsignedBigInteger('IdPeriodo');
+            $table->unsignedBigInteger('EstudianteID')->nullable();;
+            $table->unsignedBigInteger('ProyectoID')->nullable();;
+             $table->unsignedBigInteger('ParticipanteID')->nullable();;
+            $table->unsignedBigInteger('IdPeriodo')->nullable();;
             $table->unsignedBigInteger('id_nrc_vinculacion')->nullable();
-             $table->date('FechaInicio');
-             $table->date('FechaFinalizacion');
-             $table->date('FechaAsignacion');
+             $table->date('FechaInicio')->nullable();;
+             $table->date('FechaFinalizacion')->nullable();;
+             $table->date('FechaAsignacion')->nullable();;
             $table->timestamps();
             $table->foreign('EstudianteID')->references('EstudianteID')->on('estudiantes');
             $table->foreign('ProyectoID')->references('ProyectoID')->on('proyectos');
