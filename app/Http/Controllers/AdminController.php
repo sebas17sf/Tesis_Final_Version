@@ -338,20 +338,20 @@ class AdminController extends Controller
                         $query->where('Nombres', 'like', '%' . $search2 . '%')
                             ->orWhere('Apellidos', 'like', '%' . $search2 . '%');
                     })
-                    ->orWhereHas('proyecto', function ($query) use ($search2) {
-                        $query->where('nombreProyecto', 'like', '%' . $search2 . '%');
-                    })
-                    ->orWhereHas('docenteParticipante', function ($query) use ($search2) {
-                        $query->where('Nombres', 'like', '%' . $search2 . '%')
-                            ->orWhere('Apellidos', 'like', '%' . $search2 . '%');
-                    })
-                    ->orWhereHas('periodo', function ($query) use ($search2) {
-                        $query->where('numeroPeriodo', 'like', '%' . $search2 . '%');
-                    })
-                    ->orWhereHas('proyecto.director', function ($query) use ($search2) {
-                        $query->where('Nombres', 'like', '%' . $search2 . '%')
-                            ->orWhere('Apellidos', 'like', '%' . $search2 . '%');
-                    });
+                        ->orWhereHas('proyecto', function ($query) use ($search2) {
+                            $query->where('nombreProyecto', 'like', '%' . $search2 . '%');
+                        })
+                        ->orWhereHas('docenteParticipante', function ($query) use ($search2) {
+                            $query->where('Nombres', 'like', '%' . $search2 . '%')
+                                ->orWhere('Apellidos', 'like', '%' . $search2 . '%');
+                        })
+                        ->orWhereHas('periodo', function ($query) use ($search2) {
+                            $query->where('numeroPeriodo', 'like', '%' . $search2 . '%');
+                        })
+                        ->orWhereHas('proyecto.director', function ($query) use ($search2) {
+                            $query->where('Nombres', 'like', '%' . $search2 . '%')
+                                ->orWhere('Apellidos', 'like', '%' . $search2 . '%');
+                        });
                 });
             })
 
@@ -387,7 +387,7 @@ class AdminController extends Controller
     }
 
 
-    ///////////////////////Vista para crear los proyectos
+    ///////////////////////Vista para crear los proyectos////////////////////
 
     public function crearProyectoForm()
     {
@@ -397,7 +397,7 @@ class AdminController extends Controller
     }
 
 
-    ///////////////////////guardar proyectos
+    /////////////////////////////guardar proyectos//////////////////////////////
 
 
 
@@ -818,10 +818,24 @@ class AdminController extends Controller
     public function agregarEmpresa(Request $request)
     {
         $elementosPorPagina = $request->input('elementosPorPagina');
-        $empresas = Empresa::paginate($elementosPorPagina);
+        $search = $request->input('search');
 
-        return view('admin.agregarEmpresa', compact('empresas', 'elementosPorPagina'));
+        $empresas = Empresa::when($search, function ($query, $search) {
+            return $query->where('nombreEmpresa', 'like', '%' . $search . '%')
+                ->orWhere('rucEmpresa', 'like', '%' . $search . '%')
+                ->orWhere('provincia', 'like', '%' . $search . '%')
+                ->orWhere('ciudad', 'like', '%' . $search . '%')
+                ->orWhere('direccion', 'like', '%' . $search . '%')
+                ->orWhere('correo', 'like', '%' . $search . '%')
+                ->orWhere('nombreContacto', 'like', '%' . $search . '%')
+                ->orWhere('telefonoContacto', 'like', '%' . $search . '%')
+                ->orWhere('actividadesMacro', 'like', '%' . $search . '%')
+                ->orWhere('cuposDisponibles', 'like', '%' . $search . '%');
+        })->paginate($elementosPorPagina);
+
+        return view('admin.agregarEmpresa', compact('empresas', 'elementosPorPagina', 'search'));
     }
+
 
     public function guardarEmpresa(Request $request)
     {
