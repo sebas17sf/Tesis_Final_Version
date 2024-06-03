@@ -451,8 +451,7 @@
 
                                 <li class="page-item mx-3 d-flex align-items-center">
                                     <form method="GET" action="{{ route('admin.indexProyectos') }}"
-                                        class="form-inline"
-                                        onsubmit="document.getElementById('tablaAsignaciones').scrollIntoView()">
+                                        class="form-inline">
                                         <div class="form-group">
                                             <label for="perPage2" class="sr-only">Items per page</label>
                                             <select class="form-control page-item" name="perPage2" id="perPage2"

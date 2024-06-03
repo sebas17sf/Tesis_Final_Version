@@ -35,7 +35,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\NrcVinculacion;
 use App\Models\UsuariosSession;
- use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -363,13 +363,14 @@ class AdminController extends Controller
 
 
 
+
         // Second pagination
         $total = $asignacionesAgrupadas->count();
-        $paginatedData = $asignacionesAgrupadas->forPage($page2, $perPage);
+        $paginatedData = $asignacionesAgrupadas->forPage($page2, $perPage2);
         $paginator = new LengthAwarePaginator(
             $paginatedData,
             $total,
-            $perPage,
+            $perPage2,
             $page2,
             ['path' => route('admin.indexProyectos'), 'pageName' => 'page2']
         );
@@ -387,6 +388,7 @@ class AdminController extends Controller
             'periodos' => $periodos,
             'search' => $search,
         ]);
+
     }
 
 
@@ -1004,8 +1006,13 @@ class AdminController extends Controller
 
     //////////////////////////PRACTICAS////////////////////////////////////////
 
-    public function aceptarFasei()
+    public function aceptarFasei(Request $request)
     {
+        $perPage = $request->input('paginacion1', 10);
+        $perPage2 = $request->input('paginacion2', 10);
+        $perPage3 = $request->input('paginacion3', 10);
+
+
         $estudiantesConPracticaI = PracticaI::with('estudiante')
             ->where('Estado', 'PracticaI')
             ->get();
@@ -1014,29 +1021,28 @@ class AdminController extends Controller
             ->where('Estado', 'PracticaII')
             ->get();
 
-
-
-
         $estudiantesPracticas = PracticaI::with('estudiante')
             ->where(function ($query) {
                 $query->where('Estado', 'En ejecucion')
                     ->orWhere('Estado', 'Finalizado');
             })
-            ->get();
+            ->paginate($perPage);
 
         $estudiantesPracticasII = PracticaII::with('estudiante')
             ->where(function ($query) {
                 $query->where('Estado', 'En ejecucion')
                     ->orWhere('Estado', 'Finalizado');
             })
-            ->get();
+            ->paginate($perPage2);
+
 
         $estudiantesPracticasIII = PracticaIII::with('estudiante')
             ->where(function ($query) {
                 $query->where('Estado', 'En ejecucion')
                     ->orWhere('Estado', 'Finalizado');
             })
-            ->get();
+            ->paginate($perPage3);
+
 
         $estudiantesPracticasIV = PracticaIV::with('estudiante')
             ->where(function ($query) {
@@ -1052,9 +1058,22 @@ class AdminController extends Controller
             })
             ->get();
 
+        return view(
+            'admin.aceptarFaseI',
+            compact(
+                'estudiantesConPracticaI',
+                'estudiantesPracticas',
+                'estudiantesConPracticaII',
+                'estudiantesPracticasII',
+                'estudiantesPracticasIII',
+                'estudiantesPracticasIV',
+                'estudiantesPracticasV',
+                'perPage',
+                'perPage2',
+                'perPage3'
 
-        return view('admin.aceptarFaseI', compact('estudiantesConPracticaI', 'estudiantesPracticas', 'estudiantesConPracticaII', 'estudiantesPracticasII', 'estudiantesPracticasIII', 'estudiantesPracticasIV', 'estudiantesPracticasV'));
-
+            )
+        );
     }
 
 

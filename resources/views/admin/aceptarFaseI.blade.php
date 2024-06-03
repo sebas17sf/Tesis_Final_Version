@@ -207,8 +207,8 @@
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
 
-                        <div id="tablaDocentes">
-                            <table class="mat-mdc-table">
+                        <div id="practicas1">
+                            <table id="practicas1" class="mat-mdc-table">
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
@@ -247,11 +247,6 @@
                                                 <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                                                 <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
                                                 <td>{{ $practicaI->Estado }}</td>
-
-
-
-
-
                                             </tr>
                                         @endif
                                     @endforeach
@@ -260,9 +255,70 @@
 
                         </div>
                     </div>
-                </div>
+                    <div class="paginator-container">
+                        <nav aria-label="...">
+                            <ul class="pagination">
+                                <li class="page-item mx-3">
+                                    <form method="GET" action="{{ route('admin.aceptarFaseI') }}">
+                                        <select class="form-control page-item" class="input" name="paginacion1"
+                                            id="perPage" onchange="this.form.submit()">
+                                            <option value="10" @if ($perPage == 10) selected @endif>10
+                                            </option>
+                                            <option value="20" @if ($perPage == 20) selected @endif>20
+                                            </option>
+                                            <option value="50" @if ($perPage == 50) selected @endif>
+                                                50
+                                            </option>
+                                            <option value="100" @if ($perPage == 100) selected @endif>
+                                                100
+                                            </option>
+                                        </select>
+                                    </form>
+                                </li>
 
+                                @if ($estudiantesPracticas->onFirstPage())
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Anterior</span>
+                                    </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="{{ $estudiantesPracticas->previousPageUrl() }}#practicas1"
+                                            aria-label="Anterior">Anterior</a>
+                                    </li>
+                                @endif
+
+                                @foreach ($estudiantesPracticas->getUrlRange(1, $estudiantesPracticas->lastPage()) as $perPage => $url)
+                                    @if ($perPage == $estudiantesPracticas->currentPage())
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ $perPage }}</span>
+                                        </li>
+                                    @else
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                                href="{{ $url }}#practicas1">{{ $perPage }}</a>
+                                        </li>
+                                    @endif
+                                @endforeach
+
+                                @if ($estudiantesPracticas->hasMorePages())
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $estudiantesPracticas->nextPageUrl() }}#practicas1"
+                                            aria-label="Siguiente">Siguiente</a>
+                                    </li>
+                                @else
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Siguiente</span>
+                                    </li>
+                                @endif
+
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
             </div>
+
+
         </section>
 
 
@@ -334,8 +390,8 @@
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
 
-                        <div id="tablaDocentes">
-                            <table class="mat-mdc-table">
+                        <div id="practicas2">
+                            <table id="practicas2" class="mat-mdc-table">
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
@@ -383,6 +439,68 @@
                             </table>
 
                         </div>
+
+                    </div>
+                    <div class="paginator-container">
+                        <nav aria-label="...">
+                            <ul class="pagination">
+                                <li class="page-item mx-3">
+                                    <form method="GET" action="{{ route('admin.aceptarFaseI') }}">
+                                        <select class="form-control page-item" class="input" name="paginacion2"
+                                            id="perPage" onchange="this.form.submit()">
+                                            <option value="10" @if ($perPage2 == 10) selected @endif>10
+                                            </option>
+                                            <option value="20" @if ($perPage2 == 20) selected @endif>20
+                                            </option>
+                                            <option value="50" @if ($perPage2 == 50) selected @endif>
+                                                50
+                                            </option>
+                                            <option value="100" @if ($perPage2 == 100) selected @endif>
+                                                100
+                                            </option>
+                                        </select>
+                                    </form>
+                                </li>
+
+                                @if ($estudiantesPracticasII->onFirstPage())
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Anterior</span>
+                                    </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="{{ $estudiantesPracticasII->previousPageUrl() }}#practicas2"
+                                            aria-label="Anterior">Anterior</a>
+                                    </li>
+                                @endif
+
+                                @foreach ($estudiantesPracticasII->getUrlRange(1, $estudiantesPracticasII->lastPage()) as $page => $url)
+                                    @if ($page == $estudiantesPracticasII->currentPage())
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ $page }}</span>
+                                        </li>
+                                    @else
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                                href="{{ $url }}#practicas2">{{ $page }}</a>
+                                        </li>
+                                    @endif
+                                @endforeach
+
+                                @if ($estudiantesPracticasII->hasMorePages())
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="{{ $estudiantesPracticasII->nextPageUrl() }}#practicas2"
+                                            aria-label="Siguiente">Siguiente</a>
+                                    </li>
+                                @else
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Siguiente</span>
+                                    </li>
+                                @endif
+
+                            </ul>
+                        </nav>
                     </div>
                 </div>
 
@@ -458,8 +576,8 @@
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
 
-                        <div id="tablaDocentes">
-                            <table class="mat-mdc-table">
+                        <div id="practicas3">
+                            <table id="practicas3" class="mat-mdc-table">
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
@@ -507,6 +625,66 @@
                             </table>
 
                         </div>
+                    </div>
+                    <div class="paginator-container">
+                        <nav aria-label="...">
+                            <ul class="pagination">
+                                <li class="page-item mx-3">
+                                    <form method="GET" action="{{ route('admin.aceptarFaseI') }}">
+                                        <select class="form-control page-item" class="input" name="paginacion3"
+                                            id="perPage" onchange="this.form.submit()">
+                                            <option value="10" @if ($perPage3 == 10) selected @endif>10
+                                            </option>
+                                            <option value="20" @if ($perPage3 == 20) selected @endif>20
+                                            </option>
+                                            <option value="50" @if ($perPage3 == 50) selected @endif>
+                                                50
+                                            </option>
+                                            <option value="100" @if ($perPage3 == 100) selected @endif>
+                                                100
+                                            </option>
+                                        </select>
+                                    </form>
+                                </li>
+
+                                @if ($estudiantesPracticas->onFirstPage())
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Anterior</span>
+                                    </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="{{ $estudiantesPracticas->previousPageUrl() }}#practicas3"
+                                            aria-label="Anterior">Anterior</a>
+                                    </li>
+                                @endif
+
+                                @foreach ($estudiantesPracticas->getUrlRange(1, $estudiantesPracticas->lastPage()) as $page => $url)
+                                    @if ($page == $estudiantesPracticas->currentPage())
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ $page }}</span>
+                                        </li>
+                                    @else
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                                href="{{ $url }}#practicas3">{{ $page }}</a>
+                                        </li>
+                                    @endif
+                                @endforeach
+
+                                @if ($estudiantesPracticas->hasMorePages())
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $estudiantesPracticas->nextPageUrl() }}#practicas3"
+                                            aria-label="Siguiente">Siguiente</a>
+                                    </li>
+                                @else
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Siguiente</span>
+                                    </li>
+                                @endif
+
+                            </ul>
+                        </nav>
                     </div>
                 </div>
 
