@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@section('title', 'Agregar Empresa')
 @section('title_component', 'Agregar Empresa')
 @section('content')
     {{--    <div class="container"> --}}
@@ -191,6 +192,10 @@
         <br>
 
         <h4><b>Listado de Empresas Agregadas</b></h4>
+        <div class="mat-elevation-z8 contenedor_general">
+                <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+                    <!-- Botones -->
+                    <div class="contenedor_botones">
         <div class="tooltip-container">
             <span class="tooltip-text">Importar archivo</span>
             <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
@@ -198,7 +203,29 @@
                 <i class="fa fa-upload"></i>
             </button>
         </div>
+        
 
+<div class="tooltip-container">
+    <span class="tooltip-text">Excel</span>
+    <form action="{{ route('coordinador.reportesEmpresas') }}" method="post">
+        @csrf
+        <button type="submit" class="button3 efects_button btn_excel">
+            <i class="fas fa-file-excel"></i>
+        </button>
+    </form>
+</div>
+
+{{-- <form action="{{ route('admin.estudiantes') }}" method="GET">
+    @csrf
+    <div class="form-group d-flex align-items-center">
+        <input type="text" name="buscarEstudiantes" id="buscarEstudiantes"
+            class="form-control input"
+            placeholder="Buscar estudiantes de vinculación a la sociedad">
+
+    </div>
+</form> --}}
+</div>
+</div>
         <div class="modal fade" id="modalImportar" tabindex="-1" role="dialog"
             aria-labelledby="modalImportarLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -237,36 +264,11 @@
                 </div>
             </div>
         </div>
-        <hr>
 
         <section>
-            <div class="mat-elevation-z8 contenedor_general">
                 @if ($empresas->isEmpty())
                     <p>No hay empresas agregadas.</p>
                 @else
-                    <div class="contenedor_acciones_tabla">
-
-                        <div class="tooltip-container">
-                            <span class="tooltip-text">Excel</span>
-                            <form action="{{ route('coordinador.reportesEmpresas') }}" method="post">
-                                @csrf
-                                <button type="submit" class="button3 efects_button btn_excel">
-                                    <i class="fas fa-file-excel"></i>
-                                </button>
-                            </form>
-                        </div>
-
-                        {{-- <form action="{{ route('admin.estudiantes') }}" method="GET">
-                            @csrf
-                            <div class="form-group d-flex align-items-center">
-                                <input type="text" name="buscarEstudiantes" id="buscarEstudiantes"
-                                    class="form-control input"
-                                    placeholder="Buscar estudiantes de vinculación a la sociedad">
-
-                            </div>
-                        </form> --}}
-                    </div>
-
 
                     <div class="contenedor_tabla">
                         <div class="table-container mat-elevation-z8">
@@ -284,7 +286,7 @@
                                             <th>Correo de Contacto</th>
                                             <th>Nombre del Contacto</th>
                                             <th>Teléfono del Contacto</th>
-                                            <th>Actividades Macro</th>
+                                            <th class="tamanio">Actividades Macro</th>
                                             <th>Cupos Disponibles</th>
                                             <th>Descargar Carta</th>
                                             <th>Descargar Convenio</th>

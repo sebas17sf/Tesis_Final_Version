@@ -1,6 +1,5 @@
 @extends('layouts.admin')
 
-
 @section('title', 'Aceptación de Estudiantes')
 
 @section('title_component', 'Aceptación de Estudiantes')
@@ -423,20 +422,12 @@
         </section>
     </section>
 
-
-
-
-
-
     {{--     <div class="mat-elevation-z8 contenedor_general">
 
         <div class="container">
 
       
  --}}
-
-
-
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

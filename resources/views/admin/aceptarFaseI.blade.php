@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@section('title', 'Practicas')
 @section('title_component', 'Practicas')
 @section('content')
     @if (session('success'))
@@ -28,9 +29,6 @@
         <hr>
         <section>
             <div class="mat-elevation-z8 contenedor_general">
-
-
-
 
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
@@ -144,20 +142,23 @@
         <h4><b>Estudiantes Practica 1</b></h4>
         <hr>
         <section>
-            <div class="mat-elevation-z8 contenedor_general">
-
-                <div class="contenedor_acciones_tabla">
-                    <form method="POST" action="{{ route('coordinador.reportesPracticaI') }}">
-                        @csrf
-                        <button type="submit" class="btn btn-sm btn-secondary">
-                            <i class="fas fa-file-excel"></i> Generar Reporte
-                        </button>
-                    </form>
-
-
-                </div>
-
-
+        <div class="mat-elevation-z8 contenedor_general">
+                <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+                    <!-- Botones -->
+                    <div class="contenedor_botones">
+                <div class="tooltip-container">
+                            <span class="tooltip-text">Excel</span>
+                            <form id="reportForm" action="{{ route('coordinador.reportesPracticaI') }}" method="POST"
+                                onsubmit="submitForm(event)">
+                                @csrf
+                                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+                                    <span id="loadingIcon" style="display: none;">
+                                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+                                    </span>
+                                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                                </button>
+                            </form>
+                        </div>
 
                 <div class="tooltip-container">
                     <span class="tooltip-text">Importar archivo</span>
@@ -203,7 +204,8 @@
                         </div>
                     </div>
                 </div>
-
+</div>
+</div>
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
 
@@ -323,24 +325,29 @@
 
 
         <br>
-        <h4><b>Estudiantes Practica 1.2 <b></h4>
+        <h4><b>Estudiantes Practica 1.2 </b></h4>
 
         <hr>
         <section>
-            <div class="mat-elevation-z8 contenedor_general">
 
-                <div class="contenedor_acciones_tabla">
-                    <form method="POST" action="{{ route('coordinador.reportesPracticaII') }}">
-                        @csrf
-                        <button type="submit" class="btn btn-sm btn-secondary">
-                            <i class="fas fa-file-excel"></i> Generar Reporte
-                        </button>
-                    </form>
+        <div class="mat-elevation-z8 contenedor_general">
+                <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+                    <!-- Botones -->
+                    <div class="contenedor_botones">
 
-
-
-                </div>
-
+                <div class="tooltip-container">
+                            <span class="tooltip-text">Excel</span>
+                            <form id="reportForm" action="{{ route('coordinador.reportesPracticaII') }}" method="POST"
+                                onsubmit="submitForm(event)">
+                                @csrf
+                                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+                                    <span id="loadingIcon" style="display: none;">
+                                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+                                    </span>
+                                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                                </button>
+                            </form>
+                        </div>
                 <div class="tooltip-container">
                     <span class="tooltip-text">Importar archivo</span>
                     <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
@@ -385,7 +392,8 @@
                         </div>
                     </div>
                 </div>
-
+</div>
+</div>
 
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
@@ -509,23 +517,28 @@
 
 
         <br>
-        <h4><b>Estudiantes Practica 1.3<b></h4>
+        <h4><b>Estudiantes Practica 1.3</b></h4>
 
         <hr>
         <section>
-            <div class="mat-elevation-z8 contenedor_general">
+        <div class="mat-elevation-z8 contenedor_general">
+                <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+                    <!-- Botones -->
+                    <div class="contenedor_botones">
 
-                <div class="contenedor_acciones_tabla">
-                    <form method="POST" action="{{ route('coordinador.reportesPracticaII') }}">
-                        @csrf
-                        <button type="submit" class="btn btn-sm btn-secondary">
-                            <i class="fas fa-file-excel"></i> Generar Reporte
-                        </button>
-                    </form>
-
-
-
-                </div>
+                <div class="tooltip-container">
+                            <span class="tooltip-text">Excel</span>
+                            <form id="reportForm" action="{{ route('coordinador.reportesPracticaII') }}" method="POST"
+                                onsubmit="submitForm(event)">
+                                @csrf
+                                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+                                    <span id="loadingIcon" style="display: none;">
+                                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+                                    </span>
+                                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                                </button>
+                            </form>
+                        </div>
 
                 <div class="tooltip-container">
                     <span class="tooltip-text">Importar archivo</span>
@@ -571,7 +584,8 @@
                         </div>
                     </div>
                 </div>
-
+</div>
+</div>
 
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
@@ -694,24 +708,27 @@
 
 
         <br>
-        <h4><b>Estudiantes Practica 2<b></h4>
+        <h4><b>Estudiantes Practica 2</b></h4>
 
         <hr>
         <section>
-            <div class="mat-elevation-z8 contenedor_general">
-
-                <div class="contenedor_acciones_tabla">
-                    <form method="POST" action="{{ route('coordinador.reportesPracticaII') }}">
-                        @csrf
-                        <button type="submit" class="btn btn-sm btn-secondary">
-                            <i class="fas fa-file-excel"></i> Generar Reporte
-                        </button>
-                    </form>
-
-
-
-                </div>
-
+        <div class="mat-elevation-z8 contenedor_general">
+                <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+                    <!-- Botones -->
+                    <div class="contenedor_botones">
+                <div class="tooltip-container">
+                            <span class="tooltip-text">Excel</span>
+                            <form id="reportForm" action="{{ route('coordinador.reportesPracticaII') }}" method="POST"
+                                onsubmit="submitForm(event)">
+                                @csrf
+                                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+                                    <span id="loadingIcon" style="display: none;">
+                                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+                                    </span>
+                                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                                </button>
+                            </form>
+                        </div>
                 <div class="tooltip-container">
                     <span class="tooltip-text">Importar archivo</span>
                     <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
@@ -757,6 +774,8 @@
                     </div>
                 </div>
 
+</div>
+</div>
 
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
@@ -818,24 +837,27 @@
 
 
         <br>
-        <h4><b>Estudiantes Practica 2.1<b></h4>
+        <h4><b>Estudiantes Practica 2.1</b></h4>
 
         <hr>
         <section>
-            <div class="mat-elevation-z8 contenedor_general">
-
-                <div class="contenedor_acciones_tabla">
-                    <form method="POST" action="{{ route('coordinador.reportesPracticaII') }}">
-                        @csrf
-                        <button type="submit" class="btn btn-sm btn-secondary">
-                            <i class="fas fa-file-excel"></i> Generar Reporte
-                        </button>
-                    </form>
-
-
-
-                </div>
-
+        <div class="mat-elevation-z8 contenedor_general">
+                <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+                    <!-- Botones -->
+                    <div class="contenedor_botones">
+                <div class="tooltip-container">
+                            <span class="tooltip-text">Excel</span>
+                            <form id="reportForm" action="{{ route('coordinador.reportesPracticaII') }}" method="POST"
+                                onsubmit="submitForm(event)">
+                                @csrf
+                                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+                                    <span id="loadingIcon" style="display: none;">
+                                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+                                    </span>
+                                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                                </button>
+                            </form>
+                        </div>
                 <div class="tooltip-container">
                     <span class="tooltip-text">Importar archivo</span>
                     <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
@@ -881,6 +903,8 @@
                     </div>
                 </div>
 
+</div>
+</div>
 
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">

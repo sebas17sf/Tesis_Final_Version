@@ -169,10 +169,7 @@
                                                 </td>
                                                 <td>{{ strtoupper($proyecto->Estado) }}</td>
                                                 <td>
-                                                    <div class="contenedor_botones">
-                                                        <div class="btn-group  shadow-0">
-                                                            <div class="tooltip-container">
-                                                                <span class="tooltip-text">Editar</span>
+                                                        <div class="btn-group shadow-0">
                                                                 <a href="{{ route('admin.editarProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
                                                                     type="button"
                                                                     class="button3 efects_button btn_editar3">
@@ -184,16 +181,13 @@
                                                                 method="POST">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <div class="tooltip-container">
-                                                                    <span class="tooltip-text">Eliminar</span>
                                                                     <button type="submit"
                                                                         class="button3 efects_button btn_eliminar3"
                                                                         onclick="return confirm('¿Estás seguro de eliminar este proyecto?')">
                                                                         <i class="bx bx-trash"></i>
                                                                     </button>
-                                                                </div>
                                                             </form>
-                                                        </div>
+                                                        </dv>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -584,13 +578,6 @@
                                         </option>
                                     @endforeach
                                 </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="periodo">Periodo:</label>
-                                <input type="text" id="periodo" class="form-control input" readonly>
                             </div>
                         </div>
                     </div>

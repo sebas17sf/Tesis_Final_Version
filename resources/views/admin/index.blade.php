@@ -411,10 +411,8 @@
                                                 </td>
                                                 <td class="center_size">{{ $profesor->espe_id }}</td>
                                                 <td>
-                                                    <div class="contenedor_botones">
-                                                        <div class="btn-group  shadow-1">
+                                                        <div class="btn-group shadow-1">
 
-                                                            <div class="tooltip-container">
                                                                 <button type="button"
                                                                     class="button3 efects_button btn_editar3"
                                                                     data-toggle="modal"
