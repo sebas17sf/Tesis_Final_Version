@@ -192,29 +192,10 @@ class AdminController extends Controller
 
 
         // Consulta para estudiantes de vinculación
-        $queryEstudiantesVinculacion = EstudiantesVinculacion::orderBy('nombres', 'asc');
 
         // Búsqueda de estudiantes de vinculación
-        if ($request->has('buscarEstudiantes')) {
-            $busquedaEstudiantesVinculacion = $request->input('buscarEstudiantes');
-            $queryEstudiantesVinculacion->where(function ($query) use ($busquedaEstudiantesVinculacion) {
-                $query->where('cedula_identidad', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
-                    ->orWhere('correo_electronico', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
-                    ->orWhere('espe_id', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
-                    ->orWhere('nombres', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
-                    ->orWhere('periodo_ingreso', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
-                    ->orWhere('periodo_vinculacion', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
-                    ->orWhere('actividades_macro', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
-                    ->orWhere('docente_participante', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
-                    ->orWhere('fecha_inicio', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
-                    ->orWhere('fecha_fin', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
-                    ->orWhere('total_horas', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
-                    ->orWhere('director_proyecto', 'like', '%' . $busquedaEstudiantesVinculacion . '%')
-                    ->orWhere('nombre_proyecto', 'like', '%' . $busquedaEstudiantesVinculacion . '%');
-            });
-        }
 
-        $estudiantesVinculacion = $queryEstudiantesVinculacion->paginate($elementosPorPagina);
+
 
         // Consulta y paginación para estudiantes aprobados
         $queryEstudiantesAprobados = Estudiante::whereIn('Estado', ['Aprobado', 'Aprobado-prácticas']);
@@ -231,15 +212,12 @@ class AdminController extends Controller
         $estudiantesAprobados = $queryEstudiantesAprobados->paginate($elementosPorPaginaAprobados); // Cambio de nombre
 
         // Verificar si no se encontraron resultados para la búsqueda de estudiantes de vinculación
-        $noResultadosEstudiantesVinculacion = $estudiantesVinculacion->isEmpty() && $estudiantesVinculacion->total() === 0;
 
         return view('admin.aceptacionEstudiantes', [
             'estudiantesEnRevision' => $estudiantesEnRevision,
             'estudiantesAprobados' => $estudiantesAprobados,
-            'estudiantesVinculacion' => $estudiantesVinculacion,
             'elementosPorPagina' => $elementosPorPagina,
             'elementosPorPaginaAprobados' => $elementosPorPaginaAprobados, // Cambio de nombre
-            'noResultadosEstudiantesVinculacion' => $noResultadosEstudiantesVinculacion,
         ]);
     }
 
@@ -305,6 +283,8 @@ class AdminController extends Controller
         $page = $request->input('page', 1);
         $page2 = $request->input('page2', 1);
         $search = $request->input('search');
+        $search2 = $request->input('search2');
+
 
         $validPerPages = [10, 20, 50, 100];
         if (!in_array($perPage, $validPerPages)) {
@@ -326,17 +306,12 @@ class AdminController extends Controller
         if ($estadoProyecto) {
             $query->where('Estado', $estadoProyecto);
         }
-
-        // First pagination
         $proyectos = $query->paginate($perPage, ['*'], 'page', $page);
 
-        // Obtener otros datos necesarios
         $proyectosDisponibles = Proyecto::where('Estado', 'Ejecucion')->get();
         $estudiantesAprobados = Estudiante::where('Estado', 'Aprobado')
             ->whereDoesntHave('asignaciones')
             ->get();
-
-        ///////////// Obtener todas las asignacionesProyectos
 
         $profesorId = request('profesor');
         $periodoId = request('periodos');
@@ -355,16 +330,37 @@ class AdminController extends Controller
                     $query->where('id', $periodoId);
                 });
             })
+
+
+            ->when($search2, function ($query, $search2) {
+                return $query->where(function ($query) use ($search2) {
+                    $query->whereHas('estudiante', function ($query) use ($search2) {
+                        $query->where('Nombres', 'like', '%' . $search2 . '%')
+                            ->orWhere('Apellidos', 'like', '%' . $search2 . '%');
+                    })
+                    ->orWhereHas('proyecto', function ($query) use ($search2) {
+                        $query->where('nombreProyecto', 'like', '%' . $search2 . '%');
+                    })
+                    ->orWhereHas('docenteParticipante', function ($query) use ($search2) {
+                        $query->where('Nombres', 'like', '%' . $search2 . '%')
+                            ->orWhere('Apellidos', 'like', '%' . $search2 . '%');
+                    })
+                    ->orWhereHas('periodo', function ($query) use ($search2) {
+                        $query->where('numeroPeriodo', 'like', '%' . $search2 . '%');
+                    })
+                    ->orWhereHas('proyecto.director', function ($query) use ($search2) {
+                        $query->where('Nombres', 'like', '%' . $search2 . '%')
+                            ->orWhere('Apellidos', 'like', '%' . $search2 . '%');
+                    });
+                });
+            })
+
+
             ->get()
             ->groupBy(function ($item) {
                 return $item->ProyectoID . '_' . $item->IdPeriodo . "_" . $item->ParticipanteID;
             });
 
-
-
-
-
-        // Second pagination
         $total = $asignacionesAgrupadas->count();
         $paginatedData = $asignacionesAgrupadas->forPage($page2, $perPage2);
         $paginator = new LengthAwarePaginator(
@@ -374,7 +370,6 @@ class AdminController extends Controller
             $page2,
             ['path' => route('admin.indexProyectos'), 'pageName' => 'page2']
         );
-
         return view('admin.indexProyectos', [
             'proyectos' => $proyectos,
             'proyectosDisponibles' => $proyectosDisponibles,
@@ -387,8 +382,8 @@ class AdminController extends Controller
             'asignacionesAgrupadas' => $paginator,
             'periodos' => $periodos,
             'search' => $search,
+            'search2' => $search2,
         ]);
-
     }
 
 
