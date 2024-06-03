@@ -198,12 +198,19 @@
                     <div class="contenedor_botones">
         <div class="tooltip-container">
             <span class="tooltip-text">Importar archivo</span>
-            <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
-                data-target="#modalImportar">
+            <button type="button" class="button3 efects_button btn_3" data-toggle="modal" data-target="#modalImportar">
                 <i class="fa fa-upload"></i>
             </button>
+
+
+
+
+
+
+
         </div>
         
+
 
 <div class="tooltip-container">
     <span class="tooltip-text">Excel</span>
@@ -226,8 +233,10 @@
 </form> --}}
 </div>
 </div>
-        <div class="modal fade" id="modalImportar" tabindex="-1" role="dialog"
-            aria-labelledby="modalImportarLabel" aria-hidden="true">
+
+        <div class="modal fade" id="modalImportar" tabindex="-1" role="dialog" aria-labelledby="modalImportarLabel"
+            aria-hidden="true">
+
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <form id="idModalImportar" action="{{ route('import-empresas') }}" method="POST"
@@ -235,29 +244,26 @@
                         @csrf
                         <div class="modal-header">
                             <h5 class="modal-title">Importar archivo</h5>
-                            <button type="button" class="close" data-dismiss="modal"
-                                aria-label="Close">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
-                                 <div class="input input_file">
+                                <div class="input input_file">
                                     <span id="fileText" class="fileText">
                                         <i class="fa fa-upload"></i> Haz clic aquí para subir el
                                         documento
                                     </span>
-                                    <input type="file" class="form-control-file input input_file"
-                                        id="file" name="file"
-                                        onchange="displayFileName(this)" required>
+                                    <input type="file" class="form-control-file input input_file" id="file"
+                                        name="file" onchange="displayFileName(this)" required>
                                     <span title="Eliminar archivo" onclick="removeFile(this)"
                                         class="remove-icon">✖</span>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button id="cerrar_modal" type="button" class="button"
-                                data-dismiss="modal">Cerrar</button>
+                            <button id="cerrar_modal" type="button" class="button" data-dismiss="modal">Cerrar</button>
                             <button type="submit" class="button">Importar Archivo</button>
                         </div>
                     </form>
@@ -269,12 +275,39 @@
                 @if ($empresas->isEmpty())
                     <p>No hay empresas agregadas.</p>
                 @else
+                    <div class="contenedor_acciones_tabla">
+
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Excel</span>
+                            <form action="{{ route('coordinador.reportesEmpresas') }}" method="post">
+                                @csrf
+                                <button type="submit" class="button3 efects_button btn_excel">
+                                    <i class="fas fa-file-excel"></i>
+                                </button>
+                            </form>
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="contenedor_buscador">
+                        <div>
+                            <form id="formBusquedaEmpresa">
+                                <input type="text" class="input" name="search" value="{{ $search }}" matInput
+                                    placeholder="Buscar empresas...">
+                                <i class='bx bx-search-alt'></i>
+                            </form>
+                        </div>
+                    </div>
+
 
                     <div class="contenedor_tabla">
                         <div class="table-container mat-elevation-z8">
 
-                            <div id="tablaDocentes">
-                                <table class="mat-mdc-table">
+                            <div id="tablaEmpresas">
+                                <table id="tablaEmpresas" class="mat-mdc-table">
                                     <thead class="ng-star-inserted">
                                         <tr
                                             class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
@@ -452,12 +485,28 @@
 
 
 
-
-
-
-
-
-    {{--  </div> --}}
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var delayTimer;
+        $('#formBusquedaEmpresa input[name="search"]').on('keyup', function() {
+            clearTimeout(delayTimer);
+            var query = $(this).val();
+            delayTimer = setTimeout(function() {
+                $.ajax({
+                    url: '{{ route('admin.agregarEmpresa') }}',
+                    type: 'GET',
+                    data: {
+                        search: query
+                    },
+                    success: function(response) {
+                        $('#tablaEmpresas').html($(response).find('#tablaEmpresas').html());
+                    }
+                });
+            }, 500);
+        });
+    </script>
 
 
 @endsection
@@ -465,31 +514,4 @@
 
 
 
-{{-- <style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        white-space: nowrap;
-    }
 
-    table,
-    th,
-    td {
-        font-size: 0.8rem;
-    }
-
-
-    th,
-    td {
-        padding: 8px 12px;
-        text-align: left;
-        border: 1px solid #ddd;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    th {
-        background-color: #f2f2f2;
-    }
-</style>
- --}}

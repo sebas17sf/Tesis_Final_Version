@@ -345,6 +345,17 @@
                             </div>
 
 
+                            <div class="contenedor_buscador">
+                                <div>
+                                    <form id="formBusquedaAsignaciones">
+                                        <input type="text" class="input" name="search2" value="{{ $search2 }}"
+                                            matInput placeholder="Buscar asignaciones...">
+                                        <i class='bx bx-search-alt'></i>
+                                    </form>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -640,6 +651,27 @@
                     },
                     success: function(response) {
                         $('#tablaProyectos').html($(response).find('#tablaProyectos').html());
+                    }
+                });
+            }, 500);
+        });
+    </script>
+
+    <script>
+        var delayTimer;
+        $('#formBusquedaAsignaciones input[name="search2"]').on('keyup', function() {
+            clearTimeout(delayTimer);
+            var query = $(this).val();
+            delayTimer = setTimeout(function() {
+                $.ajax({
+                    url: '{{ route('admin.indexProyectos') }}',
+                    type: 'GET',
+                    data: {
+                        search2: query
+                    },
+                    success: function(response) {
+                        $('#tablaAsignaciones').html($(response).find('#tablaAsignaciones')
+                            .html());
                     }
                 });
             }, 500);

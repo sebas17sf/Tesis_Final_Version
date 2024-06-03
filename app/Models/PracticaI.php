@@ -50,11 +50,7 @@ class PracticaI extends Model
     {
         return $this->belongsTo(ProfesUniversidad::class, 'ID_tutorAcademico', 'id');
     }
-
-    public function nrcPractica()
-    {
-        return $this->belongsTo(NrcPracticas1::class, 'id_nrc_practicas1', 'id');
-    }
+ 
 
     public function actividades_practicas()
     {
