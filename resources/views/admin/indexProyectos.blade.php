@@ -345,7 +345,9 @@
                             </div>
 
 
-                            <div class="contenedor_buscador">
+                        </div>
+                    </div>
+                    <div class="contenedor_buscador">
                                 <div>
                                     <form id="formBusquedaAsignaciones">
                                         <input type="text" class="input" name="search2" value="{{ $search2 }}"
@@ -354,10 +356,6 @@
                                     </form>
                                 </div>
                             </div>
-
-
-                        </div>
-                    </div>
                 </div>
 
 
@@ -621,10 +619,6 @@
 
             </div>
         </div>
-
-
-
-
 
 
 

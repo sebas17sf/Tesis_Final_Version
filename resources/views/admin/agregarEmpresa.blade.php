@@ -202,15 +202,8 @@
                 <i class="fa fa-upload"></i>
             </button>
 
-
-
-
-
-
-
         </div>
         
-
 
 <div class="tooltip-container">
     <span class="tooltip-text">Excel</span>
@@ -222,6 +215,7 @@
     </form>
 </div>
 
+
 {{-- <form action="{{ route('admin.estudiantes') }}" method="GET">
     @csrf
     <div class="form-group d-flex align-items-center">
@@ -232,6 +226,15 @@
     </div>
 </form> --}}
 </div>
+<div class="contenedor_buscador">
+                        <div>
+                            <form id="formBusquedaEmpresa">
+                                <input type="text" class="input" name="search" value="{{ $search }}" matInput
+                                    placeholder="Buscar empresas...">
+                                <i class='bx bx-search-alt'></i>
+                            </form>
+                        </div>
+                    </div>
 </div>
 
         <div class="modal fade" id="modalImportar" tabindex="-1" role="dialog" aria-labelledby="modalImportarLabel"
@@ -268,31 +271,7 @@
                         </div>
                     </form>
                 </div>
-            </div>
-        </div>
-
-        <section>
-                @if ($empresas->isEmpty())
-                    <p>No hay empresas agregadas.</p>
-                @else
-                    <div class="contenedor_acciones_tabla">
-
-                        <div class="tooltip-container">
-                            <span class="tooltip-text">Excel</span>
-                            <form action="{{ route('coordinador.reportesEmpresas') }}" method="post">
-                                @csrf
-                                <button type="submit" class="button3 efects_button btn_excel">
-                                    <i class="fas fa-file-excel"></i>
-                                </button>
-                            </form>
-                        </div>
-
-
-                    </div>
-
-
-
-                    <div class="contenedor_buscador">
+                <div class="contenedor_buscador">
                         <div>
                             <form id="formBusquedaEmpresa">
                                 <input type="text" class="input" name="search" value="{{ $search }}" matInput
@@ -301,8 +280,13 @@
                             </form>
                         </div>
                     </div>
+            </div>
+        </div>
 
-
+        <section>
+                @if ($empresas->isEmpty())
+                    <p>No hay empresas agregadas.</p>
+                @else
                     <div class="contenedor_tabla">
                         <div class="table-container mat-elevation-z8">
 
