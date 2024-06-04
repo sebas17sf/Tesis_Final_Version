@@ -1015,12 +1015,13 @@ class AdminController extends Controller
 
     //////////////////////////PRACTICAS////////////////////////////////////////
 
+
     public function aceptarFasei(Request $request)
     {
-        $perPage = $request->input('paginacion1', 10);
+        $perPage1 = $request->input('paginacion1', 10);
         $perPage2 = $request->input('paginacion2', 10);
         $perPage3 = $request->input('paginacion3', 10);
-
+        $perPage4 = $request->input('paginacion4', 10);
 
         $estudiantesConPracticaI = PracticaI::with('estudiante')
             ->where('Estado', 'PracticaI')
@@ -1035,30 +1036,28 @@ class AdminController extends Controller
                 $query->where('Estado', 'En ejecucion')
                     ->orWhere('Estado', 'Finalizado');
             })
-            ->paginate($perPage);
+            ->paginate($perPage1, ['*'], 'page1');
 
         $estudiantesPracticasII = PracticaII::with('estudiante')
             ->where(function ($query) {
                 $query->where('Estado', 'En ejecucion')
                     ->orWhere('Estado', 'Finalizado');
             })
-            ->paginate($perPage2);
-
+            ->paginate($perPage2, ['*'], 'page2');
 
         $estudiantesPracticasIII = PracticaIII::with('estudiante')
             ->where(function ($query) {
                 $query->where('Estado', 'En ejecucion')
                     ->orWhere('Estado', 'Finalizado');
             })
-            ->paginate($perPage3);
-
+            ->paginate($perPage3, ['*'], 'page3');
 
         $estudiantesPracticasIV = PracticaIV::with('estudiante')
             ->where(function ($query) {
                 $query->where('Estado', 'En ejecucion')
                     ->orWhere('Estado', 'Finalizado');
             })
-            ->get();
+            ->paginate($perPage4, ['*'], 'page4');
 
         $estudiantesPracticasV = PracticaV::with('estudiante')
             ->where(function ($query) {
@@ -1077,10 +1076,10 @@ class AdminController extends Controller
                 'estudiantesPracticasIII',
                 'estudiantesPracticasIV',
                 'estudiantesPracticasV',
-                'perPage',
+                'perPage1',
                 'perPage2',
-                'perPage3'
-
+                'perPage3',
+                'perPage4'
             )
         );
     }
