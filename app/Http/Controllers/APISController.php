@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Estudiante;
 
 class APISController extends Controller
 {
@@ -47,12 +48,22 @@ class APISController extends Controller
         Auth::user()->tokens->each(function ($token, $key) {
             $token->delete();
         });
-    
+
         Auth::logout();
-    
+
         return redirect('/');
     }
 
-    
+
+     public function getEstudiantes()
+    {
+        $estudiantes = Estudiante::all();
+        return response()->json([
+            'success' => true,
+            'data' => $estudiantes
+        ]);
+    }
+
+
 
 }

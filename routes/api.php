@@ -20,3 +20,5 @@ use Illuminate\Support\Facades\Route;
  Route::get('/user/{id}/role', [APISController::class, 'getUserRole']);
 
  Route::get('/logout', [APISController::class, 'logout']);
+
+    Route::get('/estudiantes', [APISController::class, 'getEstudiantes']);
