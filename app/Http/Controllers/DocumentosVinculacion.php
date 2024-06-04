@@ -663,7 +663,6 @@ class DocumentosVinculacion extends Controller
                      ]);
                 }
             }
-            return back()->with('success', 'Datos importados con éxito!');
         }
 
         foreach ($dataRows as $row) {
@@ -876,7 +875,7 @@ class DocumentosVinculacion extends Controller
                 ->first();
             $empresa = Empresa::where('nombreEmpresa', $row[16])
                 ->first();
-            $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[31])
+             $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[31])
                 ->first();
 
             $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[11]);
@@ -999,7 +998,7 @@ class DocumentosVinculacion extends Controller
                 ->first();
             $empresa = Empresa::where('nombreEmpresa', $row[16])
                 ->first();
-            $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[31])
+             $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[31])
                 ->first();
 
             $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[11]);
@@ -1122,7 +1121,7 @@ class DocumentosVinculacion extends Controller
                 ->first();
             $empresa = Empresa::where('nombreEmpresa', $row[16])
                 ->first();
-            $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[31])
+             $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[31])
                 ->first();
 
             $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[11]);
@@ -1245,7 +1244,7 @@ class DocumentosVinculacion extends Controller
                 ->first();
             $empresa = Empresa::where('nombreEmpresa', $row[16])
                 ->first();
-            $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[31])
+             $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[31])
                 ->first();
 
             $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[11]);
