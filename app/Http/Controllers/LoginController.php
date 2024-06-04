@@ -217,6 +217,52 @@ class LoginController extends Controller
         return Socialite::driver('github')->redirect();
     }
 
+    public function googleRedirect()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function googleCallback()
+    {
+        try {
+            $user = Socialite::driver('google')->user();
+
+            $user = Usuario::where('CorreoElectronico', $user->email)->first();
+
+            if (!$user) {
+                $user = Usuario::create([
+                    'CorreoElectronico' => $user->email,
+                    'Estado' => 'activo',
+                    'role_id' => Role::where('Tipo', 'Estudiante')->first()->id,
+                ]);
+            }
+
+            Auth::login($user, true);
+
+            $token = Str::random(60);
+            $user->token = hash('sha256', $token);
+            $user->save();
+
+            $userRole = $user->role;
+
+            if ($userRole->Tipo === 'Administrador') {
+                return redirect()->route('admin.index')->with('token', $token);
+            } elseif ($userRole->Tipo === 'Director-Departamento' || $userRole->Tipo === 'Director-Carrera') {
+                return redirect()->route('director.indexProyectos')->with('token', $token);
+            } elseif ($userRole->Tipo === 'Vinculacion') {
+                return redirect()->route('coordinador.index')->with('token', $token);
+            } elseif ($userRole->Tipo === 'DirectorVinculacion') {
+                return redirect()->route('director_vinculacion.index')->with('token', $token);
+            } elseif ($userRole->Tipo === 'ParticipanteVinculacion') {
+                return redirect()->route('ParticipanteVinculacion.index')->with('token', $token);
+            } else {
+                return redirect()->route('estudiantes.create')->with('token', $token);
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('login')->with('error', 'Ocurrió un error al iniciar sesión con Google.');
+        }
+    }
+
 
     public function githubCallback()
     {

@@ -212,7 +212,7 @@
                     <div class="contenedor_buscador">
                         <div>
                             <form id="formBusquedaEmpresa">
-                                <input type="text" class="input" name="search" value="{{$search}}" matInput
+                                <input type="text" class="input" name="search" value=" " matInput
                                     placeholder="Buscar empresas...">
                                 <i class='bx bx-search-alt'></i>
                             </form>

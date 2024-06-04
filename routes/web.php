@@ -424,8 +424,8 @@ Route::get('/auth/github/redirect', [LoginController::class, 'githubRedirect'])-
 Route::get('auth/github/callback', [LoginController::class, 'githubCallback'])->name('github.callback');
 
 
+Route::get('/auth/google/redirect', [LoginController::class, 'googleRedirect'])->name('google.redirect');
 
-
-
+Route::get('auth/google/callback', [LoginController::class, 'googleCallback'])->name('google.callback');
 
 
