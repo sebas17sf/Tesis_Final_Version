@@ -109,6 +109,17 @@ $(document).ready(function(){
         handle: ".card-header",
         containment: "window"
     });
+
+                $("#draggableCardEditarMaestro{{ $profesor->id }}").draggable({
+                    handle: ".card-header",
+                    containment: "window"
+                });
+
+                $("#draggableCardAsignarEstudiante").draggable({
+                    handle: ".card-header",
+                    containment: "window"
+                });
+
 });
 
 function openCard(cardId) {
