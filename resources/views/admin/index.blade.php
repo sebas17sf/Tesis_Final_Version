@@ -409,184 +409,76 @@
                                                 <td>
                                                         <div class="btn-group shadow-1">
 
-                                                                <button type="button"
-                                                                    class="button3 efects_button btn_editar3"
-                                                                    data-toggle="modal"
-                                                                    data-target="#modalEditarMaestro{{ $profesor->id }}">
-                                                                    <i class="bx bx-edit-alt"></i>
-                                                                </button>
-                                                            </div>
+                                                        <button type="button" class="button3 efects_button btn_editar3" onclick="openCard('draggableCardEditarMaestro{{ $profesor->id }}');">
+            <i class="bx bx-edit-alt"></i>
+        </button>
 
-                                                            <!---Modal para editar Docentes--------------------------------------------------->
-
-                                                            <div class="modal fade"
-                                                                id="modalEditarMaestro{{ $profesor->id }}" tabindex="-1"
-                                                                role="dialog"
-                                                                aria-labelledby="modalEditarMaestroLabel{{ $profesor->id }}"
-                                                                aria-hidden="true">
-                                                                <div class="modal-dialog modal-lg" role="document">
-                                                                    <!-- Añade la clase modal-lg para un modal grande -->
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <span class="modal-title"
-                                                                                id="modalEditarMaestroLabel{{ $profesor->id }}">
-                                                                                <b>Editar Docentes</b>
-                                                                            </span>
-                                                                            <button type="button" class="close"
-                                                                                data-dismiss="modal" aria-label="Close">
-                                                                                <span aria-hidden="true">&times;</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <div class="modal-body">
-                                                                            <form
-                                                                                action="{{ route('admin.actualizarMaestro', ['id' => $profesor->id]) }}"
-                                                                                method="POST"
-                                                                                id="formularioEditarMaestro">
-                                                                                @csrf
-                                                                                @method('PUT')
-
-                                                                                <div class="form-row">
-                                                                                    <div class="form-group col-md-4">
-                                                                                        <label
-                                                                                            for="nombresEditarMaestro"><strong>Ingrese
-                                                                                                Nombres:</strong></label>
-                                                                                        <input type="text "
-                                                                                            id="nombresEditarMaestro"
-                                                                                            name="nombres"
-                                                                                            class="form-control input form-text"
-                                                                                            value="{{ $profesor->Nombres }}"
-                                                                                            
-                                                                                            required>
-
-                                                                                    </div>
-
-
-
-                                                                                    <div class="form-group col-md-4">
-                                                                                        <label
-                                                                                            for="apellidosEditarMaestro"><strong>Ingrese
-                                                                                                Apellidos:</strong></label>
-                                                                                        <input type="text"
-                                                                                            id="apellidosEditarMaestro"
-                                                                                            name="apellidos"
-                                                                                            class="form-control input"
-                                                                                            value="{{ $profesor->Apellidos }}"
-                                                                                            required>
-
-
-                                                                                    </div>
-                                                                                    <div class="form-group col-md-4">
-                                                                                        <label
-                                                                                            for="correoEditarMaestro"><strong>Ingrese
-                                                                                                Correo:</strong></label>
-                                                                                        <input type="email"
-                                                                                            id="correoEditarMaestro"
-                                                                                            name="correo"
-                                                                                            class="form-control input"
-                                                                                            value="{{ $profesor->Correo }}"
-                                                                                            required>
-                                                                                        <small id="emailHelp"
-                                                                                            class="form-text text-danger"
-                                                                                            style="display: none; c"></small>
-                                                                                        @error('correo')
-                                                                                            <small
-                                                                                                class="form-text text-danger">{{ $message }}</small>
-                                                                                        @enderror
-                                                                                    </div>
-                                                                                </div>
-
-                                                                                <div class="form-row">
-                                                                                    <div class="form-group col-md-4">
-                                                                                        <label for="Usuario"><strong>Ingrese
-                                                                                                el
-                                                                                                Usuario:</strong></label>
-                                                                                        <input type="text"
-                                                                                            id="Usuario" name="Usuario"
-                                                                                            class="form-control input"
-                                                                                            value="{{ $profesor->Usuario }}"
-                                                                                            required>
-                                                                                    </div>
-                                                                                    <div class="form-group col-md-4">
-                                                                                        <label
-                                                                                            for="espeEditarMaestro"><strong>Ingrese
-                                                                                                el ESPE
-                                                                                                ID:</strong></label>
-                                                                                        <input type="text"
-                                                                                            id="espeEditarMaestro"
-                                                                                            name="espe_id"
-                                                                                            class="form-control input"
-                                                                                            value="{{ $profesor->espe_id }}"
-                                                                                            required>
-                                                                                        <small id="espeHelp"
-                                                                                            class="form-text text-danger"
-                                                                                            style="display: none;"></small>
-                                                                                        @error('espe_id')
-                                                                                            <small
-                                                                                                class="form-text text-danger">{{ $message }}</small>
-                                                                                        @enderror
-                                                                                    </div>
-                                                                                    <div class="form-group col-md-4">
-                                                                                        <label for="cedula"><strong>Ingrese
-                                                                                                la
-                                                                                                Cedula:</strong></label>
-                                                                                        <input type="text"
-                                                                                            id="cedulaEditarMaestro"
-                                                                                            name="cedula"
-                                                                                            class="form-control input"
-                                                                                            value="{{ $profesor->Cedula }}"
-                                                                                            required>
-                                                                                        <small id="cedulaHelp"
-                                                                                            class="form-text text-danger"
-                                                                                            style="display: none;"></small>
-
-
-                                                                                        @error('cedula')
-                                                                                            <small
-                                                                                                class="form-text text-danger">{{ $message }}</small>
-                                                                                        @enderror
-                                                                                    </div>
-                                                                                </div>
-
-                                                                                <div class="form-row">
-                                                                                    <div class="form-group col-md-4">
-                                                                                        <label for="departamento"><strong>Seleccione
-                                                                                                el departamento al que
-                                                                                                pertenece:</strong></label>
-                                                                                        <select id="departamento"
-                                                                                            name="departamento"
-                                                                                            class="form-control input"
-                                                                                            required>
-                                                                                            <option
-                                                                                                value="Ciencias de la Computación"
-                                                                                                {{ $profesor->Departamento === 'Ciencias de la Computación' ? 'selected' : '' }}>
-                                                                                                Departamento de Ciencias
-                                                                                                de Computación</option>
-                                                                                            <option
-                                                                                                value="Ciencias de la Vida"
-                                                                                                {{ $profesor->Departamento === 'Ciencias de la Vida' ? 'selected' : '' }}>
-                                                                                                Departamento de Ciencias
-                                                                                                de la Vida</option>
-                                                                                            <option
-                                                                                                value="Ciencias Exactas"
-                                                                                                {{ $profesor->Departamento === 'Ciencias Exactas' ? 'selected' : '' }}>
-                                                                                                Departamento de Ciencias
-                                                                                                Exactas</option>
-                                                                                        </select>
-                                                                                    </div>
-                                                                                </div>
-
-                                                                                <div class="modal-footer">
-                                                                                    <button type="button" class="button"
-                                                                                        data-dismiss="modal">Cerrar</button>
-                                                                                    <button type="submit"
-                                                                                        class="button">Guardar
-                                                                                        Cambios</button>
-                                                                                </div>
-                                                                            </form>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+        <div class="draggable-card1_1" id="draggableCardEditarMaestro{{ $profesor->id }}">
+            <div class="card-header">
+                <span class="card-title">Editar Docentes</span>
+                <button type="button" class="close" onclick="$('#draggableCardEditarMaestro{{ $profesor->id }}').hide()">&times;</button>
+            </div>
+            <div class="card-body">
+                <form action="{{ route('admin.actualizarMaestro', ['id' => $profesor->id]) }}" method="POST" id="formularioEditarMaestro">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label class="label" for="nombresEditarMaestro"><strong>Ingrese Nombres:</strong></label>
+                            <input type="text" id="nombresEditarMaestro" name="nombres" class="form-control input input_select1 form-text" value="{{ $profesor->Nombres }}" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="label" for="apellidosEditarMaestro"><strong>Ingrese Apellidos:</strong></label>
+                            <input type="text" id="apellidosEditarMaestro" name="apellidos" class="form-control input input_select1" value="{{ $profesor->Apellidos }}" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="label" for="correoEditarMaestro"><strong>Ingrese Correo:</strong></label>
+                            <input type="email" id="correoEditarMaestro" name="correo" class="form-control input input_select1" value="{{ $profesor->Correo }}" required>
+                            <small id="emailHelp" class="form-text text-danger" style="display: none;"></small>
+                            @error('correo')
+                                <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label class="label" for="Usuario"><strong>Ingrese el Usuario:</strong></label>
+                            <input type="text" id="Usuario" name="Usuario" class="form-control input input_select1" value="{{ $profesor->Usuario }}" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="label" for="espeEditarMaestro"><strong>Ingrese el ESPE ID:</strong></label>
+                            <input type="text" id="espeEditarMaestro" name="espe_id" class="form-control input input_select1" value="{{ $profesor->espe_id }}" required>
+                            <small id="espeHelp" class="form-text text-danger" style="display: none;"></small>
+                            @error('espe_id')
+                                <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="label" for="cedulaEditarMaestro"><strong>Ingrese la Cedula:</strong></label>
+                            <input type="text" id="cedulaEditarMaestro" name="cedula" class="form-control input input_select1" value="{{ $profesor->Cedula }}" required>
+                            <small id="cedulaHelp" class="form-text text-danger" style="display: none;"></small>
+                            @error('cedula')
+                                <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label class="label" for="departamento"><strong>Seleccione el departamento al que pertenece:</strong></label>
+                            <select id="departamento" name="departamento" class="form-control input input_select1" required>
+                                <option value="Ciencias de la Computación" {{ $profesor->Departamento === 'Ciencias de la Computación' ? 'selected' : '' }}>Departamento de Ciencias de Computación</option>
+                                <option value="Ciencias de la Vida" {{ $profesor->Departamento === 'Ciencias de la Vida' ? 'selected' : '' }}>Departamento de Ciencias de la Vida</option>
+                                <option value="Ciencias Exactas" {{ $profesor->Departamento === 'Ciencias Exactas' ? 'selected' : '' }}>Departamento de Ciencias Exactas</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="button input_select1" onclick="$('#draggableCardEditarMaestro{{ $profesor->id }}').hide()">Cerrar</button>
+                        <button type="submit" class="button input_select1">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
                                                             <!-------------------------------------------------------------------------------->
                                                         </div>
@@ -833,6 +725,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
 
 
     <script>
