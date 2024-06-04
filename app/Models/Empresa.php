@@ -19,8 +19,8 @@ class Empresa extends Model
         'nombreContacto',
         'telefonoContacto',
         'actividadesMacro',
-         'cartaCompromiso',
-         'cuposDisponibles',
+        'cartaCompromiso',
+        'cuposDisponibles',
         'convenio'
 
 

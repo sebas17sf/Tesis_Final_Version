@@ -101,7 +101,7 @@ class LoginController extends Controller
                 setcookie('tokensesion', $token, time() + 3600, "/");
                 session(['token' => $encryptedToken]);
 
-                return redirect()->route('conectarModulos')->with('token', $token);
+                return redirect()->route('conectarModulos')->with('token', $encryptedToken);
 
 
             } else {
