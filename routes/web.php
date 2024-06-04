@@ -361,8 +361,8 @@ Route::middleware(['auth'])->group(function () {
 
 
     //////////////////////////////cambio de credenciales
-    Route::get('/admin/cambio-credenciales', [AdminController::class, 'cambiarCredencialesUsuario'])->name('admin.cambio-credenciales');
-    Route::put('/admin/cambio-credenciales', [AdminController::class, 'actualizarCredenciales'])->name('admin.updateCredenciales');
+    Route::get('/admin/credenciales', [AdminController::class, 'cambiarCredencialesUsuario'])->name('admin.cambio-credenciales');
+    Route::put('/admin/credenciales', [AdminController::class, 'actualizarCredenciales'])->name('admin.updateCredenciales');
 
     Route::get('/director-vinculacion/cambio-credenciales', [DirectorVinculacionController::class, 'cambiarCredencialesUsuario'])->name('director_vinculacion.cambio-credenciales');
     Route::put('/director-vinculacion/cambio-credenciales', [DirectorVinculacionController::class, 'actualizarCredenciales'])->name('director_vinculacion.updateCredenciales');

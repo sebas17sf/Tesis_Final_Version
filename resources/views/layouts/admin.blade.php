@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="hydrated">
+
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/x-icon" href="\img\logos\logo_tesis.png" alt="logo">
@@ -14,15 +15,18 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
     <style>
-       /*  body {
+        /*  body {
             overflow-x: hidden;
         } */
     </style>
 
 </head>
+
 <body>
     <!-- Barra de navegación en el lado izquierdo -->
     <section class="content-sidebar {{ session('menuState') == 'collapsed' ? 'content-sidebar-hidden' : '' }}"
@@ -107,10 +111,12 @@
         </div>
     </section>
     <!-- SIDEBAR -->
-    <section class="content-navbar dimension-nav {{ session('menuState') == 'collapsed' ? 'dimension-nav-hidden' : '' }}">
+    <section
+        class="content-navbar dimension-nav {{ session('menuState') == 'collapsed' ? 'dimension-nav-hidden' : '' }}">
         <!-- Toggle sidebar -->
         <div class="icon-menu-sidebar" onclick="toggleSidebar()">
-            <i class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
+            <i
+                class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
         </div>
         <!-- contenido -->
         <main class="navbar">
@@ -148,7 +154,8 @@
     </section>
     <button id="btn_top" *ngIf="showScrollButton" (click)="scrollToTop()"><i class='bx bxs-chevrons-up'></i></button>
     <!-- CONTENEDOR -->
-    <section class="content-views dimension-content {{ session('menuState') == 'collapsed' ? 'dimension-content-hidden' : '' }}">
+    <section
+        class="content-views dimension-content {{ session('menuState') == 'collapsed' ? 'dimension-content-hidden' : '' }}">
         <!-- Title component -->
         <div class="title-component">
             <span class="title-content">@yield('title_component')</span>
@@ -180,11 +187,6 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{ asset('js/input_file.js') }}"></script>
     <script>
-        var token = "{{ session('token') }}";
-        if (token) {
-            localStorage.setItem('token', token);
-        }
-
         function toggleSidebar() {
             var menuState = localStorage.getItem('menuState') === 'expanded' ? 'collapsed' : 'expanded';
 
@@ -225,7 +227,26 @@
         });
     </script>
 
+    <script>
+        $(document).ready(function() {
+            var token = "{{ session('token') }}";
+
+            localStorage.setItem('tokencomparacion', token);
+        });
+    </script>
+
+    <script>
+         var logoutButton = document.querySelector('.logout');
+
+         logoutButton.addEventListener('click', function() {
+             localStorage.removeItem('tokencomparacion');
+
+             window.location.href = "/";
+        });
+    </script>
+
     <script src="{{ asset('js/menu.js') }}"></script>
 
 </body>
+
 </html>

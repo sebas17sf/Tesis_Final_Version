@@ -23,7 +23,7 @@
         <form class="main1" action="{{ route('modulo1') }}" method="post">
             @csrf
             <button type="submit" class="switch">
-                <span class="title">Modulo 1</span>
+                <span class="title">GESTIÓN ACADEMICA VINCULACION/PRACTICAS</span>
             </button>
         </form>
 
