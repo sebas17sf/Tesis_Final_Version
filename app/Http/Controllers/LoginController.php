@@ -16,14 +16,14 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\File;
 
 
- use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Hash;
 
 use App\Models\Estudiante;
 
 
 class LoginController extends Controller
 {
-     public function showLoginForm()
+    public function showLoginForm()
     {
         return view('login');
     }
@@ -94,15 +94,12 @@ class LoginController extends Controller
                 session()->regenerate();
 
                 $token = Str::random(60);
-
-                $user->token = hash('sha256', $token);
-
+                $encryptedToken = hash('sha256', $token);
+                $user->token = $encryptedToken;
                 $user->save();
 
-                setcookie('token', $token, time() + 3600, "/");
-
-                //////guarda en local storage
-
+                setcookie('tokensesion', $token, time() + 3600, "/");
+                session(['token' => $encryptedToken]);
 
                 return redirect()->route('conectarModulos')->with('token', $token);
 
@@ -111,12 +108,12 @@ class LoginController extends Controller
                 throw new \Exception('Las credenciales proporcionadas no coinciden con nuestros registros.');
             }
         } catch (\Exception $e) {
-             return redirect()->route('login')->with('error', $e->getMessage());
+            return redirect()->route('login')->with('error', $e->getMessage());
         }
     }
 
 
-     public function recuperarContrasena()
+    public function recuperarContrasena()
     {
         return view('recuperarContrasena');
     }
@@ -268,7 +265,7 @@ class LoginController extends Controller
     public function githubCallback()
     {
         try {
-             $cacheKey = 'github_user_' . session('github_id');
+            $cacheKey = 'github_user_' . session('github_id');
             if (Cache::has($cacheKey)) {
                 $githubUser = Cache::get($cacheKey);
             } else {
@@ -319,59 +316,56 @@ class LoginController extends Controller
 
 
 
-      ////////////////////////////////////////////////////////////////////////////////////////////conexion
-      public function conectarModulos()
-      {
-          return view('ConexionSistemas');
+    ////////////////////////////////////////////////////////////////////////////////////////////conexion
+    public function conectarModulos()
+    {
+        return view('ConexionSistemas');
 
-      }
+    }
 
-      public function Modulo1()
-      {
+    public function Modulo1()
+    {
+        $user = Auth::user();
+        $userRole = Role::find($user->role_id);
+        $credentials = [
+            'CorreoElectronico' => $user->CorreoElectronico,
+            'Contrasena' => $user->Contrasena,
+        ];
 
-          $user = Auth::user();
-          $userRole = Role::find($user->role_id);
-          $credentials = [
-              'CorreoElectronico' => $user->CorreoElectronico,
-              'Contrasena' => $user->Contrasena,
-          ];
+        if ($user && (password_verify($credentials['Contrasena'], $user->Contrasena) || $user->Contrasena === $credentials['Contrasena'])) {
+            Auth::login($user);
 
+            session()->regenerate();
 
-          if ($user && (password_verify($credentials['Contrasena'], $user->Contrasena) || $user->Contrasena === $credentials['Contrasena'])) {
-              Auth::login($user);
+            $encryptedToken = $user->token;
 
-              session()->regenerate();
+            setcookie('token', $encryptedToken, time() + 3600, "/");
 
-              $token = Str::random(60);
+            session(['token' => $encryptedToken]);
 
-              $user->token = hash('sha256', $token);
-              $user->save();
+            if ($userRole->Tipo === 'Administrador') {
+                return redirect()->route('admin.index')->with('token', $encryptedToken);
+            } elseif ($userRole->Tipo === 'Director-Departamento' || $userRole->Tipo === 'Director-Carrera') {
+                return redirect()->route('director.indexProyectos')->with('token', $encryptedToken);
+            } elseif ($userRole->Tipo === 'Vinculacion') {
+                return redirect()->route('coordinador.index')->with('token', $encryptedToken);
+            } elseif ($userRole->Tipo === 'DirectorVinculacion') {
+                return redirect()->route('director_vinculacion.index')->with('token', $encryptedToken);
+            } elseif ($userRole->Tipo === 'ParticipanteVinculacion') {
+                return redirect()->route('ParticipanteVinculacion.index')->with('token', $encryptedToken);
+            } else {
+                return redirect()->route('estudiantes.create')->with('token', $encryptedToken);
+            }
+        }
 
-              $userRole = Role::find($user->role_id);
+        return redirect()->route('login')->with('error', 'Las credenciales proporcionadas no coinciden con nuestros registros.');
+    }
 
-              if ($userRole->Tipo === 'Administrador') {
-                  return redirect()->route('admin.index')->with('token', $token);
-              } elseif ($userRole->Tipo === 'Director-Departamento' || $userRole->Tipo === 'Director-Carrera') {
-                  return redirect()->route('director.indexProyectos')->with('token', $token);
-              } elseif ($userRole->Tipo === 'Vinculacion') {
-                  return redirect()->route('coordinador.index')->with('token', $token);
-              } elseif ($userRole->Tipo === 'DirectorVinculacion') {
-                  return redirect()->route('director_vinculacion.index')->with('token', $token);
-              } elseif ($userRole->Tipo === 'ParticipanteVinculacion') {
-                  return redirect()->route('ParticipanteVinculacion.index')->with('token', $token);
-              } else {
-                  return redirect()->route('estudiantes.create')->with('token', $token);
-              }
-          }
+    public function Modulo2()
+    {
+        $content = File::get(public_path('base-angular/index.html'));
 
-          return redirect()->route('login')->with('error', 'Las credenciales proporcionadas no coinciden con nuestros registros.');
-      }
-
-      public function Modulo2()
-      {
-          $content = File::get(public_path('base-angular/index.html'));
-
-          return response($content);
-      }
+        return response($content);
+    }
 
 }

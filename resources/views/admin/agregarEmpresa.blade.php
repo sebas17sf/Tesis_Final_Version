@@ -2,7 +2,6 @@
 @section('title', 'Agregar Empresa')
 @section('title_component', 'Agregar Empresa')
 @section('content')
-    {{--    <div class="container"> --}}
 
     <section class="contenedor_agregar_periodo">
 
