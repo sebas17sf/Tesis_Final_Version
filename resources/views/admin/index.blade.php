@@ -207,9 +207,8 @@
                 @csrf
                 <button type="submit" class="button1">Respaldar Base de Datos</button>
             </form>
-            <button type="button" class="button1 mr-2" data-toggle="modal" data-target="#modalAgregarNRC">
-                Agregar NRC
-            </button>
+
+            <button type="button" class="button1 mr-2" onclick="openCard();">Agregar NRC</button>
             <button type="button" class="button1 mr-2" data-toggle="modal" data-target="#modalAgregarPeriodo">
                 Agregar Periodo
             </button>
@@ -454,11 +453,12 @@
                                                                                         <label
                                                                                             for="nombresEditarMaestro"><strong>Ingrese
                                                                                                 Nombres:</strong></label>
-                                                                                        <input type="text"
+                                                                                        <input type="text "
                                                                                             id="nombresEditarMaestro"
                                                                                             name="nombres"
-                                                                                            class="form-control input"
+                                                                                            class="form-control input form-text"
                                                                                             value="{{ $profesor->Nombres }}"
+                                                                                            
                                                                                             required>
 
                                                                                     </div>
@@ -752,60 +752,99 @@
                     </div>
                 </div>
 
-                <div class="modal fade" id="modalAgregarNRC" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <span class="modal-title" id="modalLabel">
-                                    <p>Agregar NRC Vinculacion - Practicas preprofesionales</p>
-                                </span>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form class="FormularioNRC" action="{{ route('admin.nrcVinculacion') }}" method="post">
-                                    @csrf
 
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label class="label" for="nrc"><strong>Ingrese el NRC:</strong></label>
-                                            <input type="text" id="nrc" name="nrc"
-                                                class="form-control input" placeholder="Ingrese 5 números"
-                                                value="{{ old('nrc') }}" required>
-                                            <small id="nrcError" class="form-text text-danger"
-                                                style="display: none;"></small>
-                                            @error('nrc')
-                                                <small class="form-text text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group col-lg-6">
-                                            <label for="periodo"><strong>Seleccione el período:</strong></label>
-                                            <select id="periodo" name="periodo" class="form-control input_select input"
-                                                required>
-                                                <option value="">Seleccione un período</option>
-                                                @foreach ($periodos as $periodo)
-                                                    <option value="{{ $periodo->id }}"
-                                                        {{ old('periodo') == $periodo->id ? 'selected' : '' }}>
-                                                        {{ $periodo->numeroPeriodo }} - {{ $periodo->Periodo }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            @error('periodo')
-                                                <small class="form-text text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="button" data-dismiss="modal">Cerrar</button>
-                                        <button type="submit" class="button">Guardar NRC</button>
-                                    </div>
-                                </form>
+    <!-- Modal movible 
+    <div class="modal fade modal-draggable" id="modalAgregarNRC" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="modal-title" id="modalLabel">Agregar NRC Vinculacion - Practicas preprofesionales</span>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="FormularioNRC" action="{{ route('admin.nrcVinculacion') }}" method="post">
+                        @csrf
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="label" for="nrc"><strong>Ingrese el NRC:</strong></label>
+                                <input type="text" id="nrc" name="nrc" class="form-control input" placeholder="Ingrese 5 números" value="{{ old('nrc') }}" required>
+                                <small id="nrcError" class="form-text text-danger" style="display: none;"></small>
+                                @error('nrc')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="periodo"><strong>Seleccione el período:</strong></label>
+                                <select id="periodo" name="periodo" class="form-control input_select input" required>
+                                    <option value="">Seleccione un período</option>
+                                    @foreach ($periodos as $periodo)
+                                        <option value="{{ $periodo->id }}" {{ old('periodo') == $periodo->id ? 'selected' : '' }}>
+                                            {{ $periodo->numeroPeriodo }} - {{ $periodo->Periodo }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('periodo')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="button" data-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="button">Guardar NRC</button>
+                        </div>
+                    </form>
                 </div>
+            </div>
+        </div>
+    </div> 
+-->
+<!----<!-- Botón para abrir la tarjeta movible -->
+<!-- Botón para abrir la tarjeta movible -->
+
+
+
+ <!-- Tarjeta movible -->
+ <div class="draggable-card" id="draggableCard">
+        <div class="card-header">
+            <span class="card-title">Agregar NRC </span>
+            <button type="button" class="close" onclick="$('#draggableCard').hide()">&times;</button>
+        </div>
+        <div class="card-body">
+        <form class="FormularioNRC" action="{{ route('admin.nrcVinculacion') }}" method="post">
+                        @csrf
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label class="label" for="nrc"><strong>Ingrese el NRC:</strong></label>
+                                <input type="text" id="nrc" name="nrc" class="form-control input" placeholder="Ingrese 5 números" value="{{ old('nrc') }}" required>
+                                <small id="nrcError" class="form-text text-danger" style="display: none;"></small>
+                                @error('nrc')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group col-lg-6">
+                                <label for="periodo"><strong>Seleccione el período:</strong></label>
+                                <select id="periodo" name="periodo" class="form-control input_select input" required>
+                                    <option value="">Seleccione un período</option>
+                                    @foreach ($periodos as $periodo)
+                                        <option value="{{ $periodo->id }}" {{ old('periodo') == $periodo->id ? 'selected' : '' }}>
+                                            {{ $periodo->numeroPeriodo }} - {{ $periodo->Periodo }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('periodo')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                        <button type="button" class="button0" onclick="$('#draggableCard').hide()">Cerrar</button>
+                            <button type="submit" class="button0">Guardar NRC</button>
+                        </div>
+                    </form>
+        </div>
+    </div>
 
                 <!-- ----------------------------------------------------------------------------------- -->
                 </button>
@@ -880,13 +919,17 @@
             </div>
         </section>
     </section>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
     <script src="js\admin\acciones.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
     <script>
         var delayTimer;
         $('#formBusquedaDocentes input[name="search"]').on('keyup', function() {
@@ -906,11 +949,23 @@
             }, 500);
         });
     </script>
-
-
-
-
-
+<script>
+        $(document).ready(function(){
+            console.log("Draggable script is running");
+            $("#modalAgregarNRC").on('show.bs.modal', function () {
+                $(this).find('.modal-content').draggable({
+                    handle: ".modal-header",
+                    containment: "window"
+                });
+            });
+        });
+        function openCard() {
+            $('#draggableCard').css({
+                top: '50px', // Adjusted top position
+                left: '250px' // Adjusted left position to avoid the sidebar
+            }).show();
+        }
+    </script>
 
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
     <script src="js\admin\acciones.js"></script>
