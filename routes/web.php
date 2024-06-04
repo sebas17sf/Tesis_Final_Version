@@ -384,6 +384,16 @@ Route::middleware(['auth'])->group(function () {
 
 
 
+    //////////////////conexion modulos
+    Route::get('/conectar-modulos', [LoginController::class, 'conectarModulos'])->name('conectarModulos');
+    Route::post('/modulo1', [LoginController::class, 'Modulo1'])->name('modulo1');
+
+    ///////en carpeta public esta base-angular
+    Route::get('/{any}', function () {
+        return file_get_contents(public_path('base-angular/index.html'));
+    })->where('any', '.*');
+
+    Route::get('/base-angular', [LoginController::class, 'Modulo2'])->name('modulo2')->middleware('auth');
 
 
 

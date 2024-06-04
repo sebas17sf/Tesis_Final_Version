@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\APISController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+ Route::get('/user/{id}', [APISController::class, 'getUserData']);
+
+ Route::get('/user/{id}/role', [APISController::class, 'getUserRole']);
+
+ Route::get('/logout', [APISController::class, 'logout']);
+
+    Route::get('/estudiantes', [APISController::class, 'getEstudiantes']);

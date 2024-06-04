@@ -193,30 +193,31 @@
 
         <h4><b>Listado de Empresas Agregadas</b></h4>
         <div class="mat-elevation-z8 contenedor_general">
-                <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
-                    <!-- Botones -->
-                    <div class="contenedor_botones">
-        <div class="tooltip-container">
-            <span class="tooltip-text">Importar archivo</span>
-            <button type="button" class="button3 efects_button btn_3" data-toggle="modal" data-target="#modalImportar">
-                <i class="fa fa-upload"></i>
-            </button>
+            <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+                <!-- Botones -->
+                <div class="contenedor_botones">
+                    <div class="tooltip-container">
+                        <span class="tooltip-text">Importar archivo</span>
+                        <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
+                            data-target="#modalImportar">
+                            <i class="fa fa-upload"></i>
+                        </button>
 
-        </div>
-        
-
-<div class="tooltip-container">
-    <span class="tooltip-text">Excel</span>
-    <form action="{{ route('coordinador.reportesEmpresas') }}" method="post">
-        @csrf
-        <button type="submit" class="button3 efects_button btn_excel">
-            <i class="fas fa-file-excel"></i>
-        </button>
-    </form>
-</div>
+                    </div>
 
 
-{{-- <form action="{{ route('admin.estudiantes') }}" method="GET">
+                    <div class="tooltip-container">
+                        <span class="tooltip-text">Excel</span>
+                        <form action="{{ route('coordinador.reportesEmpresas') }}" method="post">
+                            @csrf
+                            <button type="submit" class="button3 efects_button btn_excel">
+                                <i class="fas fa-file-excel"></i>
+                            </button>
+                        </form>
+                    </div>
+
+
+                    {{-- <form action="{{ route('admin.estudiantes') }}" method="GET">
     @csrf
     <div class="form-group d-flex align-items-center">
         <input type="text" name="buscarEstudiantes" id="buscarEstudiantes"
@@ -225,53 +226,54 @@
 
     </div>
 </form> --}}
-</div>
-<div class="contenedor_buscador">
-                        <div>
-                            <form id="formBusquedaEmpresa">
-                                <input type="text" class="input" name="search" value="{{ $search }}" matInput
-                                    placeholder="Buscar empresas...">
-                                <i class='bx bx-search-alt'></i>
-                            </form>
-                        </div>
-                    </div>
-</div>
-
-        <div class="modal fade" id="modalImportar" tabindex="-1" role="dialog" aria-labelledby="modalImportarLabel"
-            aria-hidden="true">
-
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <form id="idModalImportar" action="{{ route('import-empresas') }}" method="POST"
-                        enctype="multipart/form-data">
-                        @csrf
-                        <div class="modal-header">
-                            <h5 class="modal-title">Importar archivo</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <div class="input input_file">
-                                    <span id="fileText" class="fileText">
-                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el
-                                        documento
-                                    </span>
-                                    <input type="file" class="form-control-file input input_file" id="file"
-                                        name="file" onchange="displayFileName(this)" required>
-                                    <span title="Eliminar archivo" onclick="removeFile(this)"
-                                        class="remove-icon">✖</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button id="cerrar_modal" type="button" class="button" data-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="button">Importar Archivo</button>
-                        </div>
-                    </form>
                 </div>
                 <div class="contenedor_buscador">
+                    <div>
+                        <form id="formBusquedaEmpresa">
+                            <input type="text" class="input" name="search" value="{{ $search }}" matInput
+                                placeholder="Buscar empresas...">
+                            <i class='bx bx-search-alt'></i>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalImportar" tabindex="-1" role="dialog"
+                aria-labelledby="modalImportarLabel" aria-hidden="true">
+
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form id="idModalImportar" action="{{ route('import-empresas') }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+                            <div class="modal-header">
+                                <h5 class="modal-title">Importar archivo</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <div class="input input_file">
+                                        <span id="fileText" class="fileText">
+                                            <i class="fa fa-upload"></i> Haz clic aquí para subir el
+                                            documento
+                                        </span>
+                                        <input type="file" class="form-control-file input input_file" id="file"
+                                            name="file" onchange="displayFileName(this)" required>
+                                        <span title="Eliminar archivo" onclick="removeFile(this)"
+                                            class="remove-icon">✖</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button id="cerrar_modal" type="button" class="button"
+                                    data-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="button">Importar Archivo</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="contenedor_buscador">
                         <div>
                             <form id="formBusquedaEmpresa">
                                 <input type="text" class="input" name="search" value="{{ $search }}" matInput
@@ -280,10 +282,10 @@
                             </form>
                         </div>
                     </div>
+                </div>
             </div>
-        </div>
 
-        <section>
+            <section>
                 @if ($empresas->isEmpty())
                     <p>No hay empresas agregadas.</p>
                 @else
@@ -462,8 +464,8 @@
 
                     </div>
                 @endif
-            </div>
-        </section>
+        </div>
+    </section>
 
     </section>
 
@@ -494,8 +496,3 @@
 
 
 @endsection
-
-
-
-
-

@@ -142,11 +142,11 @@
         <h4><b>Estudiantes Practica 1</b></h4>
         <hr>
         <section>
-        <div class="mat-elevation-z8 contenedor_general">
+            <div class="mat-elevation-z8 contenedor_general">
                 <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                     <!-- Botones -->
                     <div class="contenedor_botones">
-                <div class="tooltip-container">
+                        <div class="tooltip-container">
                             <span class="tooltip-text">Excel</span>
                             <form id="reportForm" action="{{ route('coordinador.reportesPracticaI') }}" method="POST"
                                 onsubmit="submitForm(event)">
@@ -160,52 +160,66 @@
                             </form>
                         </div>
 
-                <div class="tooltip-container">
-                    <span class="tooltip-text">Importar archivo</span>
-                    <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
-                        data-target="#modalImportar">
-                        <i class="fa fa-upload"></i>
-                    </button>
-                </div>
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Importar archivo</span>
+                            <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
+                                data-target="#modalImportar">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                        </div>
 
-                <div class="modal fade" id="modalImportar" tabindex="-1" role="dialog"
-                    aria-labelledby="modalImportarLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <form id="idModalImportar" action="{{ route('import-practicas1') }}" method="POST"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Importar archivo</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <div class="input input_file">
-                                            <span id="fileText" class="fileText">
-                                                <i class="fa fa-upload"></i> Haz clic aquí para subir el
-                                                documento
-                                            </span>
-                                            <input type="file" class="form-control-file input input_file" id="file"
-                                                name="file" onchange="displayFileName(this)" required>
-                                            <span title="Eliminar archivo" onclick="removeFile(this)"
-                                                class="remove-icon">✖</span>
+                        <div class="modal fade" id="modalImportar" tabindex="-1" role="dialog"
+                            aria-labelledby="modalImportarLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form id="idModalImportar" action="{{ route('import-practicas1') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Importar archivo</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
                                         </div>
-                                    </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <div class="input input_file">
+                                                    <span id="fileText" class="fileText">
+                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el
+                                                        documento
+                                                    </span>
+                                                    <input type="file" class="form-control-file input input_file"
+                                                        id="file" name="file" onchange="displayFileName(this)"
+                                                        required>
+                                                    <span title="Eliminar archivo" onclick="removeFile(this)"
+                                                        class="remove-icon">✖</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="cerrar_modal" type="button" class="button"
+                                                data-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="button">Importar Archivo</button>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="modal-footer">
-                                    <button id="cerrar_modal" type="button" class="button"
-                                        data-dismiss="modal">Cerrar</button>
-                                    <button type="submit" class="button">Importar Archivo</button>
-                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="contenedor_buscador">
+                        <div>
+                            <form id="formBusquedaEmpresa">
+                                <input type="text" class="input" name="search" value="{{$search}}" matInput
+                                    placeholder="Buscar empresas...">
+                                <i class='bx bx-search-alt'></i>
                             </form>
                         </div>
                     </div>
+
                 </div>
-</div>
-</div>
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
 
@@ -264,14 +278,14 @@
                                     <form method="GET" action="{{ route('admin.aceptarFaseI') }}">
                                         <select class="form-control page-item" class="input" name="paginacion1"
                                             id="perPage" onchange="this.form.submit()">
-                                            <option value="10" @if ($perPage == 10) selected @endif>10
+                                            <option value="10" @if ($perPage1 == 10) selected @endif>10
                                             </option>
-                                            <option value="20" @if ($perPage == 20) selected @endif>20
+                                            <option value="20" @if ($perPage1 == 20) selected @endif>20
                                             </option>
-                                            <option value="50" @if ($perPage == 50) selected @endif>
+                                            <option value="50" @if ($perPage1 == 50) selected @endif>
                                                 50
                                             </option>
-                                            <option value="100" @if ($perPage == 100) selected @endif>
+                                            <option value="100" @if ($perPage1 == 100) selected @endif>
                                                 100
                                             </option>
                                         </select>
@@ -285,27 +299,28 @@
                                 @else
                                     <li class="page-item">
                                         <a class="page-link"
-                                            href="{{ $estudiantesPracticas->previousPageUrl() }}#practicas1"
+                                            href="{{ $estudiantesPracticas->previousPageUrl() }}&page1={{ $estudiantesPracticas->currentPage() - 1 }}#practicas1"
                                             aria-label="Anterior">Anterior</a>
                                     </li>
                                 @endif
 
-                                @foreach ($estudiantesPracticas->getUrlRange(1, $estudiantesPracticas->lastPage()) as $perPage => $url)
-                                    @if ($perPage == $estudiantesPracticas->currentPage())
+                                @foreach (range(1, $estudiantesPracticas->lastPage()) as $i)
+                                    @if ($i == $estudiantesPracticas->currentPage())
                                         <li class="page-item active">
-                                            <span class="page-link">{{ $perPage }}</span>
+                                            <span class="page-link">{{ $i }}</span>
                                         </li>
                                     @else
                                         <li class="page-item">
                                             <a class="page-link"
-                                                href="{{ $url }}#practicas1">{{ $perPage }}</a>
+                                                href="{{ $estudiantesPracticas->url($i) }}&page1={{ $i }}#practicas1">{{ $i }}</a>
                                         </li>
                                     @endif
                                 @endforeach
 
                                 @if ($estudiantesPracticas->hasMorePages())
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $estudiantesPracticas->nextPageUrl() }}#practicas1"
+                                        <a class="page-link"
+                                            href="{{ $estudiantesPracticas->nextPageUrl() }}&page1={{ $estudiantesPracticas->currentPage() + 1 }}#practicas1"
                                             aria-label="Siguiente">Siguiente</a>
                                     </li>
                                 @else
@@ -330,12 +345,12 @@
         <hr>
         <section>
 
-        <div class="mat-elevation-z8 contenedor_general">
+            <div class="mat-elevation-z8 contenedor_general">
                 <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                     <!-- Botones -->
                     <div class="contenedor_botones">
 
-                <div class="tooltip-container">
+                        <div class="tooltip-container">
                             <span class="tooltip-text">Excel</span>
                             <form id="reportForm" action="{{ route('coordinador.reportesPracticaII') }}" method="POST"
                                 onsubmit="submitForm(event)">
@@ -348,52 +363,54 @@
                                 </button>
                             </form>
                         </div>
-                <div class="tooltip-container">
-                    <span class="tooltip-text">Importar archivo</span>
-                    <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
-                        data-target="#modalImportar2">
-                        <i class="fa fa-upload"></i>
-                    </button>
-                </div>
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Importar archivo</span>
+                            <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
+                                data-target="#modalImportar2">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                        </div>
 
-                <div class="modal fade" id="modalImportar2" tabindex="-1" role="dialog"
-                    aria-labelledby="modalImportarLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <form id="idModalImportar" action="{{ route('import-practicas2') }}" method="POST"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Importar archivo</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <div class="input input_file">
-                                            <span id="fileText" class="fileText">
-                                                <i class="fa fa-upload"></i> Haz clic aquí para subir el
-                                                documento
-                                            </span>
-                                            <input type="file" class="form-control-file input input_file"
-                                                id="file" name="file" onchange="displayFileName(this)" required>
-                                            <span title="Eliminar archivo" onclick="removeFile(this)"
-                                                class="remove-icon">✖</span>
+                        <div class="modal fade" id="modalImportar2" tabindex="-1" role="dialog"
+                            aria-labelledby="modalImportarLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form id="idModalImportar" action="{{ route('import-practicas2') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Importar archivo</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
                                         </div>
-                                    </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <div class="input input_file">
+                                                    <span id="fileText" class="fileText">
+                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el
+                                                        documento
+                                                    </span>
+                                                    <input type="file" class="form-control-file input input_file"
+                                                        id="file" name="file" onchange="displayFileName(this)"
+                                                        required>
+                                                    <span title="Eliminar archivo" onclick="removeFile(this)"
+                                                        class="remove-icon">✖</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="cerrar_modal" type="button" class="button"
+                                                data-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="button">Importar Archivo</button>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="modal-footer">
-                                    <button id="cerrar_modal" type="button" class="button"
-                                        data-dismiss="modal">Cerrar</button>
-                                    <button type="submit" class="button">Importar Archivo</button>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-</div>
-</div>
 
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
@@ -477,20 +494,20 @@
                                 @else
                                     <li class="page-item">
                                         <a class="page-link"
-                                            href="{{ $estudiantesPracticasII->previousPageUrl() }}#practicas2"
+                                            href="{{ $estudiantesPracticasII->previousPageUrl() }}&page2={{ $estudiantesPracticasII->currentPage() - 1 }}#practicas2"
                                             aria-label="Anterior">Anterior</a>
                                     </li>
                                 @endif
 
-                                @foreach ($estudiantesPracticasII->getUrlRange(1, $estudiantesPracticasII->lastPage()) as $page => $url)
-                                    @if ($page == $estudiantesPracticasII->currentPage())
+                                @foreach (range(1, $estudiantesPracticasII->lastPage()) as $i)
+                                    @if ($i == $estudiantesPracticasII->currentPage())
                                         <li class="page-item active">
-                                            <span class="page-link">{{ $page }}</span>
+                                            <span class="page-link">{{ $i }}</span>
                                         </li>
                                     @else
                                         <li class="page-item">
                                             <a class="page-link"
-                                                href="{{ $url }}#practicas2">{{ $page }}</a>
+                                                href="{{ $estudiantesPracticasII->url($i) }}&page2={{ $i }}#practicas2">{{ $i }}</a>
                                         </li>
                                     @endif
                                 @endforeach
@@ -498,7 +515,7 @@
                                 @if ($estudiantesPracticasII->hasMorePages())
                                     <li class="page-item">
                                         <a class="page-link"
-                                            href="{{ $estudiantesPracticasII->nextPageUrl() }}#practicas2"
+                                            href="{{ $estudiantesPracticasII->nextPageUrl() }}&page2={{ $estudiantesPracticasII->currentPage() + 1 }}#practicas2"
                                             aria-label="Siguiente">Siguiente</a>
                                     </li>
                                 @else
@@ -521,12 +538,12 @@
 
         <hr>
         <section>
-        <div class="mat-elevation-z8 contenedor_general">
+            <div class="mat-elevation-z8 contenedor_general">
                 <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                     <!-- Botones -->
                     <div class="contenedor_botones">
 
-                <div class="tooltip-container">
+                        <div class="tooltip-container">
                             <span class="tooltip-text">Excel</span>
                             <form id="reportForm" action="{{ route('coordinador.reportesPracticaII') }}" method="POST"
                                 onsubmit="submitForm(event)">
@@ -540,52 +557,54 @@
                             </form>
                         </div>
 
-                <div class="tooltip-container">
-                    <span class="tooltip-text">Importar archivo</span>
-                    <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
-                        data-target="#modalImportar3">
-                        <i class="fa fa-upload"></i>
-                    </button>
-                </div>
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Importar archivo</span>
+                            <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
+                                data-target="#modalImportar3">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                        </div>
 
-                <div class="modal fade" id="modalImportar3" tabindex="-1" role="dialog"
-                    aria-labelledby="modalImportarLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <form id="idModalImportar" action="{{ route('import-practicas3') }}" method="POST"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Importar archivo</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <div class="input input_file">
-                                            <span id="fileText" class="fileText">
-                                                <i class="fa fa-upload"></i> Haz clic aquí para subir el
-                                                documento
-                                            </span>
-                                            <input type="file" class="form-control-file input input_file"
-                                                id="file" name="file" onchange="displayFileName(this)" required>
-                                            <span title="Eliminar archivo" onclick="removeFile(this)"
-                                                class="remove-icon">✖</span>
+                        <div class="modal fade" id="modalImportar3" tabindex="-1" role="dialog"
+                            aria-labelledby="modalImportarLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form id="idModalImportar" action="{{ route('import-practicas3') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Importar archivo</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
                                         </div>
-                                    </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <div class="input input_file">
+                                                    <span id="fileText" class="fileText">
+                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el
+                                                        documento
+                                                    </span>
+                                                    <input type="file" class="form-control-file input input_file"
+                                                        id="file" name="file" onchange="displayFileName(this)"
+                                                        required>
+                                                    <span title="Eliminar archivo" onclick="removeFile(this)"
+                                                        class="remove-icon">✖</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="cerrar_modal" type="button" class="button"
+                                                data-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="button">Importar Archivo</button>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="modal-footer">
-                                    <button id="cerrar_modal" type="button" class="button"
-                                        data-dismiss="modal">Cerrar</button>
-                                    <button type="submit" class="button">Importar Archivo</button>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-</div>
-</div>
 
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
@@ -661,34 +680,35 @@
                                     </form>
                                 </li>
 
-                                @if ($estudiantesPracticas->onFirstPage())
+                                @if ($estudiantesPracticasIII->onFirstPage())
                                     <li class="page-item disabled">
                                         <span class="page-link">Anterior</span>
                                     </li>
                                 @else
                                     <li class="page-item">
                                         <a class="page-link"
-                                            href="{{ $estudiantesPracticas->previousPageUrl() }}#practicas3"
+                                            href="{{ $estudiantesPracticasIII->previousPageUrl() }}&page3={{ $estudiantesPracticasIII->currentPage() - 1 }}#practicas3"
                                             aria-label="Anterior">Anterior</a>
                                     </li>
                                 @endif
 
-                                @foreach ($estudiantesPracticas->getUrlRange(1, $estudiantesPracticas->lastPage()) as $page => $url)
-                                    @if ($page == $estudiantesPracticas->currentPage())
+                                @foreach (range(1, $estudiantesPracticasIII->lastPage()) as $i)
+                                    @if ($i == $estudiantesPracticasIII->currentPage())
                                         <li class="page-item active">
-                                            <span class="page-link">{{ $page }}</span>
+                                            <span class="page-link">{{ $i }}</span>
                                         </li>
                                     @else
                                         <li class="page-item">
                                             <a class="page-link"
-                                                href="{{ $url }}#practicas3">{{ $page }}</a>
+                                                href="{{ $estudiantesPracticasIII->url($i) }}&page3={{ $i }}#practicas3">{{ $i }}</a>
                                         </li>
                                     @endif
                                 @endforeach
 
-                                @if ($estudiantesPracticas->hasMorePages())
+                                @if ($estudiantesPracticasIII->hasMorePages())
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $estudiantesPracticas->nextPageUrl() }}#practicas3"
+                                        <a class="page-link"
+                                            href="{{ $estudiantesPracticasII->nextPageUrl() }}&page3={{ $estudiantesPracticasIII->currentPage() + 1 }}#practicas3"
                                             aria-label="Siguiente">Siguiente</a>
                                     </li>
                                 @else
@@ -712,11 +732,11 @@
 
         <hr>
         <section>
-        <div class="mat-elevation-z8 contenedor_general">
+            <div class="mat-elevation-z8 contenedor_general">
                 <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                     <!-- Botones -->
                     <div class="contenedor_botones">
-                <div class="tooltip-container">
+                        <div class="tooltip-container">
                             <span class="tooltip-text">Excel</span>
                             <form id="reportForm" action="{{ route('coordinador.reportesPracticaII') }}" method="POST"
                                 onsubmit="submitForm(event)">
@@ -729,59 +749,61 @@
                                 </button>
                             </form>
                         </div>
-                <div class="tooltip-container">
-                    <span class="tooltip-text">Importar archivo</span>
-                    <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
-                        data-target="#modalImportar4">
-                        <i class="fa fa-upload"></i>
-                    </button>
-                </div>
-
-                <div class="modal fade" id="modalImportar4" tabindex="-1" role="dialog"
-                    aria-labelledby="modalImportarLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <form id="idModalImportar" action="{{ route('import-practicas4') }}" method="POST"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Importar archivo</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <div class="input input_file">
-                                            <span id="fileText" class="fileText">
-                                                <i class="fa fa-upload"></i> Haz clic aquí para subir el
-                                                documento
-                                            </span>
-                                            <input type="file" class="form-control-file input input_file"
-                                                id="file" name="file" onchange="displayFileName(this)" required>
-                                            <span title="Eliminar archivo" onclick="removeFile(this)"
-                                                class="remove-icon">✖</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button id="cerrar_modal" type="button" class="button"
-                                        data-dismiss="modal">Cerrar</button>
-                                    <button type="submit" class="button">Importar Archivo</button>
-                                </div>
-                            </form>
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Importar archivo</span>
+                            <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
+                                data-target="#modalImportar4">
+                                <i class="fa fa-upload"></i>
+                            </button>
                         </div>
+
+                        <div class="modal fade" id="modalImportar4" tabindex="-1" role="dialog"
+                            aria-labelledby="modalImportarLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form id="idModalImportar" action="{{ route('import-practicas4') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Importar archivo</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <div class="input input_file">
+                                                    <span id="fileText" class="fileText">
+                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el
+                                                        documento
+                                                    </span>
+                                                    <input type="file" class="form-control-file input input_file"
+                                                        id="file" name="file" onchange="displayFileName(this)"
+                                                        required>
+                                                    <span title="Eliminar archivo" onclick="removeFile(this)"
+                                                        class="remove-icon">✖</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="cerrar_modal" type="button" class="button"
+                                                data-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="button">Importar Archivo</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-
-</div>
-</div>
 
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
 
-                        <div id="tablaDocentes">
-                            <table class="mat-mdc-table">
+                        <div id="practicas4">
+                            <table id="practicas4" class="mat-mdc-table">
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
@@ -830,6 +852,67 @@
 
                         </div>
                     </div>
+                    <div class="paginator-container">
+                        <nav aria-label="...">
+                            <ul class="pagination">
+                                <li class="page-item mx-3">
+                                    <form method="GET" action="{{ route('admin.aceptarFaseI') }}">
+                                        <select class="form-control page-item" class="input" name="paginacion4"
+                                            id="perPage" onchange="this.form.submit()">
+                                            <option value="10" @if ($perPage4 == 10) selected @endif>10
+                                            </option>
+                                            <option value="20" @if ($perPage4 == 20) selected @endif>20
+                                            </option>
+                                            <option value="50" @if ($perPage4 == 50) selected @endif>
+                                                50
+                                            </option>
+                                            <option value="100" @if ($perPage4 == 100) selected @endif>
+                                                100
+                                            </option>
+                                        </select>
+                                    </form>
+                                </li>
+
+                                @if ($estudiantesPracticasIV->onFirstPage())
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Anterior</span>
+                                    </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="{{ $estudiantesPracticasIV->previousPageUrl() }}&page4={{ $estudiantesPracticasIV->currentPage() - 1 }}#practicas4"
+                                            aria-label="Anterior">Anterior</a>
+                                    </li>
+                                @endif
+
+                                @foreach (range(1, $estudiantesPracticasIV->lastPage()) as $i)
+                                    @if ($i == $estudiantesPracticasIV->currentPage())
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ $i }}</span>
+                                        </li>
+                                    @else
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                                href="{{ $estudiantesPracticasIV->url($i) }}&page4={{ $i }}#practicas4">{{ $i }}</a>
+                                        </li>
+                                    @endif
+                                @endforeach
+
+                                @if ($estudiantesPracticasIV->hasMorePages())
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="{{ $estudiantesPracticasIV->nextPageUrl() }}&page4={{ $estudiantesPracticasIV->currentPage() + 1 }}#practicas4"
+                                            aria-label="Siguiente">Siguiente</a>
+                                    </li>
+                                @else
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Siguiente</span>
+                                    </li>
+                                @endif
+
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
 
             </div>
@@ -841,11 +924,11 @@
 
         <hr>
         <section>
-        <div class="mat-elevation-z8 contenedor_general">
+            <div class="mat-elevation-z8 contenedor_general">
                 <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                     <!-- Botones -->
                     <div class="contenedor_botones">
-                <div class="tooltip-container">
+                        <div class="tooltip-container">
                             <span class="tooltip-text">Excel</span>
                             <form id="reportForm" action="{{ route('coordinador.reportesPracticaII') }}" method="POST"
                                 onsubmit="submitForm(event)">
@@ -858,53 +941,55 @@
                                 </button>
                             </form>
                         </div>
-                <div class="tooltip-container">
-                    <span class="tooltip-text">Importar archivo</span>
-                    <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
-                        data-target="#modalImportar5">
-                        <i class="fa fa-upload"></i>
-                    </button>
-                </div>
-
-                <div class="modal fade" id="modalImportar5" tabindex="-1" role="dialog"
-                    aria-labelledby="modalImportarLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <form id="idModalImportar" action="{{ route('import-practicas5') }}" method="POST"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Importar archivo</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <div class="input input_file">
-                                            <span id="fileText" class="fileText">
-                                                <i class="fa fa-upload"></i> Haz clic aquí para subir el
-                                                documento
-                                            </span>
-                                            <input type="file" class="form-control-file input input_file"
-                                                id="file" name="file" onchange="displayFileName(this)" required>
-                                            <span title="Eliminar archivo" onclick="removeFile(this)"
-                                                class="remove-icon">✖</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button id="cerrar_modal" type="button" class="button"
-                                        data-dismiss="modal">Cerrar</button>
-                                    <button type="submit" class="button">Importar Archivo</button>
-                                </div>
-                            </form>
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Importar archivo</span>
+                            <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
+                                data-target="#modalImportar5">
+                                <i class="fa fa-upload"></i>
+                            </button>
                         </div>
+
+                        <div class="modal fade" id="modalImportar5" tabindex="-1" role="dialog"
+                            aria-labelledby="modalImportarLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form id="idModalImportar" action="{{ route('import-practicas5') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Importar archivo</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <div class="input input_file">
+                                                    <span id="fileText" class="fileText">
+                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el
+                                                        documento
+                                                    </span>
+                                                    <input type="file" class="form-control-file input input_file"
+                                                        id="file" name="file" onchange="displayFileName(this)"
+                                                        required>
+                                                    <span title="Eliminar archivo" onclick="removeFile(this)"
+                                                        class="remove-icon">✖</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="cerrar_modal" type="button" class="button"
+                                                data-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="button">Importar Archivo</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-
-</div>
-</div>
 
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">

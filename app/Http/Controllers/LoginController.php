@@ -13,23 +13,21 @@ use App\Models\Role;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\File;
 
 
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Hash;
+ use Illuminate\Support\Facades\Hash;
 
 use App\Models\Estudiante;
 
 
 class LoginController extends Controller
 {
-    // Mostrar el formulario de inicio de sesión
-    public function showLoginForm()
+     public function showLoginForm()
     {
         return view('login');
     }
 
-    // Procesar el inicio de sesión
 
     public function login(Request $request)
     {
@@ -106,29 +104,9 @@ class LoginController extends Controller
                 //////guarda en local storage
 
 
+                return redirect()->route('conectarModulos')->with('token', $token);
 
-                $userRole = Role::find($user->role_id);
 
-                if ($userRole->Tipo === 'Administrador') {
-                    return redirect()->route('admin.index')->with('token', $token);
-                } elseif ($user->Estado === 'activo') {
-                    if ($userRole->Tipo === 'Director-Departamento' || $user->Estado === 'Director-Carrera') {
-
-                        return redirect()->route('director.indexProyectos')->with('token', $token);
-                    } elseif ($userRole->Tipo === 'Vinculacion') {
-                        return redirect()->route('coordinador.index')->with('token', $token);
-                    } elseif ($userRole->Tipo === 'DirectorVinculacion') {
-                        return redirect()->route('director_vinculacion.index')->with('token', $token);
-                    } elseif ($userRole->Tipo === 'ParticipanteVinculacion') {
-                        return redirect()->route('ParticipanteVinculacion.index')->with('token', $token);
-                    } else {
-                        return back()->withErrors([
-                            'CorreoElectronico' => 'Su estado no permite el acceso en este momento.',
-                        ]);
-                    }
-                } else {
-                    return redirect()->route('estudiantes.create')->with('token', $token);
-                }
             } else {
                 throw new \Exception('Las credenciales proporcionadas no coinciden con nuestros registros.');
             }
@@ -291,5 +269,62 @@ class LoginController extends Controller
 
     }
 
+
+
+
+      ////////////////////////////////////////////////////////////////////////////////////////////conexion
+      public function conectarModulos()
+      {
+          return view('ConexionSistemas');
+
+      }
+
+      public function Modulo1()
+      {
+
+          $user = Auth::user();
+          $userRole = Role::find($user->role_id);
+          $credentials = [
+              'CorreoElectronico' => $user->CorreoElectronico,
+              'Contrasena' => $user->Contrasena,
+          ];
+
+
+          if ($user && (password_verify($credentials['Contrasena'], $user->Contrasena) || $user->Contrasena === $credentials['Contrasena'])) {
+              Auth::login($user);
+
+              session()->regenerate();
+
+              $token = Str::random(60);
+
+              $user->token = hash('sha256', $token);
+              $user->save();
+
+              $userRole = Role::find($user->role_id);
+
+              if ($userRole->Tipo === 'Administrador') {
+                  return redirect()->route('admin.index')->with('token', $token);
+              } elseif ($userRole->Tipo === 'Director-Departamento' || $userRole->Tipo === 'Director-Carrera') {
+                  return redirect()->route('director.indexProyectos')->with('token', $token);
+              } elseif ($userRole->Tipo === 'Vinculacion') {
+                  return redirect()->route('coordinador.index')->with('token', $token);
+              } elseif ($userRole->Tipo === 'DirectorVinculacion') {
+                  return redirect()->route('director_vinculacion.index')->with('token', $token);
+              } elseif ($userRole->Tipo === 'ParticipanteVinculacion') {
+                  return redirect()->route('ParticipanteVinculacion.index')->with('token', $token);
+              } else {
+                  return redirect()->route('estudiantes.create')->with('token', $token);
+              }
+          }
+
+          return redirect()->route('login')->with('error', 'Las credenciales proporcionadas no coinciden con nuestros registros.');
+      }
+
+      public function Modulo2()
+      {
+          $content = File::get(public_path('base-angular/index.html'));
+
+          return response($content);
+      }
 
 }
