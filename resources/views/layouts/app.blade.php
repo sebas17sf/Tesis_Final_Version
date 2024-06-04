@@ -98,7 +98,7 @@
             <!-- Aquí agregamos el contenedor del menú desplegable -->
             <div class="popup-menu-profile">
                 <div class="container">
-                    <a href="#" class="change_module">
+                    <a href="{{ route('conectarModulos') }}" class="change_module">
                         <i class="fa-regular fa-rectangle-vertical-history"></i>
                         <span>Cambiar modulo</span>
                     </a>
