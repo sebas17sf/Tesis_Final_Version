@@ -42,6 +42,12 @@
   width: 170px;
   border-radius: 25px;
 }
+.button01 {
+  @include buttons-style;
+  @include buttons-style2;
+  width: 150px;
+  border-radius: 25px;
+}
 // ===============================================
 // Boton general (semi cuadrado)
 // ===============================================

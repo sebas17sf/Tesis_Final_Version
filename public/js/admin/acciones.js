@@ -93,3 +93,27 @@ function formatDataForClipboard() {
 
     return data.trim(); // Elimina cualquier carácter de nueva línea al final
 }
+
+//VENTANAS EMERGENTES
+$(document).ready(function(){
+    console.log("Draggable script is running");
+    $("#draggableCardNRC").draggable({
+        handle: ".card-header",
+        containment: "window"
+    });
+    $("#draggableCardPeriodo").draggable({
+        handle: ".card-header",
+        containment: "window"
+    });
+    $("#draggableCardEditarPeriodo").draggable({
+        handle: ".card-header",
+        containment: "window"
+    });
+});
+
+function openCard(cardId) {
+    $('#' + cardId).css({
+        top: '100px', // Adjusted top position to avoid the top navigation bar
+        left: '50px' // Adjust as necessary to avoid other elements
+    }).show();
+}

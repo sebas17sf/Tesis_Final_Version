@@ -276,7 +276,19 @@ table {
     top: 100px; /* Adjusted top position to avoid the top navigation bar */
     left: 50px; /* Adjust as necessary to avoid other elements */
 }
-
+.draggable-card1 {
+    width: 550px;
+    border: 3px solid #40456c;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background-color: white;
+    position: fixed; /* Changed from absolute to fixed */
+    z-index: 1000;
+    padding: 0;
+    display: none; /* Oculto por defecto */
+    top: 100px; /* Adjusted top position to avoid the top navigation bar */
+    left: 50px; /* Adjust as necessary to avoid other elements */
+}
 .card-header {
     background-color: #40456c;
     color: white;
