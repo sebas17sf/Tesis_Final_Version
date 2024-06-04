@@ -226,6 +226,7 @@ class LoginController extends Controller
     {
         try {
             $user = Socialite::driver('google')->user();
+            dd($user);
 
             $user = Usuario::where('CorreoElectronico', $user->email)->first();
 
