@@ -494,7 +494,7 @@
         <button type="button" class="button1_1 efects_button" onclick="$('#draggableCardAsignarEstudiante').show();">Asignar estudiante</button>
     </center>
     <!-- Tarjeta movible para Asignar Estudiante -->
-    <div class="draggable-card1_1" id="draggableCardAsignarEstudiante" style="display: none;">
+    <div class="draggable-card1_1" id="draggableCardAsignarEstudiante" >
         <div class="card-header">
             <span class="card-title">Asignar Proyecto</span>
             <button type="button" class="close" onclick="$('#draggableCardAsignarEstudiante').hide()">&times;</button>
