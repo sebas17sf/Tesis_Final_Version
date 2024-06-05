@@ -325,40 +325,44 @@ class LoginController extends Controller
 
     public function Modulo1()
     {
-        $user = Auth::user();
-        $userRole = Role::find($user->role_id);
-        $credentials = [
-            'CorreoElectronico' => $user->CorreoElectronico,
-            'Contrasena' => $user->Contrasena,
-        ];
+        try {
+            $user = Auth::user();
+            $userRole = Role::find($user->role_id);
+            $credentials = [
+                'CorreoElectronico' => $user->CorreoElectronico,
+                'Contrasena' => $user->Contrasena,
+            ];
 
-        if ($user && (password_verify($credentials['Contrasena'], $user->Contrasena) || $user->Contrasena === $credentials['Contrasena'])) {
-            Auth::login($user);
+            if ($user && (password_verify($credentials['Contrasena'], $user->Contrasena) || $user->Contrasena === $credentials['Contrasena'])) {
+                Auth::login($user);
 
-            session()->regenerate();
+                session()->regenerate();
 
-            $encryptedToken = $user->token;
+                $encryptedToken = $user->token;
 
-            setcookie('token', $encryptedToken, time() + 3600, "/");
+                setcookie('token', $encryptedToken, time() + 3600, "/");
 
-            session(['token' => $encryptedToken]);
+                session(['token' => $encryptedToken]);
 
-            if ($userRole->Tipo === 'Administrador') {
-                return redirect()->route('admin.index')->with('token', $encryptedToken);
-            } elseif ($userRole->Tipo === 'Director-Departamento' || $userRole->Tipo === 'Director-Carrera') {
-                return redirect()->route('director.indexProyectos')->with('token', $encryptedToken);
-            } elseif ($userRole->Tipo === 'Vinculacion') {
-                return redirect()->route('coordinador.index')->with('token', $encryptedToken);
-            } elseif ($userRole->Tipo === 'DirectorVinculacion') {
-                return redirect()->route('director_vinculacion.index')->with('token', $encryptedToken);
-            } elseif ($userRole->Tipo === 'ParticipanteVinculacion') {
-                return redirect()->route('ParticipanteVinculacion.index')->with('token', $encryptedToken);
-            } else {
-                return redirect()->route('estudiantes.create')->with('token', $encryptedToken);
+                if ($userRole->Tipo === 'Administrador') {
+                    return redirect()->route('admin.index')->with('token', $encryptedToken);
+                } elseif ($userRole->Tipo === 'Director-Departamento' || $userRole->Tipo === 'Director-Carrera') {
+                    return redirect()->route('director.indexProyectos')->with('token', $encryptedToken);
+                } elseif ($userRole->Tipo === 'Vinculacion') {
+                    return redirect()->route('coordinador.index')->with('token', $encryptedToken);
+                } elseif ($userRole->Tipo === 'DirectorVinculacion') {
+                    return redirect()->route('director_vinculacion.index')->with('token', $encryptedToken);
+                } elseif ($userRole->Tipo === 'ParticipanteVinculacion') {
+                    return redirect()->route('ParticipanteVinculacion.index')->with('token', $encryptedToken);
+                } else {
+                    return redirect()->route('estudiantes.create')->with('token', $encryptedToken);
+                }
             }
-        }
 
-        return redirect()->route('login')->with('error', 'Las credenciales proporcionadas no coinciden con nuestros registros.');
+            return redirect()->route('login')->with('error', 'Las credenciales proporcionadas no coinciden con nuestros registros.');
+        } catch (\Exception $e) {
+            return redirect()->route('login')->with('error', 'Ocurrió un error: ' . $e->getMessage());
+        }
     }
 
     public function Modulo2()

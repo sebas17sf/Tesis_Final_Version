@@ -9,6 +9,7 @@ class Empresa extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
         'nombreEmpresa',
         'rucEmpresa',
