@@ -297,7 +297,7 @@
 
                         <div class="tooltip-container">
                             <span class="tooltip-text">Agregar</span>
-                            
+
                             <button type="button" class="button3 efects_button btn_primary" onclick="openCard('draggableCardAgregarMaestro');">
                             <i class="fa-solid fa-plus"></i></button>
 
@@ -537,56 +537,47 @@
                         <ul class="pagination">
                             <li class="page-item mx-3">
                                 <form method="GET" action="{{ route('admin.index') }}#tablaDocentes">
-                                    <select class="form-control page-item" class="input" name="perPage" id="perPage"
-                                        onchange="this.form.submit()">
-                                        <option value="10" @if ($perPage == 10) selected @endif>10
-                                        </option>
-                                        <option value="20" @if ($perPage == 20) selected @endif>20
-                                        </option>
-                                        <option value="50" @if ($perPage == 50) selected @endif>
-                                            50
-                                        </option>
-                                        <option value="100" @if ($perPage == 100) selected @endif>
-                                            100
-                                        </option>
+                                    <select class="form-control page-item" name="perPage" id="perPage" onchange="this.form.submit()">
+                                        <option value="10" @if ($perPage == 10) selected @endif>10</option>
+                                        <option value="20" @if ($perPage == 20) selected @endif>20</option>
+                                        <option value="50" @if ($perPage == 50) selected @endif>50</option>
+                                        <option value="100" @if ($perPage == 100) selected @endif>100</option>
                                     </select>
                                 </form>
                             </li>
 
                             @if ($profesores->onFirstPage())
-                                <li class="page-item disabled">
-                                    <span class="page-link">Anterior</span>
-                                </li>
+                            <li class="page-item disabled">
+                                <span class="page-link">Anterior</span>
+                            </li>
                             @else
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $profesores->previousPageUrl() }}#tablaDocentes"
-                                        aria-label="Anterior">Anterior</a>
-                                </li>
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $profesores->appends(['perPage' => $perPage])->previousPageUrl() }}#tablaDocentes" aria-label="Anterior">Anterior</a>
+                            </li>
                             @endif
 
                             @foreach ($profesores->getUrlRange(1, $profesores->lastPage()) as $page => $url)
-                                @if ($page == $profesores->currentPage())
-                                    <li class="page-item active">
-                                        <span class="page-link">{{ $page }}</span>
-                                    </li>
-                                @else
-                                    <li class="page-item">
-                                        <a class="page-link"
-                                            href="{{ $url }}#tablaDocentes">{{ $page }}</a>
-                                    </li>
-                                @endif
+                            @if ($page == $profesores->currentPage())
+                            <li class="page-item active">
+                                <span class="page-link">{{ $page }}</span>
+                            </li>
+                            @else
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $profesores->appends(['perPage' => $perPage])->url($page) }}#tablaDocentes">{{ $page }}</a>
+                            </li>
+                            @endif
                             @endforeach
 
                             @if ($profesores->hasMorePages())
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $profesores->nextPageUrl() }}#tablaDocentes"
-                                        aria-label="Siguiente">Siguiente</a>
-                                </li>
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $profesores->appends(['perPage' => $perPage])->nextPageUrl() }}#tablaDocentes" aria-label="Siguiente">Siguiente</a>
+                            </li>
                             @else
-                                <li class="page-item disabled">
-                                    <span class="page-link">Siguiente</span>
-                                </li>
+                            <li class="page-item disabled">
+                                <span class="page-link">Siguiente</span>
+                            </li>
                             @endif
+
 
                         </ul>
                     </nav>

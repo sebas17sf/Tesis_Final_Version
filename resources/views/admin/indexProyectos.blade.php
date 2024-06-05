@@ -440,53 +440,45 @@
                                 </li>
 
                                 <li class="page-item mx-3 d-flex align-items-center">
-                                    <form method="GET" action="{{ route('admin.indexProyectos') }}#tablaAsignaciones"
-                                        class="form-inline">
+                                    <form method="GET" action="{{ route('admin.indexProyectos') }}#tablaAsignaciones" class="form-inline">
                                         <div class="form-group">
                                             <label for="perPage2" class="sr-only">Items per page</label>
-                                            <select class="form-control page-item" name="perPage2" id="perPage2"
-                                                onchange="this.form.submit()">
-                                                <option value="10" @if ($perPage2 == 10) selected @endif>
-                                                    10</option>
-                                                <option value="20" @if ($perPage2 == 20) selected @endif>
-                                                    20</option>
-                                                <option value="50" @if ($perPage2 == 50) selected @endif>
-                                                    50</option>
-                                                <option value="100" @if ($perPage2 == 100) selected @endif>
-                                                    100</option>
+                                            <select class="form-control page-item" name="perPage2" id="perPage2" onchange="this.form.submit()">
+                                                <option value="10" @if ($perPage2 == 10) selected @endif>10</option>
+                                                <option value="20" @if ($perPage2 == 20) selected @endif>20</option>
+                                                <option value="50" @if ($perPage2 == 50) selected @endif>50</option>
+                                                <option value="100" @if ($perPage2 == 100) selected @endif>100</option>
                                             </select>
                                         </div>
                                     </form>
                                 </li>
 
                                 @if ($paginator->onFirstPage())
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Anterior</span>
-                                    </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link">Anterior</span>
+                                </li>
                                 @else
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $paginator->previousPageUrl() }}#tablaAsignaciones"
-                                            aria-label="Anterior">Anterior</a>
-                                    </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $paginator->appends(['perPage2' => $perPage2, 'search2' => $search2])->previousPageUrl() }}#tablaAsignaciones" aria-label="Anterior">Anterior</a>
+                                </li>
                                 @endif
 
                                 @for ($i = 1; $i <= $paginator->lastPage(); $i++)
-                                    <li class="page-item {{ $paginator->currentPage() == $i ? 'active' : '' }}">
-                                        <a class="page-link"
-                                            href="{{ $paginator->url($i) }}#tablaAsignaciones">{{ $i }}</a>
-                                    </li>
+                                <li class="page-item {{ $paginator->currentPage() == $i ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $paginator->appends(['perPage2' => $perPage2, 'search2' => $search2])->url($i) }}#tablaAsignaciones">{{ $i }}</a>
+                                </li>
                                 @endfor
 
                                 @if ($paginator->hasMorePages())
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $paginator->nextPageUrl() }}#tablaAsignaciones"
-                                            aria-label="Siguiente">Siguiente</a>
-                                    </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $paginator->appends(['perPage2' => $perPage2, 'search2' => $search2])->nextPageUrl() }}#tablaAsignaciones" aria-label="Siguiente">Siguiente</a>
+                                </li>
                                 @else
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Siguiente</span>
-                                    </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link">Siguiente</span>
+                                </li>
                                 @endif
+
                             </ul>
                         </nav>
                     </div>
