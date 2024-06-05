@@ -42,8 +42,7 @@
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                         <th>Nombres</th>
                                         <th>ID ESPE</th>
-                                        <th>Celular</th>
-                                        <th>Cédula</th>
+                                         <th>Cédula</th>
                                         <th>Cohorte</th>
                                         <th>Departamento</th>
                                         <th>Estado Actual</th>
@@ -62,8 +61,7 @@
 
                                                 <td>{{ strtoupper($estudiante->Apellidos) }} {{ strtoupper($estudiante->Nombres) }}</td>
                                                 <td>{{ $estudiante->espe_id }}</td>
-                                                <td>{{ $estudiante->celular }}</td>
-                                                <td>{{ $estudiante->cedula }}</td>
+                                                 <td>{{ $estudiante->cedula }}</td>
                                                 <td>{{ $estudiante->periodos->numeroPeriodo }}</td>
                                                 <td>{{ strtoupper($estudiante->Departamento) }}</td>
                                                 <td>{{ strtoupper($estudiante->Estado) }}</td>
@@ -130,8 +128,7 @@
                                         <th>Nombres</th>
                                         <th>ID ESPE</th>
                                         <th>Carrera</th>
-                                        <th>Celular</th>
-                                        <th>Cédula</th>
+                                         <th>Cédula</th>
                                         <th>Cohorte</th>
                                         <th>Periodo</th>
                                         <th>Departamento</th>
@@ -151,8 +148,7 @@
                                                 </td>
                                                 <td>{{ $estudiante->espe_id }}</td>
                                                 <td>{{ strtoupper($estudiante->Carrera) }}</td>
-                                                <td>{{ $estudiante->celular }}</td>
-                                                <td>{{ $estudiante->cedula }}</td>
+                                                 <td>{{ $estudiante->cedula }}</td>
                                                 <td>{{ $estudiante->periodos->numeroPeriodo }}</td>
                                                 <td>{{ $estudiante->periodos->Periodo }}</td>
                                                 <td>{{ strtoupper($estudiante->Departamento) }}</td>
@@ -180,21 +176,20 @@
 
                             <ul class="pagination">
                                 <li class="page-item mx-3">
-                                    <form method="GET" action="{{ route('admin.estudiantes') }}">
-
-                                        <select name="elementosPorPaginaAprobados"
-                                            class="form-control page-item"id="elementosPorPaginaAprobados"
-                                            onchange="this.form.submit">
+                                    <form method="GET" action="{{ route('admin.estudiantes') }}#tablaEstudiantes">
+                                        <select class="form-control page-item" class="input" name="elementosPorPaginaAprobados" id="elementosPorPaginaAprobados"
+                                                onchange="this.form.submit()">
                                             <option value="10" @if ($elementosPorPaginaAprobados == 10) selected @endif>10
                                             </option>
                                             <option value="20" @if ($elementosPorPaginaAprobados == 20) selected @endif>20
                                             </option>
-                                            <option value="50" @if ($elementosPorPaginaAprobados == 50) selected @endif>50
+                                            <option value="50" @if ($elementosPorPaginaAprobados == 50) selected @endif>
+                                                50
                                             </option>
-                                            <option value="100" @if ($elementosPorPaginaAprobados == 100) selected @endif>100
+                                            <option value="100" @if ($elementosPorPaginaAprobados == 100) selected @endif>
+                                                100
                                             </option>
                                         </select>
-
                                     </form>
                                 </li>
 
