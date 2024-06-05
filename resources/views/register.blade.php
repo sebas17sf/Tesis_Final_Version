@@ -60,12 +60,10 @@
                     <div>
                         <!-- Campo de contraseña -->
                         <label class="description" for="Contrasena">Contraseña</label>
-                        <div class="input-group" style="position: relative;">
                             <input type="password" class="input form_input" id="Contrasena" name="Contrasena" placeholder="Ingrese su contraseña" required>
                             <div id="togglePassword" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
-                                <i class="material-icons">visibility</i>
                             </div>
-                        </div>
+                        
                         @error('Contrasena')
                         <small class="form-text text-danger">{{ $message }}</small>
                         @enderror

@@ -158,9 +158,6 @@
                     </div>
 
                 @endif
-
-
-
                 @if (session('permisosConcedidos'))
                     <div class="alert alert-success">
                         {{ session('permisosConcedidos') }}

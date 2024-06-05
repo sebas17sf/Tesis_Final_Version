@@ -65,11 +65,10 @@
                     <!-- Campo de contraseña -->
                     <div>
                         <!-- Campo de contraseña -->
-                        <label class="description" for="Contrasena">Contraseña</label>
+                       <center> <label class="description" for="Contrasena">Contraseña</label></center>
                         <div class="input-group" style="position: relative;">
                             <input type="password" class="input form_input" id="Contrasena" name="Contrasena" placeholder="Ingrese su contraseña" required>
                             <div id="togglePassword" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
-                                <i class="material-icons">visibility</i>
                             </div>
                         </div>
                     </div>
