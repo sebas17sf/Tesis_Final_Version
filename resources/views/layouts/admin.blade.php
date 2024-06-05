@@ -181,7 +181,8 @@
 
     <script src="{{ asset('js/admin/general.js') }}"></script>
     <script src="{{ asset('js/admin/empresa.js') }}"></script>
-    <script src="{{ asset('js/input_file.js') }}">
+    <script src="{{ asset('js/input_file.js') }}"></script>
+    <script src="{{ asset('js/admin/acciones.js') }}"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -190,9 +191,6 @@
 
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
-
 
     <script>
         function toggleSidebar() {
@@ -221,55 +219,9 @@
 
             triggerToggleSidebar();
         }
-        function makeElementDraggable(element) {
-        let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-
-        if (element.querySelector('.card-header1_1')) {
-            element.querySelector('.card-header1_1').onmousedown = dragMouseDown;
-        } else {
-            element.onmousedown = dragMouseDown;
-        }
-
-        function dragMouseDown(e) {
-            e = e || window.event;
-            e.preventDefault();
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            document.onmouseup = closeDragElement;
-            document.onmousemove = elementDrag;
-        }
-
-        function elementDrag(e) {
-            e = e || window.event;
-            e.preventDefault();
-            pos1 = pos3 - e.clientX;
-            pos2 = pos4 - e.clientY;
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            element.style.top = (element.offsetTop - pos2) + "px";
-            element.style.left = (element.offsetLeft - pos1) + "px";
-        }
-
-        function closeDragElement() {
-            document.onmouseup = null;
-            document.onmousemove = null;
-        }
-    }
-
-    $(document).ready(function() {
-        $('.draggable-card').each(function() {
-            makeElementDraggable(this);
-        });
-    });
+        
     </script>
 
-    <script>
-        $(document).ready(function() {
-            var token = "{{ session('token') }}";
-
-            localStorage.setItem('tokencomparacion', token);
-        });
-    </script>
 
     <script>
          var logoutButton = document.querySelector('.logout');

@@ -132,8 +132,8 @@ function openCard(cardId) {
 function makeElementDraggable(element) {
     let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
-    if (element.querySelector('.card-header1')) {
-        element.querySelector('.card-header1').onmousedown = dragMouseDown;
+    if (element.querySelector('.card-header')) {
+        element.querySelector('.card-header').onmousedown = dragMouseDown;
     } else {
         element.onmousedown = dragMouseDown;
     }
@@ -165,7 +165,7 @@ function makeElementDraggable(element) {
 }
 
 $(document).ready(function() {
-    $('.draggable-card').each(function() {
+    $('.draggable-card1_1').each(function() {
         makeElementDraggable(this);
     });
 });

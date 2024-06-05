@@ -409,7 +409,7 @@
                                                         <div class="draggable-card1_1"
                                                             id="draggableCardEditarMaestro{{ $profesor->id }}">
                                                             <div class="card-header">
-                                                                <span class="card-title">Editar Docentes</span>
+                                                                <span class="card-title1">Editar Docentes</span>
                                                                 <button type="button" class="close"
                                                                     onclick="$('#draggableCardEditarMaestro{{ $profesor->id }}').hide()">&times;</button>
                                                             </div>
