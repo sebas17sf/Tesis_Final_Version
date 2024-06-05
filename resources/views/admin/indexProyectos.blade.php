@@ -541,19 +541,18 @@
                 <br>
 
                 <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="label" for="estudiante_id"><strong>Estudiante Aprobado:</strong></label>
-                            <select name="estudiante_id[]" id="estudiante_seleccion" class="form-control input input_select" multiple="multiple">
-                                @foreach ($estudiantesAprobados as $estudiante)
-                                    <option value="{{ $estudiante->EstudianteID }}">
-                                        {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} - {{ $estudiante->Departamento }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-
+                <div class="col-md-4">
+        <div class="form-group">
+            <label class="label" for="estudiante_id"><strong>Estudiante Aprobado:</strong></label>
+            <select name="estudiante_id[]" id="estudiante_seleccion" class="form-control input input_select" multiple="multiple">
+                @foreach ($estudiantesAprobados as $estudiante)
+                    <option value="{{ $estudiante->EstudianteID }}">
+                        {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} - {{ $estudiante->Departamento }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+    </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="label" for="nrc">Vinculacion NRC:</label>
@@ -570,7 +569,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label class="label" for="periodo"><strong>Periodo:</strong></label>
-                            <input type="text" id="periodo" class="form-control input" readonly>
+                            <input type="text" id="periodo" class="form-control input" readonly placeholder="Periodo">
                         </div>
                     </div>
                 </div>
@@ -648,50 +647,49 @@
         });
     </script>
 
-    <script>
-        $(document).ready(function() {
-            $('#estudiante_seleccion').select2({
-                placeholder: "Seleccione un estudiante",
-                closeOnSelect: false,
-                width: 'resolve',
-                templateResult: formatState,
-                templateSelection: formatSelection,
-                escapeMarkup: function(markup) {
-                    return markup;
-                }
-            }).on('select2:select', function(e) {
-                var element = e.params.data.element;
-                var $element = $(element);
-                $element.detach();
-                $(this).append($element).trigger('change');
-            }).on('select2:unselect', function(e) {
-                var element = e.params.data.element;
-                var $element = $(element);
-                $element.detach();
-                $(this).append($element).trigger('change');
-            });
+    <script>$(document).ready(function() {
+    $('#estudiante_seleccion').select2({
+        placeholder: "Seleccione un estudiante",
+        closeOnSelect: false,
+        width: 'resolve',
+        templateResult: formatState,
+        templateSelection: formatSelection,
+        escapeMarkup: function(markup) {
+            return markup;
+        }
+    }).on('select2:select', function(e) {
+        var element = e.params.data.element;
+        var $element = $(element);
+        $element.detach();
+        $(this).append($element).trigger('change');
+    }).on('select2:unselect', function(e) {
+        var element = e.params.data.element;
+        var $element = $(element);
+        $element.detach();
+        $(this).append($element).trigger('change');
+    });
 
-            function formatState(state) {
-                if (!state.id) {
-                    return state.text;
-                }
-                var $state = $(
-                    '<span><input type="checkbox" class="checkbox-item "  style="margin-right: 8px;" />' + state
-                    .text + '</span>'
-                );
-                return $state;
-            }
+    function formatState(state) {
+        if (!state.id) {
+            return state.text;
+        }
+        var $state = $(
+            '<span><input type="checkbox" class="styled-checkbox" style="margin-right: 8px;" />' + state.text + '</span>'
+        );
+        return $state;
+    }
 
-            function formatSelection(state) {
-                if (!state.id) {
-                    return state.text;
-                }
-                var $state = $(
-                    '<span>' + state.text + '</span>'
-                );
-                return $state;
-            }
-        });
+    function formatSelection(state) {
+        if (!state.id) {
+            return state.text;
+        }
+        var $state = $(
+            '<span>' + state.text + '</span>'
+        );
+        return $state;
+    }
+});
+
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

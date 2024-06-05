@@ -98,84 +98,56 @@
                                                 <td class="table1">{{ $profesor->CorreoElectronico }}</td>
                                                 <td class="table1">{{ $profesor->Estado }}</td>
                                                 <td>
-                                                    <!-- Botón de Editar -->
-                                                    <center><button type="button" class="button3 efects_button btn_editar3"
-                                                            data-toggle="modal" data-target="#editModal{{ $profesor->id }}">
-                                                            <i class="bx bx-edit-alt"></i>
-                                                        </button></center>
-                                                </td>
-                                            </tr>
+    <!-- Botón de Editar -->
+    <center>
+        <button type="button" class="button3 efects_button btn_editar3" onclick="openCard('editCard{{ $profesor->id }}');">
+            <i class="bx bx-edit-alt"></i>
+        </button>
+    </center>
+</td>
 
-                                            <!-- Modal para Editar Profesor -->
-                                            <div class="modal fade" id="editModal{{ $profesor->id }}" tabindex="-1"
-                                                role="dialog" aria-labelledby="editModalLabel{{ $profesor->id }}"
-                                                aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <form method="POST"
-                                                            action="{{ route('admin.updateEstado', ['id' => $profesor->UserID]) }}">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title"
-                                                                    id="editModalLabel{{ $profesor->id }}">
-                                                                    Editar Profesor</h5>
-                                                                <button type="button" class="close" data-dismiss="modal"
-                                                                    aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div class="form-group">
-                                                                    <label for="NombreUsuario{{ $profesor->id }}">Nombre de
-                                                                        Usuario</label>
-                                                                    <input type="text" class="form-control"
-                                                                        id="NombreUsuario{{ $profesor->id }}"
-                                                                        name="NombreUsuario"
-                                                                        value="{{ $profesor->NombreUsuario }}" required
-                                                                        disabled>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label
-                                                                        for="CorreoElectronico{{ $profesor->id }}">Correo
-                                                                        Electrónico</label>
-                                                                    <input type="email" class="form-control"
-                                                                        id="CorreoElectronico{{ $profesor->id }}"
-                                                                        name="CorreoElectronico"
-                                                                        value="{{ $profesor->CorreoElectronico }}" required
-                                                                        disabled>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="Estado{{ $profesor->id }}">Estado</label>
-                                                                    <select class="form-control"
-                                                                        id="Estado{{ $profesor->id }}" name="Estado"
-                                                                        required>
-                                                                        <option value="activo"
-                                                                            {{ $profesor->Estado == 'Activo' ? 'selected' : '' }}>
-                                                                            Activo</option>
-                                                                        <option value="inactivo"
-                                                                            {{ $profesor->Estado == 'Inactivo' ? 'selected' : '' }}>
-                                                                            Inactivo</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label for="password{{ $profesor->id }}">Cambiar
-                                                                        Contraseña</label>
-                                                                    <input type="password" class="form-control"
-                                                                        id="password{{ $profesor->id }}" name="password"
-                                                                        required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">Cerrar</button>
-                                                                <button type="submit" class="btn btn-primary">Guardar
-                                                                    Cambios</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
+<!-- Card para Editar Profesor -->
+<div class="draggable-card" id="editCard{{ $profesor->id }}" style="display: none;">
+    <div class="card-header">
+        <span class="card-title">Editar Profesor</span>
+        <button type="button" class="close" onclick="document.getElementById('editCard{{ $profesor->id }}').style.display='none'">&times;</button>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{{ route('admin.updateEstado', ['id' => $profesor->UserID]) }}">
+            @csrf
+            @method('PUT')
+            <div class="form-group">
+                <label for="NombreUsuario{{ $profesor->id }}"><b>Nombre de Usuario</b></label>
+                <input type="text" class="form-control input" id="NombreUsuario{{ $profesor->id }}" name="NombreUsuario" value="{{ $profesor->NombreUsuario }}" required disabled>
+            </div>
+            <div class="form-group">
+                <label for="CorreoElectronico{{ $profesor->id }}"><b>Correo Electrónico</b></label>
+                <input type="email" class="form-control input" id="CorreoElectronico{{ $profesor->id }}" name="CorreoElectronico" value="{{ $profesor->CorreoElectronico }}" required disabled>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="Estado{{ $profesor->id }}"><b>Estado</b></label>
+                        <select class="form-control input input_select" id="Estado{{ $profesor->id }}" name="Estado" required>
+                            <option value="activo" {{ $profesor->Estado == 'Activo' ? 'selected' : '' }}>Activo</option>
+                            <option value="inactivo" {{ $profesor->Estado == 'Inactivo' ? 'selected' : '' }}>Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="password{{ $profesor->id }}"><b>Cambiar Contraseña</b></label>
+                        <input type="password" class="form-control input" id="password{{ $profesor->id }}" name="password" required>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="button" class="button0" onclick="document.getElementById('editCard{{ $profesor->id }}').style.display='none'">Cerrar</button>
+                <button type="submit" class="button0">Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
                                         @endforeach
                                     </tbody>
                                 </table>

@@ -193,8 +193,18 @@
         <h4><b>Listado de Empresas Agregadas</b></h4>
         <div class="mat-elevation-z8 contenedor_general">
             <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+            <div class="contenedor_botones">
                 <!-- Botones -->
-                <div class="contenedor_botones">
+                 <div class="tooltip-container">
+                        <span class="tooltip-text">Excel</span>
+                        <form action="{{ route('coordinador.reportesEmpresas') }}" method="post">
+                            @csrf
+                            <button type="submit" class="button3 efects_button btn_excel">
+                                <i class="fas fa-file-excel"></i>
+                            </button>
+                        </form>
+                    </div>
+                
                     <div class="tooltip-container">
                         <span class="tooltip-text">Importar archivo</span>
                         <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
@@ -205,15 +215,7 @@
                     </div>
 
 
-                    <div class="tooltip-container">
-                        <span class="tooltip-text">Excel</span>
-                        <form action="{{ route('coordinador.reportesEmpresas') }}" method="post">
-                            @csrf
-                            <button type="submit" class="button3 efects_button btn_excel">
-                                <i class="fas fa-file-excel"></i>
-                            </button>
-                        </form>
-                    </div>
+                   
 
 
                     {{-- <form action="{{ route('admin.estudiantes') }}" method="GET">
@@ -272,7 +274,9 @@
                             </div>
                         </form>
                     </div>
-                    <div class="contenedor_buscador">
+                   
+                </div>
+                <div class="contenedor_buscador">
                         <div>
                             <form id="formBusquedaEmpresa">
                                 <input type="text" class="input" name="search" value="{{ $search }}" matInput
@@ -281,7 +285,6 @@
                             </form>
                         </div>
                     </div>
-                </div>
             </div>
 
             <section>
@@ -331,7 +334,7 @@
                                                 </td>
                                                 <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->telefonoContacto)) }}
                                                 </td>
-                                                <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->actividadesMacro)) }}
+                                                <td style="text-transform: uppercase; text-align: justify; padding: 5px 8px;">{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->actividadesMacro)) }}
                                                 </td>
                                                 <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->cuposDisponibles)) }}
                                                 </td>
