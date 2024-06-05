@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PracticaII;
+use App\Models\PracticaIII;
+use App\Models\PracticaIV;
+use App\Models\PracticaV;
 use App\Models\Proyecto;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Illuminate\Http\Request;
@@ -989,73 +993,73 @@ class DocumentoController extends Controller
     /////////reporteria Practias I////////////////////////////////////////
     public function reportesPracticaI(Request $request)
     {
-        $plantillaPath = public_path('Plantillas/Reporte-PracticasI.xlsx');
+        $plantillaPath = public_path('Plantillas/Reporte-Practicas1.xlsx');
 
         $spreadsheet = IOFactory::load($plantillaPath);
 
-        $datosEstudiantes = DB::table('PracticasI')
-            ->select(
-                'PracticasI.NombreEstudiante',
-                'PracticasI.ApellidoEstudiante',
-                'PracticasI.Departamento',
-                'PracticasI.Nivel',
-                'PracticasI.Practicas',
-                'PracticasI.DocenteTutor',
-                'PracticasI.Empresa',
-                'PracticasI.CedulaTutorEmpresarial',
-                'PracticasI.NombreTutorEmpresarial',
-                'PracticasI.Funcion',
-                'PracticasI.TelefonoTutorEmpresarial',
-                'PracticasI.EmailTutorEmpresarial',
-                'PracticasI.DepartamentoTutorEmpresarial',
-                'PracticasI.EstadoAcademico',
-                'PracticasI.FechaInicio',
-                'PracticasI.FechaFinalizacion',
-                'PracticasI.HorasPlanificadas',
-                'PracticasI.HoraEntrada',
-                'PracticasI.HoraSalida',
-                'PracticasI.AreaConocimiento',
-                'PracticasI.Estado',
-                'PracticasI.created_at',
-                'PracticasI.updated_at',
-
-            )
-            ->get();
+        $practica1 = PracticaI::all();
         $sheet = $spreadsheet->getActiveSheet();
 
 
         $filaInicio = 9;
-        $cantidadFilas = count($datosEstudiantes);
+        $cantidadFilas = count($practica1);
         $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
 
         $contador = 1;
 
-        // Bucle para reemplazar los valores en la plantilla
-        foreach ($datosEstudiantes as $index => $estudiante) {
+         foreach ($practica1 as $index => $practica1) {
+
+
+
             $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-            $nombreCombinado = $estudiante->ApellidoEstudiante . ' ' . $estudiante->NombreEstudiante;
+            $nombreCombinado = $practica1->estudiante->Apellidos . ' ' . $practica1->estudiante->Nombres;
             $sheet->setCellValue('B' . ($filaInicio + $index), $nombreCombinado);
-            $sheet->setCellValue('C' . ($filaInicio + $index), $estudiante->Departamento);
-            $sheet->setCellValue('D' . ($filaInicio + $index), $estudiante->Nivel);
-            $sheet->setCellValue('E' . ($filaInicio + $index), $estudiante->Practicas);
-            $sheet->setCellValue('G' . ($filaInicio + $index), $estudiante->DocenteTutor);
-            $sheet->setCellValue('F' . ($filaInicio + $index), $estudiante->Empresa);
-            $sheet->setCellValue('K' . ($filaInicio + $index), $estudiante->CedulaTutorEmpresarial);
-            $sheet->setCellValue('H' . ($filaInicio + $index), $estudiante->NombreTutorEmpresarial);
-            $sheet->setCellValue('I' . ($filaInicio + $index), $estudiante->Funcion);
-            $sheet->setCellValue('J' . ($filaInicio + $index), $estudiante->TelefonoTutorEmpresarial);
-            $sheet->setCellValue('L' . ($filaInicio + $index), $estudiante->EmailTutorEmpresarial);
-            $sheet->setCellValue('M' . ($filaInicio + $index), $estudiante->DepartamentoTutorEmpresarial);
-            $sheet->setCellValue('N' . ($filaInicio + $index), $estudiante->EstadoAcademico);
-            $sheet->setCellValue('O' . ($filaInicio + $index), $estudiante->FechaInicio);
-            $sheet->setCellValue('P' . ($filaInicio + $index), $estudiante->FechaFinalizacion);
-            $sheet->setCellValue('Q' . ($filaInicio + $index), $estudiante->HorasPlanificadas);
-            $sheet->setCellValue('R' . ($filaInicio + $index), $estudiante->HoraEntrada);
-            $sheet->setCellValue('S' . ($filaInicio + $index), $estudiante->HoraSalida);
-            $sheet->setCellValue('T' . ($filaInicio + $index), $estudiante->AreaConocimiento);
-            $sheet->setCellValue('U' . ($filaInicio + $index), $estudiante->Estado);
-            $sheet->setCellValue('V' . ($filaInicio + $index), $estudiante->created_at);
-            $sheet->setCellValue('W' . ($filaInicio + $index), $estudiante->updated_at);
+            $sheet->setCellValue('C' . ($filaInicio + $index), $practica1->estudiante->cedula);
+            $sheet->setCellValue('D' . ($filaInicio + $index), $practica1->estudiante->espe_id);
+            $sheet->setCellValue('E' . ($filaInicio + $index), $practica1->estudiante->Correo);
+            $sheet->setCellValue('G' . ($filaInicio + $index), $practica1->estudiante->Departamento);
+            $sheet->setCellValue('F' . ($filaInicio + $index), $practica1->estudiante->Cohorte);
+            $sheet->setCellValue('H' . ($filaInicio + $index), $practica1->estudiante->Carrera);
+
+            $sheet->setCellValue('I' . ($filaInicio + $index), $practica1->AreaConocimiento);
+            $sheet->setCellValue('J' . ($filaInicio + $index), $practica1->FechaInicio);
+            $sheet->setCellValue('K' . ($filaInicio + $index), $practica1->FechaFinalizacion);
+            $sheet->setCellValue('L' . ($filaInicio + $index), $practica1->HoraEntrada);
+            $sheet->setCellValue('M' . ($filaInicio + $index), $practica1->HoraSalida);
+            $sheet->setCellValue('N' . ($filaInicio + $index), $practica1->HorasPlanificadas);
+            $sheet->setCellValue('O' . ($filaInicio + $index), $practica1->tipoPractica);
+
+            $sheet->setCellValue('P' . ($filaInicio + $index), $practica1->empresa->nombreEmpresa ?? '');
+            $sheet->setCellValue('Q' . ($filaInicio + $index), $practica1->empresa->rucEmpresa ?? '');
+            $sheet->setCellValue('R' . ($filaInicio + $index), $practica1->empresa->actividadesMacro ?? '');
+            $sheet->setCellValue('S' . ($filaInicio + $index), $practica1->empresa->provincia ?? '');
+            $sheet->setCellValue('T' . ($filaInicio + $index), $practica1->empresa->ciudad ?? '');
+            $sheet->setCellValue('U' . ($filaInicio + $index), $practica1->empresa->direccion ?? '');
+            $sheet->setCellValue('V' . ($filaInicio + $index), $practica1->empresa->correo ?? '');
+            $sheet->setCellValue('W' . ($filaInicio + $index), $practica1->empresa->nombreContacto ?? '');
+            $sheet->setCellValue('X' . ($filaInicio + $index), $practica1->empresa->telefonoContacto ?? '');
+            $sheet->setCellValue('Y' . ($filaInicio + $index), $practica1->NombreTutorEmpresarial ?? '');
+            $sheet->setCellValue('Z' . ($filaInicio + $index), $practica1->CedulaTutorEmpresarial ?? '');
+            $sheet->setCellValue('AA' . ($filaInicio + $index), $practica1->EmailTutorEmpresarial ?? '');
+            $sheet->setCellValue('AB' . ($filaInicio + $index), $practica1->TelefonoTutorEmpresarial ?? '');
+            $sheet->setCellValue('AC' . ($filaInicio + $index), $practica1->Funcion ?? '');
+
+             $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->Apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
+            $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->Cedula ?? '');
+            $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espe_id ?? '');
+            $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->Correo ?? '');
+            $sheet->setCellValue('AH' . ($filaInicio + $index), 'Docente de tiempo completo');
+            $sheet->setCellValue('AI' . ($filaInicio + $index), $practica1->tutorAcademico->Departamento ?? '');
+            $sheet->setCellValue('AJ' . ($filaInicio + $index), 'Tecnologias de la Informacion');
+
+
+
+
+
+
+
+
+             $contador++;
 
         }
 
@@ -1072,81 +1076,327 @@ class DocumentoController extends Controller
 
 
     /////////reporteria Practias II////////////////////////////////////////
-    public function reportesPracticaII(Request $request)
+     public function reportesPracticaII(Request $request)
     {
-        $plantillaPath = public_path('Plantillas/Reporte-PracticasII.xlsx');
+        $plantillaPath = public_path('Plantillas/Reporte-Practicas1.2.xlsx');
 
         $spreadsheet = IOFactory::load($plantillaPath);
 
-        $datosEstudiantes = DB::table('PracticasII')
-            ->select(
-                'PracticasII.NombreEstudiante',
-                'PracticasII.ApellidoEstudiante',
-                'PracticasII.Departamento',
-                'PracticasII.Nivel',
-                'PracticasII.Practicas',
-                'PracticasII.DocenteTutor',
-                'PracticasII.Empresa',
-                'PracticasII.CedulaTutorEmpresarial',
-                'PracticasII.NombreTutorEmpresarial',
-                'PracticasII.Funcion',
-                'PracticasII.TelefonoTutorEmpresarial',
-                'PracticasII.EmailTutorEmpresarial',
-                'PracticasII.DepartamentoTutorEmpresarial',
-                'PracticasII.EstadoAcademico',
-                'PracticasII.FechaInicio',
-                'PracticasII.FechaFinalizacion',
-                'PracticasII.HorasPlanificadas',
-                'PracticasII.HoraEntrada',
-                'PracticasII.HoraSalida',
-                'PracticasII.AreaConocimiento',
-                'PracticasII.Estado',
-                'PracticasII.created_at',
-                'PracticasII.updated_at',
-
-            )
-            ->get();
+        $practica1 = PracticaII::all();
         $sheet = $spreadsheet->getActiveSheet();
 
 
         $filaInicio = 9;
-        $cantidadFilas = count($datosEstudiantes);
+        $cantidadFilas = count($practica1);
         $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
 
         $contador = 1;
 
-        // Bucle para reemplazar los valores en la plantilla
-        foreach ($datosEstudiantes as $index => $estudiante) {
+        foreach ($practica1 as $index => $practica1) {
+
+
+
             $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-            $nombreCombinado = $estudiante->ApellidoEstudiante . ' ' . $estudiante->NombreEstudiante;
+            $nombreCombinado = $practica1->estudiante->Apellidos . ' ' . $practica1->estudiante->Nombres;
             $sheet->setCellValue('B' . ($filaInicio + $index), $nombreCombinado);
-            $sheet->setCellValue('C' . ($filaInicio + $index), $estudiante->Departamento);
-            $sheet->setCellValue('D' . ($filaInicio + $index), $estudiante->Nivel);
-            $sheet->setCellValue('E' . ($filaInicio + $index), $estudiante->Practicas);
-            $sheet->setCellValue('G' . ($filaInicio + $index), $estudiante->DocenteTutor);
-            $sheet->setCellValue('F' . ($filaInicio + $index), $estudiante->Empresa);
-            $sheet->setCellValue('K' . ($filaInicio + $index), $estudiante->CedulaTutorEmpresarial);
-            $sheet->setCellValue('H' . ($filaInicio + $index), $estudiante->NombreTutorEmpresarial);
-            $sheet->setCellValue('I' . ($filaInicio + $index), $estudiante->Funcion);
-            $sheet->setCellValue('J' . ($filaInicio + $index), $estudiante->TelefonoTutorEmpresarial);
-            $sheet->setCellValue('L' . ($filaInicio + $index), $estudiante->EmailTutorEmpresarial);
-            $sheet->setCellValue('M' . ($filaInicio + $index), $estudiante->DepartamentoTutorEmpresarial);
-            $sheet->setCellValue('N' . ($filaInicio + $index), $estudiante->EstadoAcademico);
-            $sheet->setCellValue('O' . ($filaInicio + $index), $estudiante->FechaInicio);
-            $sheet->setCellValue('P' . ($filaInicio + $index), $estudiante->FechaFinalizacion);
-            $sheet->setCellValue('Q' . ($filaInicio + $index), $estudiante->HorasPlanificadas);
-            $sheet->setCellValue('R' . ($filaInicio + $index), $estudiante->HoraEntrada);
-            $sheet->setCellValue('S' . ($filaInicio + $index), $estudiante->HoraSalida);
-            $sheet->setCellValue('T' . ($filaInicio + $index), $estudiante->AreaConocimiento);
-            $sheet->setCellValue('U' . ($filaInicio + $index), $estudiante->Estado);
-            $sheet->setCellValue('V' . ($filaInicio + $index), $estudiante->created_at);
-            $sheet->setCellValue('W' . ($filaInicio + $index), $estudiante->updated_at);
+            $sheet->setCellValue('C' . ($filaInicio + $index), $practica1->estudiante->cedula);
+            $sheet->setCellValue('D' . ($filaInicio + $index), $practica1->estudiante->espe_id);
+            $sheet->setCellValue('E' . ($filaInicio + $index), $practica1->estudiante->Correo);
+            $sheet->setCellValue('G' . ($filaInicio + $index), $practica1->estudiante->Departamento);
+            $sheet->setCellValue('F' . ($filaInicio + $index), $practica1->estudiante->Cohorte);
+            $sheet->setCellValue('H' . ($filaInicio + $index), $practica1->estudiante->Carrera);
+
+            $sheet->setCellValue('I' . ($filaInicio + $index), $practica1->AreaConocimiento);
+            $sheet->setCellValue('J' . ($filaInicio + $index), $practica1->FechaInicio);
+            $sheet->setCellValue('K' . ($filaInicio + $index), $practica1->FechaFinalizacion);
+            $sheet->setCellValue('L' . ($filaInicio + $index), $practica1->HoraEntrada);
+            $sheet->setCellValue('M' . ($filaInicio + $index), $practica1->HoraSalida);
+            $sheet->setCellValue('N' . ($filaInicio + $index), $practica1->HorasPlanificadas);
+            $sheet->setCellValue('O' . ($filaInicio + $index), $practica1->tipoPractica);
+
+            $sheet->setCellValue('P' . ($filaInicio + $index), $practica1->empresa->nombreEmpresa ?? '');
+            $sheet->setCellValue('Q' . ($filaInicio + $index), $practica1->empresa->rucEmpresa ?? '');
+            $sheet->setCellValue('R' . ($filaInicio + $index), $practica1->empresa->actividadesMacro ?? '');
+            $sheet->setCellValue('S' . ($filaInicio + $index), $practica1->empresa->provincia ?? '');
+            $sheet->setCellValue('T' . ($filaInicio + $index), $practica1->empresa->ciudad ?? '');
+            $sheet->setCellValue('U' . ($filaInicio + $index), $practica1->empresa->direccion ?? '');
+            $sheet->setCellValue('V' . ($filaInicio + $index), $practica1->empresa->correo ?? '');
+            $sheet->setCellValue('W' . ($filaInicio + $index), $practica1->empresa->nombreContacto ?? '');
+            $sheet->setCellValue('X' . ($filaInicio + $index), $practica1->empresa->telefonoContacto ?? '');
+            $sheet->setCellValue('Y' . ($filaInicio + $index), $practica1->NombreTutorEmpresarial ?? '');
+            $sheet->setCellValue('Z' . ($filaInicio + $index), $practica1->CedulaTutorEmpresarial ?? '');
+            $sheet->setCellValue('AA' . ($filaInicio + $index), $practica1->EmailTutorEmpresarial ?? '');
+            $sheet->setCellValue('AB' . ($filaInicio + $index), $practica1->TelefonoTutorEmpresarial ?? '');
+            $sheet->setCellValue('AC' . ($filaInicio + $index), $practica1->Funcion ?? '');
+
+            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->Apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
+            $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->Cedula ?? '');
+            $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espe_id ?? '');
+            $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->Correo ?? '');
+            $sheet->setCellValue('AH' . ($filaInicio + $index), 'Docente de tiempo completo');
+            $sheet->setCellValue('AI' . ($filaInicio + $index), $practica1->tutorAcademico->Departamento ?? '');
+            $sheet->setCellValue('AJ' . ($filaInicio + $index), 'Tecnologias de la Informacion');
+
+
+
+
+
+
+
+
+            $contador++;
 
         }
 
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $documentoGeneradoPath = storage_path('app/public/Reporte-PracticasII.xlsx');
+        $documentoGeneradoPath = storage_path('app/public/Reporte-PracticasI.xlsx');
+
+        $writer->save($documentoGeneradoPath);
+
+        // Descargar el documento generado
+        return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
+    }
+
+    public function reportesPracticaIII(Request $request)
+    {
+        $plantillaPath = public_path('Plantillas/Reporte-Practicas1.2.xlsx');
+
+        $spreadsheet = IOFactory::load($plantillaPath);
+
+        $practica1 = PracticaIII::all();
+        $sheet = $spreadsheet->getActiveSheet();
+
+
+        $filaInicio = 9;
+        $cantidadFilas = count($practica1);
+        $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
+
+        $contador = 1;
+
+        foreach ($practica1 as $index => $practica1) {
+
+
+
+            $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
+            $nombreCombinado = $practica1->estudiante->Apellidos . ' ' . $practica1->estudiante->Nombres;
+            $sheet->setCellValue('B' . ($filaInicio + $index), $nombreCombinado);
+            $sheet->setCellValue('C' . ($filaInicio + $index), $practica1->estudiante->cedula);
+            $sheet->setCellValue('D' . ($filaInicio + $index), $practica1->estudiante->espe_id);
+            $sheet->setCellValue('E' . ($filaInicio + $index), $practica1->estudiante->Correo);
+            $sheet->setCellValue('G' . ($filaInicio + $index), $practica1->estudiante->Departamento);
+            $sheet->setCellValue('F' . ($filaInicio + $index), $practica1->estudiante->Cohorte);
+            $sheet->setCellValue('H' . ($filaInicio + $index), $practica1->estudiante->Carrera);
+
+            $sheet->setCellValue('I' . ($filaInicio + $index), $practica1->AreaConocimiento);
+            $sheet->setCellValue('J' . ($filaInicio + $index), $practica1->FechaInicio);
+            $sheet->setCellValue('K' . ($filaInicio + $index), $practica1->FechaFinalizacion);
+            $sheet->setCellValue('L' . ($filaInicio + $index), $practica1->HoraEntrada);
+            $sheet->setCellValue('M' . ($filaInicio + $index), $practica1->HoraSalida);
+            $sheet->setCellValue('N' . ($filaInicio + $index), $practica1->HorasPlanificadas);
+            $sheet->setCellValue('O' . ($filaInicio + $index), $practica1->tipoPractica);
+
+            $sheet->setCellValue('P' . ($filaInicio + $index), $practica1->empresa->nombreEmpresa ?? '');
+            $sheet->setCellValue('Q' . ($filaInicio + $index), $practica1->empresa->rucEmpresa ?? '');
+            $sheet->setCellValue('R' . ($filaInicio + $index), $practica1->empresa->actividadesMacro ?? '');
+            $sheet->setCellValue('S' . ($filaInicio + $index), $practica1->empresa->provincia ?? '');
+            $sheet->setCellValue('T' . ($filaInicio + $index), $practica1->empresa->ciudad ?? '');
+            $sheet->setCellValue('U' . ($filaInicio + $index), $practica1->empresa->direccion ?? '');
+            $sheet->setCellValue('V' . ($filaInicio + $index), $practica1->empresa->correo ?? '');
+            $sheet->setCellValue('W' . ($filaInicio + $index), $practica1->empresa->nombreContacto ?? '');
+            $sheet->setCellValue('X' . ($filaInicio + $index), $practica1->empresa->telefonoContacto ?? '');
+            $sheet->setCellValue('Y' . ($filaInicio + $index), $practica1->NombreTutorEmpresarial ?? '');
+            $sheet->setCellValue('Z' . ($filaInicio + $index), $practica1->CedulaTutorEmpresarial ?? '');
+            $sheet->setCellValue('AA' . ($filaInicio + $index), $practica1->EmailTutorEmpresarial ?? '');
+            $sheet->setCellValue('AB' . ($filaInicio + $index), $practica1->TelefonoTutorEmpresarial ?? '');
+            $sheet->setCellValue('AC' . ($filaInicio + $index), $practica1->Funcion ?? '');
+
+            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->Apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
+            $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->Cedula ?? '');
+            $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espe_id ?? '');
+            $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->Correo ?? '');
+            $sheet->setCellValue('AH' . ($filaInicio + $index), 'Docente de tiempo completo');
+            $sheet->setCellValue('AI' . ($filaInicio + $index), $practica1->tutorAcademico->Departamento ?? '');
+            $sheet->setCellValue('AJ' . ($filaInicio + $index), 'Tecnologias de la Informacion');
+
+
+
+
+
+
+
+
+            $contador++;
+
+        }
+
+        // Guardar el documento generado
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $documentoGeneradoPath = storage_path('app/public/Reporte-PracticasI.xlsx');
+
+        $writer->save($documentoGeneradoPath);
+
+        // Descargar el documento generado
+        return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
+    }
+
+    public function reportesPracticaIV(Request $request)
+    {
+        $plantillaPath = public_path('Plantillas/Reporte-Practicas1.2.xlsx');
+
+        $spreadsheet = IOFactory::load($plantillaPath);
+
+        $practica1 = PracticaIV::all();
+        $sheet = $spreadsheet->getActiveSheet();
+
+
+        $filaInicio = 9;
+        $cantidadFilas = count($practica1);
+        $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
+
+        $contador = 1;
+
+        foreach ($practica1 as $index => $practica1) {
+
+
+
+            $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
+            $nombreCombinado = $practica1->estudiante->Apellidos . ' ' . $practica1->estudiante->Nombres;
+            $sheet->setCellValue('B' . ($filaInicio + $index), $nombreCombinado);
+            $sheet->setCellValue('C' . ($filaInicio + $index), $practica1->estudiante->cedula);
+            $sheet->setCellValue('D' . ($filaInicio + $index), $practica1->estudiante->espe_id);
+            $sheet->setCellValue('E' . ($filaInicio + $index), $practica1->estudiante->Correo);
+            $sheet->setCellValue('G' . ($filaInicio + $index), $practica1->estudiante->Departamento);
+            $sheet->setCellValue('F' . ($filaInicio + $index), $practica1->estudiante->Cohorte);
+            $sheet->setCellValue('H' . ($filaInicio + $index), $practica1->estudiante->Carrera);
+
+            $sheet->setCellValue('I' . ($filaInicio + $index), $practica1->AreaConocimiento);
+            $sheet->setCellValue('J' . ($filaInicio + $index), $practica1->FechaInicio);
+            $sheet->setCellValue('K' . ($filaInicio + $index), $practica1->FechaFinalizacion);
+            $sheet->setCellValue('L' . ($filaInicio + $index), $practica1->HoraEntrada);
+            $sheet->setCellValue('M' . ($filaInicio + $index), $practica1->HoraSalida);
+            $sheet->setCellValue('N' . ($filaInicio + $index), $practica1->HorasPlanificadas);
+            $sheet->setCellValue('O' . ($filaInicio + $index), $practica1->tipoPractica);
+
+            $sheet->setCellValue('P' . ($filaInicio + $index), $practica1->empresa->nombreEmpresa ?? '');
+            $sheet->setCellValue('Q' . ($filaInicio + $index), $practica1->empresa->rucEmpresa ?? '');
+            $sheet->setCellValue('R' . ($filaInicio + $index), $practica1->empresa->actividadesMacro ?? '');
+            $sheet->setCellValue('S' . ($filaInicio + $index), $practica1->empresa->provincia ?? '');
+            $sheet->setCellValue('T' . ($filaInicio + $index), $practica1->empresa->ciudad ?? '');
+            $sheet->setCellValue('U' . ($filaInicio + $index), $practica1->empresa->direccion ?? '');
+            $sheet->setCellValue('V' . ($filaInicio + $index), $practica1->empresa->correo ?? '');
+            $sheet->setCellValue('W' . ($filaInicio + $index), $practica1->empresa->nombreContacto ?? '');
+            $sheet->setCellValue('X' . ($filaInicio + $index), $practica1->empresa->telefonoContacto ?? '');
+            $sheet->setCellValue('Y' . ($filaInicio + $index), $practica1->NombreTutorEmpresarial ?? '');
+            $sheet->setCellValue('Z' . ($filaInicio + $index), $practica1->CedulaTutorEmpresarial ?? '');
+            $sheet->setCellValue('AA' . ($filaInicio + $index), $practica1->EmailTutorEmpresarial ?? '');
+            $sheet->setCellValue('AB' . ($filaInicio + $index), $practica1->TelefonoTutorEmpresarial ?? '');
+            $sheet->setCellValue('AC' . ($filaInicio + $index), $practica1->Funcion ?? '');
+
+            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->Apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
+            $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->Cedula ?? '');
+            $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espe_id ?? '');
+            $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->Correo ?? '');
+            $sheet->setCellValue('AH' . ($filaInicio + $index), 'Docente de tiempo completo');
+            $sheet->setCellValue('AI' . ($filaInicio + $index), $practica1->tutorAcademico->Departamento ?? '');
+            $sheet->setCellValue('AJ' . ($filaInicio + $index), 'Tecnologias de la Informacion');
+
+
+
+
+
+
+
+
+            $contador++;
+
+        }
+
+        // Guardar el documento generado
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $documentoGeneradoPath = storage_path('app/public/Reporte-PracticasI.xlsx');
+
+        $writer->save($documentoGeneradoPath);
+
+        // Descargar el documento generado
+        return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
+    }
+
+    public function reportesPracticaV(Request $request)
+    {
+        $plantillaPath = public_path('Plantillas/Reporte-Practicas1.2.xlsx');
+
+        $spreadsheet = IOFactory::load($plantillaPath);
+
+        $practica1 = PracticaV::all();
+        $sheet = $spreadsheet->getActiveSheet();
+
+
+        $filaInicio = 9;
+        $cantidadFilas = count($practica1);
+        $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
+
+        $contador = 1;
+
+        foreach ($practica1 as $index => $practica1) {
+
+
+
+            $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
+            $nombreCombinado = $practica1->estudiante->Apellidos . ' ' . $practica1->estudiante->Nombres;
+            $sheet->setCellValue('B' . ($filaInicio + $index), $nombreCombinado);
+            $sheet->setCellValue('C' . ($filaInicio + $index), $practica1->estudiante->cedula);
+            $sheet->setCellValue('D' . ($filaInicio + $index), $practica1->estudiante->espe_id);
+            $sheet->setCellValue('E' . ($filaInicio + $index), $practica1->estudiante->Correo);
+            $sheet->setCellValue('G' . ($filaInicio + $index), $practica1->estudiante->Departamento);
+            $sheet->setCellValue('F' . ($filaInicio + $index), $practica1->estudiante->Cohorte);
+            $sheet->setCellValue('H' . ($filaInicio + $index), $practica1->estudiante->Carrera);
+
+            $sheet->setCellValue('I' . ($filaInicio + $index), $practica1->AreaConocimiento);
+            $sheet->setCellValue('J' . ($filaInicio + $index), $practica1->FechaInicio);
+            $sheet->setCellValue('K' . ($filaInicio + $index), $practica1->FechaFinalizacion);
+            $sheet->setCellValue('L' . ($filaInicio + $index), $practica1->HoraEntrada);
+            $sheet->setCellValue('M' . ($filaInicio + $index), $practica1->HoraSalida);
+            $sheet->setCellValue('N' . ($filaInicio + $index), $practica1->HorasPlanificadas);
+            $sheet->setCellValue('O' . ($filaInicio + $index), $practica1->tipoPractica);
+
+            $sheet->setCellValue('P' . ($filaInicio + $index), $practica1->empresa->nombreEmpresa ?? '');
+            $sheet->setCellValue('Q' . ($filaInicio + $index), $practica1->empresa->rucEmpresa ?? '');
+            $sheet->setCellValue('R' . ($filaInicio + $index), $practica1->empresa->actividadesMacro ?? '');
+            $sheet->setCellValue('S' . ($filaInicio + $index), $practica1->empresa->provincia ?? '');
+            $sheet->setCellValue('T' . ($filaInicio + $index), $practica1->empresa->ciudad ?? '');
+            $sheet->setCellValue('U' . ($filaInicio + $index), $practica1->empresa->direccion ?? '');
+            $sheet->setCellValue('V' . ($filaInicio + $index), $practica1->empresa->correo ?? '');
+            $sheet->setCellValue('W' . ($filaInicio + $index), $practica1->empresa->nombreContacto ?? '');
+            $sheet->setCellValue('X' . ($filaInicio + $index), $practica1->empresa->telefonoContacto ?? '');
+            $sheet->setCellValue('Y' . ($filaInicio + $index), $practica1->NombreTutorEmpresarial ?? '');
+            $sheet->setCellValue('Z' . ($filaInicio + $index), $practica1->CedulaTutorEmpresarial ?? '');
+            $sheet->setCellValue('AA' . ($filaInicio + $index), $practica1->EmailTutorEmpresarial ?? '');
+            $sheet->setCellValue('AB' . ($filaInicio + $index), $practica1->TelefonoTutorEmpresarial ?? '');
+            $sheet->setCellValue('AC' . ($filaInicio + $index), $practica1->Funcion ?? '');
+
+            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->Apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
+            $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->Cedula ?? '');
+            $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espe_id ?? '');
+            $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->Correo ?? '');
+            $sheet->setCellValue('AH' . ($filaInicio + $index), 'Docente de tiempo completo');
+            $sheet->setCellValue('AI' . ($filaInicio + $index), $practica1->tutorAcademico->Departamento ?? '');
+            $sheet->setCellValue('AJ' . ($filaInicio + $index), 'Tecnologias de la Informacion');
+
+
+
+
+
+
+
+
+            $contador++;
+
+        }
+
+        // Guardar el documento generado
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $documentoGeneradoPath = storage_path('app/public/Reporte-PracticasI.xlsx');
 
         $writer->save($documentoGeneradoPath);
 

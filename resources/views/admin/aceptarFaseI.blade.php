@@ -544,7 +544,7 @@
 
                         <div class="tooltip-container">
                             <span class="tooltip-text">Excel</span>
-                            <form id="reportForm" action="{{ route('coordinador.reportesPracticaII') }}" method="POST"
+                            <form id="reportForm" action="{{ route('coordinador.reportesPracticaIII') }}" method="POST"
                                 onsubmit="submitForm(event)">
                                 @csrf
                                 <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
@@ -736,7 +736,7 @@
                     <div class="contenedor_botones">
                         <div class="tooltip-container">
                             <span class="tooltip-text">Excel</span>
-                            <form id="reportForm" action="{{ route('coordinador.reportesPracticaII') }}" method="POST"
+                            <form id="reportForm" action="{{ route('coordinador.reportesPracticaIV') }}" method="POST"
                                 onsubmit="submitForm(event)">
                                 @csrf
                                 <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
@@ -926,7 +926,7 @@
                     <div class="contenedor_botones">
                         <div class="tooltip-container">
                             <span class="tooltip-text">Excel</span>
-                            <form id="reportForm" action="{{ route('coordinador.reportesPracticaII') }}" method="POST"
+                            <form id="reportForm" action="{{ route('coordinador.reportesPracticaV') }}" method="POST"
                                 onsubmit="submitForm(event)">
                                 @csrf
                                 <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
