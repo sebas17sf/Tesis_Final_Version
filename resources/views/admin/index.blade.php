@@ -354,7 +354,7 @@
                         <div>
                             <form id="formBusquedaDocentes">
                                 <input type="text" class="input" name="search" value="{{ $search }}"
-                                    matInput placeholder="Buscar proyectos...">
+                                    matInput placeholder="Buscar docentes...">
                                 <i class='bx bx-search-alt'></i>
                             </form>
 

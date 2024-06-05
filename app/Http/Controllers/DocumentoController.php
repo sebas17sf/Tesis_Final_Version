@@ -795,104 +795,56 @@ class DocumentoController extends Controller
 
     public function reportesProyectos(Request $request)
     {
+        try {
+            $plantillaPath = public_path('Plantillas/Reporte-Proyectos.xlsx');
+            $spreadsheet = IOFactory::load($plantillaPath);
+            $estado = $request->input('estado');
+            $query = DB::table('proyectos')
+                ->select(
+                    'proyectos.NombreProyecto',
+                    'proyectos.codigoProyecto',
+                    'proyectos.FechaInicio',
+                    'proyectos.FechaFinalizacion',
+                    'proyectos.DepartamentoTutor',
+                    'proyectos.Estado',
+                    'proyectos.DescripcionProyecto',
+                    'proyectos.DirectorID',
+                )
+                ->orderBy('proyectos.NombreProyecto', 'asc');
 
-        $plantillaPath = public_path('Plantillas/Reporte-Proyectos.xlsx');
+            if ($estado) {
+                $query->where('Estado', $estado);
+            }
 
-        $spreadsheet = IOFactory::load($plantillaPath);
+            $datosProyectos = $query->get();
+            $sheet = $spreadsheet->getActiveSheet();
+            $filaInicio = 9;
+            $cantidadFilas = count($datosProyectos);
+            $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
+            $contador = 1;
 
-        $estado = $request->input('estado');
+            foreach ($datosProyectos as $index => $proyecto) {
+                $director = ProfesUniversidad::find($proyecto->DirectorID);
+                $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
+                $sheet->setCellValue('B' . ($filaInicio + $index), mb_strtoupper($proyecto->NombreProyecto, 'UTF-8'));
+                $sheet->getStyle('B' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
+                $sheet->setCellValue('C' . ($filaInicio + $index), $proyecto->codigoProyecto);
+                $sheet->setCellValue('E' . ($filaInicio + $index), mb_strtoupper($proyecto->DepartamentoTutor, 'UTF-8'));
+                $sheet->setCellValue('F' . ($filaInicio + $index), mb_strtoupper($proyecto->Estado, 'UTF-8'));
+                $sheet->getStyle('D' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
+                $sheet->setCellValue('D' . ($filaInicio + $index), mb_strtoupper($proyecto->DescripcionProyecto, 'UTF-8'));
+                $contador++;
+            }
 
-        $query = DB::table('proyectos')
-            ->select(
-                'proyectos.NombreProyecto',
-                'proyectos.codigoProyecto',
-                'proyectos.FechaInicio',
-                'proyectos.FechaFinalizacion',
-                'proyectos.DepartamentoTutor',
-                'proyectos.Estado',
-                'proyectos.DescripcionProyecto',
-                'proyectos.DirectorID',
-            )
-            ->orderBy('proyectos.NombreProyecto', 'asc');
+            $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $nombreArchivo = 'Reporte-Proyectos.xlsx';
+            $writer->save($nombreArchivo);
 
-
-        if ($estado) {
-            $query->where('Estado', $estado);
+            return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
         }
-
-        $datosProyectos = $query->get();
-
-        $sheet = $spreadsheet->getActiveSheet();
-
-
-        $filaInicio = 9;
-        $cantidadFilas = count($datosProyectos);
-        $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
-
-        $contador = 1;
-
-        // Bucle para reemplazar los valores en la plantilla
-        foreach ($datosProyectos as $index => $proyecto) {
-            $director = ProfesUniversidad::find($proyecto->DirectorID);
-
-
-
-            $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-            /////Pasr a mayusculas NombreProyecto
-            $sheet->setCellValue('B' . ($filaInicio + $index), strtoupper($proyecto->NombreProyecto));
-
-            $sheet->getStyle('B' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
-
-            $sheet->setCellValue('C' . ($filaInicio + $index), $proyecto->codigoProyecto);
-            //$sheet->setCellValue('' . ($filaInicio + $index), $proyecto->FechaInicio);
-            //$sheet->setCellValue('' . ($filaInicio + $index), $proyecto->FechaFinalizacion);
-            $sheet->setCellValue('E' . ($filaInicio + $index), $proyecto->DepartamentoTutor);
-
-            //$nombreDirector = $director ? $director->Nombres . ' ' . $director->Apellidos : 'No especificado';
-            //$sheet->setCellValue('' . ($filaInicio + $index), $nombreDirector);
-
-
-            ///$nombreParticipante = $participante ? $participante->Nombres . ' ' . $participante->Apellidos : 'No especificado';
-            ///if ($nombresParticipantesAdicionales) {
-            //$nombreParticipante .= "\n" . $nombresParticipantesAdicionales;
-            //}
-
-            ///$sheet->setCellValue('' . ($filaInicio + $index), $nombreParticipante);
-            //$sheet->getStyle('' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
-
-
-            /// $sheet->setCellValue('' . ($filaInicio + $index), $nombreParticipante);
-            //$sheet->getStyle('' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
-
-            //$nrcValue = $nrc ? $nrc->nrc : 'No especificado';
-            //$sheet->setCellValue('' . ($filaInicio + $index), $nrcValue);
-
-            $sheet->setCellValue('F' . ($filaInicio + $index), $proyecto->Estado);
-
-            // Ajustar automáticamente la altura de la fila para la descripción del proyecto
-            $sheet->getStyle('D' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
-            $sheet->setCellValue('D' . ($filaInicio + $index), $proyecto->DescripcionProyecto);
-
-            // Obtener el periodo del NRC
-            ////$periodo = $nrc ? $nrc->periodo->numeroPeriodo : 'No especificado';
-            ///$sheet->setCellValue('H' . ($filaInicio + $index), $periodo);
-
-            $contador++;
-        }
-
-
-
-
-
-        // Guardar el documento generado
-        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $nombreArchivo = 'Reporte-Proyectos.xlsx';
-        $writer->save($nombreArchivo);
-
-        // Descargar el documento generado
-        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
-
-      }
+    }
 
 
 
@@ -1004,29 +956,32 @@ class DocumentoController extends Controller
         // Bucle para reemplazar los valores en la plantilla
         foreach ($datosEstudiantes as $index => $estudiante) {
             $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-            $sheet->setCellValue('B' . ($filaInicio + $index), $estudiante->nombreEmpresa);
-            $sheet->setCellValue('C' . ($filaInicio + $index), $estudiante->rucEmpresa);
-            $sheet->setCellValue('D' . ($filaInicio + $index), $estudiante->provincia);
-            $sheet->setCellValue('E' . ($filaInicio + $index), $estudiante->ciudad);
-            $sheet->setCellValue('F' . ($filaInicio + $index), $estudiante->direccion);
-            $sheet->setCellValue('G' . ($filaInicio + $index), $estudiante->correo);
-            $sheet->setCellValue('H' . ($filaInicio + $index), $estudiante->nombreContacto);
-            $sheet->setCellValue('I' . ($filaInicio + $index), $estudiante->telefonoContacto);
-            $sheet->setCellValue('J' . ($filaInicio + $index), $estudiante->actividadesMacro);
-            $sheet->setCellValue('K' . ($filaInicio + $index), $estudiante->cuposDisponibles);
-            $sheet->setCellValue('L' . ($filaInicio + $index), $estudiante->created_at);
-            $sheet->setCellValue('M' . ($filaInicio + $index), $estudiante->updated_at);
+            $sheet->setCellValue('B' . ($filaInicio + $index), strtoupper($estudiante->nombreEmpresa));
+            $sheet->setCellValue('C' . ($filaInicio + $index), strtoupper($estudiante->rucEmpresa));
+            $sheet->setCellValue('D' . ($filaInicio + $index), strtoupper($estudiante->provincia));
+            $sheet->setCellValue('E' . ($filaInicio + $index), strtoupper($estudiante->ciudad));
+            $sheet->setCellValue('F' . ($filaInicio + $index), strtoupper($estudiante->direccion));
+            $sheet->setCellValue('G' . ($filaInicio + $index), $estudiante->correo); // No convertir a mayúsculas
+            $sheet->setCellValue('H' . ($filaInicio + $index), strtoupper($estudiante->nombreContacto));
+            $sheet->setCellValue('I' . ($filaInicio + $index), strtoupper($estudiante->telefonoContacto));
+            $sheet->setCellValue('J' . ($filaInicio + $index), strtoupper($estudiante->actividadesMacro));
+            $sheet->setCellValue('K' . ($filaInicio + $index), strtoupper($estudiante->cuposDisponibles));
+            $sheet->setCellValue('L' . ($filaInicio + $index), strtoupper($estudiante->created_at));
+            $sheet->setCellValue('M' . ($filaInicio + $index), strtoupper($estudiante->updated_at));
 
+            $contador++;
         }
 
-        // Guardar el documento generado
-        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+
+
+
+
+         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $documentoGeneradoPath = storage_path('app/public/Reporte-Empresas.xlsx');
 
         $writer->save($documentoGeneradoPath);
 
-        // Descargar el documento generado
-        return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
+         return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
     }
 
 
@@ -1284,13 +1239,13 @@ class DocumentoController extends Controller
         // Bucle para reemplazar los valores en la plantilla
         foreach ($docentes as $index => $docente) {
             $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-            $nombreCompleto = $docente->Apellidos . ', ' . $docente->Nombres;
+            $nombreCompleto = mb_strtoupper($docente->Apellidos . ', ' . $docente->Nombres, 'UTF-8');
             $sheet->setCellValue('B' . ($filaInicio + $index), $nombreCompleto);
-            $sheet->setCellValue('C' . ($filaInicio + $index), $docente->Correo);
-            $sheet->setCellValue('D' . ($filaInicio + $index), $docente->Usuario);
-            $sheet->setCellValue('E' . ($filaInicio + $index), $docente->Cedula);
-            $sheet->setCellValue('F' . ($filaInicio + $index), $docente->Departamento);
-            $sheet->setCellValue('G' . ($filaInicio + $index), $docente->espe_id);
+            $sheet->setCellValue('C' . ($filaInicio + $index), $docente->Correo); // No convertir a mayúsculas
+            $sheet->setCellValue('D' . ($filaInicio + $index), mb_strtoupper($docente->Usuario, 'UTF-8'));
+            $sheet->setCellValue('E' . ($filaInicio + $index), mb_strtoupper($docente->Cedula, 'UTF-8'));
+            $sheet->setCellValue('F' . ($filaInicio + $index), mb_strtoupper($docente->Departamento, 'UTF-8'));
+            $sheet->setCellValue('G' . ($filaInicio + $index), mb_strtoupper($docente->espe_id, 'UTF-8'));
             $contador++;
         }
 
