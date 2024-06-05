@@ -611,9 +611,9 @@
 
                 </div>
 
-                <div class="card-footer">
-                    <button type="button" class="button" onclick="$('#draggableCardAsignarEstudiante').hide()">Cerrar</button>
-                    <button type="submit" class="button">Asignar Proyecto</button>
+                <div class="card-footer1">
+                    <button type="button" class="button0" onclick="$('#draggableCardAsignarEstudiante').hide()">Cerrar</button>
+                    <button type="submit" class="button0">Asignar Proyecto</button>
                 </div>
             </form>
         </div>
@@ -622,7 +622,7 @@
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <script src="js\admin\acciones.js"></script>
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

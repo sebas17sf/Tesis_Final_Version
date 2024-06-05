@@ -224,98 +224,69 @@
                 <hr>
 
             </div>
-            <!-- Modal para docentes -->
 
-            <div class="modal fade" id="modalAgregarMaestro" tabindex="-1" role="dialog"
-                aria-labelledby="modalAgregarMaestroLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <span class="modal-title" id="modalAgregarMaestroLabel"><b>Agregar Docentes</b></span>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="{{ route('admin.guardarMaestro') }}" method="post">
-                                @csrf
-                                <div class="form-row">
-                                    <div class="form-group col-md-4">
-                                        <label for="nombres"><strong>Ingrese Nombres:</strong></label>
-                                        <input type="text" id="nombres" name="nombres" class="form-control input"
-                                            placeholder="Ingrese los dos Nombres" required>
-                                        <small id="nombresError" class="form-text text-danger"
-                                            style="display: none;"></small>
-
-                                    </div>
-
-                                    <div class="form-group col-md-4">
-                                        <label for="apellidos"><strong>Ingrese Apellidos:</strong></label>
-                                        <input type="text" id="apellidos" name="apellidos" class="form-control input"
-                                            placeholder="Ingrese los dos Apellidos" required>
-                                        <small id="apellidosError" class="form-text text-danger"
-                                            style="display: none;"></small>
-                                    </div>
-
-                                    <div class="form-group col-md-4">
-                                        <label for="correo"><strong>Ingrese Correo:</strong></label>
-                                        <input type="email" id="correo" name="correo" class="form-control input"
-                                            placeholder="Ingrese el Correo Electrónico" required>
-                                        <small id="correoError" class="form-text text-danger"
-                                            style="display: none;"></small>
-                                        @error('correo')
-                                            <small class="form-text text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group col-md-4">
-                                        <label for="cedula"><strong>Ingrese la Cédula:</strong></label>
-                                        <input type="text" id="cedula" name="cedula" class="form-control input"
-                                            placeholder="Ingrese Cédula (10 dígitos)" pattern="\d{10}"
-                                            title="Debe ingresar exactamente 10 números" required>
-                                        <small id="cedulaError" class="form-text text-danger"
-                                            style="display: none;"></small>
-                                        @error('cedula')
-                                            <small class="form-text text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-
-                                    <div class="form-group col-md-4">
-                                        <label for="espe_id"><strong>Ingrese el la ID de la ESPE:</strong></label>
-                                        <input type="text" id="espe_id" name="espe_id" class="form-control input"
-                                            placeholder="Ingrese la ID de la ESPE" required>
-                                        <small id="espeIdError" class="form-text text-danger"
-                                            style="display: none;"></small>
-                                        @error('espe_id')
-                                            <small class="form-text text-danger">{{ $message }}</small>
-                                        @enderror
-
-                                    </div>
-
-                                    <div class="form-group col-md-4">
-                                        <label for="departamento"><strong>Seleccione el departamento al que
-                                                pertenece:</strong></label>
-                                        <select id="departamento" name="departamento"
-                                            class="form-control input_select input" required>
-                                            <option value="Ciencias de la Computación">Ciencias de la
-                                                Computación</option>
-                                            <option value="Ciencias de la Vida">Ciencias de la Vida
-                                            </option>
-                                            <option value="Ciencias Exactas">Ciencias Exactas</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="button" data-dismiss="modal">Cerrar</button>
-                                    <button type="submit" class="button">Guardar Cambios</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+<!-- Tarjeta movible para Agregar Maestro -->
+<div class="draggable-card1_1" id="draggableCardAgregarMaestro">
+    <div class="card-header">
+        <span class="card-title">Agregar Docentes</span>
+        <button type="button" class="close" onclick="document.getElementById('draggableCardAgregarMaestro').style.display='none'">&times;</button>
+    </div>
+    <div class="card-body">
+        <form action="{{ route('admin.guardarMaestro') }}" method="post">
+            @csrf
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="nombres"><strong>Ingrese Nombres:</strong></label>
+                    <input type="text" id="nombres" name="nombres" class="form-control input" placeholder="Ingrese los dos Nombres" required>
+                    <small id="nombresError" class="form-text text-danger" style="display: none;"></small>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="apellidos"><strong>Ingrese Apellidos:</strong></label>
+                    <input type="text" id="apellidos" name="apellidos" class="form-control input" placeholder="Ingrese los dos Apellidos" required>
+                    <small id="apellidosError" class="form-text text-danger" style="display: none;"></small>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="correo"><strong>Ingrese Correo:</strong></label>
+                    <input type="email" id="correo" name="correo" class="form-control input" placeholder="Ingrese el Correo Electrónico" required>
+                    <small id="correoError" class="form-text text-danger" style="display: none;"></small>
+                    @error('correo')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
                 </div>
             </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="cedula"><strong>Ingrese la Cédula:</strong></label>
+                    <input type="text" id="cedula" name="cedula" class="form-control input" placeholder="Ingrese Cédula (10 dígitos)" pattern="\d{10}" title="Debe ingresar exactamente 10 números" required>
+                    <small id="cedulaError" class="form-text text-danger" style="display: none;"></small>
+                    @error('cedula')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="espe_id"><strong>Ingrese el la ID de la ESPE:</strong></label>
+                    <input type="text" id="espe_id" name="espe_id" class="form-control input" placeholder="Ingrese la ID de la ESPE" required>
+                    <small id="espeIdError" class="form-text text-danger" style="display: none;"></small>
+                    @error('espe_id')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="departamento"><strong>Seleccione el departamento al que pertenece:</strong></label>
+                    <select id="departamento" name="departamento" class="form-control input_select input" required>
+                        <option value="Ciencias de la Computación">Ciencias de la Computación</option>
+                        <option value="Ciencias de la Vida">Ciencias de la Vida</option>
+                        <option value="Ciencias Exactas">Ciencias Exactas</option>
+                    </select>
+                </div>
+            </div>
+            <div class="card-footer1">
+                <button type="button" class="button01" onclick="document.getElementById('draggableCardAgregarMaestro').style.display='none'">Cerrar</button>
+                <button type="submit" class="button01">Guardar Cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
 
             <!--------------------------------------- -->
 
@@ -326,10 +297,9 @@
 
                         <div class="tooltip-container">
                             <span class="tooltip-text">Agregar</span>
-                            <button type="button" class="button3 efects_button btn_primary" data-toggle="modal"
-                                data-target="#modalAgregarMaestro">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
+                            
+                            <button type="button" class="button3 efects_button btn_primary" onclick="openCard('draggableCardAgregarMaestro');">
+                            <i class="fa-solid fa-plus"></i></button>
 
                         </div>
                         <div class="tooltip-container">
@@ -409,7 +379,7 @@
                                                         <div class="draggable-card1_1"
                                                             id="draggableCardEditarMaestro{{ $profesor->id }}">
                                                             <div class="card-header">
-                                                                <span class="card-title">Editar Docentes</span>
+                                                                <span class="card-title1">Editar Docentes</span>
                                                                 <button type="button" class="close"
                                                                     onclick="$('#draggableCardEditarMaestro{{ $profesor->id }}').hide()">&times;</button>
                                                             </div>
@@ -524,7 +494,7 @@
                                                                             </select>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="card-footer">
+                                                                    <div class="card-footer1">
                                                                         <button type="button"
                                                                             class="button input_select1"
                                                                             onclick="$('#draggableCardEditarMaestro{{ $profesor->id }}').hide()">Cerrar</button>
@@ -671,9 +641,9 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button type="button" class="button0"
+                                <button type="button" class="button01"
                                     onclick="$('#draggableCardNRC').hide()">Cerrar</button>
-                                <button type="submit" class="button0">Guardar NRC</button>
+                                <button type="submit" class="button01">Guardar NRC</button>
                             </div>
                         </form>
                     </div>
@@ -721,7 +691,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="card-footer">
+                            <div class="card-footer1">
                                 <button type="button" class="button"
                                     onclick="$('#draggableCardPeriodo').hide()">Cerrar</button>
                                 <button type="submit" class="button">Guardar Periodo</button>
