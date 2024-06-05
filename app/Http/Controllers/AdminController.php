@@ -1019,6 +1019,9 @@ class AdminController extends Controller
 
     public function aceptarFasei(Request $request)
     {
+
+        $search= $request->input('search');
+
         $perPage1 = $request->input('paginacion1', 10);
         $perPage2 = $request->input('paginacion2', 10);
         $perPage3 = $request->input('paginacion3', 10);
@@ -1033,9 +1036,34 @@ class AdminController extends Controller
             ->get();
 
         $estudiantesPracticas = PracticaI::with('estudiante')
-            ->where(function ($query) {
+            ->where(function ($query) use ($search) {
                 $query->where('Estado', 'En ejecucion')
                     ->orWhere('Estado', 'Finalizado');
+            })
+            ->where(function ($query) use ($search) {
+
+                $query->where('EstudianteID', 'LIKE', '%' . $search . '%')
+                    ->orWhereHas('estudiante', function ($query) use ($search) {
+                        $query->where('Nombres', 'LIKE', '%' . $search . '%')
+                            ->orWhere('Apellidos', 'LIKE', '%' . $search . '%')
+                            ->orWhere('Carrera', 'LIKE', '%' . $search . '%');
+                    })
+                    ->orWhere('ID_tutorAcademico', 'LIKE', '%' . $search . '%')
+                    ->orWhereHas('tutorAcademico', function ($query) use ($search) {
+                        $query->where('Nombres', 'LIKE', '%' . $search . '%')
+                            ->orWhere('Apellidos', 'LIKE', '%' . $search . '%');
+                    })
+                    ->orWhere('IDEmpresa', 'LIKE', '%' . $search . '%')
+                    ->orWhereHas('empresa', function ($query) use ($search) {
+                        $query->where('nombreEmpresa', 'LIKE', '%' . $search . '%')
+                            ->orWhere('rucEmpresa', 'LIKE', '%' . $search . '%')
+                            ->orWhere('provincia', 'LIKE', '%' . $search . '%')
+                            ->orWhere('ciudad', 'LIKE', '%' . $search . '%')
+
+                     ->orWhere('NombreTutorEmpresarial', 'LIKE', '%' . $search . '%')
+                             ->orWhere('tipoPractica', 'LIKE', '%' . $search . '%');
+                    });
+
             })
             ->paginate($perPage1, ['*'], 'page1');
 
@@ -1080,7 +1108,8 @@ class AdminController extends Controller
                 'perPage1',
                 'perPage2',
                 'perPage3',
-                'perPage4'
+                'perPage4',
+                'search'
             )
         );
     }

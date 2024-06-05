@@ -50,10 +50,12 @@ class PracticaI extends Model
     {
         return $this->belongsTo(ProfesUniversidad::class, 'ID_tutorAcademico', 'id');
     }
- 
+
 
     public function actividades_practicas()
     {
         return $this->hasMany(ActividadesPracticas::class, 'IDPracticasI', 'PracticasI');
     }
+
+
 }

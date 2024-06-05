@@ -161,46 +161,52 @@
                         </div>
 
                         <div class="tooltip-container">
-        <span class="tooltip-text">Importar archivo</span>
-        <button type="button" class="button3 efects_button btn_3" onclick="openCard('draggableCardImportarArchivo');">
-            <i class="fa fa-upload"></i>
-        </button>
-    </div>
+                            <span class="tooltip-text">Importar archivo</span>
+                            <button type="button" class="button3 efects_button btn_3"
+                                onclick="openCard('draggableCardImportarArchivo');">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                        </div>
 
- <!-- Tarjeta movible para Importar Archivo -->
-    <div class="draggable-card" id="draggableCardImportarArchivo" style="display: none;">
-        <div class="card-header">
-            <span class="card-title">Importar archivo</span>
-            <button type="button" class="close" onclick="document.getElementById('draggableCardImportarArchivo').style.display='none'">&times;</button>
-        </div>
-        <div class="card-body">
-            <form id="idModalImportar" action="{{ route('import-practicas1') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="form-group">
-                    <div class="input input_file">
-                        <span id="fileText" class="fileText">
-                            <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
-                        </span>
-                        <input type="file" class="form-control-file input input_file" id="file" name="file" onchange="displayFileName(this)" required>
-                        <span title="Eliminar archivo" onclick="removeFile()" class="remove-icon">✖</span>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <button type="button" class="button0" onclick="document.getElementById('draggableCardImportarArchivo').style.display='none'">Cerrar</button>
-                    <button type="submit" class="button0">Importar Archivo</button>
-                </div>
-            </form>
-        </div>
-    </div>
+                        <!-- Tarjeta movible para Importar Archivo -->
+                        <div class="draggable-card" id="draggableCardImportarArchivo" style="display: none;">
+                            <div class="card-header">
+                                <span class="card-title">Importar archivo</span>
+                                <button type="button" class="close"
+                                    onclick="document.getElementById('draggableCardImportarArchivo').style.display='none'">&times;</button>
+                            </div>
+                            <div class="card-body">
+                                <form id="idModalImportar" action="{{ route('import-practicas1') }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="form-group">
+                                        <div class="input input_file">
+                                            <span id="fileText" class="fileText">
+                                                <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
+                                            </span>
+                                            <input type="file" class="form-control-file input input_file" id="file"
+                                                name="file" onchange="displayFileName(this)" required>
+                                            <span title="Eliminar archivo" onclick="removeFile()"
+                                                class="remove-icon">✖</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="button0"
+                                            onclick="document.getElementById('draggableCardImportarArchivo').style.display='none'">Cerrar</button>
+                                        <button type="submit" class="button0">Importar Archivo</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
 
 
                     </div>
 
                     <div class="contenedor_buscador">
                         <div>
-                            <form id="formBusquedaEmpresa">
-                                <input type="text" class="input" name="search" value=" " matInput
-                                    placeholder="Buscar empresas...">
+                            <form id="formbusquedaPractica1">
+                                <input type="text" class="input" name="search" value="{{$search}}" matInput
+                                    placeholder="Buscar en practicas 1...">
                                 <i class='bx bx-search-alt'></i>
                             </form>
                         </div>
@@ -263,45 +269,55 @@
                             <ul class="pagination">
                                 <li class="page-item mx-3">
                                     <form method="GET" action="{{ route('admin.aceptarFaseI') }}#practicas1">
-                                        <select class="form-control page-item" name="paginacion1" id="perPage" onchange="this.form.submit()">
-                                            <option value="10" @if ($perPage1 == 10) selected @endif>10</option>
-                                            <option value="20" @if ($perPage1 == 20) selected @endif>20</option>
-                                            <option value="50" @if ($perPage1 == 50) selected @endif>50</option>
-                                            <option value="100" @if ($perPage1 == 100) selected @endif>100</option>
+                                        <select class="form-control page-item" name="paginacion1" id="perPage"
+                                            onchange="this.form.submit()">
+                                            <option value="10" @if ($perPage1 == 10) selected @endif>10
+                                            </option>
+                                            <option value="20" @if ($perPage1 == 20) selected @endif>20
+                                            </option>
+                                            <option value="50" @if ($perPage1 == 50) selected @endif>50
+                                            </option>
+                                            <option value="100" @if ($perPage1 == 100) selected @endif>100
+                                            </option>
                                         </select>
                                     </form>
                                 </li>
 
                                 @if ($estudiantesPracticas->onFirstPage())
-                                <li class="page-item disabled">
-                                    <span class="page-link">Anterior</span>
-                                </li>
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Anterior</span>
+                                    </li>
                                 @else
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $estudiantesPracticas->appends(['paginacion1' => $perPage1])->previousPageUrl() }}#practicas1" aria-label="Anterior">Anterior</a>
-                                </li>
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="{{ $estudiantesPracticas->appends(['paginacion1' => $perPage1])->previousPageUrl() }}#practicas1"
+                                            aria-label="Anterior">Anterior</a>
+                                    </li>
                                 @endif
 
                                 @foreach (range(1, $estudiantesPracticas->lastPage()) as $i)
-                                @if ($i == $estudiantesPracticas->currentPage())
-                                <li class="page-item active">
-                                    <span class="page-link">{{ $i }}</span>
-                                </li>
-                                @else
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $estudiantesPracticas->appends(['paginacion1' => $perPage1])->url($i) }}#practicas1">{{ $i }}</a>
-                                </li>
-                                @endif
+                                    @if ($i == $estudiantesPracticas->currentPage())
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ $i }}</span>
+                                        </li>
+                                    @else
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                                href="{{ $estudiantesPracticas->appends(['paginacion1' => $perPage1])->url($i) }}#practicas1">{{ $i }}</a>
+                                        </li>
+                                    @endif
                                 @endforeach
 
                                 @if ($estudiantesPracticas->hasMorePages())
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $estudiantesPracticas->appends(['paginacion1' => $perPage1])->nextPageUrl() }}#practicas1" aria-label="Siguiente">Siguiente</a>
-                                </li>
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="{{ $estudiantesPracticas->appends(['paginacion1' => $perPage1])->nextPageUrl() }}#practicas1"
+                                            aria-label="Siguiente">Siguiente</a>
+                                    </li>
                                 @else
-                                <li class="page-item disabled">
-                                    <span class="page-link">Siguiente</span>
-                                </li>
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Siguiente</span>
+                                    </li>
                                 @endif
 
 
@@ -339,40 +355,46 @@
                                 </button>
                             </form>
                         </div>
-                    <!-- Importar Archivo 2 -->
-                    <div class="tooltip-container">
-        <span class="tooltip-text">Importar archivo</span>
-        <button type="button" class="button3 efects_button btn_3" onclick="openCard('draggableCardImportarArchivo');">
-            <i class="fa fa-upload"></i>
-        </button>
-    </div>
+                        <!-- Importar Archivo 2 -->
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Importar archivo</span>
+                            <button type="button" class="button3 efects_button btn_3"
+                                    onclick="openCard('draggableCardImportarArchivo2');">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                        </div>
 
- <!-- Tarjeta movible para Importar Archivo -->
-    <div class="draggable-card" id="draggableCardImportarArchivo" style="display: none;">
-        <div class="card-header">
-            <span class="card-title">Importar archivo</span>
-            <button type="button" class="close" onclick="document.getElementById('draggableCardImportarArchivo').style.display='none'">&times;</button>
-        </div>
-        <div class="card-body">
-            <form id="idModalImportar" action="{{ route('import-practicas2') }}"  method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="form-group">
-                    <div class="input input_file">
-                        <span id="fileText" class="fileText">
-                            <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
-                        </span>
-                        <input type="file" class="form-control-file input input_file" id="file" name="file" onchange="displayFileName(this)" required>
-                        <span title="Eliminar archivo" onclick="removeFile()" class="remove-icon">✖</span>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <button type="button" class="button0" onclick="document.getElementById('draggableCardImportarArchivo').style.display='none'">Cerrar</button>
-                    <button type="submit" class="button0">Importar Archivo</button>
-                </div>
-            </form>
-        </div>
-    </div>
-     
+                        <!-- Tarjeta movible para Importar Archivo -->
+                        <div class="draggable-card" id="draggableCardImportarArchivo2" style="display: none;">
+                            <div class="card-header">
+                                <span class="card-title">Importar archivo</span>
+                                <button type="button" class="close"
+                                        onclick="document.getElementById('draggableCardImportarArchivo2').style.display='none'">&times;</button>
+                            </div>
+                            <div class="card-body">
+                                <form id="idModalImportar" action="{{ route('import-practicas2') }}" method="POST"
+                                      enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="form-group">
+                                        <div class="input input_file">
+                                            <span id="fileText" class="fileText">
+                                                <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
+                                            </span>
+                                            <input type="file" class="form-control-file input input_file" id="file"
+                                                   name="file" onchange="displayFileName(this)" required>
+                                            <span title="Eliminar archivo" onclick="removeFile()"
+                                                  class="remove-icon">✖</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="button0"
+                                                onclick="document.getElementById('draggableCardImportarArchivo').style.display='none'">Cerrar</button>
+                                        <button type="submit" class="button0">Importar Archivo</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -1033,5 +1055,25 @@
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+
+<script>
+    var delayTimer;
+    $('#formbusquedaPractica1 input[name="search"]').on('keyup', function() {
+        clearTimeout(delayTimer);
+        var query = $(this).val();
+        delayTimer = setTimeout(function() {
+            $.ajax({
+                url: '{{ route('admin.aceptarFaseI') }}',
+                type: 'GET',
+                data: {
+                    search: query
+                },
+                success: function(response) {
+                    $('#practicas1').html($(response).find('#practicas1').html());
+                }
+            });
+        }, 500);
+    });
+</script>
 
 @endsection
