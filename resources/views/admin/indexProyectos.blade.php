@@ -176,17 +176,14 @@
                                                                     <i class="bx bx-edit-alt"></i>
                                                                 </a>
                                                             </div>
-                                                            <form class="btn-group shadow-1"
-                                                                action="{{ route('admin.deleteProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                    <button type="submit"
-                                                                        class="button3 efects_button btn_eliminar3"
-                                                                        onclick="return confirm('¿Estás seguro de eliminar este proyecto?')">
-                                                                        <i class="bx bx-trash"></i>
-                                                                    </button>
-                                                            </form>
+                                                    <form class="btn-group shadow-1" id="deleteProjectForm"
+                                                          action="{{ route('admin.deleteProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
+                                                          method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+
+                                                        <button type="submit" class="button3 efects_button btn_eliminar3" onclick="confirmDeleteProject(event)"><i class='bx bx-trash'></i></button>
+                                                    </form>
                                                         </dv>
                                                 </td>
                                             </tr>

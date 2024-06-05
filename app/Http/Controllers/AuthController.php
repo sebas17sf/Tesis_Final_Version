@@ -23,7 +23,15 @@ class AuthController extends Controller
         $validatedData = $request->validate([
             'CorreoElectronico' => 'required|string|email|unique:usuarios',
             'Contrasena' => 'required|string|min:6',
+        ], [
+            'CorreoElectronico.required' => 'El correo electrónico es requerido',
+            'CorreoElectronico.email' => 'El correo electrónico no es válido',
+            'CorreoElectronico.unique' => 'El correo electrónico ya ha sido registrado',
+            'Contrasena.required' => 'La contraseña es requerida',
+            'Contrasena.min' => 'La contraseña debe tener al menos 6 caracteres',
         ]);
+
+
 
         // Obtener el ID del rol 'Estudiante' de la tabla 'roles'
         $estudianteRoleId = Role::where('Tipo', 'Estudiante')->value('id');

@@ -175,6 +175,8 @@ class AdminController extends Controller
         $elementosPorPagina = $request->input('elementosPorPagina');
         $elementosPorPaginaAprobados = $request->input('elementosPorPaginaAprobados'); // Cambio de nombre
 
+        $search2 = $request->input('search2');
+
         // Consulta para estudiantes en revisión
         $queryEstudiantesEnRevision = Estudiante::where('Estado', 'En proceso de revisión')
             ->orderBy('Nombres', 'asc');
@@ -190,22 +192,20 @@ class AdminController extends Controller
 
         $estudiantesEnRevision = $queryEstudiantesEnRevision->get();
 
-
-        // Consulta para estudiantes de vinculación
-
-        // Búsqueda de estudiantes de vinculación
-
-
-
         // Consulta y paginación para estudiantes aprobados
-        $queryEstudiantesAprobados = Estudiante::whereIn('Estado', ['Aprobado', 'Aprobado-prácticas']);
+        $queryEstudiantesAprobados = Estudiante::whereIn('Estado', ['Aprobado', 'Aprobado-prácticas','Desactivados']);
 
         // Búsqueda de estudiantes aprobados
-        if ($request->has('buscarEstudiantesAprobados')) {
-            $busquedaEstudiantesAprobados = $request->input('buscarEstudiantesAprobados');
+        if ($request->has('search2')) {
+            $busquedaEstudiantesAprobados = $request->input('search2');
             $queryEstudiantesAprobados->where(function ($query) use ($busquedaEstudiantesAprobados) {
                 $query->where('Nombres', 'like', '%' . $busquedaEstudiantesAprobados . '%')
-                    ->orWhere('Apellidos', 'like', '%' . $busquedaEstudiantesAprobados . '%');
+                    ->orWhere('Apellidos', 'like', '%' . $busquedaEstudiantesAprobados . '%')
+                    ->orWhere('espe_id', 'like', '%' . $busquedaEstudiantesAprobados . '%')
+                    ->orWhere('celular', 'like', '%' . $busquedaEstudiantesAprobados . '%')
+                    ->orWhere('cedula', 'like', '%' . $busquedaEstudiantesAprobados . '%')
+                    ->orWhere('Cohorte', 'like', '%' . $busquedaEstudiantesAprobados . '%')
+                    ->orWhere('Departamento', 'like', '%' . $busquedaEstudiantesAprobados . '%');
             });
         }
 
@@ -217,7 +217,8 @@ class AdminController extends Controller
             'estudiantesEnRevision' => $estudiantesEnRevision,
             'estudiantesAprobados' => $estudiantesAprobados,
             'elementosPorPagina' => $elementosPorPagina,
-            'elementosPorPaginaAprobados' => $elementosPorPaginaAprobados, // Cambio de nombre
+            'elementosPorPaginaAprobados' => $elementosPorPaginaAprobados,
+            'search2' => $search2,
         ]);
     }
 

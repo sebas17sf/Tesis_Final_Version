@@ -174,7 +174,7 @@ class EstudianteController extends Controller
     public function resend(Request $request, Estudiante $estudiante)
     {
         // Verificar si el estado actual es "Negado"
-        if ($estudiante->Estado === 'Negado') {
+        if ($estudiante->Estado === 'Negado' || $estudiante->Estado === 'negado') {
             // Actualizar el estado a "En proceso de revisión"
             $estudiante->update([
                 'Estado' => 'En proceso de revision',

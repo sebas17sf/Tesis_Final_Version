@@ -63,10 +63,16 @@
                         required placeholder="Ingrese su correo electrónico">
 
                     <!-- Campo de contraseña -->
-                    <label class="description" for="Contrasena">Contraseña</label>
-                    <input class="input form_input" type="password" id="Contrasena" name="Contrasena"
-                        placeholder="Ingrese su contraseña" required>
-
+                    <div>
+                        <!-- Campo de contraseña -->
+                        <label class="description" for="Contrasena">Contraseña</label>
+                        <div class="input-group" style="position: relative;">
+                            <input type="password" class="input form_input" id="Contrasena" name="Contrasena" placeholder="Ingrese su contraseña" required>
+                            <div id="togglePassword" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+                                <i class="material-icons">visibility</i>
+                            </div>
+                        </div>
+                    </div>
                     <!-- Olvido la contraseña -->
                     <div class="olvidar_contraseña">
                         <a href="{{ route('recuperar-contrasena') }}">¿Olvidaste tu contraseña?</a>
@@ -125,6 +131,13 @@
         document.addEventListener('DOMContentLoaded', function() {
             const sessionTitle = document.getElementById('sesionTitulo');
             sessionTitle.addEventListener('click', handleClick);
+        });
+
+        document.getElementById('togglePassword').addEventListener('click', function (e) {
+            const passwordInput = document.getElementById('Contrasena');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.children[0].textContent = type === 'password' ? 'visibility' : 'visibility_off';
         });
     </script>
 </body>

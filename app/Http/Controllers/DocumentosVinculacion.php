@@ -562,13 +562,14 @@ class DocumentosVinculacion extends Controller
                     ],
                     [
                         'Correo' => $row[2],
-                        'Apellidos' => $row[4],
-                        'Nombres' => $row[3],
+                        'Apellidos' => $row[3],
+                        'Nombres' => $row[4],
                         'Cohorte' => $row[5],
                         'id_periodo' => $periodo ? $periodo->id : null,
                         'Carrera' => 'Ingeniería en Tecnologías de la información',
                         'Departamento' => 'Ciencias de la Computación',
                         'comentario' => 'Importado desde Excel',
+                        'Estado' => 'Desactivados',
                     ]
                 );
             }
