@@ -177,55 +177,47 @@
                             <ul class="pagination">
                                 <li class="page-item mx-3">
                                     <form method="GET" action="{{ route('admin.estudiantes') }}#tablaEstudiantes">
-                                        <select class="form-control page-item" class="input" name="elementosPorPaginaAprobados" id="elementosPorPaginaAprobados"
-                                                onchange="this.form.submit()">
-                                            <option value="10" @if ($elementosPorPaginaAprobados == 10) selected @endif>10
-                                            </option>
-                                            <option value="20" @if ($elementosPorPaginaAprobados == 20) selected @endif>20
-                                            </option>
-                                            <option value="50" @if ($elementosPorPaginaAprobados == 50) selected @endif>
-                                                50
-                                            </option>
-                                            <option value="100" @if ($elementosPorPaginaAprobados == 100) selected @endif>
-                                                100
-                                            </option>
+                                        <select class="form-control page-item" name="elementosPorPaginaAprobados" id="elementosPorPaginaAprobados" onchange="this.form.submit()">
+                                            <option value="10" @if ($elementosPorPaginaAprobados == 10) selected @endif>10</option>
+                                            <option value="20" @if ($elementosPorPaginaAprobados == 20) selected @endif>20</option>
+                                            <option value="50" @if ($elementosPorPaginaAprobados == 50) selected @endif>50</option>
+                                            <option value="100" @if ($elementosPorPaginaAprobados == 100) selected @endif>100</option>
                                         </select>
                                     </form>
                                 </li>
 
                                 @if ($estudiantesAprobados->onFirstPage())
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Anterior</span>
-                                    </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link">Anterior</span>
+                                </li>
                                 @else
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $estudiantesAprobados->previousPageUrl() }}#tablaEstudiantes"
-                                            aria-label="Anterior">Anterior</a>
-                                    </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $estudiantesAprobados->appends(['elementosPorPaginaAprobados' => $elementosPorPaginaAprobados])->previousPageUrl() }}#tablaEstudiantes" aria-label="Anterior">Anterior</a>
+                                </li>
                                 @endif
 
                                 @foreach ($estudiantesAprobados->getUrlRange(1, $estudiantesAprobados->lastPage()) as $page => $url)
-                                    @if ($page == $estudiantesAprobados->currentPage())
-                                        <li class="page-item active">
-                                            <span class="page-link">{{ $page }}</span>
-                                        </li>
-                                    @else
-                                        <li class="page-item">
-                                            <a class="page-link" href="{{ $url }}#tablaEstudiantes">{{ $page }}</a>
-                                        </li>
-                                    @endif
+                                @if ($page == $estudiantesAprobados->currentPage())
+                                <li class="page-item active">
+                                    <span class="page-link">{{ $page }}</span>
+                                </li>
+                                @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $estudiantesAprobados->appends(['elementosPorPaginaAprobados' => $elementosPorPaginaAprobados])->url($page) }}#tablaEstudiantes">{{ $page }}</a>
+                                </li>
+                                @endif
                                 @endforeach
 
                                 @if ($estudiantesAprobados->hasMorePages())
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $estudiantesAprobados->nextPageUrl() }}#tablaEstudiantes"
-                                            aria-label="Siguiente">Siguiente</a>
-                                    </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $estudiantesAprobados->appends(['elementosPorPaginaAprobados' => $elementosPorPaginaAprobados])->nextPageUrl() }}#tablaEstudiantes" aria-label="Siguiente">Siguiente</a>
+                                </li>
                                 @else
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Siguiente</span>
-                                    </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link">Siguiente</span>
+                                </li>
                                 @endif
+
 
 
                             </ul>

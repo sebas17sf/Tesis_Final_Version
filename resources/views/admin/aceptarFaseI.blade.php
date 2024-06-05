@@ -262,59 +262,48 @@
                         <nav aria-label="...">
                             <ul class="pagination">
                                 <li class="page-item mx-3">
-                                    <form method="GET" action="{{ route('admin.aceptarFaseI') }}">
-                                        <select class="form-control page-item" class="input" name="paginacion1"
-                                            id="perPage" onchange="this.form.submit()">
-                                            <option value="10" @if ($perPage1 == 10) selected @endif>10
-                                            </option>
-                                            <option value="20" @if ($perPage1 == 20) selected @endif>20
-                                            </option>
-                                            <option value="50" @if ($perPage1 == 50) selected @endif>
-                                                50
-                                            </option>
-                                            <option value="100" @if ($perPage1 == 100) selected @endif>
-                                                100
-                                            </option>
+                                    <form method="GET" action="{{ route('admin.aceptarFaseI') }}#practicas1">
+                                        <select class="form-control page-item" name="paginacion1" id="perPage" onchange="this.form.submit()">
+                                            <option value="10" @if ($perPage1 == 10) selected @endif>10</option>
+                                            <option value="20" @if ($perPage1 == 20) selected @endif>20</option>
+                                            <option value="50" @if ($perPage1 == 50) selected @endif>50</option>
+                                            <option value="100" @if ($perPage1 == 100) selected @endif>100</option>
                                         </select>
                                     </form>
                                 </li>
 
                                 @if ($estudiantesPracticas->onFirstPage())
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Anterior</span>
-                                    </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link">Anterior</span>
+                                </li>
                                 @else
-                                    <li class="page-item">
-                                        <a class="page-link"
-                                            href="{{ $estudiantesPracticas->previousPageUrl() }}&page1={{ $estudiantesPracticas->currentPage() - 1 }}#practicas1"
-                                            aria-label="Anterior">Anterior</a>
-                                    </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $estudiantesPracticas->appends(['paginacion1' => $perPage1])->previousPageUrl() }}#practicas1" aria-label="Anterior">Anterior</a>
+                                </li>
                                 @endif
 
                                 @foreach (range(1, $estudiantesPracticas->lastPage()) as $i)
-                                    @if ($i == $estudiantesPracticas->currentPage())
-                                        <li class="page-item active">
-                                            <span class="page-link">{{ $i }}</span>
-                                        </li>
-                                    @else
-                                        <li class="page-item">
-                                            <a class="page-link"
-                                                href="{{ $estudiantesPracticas->url($i) }}&page1={{ $i }}#practicas1">{{ $i }}</a>
-                                        </li>
-                                    @endif
+                                @if ($i == $estudiantesPracticas->currentPage())
+                                <li class="page-item active">
+                                    <span class="page-link">{{ $i }}</span>
+                                </li>
+                                @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $estudiantesPracticas->appends(['paginacion1' => $perPage1])->url($i) }}#practicas1">{{ $i }}</a>
+                                </li>
+                                @endif
                                 @endforeach
 
                                 @if ($estudiantesPracticas->hasMorePages())
-                                    <li class="page-item">
-                                        <a class="page-link"
-                                            href="{{ $estudiantesPracticas->nextPageUrl() }}&page1={{ $estudiantesPracticas->currentPage() + 1 }}#practicas1"
-                                            aria-label="Siguiente">Siguiente</a>
-                                    </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $estudiantesPracticas->appends(['paginacion1' => $perPage1])->nextPageUrl() }}#practicas1" aria-label="Siguiente">Siguiente</a>
+                                </li>
                                 @else
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Siguiente</span>
-                                    </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link">Siguiente</span>
+                                </li>
                                 @endif
+
 
                             </ul>
                         </nav>

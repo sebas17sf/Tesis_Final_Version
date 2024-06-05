@@ -404,7 +404,7 @@
 
                                 <ul class="pagination">
                                     <li class="page-item mx-3">
-                                        <form method="GET" action="{{ route('admin.agregarEmpresa') }}">
+                                        <form method="GET" action="{{ route('admin.agregarEmpresa') }}#tablaEmpresas">
 
                                             <select name="elementosPorPagina"
                                                 class="form-control page-item"id="elementosPorPagina"
@@ -429,7 +429,7 @@
                                         </li>
                                     @else
                                         <li class="page-item">
-                                            <a class="page-link" href="{{ $empresas->previousPageUrl() }}"
+                                            <a class="page-link" href="{{ $empresas->previousPageUrl() }}#tablaEmpresas"
                                                 aria-label="Anterior">Anterior</a>
                                         </li>
                                     @endif
@@ -441,14 +441,14 @@
                                             </li>
                                         @else
                                             <li class="page-item">
-                                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                                <a class="page-link" href="{{ $url }}#tablaEmpresas">{{ $page }}</a>
                                             </li>
                                         @endif
                                     @endforeach
 
                                     @if ($empresas->hasMorePages())
                                         <li class="page-item">
-                                            <a class="page-link" href="{{ $empresas->nextPageUrl() }}"
+                                            <a class="page-link" href="{{ $empresas->nextPageUrl() }}#tablaEmpresas"
                                                 aria-label="Siguiente">Siguiente</a>
                                         </li>
                                     @else
