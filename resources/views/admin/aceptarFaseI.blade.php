@@ -161,38 +161,51 @@
                         </div>
 
                         <div class="tooltip-container">
-        <span class="tooltip-text">Importar archivo</span>
-        <button type="button" class="button3 efects_button btn_3" onclick="openCard('draggableCardImportarArchivo');">
-            <i class="fa fa-upload"></i>
-        </button>
-    </div>
+                            <span class="tooltip-text">Importar archivo</span>
+                            <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
+                                data-target="#modalImportar">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                        </div>
 
- <!-- Tarjeta movible para Importar Archivo -->
-    <div class="draggable-card" id="draggableCardImportarArchivo" style="display: none;">
-        <div class="card-header">
-            <span class="card-title">Importar archivo</span>
-            <button type="button" class="close" onclick="document.getElementById('draggableCardImportarArchivo').style.display='none'">&times;</button>
-        </div>
-        <div class="card-body">
-            <form id="idModalImportar" action="{{ route('import-practicas1') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="form-group">
-                    <div class="input input_file">
-                        <span id="fileText" class="fileText">
-                            <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
-                        </span>
-                        <input type="file" class="form-control-file input input_file" id="file" name="file" onchange="displayFileName(this)" required>
-                        <span title="Eliminar archivo" onclick="removeFile()" class="remove-icon">✖</span>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <button type="button" class="button0" onclick="document.getElementById('draggableCardImportarArchivo').style.display='none'">Cerrar</button>
-                    <button type="submit" class="button0">Importar Archivo</button>
-                </div>
-            </form>
-        </div>
-    </div>
+                        <div class="modal fade" id="modalImportar" tabindex="-1" role="dialog"
+                            aria-labelledby="modalImportarLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form id="idModalImportar" action="{{ route('import-practicas1') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Importar archivo</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <div class="input input_file">
+                                                    <span id="fileText" class="fileText">
+                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el
+                                                        documento
+                                                    </span>
+                                                    <input type="file" class="form-control-file input input_file"
+                                                        id="file" name="file" onchange="displayFileName(this)"
+                                                        required>
+                                                    <span title="Eliminar archivo" onclick="removeFile(this)"
+                                                        class="remove-icon">✖</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="cerrar_modal" type="button" class="button"
+                                                data-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="button">Importar Archivo</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
 
+                        </div>
 
                     </div>
 
@@ -350,40 +363,52 @@
                                 </button>
                             </form>
                         </div>
-                    <!-- Importar Archivo 2 -->
-                    <div class="tooltip-container">
-        <span class="tooltip-text">Importar archivo</span>
-        <button type="button" class="button3 efects_button btn_3" onclick="openCard('draggableCardImportarArchivo');">
-            <i class="fa fa-upload"></i>
-        </button>
-    </div>
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Importar archivo</span>
+                            <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
+                                data-target="#modalImportar2">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                        </div>
 
- <!-- Tarjeta movible para Importar Archivo -->
-    <div class="draggable-card" id="draggableCardImportarArchivo" style="display: none;">
-        <div class="card-header">
-            <span class="card-title">Importar archivo</span>
-            <button type="button" class="close" onclick="document.getElementById('draggableCardImportarArchivo').style.display='none'">&times;</button>
-        </div>
-        <div class="card-body">
-            <form id="idModalImportar" action="{{ route('import-practicas2') }}"  method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="form-group">
-                    <div class="input input_file">
-                        <span id="fileText" class="fileText">
-                            <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
-                        </span>
-                        <input type="file" class="form-control-file input input_file" id="file" name="file" onchange="displayFileName(this)" required>
-                        <span title="Eliminar archivo" onclick="removeFile()" class="remove-icon">✖</span>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <button type="button" class="button0" onclick="document.getElementById('draggableCardImportarArchivo').style.display='none'">Cerrar</button>
-                    <button type="submit" class="button0">Importar Archivo</button>
-                </div>
-            </form>
-        </div>
-    </div>
-     
+                        <div class="modal fade" id="modalImportar2" tabindex="-1" role="dialog"
+                            aria-labelledby="modalImportarLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form id="idModalImportar" action="{{ route('import-practicas2') }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Importar archivo</h5>
+                                            <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <div class="input input_file">
+                                                    <span id="fileText" class="fileText">
+                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el
+                                                        documento
+                                                    </span>
+                                                    <input type="file" class="form-control-file input input_file"
+                                                        id="file" name="file" onchange="displayFileName(this)"
+                                                        required>
+                                                    <span title="Eliminar archivo" onclick="removeFile(this)"
+                                                        class="remove-icon">✖</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button id="cerrar_modal" type="button" class="button"
+                                                data-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="button">Importar Archivo</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -1035,14 +1060,6 @@
             font-weight: normal;
         }
     </style>
-    <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
-    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
-    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
-    <script src="js\admin\acciones.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+
 
 @endsection
