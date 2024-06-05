@@ -169,3 +169,30 @@ $(document).ready(function() {
         makeElementDraggable(this);
     });
 });
+$(document).ready(function() {
+    $('.draggable-card').each(function() {
+        makeElementDraggable(this);
+    });
+});
+function displayFileName(input) {
+    const fileName = input.files[0].name;
+    document.getElementById('fileText').textContent = fileName;
+}
+
+function removeFile() {
+    const input = document.getElementById('file');
+    input.value = ""; // Clear the input
+    document.getElementById('fileText').innerHTML = '<i class="fa fa-upload"></i> Haz clic aquí para subir el documento'; // Reset the text
+    document.querySelector('.remove-icon').style.display = 'none';
+}
+
+$('#modalImportar').on('hidden.bs.modal', function() {
+    $('#idModalImportar')[0].reset();
+    $('#idModalImportar').find('.form-group').removeClass('has-error');
+    $('#idModalImportar').find('.help-block').text('');
+    removeFile();
+});
+function openCard(cardId) {
+    var card = document.getElementById(cardId);
+    card.style.display = 'block';
+}

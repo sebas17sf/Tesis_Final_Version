@@ -611,9 +611,9 @@
 
                 </div>
 
-                <div class="card-footer">
-                    <button type="button" class="button" onclick="$('#draggableCardAsignarEstudiante').hide()">Cerrar</button>
-                    <button type="submit" class="button">Asignar Proyecto</button>
+                <div class="card-footer1">
+                    <button type="button" class="button0" onclick="$('#draggableCardAsignarEstudiante').hide()">Cerrar</button>
+                    <button type="submit" class="button0">Asignar Proyecto</button>
                 </div>
             </form>
         </div>
