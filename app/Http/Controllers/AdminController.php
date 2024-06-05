@@ -1021,6 +1021,11 @@ class AdminController extends Controller
     {
 
         $search= $request->input('search');
+        $search2= $request->input('search2');
+        $search3= $request->input('search3');
+        $search4= $request->input('search4');
+
+
 
         $perPage1 = $request->input('paginacion1', 10);
         $perPage2 = $request->input('paginacion2', 10);
@@ -1072,6 +1077,32 @@ class AdminController extends Controller
                 $query->where('Estado', 'En ejecucion')
                     ->orWhere('Estado', 'Finalizado');
             })
+
+            ->where(function ($query) use ($search2) {
+
+                $query->where('EstudianteID', 'LIKE', '%' . $search2 . '%')
+                    ->orWhereHas('estudiante', function ($query) use ($search2) {
+                        $query->where('Nombres', 'LIKE', '%' . $search2 . '%')
+                            ->orWhere('Apellidos', 'LIKE', '%' . $search2 . '%')
+                            ->orWhere('Carrera', 'LIKE', '%' . $search2 . '%');
+                    })
+                    ->orWhere('ID_tutorAcademico', 'LIKE', '%' . $search2 . '%')
+                    ->orWhereHas('tutorAcademico', function ($query) use ($search2) {
+                        $query->where('Nombres', 'LIKE', '%' . $search2 . '%')
+                            ->orWhere('Apellidos', 'LIKE', '%' . $search2 . '%');
+                    })
+                    ->orWhere('IDEmpresa', 'LIKE', '%' . $search2 . '%')
+                    ->orWhereHas('empresa', function ($query) use ($search2) {
+                        $query->where('nombreEmpresa', 'LIKE', '%' . $search2 . '%')
+                            ->orWhere('rucEmpresa', 'LIKE', '%' . $search2 . '%')
+                            ->orWhere('provincia', 'LIKE', '%' . $search2 . '%')
+                            ->orWhere('ciudad', 'LIKE', '%' . $search2 . '%')
+
+                            ->orWhere('NombreTutorEmpresarial', 'LIKE', '%' . $search2 . '%')
+                            ->orWhere('tipoPractica', 'LIKE', '%' . $search2 . '%');
+                    });
+
+            })
             ->paginate($perPage2, ['*'], 'page2');
 
         $estudiantesPracticasIII = PracticaIII::with('estudiante')
@@ -1079,12 +1110,62 @@ class AdminController extends Controller
                 $query->where('Estado', 'En ejecucion')
                     ->orWhere('Estado', 'Finalizado');
             })
+            ->where(function ($query) use ($search3) {
+
+                $query->where('EstudianteID', 'LIKE', '%' . $search3 . '%')
+                    ->orWhereHas('estudiante', function ($query) use ($search3) {
+                        $query->where('Nombres', 'LIKE', '%' . $search3 . '%')
+                            ->orWhere('Apellidos', 'LIKE', '%' . $search3 . '%')
+                            ->orWhere('Carrera', 'LIKE', '%' . $search3 . '%');
+                    })
+                    ->orWhere('ID_tutorAcademico', 'LIKE', '%' . $search3 . '%')
+                    ->orWhereHas('tutorAcademico', function ($query) use ($search3) {
+                        $query->where('Nombres', 'LIKE', '%' . $search3 . '%')
+                            ->orWhere('Apellidos', 'LIKE', '%' . $search3 . '%');
+                    })
+                    ->orWhere('IDEmpresa', 'LIKE', '%' . $search3 . '%')
+                    ->orWhereHas('empresa', function ($query) use ($search3) {
+                        $query->where('nombreEmpresa', 'LIKE', '%' . $search3 . '%')
+                            ->orWhere('rucEmpresa', 'LIKE', '%' . $search3 . '%')
+                            ->orWhere('provincia', 'LIKE', '%' . $search3 . '%')
+                            ->orWhere('ciudad', 'LIKE', '%' . $search3 . '%')
+
+                            ->orWhere('NombreTutorEmpresarial', 'LIKE', '%' . $search3 . '%')
+                            ->orWhere('tipoPractica', 'LIKE', '%' . $search3 . '%');
+                    });
+
+            })
             ->paginate($perPage3, ['*'], 'page3');
 
         $estudiantesPracticasIV = PracticaIV::with('estudiante')
             ->where(function ($query) {
                 $query->where('Estado', 'En ejecucion')
                     ->orWhere('Estado', 'Finalizado');
+            })
+            ->where(function ($query) use ($search4) {
+
+                $query->where('EstudianteID', 'LIKE', '%' . $search4 . '%')
+                    ->orWhereHas('estudiante', function ($query) use ($search4) {
+                        $query->where('Nombres', 'LIKE', '%' . $search4 . '%')
+                            ->orWhere('Apellidos', 'LIKE', '%' . $search4 . '%')
+                            ->orWhere('Carrera', 'LIKE', '%' . $search4 . '%');
+                    })
+                    ->orWhere('ID_tutorAcademico', 'LIKE', '%' . $search4 . '%')
+                    ->orWhereHas('tutorAcademico', function ($query) use ($search4) {
+                        $query->where('Nombres', 'LIKE', '%' . $search4 . '%')
+                            ->orWhere('Apellidos', 'LIKE', '%' . $search4 . '%');
+                    })
+                    ->orWhere('IDEmpresa', 'LIKE', '%' . $search4 . '%')
+                    ->orWhereHas('empresa', function ($query) use ($search4) {
+                        $query->where('nombreEmpresa', 'LIKE', '%' . $search4 . '%')
+                            ->orWhere('rucEmpresa', 'LIKE', '%' . $search4 . '%')
+                            ->orWhere('provincia', 'LIKE', '%' . $search4 . '%')
+                            ->orWhere('ciudad', 'LIKE', '%' . $search4 . '%')
+
+                            ->orWhere('NombreTutorEmpresarial', 'LIKE', '%' . $search4 . '%')
+                            ->orWhere('tipoPractica', 'LIKE', '%' . $search4 . '%');
+                    });
+
             })
             ->paginate($perPage4, ['*'], 'page4');
 
@@ -1109,7 +1190,11 @@ class AdminController extends Controller
                 'perPage2',
                 'perPage3',
                 'perPage4',
-                'search'
+                'search',
+                'search2',
+                'search3',
+                'search4'
+
             )
         );
     }

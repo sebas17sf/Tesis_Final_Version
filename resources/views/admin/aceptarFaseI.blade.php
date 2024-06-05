@@ -409,6 +409,17 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="contenedor_buscador">
+                        <div>
+                            <form id="formbusquedaPractica2">
+                                <input type="text" class="input" name="search2" value="{{$search2}}" matInput
+                                       placeholder="Buscar en practicas 1.2...">
+                                <i class='bx bx-search-alt'></i>
+                            </form>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="contenedor_tabla">
@@ -469,59 +480,48 @@
                         <nav aria-label="...">
                             <ul class="pagination">
                                 <li class="page-item mx-3">
-                                    <form method="GET" action="{{ route('admin.aceptarFaseI') }}">
-                                        <select class="form-control page-item" class="input" name="paginacion2"
-                                            id="perPage" onchange="this.form.submit()">
-                                            <option value="10" @if ($perPage2 == 10) selected @endif>10
-                                            </option>
-                                            <option value="20" @if ($perPage2 == 20) selected @endif>20
-                                            </option>
-                                            <option value="50" @if ($perPage2 == 50) selected @endif>
-                                                50
-                                            </option>
-                                            <option value="100" @if ($perPage2 == 100) selected @endif>
-                                                100
-                                            </option>
+                                    <form method="GET" action="{{ route('admin.aceptarFaseI') }}#practicas2">
+                                        <select class="form-control page-item" name="paginacion2" id="perPage" onchange="this.form.submit()">
+                                            <option value="10" @if ($perPage2 == 10) selected @endif>10</option>
+                                            <option value="20" @if ($perPage2 == 20) selected @endif>20</option>
+                                            <option value="50" @if ($perPage2 == 50) selected @endif>50</option>
+                                            <option value="100" @if ($perPage2 == 100) selected @endif>100</option>
                                         </select>
                                     </form>
                                 </li>
 
                                 @if ($estudiantesPracticasII->onFirstPage())
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Anterior</span>
-                                    </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link">Anterior</span>
+                                </li>
                                 @else
-                                    <li class="page-item">
-                                        <a class="page-link"
-                                            href="{{ $estudiantesPracticasII->previousPageUrl() }}&page2={{ $estudiantesPracticasII->currentPage() - 1 }}#practicas2"
-                                            aria-label="Anterior">Anterior</a>
-                                    </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $estudiantesPracticasII->previousPageUrl() }}&paginacion2={{ $perPage2 }}#practicas2" aria-label="Anterior">Anterior</a>
+                                </li>
                                 @endif
 
                                 @foreach (range(1, $estudiantesPracticasII->lastPage()) as $i)
-                                    @if ($i == $estudiantesPracticasII->currentPage())
-                                        <li class="page-item active">
-                                            <span class="page-link">{{ $i }}</span>
-                                        </li>
-                                    @else
-                                        <li class="page-item">
-                                            <a class="page-link"
-                                                href="{{ $estudiantesPracticasII->url($i) }}&page2={{ $i }}#practicas2">{{ $i }}</a>
-                                        </li>
-                                    @endif
+                                @if ($i == $estudiantesPracticasII->currentPage())
+                                <li class="page-item active">
+                                    <span class="page-link">{{ $i }}</span>
+                                </li>
+                                @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $estudiantesPracticasII->url($i) }}&paginacion2={{ $perPage2 }}#practicas2">{{ $i }}</a>
+                                </li>
+                                @endif
                                 @endforeach
 
                                 @if ($estudiantesPracticasII->hasMorePages())
-                                    <li class="page-item">
-                                        <a class="page-link"
-                                            href="{{ $estudiantesPracticasII->nextPageUrl() }}&page2={{ $estudiantesPracticasII->currentPage() + 1 }}#practicas2"
-                                            aria-label="Siguiente">Siguiente</a>
-                                    </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $estudiantesPracticasII->nextPageUrl() }}&paginacion2={{ $perPage2 }}#practicas2" aria-label="Siguiente">Siguiente</a>
+                                </li>
                                 @else
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Siguiente</span>
-                                    </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link">Siguiente</span>
+                                </li>
                                 @endif
+
 
                             </ul>
                         </nav>
@@ -603,6 +603,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="contenedor_buscador">
+                        <div>
+                            <form id="formbusquedaPractica3">
+                                <input type="text" class="input" name="search3" value="{{$search3}}" matInput
+                                       placeholder="Buscar en practicas 1.3..">
+                                <i class='bx bx-search-alt'></i>
+                            </form>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="contenedor_tabla">
@@ -662,59 +671,49 @@
                         <nav aria-label="...">
                             <ul class="pagination">
                                 <li class="page-item mx-3">
-                                    <form method="GET" action="{{ route('admin.aceptarFaseI') }}">
-                                        <select class="form-control page-item" class="input" name="paginacion3"
-                                            id="perPage" onchange="this.form.submit()">
-                                            <option value="10" @if ($perPage3 == 10) selected @endif>10
-                                            </option>
-                                            <option value="20" @if ($perPage3 == 20) selected @endif>20
-                                            </option>
-                                            <option value="50" @if ($perPage3 == 50) selected @endif>
-                                                50
-                                            </option>
-                                            <option value="100" @if ($perPage3 == 100) selected @endif>
-                                                100
-                                            </option>
+                                    <form method="GET" action="{{ route('admin.aceptarFaseI') }}#practicas3">
+                                        <select class="form-control page-item" name="paginacion3" id="perPage" onchange="this.form.submit()">
+                                            <option value="10" @if ($perPage3 == 10) selected @endif>10</option>
+                                            <option value="20" @if ($perPage3 == 20) selected @endif>20</option>
+                                            <option value="50" @if ($perPage3 == 50) selected @endif>50</option>
+                                            <option value="100" @if ($perPage3 == 100) selected @endif>100</option>
                                         </select>
                                     </form>
                                 </li>
 
                                 @if ($estudiantesPracticasIII->onFirstPage())
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Anterior</span>
-                                    </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link">Anterior</span>
+                                </li>
                                 @else
-                                    <li class="page-item">
-                                        <a class="page-link"
-                                            href="{{ $estudiantesPracticasIII->previousPageUrl() }}&page3={{ $estudiantesPracticasIII->currentPage() - 1 }}#practicas3"
-                                            aria-label="Anterior">Anterior</a>
-                                    </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $estudiantesPracticasIII->previousPageUrl() }}&paginacion3={{ $perPage3 }}#practicas3" aria-label="Anterior">Anterior</a>
+                                </li>
                                 @endif
 
                                 @foreach (range(1, $estudiantesPracticasIII->lastPage()) as $i)
-                                    @if ($i == $estudiantesPracticasIII->currentPage())
-                                        <li class="page-item active">
-                                            <span class="page-link">{{ $i }}</span>
-                                        </li>
-                                    @else
-                                        <li class="page-item">
-                                            <a class="page-link"
-                                                href="{{ $estudiantesPracticasIII->url($i) }}&page3={{ $i }}#practicas3">{{ $i }}</a>
-                                        </li>
-                                    @endif
+                                @if ($i == $estudiantesPracticasIII->currentPage())
+                                <li class="page-item active">
+                                    <span class="page-link">{{ $i }}</span>
+                                </li>
+                                @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $estudiantesPracticasIII->url($i) }}&paginacion3={{ $perPage3 }}#practicas3">{{ $i }}</a>
+                                </li>
+                                @endif
                                 @endforeach
 
                                 @if ($estudiantesPracticasIII->hasMorePages())
-                                    <li class="page-item">
-                                        <a class="page-link"
-                                            href="{{ $estudiantesPracticasII->nextPageUrl() }}&page3={{ $estudiantesPracticasIII->currentPage() + 1 }}#practicas3"
-                                            aria-label="Siguiente">Siguiente</a>
-                                    </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $estudiantesPracticasIII->nextPageUrl() }}&paginacion3={{ $perPage3 }}#practicas3" aria-label="Siguiente">Siguiente</a>
+                                </li>
                                 @else
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Siguiente</span>
-                                    </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link">Siguiente</span>
+                                </li>
                                 @endif
+
+
 
                             </ul>
                         </nav>
@@ -796,6 +795,15 @@
                         </div>
 
                     </div>
+                    <div class="contenedor_buscador">
+                        <div>
+                            <form id="formbusquedaPractica1">
+                                <input type="text" class="input" name="search4" value="{{$search4}}" matInput
+                                       placeholder="Buscar en practicas 2...">
+                                <i class='bx bx-search-alt'></i>
+                            </form>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="contenedor_tabla">
@@ -855,59 +863,48 @@
                         <nav aria-label="...">
                             <ul class="pagination">
                                 <li class="page-item mx-3">
-                                    <form method="GET" action="{{ route('admin.aceptarFaseI') }}">
-                                        <select class="form-control page-item" class="input" name="paginacion4"
-                                            id="perPage" onchange="this.form.submit()">
-                                            <option value="10" @if ($perPage4 == 10) selected @endif>10
-                                            </option>
-                                            <option value="20" @if ($perPage4 == 20) selected @endif>20
-                                            </option>
-                                            <option value="50" @if ($perPage4 == 50) selected @endif>
-                                                50
-                                            </option>
-                                            <option value="100" @if ($perPage4 == 100) selected @endif>
-                                                100
-                                            </option>
+                                    <form method="GET" action="{{ route('admin.aceptarFaseI') }}#practicas4">
+                                        <select class="form-control page-item" name="paginacion4" id="perPage" onchange="this.form.submit()">
+                                            <option value="10" @if ($perPage4 == 10) selected @endif>10</option>
+                                            <option value="20" @if ($perPage4 == 20) selected @endif>20</option>
+                                            <option value="50" @if ($perPage4 == 50) selected @endif>50</option>
+                                            <option value="100" @if ($perPage4 == 100) selected @endif>100</option>
                                         </select>
                                     </form>
                                 </li>
 
                                 @if ($estudiantesPracticasIV->onFirstPage())
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Anterior</span>
-                                    </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link">Anterior</span>
+                                </li>
                                 @else
-                                    <li class="page-item">
-                                        <a class="page-link"
-                                            href="{{ $estudiantesPracticasIV->previousPageUrl() }}&page4={{ $estudiantesPracticasIV->currentPage() - 1 }}#practicas4"
-                                            aria-label="Anterior">Anterior</a>
-                                    </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $estudiantesPracticasIV->previousPageUrl() }}&paginacion4={{ $perPage4 }}#practicas4" aria-label="Anterior">Anterior</a>
+                                </li>
                                 @endif
 
                                 @foreach (range(1, $estudiantesPracticasIV->lastPage()) as $i)
-                                    @if ($i == $estudiantesPracticasIV->currentPage())
-                                        <li class="page-item active">
-                                            <span class="page-link">{{ $i }}</span>
-                                        </li>
-                                    @else
-                                        <li class="page-item">
-                                            <a class="page-link"
-                                                href="{{ $estudiantesPracticasIV->url($i) }}&page4={{ $i }}#practicas4">{{ $i }}</a>
-                                        </li>
-                                    @endif
+                                @if ($i == $estudiantesPracticasIV->currentPage())
+                                <li class="page-item active">
+                                    <span class="page-link">{{ $i }}</span>
+                                </li>
+                                @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $estudiantesPracticasIV->url($i) }}&paginacion4={{ $perPage4 }}#practicas4">{{ $i }}</a>
+                                </li>
+                                @endif
                                 @endforeach
 
                                 @if ($estudiantesPracticasIV->hasMorePages())
-                                    <li class="page-item">
-                                        <a class="page-link"
-                                            href="{{ $estudiantesPracticasIV->nextPageUrl() }}&page4={{ $estudiantesPracticasIV->currentPage() + 1 }}#practicas4"
-                                            aria-label="Siguiente">Siguiente</a>
-                                    </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $estudiantesPracticasIV->nextPageUrl() }}&paginacion4={{ $perPage4 }}#practicas4" aria-label="Siguiente">Siguiente</a>
+                                </li>
                                 @else
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Siguiente</span>
-                                    </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link">Siguiente</span>
+                                </li>
                                 @endif
+
 
                             </ul>
                         </nav>
@@ -1059,6 +1056,7 @@
             font-weight: normal;
         }
     </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
 <script>
@@ -1080,5 +1078,65 @@
         }, 500);
     });
 </script>
+
+<script>
+    var delayTimer;
+    $('#formbusquedaPractica2 input[name="search2"]').on('keyup', function() {
+        clearTimeout(delayTimer);
+        var query = $(this).val();
+        delayTimer = setTimeout(function() {
+            $.ajax({
+                url: '{{ route('admin.aceptarFaseI') }}',
+                type: 'GET',
+                data: {
+                    search2: query
+                },
+                success: function(response) {
+                    $('#practicas2').html($(response).find('#practicas2').html());
+                }
+            });
+        }, 500);
+    });
+</script>
+<script>
+    var delayTimer;
+    $('#formbusquedaPractica4 input[name="search4"]').on('keyup', function() {
+        clearTimeout(delayTimer);
+        var query = $(this).val();
+        delayTimer = setTimeout(function() {
+            $.ajax({
+                url: '{{ route('admin.aceptarFaseI') }}',
+                type: 'GET',
+                data: {
+                    search4: query
+                },
+                success: function(response) {
+                    $('#practicas4').html($(response).find('#practicas4').html());
+                }
+            });
+        }, 500);
+    });
+</script>
+<script>
+    var delayTimer;
+    $('#formbusquedaPractica3 input[name="search3"]').on('keyup', function() {
+        clearTimeout(delayTimer);
+        var query = $(this).val();
+        delayTimer = setTimeout(function() {
+            $.ajax({
+                url: '{{ route('admin.aceptarFaseI') }}',
+                type: 'GET',
+                data: {
+                    search3: query
+                },
+                success: function(response) {
+                    $('#practicas3').html($(response).find('#practicas3').html());
+                }
+            });
+        }, 500);
+    });
+</script>
+
+
 
 @endsection
