@@ -176,7 +176,8 @@ $(document).ready(function() {
 });
 function displayFileName(input) {
     const fileName = input.files[0].name;
-    document.getElementById('fileText').textContent = fileName;
+    document.getElementById('fileText').innerHTML = '<i class="fa fa-upload"></i> ' + fileName;
+    document.querySelector('.remove-icon').style.display = 'block';
 }
 
 function removeFile() {
