@@ -197,19 +197,3 @@ function openCard(cardId) {
     var card = document.getElementById(cardId);
     card.style.display = 'block';
 }
-$(document).ready(function() {
-    $('#modalImportar2').on('hidden.bs.modal', function() {
-        $('#idModalImportar')[0].reset();
-        $('#idModalImportar').find('.form-group').removeClass('has-error');
-        $('#idModalImportar').find('.help-block').text('');
-        removeFile();
-    });
-});
-$(document).ready(function() {
-    $('#modalImportar3').on('hidden.bs.modal', function() {
-        $('#idModalImportar')[0].reset();
-        $('#idModalImportar').find('.form-group').removeClass('has-error');
-        $('#idModalImportar').find('.help-block').text('');
-        removeFile();
-    });
-});
