@@ -341,15 +341,11 @@ tr:hover {
 }
 
 .remove-icon {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
     cursor: pointer;
     color: red;
-    font-size: 20px;
+    font-size: 10px;
+    display: none; /* Initially hidden */
 }
-
 .label {
     font-size: 0.7rem !important; /* Increase font size for label */
 }

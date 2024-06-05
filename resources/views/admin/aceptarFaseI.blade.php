@@ -168,7 +168,7 @@
     </div>
 
  <!-- Tarjeta movible para Importar Archivo -->
- <div class="draggable-card" id="draggableCardImportarArchivo" style="display: none;">
+    <div class="draggable-card" id="draggableCardImportarArchivo" style="display: none;">
         <div class="card-header">
             <span class="card-title">Importar archivo</span>
             <button type="button" class="close" onclick="document.getElementById('draggableCardImportarArchivo').style.display='none'">&times;</button>
