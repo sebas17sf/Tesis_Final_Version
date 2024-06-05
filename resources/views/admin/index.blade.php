@@ -566,10 +566,10 @@
 
                         <ul class="pagination">
                             <li class="page-item mx-3">
-                                <form method="GET" action="{{ route('admin.index') }}">
+                                <form method="GET" action="{{ route('admin.index') }}#tablaDocentes">
                                     <select class="form-control page-item" class="input" name="perPage" id="perPage"
                                         onchange="this.form.submit()">
-                                        <option value="3" @if ($perPage == 10) selected @endif>10
+                                        <option value="10" @if ($perPage == 10) selected @endif>10
                                         </option>
                                         <option value="20" @if ($perPage == 20) selected @endif>20
                                         </option>

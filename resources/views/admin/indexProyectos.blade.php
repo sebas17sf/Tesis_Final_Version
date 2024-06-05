@@ -202,7 +202,7 @@
                                 <li class="page-item mx-3">
 
 
-                                    <form method="GET" action="{{ route('admin.indexProyectos') }}">
+                                    <form method="GET" action="{{ route('admin.indexProyectos') }}#tablaProyectos">
                                         <select class="form-control page-item" class="input" name="perPage" id="perPage"
                                             onchange="this.form.submit()">
                                             <option value="10" @if ($perPage == 10) selected @endif>10
@@ -450,7 +450,7 @@
                                 </li>
 
                                 <li class="page-item mx-3 d-flex align-items-center">
-                                    <form method="GET" action="{{ route('admin.indexProyectos') }}"
+                                    <form method="GET" action="{{ route('admin.indexProyectos') }}#tablaAsignaciones"
                                         class="form-inline">
                                         <div class="form-group">
                                             <label for="perPage2" class="sr-only">Items per page</label>
@@ -608,7 +608,7 @@
                         </div>
                     </div>
 
-                   
+
                 </div>
 
                 <div class="card-footer">
