@@ -174,3 +174,7 @@ $(document).ready(function() {
         makeElementDraggable(this);
     });
 });
+function openCard(cardId) {
+    var card = document.getElementById(cardId);
+    card.style.display = 'block';
+}

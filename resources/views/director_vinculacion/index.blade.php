@@ -64,7 +64,7 @@
                                         @foreach ($proyectosEjecucion as $proyecto)
                                             <tr>
                                                 <td style="word-wrap: break-word; text-align: justify;">
-                                                    {{ $proyecto->NombreProyecto }}</td>
+                                                    {{ strtoupper($proyecto->NombreProyecto) }}</td>
                                                 <td>{{ strtoupper($proyecto->director->Apellidos) }}
                                                     {{ strtoupper($proyecto->director->Nombres) }}</td>
                                                 <td style="word-wrap: break-word; text-align: justify;">
