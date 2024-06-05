@@ -210,7 +210,8 @@
 
             <button type="button" class="button1 mr-2" onclick="openCard('draggableCardNRC');">Agregar NRC</button>
             <button type="button" class="button1 mr-2" onclick="openCard('draggableCardPeriodo');">Agregar Periodo</button>
-            <button type="button" class="button1 mr-2" onclick="openCard('draggableCardEditarPeriodo');">Editar Periodo</button>
+            <button type="button" class="button1 mr-2" onclick="openCard('draggableCardEditarPeriodo');">Editar
+                Periodo</button>
 
         </div>
         <br>
@@ -345,15 +346,6 @@
                             </form>
                         </div>
 
-                        <!-- Copiar -->
-                        <!--<div class="tooltip-container">
-                                    <span class="tooltip-text">Copiar</span>
-                                    <button class="button3 efects_button btn_copy" onclick="copyDataToClipboard(event)"
-                                        pTooltip="Copiar" tooltipPosition="top">
-                                        <i class="fa-solid fa-copy" id="icon"></i>
-                                    </button>
-
-                                </div>-->
 
                     </div>
 
@@ -373,7 +365,7 @@
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
 
-                        <div id="tablaProyectos">
+                        <div id="tablaDocentes">
                             <table class="mat-mdc-table">
                                 <thead class="ng-star-inserted">
                                     <tr
@@ -407,168 +399,232 @@
                                                 </td>
                                                 <td class="center_size">{{ $profesor->espe_id }}</td>
                                                 <td>
-                                                        <div class="btn-group shadow-1">
+                                                    <div class="btn-group shadow-1">
 
-                                                        <button type="button" class="button3 efects_button btn_editar3" onclick="openCard('draggableCardEditarMaestro{{ $profesor->id }}');">
-            <i class="bx bx-edit-alt"></i>
-        </button>
+                                                        <button type="button" class="button3 efects_button btn_editar3"
+                                                            onclick="openCard('draggableCardEditarMaestro{{ $profesor->id }}');">
+                                                            <i class="bx bx-edit-alt"></i>
+                                                        </button>
 
-        <div class="draggable-card1_1" id="draggableCardEditarMaestro{{ $profesor->id }}">
-            <div class="card-header">
-                <span class="card-title">Editar Docentes</span>
-                <button type="button" class="close" onclick="$('#draggableCardEditarMaestro{{ $profesor->id }}').hide()">&times;</button>
-            </div>
-            <div class="card-body">
-                <form action="{{ route('admin.actualizarMaestro', ['id' => $profesor->id]) }}" method="POST" id="formularioEditarMaestro">
-                    @csrf
-                    @method('PUT')
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label class="label" for="nombresEditarMaestro"><strong>Ingrese Nombres:</strong></label>
-                            <input type="text" id="nombresEditarMaestro" name="nombres" class="form-control input input_select1 form-text" value="{{ $profesor->Nombres }}" required>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label class="label" for="apellidosEditarMaestro"><strong>Ingrese Apellidos:</strong></label>
-                            <input type="text" id="apellidosEditarMaestro" name="apellidos" class="form-control input input_select1" value="{{ $profesor->Apellidos }}" required>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label class="label" for="correoEditarMaestro"><strong>Ingrese Correo:</strong></label>
-                            <input type="email" id="correoEditarMaestro" name="correo" class="form-control input input_select1" value="{{ $profesor->Correo }}" required>
-                            <small id="emailHelp" class="form-text text-danger" style="display: none;"></small>
-                            @error('correo')
-                                <small class="form-text text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label class="label" for="Usuario"><strong>Ingrese el Usuario:</strong></label>
-                            <input type="text" id="Usuario" name="Usuario" class="form-control input input_select1" value="{{ $profesor->Usuario }}" required>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label class="label" for="espeEditarMaestro"><strong>Ingrese el ESPE ID:</strong></label>
-                            <input type="text" id="espeEditarMaestro" name="espe_id" class="form-control input input_select1" value="{{ $profesor->espe_id }}" required>
-                            <small id="espeHelp" class="form-text text-danger" style="display: none;"></small>
-                            @error('espe_id')
-                                <small class="form-text text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label class="label" for="cedulaEditarMaestro"><strong>Ingrese la Cedula:</strong></label>
-                            <input type="text" id="cedulaEditarMaestro" name="cedula" class="form-control input input_select1" value="{{ $profesor->Cedula }}" required>
-                            <small id="cedulaHelp" class="form-text text-danger" style="display: none;"></small>
-                            @error('cedula')
-                                <small class="form-text text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label class="label" for="departamento"><strong>Seleccione el departamento al que pertenece:</strong></label>
-                            <select id="departamento" name="departamento" class="form-control input input_select1" required>
-                                <option value="Ciencias de la Computación" {{ $profesor->Departamento === 'Ciencias de la Computación' ? 'selected' : '' }}>Departamento de Ciencias de Computación</option>
-                                <option value="Ciencias de la Vida" {{ $profesor->Departamento === 'Ciencias de la Vida' ? 'selected' : '' }}>Departamento de Ciencias de la Vida</option>
-                                <option value="Ciencias Exactas" {{ $profesor->Departamento === 'Ciencias Exactas' ? 'selected' : '' }}>Departamento de Ciencias Exactas</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <button type="button" class="button input_select1" onclick="$('#draggableCardEditarMaestro{{ $profesor->id }}').hide()">Cerrar</button>
-                        <button type="submit" class="button input_select1">Guardar Cambios</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-                                                            <!-------------------------------------------------------------------------------->
+                                                        <div class="draggable-card1_1"
+                                                            id="draggableCardEditarMaestro{{ $profesor->id }}">
+                                                            <div class="card-header">
+                                                                <span class="card-title">Editar Docentes</span>
+                                                                <button type="button" class="close"
+                                                                    onclick="$('#draggableCardEditarMaestro{{ $profesor->id }}').hide()">&times;</button>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <form
+                                                                    action="{{ route('admin.actualizarMaestro', ['id' => $profesor->id]) }}"
+                                                                    method="POST" id="formularioEditarMaestro">
+                                                                    @csrf
+                                                                    @method('PUT')
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-4">
+                                                                            <label class="label"
+                                                                                for="nombresEditarMaestro"><strong>Ingrese
+                                                                                    Nombres:</strong></label>
+                                                                            <input type="text"
+                                                                                id="nombresEditarMaestro" name="nombres"
+                                                                                class="form-control input input_select1 form-text"
+                                                                                value="{{ $profesor->Nombres }}" required>
+                                                                        </div>
+                                                                        <div class="form-group col-md-4">
+                                                                            <label class="label"
+                                                                                for="apellidosEditarMaestro"><strong>Ingrese
+                                                                                    Apellidos:</strong></label>
+                                                                            <input type="text"
+                                                                                id="apellidosEditarMaestro"
+                                                                                name="apellidos"
+                                                                                class="form-control input input_select1"
+                                                                                value="{{ $profesor->Apellidos }}"
+                                                                                required>
+                                                                        </div>
+                                                                        <div class="form-group col-md-4">
+                                                                            <label class="label"
+                                                                                for="correoEditarMaestro"><strong>Ingrese
+                                                                                    Correo:</strong></label>
+                                                                            <input type="email" id="correoEditarMaestro"
+                                                                                name="correo"
+                                                                                class="form-control input input_select1"
+                                                                                value="{{ $profesor->Correo }}" required>
+                                                                            <small id="emailHelp"
+                                                                                class="form-text text-danger"
+                                                                                style="display: none;"></small>
+                                                                            @error('correo')
+                                                                                <small
+                                                                                    class="form-text text-danger">{{ $message }}</small>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-4">
+                                                                            <label class="label"
+                                                                                for="Usuario"><strong>Ingrese el
+                                                                                    Usuario:</strong></label>
+                                                                            <input type="text" id="Usuario"
+                                                                                name="Usuario"
+                                                                                class="form-control input input_select1"
+                                                                                value="{{ $profesor->Usuario }}" required>
+                                                                        </div>
+                                                                        <div class="form-group col-md-4">
+                                                                            <label class="label"
+                                                                                for="espeEditarMaestro"><strong>Ingrese el
+                                                                                    ESPE ID:</strong></label>
+                                                                            <input type="text" id="espeEditarMaestro"
+                                                                                name="espe_id"
+                                                                                class="form-control input input_select1"
+                                                                                value="{{ $profesor->espe_id }}" required>
+                                                                            <small id="espeHelp"
+                                                                                class="form-text text-danger"
+                                                                                style="display: none;"></small>
+                                                                            @error('espe_id')
+                                                                                <small
+                                                                                    class="form-text text-danger">{{ $message }}</small>
+                                                                            @enderror
+                                                                        </div>
+                                                                        <div class="form-group col-md-4">
+                                                                            <label class="label"
+                                                                                for="cedulaEditarMaestro"><strong>Ingrese
+                                                                                    la Cedula:</strong></label>
+                                                                            <input type="text" id="cedulaEditarMaestro"
+                                                                                name="cedula"
+                                                                                class="form-control input input_select1"
+                                                                                value="{{ $profesor->Cedula }}" required>
+                                                                            <small id="cedulaHelp"
+                                                                                class="form-text text-danger"
+                                                                                style="display: none;"></small>
+                                                                            @error('cedula')
+                                                                                <small
+                                                                                    class="form-text text-danger">{{ $message }}</small>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-row">
+                                                                        <div class="form-group col-md-4">
+                                                                            <label class="label"
+                                                                                for="departamento"><strong>Seleccione el
+                                                                                    departamento al que
+                                                                                    pertenece:</strong></label>
+                                                                            <select id="departamento" name="departamento"
+                                                                                class="form-control input input_select1"
+                                                                                required>
+                                                                                <option value="Ciencias de la Computación"
+                                                                                    {{ $profesor->Departamento === 'Ciencias de la Computación' ? 'selected' : '' }}>
+                                                                                    Departamento de Ciencias de Computación
+                                                                                </option>
+                                                                                <option value="Ciencias de la Vida"
+                                                                                    {{ $profesor->Departamento === 'Ciencias de la Vida' ? 'selected' : '' }}>
+                                                                                    Departamento de Ciencias de la Vida
+                                                                                </option>
+                                                                                <option value="Ciencias Exactas"
+                                                                                    {{ $profesor->Departamento === 'Ciencias Exactas' ? 'selected' : '' }}>
+                                                                                    Departamento de Ciencias Exactas
+                                                                                </option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="card-footer">
+                                                                        <button type="button"
+                                                                            class="button input_select1"
+                                                                            onclick="$('#draggableCardEditarMaestro{{ $profesor->id }}').hide()">Cerrar</button>
+                                                                        <button type="submit"
+                                                                            class="button input_select1">Guardar
+                                                                            Cambios</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
                                                         </div>
-                                                        <form class="btn-group shadow-1"
-                                                            action="{{ route('admin.eliminarMaestro', ['id' => $profesor->id]) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
 
-                                                            <input type="hidden" name="id"
-                                                                value="{{ $profesor->id }}">
-                                                            <button type="submit"
-                                                                class="button3 efects_button btn_eliminar3"><i
-                                                                    class='bx bx-trash'></i></button>
-
-                                                        </form>
+                                                        <!-------------------------------------------------------------------------------->
                                                     </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
-                                </tbody>
-                            </table>
+                                                    <form class="btn-group shadow-1" id="deleteForm"
+                                                        action="{{ route('admin.eliminarMaestro', ['id' => $profesor->id]) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+
+                                                        <input type="hidden" name="id"
+                                                            value="{{ $profesor->id }}">
+                                                        <button type="submit" class="button3 efects_button btn_eliminar3"
+                                                            onclick="confirmDelete(event)"><i
+                                                                class='bx bx-trash'></i></button>
+                                                    </form>
                         </div>
+                        </td>
+                        </tr>
+                        @endforeach
+                        @endif
+                        </tbody>
+                        </table>
                     </div>
-
-
-                    <div class="paginator-container">
-                        <nav aria-label="...">
-
-                            <ul class="pagination">
-                                <li class="page-item mx-3">
-                                    <form method="GET" action="{{ route('admin.index') }}">
-                                        <select class="form-control page-item" class="input" name="perPage"
-                                            id="perPage" onchange="this.form.submit()">
-                                            <option value="3" @if ($perPage == 10) selected @endif>10
-                                            </option>
-                                            <option value="20" @if ($perPage == 20) selected @endif>20
-                                            </option>
-                                            <option value="50" @if ($perPage == 50) selected @endif>
-                                                50
-                                            </option>
-                                            <option value="100" @if ($perPage == 100) selected @endif>
-                                                100
-                                            </option>
-                                        </select>
-                                    </form>
-                                </li>
-
-                                @if ($profesores->onFirstPage())
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Anterior</span>
-                                    </li>
-                                @else
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $profesores->previousPageUrl() }}"
-                                            aria-label="Anterior">Anterior</a>
-                                    </li>
-                                @endif
-
-                                @foreach ($profesores->getUrlRange(1, $profesores->lastPage()) as $page => $url)
-                                    @if ($page == $profesores->currentPage())
-                                        <li class="page-item active">
-                                            <span class="page-link">{{ $page }}</span>
-                                        </li>
-                                    @else
-                                        <li class="page-item">
-                                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                                        </li>
-                                    @endif
-                                @endforeach
-
-                                @if ($profesores->hasMorePages())
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $profesores->nextPageUrl() }}"
-                                            aria-label="Siguiente">Siguiente</a>
-                                    </li>
-                                @else
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Siguiente</span>
-                                    </li>
-                                @endif
-
-                            </ul>
-                        </nav>
-                    </div>
-
-
-
                 </div>
+
+
+                <div class="paginator-container">
+                    <nav aria-label="...">
+
+                        <ul class="pagination">
+                            <li class="page-item mx-3">
+                                <form method="GET" action="{{ route('admin.index') }}">
+                                    <select class="form-control page-item" class="input" name="perPage" id="perPage"
+                                        onchange="this.form.submit()">
+                                        <option value="3" @if ($perPage == 10) selected @endif>10
+                                        </option>
+                                        <option value="20" @if ($perPage == 20) selected @endif>20
+                                        </option>
+                                        <option value="50" @if ($perPage == 50) selected @endif>
+                                            50
+                                        </option>
+                                        <option value="100" @if ($perPage == 100) selected @endif>
+                                            100
+                                        </option>
+                                    </select>
+                                </form>
+                            </li>
+
+                            @if ($profesores->onFirstPage())
+                                <li class="page-item disabled">
+                                    <span class="page-link">Anterior</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $profesores->previousPageUrl() }}#tablaDocentes"
+                                        aria-label="Anterior">Anterior</a>
+                                </li>
+                            @endif
+
+                            @foreach ($profesores->getUrlRange(1, $profesores->lastPage()) as $page => $url)
+                                @if ($page == $profesores->currentPage())
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ $page }}</span>
+                                    </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="{{ $url }}#tablaDocentes">{{ $page }}</a>
+                                    </li>
+                                @endif
+                            @endforeach
+
+                            @if ($profesores->hasMorePages())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $profesores->nextPageUrl() }}#tablaDocentes"
+                                        aria-label="Siguiente">Siguiente</a>
+                                </li>
+                            @else
+                                <li class="page-item disabled">
+                                    <span class="page-link">Siguiente</span>
+                                </li>
+                            @endif
+
+                        </ul>
+                    </nav>
+                </div>
+
+
+
+            </div>
             </div>
 
         </section>
@@ -577,142 +633,164 @@
 
             <div class="container">
 
-  <!-- Tarjeta movible para Agregar NRC -->
-  <div class="draggable-card" id="draggableCardNRC">
-        <div class="card-header">
-            <span class="card-title">Agregar NRC</span>
-            <button type="button" class="close" onclick="$('#draggableCardNRC').hide()">&times;</button>
-        </div>
-        <div class="card-body">
-            <form class="FormularioNRC" action="{{ route('admin.nrcVinculacion') }}" method="post">
-                @csrf
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label class="label" for="nrc"><strong>Ingrese el NRC:</strong></label>
-                        <input type="text" id="nrc" name="nrc" class="form-control input" placeholder="Ingrese 5 números" pattern="\d{5}" title="Ingrese exactamente 5 dígitos" value="{{ old('nrc') }}" required>
-                        <small id="nrcError" class="form-text text-danger" style="display: none;"></small>
-                        @error('nrc')
-                            <small class="form-text text-danger">{{ $message }}</small>
-                        @enderror
+                <!-- Tarjeta movible para Agregar NRC -->
+                <div class="draggable-card" id="draggableCardNRC">
+                    <div class="card-header">
+                        <span class="card-title">Agregar NRC</span>
+                        <button type="button" class="close" onclick="$('#draggableCardNRC').hide()">&times;</button>
                     </div>
-                    <div class="form-group col-lg-6">
-                        <label for="periodo"><strong>Seleccione el período:</strong></label>
-                        <select id="periodo" name="periodo" class="form-control input_select input" required>
-                            <option value="">Seleccione un período</option>
-                            @foreach ($periodos as $periodo)
-                                <option value="{{ $periodo->id }}" {{ old('periodo') == $periodo->id ? 'selected' : '' }}>
-                                    {{ $periodo->numeroPeriodo }} - {{ $periodo->Periodo }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('periodo')
-                            <small class="form-text text-danger">{{ $message }}</small>
-                        @enderror
+                    <div class="card-body">
+                        <form class="FormularioNRC" action="{{ route('admin.nrcVinculacion') }}" method="post">
+                            @csrf
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label class="label" for="nrc"><strong>Ingrese el NRC:</strong></label>
+                                    <input type="text" id="nrc" name="nrc" class="form-control input"
+                                        placeholder="Ingrese 5 números" pattern="\d{5}"
+                                        title="Ingrese exactamente 5 dígitos" value="{{ old('nrc') }}" required>
+                                    <small id="nrcError" class="form-text text-danger" style="display: none;"></small>
+                                    @error('nrc')
+                                        <small class="form-text text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label for="periodo"><strong>Seleccione el período:</strong></label>
+                                    <select id="periodo" name="periodo" class="form-control input_select input"
+                                        required>
+                                        <option value="">Seleccione un período</option>
+                                        @foreach ($periodos as $periodo)
+                                            <option value="{{ $periodo->id }}"
+                                                {{ old('periodo') == $periodo->id ? 'selected' : '' }}>
+                                                {{ $periodo->numeroPeriodo }} - {{ $periodo->Periodo }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('periodo')
+                                        <small class="form-text text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="button" class="button0"
+                                    onclick="$('#draggableCardNRC').hide()">Cerrar</button>
+                                <button type="submit" class="button0">Guardar NRC</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <button type="button" class="button0" onclick="$('#draggableCardNRC').hide()">Cerrar</button>
-                    <button type="submit" class="button0">Guardar NRC</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
-    <!-- Tarjeta movible para Agregar Periodo -->
-    <div class="draggable-card1" id="draggableCardPeriodo">
-        <div class="card-header">
-            <span class="card-title">Agregar Periodo</span>
-            <button type="button" class="close" onclick="$('#draggableCardPeriodo').hide()">&times;</button>
-        </div>
-        <div class="card-body">
-            <form action="{{ route('admin.guardarPeriodo') }}" method="post">
-                @csrf
-                <div class="form-row">
-                    <div class="form-group col-md-4">
-                        <label for="periodoInicio"><strong>Ingrese el inicio del Periodo Académico:</strong></label>
-                        <input type="date" id="periodoInicio" name="periodoInicio" class="form-control input" value="{{ old('periodoInicio') }}" required>
-                        @error('periodoInicio')
-                            <small class="form-text text-danger">{{ $message }}</small>
-                        @enderror
+                <!-- Tarjeta movible para Agregar Periodo -->
+                <div class="draggable-card1" id="draggableCardPeriodo">
+                    <div class="card-header">
+                        <span class="card-title">Agregar Periodo</span>
+                        <button type="button" class="close"
+                            onclick="$('#draggableCardPeriodo').hide()">&times;</button>
                     </div>
-                    <div class="form-group col-md-4">
-                        <label for="periodoFin"><strong>Ingrese el fin del Periodo Académico:</strong></label>
-                        <input type="date" id="periodoFin" name="periodoFin" class="form-control input" value="{{ old('periodoFin') }}" required>
-                        @error('periodoFin')
-                            <small class="form-text text-danger">{{ $message }}</small>
-                        @enderror
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="numeroPeriodo"><strong>Ingrese el número identificador del periodo:</strong></label>
-                        <input type="text" id="numeroPeriodo" name="numeroPeriodo" placeholder="Ingrese 6 números" class="form-control input" pattern="[0-9]{1,6}" title="Ingrese un número no negativo de hasta 6 dígitos" value="{{ old('numeroPeriodo') }}" required>
-                        <small id="numeroPeriodoError" class="form-text text-danger" style="display: none;"></small>
-                        @error('numeroPeriodo')
-                            <small class="form-text text-danger">{{ $message }}</small>
-                        @enderror
+                    <div class="card-body">
+                        <form action="{{ route('admin.guardarPeriodo') }}" method="post">
+                            @csrf
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="periodoInicio"><strong>Ingrese el inicio del Periodo
+                                            Académico:</strong></label>
+                                    <input type="date" id="periodoInicio" name="periodoInicio"
+                                        class="form-control input" value="{{ old('periodoInicio') }}" required>
+                                    @error('periodoInicio')
+                                        <small class="form-text text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="periodoFin"><strong>Ingrese el fin del Periodo Académico:</strong></label>
+                                    <input type="date" id="periodoFin" name="periodoFin" class="form-control input"
+                                        value="{{ old('periodoFin') }}" required>
+                                    @error('periodoFin')
+                                        <small class="form-text text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="numeroPeriodo"><strong>Ingrese el número identificador del
+                                            periodo:</strong></label>
+                                    <input type="text" id="numeroPeriodo" name="numeroPeriodo"
+                                        placeholder="Ingrese 6 números" class="form-control input" pattern="[0-9]{1,6}"
+                                        title="Ingrese un número no negativo de hasta 6 dígitos"
+                                        value="{{ old('numeroPeriodo') }}" required>
+                                    <small id="numeroPeriodoError" class="form-text text-danger"
+                                        style="display: none;"></small>
+                                    @error('numeroPeriodo')
+                                        <small class="form-text text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="button" class="button"
+                                    onclick="$('#draggableCardPeriodo').hide()">Cerrar</button>
+                                <button type="submit" class="button">Guardar Periodo</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <button type="button" class="button" onclick="$('#draggableCardPeriodo').hide()">Cerrar</button>
-                    <button type="submit" class="button">Guardar Periodo</button>
-                </div>
-            </form>
-        </div>
-    </div>
                 <!-- ----------------------------------------------------------------------------------- -->
-          
-                   <!-- Tarjeta movible para Editar Periodo -->
-    <div class="draggable-card" id="draggableCardEditarPeriodo">
-        <div class="card-header">
-            <span class="card-title">Editar Periodo</span>
-            <button type="button" class="close" onclick="$('#draggableCardEditarPeriodo').hide()">&times;</button>
-        </div>
-        <div class="card-body">
-            <div class="form-group col-md-12">
-                <label for="periodo"><strong>Periodos Agregados (Seleccione el periodo a editar):</strong></label>
-                <select id="selectPeriodo" class="form-control input input_select ">
-                    <option value="" data-inicio="" data-fin="" data-numero="">Seleccionar Periodo</option>
-                    @foreach ($periodos as $periodo)
-                        <option value="{{ $periodo->id }}"
-                            data-inicio="{{ $periodo->PeriodoInicio }}"
-                            data-fin="{{ $periodo->PeriodoFin }}"
-                            data-numero="{{ $periodo->numeroPeriodo }}">
-                            {{ $periodo->numeroPeriodo }} {{ $periodo->Periodo }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-12" hidden>
-                <div class="form-group col-md-6">
-                    <form id="editarPeriodoForm" method="GET">
-                        @csrf
-                        <button type="submit" class="button">Editar</button>
-                    </form>
+
+                <!-- Tarjeta movible para Editar Periodo -->
+                <div class="draggable-card" id="draggableCardEditarPeriodo">
+                    <div class="card-header">
+                        <span class="card-title">Editar Periodo</span>
+                        <button type="button" class="close"
+                            onclick="$('#draggableCardEditarPeriodo').hide()">&times;</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group col-md-12">
+                            <label for="periodo"><strong>Periodos Agregados (Seleccione el periodo a
+                                    editar):</strong></label>
+                            <select id="selectPeriodo" class="form-control input input_select ">
+                                <option value="" data-inicio="" data-fin="" data-numero="">Seleccionar Periodo
+                                </option>
+                                @foreach ($periodos as $periodo)
+                                    <option value="{{ $periodo->id }}" data-inicio="{{ $periodo->PeriodoInicio }}"
+                                        data-fin="{{ $periodo->PeriodoFin }}"
+                                        data-numero="{{ $periodo->numeroPeriodo }}">
+                                        {{ $periodo->numeroPeriodo }} {{ $periodo->Periodo }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-12" hidden>
+                            <div class="form-group col-md-6">
+                                <form id="editarPeriodoForm" method="GET">
+                                    @csrf
+                                    <button type="submit" class="button">Editar</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md-12" id="desplegarEditarPeriodo">
+                            <form class="formulario" method="POST"
+                                action="{{ route('admin.actualizarPeriodo', ['id' => $periodo->id]) }}">
+                                @csrf
+                                @method('PUT')
+                                <div class="form-group">
+                                    <label for="periodoInicio">Fecha de Inicio:</label>
+                                    <input type="date" name="periodoInicio" class="form-control input"
+                                        value="{{ $periodo->PeriodoInicio }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="periodoFin">Fecha de Fin:</label>
+                                    <input type="date" name="periodoFin" class="form-control input"
+                                        value="{{ $periodo->PeriodoFin }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="numeroPeriodo">Ingrese el numero identificador del periodo:</label>
+                                    <input type="text" name="numeroPeriodo" id="numeroPeriodo"
+                                        class="form-control input" value="{{ $periodo->numeroPeriodo }}" required>
+                                </div>
+                                <div class="card-footer">
+                                    <button type="button" class="button01"
+                                        onclick="$('#draggableCardEditarPeriodo').hide()">Cerrar</button>
+                                    <button type="submit" class="button01">Guardar Cambios</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-12" id="desplegarEditarPeriodo">
-                <form class="formulario" method="POST" action="{{ route('admin.actualizarPeriodo', ['id' => $periodo->id]) }}">
-                    @csrf
-                    @method('PUT')
-                    <div class="form-group">
-                        <label for="periodoInicio">Fecha de Inicio:</label>
-                        <input type="date" name="periodoInicio" class="form-control input" value="{{ $periodo->PeriodoInicio }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="periodoFin">Fecha de Fin:</label>
-                        <input type="date" name="periodoFin" class="form-control input" value="{{ $periodo->PeriodoFin }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="numeroPeriodo">Ingrese el numero identificador del periodo:</label>
-                        <input type="text" name="numeroPeriodo" id="numeroPeriodo" class="form-control input" value="{{ $periodo->numeroPeriodo }}" required>
-                    </div>
-                    <div class="card-footer">
-                        <button type="button" class="button01" onclick="$('#draggableCardEditarPeriodo').hide()">Cerrar</button>
-                        <button type="submit" class="button01">Guardar Cambios</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
             </div>
         </section>
     </section>

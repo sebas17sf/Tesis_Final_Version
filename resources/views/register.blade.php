@@ -31,15 +31,7 @@
                         Inicia sesión</a>
                 </div>
 
-                @if($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endif
+
 
                 <form class="switch_container" method="POST" action="{{ route('register') }}">
 
@@ -51,19 +43,32 @@
                         <!-- Campo de nombre -->
                         <label class="description" for="NombreUsuario">Nombre de Usuario</label>
                         <input type="text" class="input form_input" id="NombreUsuario" name="NombreUsuario" placeholder="Ingrese su nombre" required>
+                        @error('NombreUsuario')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     <div>
                         <!-- Campo de correo electronico -->
                         <label class="description" for="CorreoElectronico">Correo Electrónico</label>
                         <input type="email" class="input form_input" id="CorreoElectronico" name="CorreoElectronico" placeholder="Ingrese su correo eléctronico" required>
+                        @error('CorreoElectronico')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
-
 
                     <div>
                         <!-- Campo de contraseña -->
                         <label class="description" for="Contrasena">Contraseña</label>
-                        <input type="password" class="input form_input" id="Contrasena" name="Contrasena" placeholder="Ingrese su contraseña" required>
+                        <div class="input-group" style="position: relative;">
+                            <input type="password" class="input form_input" id="Contrasena" name="Contrasena" placeholder="Ingrese su contraseña" required>
+                            <div id="togglePassword" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+                                <i class="material-icons">visibility</i>
+                            </div>
+                        </div>
+                        @error('Contrasena')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
 
@@ -83,6 +88,15 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('togglePassword').addEventListener('click', function (e) {
+            const passwordInput = document.getElementById('Contrasena');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.children[0].textContent = type === 'password' ? 'visibility' : 'visibility_off';
+        });
+    </script>
+
 </body>
 
 </html>

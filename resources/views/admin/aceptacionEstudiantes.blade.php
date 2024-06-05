@@ -41,7 +41,6 @@
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                         <th>Nombres</th>
-                                        <th>Apellidos</th>
                                         <th>ID ESPE</th>
                                         <th>Celular</th>
                                         <th>Cédula</th>
@@ -60,8 +59,8 @@
                                     @else
                                         @foreach ($estudiantesEnRevision as $estudiante)
                                             <tr>
-                                                <td>{{ strtoupper($estudiante->Nombres) }}</td>
-                                                <td>{{ strtoupper($estudiante->Apellidos) }}</td>
+
+                                                <td>{{ strtoupper($estudiante->Apellidos) }} {{ strtoupper($estudiante->Nombres) }}</td>
                                                 <td>{{ $estudiante->espe_id }}</td>
                                                 <td>{{ $estudiante->celular }}</td>
                                                 <td>{{ $estudiante->cedula }}</td>
@@ -75,15 +74,11 @@
                                                 @endif
 
                                                 <td>
-                                                    <form
-                                                        action="{{ route('admin.updateEstudiante', ['id' => $estudiante->EstudianteID]) }}"
-                                                        method="POST">
+                                                    <form id="updateEstudianteForm" action="{{ route('admin.updateEstudiante', ['id' => $estudiante->EstudianteID]) }}" method="POST" onsubmit="enviarCorreo(event)">
                                                         @csrf
                                                         @method('PUT')
-                                                        <input type="hidden" id="motivoNegacion" name="motivoNegacion"
-                                                            class="input">
-                                                        <select name="nuevoEstado" id="nuevoEstado"
-                                                            onchange="verificarEstado()" class="input input-select">
+                                                        <input type="hidden" id="motivoNegacion" name="motivoNegacion" class="input">
+                                                        <select name="nuevoEstado" id="nuevoEstado" onchange="verificarEstado()" class="input input-select">
                                                             <option value="Aprobado">Aprobado</option>
                                                             <option value="Negado">Negado</option>
                                                         </select>
@@ -110,26 +105,23 @@
 
                 <div class="contenedor_acciones_tabla">
 
-                    <form action="{{ route('admin.estudiantes') }}" method="GET">
-                        @csrf
-                        <div class="form-group d-flex align-items-center">
-                            <label for="buscarEstudiantesAprobados">Buscar estudiantes aprobados:</label>
-                            <input class="form-control input" type="text" name="buscarEstudiantesAprobados"
-                                id="buscarEstudiantesAprobados" placeholder="Buscar estudiantes aprobados">
-                            <div class="btn-group ml-2 shadow-0">
-                                <button type="submit" class="button5">Buscar
-                                    <i class="bx bx-search-alt"></i>
-                                </button>
-                            </div>
+                    <div class="contenedor_buscador">
+                        <div>
+                            <form id="formBusquedaEstudiantes">
+                                <input type="text" class="input" name="search2" value="{{ $search2 }}"
+                                       matInput placeholder="Buscar estudiantes...">
+                                <i class='bx bx-search-alt'></i>
+                            </form>
+
                         </div>
-                    </form>
+                    </div>
                 </div>
 
 
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
 
-                        <div id="tablaDocentes">
+                        <div id="tablaEstudiantes">
                             <table class="mat-mdc-table">
                                 <thead class="ng-star-inserted">
                                     <tr
@@ -212,7 +204,7 @@
                                     </li>
                                 @else
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $estudiantesAprobados->previousPageUrl() }}"
+                                        <a class="page-link" href="{{ $estudiantesAprobados->previousPageUrl() }}#tablaEstudiantes"
                                             aria-label="Anterior">Anterior</a>
                                     </li>
                                 @endif
@@ -224,14 +216,14 @@
                                         </li>
                                     @else
                                         <li class="page-item">
-                                            <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                            <a class="page-link" href="{{ $url }}#tablaEstudiantes">{{ $page }}</a>
                                         </li>
                                     @endif
                                 @endforeach
 
                                 @if ($estudiantesAprobados->hasMorePages())
                                     <li class="page-item">
-                                        <a class="page-link" href="{{ $estudiantesAprobados->nextPageUrl() }}"
+                                        <a class="page-link" href="{{ $estudiantesAprobados->nextPageUrl() }}#tablaEstudiantes"
                                             aria-label="Siguiente">Siguiente</a>
                                     </li>
                                 @else
@@ -250,8 +242,34 @@
 
             </div>
         </section>
+
+
+
         <br>
-        <!--<h4><b>Estudiantes culminados Vinculación a la sociedad</b></h4>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+        <script>
+            var delayTimer;
+            $('#formBusquedaEstudiantes input[name="search2"]').on('keyup', function() {
+                clearTimeout(delayTimer);
+                var query = $(this).val();
+                delayTimer = setTimeout(function() {
+                    $.ajax({
+                        url: '{{ route('admin.estudiantes') }}',
+                        type: 'GET',
+                        data: {
+                            search2: query
+                        },
+                        success: function(response) {
+                            $('#tablaEstudiantes').html($(response).find('#tablaEstudiantes').html());
+                        }
+                    });
+                }, 500);
+            });
+        </script>
+
+         <!--<h4><b>Estudiantes culminados Vinculación a la sociedad</b></h4>
         <hr>
         <section>
             <div class="mat-elevation-z8 contenedor_general">

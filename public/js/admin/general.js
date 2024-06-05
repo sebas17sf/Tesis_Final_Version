@@ -177,4 +177,91 @@ function verificarEstado() {
     }
 }
 
+function confirmDelete(e) {
+    e.preventDefault();
+    Swal.fire({
+        title: '¿Estás seguro de eliminar al Docente?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+         showCancelButton: true,
+        confirmButtonColor: '#7066e0',
+        cancelButtonColor: '#808080',
+        confirmButtonText: 'Aceptar',
+        customClass: {
+            container: 'my-swal',
+            popup: 'my-swal-popup',
+            header: 'my-swal-header',
+            title: 'my-swal-title',
+            closeButton: 'my-swal-close-button',
+            icon: 'my-swal-icon',
+            image: 'my-swal-image',
+            content: 'my-swal-content',
+            input: 'my-swal-input',
+            actions: 'my-swal-actions',
+            confirmButton: 'my-swal-confirm-button',
+            cancelButton: 'my-swal-cancel-button',
+            footer: 'my-swal-footer'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('deleteForm').submit();
+        }
+    })
+}
+
+function confirmDeleteProject(e) {
+    e.preventDefault();
+    Swal.fire({
+        title: '¿Estás seguro de eliminar el Proyecto?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#7066e0',
+        cancelButtonColor: '#808080',
+        confirmButtonText: 'Aceptar',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('deleteProjectForm').submit();
+        }
+    })
+}
+
+function enviarCorreo(e) {
+    e.preventDefault();
+
+    Swal.fire({
+        title: 'Enviando correo...',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    fetch(e.target.action, {
+        method: e.target.method,
+        body: new FormData(e.target)
+    })
+        .then(response => response.json())
+        .then(data => {
+            Swal.fire({
+                title: 'Éxito',
+                text: 'El correo ha sido enviado',
+                icon: 'success'
+            });
+        })
+        .catch(error => {
+            Swal.fire({
+                title: 'Error',
+                text: 'Hubo un error al enviar el correo',
+                icon: 'error'
+            });
+        });
+}
+
+
+
+
+
+
 
