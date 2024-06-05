@@ -290,7 +290,7 @@ table {
     left: 50px; /* Adjust as necessary to avoid other elements */
 }
 .draggable-card1_1 {
-    width: 700px;
+    width: 830px;
     border: 3px solid #40456c;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -302,6 +302,9 @@ table {
     top: 100px; /* Adjusted top position to avoid the top navigation bar */
     left: 50px; /* Adjust as necessary to avoid other elements */
 }
+/* Estilo para limitar el largo del select */
+
+
 .card-header {
     background-color: #40456c;
     color: white;

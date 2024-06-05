@@ -509,14 +509,13 @@
 
     </section>
     <hr>
-    <section>
 
-        <div class="container">
-        <center>
-        <button type="button" class="button1_1 efects_button" onclick="openCard('draggableCardAsignarEstudiante');">Asignar estudiante</button>
-    </center>            
-                  <!-- Tarjeta movible para Asignar Estudiante -->
-    <div class="draggable-card" id="draggableCardAsignarEstudiante">
+          <!-- Tu contenido aquí -->
+    <center>
+        <button type="button" class="button1_1 efects_button" onclick="$('#draggableCardAsignarEstudiante').show();">Asignar estudiante</button>
+    </center>
+    <!-- Tarjeta movible para Asignar Estudiante -->
+    <div class="draggable-card1_1" id="draggableCardAsignarEstudiante" style="display: none;">
         <div class="card-header">
             <span class="card-title">Asignar Proyecto</span>
             <button type="button" class="close" onclick="$('#draggableCardAsignarEstudiante').hide()">&times;</button>
@@ -531,12 +530,12 @@
                             <select name="proyecto_id" id="proyecto_id" class="form-control input input_select">
                                 <option value="">Seleccione un proyecto</option>
                                 @foreach ($proyectosDisponibles as $proyecto)
-                                <option value="{{ $proyecto->ProyectoID }}">
-                                    @if ($proyecto->director)
-                                    {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }}
-                                    @endif
-                                    {{ $proyecto->codigoProyecto }}
-                                </option>
+                                    <option value="{{ $proyecto->ProyectoID }}">
+                                        @if ($proyecto->director)
+                                            {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }}
+                                        @endif
+                                        {{ $proyecto->codigoProyecto }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -550,10 +549,10 @@
                             <select name="ProfesorParticipante" class="form-control input input_select" required>
                                 <option value="">Seleccionar Docente Participante</option>
                                 @foreach ($profesores as $profesor)
-                                <option value="{{ $profesor->id }}">
-                                    Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} - Departamento: {{
-                                    $profesor->Departamento }} - Correo: {{ $profesor->Correo }}
-                                </option>
+                                    <option value="{{ $profesor->id }}">
+                                        Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} - Departamento: {{
+                                        $profesor->Departamento }} - Correo: {{ $profesor->Correo }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -563,30 +562,36 @@
                 <br>
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label class="label" for="estudiante_id"><strong>Estudiante Aprobado:</strong></label>
                             <select name="estudiante_id[]" id="estudiante_seleccion" class="form-control input input_select" multiple="multiple">
                                 @foreach ($estudiantesAprobados as $estudiante)
-                                <option value="{{ $estudiante->EstudianteID }}">
-                                    {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} - {{ $estudiante->Departamento }}
-                                </option>
+                                    <option value="{{ $estudiante->EstudianteID }}">
+                                        {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} - {{ $estudiante->Departamento }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label class="label" for="nrc">Vinculacion NRC:</label>
                             <select name="nrc" id="nrc" class="form-control input input_select" required>
                                 <option value="">Seleccionar NRC</option>
                                 @foreach ($nrcs as $nrc)
-                                <option value="{{ $nrc->id }}" data-periodo="{{ $nrc->periodo->numeroPeriodo }} {{ $nrc->periodo->Periodo }}">
-                                    {{ $nrc->nrc }}
-                                </option>
+                                    <option value="{{ $nrc->id }}" data-periodo="{{ $nrc->periodo->numeroPeriodo }} {{ $nrc->periodo->Periodo }}">
+                                        {{ $nrc->nrc }}
+                                    </option>
                                 @endforeach
                             </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="label" for="periodo"><strong>Periodo:</strong></label>
+                            <input type="text" id="periodo" class="form-control input" readonly>
                         </div>
                     </div>
                 </div>
@@ -606,12 +611,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="label" for="periodo"><strong>Periodo:</strong></label>
-                            <input type="text" id="periodo" class="form-control input" readonly>
-                        </div>
-                    </div>
+                   
                 </div>
 
                 <div class="card-footer">
@@ -622,9 +622,6 @@
         </div>
     </div>
 
-
-
-    </section>
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
