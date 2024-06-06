@@ -139,9 +139,9 @@
                         <span>Cambiar modulo</span>
                     </a>
 
-                    <a href="{{ route('admin.cambio-credenciales') }}" class="change_password">
-                        <i class="far fa-cog"></i>
-                        <span>Configuracion</span>
+                    <a href="{{ route('conectarModulos', ['token' => session('token')]) }}" class="change_module">
+                        <i class="fa-regular fa-rectangle-vertical-history"></i>
+                        <span>Cambiar modulo</span>
                     </a>
 
                     <a class="logout" href="{{ route('logout') }}">
@@ -215,7 +215,7 @@
 
             triggerToggleSidebar();
         }
-        
+
     </script>
 
 
