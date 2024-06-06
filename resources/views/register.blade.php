@@ -68,9 +68,7 @@
                                 placeholder="Ingrese su contraseña" required>
                             <div id="togglePassword"
                                 style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
-                                <span class="material-icons">
-                                    visibility
-                                </span>
+                               
                             </div>
                         </div>
                         @error('Contrasena')

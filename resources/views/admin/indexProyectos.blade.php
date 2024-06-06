@@ -489,7 +489,7 @@
     </section>
     <hr>
 
-          <!-- Tu contenido aquí -->
+          <!-- Asignar proyecto al estudiante -->
     <center>
         <button type="button" class="button1_1 efects_button" onclick="$('#draggableCardAsignarEstudiante').show();">Asignar estudiante</button>
     </center>

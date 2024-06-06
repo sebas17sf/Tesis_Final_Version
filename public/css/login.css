@@ -999,6 +999,7 @@ body {
   font-size: 15px;
   letter-spacing: 0.25px;
   text-align: center;
+  justify-content: flex-start !important;
   line-height: 1.5;
 }
 @media (max-width: 1024px) {

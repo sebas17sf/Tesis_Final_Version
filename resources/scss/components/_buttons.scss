@@ -97,7 +97,20 @@
   font-size: fonts.$icon-size;
 
 }
-
+.button3_1_1 {
+  display: grid;
+  width: 33px;
+  height: 33px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  font-size: fonts.$icon-size;
+  font-weight: 700;
+  color: var(--white);
+  background-color: colors.$primary;
+  border: none;
+  outline: none;
+}
 // ===============================================
 // Boton icon circulo
 // ===============================================

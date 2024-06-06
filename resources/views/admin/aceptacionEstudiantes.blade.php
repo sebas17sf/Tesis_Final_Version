@@ -47,7 +47,8 @@
                                         <th>Departamento</th>
                                         <th>Estado Actual</th>
                                         <th>Observacion</th>
-                                        <th>Actualizar Estado</th>
+                                        <th>Estado</th>
+                                        <th>Actualizar</th>
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
@@ -76,12 +77,17 @@
                                                         @csrf
                                                         @method('PUT')
                                                         <input type="hidden" id="motivoNegacion" name="motivoNegacion" class="input">
-                                                        <select name="nuevoEstado" id="nuevoEstado" onchange="verificarEstado()" class="input input-select">
+                                                        <select name="nuevoEstado" id="nuevoEstado" onchange="verificarEstado()" class="form-control input1 input input_select">
                                                             <option value="Aprobado">Aprobado</option>
                                                             <option value="Negado">Negado</option>
                                                         </select>
-                                                        <button type="submit" class="button5">Enviar</button>
+                                                        
                                                     </form>
+                                                </td>
+                                                <td style="text-align: center; ">
+                                                    <button type="submit" form="updateEstudianteForm" class="button3">
+                                                        <i class="bx bx-check"></i>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         @endforeach
