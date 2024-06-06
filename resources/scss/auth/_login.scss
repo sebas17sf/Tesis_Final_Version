@@ -2,7 +2,6 @@
 
 @use "../vars/colors" as colors;
 @use "../vars/fonts" as fonts;
-@use "../animations/keyframes" as animate;
 @use "../components/buttons";
 
 // ===============================================
@@ -38,16 +37,7 @@ body {
     border-radius: 12px;
     box-shadow: 3px 3px 15px rgba(colors.$black, 0.5);
 
-    // Animacion
-    animation: popAnimation 1s ease-in-out;
 
-    &.dismissed {
-        animation: goLeft 0.5s ease 1 forwards;
-    }
-
-    &.created {
-        animation: center 0.5s ease 1 forwards;
-    }
 
     @media (max-width: 1024px) {
         width: 650px;
@@ -164,9 +154,15 @@ body {
         justify-content: center;
         align-items: center;
 
+
         hr {
             width: 100px;
         }
+    }
+
+    .row {
+        display: flex !important;
+        gap: 15px !important;
     }
 }
 
@@ -285,14 +281,14 @@ body {
         align-items: center;
         justify-content: center;
         box-shadow: none;
-        font-size: 1rem;
+        font-size: 1.1rem !important;
 
         @media (max-width: 480px) {
             right: 0px;
         }
 
         i {
-            font-size: 20px;
+            font-size: 25px;
             margin-left: 10px;
         }
     }
@@ -348,7 +344,6 @@ body {
 
         bottom: -60%;
         left: -60%;
-        transition: animate.$transition;
 
         &_t {
             top: -30%;
