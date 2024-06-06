@@ -2,117 +2,141 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AsignacionProyecto;
 use App\Models\Estudiante;
+use App\Models\NrcVinculacion;
+use App\Models\Periodo;
 use App\Models\PracticaI;
 use App\Models\PracticaII;
+use App\Models\PracticaIII;
+use App\Models\PracticaIV;
+use App\Models\PracticaV;
+use App\Models\ProfesUniversidad;
 use App\Models\Proyecto;
 use Illuminate\Http\Request;
 use App\Models\estudiantesvinculacion;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class DirectorController extends Controller
 {
-    public function mostrarEstudiantesAprobados(Request $request)
-{
-    $elementosPorPagina = $request->input('elementosPorPagina');
-    $elementosPorPagina2 = $request->input('elementosPorPagina2');
-
-    $queryEstudiantesVinculacion = estudiantesvinculacion::query();
-    $queryEstudiantesVinculacion->orderBy('nombres', 'asc');
 
 
 
-    $query = Estudiante::whereIn('Estado', ['Aprobado', 'Aprobado-practicas']);
+    public function indexProyectos(Request $request)
+    {
+        $estadoProyecto = $request->input('estado');
 
-    if ($request->filled('buscar')) {
-        $busqueda = $request->input('buscar');
-        $query->where(function ($query) use ($busqueda) {
-            $query->where('Nombres', 'like', '%' . $busqueda . '%')
-                ->orWhere('Apellidos', 'like', '%' . $busqueda . '%')
-                ->orWhere('cedula_identidad', 'like', '%' . $busqueda . '%')
-                ->orWhere('espe_id', 'like', '%' . $busqueda . '%')
-                ->orWhere('Estado', 'like', '%' . $busqueda . '%')
-                ->orWhere('Cohorte', 'like', '%' . $busqueda . '%');
-        });
-    }
+        $periodos = Periodo::all();
+        $nrcs = NrcVinculacion::all();
+        $profesores = ProfesUniversidad::all();
 
-    if ($request->has('buscarEstudiantes')) {
-        $busqueda = $request->input('buscarEstudiantes');
-        $queryEstudiantesVinculacion->where(function ($query) use ($busqueda) {
-            $query->where('cedula_identidad', 'like', '%' . $busqueda . '%')
-                ->orWhere('correo_electronico', 'like', '%' . $busqueda . '%')
-                ->orWhere('espe_id', 'like', '%' . $busqueda . '%')
-                ->orWhere('nombres', 'like', '%' . $busqueda . '%')
-                ->orWhere('periodo_ingreso', 'like', '%' . $busqueda . '%')
-                ->orWhere('periodo_vinculacion', 'like', '%' . $busqueda . '%')
-                ->orWhere('actividades_macro', 'like', '%' . $busqueda . '%')
-                ->orWhere('docente_participante', 'like', '%' . $busqueda . '%')
-                ->orWhere('fecha_inicio', 'like', '%' . $busqueda . '%')
-                ->orWhere('fecha_fin', 'like', '%' . $busqueda . '%')
-                ->orWhere('total_horas', 'like', '%' . $busqueda . '%')
-                ->orWhere('director_proyecto', 'like', '%' . $busqueda . '%')
-                ->orWhere('nombre_proyecto', 'like', '%' . $busqueda . '%');
-        });
-    }
+        $perPage = $request->input('perPage', 10);
+        $perPage2 = $request->input('perPage2', 10);
+        $page = $request->input('page', 1);
+        $page2 = $request->input('page2', 1);
+        $search = $request->input('search');
+        $search2 = $request->input('search2');
 
-    $estudiantesAprobados = $query->paginate($elementosPorPagina);
-    $estudiantesVinculacion = $queryEstudiantesVinculacion->paginate($elementosPorPagina2);
 
-    // Organizar estudiantes en los arreglos según el departamento
-    $estudiantesDCCO = [];
-    $estudiantesDCEX = [];
-    $estudiantesDCVA = [];
-
-    foreach ($estudiantesAprobados as $estudiante) {
-        switch ($estudiante->Departamento) {
-            case 'Ciencias de la Computación':
-                $estudiantesDCCO[] = $estudiante;
-                break;
-            case 'DCEX':
-                $estudiantesDCEX[] = $estudiante;
-                break;
-            case 'DCVA':
-                $estudiantesDCVA[] = $estudiante;
-                break;
+        $validPerPages = [10, 20, 50, 100];
+        if (!in_array($perPage, $validPerPages)) {
+            $perPage = 10;
         }
+
+        $query = Proyecto::query();
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('NombreProyecto', 'LIKE', '%' . $search . '%')
+                    ->orWhere('DescripcionProyecto', 'LIKE', '%' . $search . '%')
+                    ->orWhere('Estado', 'LIKE', '%' . $search . '%')
+                    ->orWhere('DepartamentoTutor', 'LIKE', '%' . $search . '%')
+                    ->orWhere('codigoProyecto', 'LIKE', '%' . $search . '%');
+            });
+        }
+
+        if ($estadoProyecto) {
+            $query->where('Estado', $estadoProyecto);
+        }
+        $proyectos = $query->paginate($perPage, ['*'], 'page', $page);
+
+        $proyectosDisponibles = Proyecto::where('Estado', 'Ejecucion')->get();
+        $estudiantesAprobados = Estudiante::where('Estado', 'Aprobado')
+            ->whereDoesntHave('asignaciones')
+            ->get();
+
+        $profesorId = request('profesor');
+        $periodoId = request('periodos');
+
+        $asignacionesAgrupadas = AsignacionProyecto::with('estudiante')
+            ->with('proyecto')
+            ->with('docenteParticipante')
+            ->with('periodo')
+            ->when($profesorId, function ($query, $profesorId) {
+                return $query->whereHas('docenteParticipante', function ($query) use ($profesorId) {
+                    $query->where('id', $profesorId);
+                });
+            })
+            ->when($periodoId, function ($query, $periodoId) {
+                return $query->whereHas('periodo', function ($query) use ($periodoId) {
+                    $query->where('id', $periodoId);
+                });
+            })
+
+
+            ->when($search2, function ($query, $search2) {
+                return $query->where(function ($query) use ($search2) {
+                    $query->whereHas('estudiante', function ($query) use ($search2) {
+                        $query->where('Nombres', 'like', '%' . $search2 . '%')
+                            ->orWhere('Apellidos', 'like', '%' . $search2 . '%');
+                    })
+                        ->orWhereHas('proyecto', function ($query) use ($search2) {
+                            $query->where('nombreProyecto', 'like', '%' . $search2 . '%');
+                        })
+                        ->orWhereHas('docenteParticipante', function ($query) use ($search2) {
+                            $query->where('Nombres', 'like', '%' . $search2 . '%')
+                                ->orWhere('Apellidos', 'like', '%' . $search2 . '%');
+                        })
+                        ->orWhereHas('periodo', function ($query) use ($search2) {
+                            $query->where('numeroPeriodo', 'like', '%' . $search2 . '%');
+                        })
+                        ->orWhereHas('proyecto.director', function ($query) use ($search2) {
+                            $query->where('Nombres', 'like', '%' . $search2 . '%')
+                                ->orWhere('Apellidos', 'like', '%' . $search2 . '%');
+                        });
+                });
+            })
+
+
+            ->get()
+            ->groupBy(function ($item) {
+                return $item->ProyectoID . '_' . $item->IdPeriodo . "_" . $item->ParticipanteID;
+            });
+
+        $total = $asignacionesAgrupadas->count();
+        $paginatedData = $asignacionesAgrupadas->forPage($page2, $perPage2);
+        $paginator = new LengthAwarePaginator(
+            $paginatedData,
+            $total,
+            $perPage2,
+            $page2,
+            ['path' => route('director.index'), 'pageName' => 'page2']
+        );
+        return view('director.proyectos', [
+            'proyectos' => $proyectos,
+            'proyectosDisponibles' => $proyectosDisponibles,
+            'estudiantesAprobados' => $estudiantesAprobados,
+            'perPage' => $perPage,
+            'perPage2' => $perPage2,
+            'paginator' => $paginator,
+            'profesores' => $profesores,
+            'nrcs' => $nrcs,
+            'asignacionesAgrupadas' => $paginator,
+            'periodos' => $periodos,
+            'search' => $search,
+            'search2' => $search2,
+        ]);
     }
-
-    return view('director.estudiantesAprobados', compact('estudiantesDCCO', 'estudiantesDCEX', 'estudiantesDCVA', 'elementosPorPagina','elementosPorPagina2', 'estudiantesAprobados', 'estudiantesVinculacion'));
-}
-
-
-
-public function indexProyectos(Request $request)
-{
-    $elementosPorPagina = $request->input('elementosPorPagina');
-    $query = Proyecto::query();
-
-    // Realizar la búsqueda por los campos especificados
-    if ($request->filled('buscar')) {
-        $busqueda = $request->input('buscar');
-        $query->where(function ($query) use ($busqueda) {
-            $query->where('NombreProfesor', 'like', '%' . $busqueda . '%')
-                ->orWhere('ApellidoProfesor', 'like', '%' . $busqueda . '%')
-                ->orWhere('NombreProyecto', 'like', '%' . $busqueda . '%')
-                ->orWhere('NombreAsignado', 'like', '%' . $busqueda . '%')
-                ->orWhere('CedulaDirector', 'like', '%' . $busqueda . '%')
-                ->orWhere('CedulaAsignado', 'like', '%' . $busqueda . '%')
-                ->orWhere('ApellidoAsignado', 'like', '%' . $busqueda . '%')
-                ->orWhere('CorreoProfeAsignado', 'like', '%' . $busqueda . '%')
-                ->orWhere('DescripcionProyecto', 'like', '%' . $busqueda . '%')
-                ->orWhere('CorreoElectronicoTutor', 'like', '%' . $busqueda . '%')
-                ->orWhere('DepartamentoTutor', 'like', '%' . $busqueda . '%')
-                ->orWhere('FechaInicio', 'like', '%' . $busqueda . '%')
-                ->orWhere('FechaFinalizacion', 'like', '%' . $busqueda . '%')
-                ->orWhere('cupos', 'like', '%' . $busqueda . '%')
-                ->orWhere('Estado', 'like', '%' . $busqueda . '%');
-        });
-    }
-
-    // Paginar los resultados de la búsqueda
-    $proyectos = $query->paginate($elementosPorPagina);
-
-    return view('director.proyectos', ['proyectos' => $proyectos, 'elementosPorPagina' => $elementosPorPagina]);
-}
 
 
     public function index()
@@ -126,44 +150,243 @@ public function indexProyectos(Request $request)
 
     public function practicas(Request $request)
 {
-    $elementosPorPagina = $request->input('elementosPorPagina'); 
-    $searchInput = $request->input('searchInput');
 
-    $estudiantesPracticaI = PracticaI::with('estudiante')
-        ->whereIn('Estado', ['En ejecucion', 'Terminado'])
-        ->where(function ($query) use ($searchInput) {
-            $query->where('NombreEstudiante', 'like', "%$searchInput%")
-                  ->orWhere('ApellidoEstudiante', 'like', "%$searchInput%")
-                  ->orWhere('Nivel', 'like', "%$searchInput%")
-                  ->orWhere('Practicas', 'like', "%$searchInput%")
-                  ->orWhere('DocenteTutor', 'like', "%$searchInput%")
-                  ->orWhere('Empresa', 'like', "%$searchInput%")
-                  ->orWhere('Estado', 'like', "%$searchInput%");
+
+    $search= $request->input('search');
+    $search2= $request->input('search2');
+    $search3= $request->input('search3');
+    $search4= $request->input('search4');
+
+
+
+    $perPage1 = $request->input('paginacion1', 10);
+    $perPage2 = $request->input('paginacion2', 10);
+    $perPage3 = $request->input('paginacion3', 10);
+    $perPage4 = $request->input('paginacion4', 10);
+
+    $estudiantesConPracticaI = PracticaI::with('estudiante')
+        ->where('Estado', 'PracticaI')
+        ->get();
+
+    $estudiantesConPracticaII = PracticaII::with('estudiante')
+        ->where('Estado', 'PracticaII')
+        ->get();
+
+    $estudiantesPracticas = PracticaI::with('estudiante')
+        ->where(function ($query) use ($search) {
+            $query->where('Estado', 'En ejecucion')
+                ->orWhere('Estado', 'Finalizado');
         })
-        ->paginate($elementosPorPagina); 
+        ->where(function ($query) use ($search) {
 
-    $estudiantesPracticaII = PracticaII::with('estudiante')
-        ->whereIn('Estado', ['En ejecucion', 'Terminado'])
-        ->where(function ($query) use ($searchInput) {
-            $query->where('NombreEstudiante', 'like', "%$searchInput%")
-                  ->orWhere('ApellidoEstudiante', 'like', "%$searchInput%")
-                  ->orWhere('Nivel', 'like', "%$searchInput%")
-                  ->orWhere('Practicas', 'like', "%$searchInput%")
-                  ->orWhere('DocenteTutor', 'like', "%$searchInput%")
-                  ->orWhere('Empresa', 'like', "%$searchInput%")
-                  ->orWhere('Estado', 'like', "%$searchInput%");
+            $query->where('EstudianteID', 'LIKE', '%' . $search . '%')
+                ->orWhereHas('estudiante', function ($query) use ($search) {
+                    $query->where('Nombres', 'LIKE', '%' . $search . '%')
+                        ->orWhere('Apellidos', 'LIKE', '%' . $search . '%')
+                        ->orWhere('Carrera', 'LIKE', '%' . $search . '%');
+                })
+                ->orWhere('ID_tutorAcademico', 'LIKE', '%' . $search . '%')
+                ->orWhereHas('tutorAcademico', function ($query) use ($search) {
+                    $query->where('Nombres', 'LIKE', '%' . $search . '%')
+                        ->orWhere('Apellidos', 'LIKE', '%' . $search . '%');
+                })
+                ->orWhere('IDEmpresa', 'LIKE', '%' . $search . '%')
+                ->orWhereHas('empresa', function ($query) use ($search) {
+                    $query->where('nombreEmpresa', 'LIKE', '%' . $search . '%')
+                        ->orWhere('rucEmpresa', 'LIKE', '%' . $search . '%')
+                        ->orWhere('provincia', 'LIKE', '%' . $search . '%')
+                        ->orWhere('ciudad', 'LIKE', '%' . $search . '%')
+
+                        ->orWhere('NombreTutorEmpresarial', 'LIKE', '%' . $search . '%')
+                        ->orWhere('tipoPractica', 'LIKE', '%' . $search . '%');
+                });
+
         })
-        ->paginate($elementosPorPagina); 
+        ->paginate($perPage1, ['*'], 'page1');
 
-    
-    return view('director.practicas', compact('estudiantesPracticaI', 'estudiantesPracticaII', 'elementosPorPagina'));
+    $estudiantesPracticasII = PracticaII::with('estudiante')
+        ->where(function ($query) {
+            $query->where('Estado', 'En ejecucion')
+                ->orWhere('Estado', 'Finalizado');
+        })
+
+        ->where(function ($query) use ($search2) {
+
+            $query->where('EstudianteID', 'LIKE', '%' . $search2 . '%')
+                ->orWhereHas('estudiante', function ($query) use ($search2) {
+                    $query->where('Nombres', 'LIKE', '%' . $search2 . '%')
+                        ->orWhere('Apellidos', 'LIKE', '%' . $search2 . '%')
+                        ->orWhere('Carrera', 'LIKE', '%' . $search2 . '%');
+                })
+                ->orWhere('ID_tutorAcademico', 'LIKE', '%' . $search2 . '%')
+                ->orWhereHas('tutorAcademico', function ($query) use ($search2) {
+                    $query->where('Nombres', 'LIKE', '%' . $search2 . '%')
+                        ->orWhere('Apellidos', 'LIKE', '%' . $search2 . '%');
+                })
+                ->orWhere('IDEmpresa', 'LIKE', '%' . $search2 . '%')
+                ->orWhereHas('empresa', function ($query) use ($search2) {
+                    $query->where('nombreEmpresa', 'LIKE', '%' . $search2 . '%')
+                        ->orWhere('rucEmpresa', 'LIKE', '%' . $search2 . '%')
+                        ->orWhere('provincia', 'LIKE', '%' . $search2 . '%')
+                        ->orWhere('ciudad', 'LIKE', '%' . $search2 . '%')
+
+                        ->orWhere('NombreTutorEmpresarial', 'LIKE', '%' . $search2 . '%')
+                        ->orWhere('tipoPractica', 'LIKE', '%' . $search2 . '%');
+                });
+
+        })
+        ->paginate($perPage2, ['*'], 'page2');
+
+    $estudiantesPracticasIII = PracticaIII::with('estudiante')
+        ->where(function ($query) {
+            $query->where('Estado', 'En ejecucion')
+                ->orWhere('Estado', 'Finalizado');
+        })
+        ->where(function ($query) use ($search3) {
+
+            $query->where('EstudianteID', 'LIKE', '%' . $search3 . '%')
+                ->orWhereHas('estudiante', function ($query) use ($search3) {
+                    $query->where('Nombres', 'LIKE', '%' . $search3 . '%')
+                        ->orWhere('Apellidos', 'LIKE', '%' . $search3 . '%')
+                        ->orWhere('Carrera', 'LIKE', '%' . $search3 . '%');
+                })
+                ->orWhere('ID_tutorAcademico', 'LIKE', '%' . $search3 . '%')
+                ->orWhereHas('tutorAcademico', function ($query) use ($search3) {
+                    $query->where('Nombres', 'LIKE', '%' . $search3 . '%')
+                        ->orWhere('Apellidos', 'LIKE', '%' . $search3 . '%');
+                })
+                ->orWhere('IDEmpresa', 'LIKE', '%' . $search3 . '%')
+                ->orWhereHas('empresa', function ($query) use ($search3) {
+                    $query->where('nombreEmpresa', 'LIKE', '%' . $search3 . '%')
+                        ->orWhere('rucEmpresa', 'LIKE', '%' . $search3 . '%')
+                        ->orWhere('provincia', 'LIKE', '%' . $search3 . '%')
+                        ->orWhere('ciudad', 'LIKE', '%' . $search3 . '%')
+
+                        ->orWhere('NombreTutorEmpresarial', 'LIKE', '%' . $search3 . '%')
+                        ->orWhere('tipoPractica', 'LIKE', '%' . $search3 . '%');
+                });
+
+        })
+        ->paginate($perPage3, ['*'], 'page3');
+
+    $estudiantesPracticasIV = PracticaIV::with('estudiante')
+        ->where(function ($query) {
+            $query->where('Estado', 'En ejecucion')
+                ->orWhere('Estado', 'Finalizado');
+        })
+        ->where(function ($query) use ($search4) {
+
+            $query->where('EstudianteID', 'LIKE', '%' . $search4 . '%')
+                ->orWhereHas('estudiante', function ($query) use ($search4) {
+                    $query->where('Nombres', 'LIKE', '%' . $search4 . '%')
+                        ->orWhere('Apellidos', 'LIKE', '%' . $search4 . '%')
+                        ->orWhere('Carrera', 'LIKE', '%' . $search4 . '%');
+                })
+                ->orWhere('ID_tutorAcademico', 'LIKE', '%' . $search4 . '%')
+                ->orWhereHas('tutorAcademico', function ($query) use ($search4) {
+                    $query->where('Nombres', 'LIKE', '%' . $search4 . '%')
+                        ->orWhere('Apellidos', 'LIKE', '%' . $search4 . '%');
+                })
+                ->orWhere('IDEmpresa', 'LIKE', '%' . $search4 . '%')
+                ->orWhereHas('empresa', function ($query) use ($search4) {
+                    $query->where('nombreEmpresa', 'LIKE', '%' . $search4 . '%')
+                        ->orWhere('rucEmpresa', 'LIKE', '%' . $search4 . '%')
+                        ->orWhere('provincia', 'LIKE', '%' . $search4 . '%')
+                        ->orWhere('ciudad', 'LIKE', '%' . $search4 . '%')
+
+                        ->orWhere('NombreTutorEmpresarial', 'LIKE', '%' . $search4 . '%')
+                        ->orWhere('tipoPractica', 'LIKE', '%' . $search4 . '%');
+                });
+
+        })
+        ->paginate($perPage4, ['*'], 'page4');
+
+    $estudiantesPracticasV = PracticaV::with('estudiante')
+        ->where(function ($query) {
+            $query->where('Estado', 'En ejecucion')
+                ->orWhere('Estado', 'Finalizado');
+        })
+        ->get();
+
+    return view(
+        'director.practicas',
+        compact(
+            'estudiantesConPracticaI',
+            'estudiantesPracticas',
+            'estudiantesConPracticaII',
+            'estudiantesPracticasII',
+            'estudiantesPracticasIII',
+            'estudiantesPracticasIV',
+            'estudiantesPracticasV',
+            'perPage1',
+            'perPage2',
+            'perPage3',
+            'perPage4',
+            'search',
+            'search2',
+            'search3',
+            'search4'
+
+        )
+    );
 }
 
-    
 
-        
+    public function mostrarEstudiantesAprobados (Request $request)
+    {
+        $elementosPorPagina = $request->input('elementosPorPagina');
+        $elementosPorPaginaAprobados = $request->input('elementosPorPaginaAprobados'); // Cambio de nombre
 
-    
+        $search2 = $request->input('search2');
+
+        // Consulta para estudiantes en revisión
+        $queryEstudiantesEnRevision = Estudiante::where('Estado', 'En proceso de revisión')
+            ->orderBy('Nombres', 'asc');
+
+        // Búsqueda de estudiantes en revisión
+        if ($request->has('buscarEstudiantesEnRevision')) {
+            $busquedaEstudiantesEnRevision = $request->input('buscarEstudiantesEnRevision');
+            $queryEstudiantesEnRevision->where(function ($query) use ($busquedaEstudiantesEnRevision) {
+                $query->where('Nombres', 'like', '%' . $busquedaEstudiantesEnRevision . '%')
+                    ->orWhere('Apellidos', 'like', '%' . $busquedaEstudiantesEnRevision . '%');
+            });
+        }
+
+        $estudiantesEnRevision = $queryEstudiantesEnRevision->get();
+
+        // Consulta y paginación para estudiantes aprobados
+        $queryEstudiantesAprobados = Estudiante::whereIn('Estado', ['Aprobado', 'Aprobado-prácticas','Desactivados']);
+
+        // Búsqueda de estudiantes aprobados
+        if ($request->has('search2')) {
+            $busquedaEstudiantesAprobados = $request->input('search2');
+            $queryEstudiantesAprobados->where(function ($query) use ($busquedaEstudiantesAprobados) {
+                $query->where('Nombres', 'like', '%' . $busquedaEstudiantesAprobados . '%')
+                    ->orWhere('Apellidos', 'like', '%' . $busquedaEstudiantesAprobados . '%')
+                    ->orWhere('espe_id', 'like', '%' . $busquedaEstudiantesAprobados . '%')
+                    ->orWhere('celular', 'like', '%' . $busquedaEstudiantesAprobados . '%')
+                    ->orWhere('cedula', 'like', '%' . $busquedaEstudiantesAprobados . '%')
+                    ->orWhere('Cohorte', 'like', '%' . $busquedaEstudiantesAprobados . '%')
+                    ->orWhere('Departamento', 'like', '%' . $busquedaEstudiantesAprobados . '%');
+            });
+        }
+
+        $estudiantesAprobados = $queryEstudiantesAprobados->paginate($elementosPorPaginaAprobados); // Cambio de nombre
+
+        // Verificar si no se encontraron resultados para la búsqueda de estudiantes de vinculación
+
+        return view('director.estudiantesAprobados', [
+            'estudiantesEnRevision' => $estudiantesEnRevision,
+            'estudiantesAprobados' => $estudiantesAprobados,
+            'elementosPorPagina' => $elementosPorPagina,
+            'elementosPorPaginaAprobados' => $elementosPorPaginaAprobados,
+            'search2' => $search2,
+        ]);
+    }
+
+
+
+
 
 
 }

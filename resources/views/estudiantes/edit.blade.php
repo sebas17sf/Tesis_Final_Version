@@ -45,7 +45,7 @@
             <div class="form-group">
                 <label for="Nombres">Nombres:</label>
                 <input id="Nombres" type="text" class="form-control input" name="Nombres" value="{{ $estudiante->Nombres }}" required autofocus placeholder="Ingrese sus Nombres" pattern="[A-Za-zÁ-úñÑ\s]+" title="Ingrese solo letras (sin caracteres especiales)">
-                <span id="error-message-name" style="color: red; display: none;">Debe ingresar solo caracteres</span>
+                <small id="error-message-name" style="color: red; display: none;">Debe ingresar solo caracteres</small>
             </div>
             <div class="form-group">
                 <label for="celular">Celular:</label>
@@ -55,7 +55,7 @@
                     </div>
                     <input id="celular" type="text" class="form-control input" name="celular" value="{{ $estudiante->celular }}" required placeholder="Ingrese su número de celular">
                 </div>
-                <span id="error-message-cell" style="color: red; display: none;">Número de celular no válido</span>
+                <small id="error-message-cell" style="color: red; display: none;">Número de celular no válido</small>
             </div>
             <div class="form-group">
                 <label for="Periodo">Periodo:</label>
@@ -73,7 +73,7 @@
             <div class="form-group">
                 <label for="Apellidos">Apellidos:</label>
                 <input id="Apellidos" type="text" class="form-control input" name="Apellidos" value="{{ $estudiante->Apellidos }}" required placeholder="Ingrese sus Apellidos" pattern="[A-Za-zÁ-úñÑ\s]+" title="Ingrese solo letras (sin caracteres especiales)">
-                <span id="error-message-apellidos" style="color: red; display: none;">Debe ingresar solo caracteres</span>
+                <small id="error-message-apellidos" style="color: red; display: none;">Debe ingresar solo caracteres</small>
             </div>
             <div class="form-group">
                 <label for="Carrera">Carrera:</label>
@@ -102,6 +102,8 @@
                     <div class="form-group">
                         <label for="espe_id">ESPE ID:</label>
                         <input id="espe_id" type="text" class="form-control input" name="espe_id" value="{{ $estudiante->espe_id }}" required placeholder="Ingrese su ESPE ID">
+                        <small id="espe_id_error" class="form-text text-danger" style="display: none;">El ESPE ID es de 9 caracteres.</small>
+
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -141,5 +143,5 @@
 </form>
 </div>
 </div>
-</div>   
+</div>
 @endsection

@@ -483,32 +483,26 @@ class DocumentosVinculacion extends Controller
 
 
 
-
-            $hojaCalculo->getColumnDimension('I')->setAutoSize(true);
-            $hojaCalculo->getColumnDimension('O')->setAutoSize(true);
-            $hojaCalculo->getColumnDimension('J')->setAutoSize(true);
-            $hojaCalculo->getColumnDimension('K')->setAutoSize(true);
-            $hojaCalculo->getColumnDimension('L')->setAutoSize(true);
-            $hojaCalculo->getColumnDimension('M')->setAutoSize(true);
-            $hojaCalculo->getColumnDimension('N')->setAutoSize(true);
-            $hojaCalculo->getColumnDimension('O')->setAutoSize(true);
-            $hojaCalculo->getColumnDimension('A')->setAutoSize(true);
-
-
-            $hojaCalculo->setCellValue("I$filaActual", $proyecto->NombreProyecto);
-            $hojaCalculo->setCellValue("K$filaActual", $director->Apellidos . ' ' . $director->Nombres);
-            $hojaCalculo->setCellValue("L$filaActual", $participante->Apellidos . ' ' . $participante->Nombres);
-            $hojaCalculo->setCellValue("M$filaActual", $proyecto->FechaInicio);
-            $hojaCalculo->setCellValue("J$filaActual", $proyecto->DescripcionProyecto);
-            $hojaCalculo->setCellValue("N$filaActual", $proyecto->FechaFinalizacion);
-            $hojaCalculo->setCellValue("O$filaActual", $proyecto->DepartamentoTutor);
+            $hojaCalculo->setCellValue("H$filaActual", $proyecto->NombreProyecto);
+            $hojaCalculo->setCellValue("J$filaActual", $director->Apellidos . ' ' . $director->Nombres);
+            $hojaCalculo->setCellValue("K$filaActual", $participante->Apellidos . ' ' . $participante->Nombres);
+            $hojaCalculo->setCellValue("L$filaActual", $proyecto->FechaInicio);
+            $hojaCalculo->setCellValue("I$filaActual", $proyecto->DescripcionProyecto);
+            $hojaCalculo->setCellValue("M$filaActual", $proyecto->FechaFinalizacion);
+            $hojaCalculo->setCellValue("N$filaActual", $proyecto->DepartamentoTutor);
             $hojaCalculo->setCellValue("F$filaActual", $periodo->numeroPeriodo);
 
             $hojaCalculo->setCellValue("A$filaActual", $asignacion->estudiante->Apellidos . ' ' . $asignacion->estudiante->Nombres);
             $hojaCalculo->setCellValue("C$filaActual", $asignacion->estudiante->cedula);
             $hojaCalculo->setCellValue("B$filaActual", $asignacion->estudiante->espe_id);
-            $hojaCalculo->setCellValue("D$filaActual", $asignacion->estudiante->usuario->CorreoElectronico);
+            $hojaCalculo->setCellValue("D$filaActual", $asignacion->estudiante->Correo);
             $hojaCalculo->setCellValue("E$filaActual", $asignacion->estudiante->Cohorte);
+
+             $hojaCalculo->setCellValue("G$filaActual", $asignacion->first()->estudiante->notas->first()->Nota_Final);
+
+
+
+
 
 
         }
@@ -555,28 +549,31 @@ class DocumentosVinculacion extends Controller
             if (!empty($row[0]) && !empty($row[1]) && !empty($row[2]) && !empty($row[3]) && !empty($row[4]) && !empty($row[5]) && !empty($row[6])) {
                 $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
 
-                Estudiante::updateOrCreate(
-                    [
-                        'espe_id' => $row[0],
-                        'cedula' => $row[1],
-                    ],
-                    [
-                        'Correo' => $row[2],
-                        'Apellidos' => $row[3],
-                        'Nombres' => $row[4],
-                        'Cohorte' => $row[5],
-                        'id_periodo' => $periodo ? $periodo->id : null,
-                        'Carrera' => 'Ingeniería en Tecnologías de la información',
-                        'Departamento' => 'Ciencias de la Computación',
-                        'comentario' => 'Importado desde Excel',
-                        'Estado' => 'Desactivados',
-                    ]
-                );
+                $estudiante = Estudiante::where('espe_id', $row[0])->first();
+
+                $data = [
+                    'espe_id' => $row[0],
+                    'Correo' => $row[2],
+                    'Apellidos' => $row[3],
+                    'Nombres' => $row[4],
+                    'Cohorte' => $row[5],
+                    'id_periodo' => $periodo ? $periodo->id : null,
+                    'Carrera' => 'Ingeniería en Tecnologías de la información',
+                    'Departamento' => 'Ciencias de la Computación',
+                    'comentario' => 'Importado desde Excel',
+                    'Estado' => 'Desactivados',
+                ];
+
+                if ($estudiante) {
+                    $estudiante->update($data);
+                } else {
+                    Estudiante::create($data);
+                }
             }
         }
 
-        foreach ($dataRows as $row) {
 
+        foreach ($dataRows as $row) {
             $participante = null;
             if (!empty($row[7]) && !empty($row[8]) && !empty($row[6]) && !empty($row[9]) && !empty($row[10]) && !empty($row[11]) && !empty($row[21])) {
                 $estudiante = Estudiante::where('espe_id', $row[0])->first();
@@ -593,44 +590,55 @@ class DocumentosVinculacion extends Controller
                         ->where('Nombres', 'like', '%' . $apellido . '%')
                         ->first();
                 }
-                $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[9]);
-                if ($fechaInicio) {
-                    $fechaInicioFormatted = $fechaInicio->format('Y-m-d');
-                } else {
-                    $fechaInicioFormatted = null;
-                }
-                $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $row[10]);
-                if ($fechaFinalizacion) {
-                    $fechaFinalizacionFormatted = $fechaFinalizacion->format('Y-m-d');
-                } else {
-                    $fechaFinalizacionFormatted = null;
-                }
 
-                $asignacionExistente = AsignacionProyecto::where('EstudianteID', $estudiante ? $estudiante->EstudianteID : null)
+                $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[9]);
+                $fechaInicioFormatted = $fechaInicio ? $fechaInicio->format('Y-m-d') : null;
+
+                $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $row[10]);
+                $fechaFinalizacionFormatted = $fechaFinalizacion ? $fechaFinalizacion->format('Y-m-d') : null;
+
+                // Buscar la asignación existente
+                $asignacion = AsignacionProyecto::where('EstudianteID', $estudiante ? $estudiante->EstudianteID : null)
                     ->where('ProyectoID', $proyecto ? $proyecto->ProyectoID : null)
-                    ->where('ParticipanteID', $participante ? $participante->id : null)
                     ->where('IdPeriodo', $periodo ? $periodo->id : null)
                     ->first();
 
-                if ($asignacionExistente) {
-                    $asignacionExistente->update([
-                        'FechaInicio' => $fechaInicioFormatted,
-                        'FechaFinalizacion' => $fechaFinalizacionFormatted,
-                        'FechaAsignacion' => now(),
-                    ]);
+                $data = [
+                    'EstudianteID' => $estudiante ? $estudiante->EstudianteID : null,
+                    'ProyectoID' => $proyecto ? $proyecto->ProyectoID : null,
+                    'ParticipanteID' => $participante ? $participante->id : null,
+                    'IdPeriodo' => $periodo ? $periodo->id : null,
+                    'FechaInicio' => $fechaInicioFormatted,
+                    'FechaFinalizacion' => $fechaFinalizacionFormatted,
+                    'FechaAsignacion' => now(),
+                ];
+
+                if ($asignacion) {
+                     $asignacion->update($data);
                 } else {
-                    AsignacionProyecto::create([
-                        'EstudianteID' => $estudiante ? $estudiante->EstudianteID : null,
-                        'ProyectoID' => $proyecto ? $proyecto->ProyectoID : null,
-                        'ParticipanteID' => $participante ? $participante->id : null,
-                        'IdPeriodo' => $periodo->id,
-                        'FechaInicio' => $fechaInicioFormatted,
-                        'FechaFinalizacion' => $fechaFinalizacionFormatted,
-                        'FechaAsignacion' => now(),
-                    ]);
+                     AsignacionProyecto::create($data);
                 }
             }
         }
+
+         foreach ($dataRows as $row) {
+            $estudiante = Estudiante::where('espe_id', $row[0])->first();
+            $notas = NotasEstudiante::where('EstudianteID', $estudiante ? $estudiante->EstudianteID : null)->first();
+            if ($notas) {
+                $notas->update([
+                    'EstudianteID' => $estudiante ? $estudiante->EstudianteID : null,
+                    'Nota_Final' => $row[12] ?? '0',
+                ]);
+            } else {
+                NotasEstudiante::create([
+                    'EstudianteID' => $estudiante ? $estudiante->EstudianteID : null,
+                    'Nota_Final' => $row[12] ?? '0',
+                ]);
+            }
+        }
+
+
+
 
 
         return back()->with('success', 'Datos importados con éxito!');

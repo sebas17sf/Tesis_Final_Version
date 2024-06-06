@@ -330,7 +330,7 @@
         <div class="modal fade" id="modalImportar2" tabindex="-1" role="dialog" aria-labelledby="modalImportarLabel2" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <form id="idModalImportar2" action="{{ route('import-practicas2') }}" method="POST" enctype="multipart/form-data">
+                    <form id="idModalImportar2" action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="modal-header">
                             <h5 class="modal-title">Importar archivo</h5>
@@ -440,6 +440,7 @@
                                         <th class="tamanio1">DOCENTES PARTICIPANTES</th>
                                         <th>FECHA ASIGNACION</th>
                                         <th class="tamanio">ESTUDIANTES</th>
+                                        <th>Nota</th>
                                         <th>PERIODO</th>
                                         <th>NRC</th>
                                         <th>FECHA INICIO</th>
@@ -455,7 +456,10 @@
 
                                             <td style="text-transform: uppercase; text-align: left;">
                                                 {{ $grupo->first()->proyecto->director->Apellidos ?? '' }}
-                                                {{ $grupo->first()->proyecto->director->Nombres ?? '' }}</td>
+                                                {{ $grupo->first()->proyecto->director->Nombres ?? '' }}
+                                            </td>
+
+
                                             <td style="text-transform: uppercase; text-align: left;">
 
                                                 {{ $grupo->first()->docenteParticipante->Apellidos ?? '' }}
@@ -470,8 +474,11 @@
                                                 @foreach ($grupo as $asignacion)
                                                     {{ $asignacion->estudiante->Apellidos ?? '' }}
                                                     {{ $asignacion->estudiante->Nombres ?? '' }}<br>
+
                                                 @endforeach
+
                                             </td>
+                                            <td>{{ $grupo->first()->estudiante->notas->first()->Nota_Final ?? '' }}</td>
                                             <td>{{ $grupo->first()->periodo->numeroPeriodo ?? '' }}</td>
                                             <td>{{ $grupo->first()->nrcVinculacion->nrc ?? 'NO REQUERIA DE NRC' }}</td>
                                             <td>{{ $grupo->first()->FechaInicio ?? '' }}</td>

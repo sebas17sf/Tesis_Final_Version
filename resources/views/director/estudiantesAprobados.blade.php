@@ -1,379 +1,237 @@
 @extends('layouts.director')
 
-@section('title', 'Estudiantes Aprobados')
+@section('title', 'Aceptación de Estudiantes')
 
-@section('title_component', 'Estudiantes Aprobados')
+@section('title_component', 'Aceptación de Estudiantes')
 
 @section('content')
-<div class="container">
-    <br>
-    <h6><b>Seguimiento Estudiantes</b></h6>
-    <hr>
-    <div class="d-flex">
-        <form method="GET" action="{{ route('director.estudiantesAprobados') }}" class="mr-3">
-            <label for="elementosPorPagina">Estudiantes a visualizar:</label>
-            <select name="elementosPorPagina" id="elementosPorPagina" onchange="this.form.submit()">
-                <option value="10" @if(request('elementosPorPagina', $elementosPorPagina)==10) selected @endif>10
-                </option>
-                <option value="20" @if(request('elementosPorPagina', $elementosPorPagina)==20) selected @endif>20
-                </option>
-                <option value="50" @if(request('elementosPorPagina', $elementosPorPagina)==50) selected @endif>50
-                </option>
-                <option value="100" @if(request('elementosPorPagina', $elementosPorPagina)==100) selected @endif>100
-                </option>
-            </select>
-        </form>
 
-        <form method="GET" action="{{ route('director.estudiantesAprobados') }}">
-            @csrf
-            <div class="form-group">
-                <label for="buscar"></label>
-                <input type="text" name="buscar" id="buscar" value="{{ request('buscar') }}"
-                    placeholder="Buscar estudiantes">
-                <button type="submit">Buscar</button>
+
+
+    <br>
+    <h4><b>Seguimiento Estudiantes</b></h4>
+    <hr>
+    <section>
+        <div class="mat-elevation-z8 contenedor_general">
+
+            <div class="contenedor_acciones_tabla">
+
+                <div class="contenedor_buscador">
+                    <div>
+                        <form id="formBusquedaEstudiantes">
+                            <input type="text" class="input" name="search2" value="{{ $search2 }}"
+                                   matInput placeholder="Buscar estudiantes...">
+                            <i class='bx bx-search-alt'></i>
+                        </form>
+
+                    </div>
+                </div>
             </div>
 
-        </form>
-    </div>
+
+            <div class="contenedor_tabla">
+                <div class="table-container mat-elevation-z8">
+
+                    <div id="tablaEstudiantes">
+                        <table class="mat-mdc-table">
+                            <thead class="ng-star-inserted">
+                            <tr
+                                class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+
+                                <th>Nombres</th>
+                                <th>ID ESPE</th>
+                                <th>Carrera</th>
+                                <th>Cédula</th>
+                                <th>Cohorte</th>
+                                <th>Periodo</th>
+                                <th>Departamento</th>
+                                <th>Estado</th>
+
+                            </tr>
+                            </thead>
+                            <tbody class="mdc-data-table__content ng-star-inserted">
+                            @if ($estudiantesAprobados->isEmpty())
+                            <tr style="text-align:center">
+                                <td colspan="9">No hay estudiantes en proceso de revisión.</td>
+                            </tr>
+                            @else
+                            @foreach ($estudiantesAprobados as $estudiante)
+                            <tr>
+                                <td>{{ strtoupper($estudiante->Apellidos . ' ' . $estudiante->Nombres) }}
+                                </td>
+                                <td>{{ $estudiante->espe_id }}</td>
+                                <td>{{ strtoupper($estudiante->Carrera) }}</td>
+                                <td>{{ $estudiante->cedula }}</td>
+                                <td>{{ $estudiante->periodos->numeroPeriodo }}</td>
+                                <td>{{ $estudiante->periodos->Periodo }}</td>
+                                <td>{{ strtoupper($estudiante->Departamento) }}</td>
+                                <td>
+                                    @if ($estudiante->Estado == 'Aprobado')
+                                    {{ strtoupper('Vinculacion') }}
+                                    @elseif ($estudiante->Estado == 'Aprobado-practicas')
+                                    {{ strtoupper('Practicas') }}
+                                    @else
+                                    {{ strtoupper($estudiante->Estado) }}
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                            @endif
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+
+                <div class="paginator-container">
+                    <nav aria-label="...">
+
+                        <ul class="pagination">
+                            <li class="page-item mx-3">
+                                <form method="GET" action="{{ route('admin.estudiantes') }}#tablaEstudiantes">
+                                    <select class="form-control page-item" name="elementosPorPaginaAprobados" id="elementosPorPaginaAprobados" onchange="this.form.submit()">
+                                        <option value="10" @if ($elementosPorPaginaAprobados == 10) selected @endif>10</option>
+                                        <option value="20" @if ($elementosPorPaginaAprobados == 20) selected @endif>20</option>
+                                        <option value="50" @if ($elementosPorPaginaAprobados == 50) selected @endif>50</option>
+                                        <option value="100" @if ($elementosPorPaginaAprobados == 100) selected @endif>100</option>
+                                    </select>
+                                </form>
+                            </li>
+
+                            @if ($estudiantesAprobados->onFirstPage())
+                            <li class="page-item disabled">
+                                <span class="page-link">Anterior</span>
+                            </li>
+                            @else
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $estudiantesAprobados->appends(['elementosPorPaginaAprobados' => $elementosPorPaginaAprobados])->previousPageUrl() }}#tablaEstudiantes" aria-label="Anterior">Anterior</a>
+                            </li>
+                            @endif
+
+                            @foreach ($estudiantesAprobados->getUrlRange(1, $estudiantesAprobados->lastPage()) as $page => $url)
+                            @if ($page == $estudiantesAprobados->currentPage())
+                            <li class="page-item active">
+                                <span class="page-link">{{ $page }}</span>
+                            </li>
+                            @else
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $estudiantesAprobados->appends(['elementosPorPaginaAprobados' => $elementosPorPaginaAprobados])->url($page) }}#tablaEstudiantes">{{ $page }}</a>
+                            </li>
+                            @endif
+                            @endforeach
+
+                            @if ($estudiantesAprobados->hasMorePages())
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $estudiantesAprobados->appends(['elementosPorPaginaAprobados' => $elementosPorPaginaAprobados])->nextPageUrl() }}#tablaEstudiantes" aria-label="Siguiente">Siguiente</a>
+                            </li>
+                            @else
+                            <li class="page-item disabled">
+                                <span class="page-link">Siguiente</span>
+                            </li>
+                            @endif
 
 
 
-    <h6><b>Departamento DCCO</b></h6>
-    <hr>
-    <div style="overflow-x: auto;">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Estudiante</th>
-                <th>ID ESPE</th>
-                <th>Carrera</th>
-                <th>Celular</th>
-                <th>Cédula</th>
-                <th>Cohorte</th>
-                <th>Departamento</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($estudiantesDCCO as $estudiante)
-            <tr>
-                <td>{{ strtoupper($estudiante->Apellidos) }} {{ strtoupper($estudiante->Nombres) }}</td>
-                <td>{{ strtoupper($estudiante->espe_id) }}</td>
-                <td>{{ strtoupper($estudiante->Carrera) }}</td>
-                <td>{{ strtoupper($estudiante->celular) }}</td>
-                <td>{{ strtoupper($estudiante->cedula) }}</td>
-                <td>{{ strtoupper($estudiante->Cohorte) }}</td>
-                <td>{{ strtoupper($estudiante->Departamento) }}</td>
-                <td>
-    @if ($estudiante->Estado == 'Aprobado')
-        {{ strtoupper('Vinculacion') }}
-    @elseif ($estudiante->Estado == 'Aprobado-practicas')
-        {{ strtoupper('Practicas') }}
-    @else
-        {{ strtoupper($estudiante->Estado) }}
-    @endif
-</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-    </div>
-<br>
-    <h6><b>Departamento DCEX</b></h6>
-    <hr>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Estudiante</th>
-                <th>ID ESPE</th>
-                <th>Celular</th>
-                <th>Cédula</th>
-                <th>Cohorte</th>
-                <th>Departamento</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($estudiantesDCEX as $estudiante)
-            <tr>
-                <td>{{ strtoupper($estudiante->Apellidos) }} {{ strtoupper($estudiante->Nombres) }}</td>
-                <td>{{ strtoupper($estudiante->espe_id) }}</td>
-                <td>{{ strtoupper($estudiante->celular) }}</td>
-                <td>{{ strtoupper($estudiante->cedula) }}</td>
-                <td>{{ strtoupper($estudiante->Cohorte) }}</td>
-                <td>{{ strtoupper($estudiante->Departamento) }}</td>
-                <td>{{ strtoupper($estudiante->Estado) }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-<br>
-    <h6><b>Departamento DCVA</b></h6>
-    <hr>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Estudiante</th>
-                <th>ID ESPE</th>
-                <th>Celular</th>
-                <th>Cédula</th>
-                <th>Cohorte</th>
-                <th>Departamento</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($estudiantesDCVA as $estudiante)
-            <tr>
-                <td>{{ strtoupper($estudiante->Apellidos) }} {{ strtoupper($estudiante->Nombres) }}</td>
-                <td>{{ strtoupper($estudiante->espe_id) }}</td>
-                <td>{{ strtoupper($estudiante->celular) }}</td>
-                <td>{{ strtoupper($estudiante->cedula) }}</td>
-                <td>{{ strtoupper($estudiante->Cohorte) }}</td>
-                <td>{{ strtoupper($estudiante->Departamento) }}</td>
-                <td>{{ strtoupper($estudiante->Estado) }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+                        </ul>
+                    </nav>
+                </div>
 
-    <form method="POST" action="{{ route('coordinador.reportesEstudiantes') }}">
-    @csrf
-    <button type="submit" class="btn btn-sm btn-secondary">
-            <i class="fas fa-file-excel"></i> Generar Reporte
-        </button>
-    </form>
 
-</div>
+            </div>
 
-    <div class="d-flex justify-content-center">
-        <ul class="pagination">
-            @if ($estudiantesAprobados->onFirstPage())
-            <li class="page-item disabled">
-                <span class="page-link">Anterior</span>
-            </li>
-            @else
-            <li class="page-item">
-                <a class="page-link" href="{{ $estudiantesAprobados->previousPageUrl() }}"
-                    aria-label="Anterior">Anterior</a>
-            </li>
-            @endif
-
-            @foreach ($estudiantesAprobados->getUrlRange(1, $estudiantesAprobados->lastPage()) as $page => $url)
-            @if ($page == $estudiantesAprobados->currentPage())
-            <li class="page-item active">
-                <span class="page-link">{{ $page }}</span>
-            </li>
-            @else
-            <li class="page-item">
-                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-            </li>
-            @endif
-            @endforeach
-
-            @if ($estudiantesAprobados->hasMorePages())
-            <li class="page-item">
-                <a class="page-link" href="{{ $estudiantesAprobados->nextPageUrl() }}"
-                    aria-label="Siguiente">Siguiente</a>
-            </li>
-            @else
-            <li class="page-item disabled">
-                <span class="page-link">Siguiente</span>
-            </li>
-            @endif
-        </ul>
-    </div>
-
-    <h6><b>Estudiantes culminados Vinculacion a la sociedad</b></h6>
-    <hr>
-    <div class="d-flex">
-    <form method="GET" action="{{ route('director.estudiantesAprobados') }}" class="mr-3">
-    <label for="elementosPorPagina2">Estudiantes a visualizar:</label>
-    <select name="elementosPorPagina2" id="elementosPorPagina2" onchange="this.form.submit()">
-        <option value="10" @if(request('elementosPorPagina2', $elementosPorPagina2) == 10) selected @endif>10</option>
-        <option value="20" @if(request('elementosPorPagina2', $elementosPorPagina2) == 20) selected @endif>20</option>
-        <option value="50" @if(request('elementosPorPagina2', $elementosPorPagina2) == 50) selected @endif>50</option>
-        <option value="100" @if(request('elementosPorPagina2', $elementosPorPagina2) == 100) selected @endif>100</option>
-    </select>
-</form>
-
-        <form method="GET" action="{{ route('director.estudiantesAprobados') }}">
-        <input type="text" name="buscarEstudiantes" placeholder="Buscar estudiantes">
-        <button type="submit">Buscar</button>
-    </form>
+        </div>
+    </section>
 
 
 
-    </div>
-    <div style="overflow-x: auto;">
-    <table class="table">
-    <thead>
-        <tr>
-            <th>N~</th>
-            <th>Nombres</th>
-            <th>Cédula de Identidad</th>
-            <th>Correo Electrónico</th>
-            <th>ESPE ID</th>
-            <th>Período de Ingreso</th>
-            <th>Período de Vinculación</th>
-            <th>Actividades Macro</th>
-            <th>Docente Participante</th>
-            <th>Fecha de Inicio</th>
-            <th>Fecha de Fin</th>
-            <th>Total de Horas</th>
-            <th>Director del Proyecto</th>
-            <th>Nombre del Proyecto</th>
-        </tr>
-    </thead>
-    <tbody>
-        @php
-        $contador = ($estudiantesVinculacion->currentPage() - 1) * $elementosPorPagina2 + 1;
-        @endphp
+    <br>
 
-        @foreach ($estudiantesVinculacion as $estudiante)
-        <tr>
-        <td>{{ $contador }}</td>
-            <td>{{ mb_strtoupper($estudiante->nombres) }}</td>
-            <td>{{ $estudiante->cedula_identidad }}</td>
-            <td>{{ mb_strtolower($estudiante->correo_electronico) }}</td>
-            <td>{{ $estudiante->espe_id }}</td>
-            <td>{{ $estudiante->periodo_ingreso }}</td>
-            <td>{{ $estudiante->periodo_vinculacion }}</td>
-            <td>{{ mb_strtoupper($estudiante->actividades_macro) }}</td>
-            <td>{{ mb_strtoupper($estudiante->docente_participante) }}</td>
-            <td>{{ $estudiante->fecha_inicio }}</td>
-            <td>{{ $estudiante->fecha_fin }}</td>
-            <td>{{ $estudiante->total_horas }}</td>
-            <td>{{ mb_strtoupper($estudiante->director_proyecto) }}</td>
-            <td>{{ mb_strtoupper($estudiante->nombre_proyecto) }}</td>
-        </tr>
-
-        @php
-        $contador++;
-        @endphp
-        @endforeach
-    </tbody>
-</table>
-
-
-    <div class="d-flex justify-content-center">
-        <ul class="pagination">
-            @if ($estudiantesVinculacion->onFirstPage())
-            <li class="page-item disabled">
-                <span class="page-link">Anterior</span>
-            </li>
-            @else
-            <li class="page-item">
-                <a class="page-link" href="{{ $estudiantesVinculacion->previousPageUrl() }}&elementosPorPagina2={{ $elementosPorPagina2 }}"
-                    aria-label="Anterior">Anterior</a>
-            </li>
-            @endif
-
-            @foreach ($estudiantesVinculacion->getUrlRange(1, $estudiantesVinculacion->lastPage()) as $page => $url)
-            @if ($page == $estudiantesVinculacion->currentPage())
-            <li class="page-item active">
-                <span class="page-link">{{ $page }}</span>
-            </li>
-            @else
-            <li class="page-item">
-                <a class="page-link"
-                    href="{{ $url }}&elementosPorPagina2={{ $elementosPorPagina2 }}">{{ $page }}</a>
-            </li>
-            @endif
-            @endforeach
-
-            @if ($estudiantesVinculacion->hasMorePages())
-            <li class="page-item">
-                <a class="page-link"
-                    href="{{ $estudiantesVinculacion->nextPageUrl() }}&elementosPorPagina2={{ $elementosPorPagina2 }}"
-                    aria-label="Siguiente">Siguiente</a>
-            </li>
-            @else
-            <li class="page-item disabled">
-                <span class="page-link">Siguiente</span>
-            </li>
-            @endif
-        </ul>
-    </div>
-
-<form action="{{ route('coordinador.reportesVinculacion') }}" method="post">
-    @csrf
-    <button type="submit" class="btn btn-sm btn-secondary">
-    <i class="fas fa-file-excel"></i> Generar Reporte
-    </button>
-</form>
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-@endsection
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
-<script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
-<script>
-    $(document).ready(function () {
-        // Manejar el clic en el botón para mostrar/ocultar el formulario
-        $("#toggleFormBtn").click(function () {
-            $("#estudiantes").toggle();
-            // Cambiar el texto del botón según si el formulario está visible u oculto
-            if ($("#estudiantes").is(":visible")) {
-                $(this).text("Ocultar Estudiantes Vinculacion a la Sociedad");
-            } else {
-                $(this).text("Estudiantes Vinculacion a la Sociedad");
-            }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script>
+        var delayTimer;
+        $('#formBusquedaEstudiantes input[name="search2"]').on('keyup', function() {
+            clearTimeout(delayTimer);
+            var query = $(this).val();
+            delayTimer = setTimeout(function() {
+                $.ajax({
+                    url: '{{ route('director.estudiantesAprobados') }}',
+                    type: 'GET',
+                    data: {
+                        search2: query
+                    },
+                    success: function(response) {
+                        $('#tablaEstudiantes').html($(response).find('#tablaEstudiantes').html());
+                    }
+                });
+            }, 500);
         });
-    });
-</script>
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        white-space: nowrap;
-        /* Evita el desbordamiento de texto */
-    }
+    </script>
 
-    table,
-    th,
-    td {
-        font-size: 0.8rem;
-    }
+    <!--<h4><b>Estudiantes culminados Vinculación a la sociedad</b></h4>
+   <hr>
+   <section>
+       <div class="mat-elevation-z8 contenedor_general">
+
+           <div class="contenedor_acciones_tabla">
+
+               <form action="{{ route('coordinador.reportesVinculacion') }}" method="post">
+                   @csrf
+                   <div class="tooltip-container">
+                       <span class="tooltip-text">Excel</span>
+                       <button type="submit" class="button3 efects_button btn_excel">
+                           <i class="fas fa-file-excel"></i>
+                       </button>
+                   </div>
+               </form>
 
 
-    th,
-    td {
-        padding: 8px 12px;
-        text-align: left;
-        border: 1px solid #ddd;
-        overflow: hidden;
-        /* Oculta el contenido desbordado */
-        text-overflow: ellipsis;
-        /* Agrega puntos suspensivos en el texto desbordado */
-    }
 
-    th {
-        background-color: #f2f2f2;
-    }
-</style>
+
+
+
+@endsection
+
+
+{{--   <style>
+       table {
+           width: 100%;
+           border-collapse: collapse;
+           white-space: nowrap;
+       }
+
+       table,
+       th,
+       td {
+           font-size: 0.8rem;
+       }
+
+       th,
+       td {
+           padding: 8px 12px;
+           text-align: left;
+           border: 1px solid #ddd;
+           overflow: hidden;
+           text-overflow: ellipsis;
+       }
+
+       th {
+           background-color: #f2f2f2;
+       }
+
+       body,
+       input,
+       select,
+       th,
+       td,
+       label,
+       button,
+       table {
+           background-color: #F5F5F5;
+           font-family: Arial, sans-serif;
+           font-size: 14px;
+           line-height: 1.5;
+       }
+   </style>
+--}}

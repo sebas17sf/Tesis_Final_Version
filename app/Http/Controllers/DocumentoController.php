@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AsignacionProyecto;
+use App\Models\Estudiante;
 use App\Models\PracticaII;
 use App\Models\PracticaIII;
 use App\Models\PracticaIV;
@@ -980,12 +982,12 @@ class DocumentoController extends Controller
 
 
 
-         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $documentoGeneradoPath = storage_path('app/public/Reporte-Empresas.xlsx');
 
         $writer->save($documentoGeneradoPath);
 
-         return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
+        return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
     }
 
 
@@ -1007,7 +1009,7 @@ class DocumentoController extends Controller
 
         $contador = 1;
 
-         foreach ($practica1 as $index => $practica1) {
+        foreach ($practica1 as $index => $practica1) {
 
 
 
@@ -1044,7 +1046,7 @@ class DocumentoController extends Controller
             $sheet->setCellValue('AB' . ($filaInicio + $index), $practica1->TelefonoTutorEmpresarial ?? '');
             $sheet->setCellValue('AC' . ($filaInicio + $index), $practica1->Funcion ?? '');
 
-             $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->Apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
+            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->Apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
             $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->Cedula ?? '');
             $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espe_id ?? '');
             $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->Correo ?? '');
@@ -1059,7 +1061,7 @@ class DocumentoController extends Controller
 
 
 
-             $contador++;
+            $contador++;
 
         }
 
@@ -1076,7 +1078,7 @@ class DocumentoController extends Controller
 
 
     /////////reporteria Practias II////////////////////////////////////////
-     public function reportesPracticaII(Request $request)
+    public function reportesPracticaII(Request $request)
     {
         $plantillaPath = public_path('Plantillas/Reporte-Practicas1.2.xlsx');
 
@@ -1672,6 +1674,150 @@ class DocumentoController extends Controller
     }
 
 
+
+    ///////////////acta de reunion
+
+    public function actaReunion(Request $request)
+    {
+        $plantillaPath = public_path('Plantillas/2.-Acta-de-Reunión-2.docx');
+        if (!file_exists($plantillaPath)) {
+            abort(404, 'El archivo de plantilla no existe.');
+        }
+
+        $template = new TemplateProcessor($plantillaPath);
+
+        $profesor = Auth::user()->profesorUniversidad;
+
+        ////obtener el proyecto del profesor con estudiantes asignados en estado aprobado
+        $proyecto = AsignacionProyecto::where('ParticipanteID', $profesor->id)
+            ->whereHas('estudiante', function ($query) {
+                $query->where('Estado', 'Aprobado');
+            })->first();
+
+        ////nombre del proyecto
+        $template->setValue('nombreProyecto', $proyecto->proyecto->NombreProyecto);
+
+        $template->setValue('lugar', $request->lugar);
+        $template->setValue('fecha', $request->fecha);
+        $template->setValue('horaInicial', $request->horaInicial);
+        $template->setValue('horaFinal', $request->horaFinal);
+        $template->setValue('tema', $request->tema);
+        $template->setValue('objetivo', $request->objetivo);
+        $template->setValue('antecedentes', $request->antecedentes);
+
+
+        $acciones = $request->input('acciones');
+        $responsable = $request->input('responsable');
+        $fecha = $request->input('fechaAcciones');
+
+        $contadorObjetivos = count($acciones);
+        $template->cloneRow('acciones', $contadorObjetivos); // Clonar filas según la cantidad de acciones
+
+        foreach ($acciones as $index => $objetivo) {
+            $numFila = $index + 1; // Obtener el número de fila
+            $template->setValue('acciones#' . $numFila, $objetivo); // Asignar valor de acción
+            $template->setValue('responsable#' . $numFila, $responsable[$index]); // Asignar valor de responsable
+            $template->setValue('fechaAcciones#' . $numFila, $fecha[$index]); // Asignar valor de fecha de acciones
+            $template->setValue('contador#' . $numFila, $numFila); // Asignar valor de contador
+        }
+
+         $template->setValue('participante', $profesor->Apellidos . ' ' . $profesor->Nombres);
+        $template->setValue('Correo', $profesor->Correo);
+        $template->setValue('Celular', '0912345678');
+
+         $proyectoID = Proyecto::find($proyecto->ProyectoID);
+         $director = ProfesUniversidad::find($proyectoID->DirectorID);
+            $template->setValue('director', $director->Apellidos . ' ' . $director->Nombres);
+            $template->setValue('correoDirector', $director->Correo);
+            $template->setValue('celularDirector', '0912345238');
+
+
+            /////obtener todos los estudiantes asignados al proyecto del profesor con estado aprobado
+            $estudiantes = Estudiante::where('Estado', 'Aprobado')
+            ->whereHas('asignaciones', function ($query) use ($profesor) {
+                $query->where('ParticipanteID', $profesor->id);
+            })->get();
+
+            $contadorEstudiantes = count($estudiantes);
+            $template->cloneRow('estudiantes', $contadorEstudiantes);
+            foreach ($estudiantes as $index => $estudiante) {
+                $numFila = $index + 1;
+                $template->setValue('estudiantes#' . $numFila, $estudiante->Apellidos . ' ' . $estudiante->Nombres);
+                $template->setValue('entidad#' . $numFila, 'Universidad de las Fuerzas Armadas ESPE Sede Santo Domingo');
+                 $template->setValue('correoEstudiante#' . $numFila, $estudiante->Correo);
+                $template->setValue('celularEstudiante#' . $numFila, $estudiante->celular);
+            }
+
+
+        $nombreArchivo = 'Acta-de-Reunión.docx';
+        $template->saveAs($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+
+
+    }
+
+
+    ///////////////baremos
+
+    public function baremo(Request $request){
+        $plantillaPath = public_path('Plantillas/baremos.xlsx');
+
+        $spreadsheet = IOFactory::load($plantillaPath);
+
+        $profesor = Auth::user()->profesorUniversidad;
+
+        $proyecto = AsignacionProyecto::where('ParticipanteID', $profesor ->id)
+            ->whereHas('estudiante', function ($query) {
+                $query->where('Estado', 'Aprobado');
+            })->first();
+
+        $proyectoID = Proyecto::find($proyecto->ProyectoID);
+
+        ///obtener nombre del proyecto
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('B7', $proyectoID->NombreProyecto);
+
+        ////nombre del director del proyecto
+        $director = ProfesUniversidad::find($proyectoID->DirectorID);
+        $sheet->setCellValue('B8', $director->Apellidos . ' ' . $director->Nombres);
+
+        $sheet->setCellValue('B10', $proyectoID->DepartamentoTutor);
+        $sheet->setCellValue('B11', $proyectoID->FechaInicio);
+        $sheet->setCellValue('B12', $proyectoID->FechaFinalizacion);
+
+        $sheet->setCellValue('B13', $profesor->Apellidos . ' ' . $profesor->Nombres);
+        $sheet->setCellValue('B14', $profesor->Departamento);
+
+
+
+         $tabla1 = $request->input('tabla1');
+        $tabla2 = $request->input('tabla2');
+        $tabla3 = $request->input('tabla3');
+        $tabla4 = $request->input('tabla4');
+
+        $sumasTablas = $tabla1 + $tabla2 + $tabla3 + $tabla4;
+
+        ///mandar cada uno a una celda
+        $sheet->setCellValue('B22', $tabla1);
+        $sheet->setCellValue('F22', $tabla2);
+        $sheet->setCellValue('J22', $tabla3);
+        $sheet->setCellValue('N22', $tabla4);
+        $sheet->setCellValue('R22', $sumasTablas);
+        $sheet->setCellValue('B15', $sumasTablas);
+
+
+
+
+
+
+
+        /////descarga del documento
+        $nombreArchivo = 'baremo.xlsx';
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+
+    }
 
 
 
