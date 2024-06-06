@@ -436,7 +436,7 @@ tr:hover {
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
     background-color: #40456c;
     border: 1px solid #40456c;
-    color: rgb(44, 50, 88);
+    color: rgb(255, 255, 255);
     padding: 2px 5px;
     border-radius: 2px;
     margin: 2px;
