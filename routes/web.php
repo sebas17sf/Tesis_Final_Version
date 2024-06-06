@@ -172,6 +172,11 @@ Route::middleware(['auth'])->group(function () {
     ///ruta para actualizar las notas del estudiante
     Route::put('/participante-vinculacion/{id}/actualizar-notas', [ParticipanteVinculacionController::class, 'editarNotas'])->name('actualizar-notas');
 
+    ///acta de reunion
+    Route::post('/participante-vinculacion/generar-acta-reunion', [DocumentoController::class, 'actaReunion'])->name('ParticipanteVinculacion.generarActaReunion');
+
+    ////baremos
+    Route::post('/participante-vinculacion/generar-baremo', [DocumentoController::class, 'baremo'])->name('ParticipanteVinculacion.generarBaremo');
 
     //////////matriz vinculacion de DocumentosVinculacion
     Route::post('/reporte/matriz-vinculacion', [DocumentosVinculacion::class, 'matrizVinculacion'])->name('reporte.matrizVinculacion');
