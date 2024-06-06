@@ -207,7 +207,7 @@
                 
                     <div class="tooltip-container">
                         <span class="tooltip-text">Importar archivo</span>
-                        <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
+                        <button type="button" class="button3 efects_button btn_copy" data-toggle="modal"
                             data-target="#modalImportar">
                             <i class="fa fa-upload"></i>
                         </button>
@@ -334,7 +334,7 @@
                                                 </td>
                                                 <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->telefonoContacto)) }}
                                                 </td>
-                                                <td style="text-transform: uppercase; text-align: justify; padding: 5px 8px;">{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->actividadesMacro)) }}
+                                                <td style="text-transform: uppercase; text-align: justify; padding: 5px 8px;">{{ strtoupper($empresa->actividadesMacro) }}
                                                 </td>
                                                 <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->cuposDisponibles)) }}
                                                 </td>
@@ -345,7 +345,7 @@
                                                             <i class="material-icons">cloud_download</i>
                                                         </a>
                                                     @else
-                                                        <span class="text-muted">No disponible</span>
+                                                        <span class="text-muted">NO DISPONIBLE</span>
                                                     @endif
                                                 </td>
 
@@ -356,31 +356,24 @@
                                                             <i class="material-icons">cloud_download</i>
                                                         </a>
                                                     @else
-                                                        <span class="text-muted">No disponible</span>
+                                                        <span class="text-muted">NO DISPONIBLE</span>
                                                     @endif
                                                 </td>
 
                                                 <td>
-                                                    <div class="btn-group" role="group">
-                                                        <form
-                                                            action="{{ route('admin.eliminarEmpresa', ['id' => $empresa->id]) }}"
-                                                            method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-link p-0">
-                                                                <i class="material-icons text-muted"
-                                                                    style="font-size: 1.5em;">delete</i>
-                                                            </button>
-                                                        </form>
-
-                                                        <form
-                                                            action="{{ route('admin.editarEmpresa', ['id' => $empresa->id]) }}"
-                                                            method="POST">
+                                                    <div class="btn-group shadow-1 " role="group">
+                                                        <form action="{{ route('admin.editarEmpresa', ['id' => $empresa->id]) }}" method="POST">
                                                             @csrf
                                                             @method('GET')
-                                                            <button type="submit" class="btn btn-link p-0">
-                                                                <i class="material-icons text-muted"
-                                                                    style="font-size: 1.5em;">edit</i>
+                                                            <button type="submit" class="button3 efects_button btn_editar3" style="margin-right: 10px;">
+                                                                <i class="bx bx-edit-alt"></i>
+                                                            </button>
+                                                        </form>
+                                                        <form class="btn-group shadow-1" action="{{ route('admin.eliminarEmpresa', ['id' => $empresa->id]) }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="button3 efects_button btn_eliminar3">
+                                                                <i class='bx bx-trash'></i>
                                                             </button>
                                                         </form>
                                                     </div>

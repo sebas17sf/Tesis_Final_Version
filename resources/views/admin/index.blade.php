@@ -284,8 +284,21 @@
                                 </button>
                             </form>
                         </div>
+                        <!--filtros
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Filtros</span>
+                        <button class="button3 efects_button btn_filtro" pTooltip="Filtros" tooltipPosition="top"><i
+                                        class="fa-solid fa-filter-list"></i></button>
+                                        </div>
 
-
+                                        
+<div class="tooltip-container">
+    <span class="tooltip-text">Eliminar Filtros</span>
+    <button class="button3 efects_button btn_delete_filter" onclick="resetFilters()">
+        <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+    </button>
+</div> 
+-->
                     </div>
 
                     <!-- Buscador -->
@@ -326,15 +339,16 @@
                                     @else
                                         @foreach ($profesores as $profesor)
                                             <tr>
-                                                <td style="word-wrap: break-word; text-align: left; padding: 5px 8px;">
-                                                    {{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Apellidos)) }}
-                                                    {{ strtoupper(str_replace(['Á', 'É', 'Í', 'Ó', 'Ú', 'Ü', 'Ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'N'], $profesor->Nombres)) }}
+                                                <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left; padding: 5px 8px;">
+                                                    {{ strtoupper
+                                                        ($profesor->Apellidos) }}
+                                                    {{ strtoupper( $profesor->Nombres ?? '' ) }}
                                                 </td>
                                                 <td>{{ $profesor->Correo }}</td>
                                                 <td class="center_size">{{ $profesor->Usuario }}</td>
                                                 <td class="center_size">{{ $profesor->Cedula }}</td>
-                                                <td class="medium_size">
-                                                    {{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $profesor->Departamento)) }}
+                                                <td class="medium_size" style=" text-transform: uppercase;">
+                                                    {{ strtoupper( $profesor->Departamento) }}
                                                 </td>
                                                 <td class="center_size">{{ $profesor->espe_id }}</td>
                                                 <td>

@@ -268,7 +268,32 @@ tr:hover {
 }
 /* Estilo para limitar el largo del select */
 
-
+.draggable-card1_2 {
+    width: 255px;
+    border: 3px solid #40456c;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background-color: white;
+    position: fixed; /* Changed from absolute to fixed */
+    z-index: 1000;
+    padding: 0;
+    display: none; /* Oculto por defecto */
+    top: 100px; /* Adjusted top position to avoid the top navigation bar */
+    left: 50px; /* Adjust as necessary to avoid other elements */
+}
+.draggable-card1_3 {
+    width: 730px;
+    border: 3px solid #40456c;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background-color: white;
+    position: fixed; /* Changed from absolute to fixed */
+    z-index: 1000;
+    padding: 0;
+    display: none; /* Oculto por defecto */
+    top: 100px; /* Adjusted top position to avoid the top navigation bar */
+    left: 50px; /* Adjust as necessary to avoid other elements */
+}
 .card-header {
     background-color: #40456c;
     color: white;
@@ -361,67 +386,106 @@ tr:hover {
         font-size: 16px;
     }
 }
-.select2-container--default .select2-selection--multiple .select2-selection__rendered li {
-    list-style: none;
-}
-
-.select2-container .select2-selection--single {
-    height: 38px;
-    border-radius: 0.25rem;
-    padding: 6px 12px;
-    border: 1px solid #ced4da;
-    background-color: #f8f9fa;
-}
-
-.select2-container--default .select2-selection--single .select2-selection__arrow {
-    height: 38px;
-    right: 6px;
-}
-
+/* Estilos personalizados para los checkboxes en Select2 */
+.select2-container--default .select2-selection--multiple {
+    background-color: #ecf0f3!important;
+    border: none #000 !important;
+    border-radius: 4px;
+    min-height: 40px !important;
+    min-width: 100% !important; 
+    cursor: text;}
+/* Estilos personalizados para los checkboxes en Select2 */
 .styled-checkbox {
-    appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    display: inline-block;
-    width: 1.2em;
-    height: 1.2em;
-    margin: 0;
-    padding: 0;
-    background-color: #fff;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    vertical-align: middle;
+    appearance: none;
+    background-color: #ecf0f3;
+    border: 1px solid #d1d3e6;
+    border-radius: 3px;
+    width: 16px;
+    height: 16px;
     cursor: pointer;
-    outline: none;
-    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    position: relative;
+    margin-right: 8px;
+    display: inline-block;
+    vertical-align: middle;
+    box-shadow:
+        inset 2px 2px 4px #d1d9e6,
+        inset -2px -2px 4px #f9f9f9;
+    transition: 0.25s ease;
 }
 
 .styled-checkbox:checked {
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #40456c;
+    border-color: #40456c;
 }
 
 .styled-checkbox:checked::before {
-    content: '✔';
-    display: block;
-    text-align: center;
-    color: #fff;
-    font-size: 1em;
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: translate(-50%, -50%) rotate(45deg);
 }
 
-.input_select {
-    display: inline-block;
-    width: 100%;
-    height: calc(2.25rem + 2px);
+/* Ajuste de estilo para Select2 */
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #40456c;
+    border: 1px solid #40456c;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 2px;
+    margin: 2px;
+    font-size: 0.875rem;
+}
+
+.select2-container .select2-selection--multiple {
+    border: 1px solid #d1d3e6;
+    border-radius: 8px;
     padding: 0.375rem 0.75rem;
     font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    background-color: #ecf0f3;
+    box-shadow:
+        inset 2px 2px 4px #d1d3e6,
+        inset -2px -2px 4px #f9f9f9;
+    transition: 0.25s ease;
+    min-height: 40px; /* Ajusta la altura mínima */
+    max-height: 100px; /* Ajusta la altura máxima */
+    width: 100%; /* Asegura que el select tome el ancho completo del contenedor */
+    overflow-y: auto; /* Permite el desplazamiento vertical */
+    box-sizing: border-box;
 }
 
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0.375rem 0.75rem;
+    min-height: 40px; /* Ajusta la altura mínima */
+}
+
+.select2-container--default .select2-selection--multiple .select2-search--inline {
+    float: none;
+}
+
+.select2-container--default .select2-selection--multiple .select2-search--inline .select2-search__field {
+    width: 100% !important;
+    max-width: 100% !important;
+    white-space: nowrap;
+    height: auto !important;
+    line-height: 1.5rem !important;
+    padding: 0.375rem 0.75rem !important;
+    background-color: #ecf0f3 !important;
+    border: none !important;
+}
+
+.select2-container {
+    width: 100% !important; /* Asegura que el contenedor de select2 tome el ancho completo */
+}
+
+.select2-selection {
+    width: 100% !important; /* Asegura que el select2 tome el ancho completo */
+}

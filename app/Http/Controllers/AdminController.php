@@ -385,6 +385,30 @@ class AdminController extends Controller
             'search' => $search,
             'search2' => $search2,
         ]);
+        if ($estadoProyecto) {
+            $query->where('Estado', $estadoProyecto);
+        }
+    
+        if ($profesorId) {
+            $query->whereHas('director', function ($q) use ($profesorId) {
+                $q->where('id', $profesorId);
+            });
+        }
+    
+        if ($periodoId) {
+            $query->whereHas('periodo', function ($q) use ($periodoId) {
+                $q->where('id', $periodoId);
+            });
+        }
+    
+        $proyectos = $query->paginate($perPage, ['*'], 'page', $page);
+    
+        if ($request->ajax()) {
+            return view('tablaProyectos', compact('proyectos'))->render();
+        }
+    
+        return view('admin.indexProyectos', compact('proyectos', 'periodos', 'nrcs', 'profesores', 'estadoProyecto', 'search'));
+    
     }
 
 

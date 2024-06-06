@@ -53,12 +53,14 @@
                     <div class="row">
                         <div class="col-md-12 d-flex align-items-center">
                             <!-- Formulario para exportar a Excel -->
-
-
-
-
-
-
+ <!-- Botón para agregar proyecto -->
+ <div class="tooltip-container mr-2">
+                                <span class="tooltip-text">Agregar</span>
+                                <button type="button" onclick="location.href='{{ route('admin.agregarProyecto') }}';"
+                                    class="button3 efects_button btn_primary" id="button3">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
                             <form method="POST" action="{{ route('coordinador.reportesProyectos') }}"
                                 class="form-inline mr-2 d-flex align-items-center">
                                 @csrf
@@ -75,16 +77,36 @@
 
 
 
-                            <!-- Botón para agregar proyecto -->
-                            <div class="tooltip-container mr-2">
-                                <span class="tooltip-text">Agregar</span>
-                                <button type="button" onclick="location.href='{{ route('admin.agregarProyecto') }}';"
-                                    class="button3 efects_button btn_primary" id="button3">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                            </div>
+                           
+<!-- Botón para abrir el card de filtros -->
+<div class="tooltip-container">
+    <span class="tooltip-text">Filtros</span>
+    <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCard');">
+        <i class="fa-solid fa-filter-list"></i>
+    </button>
+</div>
 
-                            <!-- Selector de estado del proyecto -->
+<!-- Card de Filtros -->
+<div class="draggable-card1_2" id="filtersCard" style="display: none;">
+    <div class="card-header">
+        <span class="card-title">Filtros</span>
+        <button type="button" class="close" onclick="document.getElementById('filtersCard').style.display='none'">&times;</button>
+    </div>
+    <div class="card-body">
+        <form id="filtersForm" method="GET" action="{{ route('admin.indexProyectos') }}">
+            <div class="form-group">
+                <label for="estado" class="mr-2">Estado del Proyecto:</label>
+                <select name="estado" id="estado" class="form-control input input_select" onchange="this.form.submit()">
+                    <option value="">Todos</option>
+                    <option value="Ejecucion" {{ request('estado') == 'Ejecucion' ? 'selected' : '' }}>En Ejecución</option>
+                    <option value="Terminado" {{ request('estado') == 'Terminado' ? 'selected' : '' }}>Terminado</option>
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+
+                            <!-- Selector de estado del proyecto
                             <div class="form-group mr-2">
                                 <label for="estado" class="mr-2"> Estado del Proyecto:</label>
                                 <form method="GET" action="{{ route('admin.indexProyectos') }}">
@@ -99,7 +121,14 @@
                                     </select>
                                 </form>
                             </div>
-
+ -->
+ <!-- Botón de Eliminar Filtros -->
+<div class="tooltip-container mx-2">
+    <span class="tooltip-text">Eliminar Filtros</span>
+    <button class="button3 efects_button btn_delete_filter" onclick="resetFilters()">
+        <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+    </button>
+</div>
                         </div>
                     </div>
 
@@ -126,7 +155,7 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th class="tamanio">NOMBRE DEL PROYECTO</th>
+                                        <th class="tamanio" >NOMBRE DEL PROYECTO</th>
                                         <th>DIRECTOR</th>
                                         <th class="tamanio">DESCRIPCION</th>
                                         <th>DEPARTAMENTO</th>
@@ -145,9 +174,9 @@
                                     @else
                                         @foreach ($proyectos as $proyecto)
                                             <tr>
-                                                <td style="word-wrap: break-word; text-align: justify; padding: 5px 8px;">
+                                                <td style="text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
                                                     {{ strtoupper($proyecto->NombreProyecto) }}</td>
-                                                <td style="word-wrap: break-word; text-align: left;">
+                                                <td style="text-transform: uppercase; word-wrap: break-word; text-align: left;">
                                                     @if ($proyecto->director)
                                                         {{ strtoupper($proyecto->director->Apellidos) }}
                                                         {{ strtoupper($proyecto->director->Nombres) }}
@@ -156,10 +185,10 @@
                                                     @endif
                                                 </td>
 
-                                                <td style="word-wrap: break-word; text-align: justify; padding: 5px 8px;">
+                                                <td style="text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
                                                     {{ strtoupper($proyecto->DescripcionProyecto) }}</td>
 
-                                                <td>{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
                                                 <td>
                                                     @if (empty($proyecto->codigoProyecto))
                                                         {{ strtoupper('No requiere código de proyecto') }}
@@ -167,7 +196,7 @@
                                                         {{ strtoupper($proyecto->codigoProyecto) }}
                                                     @endif
                                                 </td>
-                                                <td>{{ strtoupper($proyecto->Estado) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($proyecto->Estado) }}</td>
                                                 <td>
                                                         <div class="btn-group shadow-0">
                                                                 <a href="{{ route('admin.editarProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
@@ -270,36 +299,34 @@
             <div class="mat-elevation-z8 contenedor_general">
 
                 <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
-                    <!-- Fila de Botones -->
-                    <div class="row">
-                        <!-- Columna de Botones -->
-                        <div class="col-md-12 d-flex align-items-center">
+                  <!-- Fila de Botones -->
+<div class="row">
+    <!-- Columna de Botones -->
+    <div class="col-md-12 d-flex">
+        
+        <!-- Botón de Matriz de Vinculación -->
+        <form id="reportForm" action="{{ route('reporte.matrizVinculacion') }}" method="POST" onsubmit="submitForm(event)" class="mx-1">
+            @csrf
+            <div class="tooltip-container">
+                <span class="tooltip-text">Matriz de Vinculacion</span>
+                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+                    <span id="loadingIcon" style="display: none;">
+                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+                    </span>
+                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                </button>
+            </div>
+        </form>
 
-                            <!-- Botón de Matriz de Vinculación -->
-
-                            <form id="reportForm" action="{{ route('reporte.matrizVinculacion') }}" method="POST"
-                                onsubmit="submitForm(event)">
-                                @csrf
-                                <div class="tooltip-container mx-2">
-                                    <span class="tooltip-text">Matriz de Vinculacion</span>
-                                    <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
-                                        <span id="loadingIcon" style="display: none;">
-                                            <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
-                                        </span>
-                                        <i class="fa-solid fa-file-excel" id="excelIcon"></i>
-                                    </button>
-                                </div>
-                            </form>
-
-
-
-                            <div class="tooltip-container">
+        <!-- Botón de Importar archivo -->
+        <div class="tooltip-container mx-1">
             <span class="tooltip-text">Importar archivo</span>
-            <button type="button" class="button3 efects_button btn_3" data-toggle="modal" data-target="#modalImportar2">
+            <button type="button" class="button3 efects_button btn_copy" data-toggle="modal" data-target="#modalImportar2">
                 <i class="fa fa-upload"></i>
             </button>
         </div>
 
+        <!-- Modal de Importar archivo -->
         <div class="modal fade" id="modalImportar2" tabindex="-1" role="dialog" aria-labelledby="modalImportarLabel2" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -332,8 +359,61 @@
         </div>
 
 
-                        </div>
-                    </div>
+
+       <!-- Botón de Filtros -->
+       <!-- Botón de Filtros para Profesores y Periodos -->
+<div class="tooltip-container mx-1">
+    <span class="tooltip-text">Filtros</span>
+    <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCardProfesores');">
+        <i class="fa-solid fa-filter-list"></i>
+    </button>
+</div>
+<!-- Card de Filtros para Profesores y Periodos -->
+<div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
+    <div class="card-header">
+        <span class="card-title">Filtros Profesores y Periodos</span>
+        <button type="button" class="close" onclick="document.getElementById('filtersCardProfesores').style.display='none'">&times;</button>
+    </div>
+    <div class="card-body">
+        <form id="filterFormProfesores" method="GET" action="{{ route('admin.indexProyectos') }}">
+            <div class="form-group">
+                <label for="profesor">Profesor</label>
+                <select name="profesor" id="profesor" class="form-control input input_select">
+                    <option value="">Todos los docentes</option>
+                    @foreach ($profesores as $profesor)
+                        <option value="{{ $profesor->id }}" {{ request('profesor') == $profesor->id ? 'selected' : '' }}>
+                            {{ $profesor->Apellidos }} {{ $profesor->Nombres }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="periodos">Períodos</label>
+                <select name="periodos" id="periodos" class="form-control input input_select">
+                    <option value="">Todos los periodos</option>
+                    @foreach ($periodos as $periodo)
+                        <option value="{{ $periodo->id }}" {{ request('periodos') == $periodo->id ? 'selected' : '' }}>
+                            {{ $periodo->numeroPeriodo }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Botón de Eliminar Filtros Profesores y Periodos -->
+<div class="tooltip-container mx-2">
+    <span class="tooltip-text">Eliminar Filtros</span>
+    <button class="button3 efects_button btn_delete_filter" onclick="resetFiltersProfesores()">
+        <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+    </button>
+</div>
+
+        
+    </div>
+</div>
+
                     <div class="contenedor_buscador">
                                 <div>
                                     <form id="formBusquedaAsignaciones">
@@ -393,7 +473,7 @@
                                                 @endforeach
                                             </td>
                                             <td>{{ $grupo->first()->periodo->numeroPeriodo ?? '' }}</td>
-                                            <td>{{ $grupo->first()->nrcVinculacion->nrc ?? 'No requeria de NRC' }}</td>
+                                            <td>{{ $grupo->first()->nrcVinculacion->nrc ?? 'NO REQUERIA DE NRC' }}</td>
                                             <td>{{ $grupo->first()->FechaInicio ?? '' }}</td>
                                             <td>{{ $grupo->first()->FechaFinalizacion ?? '' }}</td>
                                         </tr>
@@ -407,37 +487,7 @@
                         <nav aria-label="...">
                             <ul class="pagination d-flex align-items-center">
 
-                                <li class="page-item mx-3 d-flex align-items-center">
-                                    <form id="filterForm" action="{{ route('admin.indexProyectos') }}" method="GET"
-                                        class="form-inline" onsubmit="filterFormSubmit(event)">
-                                        <div class="form-group mr-2">
-                                            <label for="profesor" class="sr-only">Profesor</label>
-                                            <select name="profesor" id="profesor" class="form-control"
-                                                onchange="document.getElementById('filterForm').submit();">
-                                                <option value="">Todos los docentes</option>
-                                                @foreach ($profesores as $profesor)
-                                                    <option value="{{ $profesor->id }}"
-                                                        {{ request('profesor') == $profesor->id ? 'selected' : '' }}>
-                                                        {{ $profesor->Apellidos }} {{ $profesor->Nombres }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="form-group mr-2">
-                                            <label for="periodos" class="sr-only">Períodos</label>
-                                            <select name="periodos" id="periodos" class="form-control"
-                                                onchange="document.getElementById('filterForm').submit();">
-                                                <option value="">Todos los periodos</option>
-                                                @foreach ($periodos as $periodo)
-                                                    <option value="{{ $periodo->id }}"
-                                                        {{ request('periodos') == $periodo->id ? 'selected' : '' }}>
-                                                        {{ $periodo->numeroPeriodo }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </form>
-                                </li>
+                              
 
                                 <li class="page-item mx-3 d-flex align-items-center">
                                     <form method="GET" action="{{ route('admin.indexProyectos') }}#tablaAsignaciones" class="form-inline">
@@ -494,116 +544,118 @@
         <button type="button" class="button1_1 efects_button" onclick="$('#draggableCardAsignarEstudiante').show();">Asignar estudiante</button>
     </center>
     <!-- Tarjeta movible para Asignar Estudiante -->
-    <div class="draggable-card1_1" id="draggableCardAsignarEstudiante" >
-        <div class="card-header">
-            <span class="card-title">Asignar Proyecto</span>
-            <button type="button" class="close" onclick="$('#draggableCardAsignarEstudiante').hide()">&times;</button>
-        </div>
-        <div class="card-body">
-            <form method="POST" action="{{ route('admin.guardarAsignacion') }}">
-                @csrf
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="label" for="proyecto_id"><strong>Proyecto Disponible:</strong></label>
-                            <select name="proyecto_id" id="proyecto_id" class="form-control input input_select">
-                                <option value="">Seleccione un proyecto</option>
-                                @foreach ($proyectosDisponibles as $proyecto)
-                                    <option value="{{ $proyecto->ProyectoID }}">
-                                        @if ($proyecto->director)
-                                            {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }}
-                                        @endif
-                                        {{ $proyecto->codigoProyecto }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="label" for="ProfesorParticipante">Docente Participante:</label>
-                            <select name="ProfesorParticipante" class="form-control input input_select" required>
-                                <option value="">Seleccionar Docente Participante</option>
-                                @foreach ($profesores as $profesor)
-                                    <option value="{{ $profesor->id }}">
-                                        Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} - Departamento: {{
-                                        $profesor->Departamento }} - Correo: {{ $profesor->Correo }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <br>
-
-                <div class="row">
-                <div class="col-md-4">
-        <div class="form-group">
-            <label class="label" for="estudiante_id"><strong>Estudiante Aprobado:</strong></label>
-            <select name="estudiante_id[]" id="estudiante_seleccion" class="form-control input input_select" multiple="multiple">
-                @foreach ($estudiantesAprobados as $estudiante)
-                    <option value="{{ $estudiante->EstudianteID }}">
-                        {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} - {{ $estudiante->Departamento }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+    <div class="draggable-card1_3" id="draggableCardAsignarEstudiante">
+    <div class="card-header">
+        <span class="card-title">Asignar Proyecto</span>
+        <button type="button" class="close" onclick="$('#draggableCardAsignarEstudiante').hide()">&times;</button>
     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="label" for="nrc">Vinculacion NRC:</label>
-                            <select name="nrc" id="nrc" class="form-control input input_select" required>
-                                <option value="">Seleccionar NRC</option>
-                                @foreach ($nrcs as $nrc)
-                                    <option value="{{ $nrc->id }}" data-periodo="{{ $nrc->periodo->numeroPeriodo }} {{ $nrc->periodo->Periodo }}">
-                                        {{ $nrc->nrc }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="label" for="periodo"><strong>Periodo:</strong></label>
-                            <input type="text" id="periodo" class="form-control input" readonly placeholder="Periodo">
-                        </div>
+    <div class="card-body">
+        <form method="POST" action="{{ route('admin.guardarAsignacion') }}">
+            @csrf
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="label" for="proyecto_id"><strong>Proyecto Disponible:</strong></label>
+                        <select name="proyecto_id" id="proyecto_id" class="form-control input input_select">
+                            <option value="">Seleccione un proyecto</option>
+                            @foreach ($proyectosDisponibles as $proyecto)
+                                <option value="{{ $proyecto->ProyectoID }}">
+                                    @if ($proyecto->director)
+                                        {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }}
+                                    @endif
+                                    {{ $proyecto->codigoProyecto }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="label" for="FechaInicio">Fecha de Inicio de intervencion en el proyecto:</label>
-                            <input type="date" name="FechaInicio" class="form-control input" required>
-                        </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="label" for="ProfesorParticipante">Docente Participante:</label>
+                        <select name="ProfesorParticipante" class="form-control input input_select" required>
+                            <option value="">Seleccionar Docente Participante</option>
+                            @foreach ($profesores as $profesor)
+                                <option value="{{ $profesor->id }}">
+                                    Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} - Departamento: {{
+                                    $profesor->Departamento }} - Correo: {{ $profesor->Correo }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
+                </div>
+            </div>
 
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label class="label" for="FechaFinalizacion">Fecha de Fin de intervencion en el proyecto:</label>
-                            <input type="date" name="FechaFinalizacion" class="form-control input" required>
-                        </div>
+            <br>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="label" for="estudiante_id"><strong>Estudiante Aprobado:</strong></label>
+                        <select name="estudiante_id[]" id="estudiante_seleccion" class="form-control input input_select" multiple="multiple">
+                            @foreach ($estudiantesAprobados as $estudiante)
+                                <option value="{{ $estudiante->EstudianteID }}">
+                                    {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} - {{ $estudiante->Departamento }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
-
-
                 </div>
-                <div class="card-footer1">
-                    <button type="button" class="button0" onclick="$('#draggableCardAsignarEstudiante').hide()">Cerrar</button>
-                    <button type="submit" class="button0">Asignar Proyecto</button>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="label" for="nrc">Vinculacion NRC:</label>
+                        <select name="nrc" id="nrc" class="form-control input input_select" required>
+                            <option value="">Seleccionar NRC</option>
+                            @foreach ($nrcs as $nrc)
+                                <option value="{{ $nrc->id }}" data-periodo="{{ $nrc->periodo->numeroPeriodo }} {{ $nrc->periodo->Periodo }}">
+                                    {{ $nrc->nrc }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
-            </form>
-        </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="label" for="periodo"><strong>Periodo:</strong></label>
+                        <input type="text" id="periodo" class="form-control input" readonly placeholder="Periodo">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="label" for="FechaInicio">Fecha de Inicio de intervención en el proyecto:</label>
+                        <input type="date" name="FechaInicio" class="form-control input" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="label" for="FechaFinalizacion">Fecha de Fin de intervención en el proyecto:</label>
+                        <input type="date" name="FechaFinalizacion" class="form-control input" required>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="button" class="button" onclick="$('#draggableCardAsignarEstudiante').hide()">Cerrar</button>
+                <button type="submit" class="button">Asignar Proyecto</button>
+            </div>
+        </form>
     </div>
+</div>
 
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js\admin\acciones.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -647,7 +699,12 @@
         });
     </script>
 
-    <script>$(document).ready(function() {
+    <script>
+$(document).ready(function() {
+    $('#draggableCardAsignarEstudiante').draggable({
+        handle: ".card-header"
+    });
+
     $('#estudiante_seleccion').select2({
         placeholder: "Seleccione un estudiante",
         closeOnSelect: false,
@@ -674,7 +731,7 @@
             return state.text;
         }
         var $state = $(
-            '<span><input type="checkbox" class="styled-checkbox" style="margin-right: 8px;" />' + state.text + '</span>'
+            '<span><input type="checkbox" class="styled-checkbox" /> ' + state.text + '</span>'
         );
         return $state;
     }
@@ -722,7 +779,66 @@
             $('#idModalImportar').find('.help-block').text('');
             removeFile();
         });
-    </script>
+
+        // Hacer el card draggable
+$(document).ready(function() {
+    $('.draggable-card1_1').draggable({
+        handle: ".card-header",
+        containment: "window"
+    });
+});
+
+function openCard(cardId) {
+    $('#' + cardId).css({
+        top: '100px',
+        left: '50px'
+    }).show();
+}
+
+$(document).ready(function() {
+    // Hacer que el card sea draggable
+    $('.draggable-card1_2').draggable({
+        handle: ".card-header",
+        containment: "window"
+    });
+
+    // Enviar el formulario cuando cambian los select
+    $('#filterFormProyectos select, #filterFormProfesores select').change(function() {
+        submitFormAndKeepOpen($(this).closest('form').attr('id'));
+    });
+});
+
+function submitFormAndKeepOpen(formId) {
+    let form = document.getElementById(formId);
+    let formData = new FormData(form);
+    let url = form.action;
+
+    fetch(url + '?' + new URLSearchParams(formData).toString(), {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.text())
+    .then(html => {
+        document.getElementById('tablaProyectos').innerHTML = html;
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function resetFiltersProyectos() {
+    document.getElementById('estado').value = '';
+    document.getElementById('filterFormProyectos').reset();
+    submitFormAndKeepOpen('filterFormProyectos');
+}
+
+function resetFiltersProfesores() {
+    document.getElementById('profesor').value = '';
+    document.getElementById('periodos').value = '';
+    document.getElementById('filterFormProfesores').reset();
+    submitFormAndKeepOpen('filterFormProfesores');
+}
+
 
 
 

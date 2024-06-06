@@ -56,13 +56,13 @@
                                     @foreach ($estudiantesConPracticaI as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td>{{ strtoupper($practicaI->estudiante->Apellidos) }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->Apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->Nombres) }}</td>
-                                                <td>{{ strtoupper($practicaI->tipoPractica) }}</td>
-                                                <td>{{ strtoupper($practicaI->tutorAcademico->Apellidos) }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->Apellidos) }}
                                                     {{ strtoupper($practicaI->tutorAcademico->Nombres) }}</td>
-                                                <td>{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
-                                                <td>{{ strtoupper($practicaI->Empresa->nombreEmpresa) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->Empresa->nombreEmpresa) }}</td>
                                                 <td>{{ strtoupper($practicaI->nrcPractica->nrc) }}</td>
                                                 <td>{{ strtoupper($practicaI->nrcPractica->periodo->numeroPeriodo) }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
@@ -162,7 +162,7 @@
 
                         <div class="tooltip-container">
                             <span class="tooltip-text">Importar archivo</span>
-                            <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
+                            <button type="button" class="button3 efects_button btn_copy" data-toggle="modal"
                                 data-target="#modalImportar">
                                 <i class="fa fa-upload"></i>
                             </button>
@@ -246,14 +246,14 @@
                                     @foreach ($estudiantesPracticas as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td>{{ strtoupper($practicaI->estudiante->Apellidos) }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->Apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->Nombres) }}</td>
-                                                <td>{{ strtoupper($practicaI->tipoPractica) }}</td>
-                                                <td>{{ strtoupper($practicaI->tutorAcademico->Apellidos ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->Apellidos ?? 'No por el momento') }}
                                                     {{ strtoupper($practicaI->tutorAcademico->Nombres ?? 'No por el momento') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
-                                                <td>{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
                                                 <td>{{ strtoupper($practicaI->nrcPractica->nrc ?? 'No cuenta con NRC') }}
                                                 </td>
@@ -364,7 +364,7 @@
                         </div>
                         <div class="tooltip-container">
                             <span class="tooltip-text">Importar archivo</span>
-                            <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
+                            <button type="button" class="button3 efects_button btn_copy" data-toggle="modal"
                                 data-target="#modalImportar2">
                                 <i class="fa fa-upload"></i>
                             </button>
@@ -448,14 +448,14 @@
                                     @foreach ($estudiantesPracticasII as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td>{{ strtoupper($practicaI->estudiante->Apellidos) }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->Apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->Nombres) }}</td>
-                                                <td>{{ strtoupper($practicaI->tipoPractica) }}</td>
-                                                <td>{{ strtoupper($practicaI->tutorAcademico->Apellidos ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->Apellidos ?? 'No por el momento') }}
                                                     {{ strtoupper($practicaI->tutorAcademico->Nombres ?? 'No por el momento') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
-                                                <td>{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
                                                 <td>{{ strtoupper($practicaI->nrcPractica->nrc ?? 'No cuenta con NRC') }}
                                                 </td>
@@ -558,7 +558,7 @@
 
                         <div class="tooltip-container">
                             <span class="tooltip-text">Importar archivo</span>
-                            <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
+                            <button type="button" class="button3 efects_button btn_copy" data-toggle="modal"
                                 data-target="#modalImportar3">
                                 <i class="fa fa-upload"></i>
                             </button>
@@ -640,14 +640,14 @@
                                     @foreach ($estudiantesPracticasIII as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td>{{ strtoupper($practicaI->estudiante->Apellidos) }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->Apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->Nombres) }}</td>
-                                                <td>{{ strtoupper($practicaI->tipoPractica) }}</td>
-                                                <td>{{ strtoupper($practicaI->tutorAcademico->Apellidos ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->Apellidos ?? 'No por el momento') }}
                                                     {{ strtoupper($practicaI->tutorAcademico->Nombres ?? 'No por el momento') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
-                                                <td>{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
                                                 <td>{{ strtoupper($practicaI->nrcPractica->nrc ?? 'No cuenta con NRC') }}
                                                 </td>
@@ -749,7 +749,7 @@
                         </div>
                         <div class="tooltip-container">
                             <span class="tooltip-text">Importar archivo</span>
-                            <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
+                            <button type="button" class="button3 efects_button btn_copy" data-toggle="modal"
                                 data-target="#modalImportar4">
                                 <i class="fa fa-upload"></i>
                             </button>
@@ -832,16 +832,16 @@
                                     @foreach ($estudiantesPracticasIV as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td>{{ strtoupper($practicaI->estudiante->Apellidos) }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->Apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->Nombres) }}</td>
-                                                <td>{{ strtoupper($practicaI->tipoPractica) }}</td>
-                                                <td>{{ strtoupper($practicaI->tutorAcademico->Apellidos ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->Apellidos ?? 'No por el momento') }}
                                                     {{ strtoupper($practicaI->tutorAcademico->Nombres ?? 'No por el momento') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
-                                                <td>{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->nrc ?? 'No cuenta con NRC') }}
+                                                <td >{{ strtoupper($practicaI->nrcPractica->nrc ?? 'No cuenta con NRC') }}
                                                 </td>
                                                 <td>{{ strtoupper($practicaI->nrcPractica->periodo->numeroPeriodo ?? 'No cuenta con NRC') }}
                                                 </td>
@@ -939,7 +939,7 @@
                         </div>
                         <div class="tooltip-container">
                             <span class="tooltip-text">Importar archivo</span>
-                            <button type="button" class="button3 efects_button btn_3" data-toggle="modal"
+                            <button type="button" class="button3 efects_button btn_copy" data-toggle="modal"
                                 data-target="#modalImportar5">
                                 <i class="fa fa-upload"></i>
                             </button>
@@ -1013,14 +1013,14 @@
                                     @foreach ($estudiantesPracticasV as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td>{{ strtoupper($practicaI->estudiante->Apellidos) }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->Apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->Nombres) }}</td>
-                                                <td>{{ strtoupper($practicaI->tipoPractica) }}</td>
-                                                <td>{{ strtoupper($practicaI->tutorAcademico->Apellidos ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->Apellidos ?? 'No por el momento') }}
                                                     {{ strtoupper($practicaI->tutorAcademico->Nombres ?? 'No por el momento') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
-                                                <td>{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
                                                 <td>{{ strtoupper($practicaI->nrcPractica->nrc ?? 'No cuenta con NRC') }}
                                                 </td>

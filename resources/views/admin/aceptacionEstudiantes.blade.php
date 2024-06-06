@@ -60,12 +60,12 @@
                                         @foreach ($estudiantesEnRevision as $estudiante)
                                             <tr>
 
-                                                <td>{{ strtoupper($estudiante->Apellidos) }} {{ strtoupper($estudiante->Nombres) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($estudiante->Apellidos) }} {{ strtoupper($estudiante->Nombres) }}</td>
                                                 <td>{{ $estudiante->espe_id }}</td>
                                                  <td>{{ $estudiante->cedula }}</td>
                                                 <td>{{ $estudiante->periodos->numeroPeriodo }}</td>
-                                                <td>{{ strtoupper($estudiante->Departamento) }}</td>
-                                                <td>{{ strtoupper($estudiante->Estado) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($estudiante->Departamento) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($estudiante->Estado) }}</td>
                                                 @if ($estudiante->comentario !== 'Sin comentarios')
                                                     <td>{{ strtoupper($estudiante->comentario) }}</td>
                                                 @else
@@ -150,19 +150,19 @@
                                     @else
                                         @foreach ($estudiantesAprobados as $estudiante)
                                             <tr>
-                                                <td>{{ strtoupper($estudiante->Apellidos . ' ' . $estudiante->Nombres) }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($estudiante->Apellidos . ' ' . $estudiante->Nombres) }}
                                                 </td>
                                                 <td>{{ $estudiante->espe_id }}</td>
-                                                <td>{{ strtoupper($estudiante->Carrera) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($estudiante->Carrera) }}</td>
                                                  <td>{{ $estudiante->cedula }}</td>
                                                 <td>{{ $estudiante->periodos->numeroPeriodo }}</td>
                                                 <td>{{ $estudiante->periodos->Periodo }}</td>
-                                                <td>{{ strtoupper($estudiante->Departamento) }}</td>
-                                                <td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($estudiante->Departamento) }}</td>
+                                                <td style="text-transform: uppercase;">
                                                     @if ($estudiante->Estado == 'Aprobado')
-                                                        {{ strtoupper('Vinculacion') }}
-                                                    @elseif ($estudiante->Estado == 'Aprobado-practicas')
-                                                        {{ strtoupper('Practicas') }}
+                                                        {{ strtoupper('Vinculación') }}
+                                                    @elseif ($estudiante->Estado == 'Aprobado-prácticas')
+                                                        {{ strtoupper('Prácticas') }}
                                                     @else
                                                         {{ strtoupper($estudiante->Estado) }}
                                                     @endif
