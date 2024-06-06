@@ -328,10 +328,19 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/coordinador/reportes-estudiantes', [DocumentoController::class, 'reportesEstudiantes'])->name('coordinador.reportesEstudiantes');
     /////reportesEmpresas de DocumentoController para admin y coordinador
     Route::post('/coordinador/reportes-empresas', [DocumentoController::class, 'reportesEmpresas'])->name('coordinador.reportesEmpresas');
+
     ////reportesPracticaI de DocumentoController para admin y coordinador
     Route::post('/coordinador/reportes-practicaI', [DocumentoController::class, 'reportesPracticaI'])->name('coordinador.reportesPracticaI');
     ////reportesPracticaII de DocumentoController para admin y coordinador
     Route::post('/coordinador/reportes-practicaII', [DocumentoController::class, 'reportesPracticaII'])->name('coordinador.reportesPracticaII');
+    ////reportesPracticaIII de DocumentoController para admin y coordinador
+    Route::post('/coordinador/reportes-practicaIII', [DocumentoController::class, 'reportesPracticaIII'])->name('coordinador.reportesPracticaIII');
+    ////reportesPracticaIV de DocumentoController para admin y coordinador
+    Route::post('/coordinador/reportes-practicaIV', [DocumentoController::class, 'reportesPracticaIV'])->name('coordinador.reportesPracticaIV');
+    ////reportesPracticaV de DocumentoController para admin y coordinador
+    Route::post('/coordinador/reportes-practicaV', [DocumentoController::class, 'reportesPracticaV'])->name('coordinador.reportesPracticaV');
+
+
     ////reporteVinculacionProyectos
     Route::post('/coordinador/reportes-vinculacion-proyectos', [DocumentoController::class, 'reporteVinculacionProyectos'])->name('coordinador.reporteVinculacionProyectos');
     ////////////Reporte Docentes de admin

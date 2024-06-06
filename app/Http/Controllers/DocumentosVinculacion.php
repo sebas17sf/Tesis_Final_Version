@@ -750,10 +750,12 @@ class DocumentosVinculacion extends Controller
                 ->first();
             $practica1 = PracticaI::where('EstudianteID', $estudiante ? $estudiante->EstudianteID : null)
                 ->first();
-            $empresa = Empresa::where('nombreEmpresa', $row[16])
+            $empresa = Empresa::where('nombreEmpresa', $row[18])
                 ->first();
-            $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[31])
+            $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[33])
                 ->first();
+             $nombreTutorEmpresarial = $row[27] . ' ' . $row[28];
+
 
             $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[11]);
             if ($fechaInicio) {
@@ -775,14 +777,16 @@ class DocumentosVinculacion extends Controller
                     'AreaConocimiento' => $row[10],
                     'FechaInicio' => $fechaInicioFormatted,
                     'FechaFinalizacion' => $fechaFinalizacionFormatted,
-                    'HorasPlanificadas' => $row[13],
-                    'tipoPractica' => $row[14],
+                    'HoraEntrada' => $row[13],
+                    'HoraSalida' => $row[14],
+                    'HorasPlanificadas' => $row[15],
+                    'tipoPractica' => $row[16],
                     'IDEmpresa' => $empresa ? $empresa->id : null,
-                    'NombreTutorEmpresarial' => $row[25],
-                    'CedulaTutorEmpresarial' => $row[27],
-                    'EmailTutorEmpresarial' => $row[28],
-                    'TelefonoTutorEmpresarial' => $row[29],
-                    'Funcion' => $row[30],
+                    'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
+                     'CedulaTutorEmpresarial' => $row[29],
+                    'EmailTutorEmpresarial' => $row[30],
+                    'TelefonoTutorEmpresarial' => $row[31],
+                    'Funcion' => $row[32],
                     'ID_tutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
                     'Estado' => 'Finalizado',
                     'EstadoAcademico' => 'Cursando estudios',
@@ -796,14 +800,16 @@ class DocumentosVinculacion extends Controller
                     'AreaConocimiento' => $row[10],
                     'FechaInicio' => $fechaInicioFormatted,
                     'FechaFinalizacion' => $fechaFinalizacionFormatted,
-                    'HorasPlanificadas' => $row[13],
-                    'tipoPractica' => $row[14],
+                    'HoraEntrada' => $row[13],
+                    'HoraSalida' => $row[14],
+                    'HorasPlanificadas' => $row[15],
+                    'tipoPractica' => $row[16],
                     'IDEmpresa' => $empresa ? $empresa->id : null,
-                    'NombreTutorEmpresarial' => $row[25],
-                    'CedulaTutorEmpresarial' => $row[27],
-                    'EmailTutorEmpresarial' => $row[28],
-                    'TelefonoTutorEmpresarial' => $row[29],
-                    'Funcion' => $row[30],
+                    'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
+                    'CedulaTutorEmpresarial' => $row[29],
+                    'EmailTutorEmpresarial' => $row[30],
+                    'TelefonoTutorEmpresarial' => $row[31],
+                    'Funcion' => $row[32],
                     'ID_tutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
                     'Estado' => 'Finalizado',
                     'EstadoAcademico' => 'Cursando estudios',
@@ -831,7 +837,6 @@ class DocumentosVinculacion extends Controller
         foreach ($dataRows as $row) {
             $estudiante = Estudiante::where('espe_id', $row[4])
                 ->first();
-
             $periodo = Periodo::where('numeroPeriodo', $row[6])
                 ->first();
 
@@ -874,10 +879,12 @@ class DocumentosVinculacion extends Controller
                 ->first();
             $practica1 = PracticaII::where('EstudianteID', $estudiante ? $estudiante->EstudianteID : null)
                 ->first();
-            $empresa = Empresa::where('nombreEmpresa', $row[16])
+            $empresa = Empresa::where('nombreEmpresa', $row[18])
                 ->first();
-             $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[31])
+            $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[33])
                 ->first();
+            $nombreTutorEmpresarial = $row[27] . ' ' . $row[28];
+
 
             $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[11]);
             if ($fechaInicio) {
@@ -899,14 +906,16 @@ class DocumentosVinculacion extends Controller
                     'AreaConocimiento' => $row[10],
                     'FechaInicio' => $fechaInicioFormatted,
                     'FechaFinalizacion' => $fechaFinalizacionFormatted,
-                    'HorasPlanificadas' => $row[13],
-                    'tipoPractica' => $row[14],
-                    'IDEmpresa' => $empresa->id ?? null,
-                    'NombreTutorEmpresarial' => $row[25],
-                    'CedulaTutorEmpresarial' => $row[27],
-                    'EmailTutorEmpresarial' => $row[28],
-                    'TelefonoTutorEmpresarial' => $row[29],
-                    'Funcion' => $row[30],
+                    'HoraEntrada' => $row[13],
+                    'HoraSalida' => $row[14],
+                    'HorasPlanificadas' => $row[15],
+                    'tipoPractica' => $row[16],
+                    'IDEmpresa' => $empresa ? $empresa->id : null,
+                    'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
+                    'CedulaTutorEmpresarial' => $row[29],
+                    'EmailTutorEmpresarial' => $row[30],
+                    'TelefonoTutorEmpresarial' => $row[31],
+                    'Funcion' => $row[32],
                     'ID_tutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
                     'Estado' => 'Finalizado',
                     'EstadoAcademico' => 'Cursando estudios',
@@ -920,14 +929,16 @@ class DocumentosVinculacion extends Controller
                     'AreaConocimiento' => $row[10],
                     'FechaInicio' => $fechaInicioFormatted,
                     'FechaFinalizacion' => $fechaFinalizacionFormatted,
-                    'HorasPlanificadas' => $row[13],
-                    'tipoPractica' => $row[14],
+                    'HoraEntrada' => $row[13],
+                    'HoraSalida' => $row[14],
+                    'HorasPlanificadas' => $row[15],
+                    'tipoPractica' => $row[16],
                     'IDEmpresa' => $empresa ? $empresa->id : null,
-                    'NombreTutorEmpresarial' => $row[25],
-                    'CedulaTutorEmpresarial' => $row[27],
-                    'EmailTutorEmpresarial' => $row[28],
-                    'TelefonoTutorEmpresarial' => $row[29],
-                    'Funcion' => $row[30],
+                    'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
+                    'CedulaTutorEmpresarial' => $row[29],
+                    'EmailTutorEmpresarial' => $row[30],
+                    'TelefonoTutorEmpresarial' => $row[31],
+                    'Funcion' => $row[32],
                     'ID_tutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
                     'Estado' => 'Finalizado',
                     'EstadoAcademico' => 'Cursando estudios',
@@ -936,7 +947,7 @@ class DocumentosVinculacion extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Estudiantes importados 2.');
+        return redirect()->back()->with('success', 'Estudiantes importados correctamente.');
     }
 
 
@@ -954,7 +965,6 @@ class DocumentosVinculacion extends Controller
         foreach ($dataRows as $row) {
             $estudiante = Estudiante::where('espe_id', $row[4])
                 ->first();
-
             $periodo = Periodo::where('numeroPeriodo', $row[6])
                 ->first();
 
@@ -997,10 +1007,12 @@ class DocumentosVinculacion extends Controller
                 ->first();
             $practica1 = PracticaIII::where('EstudianteID', $estudiante ? $estudiante->EstudianteID : null)
                 ->first();
-            $empresa = Empresa::where('nombreEmpresa', $row[16])
+            $empresa = Empresa::where('nombreEmpresa', $row[18])
                 ->first();
-             $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[31])
+            $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[33])
                 ->first();
+            $nombreTutorEmpresarial = $row[27] . ' ' . $row[28];
+
 
             $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[11]);
             if ($fechaInicio) {
@@ -1022,14 +1034,16 @@ class DocumentosVinculacion extends Controller
                     'AreaConocimiento' => $row[10],
                     'FechaInicio' => $fechaInicioFormatted,
                     'FechaFinalizacion' => $fechaFinalizacionFormatted,
-                    'HorasPlanificadas' => $row[13],
-                    'tipoPractica' => $row[14],
-                    'IDEmpresa' => $empresa->id ?? null,
-                    'NombreTutorEmpresarial' => $row[25],
-                    'CedulaTutorEmpresarial' => $row[27],
-                    'EmailTutorEmpresarial' => $row[28],
-                    'TelefonoTutorEmpresarial' => $row[29],
-                    'Funcion' => $row[30],
+                    'HoraEntrada' => $row[13],
+                    'HoraSalida' => $row[14],
+                    'HorasPlanificadas' => $row[15],
+                    'tipoPractica' => $row[16],
+                    'IDEmpresa' => $empresa ? $empresa->id : null,
+                    'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
+                    'CedulaTutorEmpresarial' => $row[29],
+                    'EmailTutorEmpresarial' => $row[30],
+                    'TelefonoTutorEmpresarial' => $row[31],
+                    'Funcion' => $row[32],
                     'ID_tutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
                     'Estado' => 'Finalizado',
                     'EstadoAcademico' => 'Cursando estudios',
@@ -1043,14 +1057,16 @@ class DocumentosVinculacion extends Controller
                     'AreaConocimiento' => $row[10],
                     'FechaInicio' => $fechaInicioFormatted,
                     'FechaFinalizacion' => $fechaFinalizacionFormatted,
-                    'HorasPlanificadas' => $row[13],
-                    'tipoPractica' => $row[14],
+                    'HoraEntrada' => $row[13],
+                    'HoraSalida' => $row[14],
+                    'HorasPlanificadas' => $row[15],
+                    'tipoPractica' => $row[16],
                     'IDEmpresa' => $empresa ? $empresa->id : null,
-                    'NombreTutorEmpresarial' => $row[25],
-                    'CedulaTutorEmpresarial' => $row[27],
-                    'EmailTutorEmpresarial' => $row[28],
-                    'TelefonoTutorEmpresarial' => $row[29],
-                    'Funcion' => $row[30],
+                    'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
+                    'CedulaTutorEmpresarial' => $row[29],
+                    'EmailTutorEmpresarial' => $row[30],
+                    'TelefonoTutorEmpresarial' => $row[31],
+                    'Funcion' => $row[32],
                     'ID_tutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
                     'Estado' => 'Finalizado',
                     'EstadoAcademico' => 'Cursando estudios',
@@ -1059,7 +1075,7 @@ class DocumentosVinculacion extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Estudiantes importados.');
+        return redirect()->back()->with('success', 'Estudiantes importados correctamente.');
     }
 
 
@@ -1077,7 +1093,6 @@ class DocumentosVinculacion extends Controller
         foreach ($dataRows as $row) {
             $estudiante = Estudiante::where('espe_id', $row[4])
                 ->first();
-
             $periodo = Periodo::where('numeroPeriodo', $row[6])
                 ->first();
 
@@ -1120,10 +1135,12 @@ class DocumentosVinculacion extends Controller
                 ->first();
             $practica1 = PracticaIV::where('EstudianteID', $estudiante ? $estudiante->EstudianteID : null)
                 ->first();
-            $empresa = Empresa::where('nombreEmpresa', $row[16])
+            $empresa = Empresa::where('nombreEmpresa', $row[18])
                 ->first();
-             $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[31])
+            $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[33])
                 ->first();
+            $nombreTutorEmpresarial = $row[27] . ' ' . $row[28];
+
 
             $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[11]);
             if ($fechaInicio) {
@@ -1145,14 +1162,16 @@ class DocumentosVinculacion extends Controller
                     'AreaConocimiento' => $row[10],
                     'FechaInicio' => $fechaInicioFormatted,
                     'FechaFinalizacion' => $fechaFinalizacionFormatted,
-                    'HorasPlanificadas' => $row[13],
-                    'tipoPractica' => $row[14],
-                    'IDEmpresa' => $empresa->id ?? null,
-                    'NombreTutorEmpresarial' => $row[25],
-                    'CedulaTutorEmpresarial' => $row[27],
-                    'EmailTutorEmpresarial' => $row[28],
-                    'TelefonoTutorEmpresarial' => $row[29],
-                    'Funcion' => $row[30],
+                    'HoraEntrada' => $row[13],
+                    'HoraSalida' => $row[14],
+                    'HorasPlanificadas' => $row[15],
+                    'tipoPractica' => $row[16],
+                    'IDEmpresa' => $empresa ? $empresa->id : null,
+                    'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
+                    'CedulaTutorEmpresarial' => $row[29],
+                    'EmailTutorEmpresarial' => $row[30],
+                    'TelefonoTutorEmpresarial' => $row[31],
+                    'Funcion' => $row[32],
                     'ID_tutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
                     'Estado' => 'Finalizado',
                     'EstadoAcademico' => 'Cursando estudios',
@@ -1166,14 +1185,16 @@ class DocumentosVinculacion extends Controller
                     'AreaConocimiento' => $row[10],
                     'FechaInicio' => $fechaInicioFormatted,
                     'FechaFinalizacion' => $fechaFinalizacionFormatted,
-                    'HorasPlanificadas' => $row[13],
-                    'tipoPractica' => $row[14],
+                    'HoraEntrada' => $row[13],
+                    'HoraSalida' => $row[14],
+                    'HorasPlanificadas' => $row[15],
+                    'tipoPractica' => $row[16],
                     'IDEmpresa' => $empresa ? $empresa->id : null,
-                    'NombreTutorEmpresarial' => $row[25],
-                    'CedulaTutorEmpresarial' => $row[27],
-                    'EmailTutorEmpresarial' => $row[28],
-                    'TelefonoTutorEmpresarial' => $row[29],
-                    'Funcion' => $row[30],
+                    'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
+                    'CedulaTutorEmpresarial' => $row[29],
+                    'EmailTutorEmpresarial' => $row[30],
+                    'TelefonoTutorEmpresarial' => $row[31],
+                    'Funcion' => $row[32],
                     'ID_tutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
                     'Estado' => 'Finalizado',
                     'EstadoAcademico' => 'Cursando estudios',
@@ -1182,7 +1203,7 @@ class DocumentosVinculacion extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Estudiantes importados.');
+        return redirect()->back()->with('success', 'Estudiantes importados correctamente.');
     }
 
 
@@ -1200,7 +1221,6 @@ class DocumentosVinculacion extends Controller
         foreach ($dataRows as $row) {
             $estudiante = Estudiante::where('espe_id', $row[4])
                 ->first();
-
             $periodo = Periodo::where('numeroPeriodo', $row[6])
                 ->first();
 
@@ -1243,10 +1263,12 @@ class DocumentosVinculacion extends Controller
                 ->first();
             $practica1 = PracticaV::where('EstudianteID', $estudiante ? $estudiante->EstudianteID : null)
                 ->first();
-            $empresa = Empresa::where('nombreEmpresa', $row[16])
+            $empresa = Empresa::where('nombreEmpresa', $row[18])
                 ->first();
-             $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[31])
+            $tutorAcademico = ProfesUniversidad::where('Apellidos', $row[33])
                 ->first();
+            $nombreTutorEmpresarial = $row[27] . ' ' . $row[28];
+
 
             $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[11]);
             if ($fechaInicio) {
@@ -1268,14 +1290,16 @@ class DocumentosVinculacion extends Controller
                     'AreaConocimiento' => $row[10],
                     'FechaInicio' => $fechaInicioFormatted,
                     'FechaFinalizacion' => $fechaFinalizacionFormatted,
-                    'HorasPlanificadas' => $row[13],
-                    'tipoPractica' => $row[14],
-                    'IDEmpresa' => $empresa->id ?? null,
-                    'NombreTutorEmpresarial' => $row[25],
-                    'CedulaTutorEmpresarial' => $row[27],
-                    'EmailTutorEmpresarial' => $row[28],
-                    'TelefonoTutorEmpresarial' => $row[29],
-                    'Funcion' => $row[30],
+                    'HoraEntrada' => $row[13],
+                    'HoraSalida' => $row[14],
+                    'HorasPlanificadas' => $row[15],
+                    'tipoPractica' => $row[16],
+                    'IDEmpresa' => $empresa ? $empresa->id : null,
+                    'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
+                    'CedulaTutorEmpresarial' => $row[29],
+                    'EmailTutorEmpresarial' => $row[30],
+                    'TelefonoTutorEmpresarial' => $row[31],
+                    'Funcion' => $row[32],
                     'ID_tutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
                     'Estado' => 'Finalizado',
                     'EstadoAcademico' => 'Cursando estudios',
@@ -1289,14 +1313,16 @@ class DocumentosVinculacion extends Controller
                     'AreaConocimiento' => $row[10],
                     'FechaInicio' => $fechaInicioFormatted,
                     'FechaFinalizacion' => $fechaFinalizacionFormatted,
-                    'HorasPlanificadas' => $row[13],
-                    'tipoPractica' => $row[14],
+                    'HoraEntrada' => $row[13],
+                    'HoraSalida' => $row[14],
+                    'HorasPlanificadas' => $row[15],
+                    'tipoPractica' => $row[16],
                     'IDEmpresa' => $empresa ? $empresa->id : null,
-                    'NombreTutorEmpresarial' => $row[25],
-                    'CedulaTutorEmpresarial' => $row[27],
-                    'EmailTutorEmpresarial' => $row[28],
-                    'TelefonoTutorEmpresarial' => $row[29],
-                    'Funcion' => $row[30],
+                    'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
+                    'CedulaTutorEmpresarial' => $row[29],
+                    'EmailTutorEmpresarial' => $row[30],
+                    'TelefonoTutorEmpresarial' => $row[31],
+                    'Funcion' => $row[32],
                     'ID_tutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
                     'Estado' => 'Finalizado',
                     'EstadoAcademico' => 'Cursando estudios',
@@ -1305,7 +1331,7 @@ class DocumentosVinculacion extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Estudiantes importados.');
+        return redirect()->back()->with('success', 'Estudiantes importados correctamente.');
     }
 
 
