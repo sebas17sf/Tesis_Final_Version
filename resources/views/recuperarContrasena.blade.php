@@ -24,18 +24,8 @@
                         {{ session('success') }}
                     </div>
                     @endif
-                    @if (session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
-                    @endif
-                    @if ($errors->any())
-                    <div class="alert alert-danger">
-                        @foreach ($errors->all() as $error)
-                        {{ $error }}
-                        @endforeach
-                    </div>
-                    @endif
+
+                   
                 </div>
 
 
@@ -48,7 +38,9 @@
                     <!-- Campo de correo electronico -->
                     <label class="description" for="CorreoElectronico">Correo Electrónico</label>
                     <input type="email" class="input form_input" id="CorreoElectronico" name="email" placeholder="Ingrese su correo electrónico" required>
-
+                    @error('email')
+                    <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
                     <!-- Botón de enviar -->
                     <div class="btn_contenedor_register">
                         <button type="submit" class="button">Enviar</button>
