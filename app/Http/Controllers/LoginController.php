@@ -196,16 +196,25 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        $user = Auth::user();
-        $user->token = null;
-        $user->save();
+        try {
+            $user = Auth::user();
+            if ($user) {
+                $user->token = null;
+                $user->save();
+            }
 
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
 
-        return redirect('/');
+            return redirect('/');
+        } catch (\Exception $e) {
+             Log::error('Error al cerrar sesión: ' . $e->getMessage());
+
+             return redirect('/')->withErrors(['error' => 'Hubo un problema al cerrar sesión. Por favor, inténtelo de nuevo.']);
+        }
     }
+
 
 
     ///////////iniciar con gith

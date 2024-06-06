@@ -21,6 +21,7 @@ class NotasEstudiante extends Model
         'Capacidad_liderazgo',
         'Asistencia',
         'Informe',
+        'Nota_Final'
     ];
     public $timestamps = true;
 
