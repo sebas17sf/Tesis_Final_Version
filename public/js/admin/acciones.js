@@ -94,40 +94,35 @@ function formatDataForClipboard() {
     return data.trim(); // Elimina cualquier carácter de nueva línea al final
 }
 
-//VENTANAS EMERGENTES
-$(document).ready(function(){
-    console.log("Draggable script is running");
-    $("#draggableCardNRC").draggable({
-        handle: ".card-header",
-        containment: "window"
-    });
-    $("#draggableCardPeriodo").draggable({
-        handle: ".card-header",
-        containment: "window"
-    });
-    $("#draggableCardEditarPeriodo").draggable({
-        handle: ".card-header",
-        containment: "window"
-    });
-
-                $("#draggableCardEditarMaestro{{ $profesor->id }}").draggable({
-                    handle: ".card-header",
-                    containment: "window"
-                });
-
-                $("#draggableCardAsignarEstudiante").draggable({
-                    handle: ".card-header",
-                    containment: "window"
-                });
-
-});
-
 function openCard(cardId) {
-    $('#' + cardId).css({
-        top: '100px', // Adjusted top position to avoid the top navigation bar
-        left: '50px' // Adjust as necessary to avoid other elements
-    }).show();
+    var card = document.getElementById(cardId);
+    card.style.display = 'block';
 }
+
+function closeCard(cardId) {
+    var card = document.getElementById(cardId);
+    card.style.display = 'none';
+}
+
+function displayFileName(input) {
+    const fileName = input.files[0].name;
+    document.getElementById('fileText').innerHTML = '<i class="fa fa-upload"></i> ' + fileName;
+    document.querySelector('.remove-icon').style.display = 'block';
+}
+
+function removeFile() {
+    const input = document.getElementById('evidencias');
+    input.value = ""; // Clear the input
+    document.getElementById('fileText').innerHTML = '<i class="fa fa-upload"></i> Haz clic aquí para subir el documento'; // Reset the text
+    document.querySelector('.remove-icon').style.display = 'none';
+}
+
+$(document).ready(function(){
+    $(".draggable-card").draggable({
+        handle: ".card-header",
+        containment: "window"
+    });
+});
 
 function makeElementDraggable(element) {
     let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -165,16 +160,7 @@ function makeElementDraggable(element) {
 }
 
 $(document).ready(function() {
-    $('.draggable-card1_1').each(function() {
-        makeElementDraggable(this);
-    });
-});
-$(document).ready(function() {
     $('.draggable-card').each(function() {
         makeElementDraggable(this);
     });
 });
-function openCard(cardId) {
-    var card = document.getElementById(cardId);
-    card.style.display = 'block';
-}

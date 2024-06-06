@@ -11,7 +11,6 @@
                 icon: 'success',
                 title: 'Éxito',
                 text: '{{ session('success') }}',
-                confirmButtonText: 'Ok'
             });
         </script>
     @endif
@@ -34,14 +33,14 @@
                 <div class="container mt-3">
                     <div class="card" style="max-width: 750px; margin: auto;">
                         <div class="card-header">
-                            <div class="d-flex justify-content-between align-items-center">
+                            <div class=" justify-content-between align-items-center">
                                 <div></div>
                                 <div class="d-flex">
                                     <form action="{{ route('estudiantes.certificadoMatricula') }}" method="get"
                                         class="mr-2">
                                         <div class="tooltip-container">
                                             <span class="tooltip-text">Pdf</span>
-                                            <button type="submit" class="button3 efects_button btn_pdf"
+                                            <button type="submit" class="button3_1_1  btn_pdf"
                                                 tooltipPosition="top">
                                                 <i class="fa-solid fa-file-pdf"></i>
                                             </button>
@@ -49,8 +48,8 @@
                                     </form>
                                     <div class="tooltip-container">
                                         <span class="tooltip-text">Editar</span>
-                                        <a href="{{ route('estudiantes.edit', ['estudiante' => $estudiante->EstudianteID]) }}"
-                                            class="button3 efects_button" tooltipPosition="top">
+                                        <a  type="submit" href="{{ route('estudiantes.edit', ['estudiante' => $estudiante->EstudianteID]) }}"
+                                            class="button3_1_1 btn_editar" tooltipPosition="top">
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </a>
                                     </div>
