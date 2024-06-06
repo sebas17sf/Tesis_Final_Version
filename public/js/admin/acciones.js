@@ -123,7 +123,18 @@ $(document).ready(function(){
         containment: "window"
     });
 });
-
+$(document).ready(function(){
+    $(".draggable-card1_1").draggable({
+        handle: ".card-header",
+        containment: "window"
+    });
+});
+$(document).ready(function(){
+    $(".draggable-card1").draggable({
+        handle: ".card-header",
+        containment: "window"
+    });
+});
 function makeElementDraggable(element) {
     let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
