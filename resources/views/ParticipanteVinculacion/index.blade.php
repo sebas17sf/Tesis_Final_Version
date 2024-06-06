@@ -69,57 +69,9 @@
                     <p>No hay proyectos en ejecución.</p>
         @endif
     </div>
-    
+
 <br>
-    <h4><b>Proyectos Terminados</b></h4>
-    <hr>
-    <form method="GET" action="{{ route('ParticipanteVinculacion.index') }}">
-        <label for="elementosPorPagina2">Elementos por página:</label>
-        <select name="elementosPorPagina2" onchange="this.form.submit()">
-            <option value="10" {{ request('elementosPorPagina2') == 10 ? 'selected' : '' }}>10</option>
-            <option value="20" {{ request('elementosPorPagina2') == 20 ? 'selected' : '' }}>20</option>
-            <option value="50" {{ request('elementosPorPagina2') == 50 ? 'selected' : '' }}>50</option>
-            <option value="100" {{ request('elementosPorPagina2') == 100 ? 'selected' : '' }}>100</option>
-        </select>
-    </form>
-
-
-
-    @if ($proyectosTerminados->isNotEmpty())
-    <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Nombre del proyecto</th>
-                    <th>Director</th>
-                    <th>Actividades realizadas</th>
-                    <th>Correo del tutor</th>
-                    <th>Departamento</th>
-                    <th>Fecha de inicio</th>
-                    <th>Fecha fin</th>
-                    <th>Estado del proyecto</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($proyectosTerminados as $proyecto)
-                    <tr>
-                        <td>{{ $proyecto->NombreProyecto }}</td>
-                        <td>{{ strtoupper($proyecto->director->Apellidos) }}
-                            {{ strtoupper($proyecto->director->Nombres) }}</td>
-                        <td>{{ $proyecto->DescripcionProyecto }}</td>
-
-                        <td>{{ $proyecto->docenteParticipante->Correo }}</td>
-                        <td>{{ $proyecto->DepartamentoTutor }}</td>
-                        <td>{{ $proyecto->FechaInicio }}</td>
-                        <td>{{ $proyecto->FechaFinalizacion }}</td>
-                        <td>{{ $proyecto->Estado }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-        {{ $proyectosTerminados->links('vendor.pagination.proyectosTerminados') }}
-    @else
-        <p>No hay proyectos terminados.</p>
-    @endif
+    
 
     </div>
 

@@ -31,25 +31,25 @@
                 </div>
 
                 @if (session('success'))
-                <script>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Éxito',
-                        text: '{{ session('success') }}',
-                        confirmButtonText: 'Ok'
-                    });
-                </script>
+                    <script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Éxito',
+                            text: '{{ session('success') }}',
+                            confirmButtonText: 'Ok'
+                        });
+                    </script>
                 @endif
 
                 @if (session('error'))
-                <script>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: '{{ session('error') }}',
-                        confirmButtonText: 'Ok'
-                    });
-                </script>
+                    <script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: '{{ session('error') }}',
+                            confirmButtonText: 'Ok'
+                        });
+                    </script>
                 @endif
 
                 <form class="switch_container" action="{{ route('login') }}" method="POST">
@@ -65,10 +65,15 @@
                     <!-- Campo de contraseña -->
                     <div>
                         <!-- Campo de contraseña -->
-                       <center> <label class="description" for="Contrasena">Contraseña</label></center>
+                        <center> <label class="description" for="Contrasena">Contraseña</label></center>
                         <div class="input-group" style="position: relative;">
-                            <input type="password" class="input form_input" id="Contrasena" name="Contrasena" placeholder="Ingrese su contraseña" required>
-                            <div id="togglePassword" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+                            <input type="password" class="input form_input" id="Contrasena" name="Contrasena"
+                                placeholder="Ingrese su contraseña" required>
+                            <div id="togglePassword"
+                                style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+                                <span class="material-icons">
+                                    visibility
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -132,7 +137,7 @@
             sessionTitle.addEventListener('click', handleClick);
         });
 
-        document.getElementById('togglePassword').addEventListener('click', function (e) {
+        document.getElementById('togglePassword').addEventListener('click', function(e) {
             const passwordInput = document.getElementById('Contrasena');
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);

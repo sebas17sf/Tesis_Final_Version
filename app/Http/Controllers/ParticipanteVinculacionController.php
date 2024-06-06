@@ -33,7 +33,6 @@ class ParticipanteVinculacionController extends Controller
             $participanteID = $participante->id;
 
             // Buscar si el docente ha sido un participante adicional
-            $participanteAdicional = ParticipanteAdicional::where('ParticipanteID', $participanteID)->first();
 
             // Obtener el proyecto asociado al participante en AsignacionProyecto
             $proyectosEnEjecucion = AsignacionProyecto::where('ParticipanteID', $participanteID)

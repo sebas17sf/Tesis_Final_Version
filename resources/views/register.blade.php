@@ -27,7 +27,8 @@
 
                 <!-- Boton iniciar sesion -->
                 <div class="button_container_login">
-                    <a href="{{ route('login') }}" class="boton_login button1" type="button" id="toggleButton2"><i class="fa-regular fa-angles-left"></i>
+                    <a href="{{ route('login') }}" class="boton_login button1" type="button" id="toggleButton2"><i
+                            class="fa-regular fa-angles-left"></i>
                         Inicia sesión</a>
                 </div>
 
@@ -42,30 +43,38 @@
                     <div>
                         <!-- Campo de nombre -->
                         <label class="description" for="NombreUsuario">Nombre de Usuario</label>
-                        <input type="text" class="input form_input" id="NombreUsuario" name="NombreUsuario" placeholder="Ingrese su nombre" required>
+                        <input type="text" class="input form_input" id="NombreUsuario" name="NombreUsuario"
+                            placeholder="Ingrese su nombre" required>
                         @error('NombreUsuario')
-                        <small class="form-text text-danger">{{ $message }}</small>
+                            <small class="form-text text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
                     <div>
                         <!-- Campo de correo electronico -->
                         <label class="description" for="CorreoElectronico">Correo Electrónico</label>
-                        <input type="email" class="input form_input" id="CorreoElectronico" name="CorreoElectronico" placeholder="Ingrese su correo eléctronico" required>
+                        <input type="email" class="input form_input" id="CorreoElectronico" name="CorreoElectronico"
+                            placeholder="Ingrese su correo eléctronico" required>
                         @error('CorreoElectronico')
-                        <small class="form-text text-danger">{{ $message }}</small>
+                            <small class="form-text text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
                     <div>
                         <!-- Campo de contraseña -->
                         <label class="description" for="Contrasena">Contraseña</label>
-                            <input type="password" class="input form_input" id="Contrasena" name="Contrasena" placeholder="Ingrese su contraseña" required>
-                            <div id="togglePassword" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+                        <div class="input-group" style="position: relative;">
+                            <input type="password" class="input form_input" id="Contrasena" name="Contrasena"
+                                placeholder="Ingrese su contraseña" required>
+                            <div id="togglePassword"
+                                style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+                                <span class="material-icons">
+                                    visibility
+                                </span>
                             </div>
-                        
+                        </div>
                         @error('Contrasena')
-                        <small class="form-text text-danger">{{ $message }}</small>
+                            <small class="form-text text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
@@ -87,7 +96,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        document.getElementById('togglePassword').addEventListener('click', function (e) {
+        document.getElementById('togglePassword').addEventListener('click', function(e) {
             const passwordInput = document.getElementById('Contrasena');
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);

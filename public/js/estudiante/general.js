@@ -82,3 +82,13 @@ function validateApellidos(apellidos) {
      var regex = /^[A-Za-zÁ-úñÑ\s]+$/;
     return regex.test(apellidos);
 }
+
+document.getElementById('espe_id').addEventListener('input', function (e) {
+    const regex = /^[a-zA-Z0-9]{1,9}$/;
+    const errorMessage = document.getElementById('espe_id_error');
+    if (!regex.test(this.value)) {
+        errorMessage.style.display = 'block';
+    } else {
+        errorMessage.style.display = 'none';
+    }
+});
