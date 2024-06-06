@@ -127,7 +127,7 @@ class LoginController extends Controller
         $usuario = Usuario::where('CorreoElectronico', $request->email)->first();
 
         if (!$usuario) {
-            return back()->with('error', 'Correo no registrado, no cuenta con un usuario en el sistema.');
+            return redirect()->route('recuperar-contrasena')->withErrors(['email' => 'Correo no registrado, no cuenta con un usuario en el sistema.']);
         }
 
         $token = Str::random(60);

@@ -34,7 +34,7 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                              
+
                                         <th>Estudiante</th>
                 <th>Docente asignado</th>
                 <th>Proyecto</th>
@@ -74,9 +74,10 @@
         </div>
         </div>
         <br>
-        <form action="{{ route('director_vinculacion.cerrarProcesoEstudiantes') }}" method="POST">
+
+        <form id="finalizarForm" action="{{ route('director_vinculacion.cerrarProcesoEstudiantes') }}" method="POST">
             @csrf
-            <button type="submit" class="button1_1">Finalizar actividades de los estudiantes</button>
+            <button id="finalizarBtn" type="button" class="button1_1">Finalizar actividades de los estudiantes</button>
         </form>
 
 
@@ -157,6 +158,7 @@
     </div>
 @endsection
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     function mostrarSweetAlert(estudianteID) {
         Swal.fire({
@@ -193,6 +195,26 @@
             tablaActividad.slideToggle();
         });
     });
+
+    window.onload = function() {
+        const finalizarBtn = document.getElementById('finalizarBtn');
+        if (finalizarBtn) {
+            finalizarBtn.addEventListener('click', function (e) {
+                Swal.fire({
+                    title: '¿Está seguro de finalizar a los estudiantes?',
+                    text: 'Debe verificar que todos los estudiantes hayan generado todos sus documentos antes de finalizar el proceso.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, finalizar',
+                    cancelButtonText: 'No, cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('finalizarForm').submit();
+                    }
+                });
+            });
+        }
+    };
 </script>
 
 
