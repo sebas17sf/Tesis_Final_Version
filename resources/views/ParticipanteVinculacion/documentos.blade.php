@@ -30,26 +30,19 @@
     <div class="container mt-5">
 
 
+    <div class="contenedor_tabla">
+                    <div class="table-container mat-elevation-z8">
 
-        <div>
-
-
-
-            <div class="table-container ">
-
-                <div id="tablaProyectos">
-                    <table class="mat-mdc-table">
-                        <thead class="ng-star-inserted">
-                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-
-                                <table class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Nombre del Reporte</th>
-                                            <th>Acción</th>
+                        <div id="tablaDocentes">
+                            <table class="mat-mdc-table">
+                                <thead class="ng-star-inserted">
+                                    <tr
+                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                        <th class="tamanio1">Nombre del Reporte</th>
+                                            <th class="tamanio1">Acción</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody class="mdc-data-table__content ng-star-inserted">
                                         <tr>
                                             <td>Generar Evaluación de Estudiantes</td>
                                             <td>
@@ -105,10 +98,10 @@
                                 </table>
                 </div>
             </div>
-
+        </div>
             <hr>
             <h4><b>Informe Docente - Vinculación a la Sociedad</b></h4>
-
+<hr>
             <form action="{{ route('director_vinculacion.generarInformeDirector') }}" method="POST">
                 @csrf
 
@@ -151,13 +144,15 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="d-flex">
                     <button type="button" class="button3 efects_button btn_primary mr-2" onclick="agregarCampo()"><i
                             class="fa-solid fa-plus"></i></button></button>
                     <button type="button" class="button3 efects_button btn_eliminar1 1mr-2" onclick="eliminarCampo()"><i
                             class='bx bx-trash'></i></button>
-                </div <hr>
-                <h4><b>Beneficiarios-atendidos</b></h4>
+        </div >
+        <hr>
+                <h4><b>Beneficiarios atendidos</b></h4>
                 <hr>
 
                 <div class="form-row">
@@ -252,46 +247,50 @@
         </div>
 
         <hr>
-        <h4>Acta de reuniones</h4>
+        <h4><b>Acta de reuniones</b></h4>
+        <hr>
 
         <form action="{{ route('ParticipanteVinculacion.generarActaReunion') }}" method="post">
             @csrf
 
-            <div class="form-group">
-                <label for="lugar"><strong>Lugar de la reunión:</strong></label>
-                <input type="text" id="lugar" name="lugar" class="form-control input">
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="lugar"><strong>Lugar de la reunión:</strong></label>
+                    <input type="text" id="lugar" name="lugar" class="form-control input">
+                </div>
+                
+                <div class="col-md-6 form-group">
+                    <label for="tema"><strong>Tema de la reunión:</strong></label>
+                    <input type="text" id="tema" name="tema" class="form-control input">
+                </div>
             </div>
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <label for="fecha"><strong>Fecha de la reunión:</strong></label>
+                    <input type="date" id="fecha" name="fecha" class="form-control input">
+                </div>
 
-            <div class="form-group">
-                <label for="fecha"><strong>Fecha de la reunión:</strong></label>
-                <input type="date" id="fecha" name="fecha" class="form-control input">
+                <div class="col-md-4 form-group">
+                    <label for="hora"><strong>Hora de la reunión:</strong></label>
+                    <input type="time" id="horaInicial" name="horaInicial" class="form-control input">
+                </div>
+
+                <div class="col-md-4 form-group">
+                    <label for="hora"><strong>Hora de finalización de la reunión:</strong></label>
+                    <input type="time" id="horaFinal" name="horaFinal" class="form-control input">
+                </div>
             </div>
-
-            <div class="form-group">
-                <label for="hora"><strong>Hora de la reunión:</strong></label>
-                <input type="time" id="horaInicial" name="horaInicial" class="form-control input">
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="objetivo"><strong>objetivo:</strong></label>
+                    <textarea id="objetivo" name="objetivo" class="form-control input"></textarea>
+                </div>
+                
+                <div class="col-md-6 form-group">
+                    <label for="antecedentes"><strong>antecedentes:</strong></label>
+                    <textarea id="antecedentes" name="antecedentes" class="form-control input"></textarea>
+                </div>
             </div>
-
-            <div class="form-group">
-                <label for="hora"><strong>Hora de finalización de la reunión:</strong></label>
-                <input type="time" id="horaFinal" name="horaFinal" class="form-control input">
-            </div>
-
-            <div class="form-group">
-                <label for="tema"><strong>Tema de la reunión:</strong></label>
-                <input type="text" id="tema" name="tema" class="form-control input">
-            </div>
-
-            <div class="form-group">
-                <label for="objetivo"><strong>objetivo:</strong></label>
-                <textarea id="objetivo" name="objetivo" class="form-control input"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="antecedentes"><strong>antecedentes:</strong></label>
-                <textarea id="antecedentes" name="antecedentes" class="form-control input"></textarea>
-            </div>
-
             <div id="campos2">
                 <div class="form-row">
                     <div class="form-group col-md-4">
@@ -321,30 +320,19 @@
                         class='bx bx-trash'></i></button>
             </div <hr>
 
-
-
-
-
-
-
-            <center><button type="submit" class="button1">
-                    <i class="fas fa-cogs"></i> Generar
-                </button>
-                <center>
         </form>
 
-
-
-
-
-
-
-
-
-        <button type="button" class="button1 btn_excel efects_button"  data-toggle="modal" data-target="#myModal">
-            <i class="fas fa-file-excel"></i>
-            Generar Baremo
-        </button>
+        <center>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="button1 mr-2">
+                    <i class="fas fa-cogs"></i> Generar
+                </button>
+                <button type="button" class="button1 btn_excel efects_button" data-toggle="modal" data-target="#myModal">
+                    <i class="fas fa-file-excel"></i>
+                    Generar Baremo
+                </button>
+            </div>
+        </center>
 
         <!-- Modal -->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -400,46 +388,6 @@
             </div>
         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-        <style>
-            /* Estilos CSS personalizados */
-            .table {
-                background-color: #ffffff;
-                /* Color de fondo de la tabla */
-            }
-
-            .table thead th {
-                background-color: #f8f9fa;
-                /* Color de fondo de las celdas de encabezado */
-            }
-
-            .table-striped tbody tr:nth-of-type(odd) {
-                background-color: #f8f9fa;
-                /* Color de fondo de las filas impares */
-            }
-
-            .btn-light {
-                background-color: #e9ecef;
-                /* Color de fondo de los botones */
-            }
-
-            .btn-light:hover {
-                background-color: #d9d9d9;
-                /* Color de fondo al pasar el mouse sobre los botones */
-            }
-        </style>
-
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
@@ -452,15 +400,15 @@
                 nuevoCampo.innerHTML = `
             <div class="form-group col-md-4">
                 <label><strong>Nueva Actividad Planificada:</strong></label>
-                <textarea name="planificadas[]" class="form-control" rows="2" required></textarea>
+                <textarea name="planificadas[]" class="form-control input" rows="2" required></textarea>
             </div>
             <div class="form-group col-md-4">
                 <label><strong>Nuevo Resultado Alcanzado:</strong></label>
-                <textarea name="alcanzados[]" class="form-control" rows="2" required></textarea>
+                <textarea name="alcanzados[]" class="form-control input" rows="2" required></textarea>
             </div>
             <div class="form-group col-md-4">
                 <label><strong>Nuevo Porcentaje Alcanzado:</strong></label>
-                <textarea name="porcentaje[]" class="form-control" rows="2" required></textarea>
+                <textarea name="porcentaje[]" class="form-control input" rows="2" required></textarea>
             </div>
         `;
                 campos.appendChild(nuevoCampo);
@@ -492,8 +440,7 @@
             <div class="form-group col-md-4">
                 <label><strong>Nuevo Porcentaje Alcanzado:</strong></label>
                 <input type="date" name="fechaAcciones[]" class="form-control input" required></input>
-            </div>
-        `;
+            </div>     `;
                 campos.appendChild(nuevoCampo);
             }
 
@@ -505,10 +452,5 @@
                 }
             }
         </script>
-
-
-
-
-
 
     @endsection
