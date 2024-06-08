@@ -67,8 +67,9 @@
             <table class="mat-mdc-table">
                 <thead class="ng-star-inserted">
                     <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                      
+
                         <th>Hora de Inicio</th>
+                        <th>Hola de salida</th>
                         <th>Dirección IP</th>
                         <th>Agente de Usuario</th>
                         <th>Ubicacion</th>
@@ -78,6 +79,7 @@
                     @foreach ($userSessions as $session)
                         <tr>
                             <td>{{ $session->start_time }}</td>
+                            <td>{{ $session->end_time }}</td>
                             <td>{{ $session->ip_address }}</td>
                             <td>{{ $session->browser }}</td>
                             <td>{{ $session->locality }}</td>

@@ -12,11 +12,14 @@ use App\Http\Controllers\DirectorVinculacionController;
 use App\Http\Controllers\ParticipanteVinculacionController;
 use App\Http\Controllers\DocumentosVinculacion;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\SessionController;
 use Laravel\Socialite\Facades\Socialite;
 
 
 
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
+
+Route::post('/keep-alive', [SessionController::class, 'keepAlive'])->name('keep-alive');
 
 // Ruta para procesar el inicio de sesión (POST)
 Route::post('/', [LoginController::class, 'login']);

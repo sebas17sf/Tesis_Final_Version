@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('UserID');
             $table->string('session_id');
             $table->dateTime('start_time');
+            $table->dateTime('end_time')->nullable();
             $table->string('ip_address')->nullable();
             $table->string('user_agent')->nullable();
             $table->string('locality')->nullable();

@@ -21,6 +21,63 @@
 
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
+    @if (session('show_alert'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function showSessionAlert() {
+                Swal.fire({
+                    title: 'Tu sesión está a punto de expirar',
+                    text: "¿Deseas mantener la sesión activa?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#7066e0',
+                    cancelButtonColor: '#808080',
+                    confirmButtonText: 'Mantener sesión',
+                    cancelButtonText: 'Salir',
+                    allowOutsideClick: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch('{{ route('keep-alive') }}', {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                    .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        title: 'Sesión extendida',
+                                        text: 'Tu sesión se ha extendido exitosamente.',
+                                        icon: 'success',
+                                        allowOutsideClick: false
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: 'No se pudo extender la sesión.',
+                                        icon: 'error',
+                                        allowOutsideClick: false
+                                    });
+                                }
+                            });
+                    } else {
+                        window.location.href = '{{ route('logout') }}';
+                    }
+                });
+            }
+
+             showSessionAlert();
+        });
+    </script>
+    @endif
+
+
+
+
+
+
     <style>
         /*  body {
             overflow-x: hidden;
@@ -139,9 +196,9 @@
                         <span>Cambiar modulo</span>
                     </a>
 
-                    <a href="{{ route('conectarModulos', ['token' => session('token')]) }}" class="change_module">
-                        <i class="fa-regular fa-rectangle-vertical-history"></i>
-                        <span>Cambiar modulo</span>
+                    <a href="{{ route('admin.cambio-credenciales') }}" class="change_password">
+                        <i class="far fa-cog"></i>
+                        <span>Configuracion</span>
                     </a>
 
                     <a class="logout" href="{{ route('logout') }}">
@@ -170,8 +227,8 @@
         </div>
     </section>
 
- <!-- Scripts de jQuery y Popper.js -->
- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Scripts de jQuery y Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <!-- Script de Bootstrap 4.5.2 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -215,17 +272,16 @@
 
             triggerToggleSidebar();
         }
-
     </script>
 
 
     <script>
-         var logoutButton = document.querySelector('.logout');
+        var logoutButton = document.querySelector('.logout');
 
-         logoutButton.addEventListener('click', function() {
-             localStorage.removeItem('tokencomparacion');
+        logoutButton.addEventListener('click', function() {
+            localStorage.removeItem('tokencomparacion');
 
-             window.location.href = "/";
+            window.location.href = "/";
         });
     </script>
 

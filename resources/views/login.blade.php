@@ -97,10 +97,7 @@
 
                     <!-- Boton de google -->
                     <div class="row">
-                        <a href="{{ route('google.redirect') }}" class="btn_google">
-                            <img src="/img/logos/google.png" alt="Google Icon" width="20">
-                            <span>Continuar con Google</span>
-                        </a>
+                        
 
                         <a href="/auth/github/redirect" class="btn_google">
                             <img src="/img/logos/github.png" alt="GitHub Icon" width="20">

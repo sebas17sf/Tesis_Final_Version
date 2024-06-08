@@ -9,11 +9,12 @@ class UsuariosSession extends Model
 {
     use HasFactory;
     protected $table = 'usuarios_sessions';
- 
+
     protected $fillable = [
         'UserID',
         'session_id',
         'start_time',
+        'end_time',
         'ip_address',
         'user_agent',
         'locality',

@@ -13,6 +13,7 @@ use App\Models\Role;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 
 
@@ -198,8 +199,16 @@ class LoginController extends Controller
     {
         try {
             $user = Auth::user();
-            if ($user) {
-                $user->token = null;
+             if ($user) {
+                 $existingSession = UsuariosSession::where('UserID', $user->UserID)
+                     ->first();
+
+                if ($existingSession) {
+                    $existingSession->update(['end_time' => now()]);
+                }
+
+                 $user->token = null;
+                $user->token_expires_at = null;
                 $user->save();
             }
 
@@ -209,11 +218,12 @@ class LoginController extends Controller
 
             return redirect('/');
         } catch (\Exception $e) {
-             Log::error('Error al cerrar sesión: ' . $e->getMessage());
+            Log::error('Error al cerrar sesión: ' . $e->getMessage());
 
-             return redirect('/')->withErrors(['error' => 'Hubo un problema al cerrar sesión. Por favor, inténtelo de nuevo.']);
+            return redirect('/')->withErrors(['error' => 'Hubo un problema al cerrar sesión. Por favor, inténtelo de nuevo.']);
         }
     }
+
 
 
 
@@ -322,16 +332,6 @@ class LoginController extends Controller
 
     }
 
-
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////////conexion
-    public function conectarModulos()
-    {
-        return view('ConexionSistemas');
-
-    }
-
     public function Modulo1()
     {
         try {
@@ -346,6 +346,11 @@ class LoginController extends Controller
                 Auth::login($user);
 
                 session()->regenerate();
+
+                // Update token and token_expires_at
+                $user->token = Str::random(60);
+                $user->token_expires_at = now()->addMinutes(10);
+                $user->save();
 
                 $encryptedToken = $user->token;
 
@@ -373,6 +378,18 @@ class LoginController extends Controller
             return redirect()->route('login')->with('error', 'Ocurrió un error: ' . $e->getMessage());
         }
     }
+
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////conexion
+    public function conectarModulos()
+    {
+        return view('ConexionSistemas');
+
+    }
+
+
 
     public function Modulo2()
     {
