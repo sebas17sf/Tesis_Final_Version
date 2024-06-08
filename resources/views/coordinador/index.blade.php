@@ -122,9 +122,9 @@
                                     @else
                                         @foreach ($proyectos as $proyecto)
                                             <tr>
-                                                <td style="word-wrap: break-word; text-align: justify; padding: 5px 8px;">
+                                                <td style="text-transform: uppercase;word-wrap: break-word; text-align: justify; padding: 5px 8px;">
                                                     {{ strtoupper($proyecto->NombreProyecto) }}</td>
-                                                <td style="word-wrap: break-word; text-align: left;">
+                                                <td style="text-transform: uppercase; word-wrap: break-word; text-align: left;">
                                                     @if ($proyecto->director)
                                                         {{ strtoupper($proyecto->director->Apellidos) }}
                                                         {{ strtoupper($proyecto->director->Nombres) }}
@@ -136,8 +136,8 @@
                                                 <td style="word-wrap: break-word; text-align: justify; padding: 5px 8px;">
                                                     {{ strtoupper($proyecto->DescripcionProyecto) }}</td>
 
-                                                <td>{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
-                                                <td>
+                                                <td style=" text-transform: uppercase;">{{ strtoupper($proyecto->DepartamentoTutor) }}</td>
+                                                <td style=" text-transform: uppercase;">
                                                     @if (empty($proyecto->codigoProyecto))
                                                         {{ strtoupper('No requiere código de proyecto') }}
                                                     @else
