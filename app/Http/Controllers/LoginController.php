@@ -41,11 +41,7 @@ class LoginController extends Controller
             $user = Usuario::where('CorreoElectronico', $credentials['CorreoElectronico'])->first();
 
             if ($user && (password_verify($credentials['Contrasena'], $user->Contrasena) || $user->Contrasena === $credentials['Contrasena'])) {
-
-
                 Auth::login($user);
-
-
 
                 $userAgent = $request->userAgent();
                 $response = Http::get('https://api.ipify.org?format=json');
@@ -66,29 +62,24 @@ class LoginController extends Controller
                     $locality = 'Desconocida';
                 }
 
+                // Generar un identificador único
+                $uuid = (string) Str::uuid();
+
                 $existingSession = UsuariosSession::where('UserID', $user->UserID)
                     ->where('user_agent', $userAgent)
                     ->where('ip_address', $ipAddress)
                     ->first();
 
                 if ($existingSession) {
-                    $existingSession->update(['start_time' => now()]);
+                    $existingSession->update(['start_time' => now(), 'session_id' => $uuid]);
                 } else {
                     $session = new UsuariosSession();
                     $session->UserID = $user->UserID;
-                    $session->session_id = session()->getId();
                     $session->start_time = now();
                     $session->user_agent = $request->userAgent();
                     $session->locality = $locality;
-
-                    $response = Http::get('https://api.ipify.org?format=json');
-                    if ($response->successful()) {
-                        $ip = $response->json()['ip'];
-                        $session->ip_address = $ip;
-                    } else {
-                        $session->ip_address = $request->ip();
-                    }
-
+                    $session->ip_address = $ipAddress;
+                    $session->session_id = $uuid; // Guardar el identificador único como session_id
                     $session->save();
                 }
 
@@ -100,11 +91,10 @@ class LoginController extends Controller
                 $user->save();
 
                 setcookie('tokensesion', $token, time() + 3600, "/");
+                setcookie('session_uuid', $uuid, time() + 3600, "/"); // Guardar el identificador único en la cookie
                 session(['token' => $encryptedToken]);
 
                 return redirect()->route('conectarModulos')->with('token', $encryptedToken);
-
-
             } else {
                 throw new \Exception('Las credenciales proporcionadas no coinciden con nuestros registros.');
             }
@@ -199,15 +189,20 @@ class LoginController extends Controller
     {
         try {
             $user = Auth::user();
-             if ($user) {
-                 $existingSession = UsuariosSession::where('UserID', $user->UserID)
-                     ->first();
+            if ($user) {
+                $uuid = $_COOKIE['session_uuid'] ?? null;
 
-                if ($existingSession) {
-                    $existingSession->update(['end_time' => now()]);
+                if ($uuid) {
+                    $existingSession = UsuariosSession::where('UserID', $user->UserID)
+                        ->where('session_id', $uuid)
+                        ->first();
+
+                    if ($existingSession) {
+                        $existingSession->update(['end_time' => now()]);
+                    }
                 }
 
-                 $user->token = null;
+                $user->token = null;
                 $user->token_expires_at = null;
                 $user->save();
             }
