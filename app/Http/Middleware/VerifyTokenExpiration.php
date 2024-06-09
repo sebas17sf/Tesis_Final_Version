@@ -13,6 +13,7 @@ class VerifyTokenExpiration
 
         if ($user && $user->token_expires_at) {
             if (now()->greaterThan($user->token_expires_at)) {
+                $this->updateSessionEndTime($user);
                 $user->token = null;
                 $user->token_expires_at = null;
                 $user->save();
@@ -27,5 +28,15 @@ class VerifyTokenExpiration
         }
 
         return $next($request);
+    }
+    private function updateSessionEndTime($user)
+    {
+        $existingSession = UsuariosSession::where('UserID', $user->UserID)
+             ->first();
+
+        if ($existingSession) {
+            $existingSession->end_time = now();
+            $existingSession->save();
+        }
     }
 }

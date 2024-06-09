@@ -97,7 +97,7 @@
 
                     <!-- Boton de google -->
                     <div class="row">
-                        
+
 
                         <a href="/auth/github/redirect" class="btn_google">
                             <img src="/img/logos/github.png" alt="GitHub Icon" width="20">
