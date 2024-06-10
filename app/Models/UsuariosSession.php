@@ -11,7 +11,7 @@ class UsuariosSession extends Model
     protected $table = 'usuarios_sessions';
 
     protected $fillable = [
-        'UserID',
+        'userId',
         'session_id',
         'start_time',
         'end_time',
@@ -22,6 +22,6 @@ class UsuariosSession extends Model
 
     public function usuario()
     {
-        return $this->belongsTo(Usuario::class, 'UserID', 'UserID');
+        return $this->belongsTo(Usuario::class, 'userId', 'userId');
     }
 }

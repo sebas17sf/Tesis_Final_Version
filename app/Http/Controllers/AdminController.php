@@ -53,7 +53,7 @@ class AdminController extends Controller
             $user = Auth::user();
             $role = Role::find($user->role_id);
 
-            if ($role && $role->Tipo === 'Administrador') {
+            if ($role && $role->tipo === 'Administrador') {
 
                 $searchTerm = $request->input('search');
 
@@ -61,26 +61,26 @@ class AdminController extends Controller
 
                 if ($searchTerm) {
                     $query->where(function ($q) use ($searchTerm) {
-                        $q->where('Apellidos', 'like', "%{$searchTerm}%")
-                            ->orWhere('Nombres', 'like', "%{$searchTerm}%")
-                            ->orWhere('Correo', 'like', "%{$searchTerm}%")
-                            ->orWhere('Usuario', 'like', "%{$searchTerm}%")
+                        $q->where('apellidos', 'like', "%{$searchTerm}%")
+                            ->orWhere('nombres', 'like', "%{$searchTerm}%")
+                            ->orWhere('correo', 'like', "%{$searchTerm}%")
+                            ->orWhere('usuario', 'like', "%{$searchTerm}%")
                             ->orWhere('Cedula', 'like', "%{$searchTerm}%")
-                            ->orWhere('Departamento', 'like', "%{$searchTerm}%");
+                            ->orWhere('departamento', 'like', "%{$searchTerm}%");
                     });
                 }
 
                 $profesores = $query->paginate($perPage);
 
                 $periodos = Periodo::all();
-                $profesorRoleId = Role::where('Tipo', 'Vinculacion')->value('id');
+                $profesorRoleId = Role::where('tipo', 'Vinculacion')->value('id');
 
 
                 $profesoresPendientes = Usuario::where('role_id', $profesorRoleId)->get();
 
                 // Consulta para obtener los profesores con permisos
                 $profesoresConPermisos = Usuario::where('role_id', $profesorRoleId)
-                    ->whereIn('Estado', ['Vinculacion', 'Practicas', 'Director-Departamento'])
+                    ->whereIn('estado', ['Vinculacion', 'Practicas', 'Director-Departamento'])
                     ->get();
 
 
@@ -112,8 +112,8 @@ class AdminController extends Controller
             return redirect()->route('admin.index')->with('error', 'Usuario no encontrado');
         }
 
-        $usuario->Estado = $request->input('Estado');
-        $usuario->Contrasena = bcrypt($request->input('password'));
+        $usuario->estado = $request->input('estado');
+        $usuario->contrasena = bcrypt($request->input('password'));
         $usuario->save();
 
         return redirect()->route('admin.index')->with('success', 'Estado actualizado correctamente');
@@ -150,13 +150,13 @@ class AdminController extends Controller
         }
 
         // Verifica si el usuario tiene un estado que permite eliminar el permiso
-        if (in_array($usuario->Estado, ['Vinculacion', 'Director-Departamento', 'Director-Carrera'])) {
+        if (in_array($usuario->estado, ['Vinculacion', 'Director-Departamento', 'Director-Carrera'])) {
             // Cambia el estado del usuario a 'Negado'
-            $usuario->Estado = 'Pendiente';
+            $usuario->estado = 'Pendiente';
             $usuario->save();
 
             return redirect()->route('admin.index')->with('success', 'Permiso eliminado correctamente');
-        } elseif ($usuario->Estado === 'Pendiente') {
+        } elseif ($usuario->estado === 'Pendiente') {
             // Si el estado ya es 'Negado', elimina el usuario
             $usuario->delete();
 
@@ -178,34 +178,34 @@ class AdminController extends Controller
         $search2 = $request->input('search2');
 
         // Consulta para estudiantes en revisión
-        $queryEstudiantesEnRevision = Estudiante::where('Estado', 'En proceso de revisión')
-            ->orderBy('Nombres', 'asc');
+        $queryEstudiantesEnRevision = Estudiante::where('estado', 'En proceso de revisión')
+            ->orderBy('nombres', 'asc');
 
         // Búsqueda de estudiantes en revisión
         if ($request->has('buscarEstudiantesEnRevision')) {
             $busquedaEstudiantesEnRevision = $request->input('buscarEstudiantesEnRevision');
             $queryEstudiantesEnRevision->where(function ($query) use ($busquedaEstudiantesEnRevision) {
-                $query->where('Nombres', 'like', '%' . $busquedaEstudiantesEnRevision . '%')
-                    ->orWhere('Apellidos', 'like', '%' . $busquedaEstudiantesEnRevision . '%');
+                $query->where('nombres', 'like', '%' . $busquedaEstudiantesEnRevision . '%')
+                    ->orWhere('apellidos', 'like', '%' . $busquedaEstudiantesEnRevision . '%');
             });
         }
 
         $estudiantesEnRevision = $queryEstudiantesEnRevision->get();
 
         // Consulta y paginación para estudiantes aprobados
-        $queryEstudiantesAprobados = Estudiante::whereIn('Estado', ['Aprobado', 'Aprobado-prácticas','Desactivados']);
+        $queryEstudiantesAprobados = Estudiante::whereIn('estado', ['Aprobado', 'Aprobado-prácticas','Desactivados']);
 
         // Búsqueda de estudiantes aprobados
         if ($request->has('search2')) {
             $busquedaEstudiantesAprobados = $request->input('search2');
             $queryEstudiantesAprobados->where(function ($query) use ($busquedaEstudiantesAprobados) {
-                $query->where('Nombres', 'like', '%' . $busquedaEstudiantesAprobados . '%')
-                    ->orWhere('Apellidos', 'like', '%' . $busquedaEstudiantesAprobados . '%')
-                    ->orWhere('espe_id', 'like', '%' . $busquedaEstudiantesAprobados . '%')
+                $query->where('nombres', 'like', '%' . $busquedaEstudiantesAprobados . '%')
+                    ->orWhere('apellidos', 'like', '%' . $busquedaEstudiantesAprobados . '%')
+                    ->orWhere('espeId', 'like', '%' . $busquedaEstudiantesAprobados . '%')
                     ->orWhere('celular', 'like', '%' . $busquedaEstudiantesAprobados . '%')
-                    ->orWhere('cedula', 'like', '%' . $busquedaEstudiantesAprobados . '%')
                     ->orWhere('Cohorte', 'like', '%' . $busquedaEstudiantesAprobados . '%')
-                    ->orWhere('Departamento', 'like', '%' . $busquedaEstudiantesAprobados . '%');
+                    ->orWhere('correo', 'like', '%' . $busquedaEstudiantesAprobados . '%')
+                    ->orWhere('departamento', 'like', '%' . $busquedaEstudiantesAprobados . '%');
             });
         }
 
@@ -240,14 +240,14 @@ class AdminController extends Controller
         }
 
         $nuevoEstado = $request->input('nuevoEstado');
-        $estudiante->Estado = $nuevoEstado;
+        $estudiante->estado = $nuevoEstado;
         $estudiante->save();
 
         // Envía el correo electrónico correspondiente al estado del estudiante
         $usuario = $estudiante->usuario;
 
         if ($usuario) {
-            $email = $usuario->CorreoElectronico;
+            $email = $usuario->correoElectronico;
 
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 if ($nuevoEstado === 'Aprobado') {
@@ -296,21 +296,21 @@ class AdminController extends Controller
 
         if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->where('NombreProyecto', 'LIKE', '%' . $search . '%')
-                    ->orWhere('DescripcionProyecto', 'LIKE', '%' . $search . '%')
-                    ->orWhere('Estado', 'LIKE', '%' . $search . '%')
-                    ->orWhere('DepartamentoTutor', 'LIKE', '%' . $search . '%')
+                $q->where('nombreProyecto', 'LIKE', '%' . $search . '%')
+                    ->orWhere('descripcionProyecto', 'LIKE', '%' . $search . '%')
+                    ->orWhere('estado', 'LIKE', '%' . $search . '%')
+                    ->orWhere('departamentoTutor', 'LIKE', '%' . $search . '%')
                     ->orWhere('codigoProyecto', 'LIKE', '%' . $search . '%');
             });
         }
 
         if ($estadoProyecto) {
-            $query->where('Estado', $estadoProyecto);
+            $query->where('estado', $estadoProyecto);
         }
         $proyectos = $query->paginate($perPage, ['*'], 'page', $page);
 
-        $proyectosDisponibles = Proyecto::where('Estado', 'Ejecucion')->get();
-        $estudiantesAprobados = Estudiante::where('Estado', 'Aprobado')
+        $proyectosDisponibles = Proyecto::where('estado', 'Ejecucion')->get();
+        $estudiantesAprobados = Estudiante::where('estado', 'Aprobado')
             ->whereDoesntHave('asignaciones')
             ->get();
 
@@ -336,22 +336,22 @@ class AdminController extends Controller
             ->when($search2, function ($query, $search2) {
                 return $query->where(function ($query) use ($search2) {
                     $query->whereHas('estudiante', function ($query) use ($search2) {
-                        $query->where('Nombres', 'like', '%' . $search2 . '%')
-                            ->orWhere('Apellidos', 'like', '%' . $search2 . '%');
+                        $query->where('nombres', 'like', '%' . $search2 . '%')
+                            ->orWhere('apellidos', 'like', '%' . $search2 . '%');
                     })
                         ->orWhereHas('proyecto', function ($query) use ($search2) {
                             $query->where('nombreProyecto', 'like', '%' . $search2 . '%');
                         })
                         ->orWhereHas('docenteParticipante', function ($query) use ($search2) {
-                            $query->where('Nombres', 'like', '%' . $search2 . '%')
-                                ->orWhere('Apellidos', 'like', '%' . $search2 . '%');
+                            $query->where('nombres', 'like', '%' . $search2 . '%')
+                                ->orWhere('apellidos', 'like', '%' . $search2 . '%');
                         })
                         ->orWhereHas('periodo', function ($query) use ($search2) {
                             $query->where('numeroPeriodo', 'like', '%' . $search2 . '%');
                         })
                         ->orWhereHas('proyecto.director', function ($query) use ($search2) {
-                            $query->where('Nombres', 'like', '%' . $search2 . '%')
-                                ->orWhere('Apellidos', 'like', '%' . $search2 . '%');
+                            $query->where('nombres', 'like', '%' . $search2 . '%')
+                                ->orWhere('apellidos', 'like', '%' . $search2 . '%');
                         });
                 });
             })
@@ -386,29 +386,29 @@ class AdminController extends Controller
             'search2' => $search2,
         ]);
         if ($estadoProyecto) {
-            $query->where('Estado', $estadoProyecto);
+            $query->where('estado', $estadoProyecto);
         }
-    
+
         if ($profesorId) {
             $query->whereHas('director', function ($q) use ($profesorId) {
                 $q->where('id', $profesorId);
             });
         }
-    
+
         if ($periodoId) {
             $query->whereHas('periodo', function ($q) use ($periodoId) {
                 $q->where('id', $periodoId);
             });
         }
-    
+
         $proyectos = $query->paginate($perPage, ['*'], 'page', $page);
-    
+
         if ($request->ajax()) {
             return view('tablaProyectos', compact('proyectos'))->render();
         }
-    
+
         return view('admin.indexProyectos', compact('proyectos', 'periodos', 'nrcs', 'profesores', 'estadoProyecto', 'search'));
-    
+
     }
 
 
@@ -443,14 +443,14 @@ class AdminController extends Controller
             ]);
 
             $proyecto = Proyecto::create([
-                'DirectorID' => $validatedData['DirectorProyecto'],
-                'NombreProyecto' => $validatedData['NombreProyecto'],
-                'DescripcionProyecto' => $validatedData['DescripcionProyecto'],
-                'DepartamentoTutor' => $validatedData['DepartamentoTutor'],
+                'directorId' => $validatedData['DirectorProyecto'],
+                'nombreProyecto' => $validatedData['NombreProyecto'],
+                'descripcionProyecto' => $validatedData['DescripcionProyecto'],
+                'departamentoTutor' => $validatedData['DepartamentoTutor'],
                 'codigoProyecto' => $validatedData['codigoProyecto'],
-                'Estado' => $validatedData['Estado'],
-                'FechaInicio' => $validatedData['FechaInicio'],
-                'FechaFinalizacion' => $validatedData['FechaFinalizacion'],
+                'estado' => $validatedData['Estado'],
+                'inicioFecha' => $validatedData['FechaInicio'],
+                'finFecha' => $validatedData['FechaFinalizacion'],
             ]);
 
             $this->actualizarUsuarioYRol($validatedData['DirectorProyecto'], 'DirectorVinculacion');
@@ -497,14 +497,14 @@ class AdminController extends Controller
 
         $proyecto = Proyecto::findOrFail($ProyectoID);
 
-        $proyecto->DirectorID = $validatedData['DirectorProyecto'];
-        $proyecto->NombreProyecto = $validatedData['NombreProyecto'];
-        $proyecto->DescripcionProyecto = $validatedData['DescripcionProyecto'];
-        $proyecto->DepartamentoTutor = $validatedData['DepartamentoTutor'];
+        $proyecto->directorId = $validatedData['DirectorProyecto'];
+        $proyecto->nombreProyecto = $validatedData['NombreProyecto'];
+        $proyecto->descripcionProyecto = $validatedData['DescripcionProyecto'];
+        $proyecto->departamentoTutor = $validatedData['DepartamentoTutor'];
         $proyecto->codigoProyecto = $validatedData['codigoProyecto'];
-        $proyecto->FechaInicio = $validatedData['FechaInicio'];
-        $proyecto->FechaFinalizacion = $validatedData['FechaFinalizacion'];
-        $proyecto->Estado = $validatedData['Estado'];
+        $proyecto->inicioFecha = $validatedData['FechaInicio'];
+        $proyecto->finFecha = $validatedData['FechaFinalizacion'];
+        $proyecto->estado = $validatedData['Estado'];
         $proyecto->save();
 
         $this->actualizarUsuarioYRol($validatedData['DirectorProyecto'], 'DirectorVinculacion');
@@ -516,19 +516,16 @@ class AdminController extends Controller
     private function actualizarUsuarioYRol($profesorId, $tipoRol)
     {
         $profesor = ProfesUniversidad::findOrFail($profesorId);
-        $rolId = Role::where('Tipo', $tipoRol)->value('id');
+        $rolId = Role::where('tipo', $tipoRol)->value('id');
 
-        $usuario = Usuario::where('CorreoElectronico', $profesor->Correo)->first();
+        $usuario = Usuario::where('correoElectronico', $profesor->Correo)->first();
 
         if (!$usuario) {
             Usuario::create([
-                'NombreUsuario' => $profesor->Usuario,
-                'Nombre' => $profesor->Nombres,
-                'Apellido' => $profesor->Apellidos,
-                'CorreoElectronico' => $profesor->Correo,
-                'FechaNacimiento' => now(),
-                'Contrasena' => bcrypt('123'),
-                'Estado' => 'activo',
+                'nombreUsuario' => $profesor->usuario,
+                'correoElectronico' => $profesor->correo,
+                'contrasena' => bcrypt('123'),
+                'estado' => 'activo',
                 'role_id' => $rolId,
             ]);
         } else {
@@ -539,7 +536,7 @@ class AdminController extends Controller
         }
 
         //////actualizar el UserID de ProfesUniversidad con el ID de Usuario creado
-        $profesor->UserID = Usuario::where('CorreoElectronico', $profesor->Correo)->value('UserID');
+        $profesor->UserID = Usuario::where('correoElectronico', $profesor->Correo)->value('userId');
         $profesor->save();
     }
 
@@ -550,12 +547,12 @@ class AdminController extends Controller
         $proyecto = Proyecto::findOrFail($ProyectoID);
 
         // Verificar si el Estado del proyecto es "Ejecucion"
-        if ($proyecto->Estado === 'Ejecucion') {
+        if ($proyecto->estado === 'Ejecucion') {
             return redirect()->route('admin.indexProyectos')->with('error', 'No puedes eliminar un proyecto en estado de ejecución');
         }
 
         // Obtener todas las asignaciones relacionadas con el proyecto
-        $asignaciones = AsignacionProyecto::where('ProyectoID', $ProyectoID)->get();
+        $asignaciones = AsignacionProyecto::where('proyectoId', $ProyectoID)->get();
 
         // Eliminar cada asignación relacionada con el proyecto
         foreach ($asignaciones as $asignacion) {
@@ -587,14 +584,14 @@ class AdminController extends Controller
 
         foreach ($request->estudiante_id as $estudianteID) {
             AsignacionProyecto::create([
-                'ProyectoID' => $request->proyecto_id,
-                'EstudianteID' => $estudianteID,
-                'ParticipanteID' => $request->ProfesorParticipante,
-                'FechaAsignacion' => now(),
-                'IdPeriodo' => $nrc->id_periodo,
-                'id_nrc_vinculacion' => $request->nrc,
-                'FechaInicio' => $request->FechaInicio,
-                'FechaFinalizacion' => $request->FechaFinalizacion,
+                'proyectoId' => $request->proyecto_id,
+                'estudianteId' => $estudianteID,
+                'participanteId' => $request->ProfesorParticipante,
+                'asignacionFecha' => now(),
+                'idPeriodo' => $nrc->id_periodo,
+                'nrc' => $request->nrc,
+                'inicioFecha' => $request->FechaInicio,
+                'finalizacionFecha' => $request->FechaFinalizacion,
             ]);
         }
         $this->actualizarUsuarioYRol($request->ProfesorParticipante, 'ParticipanteVinculacion');
@@ -622,13 +619,13 @@ class AdminController extends Controller
 
             $usuario = explode('@', $request->correo)[0];
             ProfesUniversidad::create([
-                'Nombres' => $request->nombres,
-                'Usuario' => $usuario,
-                'Apellidos' => $request->apellidos,
-                'Correo' => $request->correo,
-                'Cedula' => $request->cedula,
-                'Departamento' => $request->departamento,
-                'espe_id' => $request->espe_id,
+                'nombres' => $request->nombres,
+                'usuario' => $usuario,
+                'apellidos' => $request->apellidos,
+                'correo' => $request->correo,
+                'cedula' => $request->cedula,
+                'departamento' => $request->departamento,
+                'espeId' => $request->espe_id,
             ]);
 
             return redirect()->route('admin.index')->with('success', 'Docente creado con éxito');
@@ -653,11 +650,11 @@ class AdminController extends Controller
                 return redirect()->route('admin.index')->with('error', 'Docente no encontrado.');
             }
 
-            $proyectosRelacionados = Proyecto::where('DirectorID', $maestro->id)
-                ->orWhere('DirectorID', $maestro->id)
+            $proyectosRelacionados = Proyecto::where('directorId', $maestro->id)
+                ->orWhere('directorId', $maestro->id)
                 ->get();
 
-            $participante = AsignacionProyecto::where('ParticipanteID', $maestro->id)->first();
+            $participante = AsignacionProyecto::where('participanteId', $maestro->id)->first();
 
             if ($participante) {
                 session(['maestro_con_proyectos' => true]);
@@ -711,12 +708,12 @@ class AdminController extends Controller
             }
 
             $maestro->update([
-                'Nombres' => $request->nombres,
-                'Apellidos' => $request->apellidos,
-                'Correo' => $request->correo,
-                'Cedula' => $request->cedula,
-                'Departamento' => $request->departamento,
-                'espe_id' => $request->espe_id,
+                'nombres' => $request->nombres,
+                'apellidos' => $request->apellidos,
+                'correo' => $request->correo,
+                'cedula' => $request->cedula,
+                'departamento' => $request->departamento,
+                'espeId' => $request->espe_id,
             ]);
 
             return redirect()->route('admin.index')->with('success', 'Maestro actualizado con éxito.');
@@ -758,9 +755,9 @@ class AdminController extends Controller
         $periodoAcademico = $periodoInicio . '-' . $periodoFin;
 
         Periodo::create([
-            'Periodo' => $periodoAcademico,
-            'PeriodoInicio' => $fechaInicio,
-            'PeriodoFin' => $fechaFin,
+            'periodo' => $periodoAcademico,
+            'inicioPeriodo' => $fechaInicio,
+            'finPeriodo' => $fechaFin,
             'numeroPeriodo' => $request->numeroPeriodo,
         ]);
 
@@ -813,9 +810,9 @@ class AdminController extends Controller
             return redirect()->route('admin.index')->with('error', 'El período académico no existe.');
         }
 
-        $periodo->Periodo = $periodoAcademico;
-        $periodo->PeriodoInicio = $fechaInicio;
-        $periodo->PeriodoFin = $fechaFin;
+        $periodo->periodo = $periodoAcademico;
+        $periodo->inicioPeriodo = $fechaInicio;
+        $periodo->finPeriodo = $fechaFin;
         $periodo->numeroPeriodo = $request->numeroPeriodo;
         $periodo->save();
 
@@ -1057,32 +1054,32 @@ class AdminController extends Controller
         $perPage4 = $request->input('paginacion4', 10);
 
         $estudiantesConPracticaI = PracticaI::with('estudiante')
-            ->where('Estado', 'PracticaI')
+            ->where('estado', 'PracticaI')
             ->get();
 
         $estudiantesConPracticaII = PracticaII::with('estudiante')
-            ->where('Estado', 'PracticaII')
+            ->where('estado', 'PracticaII')
             ->get();
 
         $estudiantesPracticas = PracticaI::with('estudiante')
             ->where(function ($query) use ($search) {
-                $query->where('Estado', 'En ejecucion')
-                    ->orWhere('Estado', 'Finalizado');
+                $query->where('estado', 'En ejecucion')
+                    ->orWhere('estado', 'Finalizado');
             })
             ->where(function ($query) use ($search) {
 
                 $query->where('EstudianteID', 'LIKE', '%' . $search . '%')
-                    ->orWhereHas('estudiante', function ($query) use ($search) {
-                        $query->where('Nombres', 'LIKE', '%' . $search . '%')
-                            ->orWhere('Apellidos', 'LIKE', '%' . $search . '%')
-                            ->orWhere('Carrera', 'LIKE', '%' . $search . '%');
+                    ->orWhereHas('estudianteId', function ($query) use ($search) {
+                        $query->where('nombres', 'LIKE', '%' . $search . '%')
+                            ->orWhere('apellidos', 'LIKE', '%' . $search . '%')
+                            ->orWhere('carrera', 'LIKE', '%' . $search . '%');
                     })
-                    ->orWhere('ID_tutorAcademico', 'LIKE', '%' . $search . '%')
+                    ->orWhere('idTutorAcademico', 'LIKE', '%' . $search . '%')
                     ->orWhereHas('tutorAcademico', function ($query) use ($search) {
-                        $query->where('Nombres', 'LIKE', '%' . $search . '%')
-                            ->orWhere('Apellidos', 'LIKE', '%' . $search . '%');
+                        $query->where('nombres', 'LIKE', '%' . $search . '%')
+                            ->orWhere('apellidos', 'LIKE', '%' . $search . '%');
                     })
-                    ->orWhere('IDEmpresa', 'LIKE', '%' . $search . '%')
+                    ->orWhere('idEmpresa', 'LIKE', '%' . $search . '%')
                     ->orWhereHas('empresa', function ($query) use ($search) {
                         $query->where('nombreEmpresa', 'LIKE', '%' . $search . '%')
                             ->orWhere('rucEmpresa', 'LIKE', '%' . $search . '%')
@@ -1235,7 +1232,7 @@ class AdminController extends Controller
         ]);
 
 
-        $practica = PracticaI::where('EstudianteID', $id)->first();
+        $practica = PracticaI::where('estudianteId', $id)->first();
 
         if (!$practica) {
             return redirect()->route('admin.aceptarFaseI')->with('error', 'Práctica no encontrada.');
@@ -1267,7 +1264,7 @@ class AdminController extends Controller
             'nuevoEstado' => 'required|in:En ejecucion,Negado,Terminado',
         ]);
 
-        $practica = PracticaII::where('EstudianteID', $id)->first();
+        $practica = PracticaII::where('estudianteId', $id)->first();
 
         if (!$practica) {
             return redirect()->route('admin.aceptarFaseI')->with('error', 'Práctica no encontrada.');
@@ -1353,7 +1350,7 @@ class AdminController extends Controller
 
         NrcVinculacion::create([
             'nrc' => $request->nrc,
-            'id_periodo' => $request->periodo,
+            'idPeriodo' => $request->periodo,
         ]);
 
         return redirect()->route('admin.index')->with('success', 'NRC guardado con éxito.');
@@ -1398,7 +1395,7 @@ class AdminController extends Controller
     public function cambiarCredencialesUsuario()
     {
         $usuario = Auth::user();
-        $userSessions = UsuariosSession::where('UserID', $usuario->UserID)->get();
+        $userSessions = UsuariosSession::where('userId', $usuario->userId)->get();
 
         foreach ($userSessions as $session) {
             $session->browser = $this->getBrowserFromUserAgent($session->user_agent);
@@ -1449,9 +1446,9 @@ class AdminController extends Controller
 
         $usuario = Auth::user();
 
-        $usuario->CorreoElectronico = $request->email;
-        $usuario->NombreUsuario = $request->nombre;
-        $usuario->Contrasena = bcrypt($request->password);
+        $usuario->correoElectronico = $request->email;
+        $usuario->nombreUsuario = $request->nombre;
+        $usuario->contrasena = bcrypt($request->password);
 
         $usuario->save();
 

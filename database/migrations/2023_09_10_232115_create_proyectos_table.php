@@ -14,16 +14,16 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('proyectos', function (Blueprint $table) {
-            $table->id('ProyectoID');
-            $table->unsignedBigInteger('DirectorID')->nullable();
-            $table->foreign('DirectorID')->references('id')->on('profesUniversidad');
-            $table->text('NombreProyecto');
+            $table->id('proyectoId');
+            $table->unsignedBigInteger('directorId')->nullable();
+            $table->foreign('directorId')->references('id')->on('profesuniversidad');
+            $table->text('nombreProyecto');
             $table->string('codigoProyecto')->nullable();
-            $table->text('DescripcionProyecto');
-            $table->string('DepartamentoTutor');
-            $table->Date('FechaInicio')->nullable();;
-            $table->Date('FechaFinalizacion')->nullable();;
-             $table->string('Estado');
+            $table->text('descripcionProyecto');
+            $table->string('departamentoTutor');
+            $table->Date('inicioFecha')->nullable();;
+            $table->Date('finFecha')->nullable();;
+             $table->string('estado');
             $table->timestamps();
         });
     }

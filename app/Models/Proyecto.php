@@ -11,33 +11,32 @@ class Proyecto extends Model
     use HasFactory;
 
     protected $table = 'proyectos';
-    protected $primaryKey = 'ProyectoID';
+    protected $primaryKey = 'proyectoId';
 
     protected $fillable = [
-        'DirectorID',
-        'NombreProyecto',
-        'DescripcionProyecto',
-        'CorreoElectronicoTutor',
-        'DepartamentoTutor',
+        'directorId',
+        'nombreProyecto',
+        'descripcionProyecto',
+         'departamentoTutor',
         'codigoProyecto',
-        'FechaInicio',
-        'FechaFinalizacion',
-        'Estado',
+        'inicioFecha',
+        'fechaFin',
+        'estado',
     ];
 
     public function estudiantes()
     {
-        return $this->belongsToMany(Estudiante::class, 'asignacionProyectos', 'ProyectoID', 'EstudianteID');
+        return $this->belongsToMany(Estudiante::class, 'asignacionproyectos', 'proyectoId', 'estudianteId');
     }
 
     public function asignaciones()
     {
-        return $this->hasMany(AsignacionProyecto::class, 'ProyectoID', 'ProyectoID');
+        return $this->hasMany(AsignacionProyecto::class, 'proyectoId', 'proyectoId');
     }
 
     public function director()
     {
-        return $this->belongsTo(ProfesUniversidad::class, 'DirectorID', 'id');
+        return $this->belongsTo(ProfesUniversidad::class, 'directorId', 'id');
     }
 
 

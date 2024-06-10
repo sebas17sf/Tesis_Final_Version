@@ -8,16 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class ProfesUniversidad extends Model
 {
     use HasFactory;
-    protected $table = 'profesUniversidad';
+    protected $table = 'profesuniversidad';
     protected $fillable = [
-        'UserID',
-        'Apellidos',
-        'Nombres',
-        'Correo',
-        'Usuario',
-        'Cedula',
-        'Departamento',
-        'espe_id',
+        'userId',
+        'apellidos',
+        'nombres',
+        'correo',
+        'usuario',
+        'cedula',
+        'departamento',
+        'espeId',
     ];
 
     public function proyectosDirigidos()
@@ -30,20 +30,7 @@ class ProfesUniversidad extends Model
         return $this->hasMany(Proyecto::class, 'id_docenteParticipante');
     }
 
-    public function participantesAdicionales()
-    {
-        return $this->hasMany(ParticipanteAdicional::class, 'ParticipanteID');
-    }
 
-    public function asignacionesComoDirector()
-    {
-        return $this->hasMany(AsignacionEstudiantesDirector::class, 'DirectorID');
-    }
-
-     public function asignacionesComoParticipante()
-    {
-        return $this->hasMany(AsignacionEstudiantesDirector::class, 'ParticipanteID');
-    }
 
     public function asignadosEstudiantes ()
     {
@@ -62,7 +49,7 @@ class ProfesUniversidad extends Model
 
      public function usuario()
     {
-        return $this->belongsTo(User::class, 'UserID');
+        return $this->belongsTo(Usuario::class, 'userId');
     }
 
 

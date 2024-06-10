@@ -15,20 +15,20 @@ class Estudiante extends Model
 
     // Campos que pueden ser llenados en masa (en el proceso de registro)
     protected $fillable = [
-        'UserID',
-        'Nombres',
-        'Apellidos',
-        'espe_id',
+        'userId',
+        'nombres',
+        'apellidos',
+        'espeId',
         'celular',
         'cedula',
         'Cohorte',
-        'id_periodo',
-        'Correo',
-        'Departamento',
-        'Carrera',
-        'Provincia',
+        'idPeriodo',
+        'correo',
+        'departamento',
+        'carrera',
+        'provincia',
         'comentario',
-        'Estado',
+        'estado',
 
 
     ];
@@ -39,50 +39,46 @@ class Estudiante extends Model
     // Relación con la tabla Usuarios
     public function usuario()
     {
-        return $this->belongsTo(Usuario::class, 'UserID', 'UserID');
+        return $this->belongsTo(Usuario::class, 'userId', 'userId');
     }
     public function asignaciones()
     {
-        return $this->hasMany(AsignacionProyecto::class, 'EstudianteID', 'EstudianteID');
+        return $this->hasMany(AsignacionProyecto::class, 'estudianteId', 'estudianteId');
     }
     public function notas()
     {
-        return $this->hasMany(NotasEstudiante::class, 'EstudianteID', 'EstudianteID');
+        return $this->hasMany(NotasEstudiante::class, 'estudianteId', 'estudianteId');
     }
 
     public function evidencias()
     {
-        return $this->hasMany(ActividadEstudiante::class, 'EstudianteID');
+        return $this->hasMany(ActividadEstudiante::class, 'estudianteId');
     }
-    
+
     public function actividades()
     {
-        return $this->hasMany(ActividadEstudiante::class, 'EstudianteID');
+        return $this->hasMany(ActividadEstudiante::class, 'estudianteId');
     }
     public function proyectos()
     {
-        return $this->belongsToMany(Proyecto::class, 'asignacionProyectos', 'EstudianteID', 'ProyectoID');
+        return $this->belongsToMany(Proyecto::class, 'asignacionProyectos', 'estudianteId', 'proyectoId');
     }
- 
+
 
     public function periodos()
     {
-        return $this->belongsTo(Periodo::class, 'id_periodo', 'id');
+        return $this->belongsTo(Periodo::class, 'idPeriodo', 'id');
     }
 
-    public function asignacionesEstudiantesDirectores()
-    {
-        return $this->hasMany(AsignacionEstudiantesDirector::class, 'EstudianteID');
-    }
 
 
 
     public function actividades_practicas()
     {
-        return $this->hasMany(ActividadesPracticas::class, 'EstudianteID');
+        return $this->hasMany(ActividadesPracticas::class, 'estudianteId');
     }
 
-   
+
 
 
 

@@ -10,15 +10,15 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {  
+    {
         Schema::create('actividades_practicas', function (Blueprint $table) {
             $table->id();
-            $table->string('Actividad');
+            $table->string('actividad');
             $table->integer('horas');
-            $table->unsignedBigInteger('EstudianteID');
-            $table->foreign('EstudianteID')->references('EstudianteID')->on('estudiantes');
-            $table->unsignedBigInteger('IDPracticasI');
-            $table->foreign('IDPracticasI')->references('PracticasI')->on('practicasi');
+            $table->unsignedBigInteger('estudianteId');
+            $table->foreign('estudianteId')->references('estudianteId')->on('estudiantes');
+            $table->unsignedBigInteger('idPracticasi');
+            $table->foreign('idPracticasi')->references('practicasI')->on('practicasi');
             $table->string('observaciones');
             $table->date('fechaActividad');
             $table->string('departamento');
@@ -28,7 +28,7 @@ return new class extends Migration
         });
     }
 
-  
+
     public function down(): void
     {
         Schema::dropIfExists('actividades_practicas');

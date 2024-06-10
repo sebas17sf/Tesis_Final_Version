@@ -9,17 +9,17 @@ return new class extends Migration
 
     public function up(): void
     {
-        Schema::create('profesUniversidad', function (Blueprint $table) {
+        Schema::create('profesuniversidad', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('UserID')->nullable();
-            $table->foreign('UserID')->references('UserID')->on('usuarios')->nullable();
-            $table->string('Apellidos');
-            $table->string('Nombres');
-            $table->string('Correo');
-            $table->string('Usuario');
-            $table->string('Cedula');
-            $table->string('espe_id')->nullable();
-            $table->string('Departamento');
+            $table->unsignedBigInteger('userId')->nullable();
+            $table->foreign('userId')->references('userId')->on('usuarios')->nullable();
+            $table->string('apellidos');
+            $table->string('nombres');
+            $table->string('correo');
+            $table->string('usuario');
+            $table->string('cedula');
+            $table->string('espeId')->nullable();
+            $table->string('departamento');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('profes_universidad');
+        Schema::dropIfExists('profesuniversidad');
     }
 };

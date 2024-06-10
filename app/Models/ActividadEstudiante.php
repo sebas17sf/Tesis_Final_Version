@@ -9,21 +9,21 @@ class ActividadEstudiante extends Model
 {
     use HasFactory;
     protected $table = 'actividades_estudiante';
-    protected $primaryKey = 'ID_Actividades';
+    protected $primaryKey = 'idActividades';
     public $timestamps = true;
 
     protected $fillable = [
-        'EstudianteID',
+        'estudianteId',
         'fecha',
         'actividades',
-        'numero_horas',
+        'numeroHoras',
         'evidencias',
-        'nombre_actividad',
+        'nombreActividad',
     ];
 
     public function estudiante()
         {
-        return $this->belongsTo(Estudiante::class, 'EstudianteID');
+        return $this->belongsTo(Estudiante::class, 'estudianteId');
      }
-    
+
 }

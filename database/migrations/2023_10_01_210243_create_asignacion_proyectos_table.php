@@ -11,27 +11,27 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('asignacionProyectos', function (Blueprint $table) {
-            $table->id('AsignacionID');
-            $table->unsignedBigInteger('EstudianteID')->nullable();;
-            $table->unsignedBigInteger('ProyectoID')->nullable();;
-             $table->unsignedBigInteger('ParticipanteID')->nullable();;
-            $table->unsignedBigInteger('IdPeriodo')->nullable();;
-            $table->unsignedBigInteger('id_nrc_vinculacion')->nullable();
-             $table->date('FechaInicio')->nullable();;
-             $table->date('FechaFinalizacion')->nullable();;
-             $table->date('FechaAsignacion')->nullable();;
+        Schema::create('asignacionproyectos', function (Blueprint $table) {
+            $table->id('asignacionID');
+            $table->unsignedBigInteger('estudianteId')->nullable();;
+            $table->unsignedBigInteger('proyectoId')->nullable();;
+             $table->unsignedBigInteger('participanteId')->nullable();;
+            $table->unsignedBigInteger('idPeriodo')->nullable();;
+            $table->unsignedBigInteger('nrc')->nullable();
+             $table->date('inicioFecha')->nullable();;
+             $table->date('finalizacionFecha')->nullable();;
+             $table->date('asignacionFecha')->nullable();;
             $table->timestamps();
-            $table->foreign('EstudianteID')->references('EstudianteID')->on('estudiantes');
-            $table->foreign('ProyectoID')->references('ProyectoID')->on('proyectos');
-            $table->foreign('id_nrc_vinculacion')->references('id')->on('nrc_vinculacion');
-             $table->foreign('ParticipanteID')->references('id')->on('profesUniversidad');
-            $table->foreign('IdPeriodo')->references('id')->on('periodo');
+            $table->foreign('estudianteId')->references('estudianteId')->on('estudiantes');
+            $table->foreign('proyectoId')->references('proyectoId')->on('proyectos');
+            $table->foreign('nrc')->references('id')->on('nrc');
+             $table->foreign('participanteId')->references('id')->on('profesuniversidad');
+            $table->foreign('idPeriodo')->references('id')->on('periodo');
          });
     }
 
     public function down()
     {
-        Schema::dropIfExists('asignacionProyectos');
+        Schema::dropIfExists('asignacionproyectos');
     }
 };

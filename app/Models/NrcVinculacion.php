@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class NrcVinculacion extends Model
 {
-    protected $table = 'nrc_vinculacion';  
+    protected $table = 'nrc';
     protected $fillable = [
-        'id_periodo', 'nrc'
+        'idPeriodo', 'nrc', 'tipo'
     ];
 
      public function periodo()
     {
-        return $this->belongsTo(Periodo::class, 'id_periodo');
+        return $this->belongsTo(Periodo::class, 'idPeriodo');
     }
 }

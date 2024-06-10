@@ -11,19 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notasEstudiante', function (Blueprint $table) {
-            $table->id('ID_Notas');
-            $table->unsignedBigInteger('EstudianteID')->nullable();
-            $table->foreign('EstudianteID')->references('EstudianteID')->on('estudiantes');
-            $table->decimal('Tareas', 5, 2)->nullable();
-            $table->decimal('Resultados_Alcanzados', 5, 2)->nullable();
-            $table->decimal('Conocimientos', 5, 2)->nullable();
-            $table->decimal('Adaptabilidad', 5, 2)->nullable();
-            $table->decimal('Aplicacion', 5, 2)->nullable();
-            $table->decimal('Capacidad_liderazgo', 5, 2)->nullable();
-            $table->decimal('Asistencia', 5, 2)->nullable();
-            $table->string('Informe');
-            $table->decimal('Nota_Final', 5, 2)->nullable();
+        Schema::create('notas_estudiante', function (Blueprint $table) {
+            $table->id('idNotas');
+            $table->unsignedBigInteger('estudianteId')->nullable();
+            $table->foreign('estudianteId')->references('estudianteId')->on('estudiantes');
+            $table->decimal('tareas', 5, 2)->nullable();
+            $table->decimal('resultadosAlcanzados', 5, 2)->nullable();
+            $table->decimal('conocimientos', 5, 2)->nullable();
+            $table->decimal('adaptabilidad', 5, 2)->nullable();
+            $table->decimal('aplicacion', 5, 2)->nullable();
+            $table->decimal('CapacidadLiderazgo', 5, 2)->nullable();
+            $table->decimal('asistencia', 5, 2)->nullable();
+            $table->string('informe');
+            $table->decimal('notaFinal', 5, 2)->nullable();
             $table->timestamps();
         });
     }

@@ -38,9 +38,9 @@ class LoginController extends Controller
                 'Contrasena' => 'required',
             ]);
 
-            $user = Usuario::where('CorreoElectronico', $credentials['CorreoElectronico'])->first();
+            $user = Usuario::where('correoElectronico', $credentials['CorreoElectronico'])->first();
 
-            if ($user && (password_verify($credentials['Contrasena'], $user->Contrasena) || $user->Contrasena === $credentials['Contrasena'])) {
+            if ($user && (password_verify($credentials['Contrasena'], $user->contrasena) || $user->contrasena === $credentials['Contrasena'])) {
                 Auth::login($user);
 
                 $userAgent = $request->userAgent();
@@ -65,7 +65,7 @@ class LoginController extends Controller
                 // Generar un identificador único
                 $uuid = (string) Str::uuid();
 
-                $existingSession = UsuariosSession::where('UserID', $user->UserID)
+                $existingSession = UsuariosSession::where('userId', $user->UserID)
                     ->where('user_agent', $userAgent)
                     ->where('ip_address', $ipAddress)
                     ->first();
@@ -74,7 +74,7 @@ class LoginController extends Controller
                     $existingSession->update(['start_time' => now(), 'session_id' => $uuid]);
                 } else {
                     $session = new UsuariosSession();
-                    $session->UserID = $user->UserID;
+                    $session->userId = $user->userId;
                     $session->start_time = now();
                     $session->user_agent = $request->userAgent();
                     $session->locality = $locality;
@@ -333,11 +333,11 @@ class LoginController extends Controller
             $user = Auth::user();
             $userRole = Role::find($user->role_id);
             $credentials = [
-                'CorreoElectronico' => $user->CorreoElectronico,
-                'Contrasena' => $user->Contrasena,
+                'CorreoElectronico' => $user->correoElectronico,
+                'Contrasena' => $user->contrasena,
             ];
 
-            if ($user && (password_verify($credentials['Contrasena'], $user->Contrasena) || $user->Contrasena === $credentials['Contrasena'])) {
+            if ($user && (password_verify($credentials['Contrasena'], $user->contrasena) || $user->contrasena === $credentials['Contrasena'])) {
                 Auth::login($user);
 
                 session()->regenerate();
@@ -353,15 +353,15 @@ class LoginController extends Controller
 
                 session(['token' => $encryptedToken]);
 
-                if ($userRole->Tipo === 'Administrador') {
+                if ($userRole->tipo === 'Administrador') {
                     return redirect()->route('admin.index')->with('token', $encryptedToken);
-                } elseif ($userRole->Tipo === 'Director-Departamento' || $userRole->Tipo === 'Director-Carrera') {
+                } elseif ($userRole->tipo === 'Director-Departamento' || $userRole->tipo === 'Director-Carrera') {
                     return redirect()->route('director.indexProyectos')->with('token', $encryptedToken);
-                } elseif ($userRole->Tipo === 'Vinculacion') {
+                } elseif ($userRole->tipo === 'Vinculacion') {
                     return redirect()->route('coordinador.index')->with('token', $encryptedToken);
-                } elseif ($userRole->Tipo === 'DirectorVinculacion') {
+                } elseif ($userRole->tipo === 'DirectorVinculacion') {
                     return redirect()->route('director_vinculacion.index')->with('token', $encryptedToken);
-                } elseif ($userRole->Tipo === 'ParticipanteVinculacion') {
+                } elseif ($userRole->tipo === 'ParticipanteVinculacion') {
                     return redirect()->route('ParticipanteVinculacion.index')->with('token', $encryptedToken);
                 } else {
                     return redirect()->route('estudiantes.create')->with('token', $encryptedToken);

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('usuarios_sessions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('UserID');
+            $table->unsignedBigInteger('userId');
             $table->string('session_id');
             $table->dateTime('start_time');
             $table->dateTime('end_time')->nullable();
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('user_agent')->nullable();
             $table->string('locality')->nullable();
             $table->timestamps();
-            $table->foreign('UserID')->references('UserID')->on('usuarios')->onDelete('cascade');
+            $table->foreign('userId')->references('userId')->on('usuarios')->onDelete('cascade');
 
 
 

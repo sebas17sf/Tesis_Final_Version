@@ -13,21 +13,21 @@ class Periodo extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'Periodo',
-        'PeriodoInicio',
-        'PeriodoFin',
-        'numeroPeriodo'
+        'periodo',
+        'numeroPeriodo',
+        'inicioPeriodo',
+        'finPeriodo'
     ];
     public $timestamps = false;
 
     public function estudiantes()
     {
-        return $this->hasMany(Estudiante::class, 'id_periodo', 'id');
+        return $this->hasMany(Estudiante::class, 'idPeriodo', 'id');
     }
 
     public function asignacionProyectos()
     {
-        return $this->hasMany(AsignacionProyecto::class, 'IdPeriodo', 'id');
+        return $this->hasMany(AsignacionProyecto::class, 'idPeriodo', 'id');
     }
 
 }

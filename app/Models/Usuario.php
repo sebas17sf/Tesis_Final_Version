@@ -15,19 +15,18 @@ class Usuario extends Model implements Authenticatable
     protected $table = 'usuarios';
 
     // Nombre de la columna que es clave primaria en la tabla
-    protected $primaryKey = 'UserID';
+    protected $primaryKey = 'userId';
 
     // Campos que pueden ser llenados en masa (en el proceso de registro)
     protected $fillable = [
-        'NombreUsuario',
-         'CorreoElectronico',
-        'Contrasena',
+        'nombreUsuario',
+         'correoElectronico',
+        'contrasena',
         'token',
         'token_expires_at',
-        'Estado',
+        'estado',
         'github_id',
-        'google_id',
-        'remember_token',
+         'remember_token',
         'role_id'
     ];
 
@@ -39,7 +38,7 @@ class Usuario extends Model implements Authenticatable
     // Implementación de la función getAuthIdentifierName
     public function getAuthIdentifierName()
     {
-        return 'UserID'; // Nombre de la columna que es clave primaria en la tabla
+        return 'userId'; // Nombre de la columna que es clave primaria en la tabla
     }
 
     // Implementación de la función getAuthIdentifier
@@ -76,7 +75,7 @@ class Usuario extends Model implements Authenticatable
     // Relación con la tabla Estudiantes
     public function estudiante()
     {
-        return $this->hasOne(Estudiante::class, 'UserID', 'UserID');
+        return $this->hasOne(Estudiante::class, 'userId', 'userId');
     }
 
     // Relación con la tabla roles
@@ -88,13 +87,13 @@ class Usuario extends Model implements Authenticatable
     // Relación con la tabla usuarios_sessions
     public function session()
     {
-        return $this->hasOne(UsuariosSession::class, 'UserID', 'UserID');
+        return $this->hasOne(UsuariosSession::class, 'userId', 'userId');
     }
 
     // Relación con la tabla profes_universidad
     public function profesorUniversidad()
     {
-        return $this->hasOne(ProfesUniversidad::class, 'UserID', 'UserID');
+        return $this->hasOne(ProfesUniversidad::class, 'userId', 'userId');
     }
 
 

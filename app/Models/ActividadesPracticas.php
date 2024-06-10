@@ -11,12 +11,12 @@ class ActividadesPracticas extends Model
 
     protected $table = 'actividades_practicas';
 
- 
+
     protected $fillable = [
-        'Actividad',
+        'actividad',
         'horas',
-        'EstudianteID',
-        'IDPracticasI',
+        'estudianteId',
+        'idPracticasi',
         'observaciones',
         'fechaActividad',
         'departamento',
@@ -26,13 +26,13 @@ class ActividadesPracticas extends Model
 
     public function estudiante()
     {
-        return $this->belongsTo(Estudiante::class, 'EstudianteID');
+        return $this->belongsTo(Estudiante::class, 'estudianteId');
     }
 
     public function practicas()
     {
-        return $this->belongsTo(PracticaI::class, 'IDPracticasI');
+        return $this->belongsTo(PracticaI::class, 'practicasi');
     }
 
-    
+
 }

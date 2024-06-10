@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('practicasi', function (Blueprint $table) {
-            $table->id('PracticasI');
-            $table->unsignedBigInteger('EstudianteID')->nullable();
+            $table->id('practicasi');
+            $table->unsignedBigInteger('estudianteId')->nullable();
              $table->unsignedBigInteger('nrc')->nullable();
-            $table->foreign('nrc')->references('id')->on('nrc_vinculacion')->nullable();
-            $table->foreign('EstudianteID')->references('EstudianteID')->on('estudiantes')->nullable();
-            $table->unsignedBigInteger('IDEmpresa')->nullable();
-            $table->foreign('IDEmpresa')->references('id')->on('empresas')->nullable();
-            $table->unsignedBigInteger('ID_tutorAcademico')->nullable();
-            $table->foreign('ID_tutorAcademico')->references('id')->on('profesUniversidad')->nullable();
+            $table->foreign('nrc')->references('id')->on('nrc')->nullable();
+            $table->foreign('estudianteId')->references('estudianteId')->on('estudiantes')->nullable();
+            $table->unsignedBigInteger('idEmpresa')->nullable();
+            $table->foreign('idEmpresa')->references('id')->on('empresas')->nullable();
+            $table->unsignedBigInteger('idTutorAcademico')->nullable();
+            $table->foreign('idTutorAcademico')->references('id')->on('profesuniversidad')->nullable();
             $table->string('tipoPractica')->nullable();
             $table->string('CedulaTutorEmpresarial')->nullable();
             $table->string('NombreTutorEmpresarial')->nullable();

@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('actividades_estudiante', function (Blueprint $table) {
-            $table->id('ID_Actividades');
-            $table->unsignedBigInteger('EstudianteID');
-            $table->foreign('EstudianteID')->references('EstudianteID')->on('estudiantes');
+            $table->id('idActividades');
+            $table->unsignedBigInteger('estudianteId');
+            $table->foreign('estudianteId')->references('estudianteId')->on('estudiantes');
             $table->date('fecha');
             $table->text('actividades');
-            $table->integer('numero_horas');
+            $table->integer('numeroHoras');
             $table->longText('evidencias');
-            $table->string('nombre_actividad');
+            $table->string('nombreActividad');
             $table->timestamps();
         });
     }
