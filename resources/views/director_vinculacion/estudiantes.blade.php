@@ -56,13 +56,13 @@
                     <tbody>
                         @foreach ($estudiantesConNotasPendientes as $estudiante)
                             <tr>
-                                <td class="wide-cell">{{ $estudiante->Apellidos }} {{ $estudiante->Nombres }}</td>
+                                <td class="wide-cell">{{ $estudiante->apellidos }} {{ $estudiante->nombres }}</td>
                                 <td>{{ $estudiante->espe_id }}</td>
                                 <td class="wide-cell">{{ $estudiante->Carrera }}</td>
                                 <td>{{ $estudiante->Departamento }}</td>
                                 <td>
-                                    <input type="hidden" name="estudiante_id[]" value="{{ $estudiante->EstudianteID }}">
-                                    <input type="text" name="informe_servicio[]" value="{{ $estudiante->notas->first()->Informe !== 'Pendiente' ? $estudiante->notas->first()->Informe : '' }}" required>
+                                    <input type="hidden" name="estudiante_id[]" value="{{ $estudiante->estudianteId }}">
+                                    <input type="text" name="informe_servicio[]" value="{{ $estudiante->notas->first()->Informe !== 'Pendiente' ? $estudiante->notas->first()->informe : '' }}" required>
                                     <small class="form-text text-danger" style="display: none;"></small>
                                 </td>
                             </tr>
@@ -86,7 +86,7 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                              
+
                                         <th>NOMBRES</th>
                         <th>ESPE ID</th>
                         <th>CARRERA</th>
@@ -106,61 +106,61 @@
                 <tbody>
                     @foreach ($estudiantesCalificados as $estudiante)
                         <tr>
-                            <td class="wide-cell">{{ $estudiante->Apellidos }} {{ $estudiante->Nombres }}</td>
-                            <td>{{ $estudiante->espe_id }}</td>
-                            <td class="wide-cell">{{ $estudiante->Carrera }}</td>
-                            <td>{{ $estudiante->Departamento }}</td>
+                            <td class="wide-cell">{{ $estudiante->apellidos }} {{ $estudiante->nombres }}</td>
+                            <td>{{ $estudiante->espeId }}</td>
+                            <td class="wide-cell">{{ $estudiante->carrera }}</td>
+                            <td>{{ $estudiante->departamento }}</td>
                             <td>
                                 @foreach ($estudiante->notas as $nota)
-                                    {{ $nota->Tareas }}<br>
+                                    {{ $nota->tareas }}<br>
                                 @endforeach
                             </td>
                             <td>
                                 @foreach ($estudiante->notas as $nota)
-                                    {{ $nota->Resultados_Alcanzados }}<br>
+                                    {{ $nota->resultadosAlcanzados }}<br>
                                 @endforeach
                             </td>
                             <td>
                                 @foreach ($estudiante->notas as $nota)
-                                    {{ $nota->Conocimientos }}<br>
+                                    {{ $nota->conocimientos }}<br>
                                 @endforeach
                             </td>
                             <td>
                                 @foreach ($estudiante->notas as $nota)
-                                    {{ $nota->Adaptabilidad }}<br>
+                                    {{ $nota->adaptabilidad }}<br>
                                 @endforeach
                             </td>
                             <td>
                                 @foreach ($estudiante->notas as $nota)
-                                    {{ $nota->Aplicacion }}<br>
+                                    {{ $nota->aplicacion }}<br>
                                 @endforeach
                             </td>
                             <td>
                                 @foreach ($estudiante->notas as $nota)
-                                    {{ $nota->Capacidad_liderazgo }}<br>
+                                    {{ $nota->CapacidadLiderazgo }}<br>
                                 @endforeach
                             </td>
                             <td>
                                 @foreach ($estudiante->notas as $nota)
-                                    {{ $nota->Asistencia }}<br>
+                                    {{ $nota->asistencia }}<br>
                                 @endforeach
                             </td>
                             <td>
                                 @foreach ($estudiante->notas as $nota)
-                                    {{ $nota->Informe }}<br>
+                                    {{ $nota->informe }}<br>
                                 @endforeach
                             </td>
                             <td>
                                 @php
                                     $notaTotal = $estudiante->notas->sum(function ($nota) {
-                                        return $nota->Tareas +
-                                            $nota->Resultados_Alcanzados +
-                                            $nota->Conocimientos +
-                                            $nota->Adaptabilidad +
-                                            $nota->Aplicacion +
-                                            $nota->Capacidad_liderazgo +
-                                            $nota->Asistencia +
-                                            $nota->Informe;
+                                        return $nota->tareas +
+                                            $nota->resultadosAlcanzados +
+                                            $nota->conocimientos +
+                                            $nota->adaptabilidad +
+                                            $nota->aplicacion +
+                                            $nota->CapacidadLiderazgo +
+                                            $nota->asistencia +
+                                            $nota->informe;
                                     });
                                     $notaFinal = ($notaTotal * 20) / 100;
                                 @endphp
@@ -174,13 +174,13 @@
                                 <div class="modal fade" id="modalEditarInforme{{ $estudiante->EstudianteID }}" tabindex="-1" role="dialog" aria-labelledby="modalEditarInforme{{ $estudiante->EstudianteID }}Label" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
-                                            <form method="post" action="{{ route('director_vinculacion.actualizarNota', ['id' => $estudiante->EstudianteID]) }}">
+                                            <form method="post" action="{{ route('director_vinculacion.actualizarNota', ['id' => $estudiante->estudianteId]) }}">
                                                 @csrf
                                                 @method('PUT')
 
                                                 <div class="modal-header">
                                                     <h5 class="modal-title"
-                                                        id="modalEditarNota{{ $estudiante->EstudianteID }}Label">
+                                                        id="modalEditarNota{{ $estudiante->estudianteId }}Label">
                                                         Nota de Informe {{ $estudiante->Apellidos }}
                                                         {{ $estudiante->Nombres }}</h5>
                                                     <button type="button" class="close" data-dismiss="modal"
@@ -190,10 +190,10 @@
                                                 </div>
 
                                                 <div class="modal-body">
-                                                    <input type="hidden" name="estudiante_id" value="{{ $estudiante->EstudianteID }}">
+                                                    <input type="hidden" name="estudiante_id" value="{{ $estudiante->estudianteId }}">
                                                     <div class="form-group">
                                                         <label for="nota_servicio">Informe de Servicio Comunitario</label>
-                                                        <input type="text" class="input" name="nota_servicio" value="{{ $estudiante->notas->first()->Informe }}" required>
+                                                        <input type="text" class="input" name="nota_servicio" value="{{ $estudiante->notas->first()->informe }}" required>
                                                         <small class="form-text text-danger" style="display: none;"></small>
                                                     </div>
                                                 </div>

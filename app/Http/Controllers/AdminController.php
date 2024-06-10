@@ -518,7 +518,7 @@ class AdminController extends Controller
         $profesor = ProfesUniversidad::findOrFail($profesorId);
         $rolId = Role::where('tipo', $tipoRol)->value('id');
 
-        $usuario = Usuario::where('correoElectronico', $profesor->Correo)->first();
+        $usuario = Usuario::where('correoElectronico', $profesor->correo)->first();
 
         if (!$usuario) {
             Usuario::create([
@@ -536,7 +536,7 @@ class AdminController extends Controller
         }
 
         //////actualizar el UserID de ProfesUniversidad con el ID de Usuario creado
-        $profesor->UserID = Usuario::where('correoElectronico', $profesor->Correo)->value('userId');
+        $profesor->userId = Usuario::where('correoElectronico', $profesor->correo)->value('userId');
         $profesor->save();
     }
 

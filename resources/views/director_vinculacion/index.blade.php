@@ -64,17 +64,17 @@
                                         @foreach ($proyectosEjecucion as $proyecto)
                                             <tr>
                                                 <td style="word-wrap: break-word; text-align: justify;">
-                                                    {{ strtoupper($proyecto->NombreProyecto) }}</td>
-                                                <td>{{ strtoupper($proyecto->director->Apellidos) }}
-                                                    {{ strtoupper($proyecto->director->Nombres) }}</td>
+                                                    {{ strtoupper($proyecto->nombreProyecto) }}</td>
+                                                <td>{{ strtoupper($proyecto->director->apellidos) }}
+                                                    {{ strtoupper($proyecto->director->nombres) }}</td>
                                                 <td style="word-wrap: break-word; text-align: justify;">
-                                                    {{ $proyecto->DescripcionProyecto }}</td>
+                                                    {{ $proyecto->descripcionProyecto }}</td>
 
-                                                <td>{{ $proyecto->director->Correo }}</td>
+                                                <td>{{ $proyecto->director->correo }}</td>
 
-                                                <td>{{ $proyecto->DepartamentoTutor }}</td>
-                                                <td>{{ $proyecto->FechaInicio }}</td>
-                                                <td>{{ $proyecto->FechaFinalizacion }}</td>
+                                                <td>{{ $proyecto->departamentoTutor }}</td>
+                                                <td>{{ optional($proyecto->asignaciones->first())->inicioFecha ?? 'Fecha no disponible' }}</td>
+                                                <td>{{ optional($proyecto->asignaciones->first())->finalizacionFecha ?? 'Fecha no disponible' }}</td>
                                                 @foreach ($proyecto->asignaciones as $asignacion)
                                                     <td>{{ $asignacion->periodo->numeroPeriodo }}</td>
                                                 @endforeach
@@ -160,7 +160,7 @@
 
                         </div>
                     </div>
-                    
+
                     <div class="paginator-container">
                         <nav aria-label="...">
 
