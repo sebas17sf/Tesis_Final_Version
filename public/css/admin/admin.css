@@ -301,7 +301,9 @@ tr:hover {
     color: white;
     padding: 10px;
     cursor: move;
-    border-radius: 5px 5px 0 0;
+    border-radius: calc(.29rem - 9px) calc(.26rem - 9px) 0 0 !important;
+
+
 }
 .card-body {
     padding: 15px;

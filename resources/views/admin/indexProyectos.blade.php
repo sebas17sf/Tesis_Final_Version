@@ -73,45 +73,33 @@
                                 </div>
                             </form>
 
+                          <!-- Botón para abrir el card de filtros -->
+<div class="tooltip-container">
+    <span class="tooltip-text">Filtros</span>
+    <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCard');">
+        <i class="fa-solid fa-filter-list"></i>
+    </button>
+</div>
 
-
-
-
-
-                            <!-- Botón para abrir el card de filtros -->
-                            <div class="tooltip-container">
-                                <span class="tooltip-text">Filtros</span>
-                                <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCard');">
-                                    <i class="fa-solid fa-filter-list"></i>
-                                </button>
-                            </div>
-
-                            <!-- Card de Filtros -->
-                            <div class="draggable-card1_2" id="filtersCard" style="display: none;">
-                                <div class="card-header">
-                                    <span class="card-title">Filtros</span>
-                                    <button type="button" class="close"
-                                        onclick="document.getElementById('filtersCard').style.display='none'">&times;</button>
-                                </div>
-                                <div class="card-body">
-                                    <form id="filtersForm" method="GET" action="{{ route('admin.indexProyectos') }}">
-                                        <div class="form-group">
-                                            <label for="estado" class="mr-2">Estado del Proyecto:</label>
-                                            <select name="estado" id="estado" class="form-control input input_select"
-                                                onchange="this.form.submit()">
-                                                <option value="">Todos</option>
-                                                <option value="Ejecucion"
-                                                    {{ request('estado') == 'Ejecucion' ? 'selected' : '' }}>En Ejecución
-                                                </option>
-                                                <option value="Terminado"
-                                                    {{ request('estado') == 'Terminado' ? 'selected' : '' }}>Terminado
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-
+<!-- Card de Filtros -->
+<div class="draggable-card1_2" id="filtersCard" style="display: none;">
+    <div class="card-header">
+        <span class="card-title">Filtros</span>
+        <button type="button" class="close" onclick="document.getElementById('filtersCard').style.display='none'">&times;</button>
+    </div>
+    <div class="card-body">
+        <form id="formBusquedaProyectos" method="GET">
+            <div class="form-group">
+                <label for="estado" class="mr-2">Estado del Proyecto:</label>
+                <select name="estado" id="estado" class="form-control input input_select" onchange="submitFilters()">
+                    <option value="">Todos</option>
+                    <option value="Ejecucion" {{ request('estado') == 'Ejecucion' ? 'selected' : '' }}>En Ejecución</option>
+                    <option value="Terminado" {{ request('estado') == 'Terminado' ? 'selected' : '' }}>Terminado</option>
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
                             <!-- Selector de estado del proyecto
                                 <div class="form-group mr-2">
                                     <label for="estado" class="mr-2"> Estado del Proyecto:</label>
@@ -129,12 +117,13 @@
                                 </div>
      -->
                             <!-- Botón de Eliminar Filtros -->
-                            <div class="tooltip-container mx-2">
-                                <span class="tooltip-text">Eliminar Filtros</span>
-                                <button class="button3 efects_button btn_delete_filter" onclick="resetFilters()">
-                                    <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
-                                </button>
-                            </div>
+                           <!-- Botón de Eliminar Filtros -->
+<div class="tooltip-container mx-2">
+    <span class="tooltip-text">Eliminar Filtros</span>
+    <button class="button3 efects_button btn_delete_filter" onclick="resetFilters()">
+        <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+    </button>
+</div>
                         </div>
                     </div>
 
@@ -656,15 +645,14 @@
                     </div>
                 </div>
 
-                <div class="row">
+      
                     <div class="col-md-6">
-                        <div class="form-group">
+                    <div class="form-group">
                             <label class="label" for="nrc">Vinculacion NRC:</label>
                             <select name="nrc" id="nrc" class="form-control input input_select" required>
                                 <option value="">Seleccionar NRC</option>
                                 @foreach ($nrcs as $nrc)
-                                    <option value="{{ $nrc->id }}"
-                                        data-periodo="{{ $nrc->periodo->numeroPeriodo }} {{ $nrc->periodo->Periodo }}">
+                                    <option value="{{ $nrc->id }}" data-periodo="{{ $nrc->periodo->numeroPeriodo }} {{ $nrc->periodo->Periodo }}">
                                         {{ $nrc->nrc }}
                                     </option>
                                 @endforeach
@@ -672,10 +660,9 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group">
+                    <div class="form-group">
                             <label class="label" for="periodo"><strong>Periodo:</strong></label>
-                            <input type="text" id="periodo" class="form-control input" readonly
-                                placeholder="Periodo">
+                            <input type="text" id="periodo" class="form-control input" readonly placeholder="Periodo">
                         </div>
                     </div>
                 </div>
@@ -892,6 +879,60 @@
             removeFile();
         });
 
+        function submitFilters() {
+    let form = $('#filtersForm');
+    let url = form.attr('action');
+    let data = form.serialize();
+
+    $.ajax({
+        url: url,
+        type: 'GET',
+        data: data,
+        success: function(response) {
+            $('#tableContainer').html(response);
+        },
+        error: function(xhr) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+function resetFilters() {
+    $('#estado').val('');
+    submitFilters();
+}
+
+$(document).ready(function() {
+    // Hacer que el card sea draggable
+    $('.draggable-card1_2').draggable({
+        handle: ".card-header",
+        containment: "window"
+    });
+
+    // Configurar la función para enviar el formulario y mantener el card abierto
+    window.submitFilters = function() {
+        let form = $('#filtersForm');
+        let url = form.attr('action');
+        let data = form.serialize();
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: data,
+            success: function(response) {
+                $('#tablaProyectos').html(response);
+            },
+            error: function(xhr) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
+
+    window.resetFilters = function() {
+        $('#estado').val('');
+        submitFilters();
+    }
+});
 
 
 

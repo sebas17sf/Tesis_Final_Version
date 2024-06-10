@@ -41,7 +41,7 @@
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                         <th class="tamanio1">NOMBRE</th>
-                                        <th class="tamanio2">ID ESPE</th>
+                                        <th>ID ESPE</th>
                                          <th class="tamanio2">CÉDULA</th>
                                         <th>Cohorte</th>
                                         <th class="tamanio1">DEPARTAMENTO</th>
@@ -131,13 +131,13 @@
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
 
-                                        <th>NOMBRES</th>
+                                        <th class="tamanio1">NOMBRES</th>
                                         <th>ID ESPE</th>
-                                        <th>CARRERA</th>
+                                        <th class="tamanio1">CARRERA</th>
                                          <th>CÉDULA</th>
                                         <th>COHORTE</th>
                                         <th>PERIODO</th>
-                                        <th>DEPARTAMENTO</th>
+                                        <th class="tamanio1">DEPARTAMENTO</th>
                                         <th>ESTADO</th>
 
                                     </tr>
@@ -153,7 +153,7 @@
                                                 <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($estudiante->Apellidos . ' ' . $estudiante->Nombres) }}
                                                 </td>
                                                 <td>{{ $estudiante->espe_id }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($estudiante->Carrera) }}</td>
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($estudiante->Carrera) }}</td>
                                                  <td>{{ $estudiante->cedula }}</td>
                                                 <td>{{ $estudiante->periodos->numeroPeriodo }}</td>
                                                 <td>{{ $estudiante->periodos->Periodo }}</td>

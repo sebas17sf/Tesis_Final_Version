@@ -21,57 +21,7 @@
 
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
-    @if (session('show_alert'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            function showSessionAlert() {
-                Swal.fire({
-                    title: 'Tu sesión está a punto de expirar',
-                    text: "¿Deseas mantener la sesión activa?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#7066e0',
-                    cancelButtonColor: '#808080',
-                    confirmButtonText: 'Mantener sesión',
-                    cancelButtonText: 'Salir',
-                    allowOutsideClick: false
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        fetch('{{ route('keep-alive') }}', {
-                            method: 'POST',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                    .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    Swal.fire({
-                                        title: 'Sesión extendida',
-                                        text: 'Tu sesión se ha extendido exitosamente.',
-                                        icon: 'success',
-                                        allowOutsideClick: false
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        title: 'Error',
-                                        text: 'No se pudo extender la sesión.',
-                                        icon: 'error',
-                                        allowOutsideClick: false
-                                    });
-                                }
-                            });
-                    } else {
-                        window.location.href = '{{ route('logout') }}';
-                    }
-                });
-            }
-
-             showSessionAlert();
-        });
-    </script>
-    @endif
+    
 
 
 
