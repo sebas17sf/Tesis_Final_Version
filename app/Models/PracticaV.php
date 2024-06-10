@@ -15,7 +15,7 @@ class PracticaV extends Model
         'EstudianteID',
         'tipoPractica',
         'IDEmpresa',
-        'ID_tutorAcademico',
+        'idTutorAcademico',
         'nrc',
         'CedulaTutorEmpresarial',
         'NombreTutorEmpresarial',
@@ -47,10 +47,10 @@ class PracticaV extends Model
 
     public function tutorAcademico()
     {
-        return $this->belongsTo(ProfesUniversidad::class, 'ID_tutorAcademico', 'id');
+        return $this->belongsTo(ProfesUniversidad::class, 'idTutorAcademico', 'id');
     }
 
-     
+
 
     public function actividades_practicas()
     {

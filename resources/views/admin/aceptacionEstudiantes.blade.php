@@ -60,12 +60,12 @@
                                         @foreach ($estudiantesEnRevision as $estudiante)
                                             <tr>
 
-                                                <td style="text-transform: uppercase;">{{ strtoupper($estudiante->Apellidos) }} {{ strtoupper($estudiante->Nombres) }}</td>
-                                                <td>{{ $estudiante->espe_id }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($estudiante->apellidos) }} {{ strtoupper($estudiante->nombres) }}</td>
+                                                <td>{{ $estudiante->espeId }}</td>
                                                  <td>{{ $estudiante->cedula }}</td>
                                                 <td>{{ $estudiante->periodos->numeroPeriodo }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($estudiante->Departamento) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($estudiante->Estado) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($estudiante->departamento) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($estudiante->estado) }}</td>
                                                 @if ($estudiante->comentario !== 'Sin comentarios')
                                                     <td>{{ strtoupper($estudiante->comentario) }}</td>
                                                 @else
@@ -73,7 +73,7 @@
                                                 @endif
 
                                                 <td>
-                                                    <form id="updateEstudianteForm" action="{{ route('admin.updateEstudiante', ['id' => $estudiante->EstudianteID]) }}" method="POST" onsubmit="enviarCorreo(event)">
+                                                    <form id="updateEstudianteForm" action="{{ route('admin.updateEstudiante', ['id' => $estudiante->estudianteId]) }}" method="POST" onsubmit="enviarCorreo(event)">
                                                         @csrf
                                                         @method('PUT')
                                                         <input type="hidden" id="motivoNegacion" name="motivoNegacion" class="input">
@@ -81,7 +81,7 @@
                                                             <option value="Aprobado">Aprobado</option>
                                                             <option value="Negado">Negado</option>
                                                         </select>
-                                                        
+
                                                     </form>
                                                 </td>
                                                 <td style="text-align: center; ">
@@ -150,21 +150,21 @@
                                     @else
                                         @foreach ($estudiantesAprobados as $estudiante)
                                             <tr>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($estudiante->Apellidos . ' ' . $estudiante->Nombres) }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($estudiante->apellidos . ' ' . $estudiante->nombres) }}
                                                 </td>
-                                                <td>{{ $estudiante->espe_id }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($estudiante->Carrera) }}</td>
+                                                <td>{{ $estudiante->espeId }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($estudiante->carrera) }}</td>
                                                  <td>{{ $estudiante->cedula }}</td>
                                                 <td>{{ $estudiante->periodos->numeroPeriodo }}</td>
-                                                <td>{{ $estudiante->periodos->Periodo }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($estudiante->Departamento) }}</td>
+                                                <td>{{ $estudiante->periodos->periodo }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($estudiante->departamento) }}</td>
                                                 <td style="text-transform: uppercase;">
-                                                    @if ($estudiante->Estado == 'Aprobado')
+                                                    @if ($estudiante->estado == 'Aprobado')
                                                         {{ strtoupper('Vinculación') }}
-                                                    @elseif ($estudiante->Estado == 'Aprobado-prácticas')
+                                                    @elseif ($estudiante->estado == 'Aprobado-prácticas')
                                                         {{ strtoupper('Prácticas') }}
                                                     @else
-                                                        {{ strtoupper($estudiante->Estado) }}
+                                                        {{ strtoupper($estudiante->estado) }}
                                                     @endif
                                                 </td>
                                             </tr>

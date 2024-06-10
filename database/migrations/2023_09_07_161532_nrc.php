@@ -11,8 +11,8 @@ return new class extends Migration {
         Schema::create('nrc', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('idPeriodo');
-            $table->string('nrc');
-            $table->string('tipo');
+            $table->string('nrc')->nullable();
+            $table->string('tipo')->nullable();
             $table->timestamps();
 
              $table->foreign('idPeriodo')->references('id')->on('periodo');

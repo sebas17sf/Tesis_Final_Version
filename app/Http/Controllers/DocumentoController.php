@@ -1858,14 +1858,14 @@ class DocumentoController extends Controller
         $estudiante = Auth::user()->estudiante;
 
         // Verificar el estado del estudiante
-        if ($estudiante->Estado === 'En proceso de revision' || $estudiante->Estado === 'Aprobado-practicas') {
+        if ($estudiante->estado === 'En proceso de revision' || $estudiante->estado === 'Aprobado-practicas') {
             // Redirigir o mostrar un mensaje de error, según tus necesidades
             return redirect()->back()->with('error', 'No tienes acceso a esta página en este momento.');
         }
 
 
         // Obtener las actividades registradas si el estado permite el acceso
-        $actividadesRegistradas = ActividadEstudiante::where('EstudianteID', $estudiante->EstudianteID)->get();
+        $actividadesRegistradas = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)->get();
 
         return view('estudiantes.documentos', ['actividadesRegistradas' => $actividadesRegistradas]);
     }

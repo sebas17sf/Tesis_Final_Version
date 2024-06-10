@@ -11,7 +11,7 @@ class Estudiante extends Model
     protected $table = 'estudiantes';
 
     // Nombre de la columna que es clave primaria en la tabla
-    protected $primaryKey = 'EstudianteID';
+    protected $primaryKey = 'estudianteId';
 
     // Campos que pueden ser llenados en masa (en el proceso de registro)
     protected $fillable = [
@@ -61,7 +61,7 @@ class Estudiante extends Model
     }
     public function proyectos()
     {
-        return $this->belongsToMany(Proyecto::class, 'asignacionProyectos', 'estudianteId', 'proyectoId');
+        return $this->belongsToMany(Proyecto::class, 'asignacionproyectos', 'estudianteId', 'proyectoId');
     }
 
 

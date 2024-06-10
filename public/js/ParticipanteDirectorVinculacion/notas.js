@@ -63,7 +63,5 @@ document.querySelector('form').addEventListener('submit', function(event) {
     });
 
     // Prevenir el envío del formulario si hay errores
-    if (hasErrors) {
-        event.preventDefault();
-    }
+
 });

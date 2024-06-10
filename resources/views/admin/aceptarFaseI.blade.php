@@ -56,11 +56,11 @@
                                     @foreach ($estudiantesConPracticaI as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->Apellidos) }}
-                                                    {{ strtoupper($practicaI->estudiante->Nombres) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->apellidos) }}
+                                                    {{ strtoupper($practicaI->estudiante->nombres) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->Apellidos) }}
-                                                    {{ strtoupper($practicaI->tutorAcademico->Nombres) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->apellidos) }}
+                                                    {{ strtoupper($practicaI->tutorAcademico->nombres) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->Empresa->nombreEmpresa) }}</td>
                                                 <td>{{ strtoupper($practicaI->nrcPractica->nrc) }}</td>
@@ -95,8 +95,8 @@
                                     @foreach ($estudiantesConPracticaII as $practicaII)
                                         @if ($practicaII->estudiante)
                                             <tr>
-                                                <td>{{ strtoupper($practicaII->estudiante->Apellidos) }}
-                                                    {{ strtoupper($practicaII->estudiante->Nombres) }}</td>
+                                                <td>{{ strtoupper($practicaII->estudiante->apellidos) }}
+                                                    {{ strtoupper($practicaII->estudiante->nombres) }}</td>
                                                 <td>{{ strtoupper($practicaII->Practicas) }}</td>
                                                 <td>{{ strtoupper($practicaII->DocenteTutor) }}</td>
                                                 <td>{{ strtoupper($practicaII->NombreTutorEmpresarial) }}</td>
@@ -246,18 +246,18 @@
                                     @foreach ($estudiantesPracticas as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->Apellidos) }}
-                                                    {{ strtoupper($practicaI->estudiante->Nombres) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->apellidos) }}
+                                                    {{ strtoupper($practicaI->estudiante->nombres) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->Apellidos ?? 'No por el momento') }}
-                                                    {{ strtoupper($practicaI->tutorAcademico->Nombres ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->apellidos ?? 'No por el momento') }}
+                                                    {{ strtoupper($practicaI->tutorAcademico->nombres ?? 'No por el momento') }}
                                                 </td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->nrc ?? 'No cuenta con NRC') }}
+                                                <td>{{ strtoupper($practicaI->nrc->nrc ?? 'No cuenta con NRC') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->periodo->numeroPeriodo ?? 'No cuenta con NRC') }}
+                                                <td>{{ strtoupper($practicaI->nrc->periodo->numeroPeriodo ?? 'No cuenta con NRC') }}
                                                 </td>
                                                 <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
@@ -465,8 +465,6 @@
                                                 <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                                                 <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
                                                 <td>{{ $practicaI->Estado }}</td>
-
-
                                             </tr>
                                         @endif
                                     @endforeach

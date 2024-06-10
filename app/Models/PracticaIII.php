@@ -48,10 +48,10 @@ class PracticaIII extends Model
 
     public function tutorAcademico()
     {
-        return $this->belongsTo(ProfesUniversidad::class, 'ID_tutorAcademico', 'id');
+        return $this->belongsTo(ProfesUniversidad::class, 'idTutorAcademico', 'id');
     }
 
-    
+
 
     public function actividades_practicas()
     {

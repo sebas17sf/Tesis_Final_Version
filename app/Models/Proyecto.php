@@ -20,7 +20,7 @@ class Proyecto extends Model
          'departamentoTutor',
         'codigoProyecto',
         'inicioFecha',
-        'fechaFin',
+        'finFecha',
         'estado',
     ];
 

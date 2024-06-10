@@ -93,10 +93,10 @@
                                     <tbody class="mdc-data-table__content ng-star-inserted">
                                         @foreach ($profesoresPendientes as $profesor)
                                             <tr>
-                                                <td class="table1">{{ strtoupper($profesor->NombreUsuario) }}</td>
-                                                <td class="table1">{{ strtoupper($profesor->NombreUsuario) }}</td>
-                                                <td class="table1">{{ $profesor->CorreoElectronico }}</td>
-                                                <td class="table1">{{ $profesor->Estado }}</td>
+                                                <td class="table1">{{ strtoupper($profesor->nombreUsuario) }}</td>
+                                                <td class="table1">{{ strtoupper($profesor->nombreUsuario) }}</td>
+                                                <td class="table1">{{ $profesor->correoElectronico }}</td>
+                                                <td class="table1">{{ $profesor->estado }}</td>
                                                 <td>
     <!-- Botón de Editar -->
     <center>
@@ -113,16 +113,16 @@
         <button type="button" class="close" onclick="document.getElementById('editCard{{ $profesor->id }}').style.display='none'">&times;</button>
     </div>
     <div class="card-body">
-        <form method="POST" action="{{ route('admin.updateEstado', ['id' => $profesor->UserID]) }}">
+        <form method="POST" action="{{ route('admin.updateEstado', ['id' => $profesor->userid]) }}">
             @csrf
             @method('PUT')
             <div class="form-group">
                 <label for="NombreUsuario{{ $profesor->id }}"><b>Nombre de Usuario</b></label>
-                <input type="text" class="form-control input" id="NombreUsuario{{ $profesor->id }}" name="NombreUsuario" value="{{ $profesor->NombreUsuario }}" required disabled>
+                <input type="text" class="form-control input" id="NombreUsuario{{ $profesor->id }}" name="NombreUsuario" value="{{ $profesor->nombreUsuario }}" required disabled>
             </div>
             <div class="form-group">
                 <label for="CorreoElectronico{{ $profesor->id }}"><b>Correo Electrónico</b></label>
-                <input type="email" class="form-control input" id="CorreoElectronico{{ $profesor->id }}" name="CorreoElectronico" value="{{ $profesor->CorreoElectronico }}" required disabled>
+                <input type="email" class="form-control input" id="CorreoElectronico{{ $profesor->id }}" name="CorreoElectronico" value="{{ $profesor->correoElectronico }}" required disabled>
             </div>
             <div class="row">
                 <div class="col-md-6">
@@ -291,13 +291,13 @@
                                         class="fa-solid fa-filter-list"></i></button>
                                         </div>
 
-                                        
+
 <div class="tooltip-container">
     <span class="tooltip-text">Eliminar Filtros</span>
     <button class="button3 efects_button btn_delete_filter" onclick="resetFilters()">
         <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
     </button>
-</div> 
+</div>
 -->
                     </div>
 
@@ -341,16 +341,16 @@
                                             <tr>
                                                 <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left; padding: 5px 8px;">
                                                     {{ strtoupper
-                                                        ($profesor->Apellidos) }}
-                                                    {{ strtoupper( $profesor->Nombres ?? '' ) }}
+                                                        ($profesor->apellidos) }}
+                                                    {{ strtoupper( $profesor->nombres ?? '' ) }}
                                                 </td>
-                                                <td>{{ $profesor->Correo }}</td>
-                                                <td class="center_size">{{ $profesor->Usuario }}</td>
-                                                <td class="center_size">{{ $profesor->Cedula }}</td>
+                                                <td>{{ $profesor->correo }}</td>
+                                                <td class="center_size">{{ $profesor->usuario }}</td>
+                                                <td class="center_size">{{ $profesor->cedula }}</td>
                                                 <td class="medium_size" style=" text-transform: uppercase;">
-                                                    {{ strtoupper( $profesor->Departamento) }}
+                                                    {{ strtoupper( $profesor->departamento) }}
                                                 </td>
-                                                <td class="center_size">{{ $profesor->espe_id }}</td>
+                                                <td class="center_size">{{ $profesor->espeId }}</td>
                                                 <td>
                                                     <div class="btn-group shadow-1">
 
@@ -380,7 +380,7 @@
                                                                             <input type="text"
                                                                                 id="nombresEditarMaestro" name="nombres"
                                                                                 class="form-control input input_select1 form-text"
-                                                                                value="{{ $profesor->Nombres }}" required>
+                                                                                value="{{ $profesor->nombres }}" required>
                                                                         </div>
                                                                         <div class="form-group col-md-4">
                                                                             <label class="label"
@@ -390,7 +390,7 @@
                                                                                 id="apellidosEditarMaestro"
                                                                                 name="apellidos"
                                                                                 class="form-control input input_select1"
-                                                                                value="{{ $profesor->Apellidos }}"
+                                                                                value="{{ $profesor->apellidos }}"
                                                                                 required>
                                                                         </div>
                                                                         <div class="form-group col-md-4">
@@ -400,7 +400,7 @@
                                                                             <input type="email" id="correoEditarMaestro"
                                                                                 name="correo"
                                                                                 class="form-control input input_select1"
-                                                                                value="{{ $profesor->Correo }}" required>
+                                                                                value="{{ $profesor->correo }}" required>
                                                                             <small id="emailHelp"
                                                                                 class="form-text text-danger"
                                                                                 style="display: none;"></small>
@@ -418,7 +418,7 @@
                                                                             <input type="text" id="Usuario"
                                                                                 name="Usuario"
                                                                                 class="form-control input input_select1"
-                                                                                value="{{ $profesor->Usuario }}" required>
+                                                                                value="{{ $profesor->usuario }}" required>
                                                                         </div>
                                                                         <div class="form-group col-md-4">
                                                                             <label class="label"
@@ -427,7 +427,7 @@
                                                                             <input type="text" id="espeEditarMaestro"
                                                                                 name="espe_id"
                                                                                 class="form-control input input_select1"
-                                                                                value="{{ $profesor->espe_id }}" required>
+                                                                                value="{{ $profesor->espeId }}" required>
                                                                             <small id="espeHelp"
                                                                                 class="form-text text-danger"
                                                                                 style="display: none;"></small>
@@ -443,7 +443,7 @@
                                                                             <input type="text" id="cedulaEditarMaestro"
                                                                                 name="cedula"
                                                                                 class="form-control input input_select1"
-                                                                                value="{{ $profesor->Cedula }}" required>
+                                                                                value="{{ $profesor->cedula }}" required>
                                                                             <small id="cedulaHelp"
                                                                                 class="form-text text-danger"
                                                                                 style="display: none;"></small>
@@ -463,15 +463,15 @@
                                                                                 class="form-control input input_select1"
                                                                                 required>
                                                                                 <option value="Ciencias de la Computación"
-                                                                                    {{ $profesor->Departamento === 'Ciencias de la Computación' ? 'selected' : '' }}>
+                                                                                    {{ $profesor->departamento === 'Ciencias de la Computación' ? 'selected' : '' }}>
                                                                                     Departamento de Ciencias de Computación
                                                                                 </option>
                                                                                 <option value="Ciencias de la Vida"
-                                                                                    {{ $profesor->Departamento === 'Ciencias de la Vida' ? 'selected' : '' }}>
+                                                                                    {{ $profesor->departamento === 'Ciencias de la Vida' ? 'selected' : '' }}>
                                                                                     Departamento de Ciencias de la Vida
                                                                                 </option>
                                                                                 <option value="Ciencias Exactas"
-                                                                                    {{ $profesor->Departamento === 'Ciencias Exactas' ? 'selected' : '' }}>
+                                                                                    {{ $profesor->departamento === 'Ciencias Exactas' ? 'selected' : '' }}>
                                                                                     Departamento de Ciencias Exactas
                                                                                 </option>
                                                                             </select>
@@ -605,13 +605,28 @@
                                         @foreach ($periodos as $periodo)
                                             <option value="{{ $periodo->id }}"
                                                 {{ old('periodo') == $periodo->id ? 'selected' : '' }}>
-                                                {{ $periodo->numeroPeriodo }} - {{ $periodo->Periodo }}
+                                                {{ $periodo->numeroPeriodo }} - {{ $periodo->periodo }}
                                             </option>
                                         @endforeach
                                     </select>
                                     @error('periodo')
                                         <small class="form-text text-danger">{{ $message }}</small>
                                     @enderror
+                                </div>
+
+
+                                <div class="form-group
+                                    col-md-6">
+                                    <label for="tipo"><strong>Seleccione el tipo de vinculación:</strong></label>
+                                    <select id="tipo" name="tipo" class="form-control input_select input" required>
+                                        <option value="">Seleccione un tipo</option>
+                                        <option value="Vinculación">Vinculación con la Sociedad</option>
+                                        <option value="Practicas">Practicas preprofesionales</option>
+                                    </select>
+                                    @error('tipo')
+                                        <small class="form-text text-danger">{{ $message }}</small>
+                                    @enderror
+
                                 </div>
                             </div>
                             <div class="card-footer">
@@ -690,10 +705,10 @@
                                 <option value="" data-inicio="" data-fin="" data-numero="">Seleccionar Periodo
                                 </option>
                                 @foreach ($periodos as $periodo)
-                                    <option value="{{ $periodo->id }}" data-inicio="{{ $periodo->PeriodoInicio }}"
-                                        data-fin="{{ $periodo->PeriodoFin }}"
+                                    <option value="{{ $periodo->id }}" data-inicio="{{ $periodo->inicioPeriodo }}"
+                                        data-fin="{{ $periodo->finPeriodo }}"
                                         data-numero="{{ $periodo->numeroPeriodo }}">
-                                        {{ $periodo->numeroPeriodo }} {{ $periodo->Periodo }}
+                                        {{ $periodo->numeroPeriodo }} {{ $periodo->periodo }}
                                     </option>
                                 @endforeach
                             </select>
@@ -714,12 +729,12 @@
                                 <div class="form-group">
                                     <label for="periodoInicio">Fecha de Inicio:</label>
                                     <input type="date" name="periodoInicio" class="form-control input"
-                                        value="{{ $periodo->PeriodoInicio }}" required>
+                                        value="{{ $periodo->inicioPeriodo }}" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="periodoFin">Fecha de Fin:</label>
                                     <input type="date" name="periodoFin" class="form-control input"
-                                        value="{{ $periodo->PeriodoFin }}" required>
+                                        value="{{ $periodo->finPeriodo }}" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="numeroPeriodo">Ingrese el numero identificador del periodo:</label>

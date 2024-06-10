@@ -166,6 +166,8 @@
                                         <th class="tamanio">DESCRIPCION</th>
                                         <th>DEPARTAMENTO</th>
                                         <th>CODIGO DEL PROYECTO SOCIAL</th>
+                                        <th>FECHA INICIO</th>
+                                        <th>FECHA FIN</th>
                                         <th>ESTADO DEL PROYECTO</th>
                                         <th>ACCIONES</th>
                                     </tr>
@@ -182,12 +184,12 @@
                                             <tr>
                                                 <td
                                                     style="text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
-                                                    {{ strtoupper($proyecto->NombreProyecto) }}</td>
+                                                    {{ strtoupper($proyecto->nombreProyecto) }}</td>
                                                 <td
                                                     style="text-transform: uppercase; word-wrap: break-word; text-align: left;">
                                                     @if ($proyecto->director)
-                                                        {{ strtoupper($proyecto->director->Apellidos) }}
-                                                        {{ strtoupper($proyecto->director->Nombres) }}
+                                                        {{ strtoupper($proyecto->director->apellidos) }}
+                                                        {{ strtoupper($proyecto->director->nombres) }}
                                                     @else
                                                         DIRECTOR NO ASIGNADO
                                                     @endif
@@ -195,10 +197,10 @@
 
                                                 <td
                                                     style="text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
-                                                    {{ strtoupper($proyecto->DescripcionProyecto) }}</td>
+                                                    {{ strtoupper($proyecto->descripcionProyecto) }}</td>
 
                                                 <td style="text-transform: uppercase;">
-                                                    {{ strtoupper($proyecto->DepartamentoTutor) }}</td>
+                                                    {{ strtoupper($proyecto->departamentoTutor) }}</td>
                                                 <td>
                                                     @if (empty($proyecto->codigoProyecto))
                                                         {{ strtoupper('No requiere código de proyecto') }}
@@ -206,17 +208,19 @@
                                                         {{ strtoupper($proyecto->codigoProyecto) }}
                                                     @endif
                                                 </td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($proyecto->Estado) }}
+                                                <td>{{ $proyecto->inicioFecha }}</td>
+                                                <td>{{ $proyecto->finFecha }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($proyecto->estado) }}
                                                 </td>
                                                 <td>
                                                     <div class="btn-group shadow-0">
-                                                        <a href="{{ route('admin.editarProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
+                                                        <a href="{{ route('admin.editarProyecto', ['ProyectoID' => $proyecto->proyectoId]) }}"
                                                             type="button" class="button3 efects_button btn_editar3">
                                                             <i class="bx bx-edit-alt"></i>
                                                         </a>
                                                     </div>
                                                     <form class="btn-group shadow-1" id="deleteProjectForm"
-                                                        action="{{ route('admin.deleteProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}"
+                                                        action="{{ route('admin.deleteProyecto', ['ProyectoID' => $proyecto->proyectoId]) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')
@@ -482,37 +486,37 @@
                                     @foreach ($asignacionesAgrupadas as $grupo)
                                         <tr>
                                             <td style="text-transform: uppercase; text-align: justify; padding: 5px 8px;">
-                                                {{ $grupo->first()->proyecto->NombreProyecto ?? '' }}</td>
+                                                {{ $grupo->first()->proyecto->nombreProyecto ?? '' }}</td>
                                             <td>{{ $grupo->first()->proyecto->codigoProyecto ?? '' }}</td>
 
                                             <td style="text-transform: uppercase; text-align: left;">
-                                                {{ $grupo->first()->proyecto->director->Apellidos ?? '' }}
-                                                {{ $grupo->first()->proyecto->director->Nombres ?? '' }}
+                                                {{ $grupo->first()->proyecto->director->apellidos ?? '' }}
+                                                {{ $grupo->first()->proyecto->director->nombres ?? '' }}
                                             </td>
 
 
                                             <td style="text-transform: uppercase; text-align: left;">
 
-                                                {{ $grupo->first()->docenteParticipante->Apellidos ?? '' }}
-                                                {{ $grupo->first()->docenteParticipante->Nombres ?? '' }}<br>
+                                                {{ $grupo->first()->docenteParticipante->apellidos ?? '' }}
+                                                {{ $grupo->first()->docenteParticipante->nombres ?? '' }}<br>
 
                                             </td>
-                                            <td>{{ $grupo->first()->FechaAsignacion ?? '' }}</td>
+                                            <td>{{ $grupo->first()->asignacionFecha ?? '' }}</td>
 
                                             <td
                                                 style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
 
                                                 @foreach ($grupo as $asignacion)
-                                                    {{ $asignacion->estudiante->Apellidos ?? '' }}
-                                                    {{ $asignacion->estudiante->Nombres ?? '' }}<br>
+                                                    {{ $asignacion->estudiante->apellidos ?? '' }}
+                                                    {{ $asignacion->estudiante->nombres ?? '' }}<br>
                                                 @endforeach
 
                                             </td>
-                                            <td>{{ $grupo->first()->estudiante->notas->first()->Nota_Final ?? '' }}</td>
+                                            <td>{{ $grupo->first()->estudiante->notas->first()->notaFinal ?? '' }}</td>
                                             <td>{{ $grupo->first()->periodo->numeroPeriodo ?? '' }}</td>
                                             <td>{{ $grupo->first()->nrcVinculacion->nrc ?? 'NO REQUERIA DE NRC' }}</td>
-                                            <td>{{ $grupo->first()->FechaInicio ?? '' }}</td>
-                                            <td>{{ $grupo->first()->FechaFinalizacion ?? '' }}</td>
+                                            <td>{{ $grupo->first()->inicioFecha ?? '' }}</td>
+                                            <td>{{ $grupo->first()->finalizacionFecha ?? '' }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -608,9 +612,9 @@
                             <select name="proyecto_id" id="proyecto_id" class="form-control input input_select">
                                 <option value="">Seleccione un proyecto</option>
                                 @foreach ($proyectosDisponibles as $proyecto)
-                                    <option value="{{ $proyecto->ProyectoID }}">
+                                    <option value="{{ $proyecto->proyectoId }}">
                                         @if ($proyecto->director)
-                                            {{ $proyecto->director->Apellidos }} {{ $proyecto->director->Nombres }}
+                                            {{ $proyecto->director->apellidos }} {{ $proyecto->director->nombres }}
                                         @endif
                                         {{ $proyecto->codigoProyecto }}
                                     </option>
@@ -628,8 +632,8 @@
                                 <option value="">Seleccionar Docente Participante</option>
                                 @foreach ($profesores as $profesor)
                                     <option value="{{ $profesor->id }}">
-                                        Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} - Departamento:
-                                        {{ $profesor->Departamento }} - Correo: {{ $profesor->Correo }}
+                                        Nombres: {{ $profesor->apellidos }} {{ $profesor->nombres }} - Departamento:
+                                        {{ $profesor->departamento }} - Correo: {{ $profesor->correo }}
                                     </option>
                                 @endforeach
                             </select>
@@ -646,9 +650,9 @@
                             <select name="estudiante_id[]" id="estudiante_seleccion"
                                 class="form-control input input_select" multiple="multiple">
                                 @foreach ($estudiantesAprobados as $estudiante)
-                                    <option value="{{ $estudiante->EstudianteID }}">
-                                        {{ $estudiante->Nombres }} {{ $estudiante->Apellidos }} -
-                                        {{ $estudiante->Departamento }}
+                                    <option value="{{ $estudiante->estudianteId }}">
+                                        {{ $estudiante->nombres }} {{ $estudiante->apellidos }} -
+                                        {{ $estudiante->carrera }}
                                     </option>
                                 @endforeach
                             </select>
@@ -664,7 +668,7 @@
                                 <option value="">Seleccionar NRC</option>
                                 @foreach ($nrcs as $nrc)
                                     <option value="{{ $nrc->id }}"
-                                        data-periodo="{{ $nrc->periodo->numeroPeriodo }} {{ $nrc->periodo->Periodo }}">
+                                        data-periodo="{{ $nrc->periodo->numeroPeriodo }} {{ $nrc->periodo->periodo }}">
                                         {{ $nrc->nrc }}
                                     </option>
                                 @endforeach

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ActividadesPracticas;
 use App\Models\Cohorte;
+use App\Models\NrcVinculacion;
 use App\Models\Periodo;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -59,7 +60,7 @@ class EstudianteController extends Controller
 
         // Obtén el UserID del usuario autenticado
         $userId = Auth::id();
-        $CorreoElectronico = Auth::user()->CorreoElectronico;
+        $CorreoElectronico = Auth::user()->correoElectronico;
 
         $fechaActual = now();
         $periodoSeleccionado = $validatedData['Periodo'];
@@ -69,7 +70,7 @@ class EstudianteController extends Controller
             return Redirect::back()->with('error', 'El periodo seleccionado no existe.');
         }
 
-        $fechaFinPeriodo = $periodo->PeriodoFin;
+        $fechaFinPeriodo = $periodo->finPeriodo;
 
         // Comprueba si la fecha actual es mayor que la fecha de finalización del período
         if ($fechaActual > $fechaFinPeriodo) {
@@ -78,20 +79,20 @@ class EstudianteController extends Controller
 
         // Crea un nuevo registro de Estudiante y asocia el UserID
         Estudiante::create([
-            'UserID' => $userId,
-            'Nombres' => $validatedData['Nombres'],
-            'Apellidos' => $validatedData['Apellidos'],
-            'espe_id' => $validatedData['espe_id'],
+            'userId' => $userId,
+            'nombres' => $validatedData['Nombres'],
+            'apellidos' => $validatedData['Apellidos'],
+            'espeId' => $validatedData['espe_id'],
             'celular' => $validatedData['celular'],
             'cedula' => $validatedData['cedula'],
             'Cohorte' => $validatedData['Cohorte'], // Utiliza el ID de cohorte proporcionado en el formulario
-            'id_periodo' => $validatedData['Periodo'], // Utiliza el ID de periodo proporcionado en el formulario
-            'Carrera' => $validatedData['Carrera'],
-            'Correo' => $CorreoElectronico,
-            'Departamento' => $validatedData['Departamento'],
-            'Provincia' => $validatedData['Provincia'],
+            'idPeriodo' => $validatedData['Periodo'], // Utiliza el ID de periodo proporcionado en el formulario
+            'carrera' => $validatedData['Carrera'],
+            'correo' => $CorreoElectronico,
+            'departamento' => $validatedData['Departamento'],
+            'provincia' => $validatedData['Provincia'],
              'comentario' => 'Sin comentarios',
-            'Estado' => 'En proceso de revisión'
+            'estado' => 'En proceso de revisión'
         ]);
 
         return redirect()->route('estudiantes.index')->with('success', 'Datos del Estudiante ingresados correctamente');
@@ -107,10 +108,10 @@ class EstudianteController extends Controller
             // Obtén los datos del estudiante relacionado con el usuario
             $estudiante = Auth::user()->estudiante;
 
-            $periodo = Periodo::find($estudiante->id_periodo);
+            $periodo = Periodo::find($estudiante->idPeriodo);
 
             // Obtén la asignación de proyecto del estudiante (si existe)
-            $asignacionProyecto = AsignacionProyecto::where('EstudianteID', $estudiante->EstudianteID)->first();
+            $asignacionProyecto = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->first();
 
             return view('estudiantes.index', compact('estudiante', 'asignacionProyecto', 'periodo'));
         }
@@ -138,46 +139,57 @@ class EstudianteController extends Controller
     {
         // Valida los datos del formulario antes de actualizar el estudiante
         $validatedData = $request->validate([
-            'Nombres' => 'required|string|max:255',
-            'Apellidos' => 'required|string|max:255',
-            'espe_id' => 'required|string|max:255',
-            'celular' => 'required|string',
-            'cedula' => 'required|string|max:11',
+            'Nombres' => 'required',
+            'Apellidos' => 'required',
+            'espe_id' => 'required',
+            'celular' => 'required',
+            'cedula' => 'required',
             'Cohorte' => 'required',
             'Periodo' => 'required',
-            'Carrera' => 'required|string|max:255',
-            'Provincia' => 'required|string|max:255',
-            'Departamento' => 'required|string|max:255',
+            'Carrera' => 'required',
+            'Provincia' => 'required',
+            'Departamento' => 'required',
         ]);
 
-        // Actualiza los campos del estudiante con los datos validados
-        $estudiante->update([
-             'Nombres' => $validatedData['Nombres'],
-            'Apellidos' => $validatedData['Apellidos'],
-            'espe_id' => $validatedData['espe_id'],
-            'celular' => $validatedData['celular'],
-            'cedula' => $validatedData['cedula'],
-            'Cohorte' => $validatedData['Cohorte'], // Utiliza el ID de cohorte proporcionado en el formulario
-            'id_periodo' => $validatedData['Periodo'], // Utiliza el ID de periodo proporcionado en el formulario
-            'Carrera' => $validatedData['Carrera'],
-             'Provincia' => $validatedData['Provincia'],
-            'Departamento' => $validatedData['Departamento'],
-            'comentario' => 'Sin comentarios',
-            'Estado' => 'En proceso de revisión'
-        ]);
+        try {
+            // Depuración: Verificar que los datos validados sean correctos
+            \Log::info('Datos validados:', $validatedData);
 
-        return redirect()->route('estudiantes.index')->with('success', 'Información del Estudiante actualizada correctamente');
+            // Actualiza los campos del estudiante con los datos validados
+            $estudiante->update([
+                'nombres' => $validatedData['Nombres'],
+                'apellidos' => $validatedData['Apellidos'],
+                'espeId' => $validatedData['espe_id'],
+                'celular' => $validatedData['celular'],
+                'cedula' => $validatedData['cedula'],
+                'Cohorte' => $validatedData['Cohorte'],
+                'idPeriodo' => $validatedData['Periodo'],
+                'carrera' => $validatedData['Carrera'],
+                'provincia' => $validatedData['Provincia'],
+                'departamento' => $validatedData['Departamento'],
+                'comentario' => 'Sin comentarios',
+                'estado' => 'En proceso de revisión'
+            ]);
+
+             \Log::info('Estudiante actualizado:', $estudiante->toArray());
+
+            return redirect()->route('estudiantes.index')->with('success', 'Información del Estudiante actualizada correctamente');
+        } catch (\Exception $e) {
+             \Log::error('Error al actualizar el estudiante:', ['error' => $e->getMessage()]);
+            return redirect()->route('estudiantes.index')->with('error', 'Hubo un problema al actualizar la información del estudiante.');
+        }
     }
+
 
 
     /////renviar informacion para aceptacion
     public function resend(Request $request, Estudiante $estudiante)
     {
         // Verificar si el estado actual es "Negado"
-        if ($estudiante->Estado === 'Negado' || $estudiante->Estado === 'negado') {
+        if ($estudiante->estado === 'Negado' || $estudiante->estado === 'negado') {
             // Actualizar el estado a "En proceso de revisión"
             $estudiante->update([
-                'Estado' => 'En proceso de revision',
+                'estado' => 'En proceso de revision',
             ]);
 
             // Redirigir al estudiante a la página de información con un mensaje de éxito
@@ -196,23 +208,23 @@ class EstudianteController extends Controller
         $user = Auth::user();
         $profesores = ProfesUniversidad::all();
 
-        $nrcpracticas1 = NrcPracticas1::all();
+        $nrcpracticas1 = NrcVinculacion::all();
 
         $estudiante = $user->estudiante;
 
-         $actividades = ActividadesPracticas::where('EstudianteID', $estudiante->EstudianteID)->get();
+         $actividades = ActividadesPracticas::where('estudianteId', $estudiante->estudianteId)->get();
 
 
 
         // Verifica si el usuario autenticado es un estudiante y su estado es "Aprobado-practicas"
-        if ($estudiante && $estudiante->Estado === 'Aprobado-practicas') {
-            $correoEstudiante = $estudiante->Usuario->CorreoElectronico;
+        if ($estudiante && $estudiante->estado === 'Aprobado-practicas') {
+            $correoEstudiante = $estudiante->Usuario->correoElectronico;
             $empresas = Empresa::all();
 
-            $practicaPendiente = PracticaI::where('EstudianteID', $estudiante->EstudianteID)->where('Estado', 'En ejecucion')->first();
+            $practicaPendiente = PracticaI::where('estudianteId', $estudiante->EstudianteID)->where('estado', 'En ejecucion')->first();
              $totalHoras = $actividades->sum('horas');
 
-             $estadoPractica = PracticaI::where('EstudianteID', $estudiante->EstudianteID)->where('Estado', 'Terminado')->first();
+             $estadoPractica = PracticaI::where('estudianteId', $estudiante->EstudianteID)->where('estado', 'Terminado')->first();
 
             if ($estadoPractica) {
                  return redirect()->route('estudiantes.practica2');
@@ -232,18 +244,18 @@ class EstudianteController extends Controller
         $user = Auth::user();
         $estudiante = $user->estudiante;
 
-        if ($estudiante && $estudiante->Estado === 'Aprobado-practicas') {
-            $correoEstudiante = $estudiante->Usuario->CorreoElectronico;
+        if ($estudiante && $estudiante->estadp === 'Aprobado-practicas') {
+            $correoEstudiante = $estudiante->Usuario->correoElectronico;
             $empresas = Empresa::all();
 
             // Consulta para PracticaI
-            $practicaPendienteI = PracticaI::where('EstudianteID', $estudiante->EstudianteID)->where('Estado', 'Terminado')->first();
-            $estadoPracticaI = PracticaI::where('EstudianteID', $estudiante->EstudianteID)->where('Estado', 'Terminado')->first();
+            $practicaPendienteI = PracticaI::where('estudianteId', $estudiante->EstudianteID)->where('estado', 'Terminado')->first();
+            $estadoPracticaI = PracticaI::where('estudianteId', $estudiante->EstudianteID)->where('estado', 'Terminado')->first();
             $horasPlanificadasI = $practicaPendienteI ? $practicaPendienteI->HorasPlanificadas : 0;
 
             // Consulta para PracticaII
-            $practicaPendiente = PracticaII::where('EstudianteID', $estudiante->EstudianteID)->where('Estado', 'En ejecucion')->first();
-            $estadoPractica = PracticaII::where('EstudianteID', $estudiante->EstudianteID)->where('Estado', 'Terminado')->first();
+            $practicaPendiente = PracticaII::where('estudianteId', $estudiante->EstudianteID)->where('estado', 'En ejecucion')->first();
+            $estadoPractica = PracticaII::where('estudianteId', $estudiante->EstudianteID)->where('estado', 'Terminado')->first();
 
             return view('estudiantes.practica2', compact('estudiante', 'correoEstudiante', 'empresas', 'horasPlanificadasI', 'practicaPendiente', 'estadoPractica'));
         }
@@ -402,12 +414,12 @@ class EstudianteController extends Controller
         $evidenciaBase64 = base64_encode($compressedImage->encoded);
 
         $actividadEstudiante = new ActividadEstudiante([
-            'EstudianteID' => $estudiante->EstudianteID,
+            'estudianteId' => $estudiante->estudianteId,
             'fecha' => $request->input('fecha'),
             'actividades' => $request->input('actividades'),
-            'numero_horas' => $request->input('horas'),
+            'numeroHoras' => $request->input('horas'),
             'evidencias' => $evidenciaBase64,
-            'nombre_actividad' => $request->input('nombre_actividad'),
+            'nombreActividad' => $request->input('nombre_actividad'),
         ]);
 
         try {
@@ -459,9 +471,9 @@ class EstudianteController extends Controller
         $actividad->update([
             'fecha' => $request->input('fecha'),
             'actividades' => $request->input('actividades'),
-            'numero_horas' => $request->input('numero_horas'),
+            'numeroHoras' => $request->input('numero_horas'),
             'evidencias' => $evidenciaBase64,
-            'nombre_actividad' => $request->input('nombre_actividad'),
+            'nombreActividad' => $request->input('nombre_actividad'),
         ]);
 
         return redirect()->route('estudiantes.documentos')->with('success', 'Actividad actualizada exitosamente.');
@@ -635,7 +647,7 @@ class EstudianteController extends Controller
     public function cambiarCredencialesUsuario()
     {
         $usuario = Auth::user();
-        $userSessions = UsuariosSession::where('UserID', $usuario->UserID)->get();
+        $userSessions = UsuariosSession::where('userId', $usuario->userId)->get();
 
         foreach ($userSessions as $session) {
             $session->browser = $this->getBrowserFromUserAgent($session->user_agent);
@@ -686,9 +698,9 @@ class EstudianteController extends Controller
 
         $usuario = Auth::user();
 
-        $usuario->CorreoElectronico = $request->email;
-        $usuario->NombreUsuario = $request->nombre;
-        $usuario->Contrasena = bcrypt($request->password);
+        $usuario->correoElectronico = $request->email;
+        $usuario->nombreUsuario = $request->nombre;
+        $usuario->contrasena = bcrypt($request->password);
 
         $usuario->save();
 

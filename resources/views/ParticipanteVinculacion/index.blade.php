@@ -46,21 +46,21 @@
                                 <th>Departamento</th>
                                 <th>Fecha de inicio</th>
                                 <th>Fecha fin</th>
+                                <th>Estado</th>
                             </tr>
                         </thead>
                         <tbody class="mdc-data-table__content ng-star-inserted">
                             @foreach ($proyectosEnEjecucion as $proyecto)
                                 <tr>
-                                    <td>{{ $proyecto->proyecto->NombreProyecto }}</td>
-                                    <td>{{ strtoupper($proyecto->proyecto->director->Apellidos ?? "No asignado") }}
-                                        {{ strtoupper($proyecto->proyecto->director->Nombres ?? "No asignado") }}</td>
-                                    <td>{{ $proyecto->proyecto->DescripcionProyecto }}</td>
-                                    <td>{{ $proyecto->docenteParticipante->Correo }}</td>
-                                    <td>{{ $proyecto->proyecto->DepartamentoTutor }}</td>
-                                    <td>{{ $proyecto->FechaInicio }}</td>
-                                    <td>{{ $proyecto->FechaFinalizacion }}</td>
-                                    <td>{{ $proyecto->cupos }}</td>
-                                    <td>{{ $proyecto->Estado }}</td>
+                                    <td>{{ $proyecto->proyecto->nombreProyecto }}</td>
+                                    <td>{{ strtoupper($proyecto->proyecto->director->apellidos ?? "No asignado") }}
+                                        {{ strtoupper($proyecto->proyecto->director->nombres ?? "No asignado") }}</td>
+                                    <td>{{ $proyecto->proyecto->descripcionProyecto }}</td>
+                                    <td>{{ $proyecto->docenteParticipante->correo }}</td>
+                                    <td>{{ $proyecto->proyecto->departamentoTutor }}</td>
+                                    <td>{{ $proyecto->inicioFecha }}</td>
+                                    <td>{{ $proyecto->finalizacionFecha }}</td>
+                                     <td>{{ $proyecto->proyecto->estado }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

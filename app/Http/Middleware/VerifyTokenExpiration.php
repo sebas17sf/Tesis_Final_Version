@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use App\Models\UsuariosSession;
 
 class VerifyTokenExpiration
 {
@@ -31,7 +32,7 @@ class VerifyTokenExpiration
     }
     private function updateSessionEndTime($user)
     {
-        $existingSession = UsuariosSession::where('UserID', $user->UserID)
+        $existingSession = UsuariosSession::where('userId', $user->UserID)
              ->first();
 
         if ($existingSession) {

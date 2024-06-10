@@ -44,9 +44,9 @@
                         <option value="">Seleccionar Director</option>
                         @foreach ($profesores as $profesor)
                             <option value="{{ $profesor->id }}">
-                                Nombres: {{ $profesor->Apellidos }} {{ $profesor->Nombres }} -
-                                Departamento: {{ $profesor->Departamento }} -
-                                Correo: {{ $profesor->Correo }}
+                                {{ $profesor->apellidos }} {{ $profesor->nombres }} -
+                                 {{ $profesor->departamento }} -
+                                 {{ $profesor->correo }}
                             </option>
                         @endforeach
                     </select>
@@ -101,7 +101,7 @@
 
         <div class="text-center">
             <button type="submit" class="button1 efects_button">Agregar Proyecto</button>
-        </div>   
+        </div>
 
 </form>
 </div>

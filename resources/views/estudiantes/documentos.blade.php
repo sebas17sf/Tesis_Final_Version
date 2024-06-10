@@ -181,13 +181,13 @@
                                         <tr>
                                             <td>{{ $actividad->fecha }}</td>
                                             <td>{{ $actividad->actividades }}</td>
-                                            <td>{{ $actividad->numero_horas }}</td>
-                                            <td>{{ $actividad->nombre_actividad }}</td>
+                                            <td>{{ $actividad->numeroHoras }}</td>
+                                            <td>{{ $actividad->nombreActividad }}</td>
                                             <td><img src="data:image/png;base64,{{ $actividad->evidencias }}"
                                                     alt="Evidencia" width="100" height="100"></td>
                                             <td>
                                                 <form
-                                                    action="{{ route('eliminarActividad', $actividad->ID_Actividades) }}"
+                                                    action="{{ route('eliminarActividad', $actividad->idActividades) }}"
                                                     method="POST">
                                                     @csrf
                                                     @method('DELETE')
@@ -195,12 +195,12 @@
                                                 </form>
 
                                                 <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                    data-target="#editModal{{ $actividad->ID_Actividades }}">
+                                                    data-target="#editModal{{ $actividad->idActividades }}">
                                                     Editar
                                                 </button>
 
                                                 <!-- Modal para editar la actividad -->
-                                                <div class="modal fade" id="editModal{{ $actividad->ID_Actividades }}"
+                                                <div class="modal fade" id="editModal{{ $actividad->idActividades }}"
                                                     tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
                                                     aria-hidden="true">
                                                     <div class="modal-dialog" role="document">
@@ -214,7 +214,7 @@
                                                                 </button>
                                                             </div>
                                                             <form
-                                                                action="{{ route('updateActividad', ['id' => $actividad->ID_Actividades]) }}"
+                                                                action="{{ route('updateActividad', ['id' => $actividad->idActividades]) }}"
                                                                 enctype="multipart/form-data" method="POST">
                                                                 @csrf
                                                                 @method('PUT')
@@ -233,7 +233,7 @@
                                                                         <label for="numero_horas">Número de Horas</label>
                                                                         <input type="number" class="form-control input"
                                                                             id="numero_horas" name="numero_horas"
-                                                                            value="{{ $actividad->numero_horas }}">
+                                                                            value="{{ $actividad->numeroHoras }}">
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label for="evidencias">Evidencias</label>
@@ -247,7 +247,7 @@
                                                                             Actividad</label>
                                                                         <input type="text" class="form-control"
                                                                             id="nombre_actividad" name="nombre_actividad"
-                                                                            value="{{ $actividad->nombre_actividad }}">
+                                                                            value="{{ $actividad->nombreActividad }}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
@@ -385,7 +385,7 @@
     <script src="{{ asset('js/documentosEstudiantes.js') }}"></script>
     <script scr="{{asset('js/admin/acciones.js')}}"></script>
 
-   
+
     <script>
         $(document).ready(function() {
             $('#registroActividadesModal .modal-dialog').draggable({

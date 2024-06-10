@@ -12,7 +12,7 @@
             </div>
         @endif
 
-        <form action="{{ route('admin.updateProyecto', ['ProyectoID' => $proyecto->ProyectoID]) }}" method="POST">
+        <form action="{{ route('admin.updateProyecto', ['ProyectoID' => $proyecto->proyectoId]) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -28,9 +28,9 @@
                     <option value="">Seleccionar Director</option>
                     @foreach ($profesores as $profesor)
                         <option value="{{ $profesor->id }}"
-                            {{ $proyecto->DirectorID === $profesor->id ? 'selected' : '' }}>
-                            {{ $profesor->Apellidos }} {{ $profesor->Nombres }} {{ $profesor->Departamento }}
-                            {{ $profesor->Correo }}
+                            {{ $proyecto->directorId === $profesor->id ? 'selected' : '' }}>
+                            {{ $profesor->apellidos }} {{ $profesor->nombres }} {{ $profesor->departamento }}
+                            {{ $profesor->correo }}
                         </option>
                     @endforeach
                 </select>
@@ -39,7 +39,7 @@
             <div class="form-group">
                 <label for="NombreProyecto">Nombre del Proyecto:</label>
                 <input type="text" class="form-control input" id="NombreProyecto" name="NombreProyecto"
-                    value="{{ $proyecto->NombreProyecto }}" required>
+                    value="{{ $proyecto->nombreProyecto }}" required>
             </div>
 
 
@@ -48,19 +48,19 @@
 
             <div class="form-group">
                 <label for="DescripcionProyecto">Descripción del Proyecto:</label>
-                <textarea class="form-control input" id="DescripcionProyecto" name="DescripcionProyecto" rows="4" required>{{ $proyecto->DescripcionProyecto }}</textarea>
+                <textarea class="form-control input" id="DescripcionProyecto" name="DescripcionProyecto" rows="4" required>{{ $proyecto->descripcionProyecto }}</textarea>
             </div>
 
             <div class="form-group">
                 <label for="DepartamentoTutor">Departamento:</label>
                 <select class="form-control input" id="DepartamentoTutor" name="DepartamentoTutor" required>
                     <option value="Ciencias de la Computación"
-                        {{ $proyecto->DepartamentoTutor === 'DCCO' ? 'selected' : '' }}>DCCO - Departamento de Computación
+                        {{ $proyecto->departamentoTutor === 'DCCO' ? 'selected' : '' }}>DCCO - Departamento de Computación
                     </option>
-                    <option value="Ciencias Exactas" {{ $proyecto->DepartamentoTutor === 'DCEX' ? 'selected' : '' }}>DCEX -
+                    <option value="Ciencias Exactas" {{ $proyecto->departamentoTutor === 'DCEX' ? 'selected' : '' }}>DCEX -
                         Ciencias Exactas</option>
                     <option value="Ciencias de la Vida y Agricultura"
-                        {{ $proyecto->DepartamentoTutor === 'DCVA' ? 'selected' : '' }}>DCVA - Departamento de Ciencias de
+                        {{ $proyecto->departamentoTutor === 'DCVA' ? 'selected' : '' }}>DCVA - Departamento de Ciencias de
                         la Vida y Agricultura</option>
                 </select>
             </div>
@@ -69,20 +69,20 @@
             <div class="form-group">
                 <label for="FechaInicio">Fecha de Inicio:</label>
                 <input type="date" class="form-control input" id="FechaInicio" name="FechaInicio"
-                    value="{{ $proyecto->FechaInicio }}" required>
+                    value="{{ $proyecto->inicioFecha }}" required>
             </div>
 
             <div class="form-group">
                 <label for="FechaFinalizacion">Fecha de Finalización:</label>
                 <input type="date" class="form-control input" id="FechaFinalizacion" name="FechaFinalizacion"
-                    value="{{ $proyecto->FechaFinalizacion }}" required>
+                    value="{{ $proyecto->finFecha }}" required>
             </div>
 
             <div class="form-group">
                 <label for="Estado">Estado del Proyecto:</label>
                 <select class="form-control input" id="Estado" name="Estado" required>
-                    <option value="Ejecucion" {{ $proyecto->Estado === 'Ejecucion' ? 'selected' : '' }}>Ejecucion</option>
-                    <option value="Terminado" {{ $proyecto->Estado === 'Terminado' ? 'selected' : '' }}>Terminado</option>
+                    <option value="Ejecucion" {{ $proyecto->estado === 'Ejecucion' ? 'selected' : '' }}>Ejecucion</option>
+                    <option value="Terminado" {{ $proyecto->estado === 'Terminado' ? 'selected' : '' }}>Terminado</option>
                 </select>
             </div>
 

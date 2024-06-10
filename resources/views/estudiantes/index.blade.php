@@ -48,7 +48,7 @@
                                     </form>
                                     <div class="tooltip-container">
                                         <span class="tooltip-text">Editar</span>
-                                        <a  type="submit" href="{{ route('estudiantes.edit', ['estudiante' => $estudiante->EstudianteID]) }}"
+                                        <a  type="submit" href="{{ route('estudiantes.edit', ['estudiante' => $estudiante->estudianteId]) }}"
                                             class="button3_1_1 btn_editar" tooltipPosition="top">
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </a>
@@ -71,7 +71,7 @@
                                         </label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
-                                                <label class="form-control">{{ strtoupper($estudiante->Nombres) }}</label>
+                                                <label class="form-control">{{ strtoupper($estudiante->nombres) }}</label>
                                             </div>
                                         </div>
                                     </div>
@@ -86,29 +86,29 @@
                                         </label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
-                                                <label class="form-control">{{ strtoupper($estudiante->Apellidos) }}</label>
+                                                <label class="form-control">{{ strtoupper($estudiante->apellidos) }}</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="espe_id" class="col-sm-4 font-weight-bold">
                                         <div class="icon-sidebar-item">
-                                            <i class="fas fa-id-card"></i> 
+                                            <i class="fas fa-id-card"></i>
                                         </div>
-                                        <div class="icon-sidebar-item">    
+                                        <div class="icon-sidebar-item">
                                             ESPE ID:
                                         </div>
                                         </label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
-                                                <label class="form-control">{{ strtoupper($estudiante->espe_id) }}</label>
+                                                <label class="form-control">{{ strtoupper($estudiante->espeId) }}</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="celular" class="col-sm-4 font-weight-bold">
                                         <div class="icon-sidebar-item">
-                                        <i class="fas fa-mobile-alt"></i> 
+                                        <i class="fas fa-mobile-alt"></i>
                                         </div>
                                         <div class="icon-sidebar-item">
                                         Celular:
@@ -125,7 +125,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group row">
                                         <label for="cedula" class="col-sm-4 font-weight-bold">
-                                        <div class="icon-sidebar-item">    
+                                        <div class="icon-sidebar-item">
                                         <i  class="fas fa-id-card"></i>
                                         </div>
                                         <div class="icon-sidebar-item">
@@ -140,8 +140,8 @@
                                     </div>
                                     <div class="form-group row">
                                         <label for="Cohorte" class="col-sm-4 font-weight-bold">
-                                        <div class="icon-sidebar-item">    
-                                        <i class="fas fa-calendar-alt"></i> 
+                                        <div class="icon-sidebar-item">
+                                        <i class="fas fa-calendar-alt"></i>
                                         </div>
                                         <div class="icon-sidebar-item">
                                         Cohorte:
@@ -149,10 +149,16 @@
                                     </label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
-                                                <label
-                                                    class="form-control">{{ strtoupper($periodo->numeroPeriodo) }}</label>
+                                                <label class="form-control">
+                                                    @if(isset($periodo) && $periodo->numeroPeriodo)
+                                                    {{ strtoupper($periodo->numeroPeriodo) }}
+                                                    @else
+                                                    No tiene periodo
+                                                    @endif
+                                                </label>
                                             </div>
                                         </div>
+
                                     </div>
                                     <div class="form-group row">
                                         <label for="Departamento" class="col-sm-4 font-weight-bold">
@@ -161,12 +167,12 @@
                                             </div>
                                             <div class="icon-sidebar-item">
                                          Correo:
-                                        </div> 
+                                        </div>
                                         </label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                 <label
-                                                    class="form-control label">{{ ($estudiante->Correo) }}</label>
+                                                    class="form-control label">{{ ($estudiante->correo) }}</label>
                                             </div>
                                         </div>
                                     </div>
@@ -182,7 +188,7 @@
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                 <label
-                                                    class="form-control label">{{ strtoupper($estudiante->Departamento) }}</label>
+                                                    class="form-control label">{{ strtoupper($estudiante->departamento) }}</label>
                                             </div>
                                         </div>
                                     </div>
@@ -218,16 +224,16 @@
                                     <tbody class="mdc-data-table__content ng-star-inserted">
                                         <tr>
                     <td style="word-wrap: break-word; text-align: center;">
-                        @if ($estudiante->Estado == 'Aprobado')
+                        @if ($estudiante->estado == 'Aprobado')
                             {{ strtoupper('Vinculacion') }}
-                        @elseif ($estudiante->Estado == 'Aprobado-practicas')
+                        @elseif ($estudiante->estado == 'Aprobado-practicas')
                             {{ strtoupper('Practicas') }}
                         @else
-                            {{ strtoupper($estudiante->Estado) }}
+                            {{ strtoupper($estudiante->estado) }}
                         @endif
                     </td>
                     <td>
-                    <form method="POST" action="{{ route('estudiantes.resend', ['estudiante' => $estudiante->EstudianteID]) }}">
+                    <form method="POST" action="{{ route('estudiantes.resend', ['estudiante' => $estudiante->estudianteId]) }}">
             @csrf
             <div class="text-center">
                 <button type="submit" class="button1 ">
@@ -242,7 +248,7 @@
         </div>
     </div>
     </div>
-      
+
 
 
     </div>
@@ -269,12 +275,12 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{ strtoupper($asignacionProyecto->proyecto->NombreProyecto) }}</td>
-                        <td>{{ strtoupper($asignacionProyecto->proyecto->director->Nombres . ' ' . $asignacionProyecto->proyecto->director->Apellidos) }}
+                        <td>{{ strtoupper($asignacionProyecto->proyecto->nombreProyecto) }}</td>
+                        <td>{{ strtoupper($asignacionProyecto->proyecto->director->nombres . ' ' . $asignacionProyecto->proyecto->director->apellidos) }}
 
-                        <td>{{ strtoupper($asignacionProyecto->proyecto->DescripcionProyecto) }}</td>
-                        <td>{{ $asignacionProyecto->FechaAsignacion }}</td>
-                        <td>{{ strtoupper($asignacionProyecto->periodo->numeroPeriodo) }}</td>
+                        <td>{{ strtoupper($asignacionProyecto->proyecto->descripcionProyecto) }}</td>
+                        <td>{{ $asignacionProyecto->asignacionFecha }}</td>
+                        <td>{{ strtoupper($asignacionProyecto->periodo->numeroPeriodo ?? '') }}</td>
 
                      </tr>
 

@@ -579,7 +579,6 @@ class AdminController extends Controller
             'FechaFinalizacion' => 'required',
         ]);
 
-
         $nrc = NrcVinculacion::where('id', $request->nrc)->first();
 
         foreach ($request->estudiante_id as $estudianteID) {
@@ -588,7 +587,7 @@ class AdminController extends Controller
                 'estudianteId' => $estudianteID,
                 'participanteId' => $request->ProfesorParticipante,
                 'asignacionFecha' => now(),
-                'idPeriodo' => $nrc->id_periodo,
+                'idPeriodo' => $nrc->idPeriodo,
                 'nrc' => $request->nrc,
                 'inicioFecha' => $request->FechaInicio,
                 'finalizacionFecha' => $request->FechaFinalizacion,
@@ -607,10 +606,10 @@ class AdminController extends Controller
             $request->validate([
                 'nombres' => 'required',
                 'apellidos' => 'required',
-                'correo' => 'required|email|unique:profesUniversidad,Correo',
-                'cedula' => 'required|digits:10|unique:profesUniversidad,Cedula',
+                'correo' => 'required|email|unique:profesuniversidad,correo',
+                'cedula' => 'required|digits:10|unique:profesuniversidad,cedula',
                 'departamento' => 'required',
-                'espe_id' => 'required|unique:profesUniversidad,espe_id',
+                'espe_id' => 'required|unique:profesuniversidad,espeId',
             ], [
                 'correo.unique' => 'El correo electrónico ya está en uso.',
                 'cedula.unique' => 'La cédula ya está en uso.',
@@ -691,15 +690,16 @@ class AdminController extends Controller
             $request->validate([
                 'nombres' => 'required',
                 'apellidos' => 'required',
-                'correo' => 'required|email|unique:profesUniversidad,Correo,' . $id,
-                'cedula' => 'required|digits:10|unique:profesUniversidad,Cedula,' . $id,
+                'correo' => 'required|email|unique:profesuniversidad,Correo,' . $id,
+                'cedula' => 'required|digits:10|unique:profesuniversidad,Cedula,' . $id,
                 'departamento' => 'required',
-                'espe_id' => 'required|unique:profesUniversidad,espe_id,' . $id,
+                'espe_id' => 'required|unique:profesuniversidad,espeId,' . $id,
             ], [
                 'correo.unique' => 'El correo electrónico ya está en uso.',
                 'cedula.unique' => 'La cédula ya está en uso.',
                 'espe_id.unique' => 'El ID ya está en uso.',
             ]);
+
 
             $maestro = ProfesUniversidad::find($id);
 
@@ -1068,8 +1068,8 @@ class AdminController extends Controller
             })
             ->where(function ($query) use ($search) {
 
-                $query->where('EstudianteID', 'LIKE', '%' . $search . '%')
-                    ->orWhereHas('estudianteId', function ($query) use ($search) {
+                $query->where('estudianteId', 'LIKE', '%' . $search . '%')
+                    ->orWhereHas('estudiante', function ($query) use ($search) {
                         $query->where('nombres', 'LIKE', '%' . $search . '%')
                             ->orWhere('apellidos', 'LIKE', '%' . $search . '%')
                             ->orWhere('carrera', 'LIKE', '%' . $search . '%');
@@ -1095,22 +1095,22 @@ class AdminController extends Controller
 
         $estudiantesPracticasII = PracticaII::with('estudiante')
             ->where(function ($query) {
-                $query->where('Estado', 'En ejecucion')
-                    ->orWhere('Estado', 'Finalizado');
+                $query->where('estado', 'En ejecucion')
+                    ->orWhere('estado', 'Finalizado');
             })
 
             ->where(function ($query) use ($search2) {
 
                 $query->where('EstudianteID', 'LIKE', '%' . $search2 . '%')
                     ->orWhereHas('estudiante', function ($query) use ($search2) {
-                        $query->where('Nombres', 'LIKE', '%' . $search2 . '%')
-                            ->orWhere('Apellidos', 'LIKE', '%' . $search2 . '%')
-                            ->orWhere('Carrera', 'LIKE', '%' . $search2 . '%');
+                        $query->where('nombres', 'LIKE', '%' . $search2 . '%')
+                            ->orWhere('apellidos', 'LIKE', '%' . $search2 . '%')
+                            ->orWhere('carrera', 'LIKE', '%' . $search2 . '%');
                     })
-                    ->orWhere('ID_tutorAcademico', 'LIKE', '%' . $search2 . '%')
+                    ->orWhere('idTutorAcademico', 'LIKE', '%' . $search2 . '%')
                     ->orWhereHas('tutorAcademico', function ($query) use ($search2) {
-                        $query->where('Nombres', 'LIKE', '%' . $search2 . '%')
-                            ->orWhere('Apellidos', 'LIKE', '%' . $search2 . '%');
+                        $query->where('nombres', 'LIKE', '%' . $search2 . '%')
+                            ->orWhere('apellidos', 'LIKE', '%' . $search2 . '%');
                     })
                     ->orWhere('IDEmpresa', 'LIKE', '%' . $search2 . '%')
                     ->orWhereHas('empresa', function ($query) use ($search2) {
@@ -1135,14 +1135,14 @@ class AdminController extends Controller
 
                 $query->where('EstudianteID', 'LIKE', '%' . $search3 . '%')
                     ->orWhereHas('estudiante', function ($query) use ($search3) {
-                        $query->where('Nombres', 'LIKE', '%' . $search3 . '%')
-                            ->orWhere('Apellidos', 'LIKE', '%' . $search3 . '%')
-                            ->orWhere('Carrera', 'LIKE', '%' . $search3 . '%');
+                        $query->where('nombres', 'LIKE', '%' . $search3 . '%')
+                            ->orWhere('apellidos', 'LIKE', '%' . $search3 . '%')
+                            ->orWhere('carrera', 'LIKE', '%' . $search3 . '%');
                     })
-                    ->orWhere('ID_tutorAcademico', 'LIKE', '%' . $search3 . '%')
+                    ->orWhere('idTutorAcademico', 'LIKE', '%' . $search3 . '%')
                     ->orWhereHas('tutorAcademico', function ($query) use ($search3) {
-                        $query->where('Nombres', 'LIKE', '%' . $search3 . '%')
-                            ->orWhere('Apellidos', 'LIKE', '%' . $search3 . '%');
+                        $query->where('nombres', 'LIKE', '%' . $search3 . '%')
+                            ->orWhere('apellidos', 'LIKE', '%' . $search3 . '%');
                     })
                     ->orWhere('IDEmpresa', 'LIKE', '%' . $search3 . '%')
                     ->orWhereHas('empresa', function ($query) use ($search3) {
@@ -1160,21 +1160,21 @@ class AdminController extends Controller
 
         $estudiantesPracticasIV = PracticaIV::with('estudiante')
             ->where(function ($query) {
-                $query->where('Estado', 'En ejecucion')
-                    ->orWhere('Estado', 'Finalizado');
+                $query->where('estado', 'En ejecucion')
+                    ->orWhere('estado', 'Finalizado');
             })
             ->where(function ($query) use ($search4) {
 
                 $query->where('EstudianteID', 'LIKE', '%' . $search4 . '%')
                     ->orWhereHas('estudiante', function ($query) use ($search4) {
-                        $query->where('Nombres', 'LIKE', '%' . $search4 . '%')
-                            ->orWhere('Apellidos', 'LIKE', '%' . $search4 . '%')
-                            ->orWhere('Carrera', 'LIKE', '%' . $search4 . '%');
+                        $query->where('nombres', 'LIKE', '%' . $search4 . '%')
+                            ->orWhere('apellidos', 'LIKE', '%' . $search4 . '%')
+                            ->orWhere('carrera', 'LIKE', '%' . $search4 . '%');
                     })
-                    ->orWhere('ID_tutorAcademico', 'LIKE', '%' . $search4 . '%')
+                    ->orWhere('idTutorAcademico', 'LIKE', '%' . $search4 . '%')
                     ->orWhereHas('tutorAcademico', function ($query) use ($search4) {
-                        $query->where('Nombres', 'LIKE', '%' . $search4 . '%')
-                            ->orWhere('Apellidos', 'LIKE', '%' . $search4 . '%');
+                        $query->where('nombres', 'LIKE', '%' . $search4 . '%')
+                            ->orWhere('apellidos', 'LIKE', '%' . $search4 . '%');
                     })
                     ->orWhere('IDEmpresa', 'LIKE', '%' . $search4 . '%')
                     ->orWhereHas('empresa', function ($query) use ($search4) {
@@ -1192,8 +1192,8 @@ class AdminController extends Controller
 
         $estudiantesPracticasV = PracticaV::with('estudiante')
             ->where(function ($query) {
-                $query->where('Estado', 'En ejecucion')
-                    ->orWhere('Estado', 'Finalizado');
+                $query->where('estado', 'En ejecucion')
+                    ->orWhere('estado', 'Finalizado');
             })
             ->get();
 
@@ -1337,8 +1337,9 @@ class AdminController extends Controller
     public function GuardarNRC(Request $request)
     {
         $request->validate([
-            'nrc' => 'required|numeric|digits:5|unique:nrc_vinculacion,nrc',
+            'nrc' => 'required|numeric|digits:5|unique:nrc,nrc',
             'periodo' => 'required|exists:periodo,id',
+            'tipo' => 'required',
         ], [
             'nrc.required' => 'El NRC es obligatorio.',
             'nrc.numeric' => 'El NRC debe ser un número.',
@@ -1351,6 +1352,7 @@ class AdminController extends Controller
         NrcVinculacion::create([
             'nrc' => $request->nrc,
             'idPeriodo' => $request->periodo,
+            'tipo' => $request->tipo,
         ]);
 
         return redirect()->route('admin.index')->with('success', 'NRC guardado con éxito.');

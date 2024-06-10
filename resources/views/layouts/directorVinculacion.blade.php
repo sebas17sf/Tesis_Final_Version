@@ -100,8 +100,8 @@
 
                 <div style="display: flex; align-items: center;">
                     <span>
-                        {{ explode(' ', Auth::user()->profesorUniversidad->Nombres)[0] }}
-                        {{ explode(' ', Auth::user()->profesorUniversidad->Apellidos)[0] }}
+                        {{ explode(' ', Auth::user()->profesorUniversidad->nombres)[0] }}
+                        {{ explode(' ', Auth::user()->profesorUniversidad->apellidos)[0] }}
                     </span>
                     <div class="icon-profile" style="margin-left: 20px;">
                         <img src="../img/default/user.svg">

@@ -91,7 +91,8 @@
             <button class="profile-icon dropdown" id="profile-button">
 
                 <div class="name-profile">
-                    <span><?php echo Auth::user()->NombreUsuario; ?></span>
+                    <span>   {{ explode(' ', Auth::user()->profesorUniversidad->nombres)[0] }}
+                        {{ explode(' ', Auth::user()->profesorUniversidad->apellidos)[0] }}</span>
                 </div>
                 <div class="icon-profile">
                     <img src="../img/default/user.svg">
