@@ -289,6 +289,46 @@ table {
     top: 100px; /* Adjusted top position to avoid the top navigation bar */
     left: 50px; /* Adjust as necessary to avoid other elements */
 }
+.draggable-card1_1 {
+    width: 830px;
+    border: 3px solid #40456c;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background-color: white;
+    position: fixed; /* Changed from absolute to fixed */
+    z-index: 1000;
+    padding: 0;
+    display: none; /* Oculto por defecto */
+    top: 100px; /* Adjusted top position to avoid the top navigation bar */
+    left: 50px; /* Adjust as necessary to avoid other elements */
+}
+/* Estilo para limitar el largo del select */
+.draggable-card1_2 {
+    width: 255px;
+    border: 3px solid #40456c;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background-color: white;
+    position: fixed; /* Changed from absolute to fixed */
+    z-index: 1000;
+    padding: 0;
+    display: none; /* Oculto por defecto */
+    top: 100px; /* Adjusted top position to avoid the top navigation bar */
+    left: 50px; /* Adjust as necessary to avoid other elements */
+}
+.draggable-card1_3 {
+    width: 730px;
+    border: 3px solid #40456c;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background-color: white;
+    position: fixed; /* Changed from absolute to fixed */
+    z-index: 1000;
+    padding: 0;
+    display: none; /* Oculto por defecto */
+    top: 100px; /* Adjusted top position to avoid the top navigation bar */
+    left: 50px; /* Adjust as necessary to avoid other elements */
+}
 .card-header {
     background-color: #40456c;
     color: white;
@@ -296,18 +336,20 @@ table {
     cursor: move;
     border-radius: 5px 5px 0 0;
 }
-
 .card-body {
     padding: 15px;
 }
-
 .card-footer {
     padding: 10px;
     border-top: 1px solid #e9ecef;
     display: flex;
     justify-content: space-between;
 }
-
+.card-footer1 {
+    padding: 10px;
+    border-top: 1px solid #e9ecef;
+    justify-content: left;
+}
 .close {
     color: white;
     font-size: 1.5rem;
@@ -317,21 +359,18 @@ table {
     cursor: pointer;
     opacity: .7 !important;
 }
-
 .form-control {
     border-radius: 0.25rem;
     box-shadow: none;
     border: 1px solid #40456c;
     padding: 0.375rem 0.75rem;
 }
-
 .input_select {
     width: 100%;
     padding: 0.375rem 0.75rem;
     border: 1px solid #40456c;
     border-radius: 0.25rem;
 }
-
 .button {
     background-color: #40456c;
     border: none;
@@ -341,7 +380,142 @@ table {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-
 .button:hover {
     background-color: #2c3e50;
+}
+.input_select1 {
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid #40456c;
+    border-radius: 0.25rem;
+    font-size: 0.7rem !important; /* Increase font size for select */
+}
+.remove-icon {
+    cursor: pointer;
+    color: red;
+    font-size: 10px;
+    display: none; /* Initially hidden */
+}
+.label {
+    font-size: 0.7rem !important; /* Increase font size for label */
+}
+@media (max-width: 768px) {
+    .draggable-card {
+        max-width: 100%;
+    }
+}
+@media (max-width: 576px) {
+    .card-header, .card-body, .card-footer {
+        padding: 10px;
+    }
+    .card-title {
+        font-size: 16px;
+    }
+}
+/* Estilos personalizados para los checkboxes en Select2 */
+.select2-container--default .select2-selection--multiple {
+    background-color: #ecf0f3!important;
+    border: none #000 !important;
+    border-radius: 4px;
+    min-height: 40px !important;
+    min-width: 100% !important; 
+    cursor: text;}
+/* Estilos personalizados para los checkboxes en Select2 */
+.styled-checkbox {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #ecf0f3;
+    border: 1px solid #d1d3e6;
+    border-radius: 3px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    position: relative;
+    margin-right: 8px;
+    display: inline-block;
+    vertical-align: middle;
+    box-shadow:
+        inset 2px 2px 4px #d1d9e6,
+        inset -2px -2px 4px #f9f9f9;
+    transition: 0.25s ease;
+}
+.styled-checkbox:checked {
+    background-color: #40456c;
+    border-color: #40456c;
+}
+.styled-checkbox:checked::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+/* Ajuste de estilo para Select2 */
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #40456c;
+    border: 1px solid #40456c;
+    color: rgb(44, 50, 88);
+    padding: 2px 5px;
+    border-radius: 2px;
+    margin: 2px;
+    position: none !important;
+    font-size: 0.875rem;
+}
+
+
+    
+          
+            
+    
+
+          
+          Expand Down
+    
+    
+  
+.select2-container .select2-selection--multiple {
+    border: 1px solid #d1d3e6;
+    border-radius: 8px;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    background-color: #ecf0f3;
+    box-shadow:
+        inset 2px 2px 4px #d1d3e6,
+        inset -2px -2px 4px #f9f9f9;
+    transition: 0.25s ease;
+    min-height: 40px; /* Ajusta la altura mínima */
+    max-height: 100px; /* Ajusta la altura máxima */
+    width: 100%; /* Asegura que el select tome el ancho completo del contenedor */
+    overflow-y: auto; /* Permite el desplazamiento vertical */
+    box-sizing: border-box;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0.375rem 0.75rem;
+    min-height: 40px; /* Ajusta la altura mínima */
+}
+.select2-container--default .select2-selection--multiple .select2-search--inline {
+    float: none;
+}
+.select2-container--default .select2-selection--multiple .select2-search--inline .select2-search__field {
+    width: 100% !important;
+    max-width: 100% !important;
+    white-space: nowrap;
+    height: auto !important;
+    line-height: 1.5rem !important;
+    padding: 0.375rem 0.75rem !important;
+    background-color: #ecf0f3 !important;
+    border: none !important;
+}
+.select2-container {
+    width: 100% !important; /* Asegura que el contenedor de select2 tome el ancho completo */
+}
+.select2-selection {
+    width: 100% !important; /* Asegura que el select2 tome el ancho completo */
 }
