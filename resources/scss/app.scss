@@ -42,7 +42,6 @@ div:where(.swal2-icon) {
 
 // Contenedor
 div:where(.swal2-container) div:where(.swal2-popup) {
-  padding: 1.5em 0 1.25em !important;
   transform: scale(0.8) !important;
 }
 
@@ -351,6 +350,12 @@ hr {
 }
 
 .tamanio1{
+  .form-control{
+    height: auto !important;
+    font-size: 0.7rem !important;
+  }
+}
+.tamanio2{
   .form-control{
     height: auto !important;
     font-size: 0.7rem !important;

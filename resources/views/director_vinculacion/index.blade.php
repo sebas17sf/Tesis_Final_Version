@@ -63,7 +63,7 @@
                                     @else
                                         @foreach ($proyectosEjecucion as $proyecto)
                                             <tr>
-                                                <td style="word-wrap: break-word; text-align: justify;">
+                                                <td style="word-wrap: break-word; text-align: justify; overflow: hidden;">
                                                     {{ strtoupper($proyecto->NombreProyecto) }}</td>
                                                 <td>{{ strtoupper($proyecto->director->Apellidos) }}
                                                     {{ strtoupper($proyecto->director->Nombres) }}</td>
@@ -142,16 +142,18 @@
                                 <tbody class="mdc-data-table__content ng-star-inserted">
                                     @foreach ($proyectosTerminados as $proyecto)
                                         <tr >
-                                            <td style="word-wrap: break-word; text-align: justify; padding: 5px 8px;">{{ $proyecto->NombreProyecto }}</td>
+                                            <td style="text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
+                                            {{ strtoupper($proyecto->NombreProyecto) }}</td>
                                             <td>{{ strtoupper($proyecto->director->Apellidos) }}
                                                 {{ strtoupper($proyecto->director->Nombres) }}</td>
-                                            <td style="word-wrap: break-word; text-align: justify; padding: 5px 8px;">{{ $proyecto->DescripcionProyecto }}</td>
+                                            <td style="text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">{{ $proyecto->DescripcionProyecto }}</td>
                                             <td>{{ $proyecto->director->Correo }}</td>
-                                            <td>{{ $proyecto->DepartamentoTutor }}</td>
+                                            <td style="text-transform: uppercase;">
+                                            {{ strtoupper($proyecto->DepartamentoTutor) }}</td>
                                             <td>{{ $proyecto->FechaInicio }}</td>
                                             <td>{{ $proyecto->FechaFinalizacion }}</td>
                                             <td>{{ $proyecto->cupos }}</td>
-                                            <td>{{ $proyecto->Estado }}</td>
+                                            <td>{{ strtoupper($proyecto->Estado) }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

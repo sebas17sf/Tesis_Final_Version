@@ -32,7 +32,7 @@
 
                 <div class="container mt-3">
                     <div class="card" style="max-width: 750px; margin: auto;">
-                        <div class="card-header">
+                        <div class="card-header1">
                             <div class=" justify-content-between align-items-center">
                                 <div></div>
                                 <div class="d-flex">
@@ -181,7 +181,7 @@
                                     </label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
-                                                <label
+                                                <label style="text-transform: uppercase;"
                                                     class="form-control label">{{ strtoupper($estudiante->Departamento) }}</label>
                                             </div>
                                         </div>
@@ -213,11 +213,11 @@
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                              <th class="tamanio1 ">VERIFICACIÓN</th>
-                                             <th class="tamanio1">ACCIÓN</th>
+                                             <th class="tamanio2">REENVIAR</th>
                                              </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
                                         <tr>
-                    <td style="word-wrap: break-word; text-align: center;">
+                    <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
                         @if ($estudiante->Estado == 'Aprobado')
                             {{ strtoupper('Vinculacion') }}
                         @elseif ($estudiante->Estado == 'Aprobado-practicas')
@@ -230,9 +230,9 @@
                     <form method="POST" action="{{ route('estudiantes.resend', ['estudiante' => $estudiante->EstudianteID]) }}">
             @csrf
             <div class="text-center">
-                <button type="submit" class="button1 ">
-                    <i class="fa-solid fa-paper-plane-top"></i> Reenviar Información
-                </button>
+               <center> <button type="submit" class="button3  ">
+                    <i class="fa-solid fa-paper-plane-top"></i> 
+                </button> </center>
             </div>
         </form>
         </td>
@@ -288,5 +288,10 @@
     </div>
 
     </div>
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js\admin\acciones.js"></script>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection

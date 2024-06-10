@@ -36,7 +36,7 @@
             <div class="input-group">
                 <input type="password" class="form-control input" id="password" name="password" required>
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                    <button class="btn btn-outline-secondary" type="button3" id="togglePassword">
                         <i class="fa fa-eye" aria-hidden="true"></i>
                     </button>
                 </div>
@@ -48,7 +48,7 @@
                 <input type="password" class="form-control input" id="password_confirmation" name="password_confirmation"
                     required>
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
+                    <button class="btn btn-outline-secondary" type="button3 " id="toggleConfirmPassword">
                         <i class="fa fa-eye" aria-hidden="true"></i>
                     </button>
                 </div>
@@ -78,11 +78,11 @@
                 <tbody class="mdc-data-table__content ng-star-inserted">
                     @foreach ($userSessions as $session)
                         <tr>
-                            <td>{{ $session->start_time }}</td>
-                            <td>{{ $session->end_time }}</td>
-                            <td>{{ $session->ip_address }}</td>
-                            <td>{{ $session->browser }}</td>
-                            <td>{{ $session->locality }}</td>
+                            <td style="text-align: center;">{{ $session->start_time }}</td>
+                            <td style="text-align: center;">{{ $session->end_time }}</td>
+                            <td style="text-align: center;">{{ $session->ip_address }}</td>
+                            <td style="text-align: center;">{{ $session->browser }}</td>
+                            <td style="text-align: justify;">{{ $session->locality }}</td>
                         </tr>
                     @endforeach
 

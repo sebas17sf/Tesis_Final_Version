@@ -49,11 +49,45 @@ label {
       0 0 0 4px colors.$focus-input;
   }
 }
+@mixin input-style1 {
+  height: 40px;
+  border: 1px solid transparent;
+  padding-left: 25px;
+  padding-right: 25px;
+  font-size: fonts.$form-input1;
+  letter-spacing: 0.15px;
+  outline: none;
+  background-color: colors.$bg_elements;
+  transition: 0.25s ease;
+  border-radius: 8px;
 
+  box-shadow:
+    inset 2px 2px 4px colors.$sha2,
+    inset -2px -2px 4px colors.$sha1;
+
+  &:focus {
+    box-shadow:
+      inset 4px 4px 4px colors.$sha2,
+      inset -4px -4px 4px colors.$sha1;
+  }
+
+  &:focus,
+  &:active {
+    border: 1px solid colors.$primary;
+  }
+
+  &:focus {
+    box-shadow:
+      0 0 0 1px colors.$primary,
+      0 0 0 4px colors.$focus-input;
+  }
+}
 .input {
   @include input-style;
 }
-
+.input1 {
+  @include input-style1;
+}
 // input inactivo
 .inactive {
   background-color: darken(colors.$bg_elements, 5%) !important;
