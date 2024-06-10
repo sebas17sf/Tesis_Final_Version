@@ -617,9 +617,9 @@
 
                                 <div class="form-group
                                     col-md-6">
-                                    <label for="tipo"><strong>Seleccione el tipo de vinculación:</strong></label>
+                                    <label for="tipo"><strong>Tipo de proceso:</strong></label>
                                     <select id="tipo" name="tipo" class="form-control input_select input" required>
-                                        <option value="">Seleccione un tipo</option>
+                                        <option value="">Seleccione el proceso</option>
                                         <option value="Vinculación">Vinculación con la Sociedad</option>
                                         <option value="Practicas">Practicas preprofesionales</option>
                                     </select>
