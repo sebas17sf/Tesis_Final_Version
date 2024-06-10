@@ -45,23 +45,23 @@
 
             @foreach ($asignacionesEstudiantesDirector as $asignacion)
                 <tr>
-                    <td>{{ $asignacion->estudiante->Apellidos }} {{ $asignacion->estudiante->Nombres }}</td>
-                    <td>{{ $asignacion->docenteParticipante->Nombres }} {{ $asignacion->docenteParticipante->Apellidos }}
+                    <td>{{ $asignacion->estudiante->apellidos }} {{ $asignacion->estudiante->nombres }}</td>
+                    <td>{{ $asignacion->docenteParticipante->nombres }} {{ $asignacion->docenteParticipante->apellidos }}
                     </td>
-                    <td>{{ $asignacion->proyecto->NombreProyecto }}</td>
+                    <td>{{ $asignacion->proyecto->nombreProyecto }}</td>
                     <td>
 
-                        <form id="eliminarEstudianteForm_{{ $asignacion->EstudianteID }}"
-                            action="{{ route('director_vinculacion.eliminarEstudiante', ['EstudianteID' => $asignacion->EstudianteID]) }}"
+                        <form id="eliminarEstudianteForm_{{ $asignacion->estudianteId }}"
+                            action="{{ route('director_vinculacion.eliminarEstudiante', ['EstudianteID' => $asignacion->estudianteId]) }}"
                             method="POST">
                             @csrf
                             @method('DELETE')
-                            <input type="hidden" name="estudiante_id" value="{{ $asignacion->EstudianteID }}">
+                            <input type="hidden" name="estudiante_id" value="{{ $asignacion->estudianteId }}">
                             <button class="button" type="button"
-                                onclick="mostrarSweetAlert('{{ $asignacion->EstudianteID }}')">Eliminar del
+                                onclick="mostrarSweetAlert('{{ $asignacion->estudianteId }}')">Eliminar del
                                 proyecto</button>
                             <input type="hidden" name="motivo_negacion"
-                                id="motivoNegacion_{{ $asignacion->EstudianteID }}">
+                                id="motivoNegacion_{{ $asignacion->estudianteId }}">
 
                         </form>
 
@@ -96,7 +96,7 @@
                             data-target="#modalActividad{{ $estudianteId }}">
                             <h5 class="mb-0">
                                 <button class="btn btn-link" type="button">
-                                    {{ $estudiante->Apellidos }} {{ $estudiante->Nombres }}
+                                    {{ $estudiante->apellidos }} {{ $estudiante->nombres }}
                                 </button>
                             </h5>
                         </div>
@@ -107,7 +107,7 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h4 class="modal-title" id="modalActividad{{ $estudianteId }}Label">
-                                            {{ $estudiante->Apellidos }} {{ $estudiante->Nombres }}</h4>
+                                            {{ $estudiante->apellidos }} {{ $estudiante->nombres }}</h4>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -131,8 +131,8 @@
                                                     <tr>
                                                         <td>{{ $actividad->fecha }}</td>
                                                         <td>{{ $actividad->actividades }}</td>
-                                                        <td>{{ $actividad->numero_horas }}</td>
-                                                        <td>{{ $actividad->nombre_actividad }}</td>
+                                                        <td>{{ $actividad->numeroHoras }}</td>
+                                                        <td>{{ $actividad->nombreActividad }}</td>
                                                         <td>
                                                             <img src="data:image/png;base64,{{ $actividad->evidencias }}"
                                                                 alt="Evidencia" width="100" height="100">
