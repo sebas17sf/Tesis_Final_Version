@@ -203,40 +203,6 @@ tr:hover {
     clear: both;
 }
 
-/* table {
-    width: 100%;
-    border-collapse: collapse;
-} */
-/* 
-table,
-th,
-td {
-    font-size: 14px;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
-body,
-select,
-th,
-td,
-button,
-table {
-    background-color: #f5f5f5;
-    font-family: Arial, sans-serif;
-    font-size: 13px;
-}
-
-
-.columna-numero {
-    padding: 0 5px !important;
-}
-
-.mat-mdc-table td {
-    vertical-align: middle; /* Alineación vertical del texto en las celdas */
-
 
 .acciones-container {
     display: flex;
@@ -468,16 +434,6 @@ table {
 }
 
 
-    
-          
-            
-    
-
-          
-          Expand Down
-    
-    
-  
 .select2-container .select2-selection--multiple {
     border: 1px solid #d1d3e6;
     border-radius: 8px;
@@ -518,4 +474,8 @@ table {
 }
 .select2-selection {
     width: 100% !important; /* Asegura que el select2 tome el ancho completo */
+}
+.small, small {
+    font-size: 60% !important;
+    font-weight: 400;
 }

@@ -477,10 +477,8 @@
                                                                             </select>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="card-footer1">
-                                                                        <button type="button"
-                                                                            class="button input_select1"
-                                                                            onclick="$('#draggableCardEditarMaestro{{ $profesor->id }}').hide()">Cerrar</button>
+                                                                    <div class="card-footer1 d-flex justify-content-center align-items-center"">
+                                                                        
                                                                         <button type="submit"
                                                                             class="button input_select1">Guardar
                                                                             Cambios</button>
@@ -623,63 +621,59 @@
                                     <small class="form-text text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
-                            <div class="card-footer">
-                                <button type="button" class="button01"
-                                    onclick="$('#draggableCardNRC').hide()">Cerrar</button>
+                            <div class="card-footer d-flex justify-content-center align-items-center"">
                                 <button type="submit" class="button01">Guardar NRC</button>
                             </div>
                         </form>
                     </div>
                 </div>
 
-                <!-- Tarjeta movible para Agregar Periodo -->
-                <div class="draggable-card1" id="draggableCardPeriodo">
-                    <div class="card-header">
-                        <span class="card-title">Agregar Periodo</span>
-                        <button type="button" class="close"
-                            onclick="$('#draggableCardPeriodo').hide()">&times;</button>
-                    </div>
-                    <div class="card-body">
-                        <form action="{{ route('admin.guardarPeriodo') }}" method="post">
-                            @csrf
-                            <div class="form-group">
-                                <label for="periodoInicio"><strong>Ingrese el inicio del Periodo
-                                        Académico:</strong></label>
-                                <input type="date" id="periodoInicio" name="periodoInicio"
-                                    class="form-control input" value="{{ old('periodoInicio') }}" required>
-                                @error('periodoInicio')
-                                    <small class="form-text text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="periodoFin"><strong>Ingrese el fin del Periodo Académico:</strong></label>
-                                <input type="date" id="periodoFin" name="periodoFin" class="form-control input"
-                                    value="{{ old('periodoFin') }}" required>
-                                @error('periodoFin')
-                                    <small class="form-text text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="numeroPeriodo"><strong>Ingrese el número identificador del
-                                        periodo:</strong></label>
-                                <input type="text" id="numeroPeriodo" name="numeroPeriodo"
-                                    placeholder="Ingrese 6 números" class="form-control input" pattern="[0-9]{1,6}"
-                                    title="Ingrese un número no negativo de hasta 6 dígitos"
-                                    value="{{ old('numeroPeriodo') }}" required>
-                                <small id="numeroPeriodoError" class="form-text text-danger"
-                                    style="display: none;"></small>
-                                @error('numeroPeriodo')
-                                    <small class="form-text text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <div class="card-footer1">
-                                <button type="button" class="button"
-                                    onclick="$('#draggableCardPeriodo').hide()">Cerrar</button>
-                                <button type="submit" class="button">Guardar Periodo</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                  <!-- Tarjeta movible para Agregar Periodo -->
+                            <div class="draggable-card" id="draggableCardPeriodo">
+                                <div class="card-header">
+                                    <span class="card-title">Agregar Periodo</span>
+                                    <button type="button" class="close"
+                                        onclick="$('#draggableCardPeriodo').hide()">&times;</button>
+                                </div>
+                                <div class="card-body">
+                                    <form action="{{ route('admin.guardarPeriodo') }}" method="post">
+                                        @csrf
+                                        <div class="form-group">
+                                            <label for="periodoInicio"><strong>Ingrese el inicio del Periodo
+                                                    Académico:</strong></label>
+                                            <input type="date" id="periodoInicio" name="periodoInicio"
+                                                class="form-control input" value="{{ old('periodoInicio') }}" required>
+                                            @error('periodoInicio')
+                                                <small class="form-text text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="periodoFin"><strong>Ingrese el fin del Periodo Académico:</strong></label>
+                                            <input type="date" id="periodoFin" name="periodoFin" class="form-control input"
+                                                value="{{ old('periodoFin') }}" required>
+                                            @error('periodoFin')
+                                                <small class="form-text text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="numeroPeriodo"><strong>Ingrese el número identificador del
+                                                    periodo:</strong></label>
+                                            <input type="text" id="numeroPeriodo" name="numeroPeriodo"
+                                                placeholder="Ingrese 6 números" class="form-control input" pattern="[0-9]{1,6}"
+                                                title="Ingrese un número no negativo de hasta 6 dígitos"
+                                                value="{{ old('numeroPeriodo') }}" required>
+                                            <small id="numeroPeriodoError" class="form-text text-danger"
+                                                style="display: none;"></small>
+                                            @error('numeroPeriodo')
+                                                <small class="form-text text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                        <div class="card-footer1 d-flex justify-content-center align-items-center">
+                                            <button type="submit" class="button01">Guardar Periodo</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div> centro el boton guardar
                 <!-- ----------------------------------------------------------------------------------- -->
 
                 <!-- Tarjeta movible para Editar Periodo -->
@@ -733,10 +727,8 @@
                                     <input type="text" name="numeroPeriodo" id="numeroPeriodo"
                                         class="form-control input" value="{{ $periodo->numeroPeriodo }}" required>
                                 </div>
-                                <div class="card-footer">
-                                    <button type="button" class="button01"
-                                        onclick="$('#draggableCardEditarPeriodo').hide()">Cerrar</button>
-                                    <button type="submit" class="button01">Guardar Cambios</button>
+                                <div class="card-footer d-flex justify-content-center align-items-center"">
+                                    <center><button type="submit" class="button01">Guardar Cambios</button></center>
                                 </div>
                             </form>
                         </div>
