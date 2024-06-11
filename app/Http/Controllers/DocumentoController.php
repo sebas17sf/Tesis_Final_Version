@@ -1766,27 +1766,27 @@ class DocumentoController extends Controller
 
         $profesor = Auth::user()->profesorUniversidad;
 
-        $proyecto = AsignacionProyecto::where('ParticipanteID', $profesor ->id)
+        $proyecto = AsignacionProyecto::where('participanteId', $profesor ->id)
             ->whereHas('estudiante', function ($query) {
-                $query->where('Estado', 'Aprobado');
+                $query->where('estado', 'Aprobado');
             })->first();
 
-        $proyectoID = Proyecto::find($proyecto->ProyectoID);
+        $proyectoID = Proyecto::find($proyecto->proyectoId);
 
         ///obtener nombre del proyecto
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('B7', $proyectoID->NombreProyecto);
+        $sheet->setCellValue('B7', $proyectoID->nombreProyecto);
 
         ////nombre del director del proyecto
-        $director = ProfesUniversidad::find($proyectoID->DirectorID);
-        $sheet->setCellValue('B8', $director->Apellidos . ' ' . $director->Nombres);
+        $director = ProfesUniversidad::find($proyectoID->directorId);
+        $sheet->setCellValue('B8', $director->apellidos . ' ' . $director->nombres);
 
-        $sheet->setCellValue('B10', $proyectoID->DepartamentoTutor);
-        $sheet->setCellValue('B11', $proyectoID->FechaInicio);
-        $sheet->setCellValue('B12', $proyectoID->FechaFinalizacion);
+        $sheet->setCellValue('B10', $proyectoID->departamentoTutor);
+        $sheet->setCellValue('B11', $proyectoID->first()->asignaciones->first()->inicioFecha);
+        $sheet->setCellValue('B12', $proyectoID->first()->asignaciones->first()->finalizacionFecha);
 
-        $sheet->setCellValue('B13', $profesor->Apellidos . ' ' . $profesor->Nombres);
-        $sheet->setCellValue('B14', $profesor->Departamento);
+        $sheet->setCellValue('B13', $profesor->apellidos . ' ' . $profesor->nombres);
+        $sheet->setCellValue('B14', $profesor->departamento);
 
 
 

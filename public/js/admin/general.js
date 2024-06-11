@@ -226,24 +226,6 @@ function confirmDeleteProject(e) {
     })
 }
 
-function enviarCorreo(e) {
-    e.preventDefault();
-
-    fetch(e.target.action, {
-        method: e.target.method,
-        body: new FormData(e.target)
-    })
-        .then(response => {
-            if (response.ok) {
-                 window.location.href = '{{ route("admin.estudiantes") }}';
-            } else {
-                 mostrarMensaje('Hubo un error al enviar el correo', 'error');
-            }
-        })
-        .catch(error => {
-             mostrarMensaje('Hubo un error al enviar el correo', 'error');
-        });
-}
 
 
 

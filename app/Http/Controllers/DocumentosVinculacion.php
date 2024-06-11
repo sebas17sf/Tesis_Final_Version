@@ -32,28 +32,31 @@ class DocumentosVinculacion extends Controller
         $plantillaPath = public_path('Plantillas/1.4-Evaluación-Estudiantes.xlsx');
         $spreadsheet = IOFactory::load($plantillaPath);
         $usuario = auth()->user();
-        $correoUsuario = $usuario->CorreoElectronico;
-        $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
-        // Obtener la relación AsignacionEstudiantesDirector para este ParticipanteVinculacion
-        $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)
+        $correoUsuario = $usuario->correoElectronico;
+        $participanteVinculacion = ProfesUniversidad::where('correo', $correoUsuario)->first();
+         $asignacionProyecto = AsignacionProyecto::where('participanteId', $participanteVinculacion->id)
             ->whereHas('estudiante', function ($query) {
-                $query->where('Estado', 'Aprobado');
+                $query->where('estado', 'Aprobado');
             })
             ->first();
+
+        if ($asignacionProyecto == null) {
+            return redirect()->back()->with('error', 'No tiene proyectos asignados');
+        }
 
 
 
         ///obtener la id del director de AsiignacionProyecto
-        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
-        if ($proyecto->Estado != 'Ejecucion') {
+        $proyecto = Proyecto::where('proyectoId', $asignacionProyecto->proyectoId)->first();
+        if ($proyecto->estado != 'Ejecucion') {
             return redirect()->back()->with('error', 'No tiene Proyectos en ejecucion.');
         }
 
         ////buscar en profesores universidad
-        $Director = ProfesUniversidad::where('id', $proyecto->DirectorID)->first();
+        $Director = ProfesUniversidad::where('id', $proyecto->directorId)->first();
         // Obtener los estudiantes asignados a este proyecto
 
-        $estudiantes = AsignacionProyecto::where('ProyectoID', $proyecto->ProyectoID)
+        $estudiantes = AsignacionProyecto::where('proyectoId', $proyecto->proyectoId)
             ->whereHas('estudiante', function ($query) {
                 $query->where('estado', 'Aprobado');
             })
@@ -68,8 +71,8 @@ class DocumentosVinculacion extends Controller
         $hojaCalculo->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
         $estudiantes = $estudiantes->sortBy('Estudiante.Apellidos');
         ///Obtener el nombre del participante
-        $nombreParticipante = "Ing. " . $participanteVinculacion->Apellidos . ' ' . $participanteVinculacion->Nombres . ", Mgtr.";
-        $nombreDirector = "Ing. " . $Director->Apellidos . ' ' . $Director->Nombres . ", Mgtr.";
+        $nombreParticipante = "Ing. " . $participanteVinculacion->apellidos . ' ' . $participanteVinculacion->nombres . ", Mgtr.";
+        $nombreDirector = "Ing. " . $Director->apellidos . ' ' . $Director->nombres . ", Mgtr.";
         ///Obtener el departamento del participante
         $departamento = "Departamento de " . $participanteVinculacion->Departamento;
         $departamentoDirector = "Departamento de " . $proyecto->DepartamentoTutor;
@@ -126,7 +129,7 @@ class DocumentosVinculacion extends Controller
         $hojaCalculo->getStyle("I13")->getAlignment()->setWrapText(true);
 
         foreach ($estudiantes as $index => $estudiante) {
-            $notas = NotasEstudiante::where('EstudianteID', $estudiante->EstudianteID)->first();
+            $notas = NotasEstudiante::where('estudianteId', $estudiante->estudianteId)->first();
             if ($notas == null) {
                 return redirect()->back()->with('error', 'No se han ingresado notas para los estudiantes');
             }
@@ -135,21 +138,21 @@ class DocumentosVinculacion extends Controller
         ///crea el foreach para recorrer los estudiantes y obtener Nombres,Apellidos y cedula
         foreach ($estudiantes as $index => $estudiante) {
             $filaActual = $filaInicio + $index;
-            $nombreCompleto = $estudiante->Estudiante->Apellidos . ' ' . $estudiante->Estudiante->Nombres;
+            $nombreCompleto = $estudiante->Estudiante->apellidos . ' ' . $estudiante->Estudiante->nombres;
             $hojaCalculo->setCellValue("A$filaActual", $nombreCompleto);
             $hojaCalculo->setCellValue("B$filaActual", $estudiante->Estudiante->cedula);
-            $hojaCalculo->setCellValue("C$filaActual", $estudiante->Estudiante->Carrera);
+            $hojaCalculo->setCellValue("C$filaActual", $estudiante->Estudiante->carrera);
 
-            $notas = NotasEstudiante::where('EstudianteID', $estudiante->Estudiante->EstudianteID)->first();
+            $notas = NotasEstudiante::where('estudianteId', $estudiante->Estudiante->estudianteId)->first();
 
-            $hojaCalculo->setCellValue("D$filaActual", $notas->Tareas);
-            $hojaCalculo->setCellValue("E$filaActual", $notas->Resultados_Alcanzados);
-            $hojaCalculo->setCellValue("F$filaActual", $notas->Conocimientos);
-            $hojaCalculo->setCellValue("G$filaActual", $notas->Adaptabilidad);
-            $hojaCalculo->setCellValue("H$filaActual", $notas->Aplicacion);
-            $hojaCalculo->setCellValue("I$filaActual", $notas->Capacidad_liderazgo);
-            $hojaCalculo->setCellValue("J$filaActual", $notas->Asistencia);
-            $hojaCalculo->setCellValue("K$filaActual", $notas->Informe);
+            $hojaCalculo->setCellValue("D$filaActual", $notas->tareas);
+            $hojaCalculo->setCellValue("E$filaActual", $notas->resultadosAlcanzados);
+            $hojaCalculo->setCellValue("F$filaActual", $notas->conocimientos);
+            $hojaCalculo->setCellValue("G$filaActual", $notas->adaptabilidad);
+            $hojaCalculo->setCellValue("H$filaActual", $notas->aplicacion);
+            $hojaCalculo->setCellValue("I$filaActual", $notas->CapacidadLiderazgo);
+            $hojaCalculo->setCellValue("J$filaActual", $notas->asistencia);
+            $hojaCalculo->setCellValue("K$filaActual", $notas->informe);
             $hojaCalculo->setCellValue("L$filaActual", "=SUM(D$filaActual:K$filaActual)");
             $hojaCalculo->setCellValue("M$filaActual", "=L$filaActual*20/100");
 
@@ -178,47 +181,47 @@ class DocumentosVinculacion extends Controller
         $plantillaPath = public_path('Plantillas/1.3-Número-Horas-Docentes.xlsx');
         $spreadsheet = IOFactory::load($plantillaPath);
         $usuario = auth()->user();
-        $correoUsuario = $usuario->CorreoElectronico;
-        $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
+        $correoUsuario = $usuario->correoElectronico;
+        $participanteVinculacion = ProfesUniversidad::where('correo', $correoUsuario)->first();
         // Obtener la relación AsignacionProyecto para este ParticipanteVinculacion
-        $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)
+        $asignacionProyecto = AsignacionProyecto::where('participanteId', $participanteVinculacion->id)
             ->whereHas('estudiante', function ($query) {
-                $query->where('Estado', 'Aprobado');
+                $query->where('estado', 'Aprobado');
             })
             ->first();
 
-        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
+        $proyecto = Proyecto::where('proyectoId', $asignacionProyecto->proyectoId)->first();
 
-        if ($proyecto->Estado != 'Ejecucion') {
+        if ($proyecto->estado != 'Ejecucion') {
             return redirect()->back()->with('error', 'No tiene Proyectos en ejecucion.');
         }
         // Obtener los estudiantes asignados a este proyecto
-        $Director = ProfesUniversidad::where('id', $proyecto->DirectorID)->first();
+        $Director = ProfesUniversidad::where('id', $proyecto->directorId)->first();
 
 
         $hojaCalculo = $spreadsheet->getActiveSheet();
 
 
         ///Obtener el nombre del participante
-        $nombreParticipante = "Ing. " . $participanteVinculacion->Apellidos . ' ' . $participanteVinculacion->Nombres . ", Mgtr.";
-        $nombreDirector = "Ing. " . $Director->Apellidos . ' ' . $Director->Nombres . ", Mgtr.";
+        $nombreParticipante = "Ing. " . $participanteVinculacion->apellidos . ' ' . $participanteVinculacion->nombres . ", Mgtr.";
+        $nombreDirector = "Ing. " . $Director->apellidos . ' ' . $Director->nombres . ", Mgtr.";
         ///Obtener el departamento del participante
-        $departamento = $participanteVinculacion->Departamento;
-        $departamentoDirector = $proyecto->DepartamentoTutor;
+        $departamento = $participanteVinculacion->departamento;
+        $departamentoDirector = $proyecto->departamentoTutor;
 
         //Obtener datos del director y particpante
-        $nombreParticipanteCompleto = $participanteVinculacion->Apellidos . ' ' . $participanteVinculacion->Nombres;
-        $cedulaParticipante = $participanteVinculacion->Cedula;
-        $cedulaDirector = $Director->Cedula;
-        $correoParticipante = $participanteVinculacion->Correo;
-        $correoDirector = $Director->Correo;
+        $nombreParticipanteCompleto = $participanteVinculacion->apellidos . ' ' . $participanteVinculacion->nombres;
+        $cedulaParticipante = $participanteVinculacion->cedula;
+        $cedulaDirector = $Director->cedula;
+        $correoParticipante = $participanteVinculacion->correo;
+        $correoDirector = $Director->correo;
         $sede = 'Santo Domingo';
-        $departamentosParticipante = $participanteVinculacion->Departamento;
-        $departamentosDirector = $proyecto->DepartamentoTutor;
-        $fechaInicio = $proyecto->FechaInicio;
-        $fechaFin = $proyecto->FechaFinalizacion;
+        $departamentosParticipante = $participanteVinculacion->departamento;
+        $departamentosDirector = $proyecto->departamentoTutor;
+        $fechaInicio = $proyecto->first()->asignaciones->first()->inicioFecha;
+        $fechaFin = $proyecto->first()->asignaciones->first()->finalizacionFecha;
         $NumeroHoras = '96';
-        $nombreProyecto = $proyecto->NombreProyecto;
+        $nombreProyecto = $proyecto->nombreProyecto;
         $fechaFormateada = date('d F Y', strtotime($fechaFin));
         setlocale(LC_TIME, 'es_ES');
         $meses = [
@@ -288,23 +291,23 @@ class DocumentosVinculacion extends Controller
         $plantillaPath = public_path('Plantillas/1.1-Registro-de-Estudiantes.xlsx');
         $spreadsheet = IOFactory::load($plantillaPath);
         $usuario = auth()->user();
-        $correoUsuario = $usuario->CorreoElectronico;
-        $participanteVinculacion = ProfesUniversidad::where('Correo', $correoUsuario)->first();
+        $correoUsuario = $usuario->correoElectronico;
+        $participanteVinculacion = ProfesUniversidad::where('correo', $correoUsuario)->first();
         // Obtener la relación AsignacionProyecto para este ParticipanteVinculacion
-        $asignacionProyecto = AsignacionProyecto::where('ParticipanteID', $participanteVinculacion->id)
+        $asignacionProyecto = AsignacionProyecto::where('participanteId', $participanteVinculacion->id)
             ->whereHas('estudiante', function ($query) {
-                $query->where('Estado', 'Aprobado');
+                $query->where('estado', 'Aprobado');
             })
             ->first();
 
         ///obtener la id del director de AsiignacionProyecto
-        $proyecto = Proyecto::where('ProyectoID', $asignacionProyecto->ProyectoID)->first();
+        $proyecto = Proyecto::where('proyectoId', $asignacionProyecto->proyectoId)->first();
 
-        if ($proyecto->Estado != 'Ejecucion') {
+        if ($proyecto->estado != 'Ejecucion') {
             return redirect()->back()->with('error', 'No tiene Proyectos en ejecucion.');
         }
         // Obtener los estudiantes asignados a este proyecto
-        $estudiantes = AsignacionProyecto::where('ProyectoID', $proyecto->ProyectoID)
+        $estudiantes = AsignacionProyecto::where('proyectoId', $proyecto->proyectoId)
             ->whereHas('estudiante', function ($query) {
                 $query->where('estado', 'Aprobado');
             })
@@ -312,7 +315,7 @@ class DocumentosVinculacion extends Controller
         if ($estudiantes->isEmpty()) {
             return redirect()->back()->with('error', 'No hay estudiantes asignados a este proyecto.');
         }
-        $Director = ProfesUniversidad::where('id', $proyecto->DirectorID)->first();
+        $Director = ProfesUniversidad::where('id', $proyecto->directorId)->first();
 
 
         $hojaCalculo = $spreadsheet->getActiveSheet();
@@ -321,12 +324,12 @@ class DocumentosVinculacion extends Controller
         $hojaCalculo->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
         $estudiantes = $estudiantes->sortBy('Estudiante.Apellidos');
         ///Obtener el nombre del participante
-        $nombreParticipante = "Ing. " . $participanteVinculacion->Apellidos . ' ' . $participanteVinculacion->Nombres . ", Mgtr.";
-        $nombreDirector = "Ing. " . $Director->Apellidos . ' ' . $Director->Nombres . ", Mgtr.";
+        $nombreParticipante = "Ing. " . $participanteVinculacion->apellidos . ' ' . $participanteVinculacion->nombres . ", Mgtr.";
+        $nombreDirector = "Ing. " . $Director->apellidos . ' ' . $Director->nombres . ", Mgtr.";
         ///Obtener el departamento del participante
-        $departamento = "Departamento de " . $participanteVinculacion->Departamento;
-        $departamentoDirector = "Departamento de " . $proyecto->DepartamentoTutor;
-        $nombreProyecto = "Nombre del Proyecto: " . $proyecto->NombreProyecto;
+        $departamento = "Departamento de " . $participanteVinculacion->departamento;
+        $departamentoDirector = "Departamento de " . $proyecto->departamentoTutor;
+        $nombreProyecto = "Nombre del Proyecto: " . $proyecto->nombreProyecto;
         $firma1 = 'DOCENTE PARTICIPANTE';
         $firma2 = 'DIRECTOR DE PROYECTO';
         ///Obtener del input
@@ -420,12 +423,12 @@ class DocumentosVinculacion extends Controller
         foreach ($estudiantes as $index => $estudiante) {
             $filaActual = $filaInicio + $index;
             $hojaCalculo->setCellValue("A$filaActual", $contador);
-            $nombreCompleto = $estudiante->Estudiante->Apellidos . ' ' . $estudiante->Estudiante->Nombres;
+            $nombreCompleto = $estudiante->Estudiante->apellidos . ' ' . $estudiante->Estudiante->nombres;
             $hojaCalculo->setCellValue("B$filaActual", $nombreCompleto);
             $hojaCalculo->setCellValue("C$filaActual", $estudiante->Estudiante->cedula);
-            $hojaCalculo->setCellValue("D$filaActual", $estudiante->Estudiante->Carrera);
+            $hojaCalculo->setCellValue("D$filaActual", $estudiante->Estudiante->carrera);
             $hojaCalculo->setCellValue("E$filaActual", $estudiante->Estudiante->celular);
-            $hojaCalculo->setCellValue("F$filaActual", $estudiante->Estudiante->Correo);
+            $hojaCalculo->setCellValue("F$filaActual", $estudiante->Estudiante->correo);
 
 
 
