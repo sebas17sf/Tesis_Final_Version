@@ -168,7 +168,8 @@ class DirectorVinculacionController extends Controller
             // Filtrar solo los estudiantes calificados que estén asignados a proyectos en ejecución
             $estudiantesCalificados = Estudiante::whereIn('estudianteId', $estudiantesCalificadosIds)
                 ->whereHas('proyectos', function ($query) use ($director) {
-                    $query->where('directorId', $director->id);
+                    $query->where('directorId', $director->id)
+                    ->where('estado', 'Aprobado');
                 })
                 ->get();
         }
@@ -273,28 +274,28 @@ class DirectorVinculacionController extends Controller
 
         // Obtener el usuario autenticado que tenga el estado DirectorVinculación
         $Director = Auth::user();
-        $correoDirector = $Director->CorreoElectronico;
-        $Director = ProfesUniversidad::where('Correo', $correoDirector)->first();
+        $correoDirector = $Director->correoElectronico;
+        $Director = ProfesUniversidad::where('correo', $correoDirector)->first();
         // Obtener la relación AsignacionProyecto para este DirectorVinculación
-        $asignacion = AsignacionProyecto::where('ParticipanteID', $Director->id)
+        $asignacion = AsignacionProyecto::where('participanteId', $Director->id)
         ->whereHas('estudiante', function ($query) {
-            $query->where('Estado', 'Aprobado');
+            $query->where('estado', 'Aprobado');
         })
         ->first();
-         $proyecto = Proyecto::find($asignacion->ProyectoID);
+         $proyecto = Proyecto::find($asignacion->proyectoId);
 
-        $plantilla->setValue('NombreProyecto', $proyecto->NombreProyecto);
+        $plantilla->setValue('NombreProyecto', $proyecto->nombreProyecto);
         $plantilla->setValue('Objetivos', $request->input('Objetivos'));
-        $plantilla->setValue('ParticipanteApellido', $proyecto->asignaciones->first()->docenteParticipante->Apellidos);
+        $plantilla->setValue('ParticipanteApellido', $proyecto->asignaciones->first()->docenteParticipante->apellidos);
 
-        $plantilla->setValue('ParticipanteNombre', $proyecto->asignaciones->first()->docenteParticipante->Nombres);
-        $plantilla->setValue('DepartamentoTutor', $proyecto->DepartamentoTutor);
+        $plantilla->setValue('ParticipanteNombre', $proyecto->asignaciones->first()->docenteParticipante->nombres);
+        $plantilla->setValue('DepartamentoTutor', $proyecto->departamentoTutor);
         $plantilla->setValue('intervencion', $request->input('intervencion'));
-        $plantilla->setValue('FechaInicio', $proyecto->FechaInicio);
-        $plantilla->setValue('FechaFinalizacion', $proyecto->FechaFinalizacion);
+        $plantilla->setValue('FechaInicio', $proyecto->first()->asignaciones->first()->inicioFecha);
+        $plantilla->setValue('FechaFinalizacion', $proyecto->first()->asignaciones->first()->finalizacionFecha);
 
-        $plantilla->setValue('NombreDirector', $proyecto->director->Apellidos . "" . $proyecto->director->Nombres);
-        $plantilla->setValue('NombreParticipante', $proyecto->asignaciones->first()->docenteParticipante->Apellidos . "" . $proyecto->asignaciones->first()->docenteParticipante->Nombres);
+        $plantilla->setValue('NombreDirector', $proyecto->director->apellidos . "" . $proyecto->director->nombres);
+        $plantilla->setValue('NombreParticipante', $proyecto->asignaciones->first()->docenteParticipante->apellidos . "" . $proyecto->asignaciones->first()->docenteParticipante->nombres);
 
 
         $planificadas = $request->input('planificadas');
@@ -314,11 +315,11 @@ class DirectorVinculacionController extends Controller
         }
 
         ///obtener los estudiantes que estan asignados al proyecto del DirectorVinculacion
-        $estudiantes = DB::table('asignacionProyectos')
-            ->join('Estudiantes', 'asignacionProyectos.EstudianteID', '=', 'Estudiantes.EstudianteID')
-            ->join('Proyectos', 'asignacionProyectos.ProyectoID', '=', 'Proyectos.ProyectoID')
-            ->select('Estudiantes.*')
-            ->where('Proyectos.DirectorID', $Director->id)
+        $estudiantes = DB::table('asignacionproyectos')
+            ->join('estudiantes', 'asignacionproyectos.estudianteId', '=', 'estudiantes.estudianteId')
+            ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
+            ->select('estudiantes.*')
+            ->where('proyectos.directorId', $Director->id)
             ->get();
 
         $plantilla->cloneRow('estudiante', count($estudiantes));
@@ -326,8 +327,8 @@ class DirectorVinculacionController extends Controller
         foreach ($estudiantes as $index => $estudiante) {
             $plantilla->setValue('estudiante#' . ($index + 1), $estudiante->Apellidos . ' ' . $estudiante->Nombres);
             $plantilla->setValue('Carrera#' . ($index + 1), $estudiante->Carrera);
-            $plantilla->setValue('FechaInicio#' . ($index + 1), $proyecto->FechaInicio);
-            $plantilla->setValue('FechaFinalizacion#' . ($index + 1), $proyecto->FechaFinalizacion);
+            $plantilla->setValue('FechaInicio#' . ($index + 1), $proyecto->asignaciones->inicioFecha);
+            $plantilla->setValue('FechaFinalizacion#' . ($index + 1), $proyecto->asignaciones->finalizacionFecha);
             $plantilla->setValue('Observaciones#' . ($index + 1), 'Sin ninguna observacion');
 
         }
@@ -350,11 +351,11 @@ class DirectorVinculacionController extends Controller
 
 
         ///obtener ActividadesEstudiante las "evidencias" de los estudiantes que estan asignados al proyecto del DirectorVinculacion
-        $actividades = DB::table('asignacionProyectos')
-            ->join('Estudiantes', 'asignacionProyectos.EstudianteID', '=', 'Estudiantes.EstudianteID')
-            ->join('Proyectos', 'asignacionProyectos.ProyectoID', '=', 'Proyectos.ProyectoID')
-            ->join('actividades_estudiante', 'asignacionProyectos.EstudianteID', '=', 'actividades_estudiante.EstudianteID')
-            ->where('Proyectos.DirectorID', $Director->id)
+        $actividades = DB::table('asignacionproyectos')
+            ->join('estudiantes', 'asignacionproyectos.estudianteId', '=', 'estudiantes.estudianteId')
+            ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
+            ->join('actividades_estudiante', 'asignacionproyectos.estudianteId', '=', 'actividades_estudiante.estudianteId')
+            ->where('proyectos.directorId', $Director->id)
             ->select('actividades_estudiante.*')
             ->get();
 
@@ -363,7 +364,7 @@ class DirectorVinculacionController extends Controller
 
 
         foreach ($actividades as $index => $actividad) {
-            $nombreActividad = $actividad->nombre_actividad;
+            $nombreActividad = $actividad->nombreActividad;
             $nombreFigura = 'Figura ' . $contadorFiguras . ': ' . $nombreActividad;
             $plantilla->setValue('nombre_actividad#' . ($index + 1), $nombreFigura);
 
