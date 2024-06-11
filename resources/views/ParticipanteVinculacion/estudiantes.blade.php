@@ -103,10 +103,12 @@
             <br>
             <button type="submit" class="button1 btn_4">Guardar Calificaciones</button>
         </form>
-
+        <hr>
+        <h4><b>Estudiantes Calificados</b></h4>
+        <hr>
         <!-- Estudiantes Calificados -->
         @if (!$estudiantesConNotas->isEmpty())
-            <h4><b>Estudiantes Calificados</b></h4>
+            
             <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
 
