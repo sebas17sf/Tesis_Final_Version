@@ -546,7 +546,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="card-footer1 d-flex justify-content-center align-items-center"">
-                                                                        
+
                                                                         <button type="submit"
                                                                             class="button input_select1">Guardar
                                                                             Cambios</button>
@@ -741,7 +741,7 @@
                                         </div>
                                     </form>
                                 </div>
-                            </div> centro el boton guardar
+                            </div>  
                 <!-- ----------------------------------------------------------------------------------- -->
 
                 <!-- Tarjeta movible para Editar Periodo -->
