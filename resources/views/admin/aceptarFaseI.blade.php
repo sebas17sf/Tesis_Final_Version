@@ -448,8 +448,8 @@
                                     @foreach ($estudiantesPracticasII as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->Apellidos) }}
-                                                    {{ strtoupper($practicaI->estudiante->Nombres) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->apellidos) }}
+                                                    {{ strtoupper($practicaI->estudiante->nombres) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->Apellidos ?? 'No por el momento') }}
                                                     {{ strtoupper($practicaI->tutorAcademico->Nombres ?? 'No por el momento') }}
@@ -638,8 +638,8 @@
                                     @foreach ($estudiantesPracticasIII as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->Apellidos) }}
-                                                    {{ strtoupper($practicaI->estudiante->Nombres) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->apellidos) }}
+                                                    {{ strtoupper($practicaI->estudiante->nombres) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->Apellidos ?? 'No por el momento') }}
                                                     {{ strtoupper($practicaI->tutorAcademico->Nombres ?? 'No por el momento') }}
@@ -830,8 +830,8 @@
                                     @foreach ($estudiantesPracticasIV as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->Apellidos) }}
-                                                    {{ strtoupper($practicaI->estudiante->Nombres) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->apellidos) }}
+                                                    {{ strtoupper($practicaI->estudiante->nombres) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->Apellidos ?? 'No por el momento') }}
                                                     {{ strtoupper($practicaI->tutorAcademico->Nombres ?? 'No por el momento') }}
@@ -1011,8 +1011,8 @@
                                     @foreach ($estudiantesPracticasV as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->Apellidos) }}
-                                                    {{ strtoupper($practicaI->estudiante->Nombres) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->apellidos) }}
+                                                    {{ strtoupper($practicaI->estudiante->nombres) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->Apellidos ?? 'No por el momento') }}
                                                     {{ strtoupper($practicaI->tutorAcademico->Nombres ?? 'No por el momento') }}

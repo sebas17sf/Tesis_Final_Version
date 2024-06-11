@@ -5,6 +5,96 @@
 @section('title_component', 'Aceptación de Estudiantes')
 
 @section('content')
+<style>
+    .contenedor_alerta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #dff0d8;
+        border: 1px solid #d6e9c6;
+        color: #3c763d;
+        padding: 15px;
+        margin: 15px;
+        border-radius: 4px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+
+    .contenedor_alerta .icon_alert {
+        margin-right: 10px;
+        font-size: 24px;
+    }
+
+    .contenedor_alerta .content_alert {
+        flex: 1;
+    }
+
+    .contenedor_alerta .title {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .contenedor_alerta .icon_remove button {
+        background: none;
+        border: none;
+        color: #3c763d;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    .contenedor_alerta .icon_remove button:hover {
+        color: #2b542c;
+    }
+
+    .contenedor_alerta .body {
+        word-wrap: break-word;
+    }
+</style>
+<section class="contenedor_agregar_periodo">
+
+
+
+    @if (session('success'))
+    <div class="contenedor_alerta success">
+        <div class="icon_alert"><i class="fa-regular fa-check"></i></div>
+        <div class="content_alert">
+            <div class="title">Éxito!</div>
+            <div class="body">{{ session('success') }}</div>
+        </div>
+        <div class="icon_remove">
+            <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.contenedor_alerta .icon_remove button').addEventListener('click', function() {
+            this.closest('.contenedor_alerta').style.display = 'none';
+        });
+    </script>
+    @endif
+
+
+    @if (session('error'))
+    <div class="contenedor_alerta error">
+        <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
+        <div class="content_alert">
+            <div class="title">Error!</div>
+            <div class="body">{{ session('error') }}</div>
+        </div>
+        <div class="icon_remove">
+            <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.contenedor_alerta.error .icon_remove button').addEventListener('click', function() {
+            this.closest('.contenedor_alerta').style.display = 'none';
+        });
+    </script>
+    @endif
 
 
     <section class="contenedor_agregar_periodo">
@@ -243,6 +333,37 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
         <script>
+            function enviarFormulario(e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: 'Enviando correo...',
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+
+                        // Envío del formulario usando AJAX
+                        $.ajax({
+                            url: '/admin/actualizar-estudiante/{{ $estudiante->estudianteId }}',
+                        type: 'PUT',
+                            data: $('#updateEstudianteForm').serialize(),
+                            success: function(response) {
+                            Swal.close();
+                            // Maneja el éxito de la operación aquí
+                            Swal.fire('¡Correo enviado!', '', 'success');
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.close();
+                            // Maneja el error aquí
+                            Swal.fire('Error al enviar el correo', '', 'error');
+                        }
+                    });
+                    }
+                });
+            }
+        </script>
+        <script>
             var delayTimer;
             $('#formBusquedaEstudiantes input[name="search2"]').on('keyup', function() {
                 clearTimeout(delayTimer);
@@ -261,6 +382,8 @@
                 }, 500);
             });
         </script>
+
+
 
          <!--<h4><b>Estudiantes culminados Vinculación a la sociedad</b></h4>
         <hr>

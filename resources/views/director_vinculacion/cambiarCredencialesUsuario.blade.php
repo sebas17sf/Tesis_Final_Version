@@ -23,13 +23,13 @@
         @method('PUT')
         <div class="form-group">
             <label for="nombre">Usuario</label>
-            <input type="text" class="form-control input" id="nombre" name="nombre" value="{{ $usuario->NombreUsuario }}"
+            <input type="text" class="form-control input" id="nombre" name="nombre" value="{{ $usuario->nombreUsuario }}"
                 required>
         </div>
         <div class="form-group">
             <label for="email">Correo Electrónico</label>
             <input type="email" class="form-control input" id="email" name="email"
-                value="{{ $usuario->CorreoElectronico }}" required>
+                value="{{ $usuario->correoElectronico }}" required>
         </div>
         <div class="form-group">
             <label for="password">Nueva Contraseña</label>
@@ -67,7 +67,7 @@
             <table class="mat-mdc-table">
                 <thead class="ng-star-inserted">
                     <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                      
+
                         <th>Hora de Inicio</th>
                         <th>Dirección IP</th>
                         <th>Agente de Usuario</th>

@@ -269,6 +269,7 @@ class AdminController extends Controller
 
 
 
+
     /////////////////////////////visualizar proyectos
 
     public function indexProyectos(Request $request)
@@ -277,7 +278,9 @@ class AdminController extends Controller
 
         $periodos = Periodo::all();
         $nrcs = NrcVinculacion::all();
-        $profesores = ProfesUniversidad::all();
+        $profesores = ProfesUniversidad::whereDoesntHave('proyectosDirigidos')->get();
+
+
 
         $perPage = $request->input('perPage', 10);
         $perPage2 = $request->input('perPage2', 10);
@@ -1063,8 +1066,8 @@ class AdminController extends Controller
 
         $estudiantesPracticas = PracticaI::with('estudiante')
             ->where(function ($query) use ($search) {
-                $query->where('estado', 'En ejecucion')
-                    ->orWhere('estado', 'Finalizado');
+                $query->where('Estado', 'En ejecucion')
+                    ->orWhere('Estado', 'Finalizado');
             })
             ->where(function ($query) use ($search) {
 

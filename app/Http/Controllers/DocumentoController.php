@@ -57,34 +57,34 @@ class DocumentoController extends Controller
         // Obtener el ProyectoID del modelo AsignacionProyecto del estudiante
         $asignacionProyecto = $estudiante->asignaciones->first();
         if ($asignacionProyecto) {
-            $proyectoID = $asignacionProyecto->ProyectoID;
+            $proyectoID = $asignacionProyecto->proyectoId;
         } else {
             return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
         }
 
 
         $datosEstudiantes = DB::table('estudiantes')
-            ->join('asignacionProyectos', 'estudiantes.EstudianteID', '=', 'asignacionProyectos.EstudianteID')
-            ->join('proyectos', 'asignacionProyectos.ProyectoID', '=', 'proyectos.ProyectoID')
+            ->join('asignacionproyectos', 'estudiantes.estudianteId', '=', 'asignacionproyectos.estudianteId')
+            ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
             ->select(
-                'estudiantes.Apellidos',
-                'estudiantes.Nombres',
+                'estudiantes.apellidos',
+                'estudiantes.nombres',
                 'estudiantes.cedula',
-                'estudiantes.Carrera',
-                'estudiantes.Provincia',
-                'asignacionProyectos.FechaInicio',
-                'proyectos.NombreProyecto',
+                'estudiantes.carrera',
+                'estudiantes.provincia',
+                'asignacionproyectos.inicioFecha',
+                'proyectos.nombreProyecto',
             )
-            ->where('asignacionProyectos.ProyectoID', '=', $proyectoID)
-            ->orderBy('estudiantes.Apellidos', 'asc')
+            ->where('asignacionproyectos.proyectoId', '=', $proyectoID)
+            ->orderBy('estudiantes.apellidos', 'asc')
             ->get();
 
         // Obtener Carrera, Provincia y FechaInicio del primer estudiante asignado al proyecto
         $primerEstudiante = $datosEstudiantes->first();
-        $carreraEstudiante = mb_strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú'], ['A', 'E', 'I', 'O', 'U'], $primerEstudiante->Carrera));
-        $provinciaEstudiante = $primerEstudiante->Provincia;
-        $carreraNormal = $primerEstudiante->Carrera;
-        $fechaInicioProyecto = $primerEstudiante->FechaInicio;
+        $carreraEstudiante = mb_strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú'], ['A', 'E', 'I', 'O', 'U'], $primerEstudiante->carrera));
+        $provinciaEstudiante = $primerEstudiante->provincia;
+        $carreraNormal = $primerEstudiante->carrera;
+        $fechaInicioProyecto = $primerEstudiante->inicioFecha;
         $meses = [
             'January' => 'enero',
             'February' => 'febrero',
@@ -100,7 +100,7 @@ class DocumentoController extends Controller
             'December' => 'diciembre',
         ];
         $fechaFormateada = date('d', strtotime($fechaInicioProyecto)) . ' ' . $meses[date('F', strtotime($fechaInicioProyecto))] . ' ' . date('Y', strtotime($fechaInicioProyecto));
-        $NombreProyecto = $primerEstudiante->NombreProyecto;
+        $NombreProyecto = $primerEstudiante->nombreProyecto;
         $horasVinculacionConstante = 96;
 
         // Clonar las filas en la plantilla
@@ -111,8 +111,8 @@ class DocumentoController extends Controller
 
         // Bucle para reemplazar los valores en la plantilla
         foreach ($datosEstudiantes as $index => $estudiante) {
-            $template->setValue('Apellidos#' . ($index + 1), $estudiante->Apellidos);
-            $template->setValue('Nombres#' . ($index + 1), $estudiante->Nombres);
+            $template->setValue('Apellidos#' . ($index + 1), $estudiante->apellidos);
+            $template->setValue('Nombres#' . ($index + 1), $estudiante->nombres);
             $template->setValue('Cedula#' . ($index + 1), $estudiante->cedula);
             $template->setValue('HorasVinculacion#' . ($index + 1), $horasVinculacionConstante);
         }
@@ -192,24 +192,24 @@ class DocumentoController extends Controller
         foreach ($asignaciones as $asignacion) {
             $proyecto = $asignacion->proyecto;
             if ($proyecto) {
-                $nombresProyectos[] = $proyecto->NombreProyecto;
-                $apellidosProfesores[] = $proyecto->asignaciones->first()->proyecto->director->Apellidos;
-                $nombresProfesores[] = $proyecto->asignaciones->first()->proyecto->director->Nombres;
-                $apellidosAsignados[] = $proyecto->asignaciones->first()->docenteParticipante->Apellidos;
-                $nombresAsignados[] = $proyecto->asignaciones->first()->docenteParticipante->Nombres;
+                $nombresProyectos[] = $proyecto->nombreProyecto;
+                $apellidosProfesores[] = $proyecto->asignaciones->first()->proyecto->director->apellidos;
+                $nombresProfesores[] = $proyecto->asignaciones->first()->proyecto->director->nombres;
+                $apellidosAsignados[] = $proyecto->asignaciones->first()->docenteParticipante->apellidos;
+                $nombresAsignados[] = $proyecto->asignaciones->first()->docenteParticipante->nombres;
 
-                $fechaInicio = date('d', strtotime($proyecto->FechaInicio)) . ' ' . $meses[date('F', strtotime($proyecto->FechaInicio))] . ' ' . date('Y', strtotime($proyecto->FechaInicio));
+                $fechaInicio = date('d', strtotime($proyecto->asignaciones->first()->inicioFecha)) . ' ' . $meses[date('F', strtotime($proyecto->asignaciones->first()->inicioFecha))] . ' ' . date('Y', strtotime($proyecto->asignaciones->first()->inicioFecha));
                 $fechasInicio[] = $fechaInicio;
             }
         }
 
 
         // Obtener los datos del estudiante
-        $apellidosEstudiante = $estudiante->Apellidos;
-        $nombresEstudiante = $estudiante->Nombres;
+        $apellidosEstudiante = $estudiante->apellidos;
+        $nombresEstudiante = $estudiante->nombres;
         $cedulaEstudiante = $estudiante->cedula;
-        $carreraEstudiante = $estudiante->Carrera;
-        $provinciaEstudiante = $estudiante->Provincia;
+        $carreraEstudiante = $estudiante->carrera;
+        $provinciaEstudiante = $estudiante->provincia;
 
         // Reemplazar los valores en la plantilla
         $template->setValue('Apellidos', $apellidosEstudiante);
@@ -289,7 +289,7 @@ class DocumentoController extends Controller
         $asignacionProyecto = $estudiante->asignaciones->first();
 
         if ($asignacionProyecto) {
-            $proyectoID = $asignacionProyecto->ProyectoID;
+            $proyectoID = $asignacionProyecto->proyectoId;
         } else {
             // Manejar el caso en que no se encontró la asignación de proyecto para el estudiante
             return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
@@ -297,32 +297,32 @@ class DocumentoController extends Controller
 
         // Consulta para obtener los datos de los estudiantes asignados a un proyecto específico
         $datosEstudiantes = DB::table('estudiantes')
-            ->join('asignacionProyectos', 'estudiantes.EstudianteID', '=', 'asignacionProyectos.EstudianteID')
-            ->join('proyectos', 'asignacionProyectos.ProyectoID', '=', 'proyectos.ProyectoID')
-            ->join('usuarios', 'estudiantes.UserID', '=', 'usuarios.UserID')
-            ->join('profesUniversidad as director', 'proyectos.DirectorID', '=', 'director.id')
-            ->join('profesUniversidad as participante', 'asignacionProyectos.ParticipanteID', '=', 'participante.id')
+            ->join('asignacionproyectos', 'estudiantes.estudianteId', '=', 'asignacionproyectos.estudianteId')
+            ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
+            ->join('usuarios', 'estudiantes.userId', '=', 'usuarios.userId')
+            ->join('profesuniversidad as director', 'proyectos.directorId', '=', 'director.id')
+            ->join('profesuniversidad as participante', 'asignacionproyectos.participanteId', '=', 'participante.id')
             ->select(
-                'estudiantes.Apellidos',
-                'estudiantes.Nombres',
+                'estudiantes.apellidos',
+                'estudiantes.nombres',
                 'estudiantes.cedula',
-                'estudiantes.Departamento',
+                'estudiantes.departamento',
                 'estudiantes.celular',
-                'estudiantes.Carrera',
-                'estudiantes.Provincia',
-                'usuarios.CorreoElectronico',
-                'asignacionProyectos.FechaInicio',
-                'asignacionProyectos.FechaFinalizacion',
-                'proyectos.NombreProyecto',
-                'proyectos.DepartamentoTutor',
-                'director.Nombres as NombreProfesor',
-                'director.Apellidos as ApellidoProfesor',
-                'participante.Nombres as NombreParticipante',
-                'participante.Apellidos as ApellidoParticipante'
+                'estudiantes.carrera',
+                'estudiantes.provincia',
+                'usuarios.correoElectronico',
+                'asignacionproyectos.inicioFecha',
+                'asignacionproyectos.finalizacionFecha',
+                'proyectos.nombreProyecto',
+                'proyectos.departamentoTutor',
+                'director.nombres as NombreProfesor',
+                'director.apellidos as ApellidoProfesor',
+                'participante.nombres as NombreParticipante',
+                'participante.apellidos as ApellidoParticipante'
             )
-            ->where('proyectos.Estado', '=', 'Ejecucion')
-            ->where('asignacionProyectos.ProyectoID', '=', $proyectoID)
-            ->orderBy('estudiantes.Apellidos', 'asc')
+            ->where('proyectos.estado', '=', 'Ejecucion')
+            ->where('asignacionproyectos.proyectoId', '=', $proyectoID)
+            ->orderBy('estudiantes.apellidos', 'asc')
 
             ->get();
 
@@ -335,10 +335,10 @@ class DocumentoController extends Controller
 
         // Obtener Carrera, Provincia y FechaInicio del primer estudiante asignado al proyecto
         $primerEstudiante = $datosEstudiantes->first();
-        $fechaInicioProyecto = $primerEstudiante->FechaInicio;
-        $fechaFinProyecto = $primerEstudiante->FechaFinalizacion;
-        $departamentoProyecto = $primerEstudiante->Departamento;
-        $departamento = "Departamento de " . $primerEstudiante->Departamento;
+        $fechaInicioProyecto = $primerEstudiante->inicioFecha;
+        $fechaFinProyecto = $primerEstudiante->finalizacionFecha;
+        $departamentoProyecto = $primerEstudiante->departamento;
+        $departamento = "Departamento de " . $primerEstudiante->departamento;
 
         $meses = [
             'January' => 'enero',
@@ -360,7 +360,7 @@ class DocumentoController extends Controller
         $fechaFormateada = strtr($fechaFormateada, $meses);
 
 
-        $NombreProyecto = $primerEstudiante->NombreProyecto;
+        $NombreProyecto = $primerEstudiante->nombreProyecto;
         $horasVinculacionConstante = 96;
         $matriz = 'Sede Santo Domingo';
         $nombreProfesor = $primerEstudiante->NombreProfesor;
@@ -384,18 +384,18 @@ class DocumentoController extends Controller
 
         // Bucle para reemplazar los valores en la plantilla
         foreach ($datosEstudiantes as $index => $estudiante) {
-            $apellidoNombre = $estudiante->Apellidos . ' ' . $estudiante->Nombres;
+            $apellidoNombre = $estudiante->apellidos . ' ' . $estudiante->nombres;
             $sheet->setCellValue('C' . ($filaInicio + $index), $apellidoNombre);
             $sheet->setCellValue('D' . ($filaInicio + $index), $estudiante->cedula);
             $sheet->setCellValue('E' . ($filaInicio + $index), $estudiante->celular);
             $horasVinculacionConstanteEntero = round($horasVinculacionConstante);
             $sheet->setCellValue('L' . ($filaInicio + $index), $horasVinculacionConstanteEntero);
-            $sheet->setCellValue('H' . ($filaInicio + $index), $estudiante->Departamento);
-            $sheet->setCellValue('I' . ($filaInicio + $index), $estudiante->Carrera);
+            $sheet->setCellValue('H' . ($filaInicio + $index), $estudiante->departamento);
+            $sheet->setCellValue('I' . ($filaInicio + $index), $estudiante->carrera);
             $sheet->setCellValue('J' . ($filaInicio + $index), $fechaInicioProyecto);
             $sheet->setCellValue('K' . ($filaInicio + $index), $fechaFinProyecto);
             $sheet->setCellValue('G' . ($filaInicio + $index), $matriz);
-            $sheet->setCellValue('F' . ($filaInicio + $index), $estudiante->CorreoElectronico);
+            $sheet->setCellValue('F' . ($filaInicio + $index), $estudiante->correoElectronico);
 
 
         }
@@ -477,51 +477,51 @@ class DocumentoController extends Controller
         $asignacionProyecto = $estudiante->asignaciones->first();
 
         if ($asignacionProyecto) {
-            $proyectoID = $asignacionProyecto->ProyectoID;
+            $proyectoID = $asignacionProyecto->proyectoId;
         } else {
             return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
         }
 
         $datosEstudiantes = DB::table('estudiantes')
-            ->join('asignacionProyectos', 'estudiantes.EstudianteID', '=', 'asignacionProyectos.EstudianteID')
-            ->join('proyectos', 'asignacionProyectos.ProyectoID', '=', 'proyectos.ProyectoID')
-            ->join('ProfesUniversidad as director', 'proyectos.DirectorID', '=', 'director.id')
-            ->join('ProfesUniversidad as participante', 'asignacionProyectos.ParticipanteID', '=', 'participante.id')
+            ->join('asignacionproyectos', 'estudiantes.estudianteId', '=', 'asignacionproyectos.estudianteId')
+            ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
+            ->join('profesuniversidad as director', 'proyectos.directorId', '=', 'director.id')
+            ->join('profesuniversidad as participante', 'asignacionproyectos.participanteId', '=', 'participante.id')
             ->select(
                 'estudiantes.Apellidos',
-                'estudiantes.Nombres',
+                'estudiantes.nombres',
                 'estudiantes.cedula',
-                'estudiantes.Carrera',
-                'estudiantes.Departamento',
-                'estudiantes.Provincia',
-                'asignacionProyectos.FechaInicio',
-                'asignacionProyectos.FechaFinalizacion',
+                'estudiantes.carrera',
+                'estudiantes.departamento',
+                'estudiantes.provincia',
+                'asignacionproyectos.inicioFecha',
+                'asignacionproyectos.finalizacionFecha',
                 'proyectos.NombreProyecto',
-                'director.Nombres as NombreProfesor',
-                'director.Apellidos as ApellidoProfesor',
-                'participante.Nombres as NombreAsignado',
-                'participante.Apellidos as ApellidoAsignado'
+                'director.nombres as NombreProfesor',
+                'director.apellidos as ApellidoProfesor',
+                'participante.nombres as NombreAsignado',
+                'participante.apellidos as ApellidoAsignado'
             )
-            ->where('asignacionProyectos.ProyectoID', '=', $proyectoID)
-            ->orderBy('estudiantes.Apellidos', 'asc')
+            ->where('asignacionproyectos.proyectoId', '=', $proyectoID)
+            ->orderBy('estudiantes.apellidos', 'asc')
             ->get();
 
 
 
         $datosEstudiantes2 = DB::table('estudiantes')
-            ->join('asignacionProyectos', 'estudiantes.EstudianteID', '=', 'asignacionProyectos.EstudianteID')
-            ->join('actividades_estudiante', 'estudiantes.EstudianteID', '=', 'actividades_estudiante.EstudianteID')
-            ->join('proyectos', 'asignacionProyectos.ProyectoID', '=', 'proyectos.ProyectoID')
+            ->join('asignacionproyectos', 'estudiantes.estudianteId', '=', 'asignacionproyectos.estudianteId')
+            ->join('actividades_estudiante', 'estudiantes.estudianteId', '=', 'actividades_estudiante.estudianteId')
+            ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
             ->select(
                 'actividades_estudiante.fecha',
                 'actividades_estudiante.actividades',
-                'actividades_estudiante.numero_horas',
+                'actividades_estudiante.numeroHoras',
                 'actividades_estudiante.evidencias',
-                'actividades_estudiante.nombre_actividad',
+                'actividades_estudiante.nombreActividad',
             )
             ->where('proyectos.Estado', '=', 'Ejecucion')
-            ->where('asignacionProyectos.ProyectoID', '=', $proyectoID)
-            ->orderBy('estudiantes.Apellidos', 'asc')
+            ->where('asignacionproyectos.proyectoId', '=', $proyectoID)
+            ->orderBy('estudiantes.apellidos', 'asc')
             ->get();
 
 
@@ -533,11 +533,11 @@ class DocumentoController extends Controller
 
         // Obtener Carrera, Provincia y FechaInicio del primer estudiante asignado al proyecto
         $primerEstudiante = $datosEstudiantes->first();
-        $carreraEstudiante = strtoupper($primerEstudiante->Carrera);
-        $provinciaEstudiante = $primerEstudiante->Provincia;
-        $departamento = mb_strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú'], ['A', 'E', 'I', 'O', 'U'], $primerEstudiante->Departamento));
-        $fechaInicioProyecto = $primerEstudiante->FechaInicio;
-        $fechaFinProyecto = $primerEstudiante->FechaFinalizacion;
+        $carreraEstudiante = strtoupper($primerEstudiante->carrera);
+        $provinciaEstudiante = $primerEstudiante->provincia;
+        $departamento = mb_strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú'], ['A', 'E', 'I', 'O', 'U'], $primerEstudiante->departamento));
+        $fechaInicioProyecto = $primerEstudiante->inicioFecha;
+        $fechaFinProyecto = $primerEstudiante->finalizacionFecha;
         $meses = [
             'January' => 'enero',
             'February' => 'febrero',
@@ -566,9 +566,9 @@ class DocumentoController extends Controller
         ///obtener nombre del estudiante
         $usuario = auth()->user();
         $estudiante = $usuario->estudiante;
-        $nombreEstudiante = $estudiante->Nombres;
+        $nombreEstudiante = $estudiante->nombres;
         $template->setValue('Nombre', $nombreEstudiante);
-        $apelldioEstudiante = $estudiante->Apellidos;
+        $apelldioEstudiante = $estudiante->apellidos;
         $template->setValue('Apellido', $apelldioEstudiante);
 
         $template->setValue('departamento', $departamento);
@@ -616,9 +616,9 @@ class DocumentoController extends Controller
         foreach ($datosEstudiantes as $index => $estudiante) {
             $template->setValue('Numero#' . ($index + 1), $contador);
             $template->setValue('Apellidos#' . ($index + 1), $estudiante->Apellidos);
-            $template->setValue('Nombres#' . ($index + 1), $estudiante->Nombres);
+            $template->setValue('Nombres#' . ($index + 1), $estudiante->nombres);
             $template->setValue('Cedula#' . ($index + 1), $estudiante->cedula);
-            $template->setValue('Carrera#' . ($index + 1), $estudiante->Carrera);
+            $template->setValue('Carrera#' . ($index + 1), $estudiante->carrera);
             $template->setValue('HorasVinculacion#' . ($index + 1), $horasVinculacionConstante);
             $contador++;
         }
@@ -626,7 +626,7 @@ class DocumentoController extends Controller
             $fechaActividades = date('d, F Y', strtotime($estudiante->fecha));
             $template->setValue('fecha#' . ($index + 1), $fechaActividades);
             $template->setValue('actividades#' . ($index + 1), $estudiante->actividades);
-            $template->setValue('numero_horas#' . ($index + 1), $estudiante->numero_horas);
+            $template->setValue('numero_horas#' . ($index + 1), $estudiante->numeroHoras);
 
             // Decodificar la imagen base64
             $base64Image = $estudiante->evidencias;
@@ -654,7 +654,7 @@ class DocumentoController extends Controller
         $contadorFiguras = 1;
         $template->cloneRow('nombre_actividad', count($datosEstudiantes2));
         foreach ($datosEstudiantes2 as $index => $estudiante) {
-            $nombreActividad = $estudiante->nombre_actividad;
+            $nombreActividad = $estudiante->nombreActividad;
             $nombreFigura = 'Figura ' . $contadorFiguras . ': ' . $nombreActividad;
             $template->setValue('nombre_actividad#' . ($index + 1), $nombreFigura);
 
@@ -807,19 +807,19 @@ class DocumentoController extends Controller
             $estado = $request->input('estado');
             $query = DB::table('proyectos')
                 ->select(
-                    'proyectos.NombreProyecto',
+                    'proyectos.nombreProyecto',
                     'proyectos.codigoProyecto',
-                    'proyectos.FechaInicio',
-                    'proyectos.FechaFinalizacion',
-                    'proyectos.DepartamentoTutor',
-                    'proyectos.Estado',
-                    'proyectos.DescripcionProyecto',
-                    'proyectos.DirectorID',
+                    'proyectos.inicioFecha',
+                    'proyectos.finFecha',
+                    'proyectos.departamentoTutor',
+                    'proyectos.estado',
+                    'proyectos.descripcionProyecto',
+                    'proyectos.directorId',
                 )
-                ->orderBy('proyectos.NombreProyecto', 'asc');
+                ->orderBy('proyectos.nombreProyecto', 'asc');
 
             if ($estado) {
-                $query->where('Estado', $estado);
+                $query->where('estado', $estado);
             }
 
             $datosProyectos = $query->get();
@@ -830,15 +830,15 @@ class DocumentoController extends Controller
             $contador = 1;
 
             foreach ($datosProyectos as $index => $proyecto) {
-                $director = ProfesUniversidad::find($proyecto->DirectorID);
+                $director = ProfesUniversidad::find($proyecto->directorId);
                 $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-                $sheet->setCellValue('B' . ($filaInicio + $index), mb_strtoupper($proyecto->NombreProyecto, 'UTF-8'));
+                $sheet->setCellValue('B' . ($filaInicio + $index), mb_strtoupper($proyecto->nombreProyecto, 'UTF-8'));
                 $sheet->getStyle('B' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
                 $sheet->setCellValue('C' . ($filaInicio + $index), $proyecto->codigoProyecto);
-                $sheet->setCellValue('E' . ($filaInicio + $index), mb_strtoupper($proyecto->DepartamentoTutor, 'UTF-8'));
-                $sheet->setCellValue('F' . ($filaInicio + $index), mb_strtoupper($proyecto->Estado, 'UTF-8'));
+                $sheet->setCellValue('E' . ($filaInicio + $index), mb_strtoupper($proyecto->departamentoTutor, 'UTF-8'));
+                $sheet->setCellValue('F' . ($filaInicio + $index), mb_strtoupper($proyecto->estado, 'UTF-8'));
                 $sheet->getStyle('D' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
-                $sheet->setCellValue('D' . ($filaInicio + $index), mb_strtoupper($proyecto->DescripcionProyecto, 'UTF-8'));
+                $sheet->setCellValue('D' . ($filaInicio + $index), mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
                 $contador++;
             }
 
@@ -933,20 +933,20 @@ class DocumentoController extends Controller
 
         $spreadsheet = IOFactory::load($plantillaPath);
 
-        $datosEstudiantes = DB::table('Empresas')
+        $datosEstudiantes = DB::table('empresas')
             ->select(
-                'Empresas.nombreEmpresa',
-                'Empresas.rucEmpresa',
-                'Empresas.provincia',
-                'Empresas.ciudad',
-                'Empresas.direccion',
-                'Empresas.correo',
-                'Empresas.nombreContacto',
-                'Empresas.telefonoContacto',
-                'Empresas.actividadesMacro',
-                'Empresas.cuposDisponibles',
-                'Empresas.created_at',
-                'Empresas.updated_at',
+                'empresas.nombreEmpresa',
+                'empresas.rucEmpresa',
+                'empresas.provincia',
+                'empresas.ciudad',
+                'empresas.direccion',
+                'empresas.correo',
+                'empresas.nombreContacto',
+                'empresas.telefonoContacto',
+                'empresas.actividadesMacro',
+                'empresas.cuposDisponibles',
+                'empresas.created_at',
+                'empresas.updated_at',
 
             )
             ->get();
@@ -962,18 +962,18 @@ class DocumentoController extends Controller
         // Bucle para reemplazar los valores en la plantilla
         foreach ($datosEstudiantes as $index => $estudiante) {
             $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-            $sheet->setCellValue('B' . ($filaInicio + $index), strtoupper($estudiante->nombreEmpresa));
-            $sheet->setCellValue('C' . ($filaInicio + $index), strtoupper($estudiante->rucEmpresa));
-            $sheet->setCellValue('D' . ($filaInicio + $index), strtoupper($estudiante->provincia));
-            $sheet->setCellValue('E' . ($filaInicio + $index), strtoupper($estudiante->ciudad));
-            $sheet->setCellValue('F' . ($filaInicio + $index), strtoupper($estudiante->direccion));
-            $sheet->setCellValue('G' . ($filaInicio + $index), $estudiante->correo); // No convertir a mayúsculas
-            $sheet->setCellValue('H' . ($filaInicio + $index), strtoupper($estudiante->nombreContacto));
-            $sheet->setCellValue('I' . ($filaInicio + $index), strtoupper($estudiante->telefonoContacto));
-            $sheet->setCellValue('J' . ($filaInicio + $index), strtoupper($estudiante->actividadesMacro));
-            $sheet->setCellValue('K' . ($filaInicio + $index), strtoupper($estudiante->cuposDisponibles));
-            $sheet->setCellValue('L' . ($filaInicio + $index), strtoupper($estudiante->created_at));
-            $sheet->setCellValue('M' . ($filaInicio + $index), strtoupper($estudiante->updated_at));
+            $sheet->setCellValue('B' . ($filaInicio + $index), mb_strtoupper($estudiante->nombreEmpresa, 'UTF-8'));
+            $sheet->setCellValue('C' . ($filaInicio + $index), mb_strtoupper($estudiante->rucEmpresa, 'UTF-8'));
+            $sheet->setCellValue('D' . ($filaInicio + $index), mb_strtoupper($estudiante->provincia, 'UTF-8'));
+            $sheet->setCellValue('E' . ($filaInicio + $index), mb_strtoupper($estudiante->ciudad, 'UTF-8'));
+            $sheet->setCellValue('F' . ($filaInicio + $index), mb_strtoupper($estudiante->direccion, 'UTF-8'));
+            $sheet->setCellValue('G' . ($filaInicio + $index), strtolower($estudiante->correo));
+            $sheet->setCellValue('H' . ($filaInicio + $index), mb_strtoupper($estudiante->nombreContacto, 'UTF-8'));
+            $sheet->setCellValue('I' . ($filaInicio + $index), mb_strtoupper($estudiante->telefonoContacto, 'UTF-8'));
+            $sheet->setCellValue('J' . ($filaInicio + $index), mb_strtoupper($estudiante->actividadesMacro, 'UTF-8'));
+            $sheet->setCellValue('K' . ($filaInicio + $index), mb_strtoupper($estudiante->cuposDisponibles, 'UTF-8'));
+            $sheet->setCellValue('L' . ($filaInicio + $index), mb_strtoupper($estudiante->created_at, 'UTF-8'));
+            $sheet->setCellValue('M' . ($filaInicio + $index), mb_strtoupper($estudiante->updated_at, 'UTF-8'));
 
             $contador++;
         }
@@ -1014,14 +1014,14 @@ class DocumentoController extends Controller
 
 
             $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-            $nombreCombinado = $practica1->estudiante->Apellidos . ' ' . $practica1->estudiante->Nombres;
+            $nombreCombinado = $practica1->estudiante->apellidos . ' ' . $practica1->estudiante->nombres;
             $sheet->setCellValue('B' . ($filaInicio + $index), $nombreCombinado);
             $sheet->setCellValue('C' . ($filaInicio + $index), $practica1->estudiante->cedula);
-            $sheet->setCellValue('D' . ($filaInicio + $index), $practica1->estudiante->espe_id);
-            $sheet->setCellValue('E' . ($filaInicio + $index), $practica1->estudiante->Correo);
-            $sheet->setCellValue('G' . ($filaInicio + $index), $practica1->estudiante->Departamento);
+            $sheet->setCellValue('D' . ($filaInicio + $index), $practica1->estudiante->espeId);
+            $sheet->setCellValue('E' . ($filaInicio + $index), $practica1->estudiante->correo);
+            $sheet->setCellValue('G' . ($filaInicio + $index), $practica1->estudiante->departamento);
             $sheet->setCellValue('F' . ($filaInicio + $index), $practica1->estudiante->Cohorte);
-            $sheet->setCellValue('H' . ($filaInicio + $index), $practica1->estudiante->Carrera);
+            $sheet->setCellValue('H' . ($filaInicio + $index), $practica1->estudiante->carrera);
 
             $sheet->setCellValue('I' . ($filaInicio + $index), $practica1->AreaConocimiento);
             $sheet->setCellValue('J' . ($filaInicio + $index), $practica1->FechaInicio);
@@ -1046,12 +1046,12 @@ class DocumentoController extends Controller
             $sheet->setCellValue('AB' . ($filaInicio + $index), $practica1->TelefonoTutorEmpresarial ?? '');
             $sheet->setCellValue('AC' . ($filaInicio + $index), $practica1->Funcion ?? '');
 
-            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->Apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
-            $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->Cedula ?? '');
-            $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espe_id ?? '');
-            $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->Correo ?? '');
+            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
+            $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->cedula ?? '');
+            $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espeId ?? '');
+            $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->correo ?? '');
             $sheet->setCellValue('AH' . ($filaInicio + $index), 'Docente de tiempo completo');
-            $sheet->setCellValue('AI' . ($filaInicio + $index), $practica1->tutorAcademico->Departamento ?? '');
+            $sheet->setCellValue('AI' . ($filaInicio + $index), $practica1->tutorAcademico->departamento ?? '');
             $sheet->setCellValue('AJ' . ($filaInicio + $index), 'Tecnologias de la Informacion');
 
 
@@ -1099,14 +1099,14 @@ class DocumentoController extends Controller
 
 
             $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-            $nombreCombinado = $practica1->estudiante->Apellidos . ' ' . $practica1->estudiante->Nombres;
+            $nombreCombinado = $practica1->estudiante->apellidos . ' ' . $practica1->estudiante->nombres;
             $sheet->setCellValue('B' . ($filaInicio + $index), $nombreCombinado);
             $sheet->setCellValue('C' . ($filaInicio + $index), $practica1->estudiante->cedula);
-            $sheet->setCellValue('D' . ($filaInicio + $index), $practica1->estudiante->espe_id);
-            $sheet->setCellValue('E' . ($filaInicio + $index), $practica1->estudiante->Correo);
-            $sheet->setCellValue('G' . ($filaInicio + $index), $practica1->estudiante->Departamento);
+            $sheet->setCellValue('D' . ($filaInicio + $index), $practica1->estudiante->espeId);
+            $sheet->setCellValue('E' . ($filaInicio + $index), $practica1->estudiante->correo);
+            $sheet->setCellValue('G' . ($filaInicio + $index), $practica1->estudiante->departamento);
             $sheet->setCellValue('F' . ($filaInicio + $index), $practica1->estudiante->Cohorte);
-            $sheet->setCellValue('H' . ($filaInicio + $index), $practica1->estudiante->Carrera);
+            $sheet->setCellValue('H' . ($filaInicio + $index), $practica1->estudiante->carrera);
 
             $sheet->setCellValue('I' . ($filaInicio + $index), $practica1->AreaConocimiento);
             $sheet->setCellValue('J' . ($filaInicio + $index), $practica1->FechaInicio);
@@ -1131,12 +1131,12 @@ class DocumentoController extends Controller
             $sheet->setCellValue('AB' . ($filaInicio + $index), $practica1->TelefonoTutorEmpresarial ?? '');
             $sheet->setCellValue('AC' . ($filaInicio + $index), $practica1->Funcion ?? '');
 
-            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->Apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
-            $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->Cedula ?? '');
-            $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espe_id ?? '');
-            $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->Correo ?? '');
+            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
+            $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->cedula ?? '');
+            $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espeId ?? '');
+            $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->correo ?? '');
             $sheet->setCellValue('AH' . ($filaInicio + $index), 'Docente de tiempo completo');
-            $sheet->setCellValue('AI' . ($filaInicio + $index), $practica1->tutorAcademico->Departamento ?? '');
+            $sheet->setCellValue('AI' . ($filaInicio + $index), $practica1->tutorAcademico->departamento ?? '');
             $sheet->setCellValue('AJ' . ($filaInicio + $index), 'Tecnologias de la Informacion');
 
 
@@ -1181,14 +1181,14 @@ class DocumentoController extends Controller
 
 
             $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-            $nombreCombinado = $practica1->estudiante->Apellidos . ' ' . $practica1->estudiante->Nombres;
+            $nombreCombinado = $practica1->estudiante->apellidos . ' ' . $practica1->estudiante->nombres;
             $sheet->setCellValue('B' . ($filaInicio + $index), $nombreCombinado);
             $sheet->setCellValue('C' . ($filaInicio + $index), $practica1->estudiante->cedula);
-            $sheet->setCellValue('D' . ($filaInicio + $index), $practica1->estudiante->espe_id);
-            $sheet->setCellValue('E' . ($filaInicio + $index), $practica1->estudiante->Correo);
-            $sheet->setCellValue('G' . ($filaInicio + $index), $practica1->estudiante->Departamento);
+            $sheet->setCellValue('D' . ($filaInicio + $index), $practica1->estudiante->espeId);
+            $sheet->setCellValue('E' . ($filaInicio + $index), $practica1->estudiante->correo);
+            $sheet->setCellValue('G' . ($filaInicio + $index), $practica1->estudiante->departamento);
             $sheet->setCellValue('F' . ($filaInicio + $index), $practica1->estudiante->Cohorte);
-            $sheet->setCellValue('H' . ($filaInicio + $index), $practica1->estudiante->Carrera);
+            $sheet->setCellValue('H' . ($filaInicio + $index), $practica1->estudiante->carrera);
 
             $sheet->setCellValue('I' . ($filaInicio + $index), $practica1->AreaConocimiento);
             $sheet->setCellValue('J' . ($filaInicio + $index), $practica1->FechaInicio);
@@ -1213,12 +1213,12 @@ class DocumentoController extends Controller
             $sheet->setCellValue('AB' . ($filaInicio + $index), $practica1->TelefonoTutorEmpresarial ?? '');
             $sheet->setCellValue('AC' . ($filaInicio + $index), $practica1->Funcion ?? '');
 
-            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->Apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
-            $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->Cedula ?? '');
-            $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espe_id ?? '');
-            $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->Correo ?? '');
+            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
+            $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->cedula ?? '');
+            $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espeId ?? '');
+            $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->correo ?? '');
             $sheet->setCellValue('AH' . ($filaInicio + $index), 'Docente de tiempo completo');
-            $sheet->setCellValue('AI' . ($filaInicio + $index), $practica1->tutorAcademico->Departamento ?? '');
+            $sheet->setCellValue('AI' . ($filaInicio + $index), $practica1->tutorAcademico->departamento ?? '');
             $sheet->setCellValue('AJ' . ($filaInicio + $index), 'Tecnologias de la Informacion');
 
 
@@ -1263,14 +1263,14 @@ class DocumentoController extends Controller
 
 
             $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-            $nombreCombinado = $practica1->estudiante->Apellidos . ' ' . $practica1->estudiante->Nombres;
+            $nombreCombinado = $practica1->estudiante->apellidos . ' ' . $practica1->estudiante->nombres;
             $sheet->setCellValue('B' . ($filaInicio + $index), $nombreCombinado);
             $sheet->setCellValue('C' . ($filaInicio + $index), $practica1->estudiante->cedula);
-            $sheet->setCellValue('D' . ($filaInicio + $index), $practica1->estudiante->espe_id);
-            $sheet->setCellValue('E' . ($filaInicio + $index), $practica1->estudiante->Correo);
-            $sheet->setCellValue('G' . ($filaInicio + $index), $practica1->estudiante->Departamento);
+            $sheet->setCellValue('D' . ($filaInicio + $index), $practica1->estudiante->espeId);
+            $sheet->setCellValue('E' . ($filaInicio + $index), $practica1->estudiante->correo);
+            $sheet->setCellValue('G' . ($filaInicio + $index), $practica1->estudiante->departamento);
             $sheet->setCellValue('F' . ($filaInicio + $index), $practica1->estudiante->Cohorte);
-            $sheet->setCellValue('H' . ($filaInicio + $index), $practica1->estudiante->Carrera);
+            $sheet->setCellValue('H' . ($filaInicio + $index), $practica1->estudiante->carrera);
 
             $sheet->setCellValue('I' . ($filaInicio + $index), $practica1->AreaConocimiento);
             $sheet->setCellValue('J' . ($filaInicio + $index), $practica1->FechaInicio);
@@ -1295,12 +1295,12 @@ class DocumentoController extends Controller
             $sheet->setCellValue('AB' . ($filaInicio + $index), $practica1->TelefonoTutorEmpresarial ?? '');
             $sheet->setCellValue('AC' . ($filaInicio + $index), $practica1->Funcion ?? '');
 
-            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->Apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
-            $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->Cedula ?? '');
-            $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espe_id ?? '');
-            $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->Correo ?? '');
+            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
+            $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->cedula ?? '');
+            $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espeId ?? '');
+            $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->correo ?? '');
             $sheet->setCellValue('AH' . ($filaInicio + $index), 'Docente de tiempo completo');
-            $sheet->setCellValue('AI' . ($filaInicio + $index), $practica1->tutorAcademico->Departamento ?? '');
+            $sheet->setCellValue('AI' . ($filaInicio + $index), $practica1->tutorAcademico->departamento ?? '');
             $sheet->setCellValue('AJ' . ($filaInicio + $index), 'Tecnologias de la Informacion');
 
 
@@ -1345,14 +1345,14 @@ class DocumentoController extends Controller
 
 
             $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-            $nombreCombinado = $practica1->estudiante->Apellidos . ' ' . $practica1->estudiante->Nombres;
+            $nombreCombinado = $practica1->estudiante->apellidos . ' ' . $practica1->estudiante->nombres;
             $sheet->setCellValue('B' . ($filaInicio + $index), $nombreCombinado);
             $sheet->setCellValue('C' . ($filaInicio + $index), $practica1->estudiante->cedula);
-            $sheet->setCellValue('D' . ($filaInicio + $index), $practica1->estudiante->espe_id);
-            $sheet->setCellValue('E' . ($filaInicio + $index), $practica1->estudiante->Correo);
-            $sheet->setCellValue('G' . ($filaInicio + $index), $practica1->estudiante->Departamento);
+            $sheet->setCellValue('D' . ($filaInicio + $index), $practica1->estudiante->espeId);
+            $sheet->setCellValue('E' . ($filaInicio + $index), $practica1->estudiante->correo);
+            $sheet->setCellValue('G' . ($filaInicio + $index), $practica1->estudiante->departamento);
             $sheet->setCellValue('F' . ($filaInicio + $index), $practica1->estudiante->Cohorte);
-            $sheet->setCellValue('H' . ($filaInicio + $index), $practica1->estudiante->Carrera);
+            $sheet->setCellValue('H' . ($filaInicio + $index), $practica1->estudiante->carrera);
 
             $sheet->setCellValue('I' . ($filaInicio + $index), $practica1->AreaConocimiento);
             $sheet->setCellValue('J' . ($filaInicio + $index), $practica1->FechaInicio);
@@ -1377,12 +1377,12 @@ class DocumentoController extends Controller
             $sheet->setCellValue('AB' . ($filaInicio + $index), $practica1->TelefonoTutorEmpresarial ?? '');
             $sheet->setCellValue('AC' . ($filaInicio + $index), $practica1->Funcion ?? '');
 
-            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->Apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
-            $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->Cedula ?? '');
-            $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espe_id ?? '');
-            $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->Correo ?? '');
+            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
+            $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->cedula ?? '');
+            $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espeId ?? '');
+            $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->correo ?? '');
             $sheet->setCellValue('AH' . ($filaInicio + $index), 'Docente de tiempo completo');
-            $sheet->setCellValue('AI' . ($filaInicio + $index), $practica1->tutorAcademico->Departamento ?? '');
+            $sheet->setCellValue('AI' . ($filaInicio + $index), $practica1->tutorAcademico->departamento ?? '');
             $sheet->setCellValue('AJ' . ($filaInicio + $index), 'Tecnologias de la Informacion');
 
 
@@ -1477,7 +1477,7 @@ class DocumentoController extends Controller
         $spreadsheet = IOFactory::load($plantillaPath);
 
         // Obtener todos los docentes ordenados por apellido de manera alfabética
-        $docentes = ProfesUniversidad::orderBy('Apellidos')->get();
+        $docentes = ProfesUniversidad::orderBy('apellidos')->get();
 
         $sheet = $spreadsheet->getActiveSheet();
 
@@ -1491,13 +1491,13 @@ class DocumentoController extends Controller
         // Bucle para reemplazar los valores en la plantilla
         foreach ($docentes as $index => $docente) {
             $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-            $nombreCompleto = mb_strtoupper($docente->Apellidos . ', ' . $docente->Nombres, 'UTF-8');
+            $nombreCompleto = mb_strtoupper($docente->apellidos . ', ' . $docente->nombres, 'UTF-8');
             $sheet->setCellValue('B' . ($filaInicio + $index), $nombreCompleto);
-            $sheet->setCellValue('C' . ($filaInicio + $index), $docente->Correo); // No convertir a mayúsculas
-            $sheet->setCellValue('D' . ($filaInicio + $index), mb_strtoupper($docente->Usuario, 'UTF-8'));
-            $sheet->setCellValue('E' . ($filaInicio + $index), mb_strtoupper($docente->Cedula, 'UTF-8'));
-            $sheet->setCellValue('F' . ($filaInicio + $index), mb_strtoupper($docente->Departamento, 'UTF-8'));
-            $sheet->setCellValue('G' . ($filaInicio + $index), mb_strtoupper($docente->espe_id, 'UTF-8'));
+            $sheet->setCellValue('C' . ($filaInicio + $index), $docente->correo); // No convertir a mayúsculas
+            $sheet->setCellValue('D' . ($filaInicio + $index), mb_strtoupper($docente->usuario, 'UTF-8'));
+            $sheet->setCellValue('E' . ($filaInicio + $index), mb_strtoupper($docente->cedula, 'UTF-8'));
+            $sheet->setCellValue('F' . ($filaInicio + $index), mb_strtoupper($docente->departamento, 'UTF-8'));
+            $sheet->setCellValue('G' . ($filaInicio + $index), mb_strtoupper($docente->espeId, 'UTF-8'));
             $contador++;
         }
 

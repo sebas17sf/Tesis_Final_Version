@@ -229,35 +229,22 @@ function confirmDeleteProject(e) {
 function enviarCorreo(e) {
     e.preventDefault();
 
-    Swal.fire({
-        title: 'Enviando correo...',
-        allowEscapeKey: false,
-        allowOutsideClick: false,
-        didOpen: () => {
-            Swal.showLoading();
-        }
-    });
-
     fetch(e.target.action, {
         method: e.target.method,
         body: new FormData(e.target)
     })
-        .then(response => response.json())
-        .then(data => {
-            Swal.fire({
-                title: 'Éxito',
-                text: 'El correo ha sido enviado',
-                icon: 'success'
-            });
+        .then(response => {
+            if (response.ok) {
+                 window.location.href = '{{ route("admin.estudiantes") }}';
+            } else {
+                 mostrarMensaje('Hubo un error al enviar el correo', 'error');
+            }
         })
         .catch(error => {
-            Swal.fire({
-                title: 'Error',
-                text: 'Hubo un error al enviar el correo',
-                icon: 'error'
-            });
+             mostrarMensaje('Hubo un error al enviar el correo', 'error');
         });
 }
+
 
 
 

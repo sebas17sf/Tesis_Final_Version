@@ -11,9 +11,9 @@ class PracticaIV extends Model
     protected $primaryKey = 'PracticasIV';
 
     protected $fillable = [
-        'EstudianteID',
+        'estudianteId',
         'tipoPractica',
-        'IDEmpresa',
+        'idEmpresa',
         'idTutorAcademico',
         'nrc',
         'CedulaTutorEmpresarial',
@@ -31,23 +31,24 @@ class PracticaIV extends Model
         'AreaConocimiento',
         'Estado'
     ];
-
     public $timestamps = true;
+
 
     public function estudiante()
     {
-        return $this->belongsTo(Estudiante::class, 'EstudianteID', 'EstudianteID');
+        return $this->belongsTo(Estudiante::class, 'estudianteId', 'estudianteId');
     }
 
     public function empresa()
     {
-        return $this->belongsTo(Empresa::class, 'IDEmpresa', 'id');
+        return $this->belongsTo(Empresa::class, 'idEmpresa', 'id');
     }
 
     public function tutorAcademico()
     {
         return $this->belongsTo(ProfesUniversidad::class, 'idTutorAcademico', 'id');
     }
+
 
     public function actividades_practicas()
     {
