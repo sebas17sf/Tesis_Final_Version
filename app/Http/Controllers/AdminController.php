@@ -278,7 +278,9 @@ class AdminController extends Controller
 
         $periodos = Periodo::all();
         $nrcs = NrcVinculacion::all();
-        $profesores = ProfesUniversidad::all();
+        $profesores = ProfesUniversidad::whereDoesntHave('proyectosDirigidos')->get();
+
+
 
         $perPage = $request->input('perPage', 10);
         $perPage2 = $request->input('perPage2', 10);

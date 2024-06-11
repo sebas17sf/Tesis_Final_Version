@@ -22,7 +22,7 @@ class ProfesUniversidad extends Model
 
     public function proyectosDirigidos()
     {
-        return $this->hasMany(Proyecto::class, 'id_directorProyecto');
+        return $this->hasMany(Proyecto::class, 'directorId');
     }
 
      public function proyectosParticipantes()
@@ -51,6 +51,10 @@ class ProfesUniversidad extends Model
     {
         return $this->belongsTo(Usuario::class, 'userId');
     }
+
+
+
+
 
 
 
