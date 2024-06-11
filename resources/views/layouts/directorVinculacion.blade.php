@@ -14,8 +14,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    {{-- <link rel="stylesheet" href="../css/admin/admin.css"> --}}
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
+
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
     <style>
@@ -23,8 +23,7 @@
             overflow-x: hidden;
         }
     </style>
-    {{--   <script src="../js/menu.js"></script> --}}
-    {{--     <script src="{{ asset('js/menu.js') }}"></script> --}}
+
 </head>
 
 <body>
@@ -70,8 +69,6 @@
                                     <li>Estudiantes</li>
                                 </div>
                             </a>
-
-
 
 
                         </ul>

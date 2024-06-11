@@ -89,8 +89,8 @@
 
                                         <th class="tamanio1">NOMBRES</th>
                         <th>ESPE ID</th>
-                        <th "tamanio1">CARRERA</th>
-                        <th "tamanio1">DEPARTAMENTO</th>
+                        <th class= "tamanio1">CARRERA</th>
+                        <th class= "tamanio1">DEPARTAMENTO</th>
                         <th>TAREAS</th>
                         <th>RESULTADOS ALCANZADOS</th>
                         <th>CONOCIMIENTOS EN EL ÁREA</th>
