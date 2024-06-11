@@ -280,29 +280,16 @@
 
                     </div>
 
-
-
-
-
-                    {{-- <form action="{{ route('admin.estudiantes') }}" method="GET">
-    @csrf
-    <div class="form-group d-flex align-items-center">
-        <input type="text" name="buscarEstudiantes" id="buscarEstudiantes"
-            class="form-control input"
-            placeholder="Buscar estudiantes de vinculación a la sociedad">
-
-    </div>
-</form> --}}
                 </div>
                 <div class="contenedor_buscador">
-                    <div>
-                        <form id="formBusquedaEmpresa">
-                            <input type="text" class="input" name="search" value="{{ $search }}" matInput
-                                placeholder="Buscar empresas...">
-                            <i class='bx bx-search-alt'></i>
-                        </form>
+                        <div>
+                            <form id="formBusquedaEmpresa">
+                                <input type="text" class="input" name="search" value="{{ $search }}" matInput
+                                    placeholder="Buscar empresas...">
+                                <i class='bx bx-search-alt'></i>
+                            </form>
+                        </div>
                     </div>
-                </div>
             </div>
 
             <div class="modal fade" id="modalImportar" tabindex="-1" role="dialog"
@@ -342,15 +329,7 @@
                     </div>
 
                 </div>
-                <div class="contenedor_buscador">
-                        <div>
-                            <form id="formBusquedaEmpresa">
-                                <input type="text" class="input" name="search" value="{{ $search }}" matInput
-                                    placeholder="Buscar empresas...">
-                                <i class='bx bx-search-alt'></i>
-                            </form>
-                        </div>
-                    </div>
+                
             </div>
 
             <section>

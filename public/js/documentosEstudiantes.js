@@ -30,15 +30,15 @@ function agregarCampo() {
     nuevoCampo.innerHTML = `
         <div class="form-group col-md-4">
             <label><strong>Nuevo Objetivo Específico:</strong></label>
-            <textarea name="especificos[]" class="form-control" rows="4" required></textarea>
+            <textarea name="especificos[]" class="form-control input" rows="4" required></textarea>
         </div>
         <div class="form-group col-md-4">
             <label><strong>Nuevo Resultado Alcanzado:</strong></label>
-            <textarea name="alcanzados[]" class="form-control" rows="4" required></textarea>
+            <textarea name="alcanzados[]" class="form-control input" rows="4" required></textarea>
         </div>
         <div class="form-group col-md-4">
             <label><strong>Nuevo Porcentaje Alcanzado:</strong></label>
-            <textarea name="porcentaje[]" class="form-control" rows="4" required></textarea>
+            <textarea name="porcentaje[]" class="form-control input" rows="4" required></textarea>
         </div>
     `;
     campos.appendChild(nuevoCampo);

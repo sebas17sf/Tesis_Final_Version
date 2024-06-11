@@ -78,11 +78,11 @@
                 <tbody class="mdc-data-table__content ng-star-inserted">
                     @foreach ($userSessions as $session)
                         <tr>
-                            <td>{{ $session->start_time }}</td>
-                            <td>{{ $session->end_time }}</td>
-                            <td>{{ $session->ip_address }}</td>
-                            <td>{{ $session->browser }}</td>
-                            <td>{{ $session->locality }}</td>
+                        <td style="text-align: center;">{{ $session->start_time }}</td>
+                            <td style="text-align: center;">{{ $session->end_time }}</td>
+                            <td style="text-align: center;">{{ $session->ip_address }}</td>
+                            <td style="text-align: center;">{{ $session->browser }}</td>
+                            <td style="text-align: justify;">{{ $session->locality }}</td>
                         </tr>
                     @endforeach
 

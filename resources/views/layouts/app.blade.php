@@ -17,7 +17,8 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
-    @vite(['resources/scss/app.scss', 'resources/js/app.js'])
+
+@vite(['resources/scss/app.scss', 'resources/js/app.js'])
 </head>
 <style>
     body {
@@ -37,7 +38,7 @@
                         <img src="\img\logos\logo_tesis.png" alt="logo">
                     </div>
                     <div class="title-text">
-                        <p>Gestion Academica</p>
+                        <p>VINCULACIÓN Y PRÁCTICAS</p>
                     </div>
                 </a>
                 <div class="links_site">

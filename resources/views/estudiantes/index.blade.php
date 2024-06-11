@@ -25,6 +25,9 @@
             });
         </script>
     @endif
+    <section class="contenedor_agregar_periodo">
+        <section>
+
     <div class="contenedor_general mat-elevation-z8 ">
 
         <div class="table-container mat-elevation-z8">
@@ -32,7 +35,7 @@
 
                 <div class="container mt-3">
                     <div class="card" style="max-width: 750px; margin: auto;">
-                        <div class="card-header">
+                        <div class="card-header1">
                             <div class=" justify-content-between align-items-center">
                                 <div></div>
                                 <div class="d-flex">
@@ -187,7 +190,7 @@
                                     </label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
-                                                <label
+                                                <label style="text-transform: uppercase; "
                                                     class="form-control label">{{ strtoupper($estudiante->departamento) }}</label>
                                             </div>
                                         </div>
@@ -219,11 +222,11 @@
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                              <th class="tamanio1 ">VERIFICACIÓN</th>
-                                             <th class="tamanio1">ACCIÓN</th>
+                                             <th class="tamanio2">REENVIAR</th>
                                              </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
                                         <tr>
-                    <td style="word-wrap: break-word; text-align: center;">
+                                        <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
                         @if ($estudiante->estado == 'Aprobado')
                             {{ strtoupper('Vinculacion') }}
                         @elseif ($estudiante->estado == 'Aprobado-practicas')
@@ -236,9 +239,9 @@
                     <form method="POST" action="{{ route('estudiantes.resend', ['estudiante' => $estudiante->estudianteId]) }}">
             @csrf
             <div class="text-center">
-                <button type="submit" class="button1 ">
-                    <i class="fa-solid fa-paper-plane-top"></i> Reenviar Información
-                </button>
+            <center> <button type="submit" class="button3  ">
+                    <i class="fa-solid fa-paper-plane-top"></i> 
+                </button> </center>
             </div>
         </form>
         </td>
@@ -260,27 +263,28 @@
         <hr>
         @if ($asignacionProyecto)
         <div class="contenedor_tabla">
-                <div class="table-container mat-elevation-z8">
+                    <div class="table-container mat-elevation-z8">
 
-                    <div id="tablaProyectos">
-                        <table class="mat-mdc-table">
-                            <thead class="ng-star-inserted">
-                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                <th>Nombre del Proyecto</th>
-                        <th>Docente Director</th>
-                        <th>Descripción del Proyecto</th>
-                        <th>Fecha de Asignación</th>
-                        <th>Periodo</th>
+                        <div id="tablaDocentes">
+                            <table class="mat-mdc-table">
+                                <thead class="ng-star-inserted">
+                                    <tr
+                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                        <th class="tamanio">NOMBRE DEL PROYECTO</th>
+                        <th>DOCENTE DIRECTOR</th>
+                        <th>DESCRIPCIÓN</th>
+                        <th>FECHA DE ASIGNACIÓN</th>
+                        <th>PERIODO</th>
                      </tr>
                 </thead>
-                <tbody>
+                <tbody class="mdc-data-table__content ng-star-inserted">
                     <tr>
-                        <td>{{ strtoupper($asignacionProyecto->proyecto->nombreProyecto) }}</td>
-                        <td>{{ strtoupper($asignacionProyecto->proyecto->director->nombres . ' ' . $asignacionProyecto->proyecto->director->apellidos) }}
+                        <td style=" text-transform: uppercase ; text-align:justify">{{ strtoupper($asignacionProyecto->proyecto->nombreProyecto) }}</td>
+                        <td style=" text-transform: uppercase; text-align:left">{{ strtoupper($asignacionProyecto->proyecto->director->nombres . ' ' . $asignacionProyecto->proyecto->director->apellidos) }}
 
-                        <td>{{ strtoupper($asignacionProyecto->proyecto->descripcionProyecto) }}</td>
-                        <td>{{ $asignacionProyecto->asignacionFecha }}</td>
-                        <td>{{ strtoupper($asignacionProyecto->periodo->numeroPeriodo ?? '') }}</td>
+                        <td style=" text-transform: uppercase; text-align:justify">{{ strtoupper($asignacionProyecto->proyecto->descripcionProyecto) }}</td>
+                        <td style=" text-transform: uppercase; text-align:center;">{{ $asignacionProyecto->asignacionFecha }}</td>
+                        <td style=" text-transform: uppercase; text-align:center;">{{ strtoupper($asignacionProyecto->periodo->numeroPeriodo ?? '') }}</td>
 
                      </tr>
 
@@ -292,7 +296,16 @@
     </div>
 
     </div>
-
+</div>
+</div>
     </div>
-
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    <script src="js\admin\acciones.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
 @endsection

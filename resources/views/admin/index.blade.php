@@ -689,7 +689,7 @@
                                     <small class="form-text text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
-                            <div class="card-footer d-flex justify-content-center align-items-center"">
+                            <div class="card-footer d-flex justify-content-center align-items-center">
                                 <button type="submit" class="button01">Guardar NRC</button>
                             </div>
                         </form>

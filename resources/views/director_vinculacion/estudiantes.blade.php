@@ -87,10 +87,10 @@
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
 
-                                        <th>NOMBRES</th>
+                                        <th class="tamanio1">NOMBRES</th>
                         <th>ESPE ID</th>
-                        <th>CARRERA</th>
-                        <th>DEPARTAMENTO</th>
+                        <th "tamanio1">CARRERA</th>
+                        <th "tamanio1">DEPARTAMENTO</th>
                         <th>TAREAS</th>
                         <th>RESULTADOS ALCANZADOS</th>
                         <th>CONOCIMIENTOS EN EL ÁREA</th>
@@ -106,51 +106,51 @@
                 <tbody>
                     @foreach ($estudiantesCalificados as $estudiante)
                         <tr>
-                            <td class="wide-cell">{{ $estudiante->apellidos }} {{ $estudiante->nombres }}</td>
+                            <td class="wide-cell" style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">{{ $estudiante->apellidos }} {{ $estudiante->nombres }}</td>
                             <td>{{ $estudiante->espeId }}</td>
-                            <td class="wide-cell">{{ $estudiante->carrera }}</td>
-                            <td>{{ $estudiante->departamento }}</td>
-                            <td>
+                            <td class="wide-cell" style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">{{ $estudiante->carrera }}</td>
+                            <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">{{ $estudiante->departamento }}</td>
+                            <td style="text-align: center;">
                                 @foreach ($estudiante->notas as $nota)
                                     {{ $nota->tareas }}<br>
                                 @endforeach
                             </td>
-                            <td>
+                            <td style="text-align: center;">
                                 @foreach ($estudiante->notas as $nota)
                                     {{ $nota->resultadosAlcanzados }}<br>
                                 @endforeach
                             </td>
-                            <td>
+                            <td style="text-align: center;">
                                 @foreach ($estudiante->notas as $nota)
                                     {{ $nota->conocimientos }}<br>
                                 @endforeach
                             </td>
-                            <td>
+                            <td style="text-align: center;">
                                 @foreach ($estudiante->notas as $nota)
                                     {{ $nota->adaptabilidad }}<br>
                                 @endforeach
                             </td>
-                            <td>
+                            <td style="text-align: center;">
                                 @foreach ($estudiante->notas as $nota)
                                     {{ $nota->aplicacion }}<br>
                                 @endforeach
                             </td>
-                            <td>
+                            <td style="text-align: center;">
                                 @foreach ($estudiante->notas as $nota)
                                     {{ $nota->CapacidadLiderazgo }}<br>
                                 @endforeach
                             </td>
-                            <td>
+                            <td style="text-align: center;">
                                 @foreach ($estudiante->notas as $nota)
                                     {{ $nota->asistencia }}<br>
                                 @endforeach
                             </td>
-                            <td>
+                            <td style="text-align: center;">
                                 @foreach ($estudiante->notas as $nota)
                                     {{ $nota->informe }}<br>
                                 @endforeach
                             </td>
-                            <td>
+                            <td style="text-align: center;">
                                 @php
                                     $notaTotal = $estudiante->notas->sum(function ($nota) {
                                         return $nota->tareas +
@@ -167,9 +167,9 @@
                                 {{ $notaFinal }}
                             </td>
 
-                            <td>
-                                <button class="btn btn-sm btn-secondary" data-toggle="modal"
-                                data-target="#modalEditarInforme{{ $estudiante->EstudianteID }}">Editar</button>
+                            <td style="text-align: center;">
+                                <center><button class="button3 efects_button btn_editar3" data-toggle="modal"
+                                data-target="#modalEditarInforme{{ $estudiante->EstudianteID }}"><i class="bx bx-edit-alt"></i></button></center>
 
                                 <div class="modal fade" id="modalEditarInforme{{ $estudiante->EstudianteID }}" tabindex="-1" role="dialog" aria-labelledby="modalEditarInforme{{ $estudiante->EstudianteID }}Label" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
@@ -183,8 +183,7 @@
                                                         id="modalEditarNota{{ $estudiante->estudianteId }}Label">
                                                         Nota de Informe {{ $estudiante->Apellidos }}
                                                         {{ $estudiante->Nombres }}</h5>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
+                                                    
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
@@ -199,7 +198,6 @@
                                                 </div>
 
                                                 <div class="modal-footer">
-                                                    <button type="button" class="button" data-dismiss="modal">Cerrar</button>
                                                     <button type="submit" class="button">Guardar</button>
                                                 </div>
                                             </form>

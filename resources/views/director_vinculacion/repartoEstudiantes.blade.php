@@ -35,9 +35,9 @@
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
 
-                                        <th>Estudiante</th>
-                <th>Docente asignado</th>
-                <th>Proyecto</th>
+                                        <th class="tamanio1">Estudiante</th>
+                <th class="tamanio1">Docente asignado</th>
+                <th class="tamanio">Proyecto</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -45,10 +45,10 @@
 
             @foreach ($asignacionesEstudiantesDirector as $asignacion)
                 <tr>
-                    <td>{{ $asignacion->estudiante->apellidos }} {{ $asignacion->estudiante->nombres }}</td>
-                    <td>{{ $asignacion->docenteParticipante->nombres }} {{ $asignacion->docenteParticipante->apellidos }}
+                    <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify; ">{{ $asignacion->estudiante->apellidos }} {{ $asignacion->estudiante->nombres }}</td>
+                    <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify; ">{{ $asignacion->docenteParticipante->nombres }} {{ $asignacion->docenteParticipante->apellidos }}
                     </td>
-                    <td>{{ $asignacion->proyecto->nombreProyecto }}</td>
+                    <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">{{ $asignacion->proyecto->nombreProyecto }}</td>
                     <td>
 
                         <form id="eliminarEstudianteForm_{{ $asignacion->estudianteId }}"
@@ -57,12 +57,12 @@
                             @csrf
                             @method('DELETE')
                             <input type="hidden" name="estudiante_id" value="{{ $asignacion->estudianteId }}">
-                            <button class="button" type="button"
-                                onclick="mostrarSweetAlert('{{ $asignacion->estudianteId }}')">Eliminar del
-                                proyecto</button>
+                            <center><button class="button3 efects_button btn_eliminar3" type="button"
+                                onclick="mostrarSweetAlert('{{ $asignacion->estudianteId }}')"><i
+                                class='bx bx-trash'></i>  </button></center>
                             <input type="hidden" name="motivo_negacion"
                                 id="motivoNegacion_{{ $asignacion->estudianteId }}">
-
+                              
                         </form>
 
                     </td>

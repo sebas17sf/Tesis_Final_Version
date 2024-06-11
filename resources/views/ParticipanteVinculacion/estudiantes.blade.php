@@ -57,10 +57,11 @@
                             <tbody>
                                 @foreach ($estudiantes as $estudiante)
                                     <tr>
-                                        <td class="wide-cell">{{ $estudiante->qpellidos }} {{ $estudiante->nombres }}</td>
-                                        <td>{{ $estudiante->espeId }}</td>
-                                        <td>{{ $estudiante->carrera }}</td>
-                                        <td>{{ $estudiante->departamento }}</td>
+                                        <td class="wide-cell" 
+                                        style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $estudiante->qpellidos }} {{ $estudiante->nombres }}</td>
+                                        <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $estudiante->espeId }}</td>
+                                        <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">{{ $estudiante->carrera }}</td>
+                                        <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $estudiante->departamento }}</td>
                                         <td><input type="number" name="cumple_tareas[]" value="" min="1"
                                                 max="10" step="0.01" required><small class="form-text text-danger"
                                                 style="display: none;"></small></td>
@@ -127,10 +128,11 @@
                 <tbody>
                     @foreach ($estudiantesConNotas as $estudiante)
                         <tr>
-                            <td class="wide-cell">{{ $estudiante->qpellidos }} {{ $estudiante->nombres }}</td>
-                            <td>{{ $estudiante->espeId }}</td>
-                            <td>{{ $estudiante->carrera }}</td>
-                            <td>{{ $estudiante->departamento }}</td>
+                            <td class="wide-cell"
+                            style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $estudiante->qpellidos }} {{ $estudiante->nombres }}</td>
+                            <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $estudiante->espeId }}</td>
+                            <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">{{ $estudiante->carrera }}</td>
+                            <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $estudiante->departamento }}</td>
                             <td>
                                 @foreach ($estudiante->notas as $nota)
                                     {{ $nota->tareas }}<br>
@@ -296,7 +298,8 @@
     </div>
 
 
-
+        </div>
+        </div>
     <hr>
 
     <h4><b>Control de actividades de los estudiantes</b></h4>

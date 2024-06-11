@@ -752,9 +752,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <button type="button" class="button"
-                        onclick="$('#draggableCardAsignarEstudiante').hide()">Cerrar</button>
+                <div class="card-footer  d-flex justify-content-center align-items-center">
                     <button type="submit" class="button">Asignar Proyecto</button>
                 </div>
             </form>

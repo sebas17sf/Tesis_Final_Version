@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Documentacion')
 @section('title_component', 'Generar Documentos')
 @section('content')
     @if (session('success'))
@@ -179,26 +180,30 @@
                                 @else
                                     @foreach ($actividadesRegistradas as $actividad)
                                         <tr>
-                                            <td>{{ $actividad->fecha }}</td>
-                                            <td>{{ $actividad->actividades }}</td>
-                                            <td>{{ $actividad->numeroHoras }}</td>
-                                            <td>{{ $actividad->nombreActividad }}</td>
+                                            <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $actividad->fecha }}</td>
+                                            <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify;">{{ $actividad->actividades }}</td>
+                                            <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $actividad->numeroHoras }}</td>
+                                            <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $actividad->nombreActividad }}</td>
                                             <td><img src="data:image/png;base64,{{ $actividad->evidencias }}"
                                                     alt="Evidencia" width="100" height="100"></td>
-                                            <td>
+                                            <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                            <div class="btn-group shadow-1">
                                                 <form
                                                     action="{{ route('eliminarActividad', $actividad->idActividades) }}"
                                                     method="POST">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                                    <button type="submit" class="button3 efects_button btn_eliminar3"
+                                                            onclick="confirmDelete(event)"><i
+                                                                class='bx bx-trash'></i></button>
                                                 </form>
-
-                                                <button type="button" class="btn btn-primary" data-toggle="modal"
+</div>
+<div class="btn-group shadow-1">
+                                                <button type="button" class="button3 efects_button btn_editar3" data-toggle="modal"
                                                     data-target="#editModal{{ $actividad->idActividades }}">
-                                                    Editar
+                                                    <i class="bx bx-edit-alt"></i>
                                                 </button>
-
+</div>
                                                 <!-- Modal para editar la actividad -->
                                                 <div class="modal fade" id="editModal{{ $actividad->idActividades }}"
                                                     tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
@@ -221,7 +226,7 @@
                                                                 <div class="modal-body">
                                                                     <div class="form-group">
                                                                         <label for="fecha">Fecha</label>
-                                                                        <input type="date" class="form-control"
+                                                                        <input type="date" class="form-control input"
                                                                             id="fecha" name="fecha"
                                                                             value="{{ $actividad->fecha }}">
                                                                     </div>
@@ -245,7 +250,7 @@
                                                                     <div class="form-group">
                                                                         <label for="nombre_actividad">Nombre de la
                                                                             Actividad</label>
-                                                                        <input type="text" class="form-control"
+                                                                        <input type="text" class="form-control input"
                                                                             id="nombre_actividad" name="nombre_actividad"
                                                                             value="{{ $actividad->nombreActividad }}">
                                                                     </div>
