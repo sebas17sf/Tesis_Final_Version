@@ -586,48 +586,42 @@
                     <div class="card-body">
                         <form class="FormularioNRC" action="{{ route('admin.nrcVinculacion') }}" method="post">
                             @csrf
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label class="label" for="nrc"><strong>Ingrese el NRC:</strong></label>
-                                    <input type="text" id="nrc" name="nrc" class="form-control input"
-                                        placeholder="Ingrese 5 números" pattern="\d{5}"
-                                        title="Ingrese exactamente 5 dígitos" value="{{ old('nrc') }}" required>
-                                    <small id="nrcError" class="form-text text-danger" style="display: none;"></small>
-                                    @error('nrc')
-                                        <small class="form-text text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <label for="periodo"><strong>Seleccione el período:</strong></label>
-                                    <select id="periodo" name="periodo" class="form-control input_select input"
-                                        required>
-                                        <option value="">Seleccione un período</option>
-                                        @foreach ($periodos as $periodo)
-                                            <option value="{{ $periodo->id }}"
-                                                {{ old('periodo') == $periodo->id ? 'selected' : '' }}>
-                                                {{ $periodo->numeroPeriodo }} - {{ $periodo->periodo }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('periodo')
-                                        <small class="form-text text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-
-
-                                <div class="form-group
-                                    col-md-6">
-                                    <label for="tipo"><strong>Tipo de proceso:</strong></label>
-                                    <select id="tipo" name="tipo" class="form-control input_select input" required>
-                                        <option value="">Seleccione el proceso</option>
-                                        <option value="Vinculación">Vinculación con la Sociedad</option>
-                                        <option value="Practicas">Practicas preprofesionales</option>
-                                    </select>
-                                    @error('tipo')
-                                        <small class="form-text text-danger">{{ $message }}</small>
-                                    @enderror
-
-                                </div>
+                            <div class="form-group">
+                                <label class="label" for="nrc"><strong>Ingrese el NRC:</strong></label>
+                                <input type="text" id="nrc" name="nrc" class="form-control input"
+                                    placeholder="Ingrese 5 números" pattern="\d{5}"
+                                    title="Ingrese exactamente 5 dígitos" value="{{ old('nrc') }}" required>
+                                <small id="nrcError" class="form-text text-danger" style="display: none;"></small>
+                                @error('nrc')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="periodo"><strong>Seleccione el período:</strong></label>
+                                <select id="periodo" name="periodo" class="form-control input_select input"
+                                    required>
+                                    <option value="">Seleccione un período</option>
+                                    @foreach ($periodos as $periodo)
+                                        <option value="{{ $periodo->id }}"
+                                            {{ old('periodo') == $periodo->id ? 'selected' : '' }}>
+                                            {{ $periodo->numeroPeriodo }} - {{ $periodo->periodo }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('periodo')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="tipo"><strong>Tipo de proceso:</strong></label>
+                                <select id="tipo" name="tipo" class="form-control input_select input" required>
+                                    <option value="">Seleccione el proceso</option>
+                                    <option value="Vinculación">Vinculación con la Sociedad</option>
+                                    <option value="Practicas">Practicas preprofesionales</option>
+                                </select>
+                                @error('tipo')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="card-footer">
                                 <button type="button" class="button01"
@@ -648,37 +642,35 @@
                     <div class="card-body">
                         <form action="{{ route('admin.guardarPeriodo') }}" method="post">
                             @csrf
-                            <div class="form-row">
-                                <div class="form-group col-md-4">
-                                    <label for="periodoInicio"><strong>Ingrese el inicio del Periodo
-                                            Académico:</strong></label>
-                                    <input type="date" id="periodoInicio" name="periodoInicio"
-                                        class="form-control input" value="{{ old('periodoInicio') }}" required>
-                                    @error('periodoInicio')
-                                        <small class="form-text text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="periodoFin"><strong>Ingrese el fin del Periodo Académico:</strong></label>
-                                    <input type="date" id="periodoFin" name="periodoFin" class="form-control input"
-                                        value="{{ old('periodoFin') }}" required>
-                                    @error('periodoFin')
-                                        <small class="form-text text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="numeroPeriodo"><strong>Ingrese el número identificador del
-                                            periodo:</strong></label>
-                                    <input type="text" id="numeroPeriodo" name="numeroPeriodo"
-                                        placeholder="Ingrese 6 números" class="form-control input" pattern="[0-9]{1,6}"
-                                        title="Ingrese un número no negativo de hasta 6 dígitos"
-                                        value="{{ old('numeroPeriodo') }}" required>
-                                    <small id="numeroPeriodoError" class="form-text text-danger"
-                                        style="display: none;"></small>
-                                    @error('numeroPeriodo')
-                                        <small class="form-text text-danger">{{ $message }}</small>
-                                    @enderror
-                                </div>
+                            <div class="form-group">
+                                <label for="periodoInicio"><strong>Ingrese el inicio del Periodo
+                                        Académico:</strong></label>
+                                <input type="date" id="periodoInicio" name="periodoInicio"
+                                    class="form-control input" value="{{ old('periodoInicio') }}" required>
+                                @error('periodoInicio')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="periodoFin"><strong>Ingrese el fin del Periodo Académico:</strong></label>
+                                <input type="date" id="periodoFin" name="periodoFin" class="form-control input"
+                                    value="{{ old('periodoFin') }}" required>
+                                @error('periodoFin')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="numeroPeriodo"><strong>Ingrese el número identificador del
+                                        periodo:</strong></label>
+                                <input type="text" id="numeroPeriodo" name="numeroPeriodo"
+                                    placeholder="Ingrese 6 números" class="form-control input" pattern="[0-9]{1,6}"
+                                    title="Ingrese un número no negativo de hasta 6 dígitos"
+                                    value="{{ old('numeroPeriodo') }}" required>
+                                <small id="numeroPeriodoError" class="form-text text-danger"
+                                    style="display: none;"></small>
+                                @error('numeroPeriodo')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                             <div class="card-footer1">
                                 <button type="button" class="button"
