@@ -103,10 +103,12 @@
             <br>
             <button type="submit" class="button1 btn_4">Guardar Calificaciones</button>
         </form>
-
+        <hr>
+        <h4><b>Estudiantes Calificados</b></h4>
+        <hr>
         <!-- Estudiantes Calificados -->
         @if (!$estudiantesConNotas->isEmpty())
-            <h4>Estudiantes Calificados</h4>
+            
             <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
 
@@ -345,14 +347,9 @@
                     $estudiante = $actividades->first()->estudiante;
                 @endphp
                 <div class="card mr-3 mb-3">
-                    <div class="card-header actividad-card" data-toggle="modal"
-                        data-target="#modalActividad{{ $estudianteId }}">
-                        <h5 class="mb-0">
-                            <button class="button1" type="button">
-                                {{ $estudiante->apellidos }} {{ $estudiante->nombres }}
-                            </button>
-                        </h5>
-                    </div>
+                    <button class="button1" type="button" data-toggle="modal" data-target="#modalActividad{{ $estudianteId }}">
+                        {{ $estudiante->apellidos }} {{ $estudiante->nombres }}
+                    </button>
                     <!-- Modal -->
                     <div class="modal fade" id="modalActividad{{ $estudianteId }}" tabindex="-1" role="dialog"
                         aria-labelledby="modalActividad{{ $estudianteId }}Label" aria-hidden="true">
