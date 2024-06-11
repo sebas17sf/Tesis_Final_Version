@@ -314,7 +314,7 @@
                     <div class="card-header actividad-card" data-toggle="modal"
                         data-target="#modalActividad{{ $estudianteId }}">
                         <h5 class="mb-0">
-                            <button class="btn btn-link" type="button">
+                            <button class="button1" type="button">
                                 {{ $estudiante->apellidos }} {{ $estudiante->nombres }}
                             </button>
                         </h5>
