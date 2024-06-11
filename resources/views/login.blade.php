@@ -26,30 +26,31 @@
 
                 <!-- Boton registrarse -->
                 <div class="button_container_register">
-                    <a href="{{ route('register') }}" class="boton_registro button1" type="button">Regístrate <i
-                            class="fa-regular fa-angles-right"></i></a>
+                    <a href="{{ route('register') }}" class="boton_registro button1" type="button">Regístrate <i class="fa-regular fa-angles-right"></i></a>
                 </div>
 
                 @if (session('success'))
-                    <script>
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Éxito',
-                            text: '{{ session('success') }}',
-                            confirmButtonText: 'Ok'
-                        });
-                    </script>
+                <script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Éxito',
+                        text: '{{ session('
+                        success ') }}',
+                        confirmButtonText: 'Ok'
+                    });
+                </script>
                 @endif
 
                 @if (session('error'))
-                    <script>
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: '{{ session('error') }}',
-                            confirmButtonText: 'Ok'
-                        });
-                    </script>
+                <script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: '{{ session('
+                        error ') }}',
+                        confirmButtonText: 'Ok'
+                    });
+                </script>
                 @endif
 
                 <form class="switch_container" action="{{ route('login') }}" method="POST">
@@ -57,27 +58,30 @@
                     <h3 class="title" id="sesionTitulo">INICIAR SESIÓN</h3>
 
                     @csrf
-                    <div>
-                        <!-- Campo de correo electrónico -->
-                        <label class="description" for="CorreoElectronico">Correo Electrónico</label>
-                        <input class="input form_input" type="email" id="CorreoElectronico" name="CorreoElectronico"
-                            required placeholder="Ingrese su correo electrónico">
-                    </div>
-                    <!-- Campo de contraseña -->
-                    <div>
+
+                    <div class="contenedor_inputs">
+                        <div>
+                            <!-- Campo de correo electrónico -->
+                            <label class="description" for="CorreoElectronico">Correo Electrónico</label>
+                            <input class="input form_input" type="email" id="CorreoElectronico" name="CorreoElectronico" required placeholder="Ingrese su correo electrónico">
+                        </div>
                         <!-- Campo de contraseña -->
-                        <label class="description" for="Contrasena">Contraseña</label>
-                        <div class="input-group" style="position: relative;">
-                            <input type="password" class="input form_input" id="Contrasena" name="Contrasena"
-                                placeholder="Ingrese su contraseña" required>
-                            <div id="togglePassword"
-                                style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
-                                <span class="material-icons">
-                                    visibility
-                                </span>
+                        <div>
+                            <!-- Campo de contraseña -->
+                            <label class="description" for="Contrasena">Contraseña</label>
+                            <div class="input-group" style="position: relative;">
+                                <input type="password" class="input form_input" id="Contrasena" name="Contrasena" placeholder="Ingrese su contraseña" required>
+
+                                <div id="togglePassword" style="position: absolute; top: 55%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+                                    <span class="material-icons">
+                                        visibility
+                                    </span>
+                                </div>
+
                             </div>
                         </div>
                     </div>
+
                     <!-- Olvido la contraseña -->
                     <div class="olvidar_contraseña">
                         <a href="{{ route('recuperar-contrasena') }}">¿Olvidaste tu contraseña?</a>
@@ -85,7 +89,7 @@
 
                     <!-- Botón de enviar -->
                     <div class="btn_contenedor_login">
-                        <button type="submit" class="button">Iniciar Sesión</button>
+                        <button type="submit" class="button efects_button">Iniciar Sesión</button>
                     </div>
 
                     <!-- Divisor de botones -->
@@ -97,8 +101,6 @@
 
                     <!-- Boton de google -->
                     <div class="row">
-
-
                         <a href="/auth/github/redirect" class="btn_google">
                             <img src="/img/logos/github.png" alt="GitHub Icon" width="20">
                             <span>Continuar con GitHub</span>

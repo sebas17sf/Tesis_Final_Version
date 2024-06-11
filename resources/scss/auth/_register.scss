@@ -328,6 +328,13 @@ body {
         flex-direction: column;
         position: absolute;
         width: 100%;
+
+        .contenedor_inputs {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding-bottom: 10px;
+        }
     }
 
     &_circle {

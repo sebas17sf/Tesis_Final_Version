@@ -10,7 +10,7 @@ export default defineConfig({
     }),
     copy({
       targets: [
-        { src: 'public/css/app.css', dest: 'dist/css' } // Copia app.css de public a dist/css
+        { src: 'public/css/app.css', dest: 'dist/css' }  
       ]
     })
   ],

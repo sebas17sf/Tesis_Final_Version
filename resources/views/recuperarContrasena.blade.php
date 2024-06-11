@@ -32,7 +32,7 @@
                 <form class="switch_container" method="POST" action="{{ route('enviar-correo-recuperacion') }}">
 
                     <img class="logo_login" src="\img\logos\logo_tesis.png" alt="Logo">
-                    <h2 class="title">Recuperar Contraseña</h2>
+                    <h2 class="title">RECUPERAR CONTRASEÑA</h2>
 
                     @csrf
                     <!-- Campo de correo electronico -->

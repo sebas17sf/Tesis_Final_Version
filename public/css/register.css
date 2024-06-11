@@ -170,6 +170,21 @@
   background-color: #2d314c;
 }
 
+.button3_1_1 {
+  display: grid;
+  width: 33px;
+  height: 33px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  font-size: 1.2em;
+  font-weight: 700;
+  color: var(--white);
+  background-color: #40456c;
+  border: none;
+  outline: none;
+}
+
 .button4 {
   font-weight: 700;
   font-size: 0.75em;
@@ -1184,6 +1199,12 @@ body {
   flex-direction: column;
   position: absolute;
   width: 100%;
+}
+.switch_container .contenedor_inputs {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  padding-bottom: 10px;
 }
 .switch_circle {
   position: absolute;

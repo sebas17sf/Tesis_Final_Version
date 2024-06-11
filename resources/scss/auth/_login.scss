@@ -251,6 +251,11 @@ body {
     border-radius: 50px;
     background-color: colors.$white;
     box-shadow: 2px 2px 5px colors.$sha2;
+
+    span {
+        font-weight: bold;
+        color: colors.$primary !important;
+    }
 }
 
 .contenedor_campo_requerido {
@@ -330,6 +335,12 @@ body {
         flex-direction: column;
         position: absolute;
         width: 100%;
+
+        .contenedor_inputs {
+            display: grid;
+            gap: 5px;
+            padding-bottom: 10px;
+        }
     }
 
     &_circle {

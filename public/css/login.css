@@ -170,6 +170,21 @@
   background-color: #2d314c;
 }
 
+.button3_1_1 {
+  display: grid;
+  width: 33px;
+  height: 33px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  font-size: 1.2em;
+  font-weight: 700;
+  color: var(--white);
+  background-color: #40456c;
+  border: none;
+  outline: none;
+}
+
 .button4 {
   font-weight: 700;
   font-size: 0.75em;
@@ -1109,6 +1124,13 @@ body {
   background-color: #fff;
   box-shadow: 2px 2px 5px #d1d9e6;
 }
+.btn_google span {
+  font-weight: bold;
+  color: #40456c !important;
+}
+.btn_google span:hover {
+  color: #373b5c !important;
+}
 
 .contenedor_campo_requerido {
   padding-bottom: 5px;
@@ -1182,6 +1204,11 @@ body {
   flex-direction: column;
   position: absolute;
   width: 100%;
+}
+.switch_container .contenedor_inputs {
+  display: grid;
+  gap: 5px;
+  padding-bottom: 10px;
 }
 .switch_circle {
   position: absolute;

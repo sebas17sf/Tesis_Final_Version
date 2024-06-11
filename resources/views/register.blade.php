@@ -27,8 +27,7 @@
 
                 <!-- Boton iniciar sesion -->
                 <div class="button_container_login">
-                    <a href="{{ route('login') }}" class="boton_login button1" type="button" id="toggleButton2"><i
-                            class="fa-regular fa-angles-left"></i>
+                    <a href="{{ route('login') }}" class="boton_login button1" type="button" id="toggleButton2"><i class="fa-regular fa-angles-left"></i>
                         Inicia sesión</a>
                 </div>
 
@@ -37,52 +36,50 @@
                 <form class="switch_container" method="POST" action="{{ route('register') }}">
 
                     <img class="logo_login" src="\img\logos\logo_tesis.png" alt="Logo">
-
+                    <h3 class="title" id="sesionTitulo">REGÍSTRARSE</h3>
                     @csrf
 
-                    <div>
-                        <!-- Campo de nombre -->
-                        <label class="description" for="NombreUsuario">Nombre de Usuario</label>
-                        <input type="text" class="input form_input" id="NombreUsuario" name="NombreUsuario"
-                            placeholder="Ingrese su nombre" required>
-                        @error('NombreUsuario')
+                    <div class="contenedor_inputs">
+                        <div>
+                            <!-- Campo de nombre -->
+                            <label class="description" for="NombreUsuario">Nombre de Usuario</label>
+                            <input type="text" class="input form_input" id="NombreUsuario" name="NombreUsuario" placeholder="Ingrese su nombre" required>
+                            @error('NombreUsuario')
                             <small class="form-text text-danger">{{ $message }}</small>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <!-- Campo de correo electronico -->
-                        <label class="description" for="CorreoElectronico">Correo Electrónico</label>
-                        <input type="email" class="input form_input" id="CorreoElectronico" name="CorreoElectronico"
-                            placeholder="Ingrese su correo eléctronico" required>
-                        @error('CorreoElectronico')
-                            <small class="form-text text-danger">{{ $message }}</small>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <!-- Campo de contraseña -->
-                        <label class="description" for="Contrasena">Contraseña</label>
-                        <div class="input-group" style="position: relative;">
-                            <input type="password" class="input form_input" id="Contrasena" name="Contrasena"
-                                placeholder="Ingrese su contraseña" required>
-                            <div id="togglePassword"
-                                style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); cursor: pointer;">
-                                <span class="material-icons">
-                                    visibility
-                                </span>
-                            </div>
+                            @enderror
                         </div>
-                        @error('Contrasena')
+
+                        <div>
+                            <!-- Campo de correo electronico -->
+                            <label class="description" for="CorreoElectronico">Correo Electrónico</label>
+                            <input type="email" class="input form_input" id="CorreoElectronico" name="CorreoElectronico" placeholder="Ingrese su correo eléctronico" required>
+                            @error('CorreoElectronico')
                             <small class="form-text text-danger">{{ $message }}</small>
-                        @enderror
+                            @enderror
+                        </div>
+
+                        <div>
+                            <!-- Campo de contraseña -->
+                            <label class="description" for="Contrasena">Contraseña</label>
+                            <div class="input-group" style="position: relative;">
+                                <input type="password" class="input form_input" id="Contrasena" name="Contrasena" placeholder="Ingrese su contraseña" required>
+                                <div id="togglePassword" style="position: absolute; top: 55%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+                                    <span class="material-icons">
+                                        visibility
+                                    </span>
+                                </div>
+                            </div>
+                            @error('Contrasena')
+                            <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
                     </div>
 
 
 
                     <!-- Botón de enviar -->
                     <div class="btn_contenedor_register">
-                        <button type="submit" class="button">Registrarse</button>
+                        <button type="submit" class="button efects_button">Registrarse</button>
                     </div>
 
                 </form>
