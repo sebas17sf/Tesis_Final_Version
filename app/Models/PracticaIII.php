@@ -13,10 +13,10 @@ class PracticaIII extends Model
     protected $primaryKey = 'PracticasIII';
 
     protected $fillable = [
-        'EstudianteID',
+        'estudianteId',
         'tipoPractica',
-        'IDEmpresa',
-        'ID_tutorAcademico',
+        'idEmpresa',
+        'idTutorAcademico',
         'nrc',
         'CedulaTutorEmpresarial',
         'NombreTutorEmpresarial',
@@ -33,24 +33,23 @@ class PracticaIII extends Model
         'AreaConocimiento',
         'Estado'
     ];
-
     public $timestamps = true;
+
 
     public function estudiante()
     {
-        return $this->belongsTo(Estudiante::class, 'EstudianteID', 'EstudianteID');
+        return $this->belongsTo(Estudiante::class, 'estudianteId', 'estudianteId');
     }
 
     public function empresa()
     {
-        return $this->belongsTo(Empresa::class, 'IDEmpresa', 'id');
+        return $this->belongsTo(Empresa::class, 'idEmpresa', 'id');
     }
 
     public function tutorAcademico()
     {
         return $this->belongsTo(ProfesUniversidad::class, 'idTutorAcademico', 'id');
     }
-
 
 
     public function actividades_practicas()

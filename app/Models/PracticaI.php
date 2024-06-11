@@ -13,9 +13,9 @@ class PracticaI extends Model
     protected $primaryKey = 'PracticasI';
 
     protected $fillable = [
-        'EstudianteID',
+        'estudianteId',
         'tipoPractica',
-        'IDEmpresa',
+        'idEmpresa',
         'idTutorAcademico',
         'nrc',
         'CedulaTutorEmpresarial',
@@ -38,12 +38,12 @@ class PracticaI extends Model
 
     public function estudiante()
     {
-        return $this->belongsTo(Estudiante::class, 'EstudianteID', 'EstudianteID');
+        return $this->belongsTo(Estudiante::class, 'estudianteId', 'estudianteId');
     }
 
     public function empresa()
     {
-        return $this->belongsTo(Empresa::class, 'IDEmpresa', 'id');
+        return $this->belongsTo(Empresa::class, 'idEmpresa', 'id');
     }
 
     public function tutorAcademico()

@@ -2,29 +2,95 @@
 @section('title', 'Agregar Empresa')
 @section('title_component', 'Agregar Empresa')
 @section('content')
+<style>
+    .contenedor_alerta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #dff0d8;
+        border: 1px solid #d6e9c6;
+        color: #3c763d;
+        padding: 15px;
+        margin: 15px;
+        border-radius: 4px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
 
+    .contenedor_alerta .icon_alert {
+        margin-right: 10px;
+        font-size: 24px;
+    }
+
+    .contenedor_alerta .content_alert {
+        flex: 1;
+    }
+
+    .contenedor_alerta .title {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .contenedor_alerta .icon_remove button {
+        background: none;
+        border: none;
+        color: #3c763d;
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+    .contenedor_alerta .icon_remove button:hover {
+        color: #2b542c;
+    }
+
+    .contenedor_alerta .body {
+        word-wrap: break-word;
+    }
+</style>
     <section class="contenedor_agregar_periodo">
 
+
+
         @if (session('success'))
-            <script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Éxito',
-                    text: '{{ session('success') }}',
-                    confirmButtonText: 'Ok'
-                });
-            </script>
+        <div class="contenedor_alerta success">
+            <div class="icon_alert"><i class="fa-regular fa-check"></i></div>
+            <div class="content_alert">
+                <div class="title">Éxito!</div>
+                <div class="body">{{ session('success') }}</div>
+            </div>
+            <div class="icon_remove">
+                <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+            </div>
+        </div>
+
+        <script>
+            document.querySelector('.contenedor_alerta .icon_remove button').addEventListener('click', function() {
+                this.closest('.contenedor_alerta').style.display = 'none';
+            });
+        </script>
         @endif
 
+
         @if (session('error'))
-            <script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: '{{ session('error') }}',
-                    confirmButtonText: 'Ok'
-                });
-            </script>
+        <div class="contenedor_alerta error">
+            <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
+            <div class="content_alert">
+                <div class="title">Error!</div>
+                <div class="body">{{ session('error') }}</div>
+            </div>
+            <div class="icon_remove">
+                <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+            </div>
+        </div>
+
+        <script>
+            document.querySelector('.contenedor_alerta.error .icon_remove button').addEventListener('click', function() {
+                this.closest('.contenedor_alerta').style.display = 'none';
+            });
+        </script>
         @endif
         <section>
 
@@ -204,7 +270,7 @@
                             </button>
                         </form>
                     </div>
-                
+
                     <div class="tooltip-container">
                         <span class="tooltip-text">Importar archivo</span>
                         <button type="button" class="button3 efects_button btn_copy" data-toggle="modal"
@@ -215,7 +281,7 @@
                     </div>
 
 
-                   
+
 
 
                     {{-- <form action="{{ route('admin.estudiantes') }}" method="GET">
@@ -274,7 +340,7 @@
                             </div>
                         </form>
                     </div>
-                   
+
                 </div>
                 <div class="contenedor_buscador">
                         <div>

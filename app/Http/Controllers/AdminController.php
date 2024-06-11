@@ -269,6 +269,7 @@ class AdminController extends Controller
 
 
 
+
     /////////////////////////////visualizar proyectos
 
     public function indexProyectos(Request $request)
@@ -1063,8 +1064,8 @@ class AdminController extends Controller
 
         $estudiantesPracticas = PracticaI::with('estudiante')
             ->where(function ($query) use ($search) {
-                $query->where('estado', 'En ejecucion')
-                    ->orWhere('estado', 'Finalizado');
+                $query->where('Estado', 'En ejecucion')
+                    ->orWhere('Estado', 'Finalizado');
             })
             ->where(function ($query) use ($search) {
 

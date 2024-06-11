@@ -407,7 +407,7 @@ class DirectorVinculacionController extends Controller
     public function cambiarCredencialesUsuario()
     {
         $usuario = Auth::user();
-        $userSessions = UsuariosSession::where('UserID', $usuario->UserID)->get();
+        $userSessions = UsuariosSession::where('userId', $usuario->userId)->get();
 
         foreach ($userSessions as $session) {
             $session->browser = $this->getBrowserFromUserAgent($session->user_agent);
