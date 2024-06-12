@@ -5,54 +5,6 @@
 @section('title_component', 'Proyectos')
 
 @section('content')
-<style>
-    .contenedor_alerta {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background-color: #dff0d8;
-        border: 1px solid #d6e9c6;
-        color: #3c763d;
-        padding: 15px;
-        margin: 15px;
-        border-radius: 4px;
-        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 1000;
-    }
-
-    .contenedor_alerta .icon_alert {
-        margin-right: 10px;
-        font-size: 24px;
-    }
-
-    .contenedor_alerta .content_alert {
-        flex: 1;
-    }
-
-    .contenedor_alerta .title {
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-
-    .contenedor_alerta .icon_remove button {
-        background: none;
-        border: none;
-        color: #3c763d;
-        font-size: 24px;
-        cursor: pointer;
-    }
-
-    .contenedor_alerta .icon_remove button:hover {
-        color: #2b542c;
-    }
-
-    .contenedor_alerta .body {
-        word-wrap: break-word;
-    }
-</style>
 
 @if (session('success'))
 <div class="contenedor_alerta success">
@@ -130,63 +82,43 @@
 
 
 
-                            <!-- Botón para abrir el card de filtros -->
-                            <div class="tooltip-container">
-                                <span class="tooltip-text">Filtros</span>
-                                <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCard');">
-                                    <i class="fa-solid fa-filter-list"></i>
-                                </button>
-                            </div>
+                          <!-- Botón para abrir el card de filtros -->
+<div class="tooltip-container">
+    <span class="tooltip-text">Filtros</span>
+    <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCard');">
+        <i class="fa-solid fa-filter-list"></i>
+    </button>
+</div>
 
-                            <!-- Card de Filtros -->
-                            <div class="draggable-card1_2" id="filtersCard" style="display: none;">
-                                <div class="card-header">
-                                    <span class="card-title">Filtros</span>
-                                    <button type="button" class="close"
-                                        onclick="document.getElementById('filtersCard').style.display='none'">&times;</button>
-                                </div>
-                                <div class="card-body">
-                                    <form id="filtersForm" method="GET" action="{{ route('admin.indexProyectos') }}">
-                                        <div class="form-group">
-                                            <label for="estado" class="mr-2">Estado del Proyecto:</label>
-                                            <select name="estado" id="estado" class="form-control input input_select"
-                                                onchange="this.form.submit()">
-                                                <option value="">Todos</option>
-                                                <option value="Ejecucion"
-                                                    {{ request('estado') == 'Ejecucion' ? 'selected' : '' }}>En Ejecución
-                                                </option>
-                                                <option value="Terminado"
-                                                    {{ request('estado') == 'Terminado' ? 'selected' : '' }}>Terminado
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+<!-- Card de Filtros -->
+<div class="draggable-card1_2" id="filtersCard" style="display: none;">
+    <div class="card-header">
+        <span class="card-title">Filtros</span>
+        <button type="button" class="close" onclick="closeCard('filtersCard')">&times;</button>
+    </div>
+    <div class="card-body">
+        <form id="filtersForm" method="GET" action="{{ route('admin.indexProyectos') }}">
+            <div class="form-group">
+                <label for="estado" class="mr-2">Estado del Proyecto:</label>
+                <select name="estado" id="estado" class="form-control input input_select">
+                    <option value="">Todos</option>
+                    <option value="Ejecucion" {{ request('estado') == 'Ejecucion' ? 'selected' : '' }}>En Ejecución</option>
+                    <option value="Terminado" {{ request('estado') == 'Terminado' ? 'selected' : '' }}>Terminado</option>
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
 
-                            <!-- Selector de estado del proyecto
-                                <div class="form-group mr-2">
-                                    <label for="estado" class="mr-2"> Estado del Proyecto:</label>
-                                    <form method="GET" action="{{ route('admin.indexProyectos') }}">
-                                        <select name="estado" id="estado" class="form-control input input_select"
-                                            onchange="this.form.submit()">
-                                            <option value="">Todos</option>
-                                            <option value="Ejecucion" {{ old('estado') == 'Ejecucion' ? 'selected' : '' }}>En
-                                                Ejecución</option>
-                                            <option value="Terminado" {{ old('estado') == 'Terminado' ? 'selected' : '' }}>
-                                                Terminado
-                                            </option>
-                                        </select>
-                                    </form>
-                                </div>
-     -->
-                            <!-- Botón de Eliminar Filtros -->
-                            <div class="tooltip-container mx-2">
-                                <span class="tooltip-text">Eliminar Filtros</span>
-                                <button class="button3 efects_button btn_delete_filter" onclick="resetFilters()">
-                                    <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
-                                </button>
-                            </div>
+<!-- Botón de Eliminar Filtros -->
+<div class="tooltip-container mx-2">
+    <span class="tooltip-text">Eliminar Filtros</span>
+    <button class="button3 efects_button btn_delete_filter" onclick="resetFilters()">
+        <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+    </button>
+</div>
+
+
                         </div>
                     </div>
 
@@ -439,64 +371,55 @@
 
 
 
-                            <!-- Botón de Filtros -->
-                            <!-- Botón de Filtros para Profesores y Periodos -->
-                            <div class="tooltip-container mx-1">
-                                <span class="tooltip-text">Filtros</span>
-                                <button class="button3 efects_button btn_filtro"
-                                    onclick="openCard('filtersCardProfesores');">
-                                    <i class="fa-solid fa-filter-list"></i>
-                                </button>
-                            </div>
-                            <!-- Card de Filtros para Profesores y Periodos -->
-                            <div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
-                                <div class="card-header">
-                                    <span class="card-title">Filtros Profesores y Periodos</span>
-                                    <button type="button" class="close"
-                                        onclick="document.getElementById('filtersCardProfesores').style.display='none'">&times;</button>
-                                </div>
-                                <div class="card-body">
-                                    <form id="filterFormProfesores" method="GET"
-                                        action="{{ route('admin.indexProyectos') }}">
-                                        <div class="form-group">
-                                            <label for="profesor">Profesor</label>
-                                            <select name="profesor" id="profesor"
-                                                class="form-control input input_select">
-                                                <option value="">Todos los docentes</option>
-                                                @foreach ($profesores as $profesor)
-                                                    <option value="{{ $profesor->id }}"
-                                                        {{ request('profesor') == $profesor->id ? 'selected' : '' }}>
-                                                        {{ $profesor->Apellidos }} {{ $profesor->Nombres }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="periodos">Períodos</label>
-                                            <select name="periodos" id="periodos"
-                                                class="form-control input input_select">
-                                                <option value="">Todos los periodos</option>
-                                                @foreach ($periodos as $periodo)
-                                                    <option value="{{ $periodo->id }}"
-                                                        {{ request('periodos') == $periodo->id ? 'selected' : '' }}>
-                                                        {{ $periodo->numeroPeriodo }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+<!-- Botón de Filtros para Profesores y Periodos -->
+<div class="tooltip-container mx-1">
+    <span class="tooltip-text">Filtros</span>
+    <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCardProfesores');">
+        <i class="fa-solid fa-filter-list"></i>
+    </button>
+</div>
 
-                            <!-- Botón de Eliminar Filtros Profesores y Periodos -->
-                            <div class="tooltip-container mx-2">
-                                <span class="tooltip-text">Eliminar Filtros</span>
-                                <button class="button3 efects_button btn_delete_filter"
-                                    onclick="resetFiltersProfesores()">
-                                    <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
-                                </button>
-                            </div>
+<!-- Card de Filtros para Profesores y Periodos -->
+<div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
+    <div class="card-header">
+        <span class="card-title">Filtros Profesores y Periodos</span>
+        <button type="button" class="close" onclick="closeCard('filtersCardProfesores')">&times;</button>
+    </div>
+    <div class="card-body">
+        <form id="filterFormProfesores" method="GET" action="{{ route('admin.indexProyectos') }}">
+            <div class="form-group">
+                <label for="profesor">Profesor</label>
+                <select name="profesor" id="profesor" class="form-control input input_select">
+                    <option value="">Todos los docentes</option>
+                    @foreach ($profesores as $profesor)
+                        <option value="{{ $profesor->id }}" {{ request('profesor') == $profesor->id ? 'selected' : '' }}>
+                            {{ $profesor->Apellidos }} {{ $profesor->Nombres }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="periodos">Períodos</label>
+                <select name="periodos" id="periodos" class="form-control input input_select">
+                    <option value="">Todos los periodos</option>
+                    @foreach ($periodos as $periodo)
+                        <option value="{{ $periodo->id }}" {{ request('periodos') == $periodo->id ? 'selected' : '' }}>
+                            {{ $periodo->numeroPeriodo }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
 
+<!-- Botón de Eliminar Filtros Profesores y Periodos -->
+<div class="tooltip-container mx-2">
+    <span class="tooltip-text">Eliminar Filtros</span>
+    <button class="button3 efects_button btn_delete_filter" onclick="resetFiltersProfesores()">
+        <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+    </button>
+</div>
 
                         </div>
                     </div>
@@ -894,25 +817,51 @@
             });
         });
 
-        function openCard(cardId) {
-            $('#' + cardId).css({
-                top: '100px',
-                left: '50px'
-            }).show();
-        }
-
         $(document).ready(function() {
-            // Hacer que el card sea draggable
-            $('.draggable-card1_2').draggable({
-                handle: ".card-header",
-                containment: "window"
-            });
+    // Hacer que el card sea draggable
+    $('.draggable-card1_2').draggable({
+        handle: ".card-header",
+        containment: "window"
+    });
 
-            // Enviar el formulario cuando cambian los select
-            $('#filterFormProyectos select, #filterFormProfesores select').change(function() {
-                submitFormAndKeepOpen($(this).closest('form').attr('id'));
-            });
-        });
+    // Enviar el formulario cuando cambian los select
+    $('#filtersForm select').change(function() {
+        applyFilter();
+    });
+    $('#filterFormProfesores select').change(function() {
+        applyFilter('#filterFormProfesores', '#tablaAsignaciones');
+    });
+});
+
+function openCard(cardId) {
+    $('#' + cardId).css({
+        top: '100px',
+        left: '1px'
+    }).show();
+}
+
+function closeCard(cardId) {
+    $('#' + cardId).hide();
+}
+
+function applyFilter() {
+    $.ajax({
+        url: $('#filtersForm').attr('action'),
+        data: $('#filtersForm').serialize(),
+        success: function(data) {
+            $('#tablaProyectos').html($(data).find('#tablaProyectos').html());
+        },
+        error: function() {
+            alert('Error al aplicar el filtro');
+        }
+    });
+}
+
+function resetFilters() {
+    $('#filtersForm')[0].reset();
+    applyFilter();
+}
+
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

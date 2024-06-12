@@ -5,25 +5,22 @@
 @section('title_component', 'Agregar Proyecto')
 
 @if (session('success'))
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Éxito',
-            text: '{{ session('success') }}',
-            confirmButtonText: 'Ok'
-        });
-    </script>
-@endif
+<div class="contenedor_alerta success">
+    <div class="icon_alert"><i class="fa-regular fa-check"></i></div>
+    <div class="content_alert">
+        <div class="title">Éxito!</div>
+        <div class="body">{{ session('success') }}</div>
+    </div>
+    <div class="icon_remove">
+        <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+    </div>
+</div>
 
-@if (session('error'))
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: '{{ session('error') }}',
-            confirmButtonText: 'Ok'
-        });
-    </script>
+<script>
+    document.querySelector('.contenedor_alerta .icon_remove button').addEventListener('click', function() {
+        this.closest('.contenedor_alerta').style.display = 'none';
+    });
+</script>
 @endif
 
 @section('content')

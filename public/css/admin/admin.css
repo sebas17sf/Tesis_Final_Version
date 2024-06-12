@@ -224,6 +224,7 @@ tr:hover {
     font-size: 11px !important;
     text-align: center;
 }
+
 .draggable-card {
     width: 400px;
     border: 3px solid #40456c;
@@ -234,21 +235,24 @@ tr:hover {
     z-index: 1000;
     padding: 0;
     display: none; /* Oculto por defecto */
-    top: 100px; /* Adjusted top position to avoid the top navigation bar */
-    left: 50px; /* Adjust as necessary to avoid other elements */
+    position: fixed;
+    top: 15%;
+    left: 40%;/* Adjust as necessary to avoid other elements */
 }
 .draggable-card1 {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 550px;
     border: 3px solid #40456c;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    background-color: white;
-    position: fixed; /* Changed from absolute to fixed */
+    background-color: rgb(190, 85, 85);
     z-index: 1000;
-    padding: 0;
-    display: none; /* Oculto por defecto */
-    top: 100px; /* Adjusted top position to avoid the top navigation bar */
-    left: 50px; /* Adjust as necessary to avoid other elements */
+    padding: 20;
+    border-radius: 10px;
+
 }
 .draggable-card1_1 {
     width: 830px;
@@ -263,14 +267,14 @@ tr:hover {
     top: 100px; /* Adjusted top position to avoid the top navigation bar */
     left: 50px; /* Adjust as necessary to avoid other elements */
 }
-/* Estilo para limitar el largo del select */
+/* Estilos para el card de filtros */
 .draggable-card1_2 {
-    width: 255px;
+    width: 250px;
     border: 3px solid #40456c;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     background-color: white;
-    position: fixed; /* Changed from absolute to fixed */
+    position: fixed; /* Fixed positioning */
     z-index: 1000;
     padding: 0;
     display: none; /* Oculto por defecto */
@@ -381,6 +385,15 @@ tr:hover {
         font-size: 16px;
     }
 }
+
+.draggable-card .card-header, 
+.draggable-card1_2 .card-header {
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+
 /* Estilos personalizados para los checkboxes en Select2 */
 .select2-container--default .select2-selection--multiple {
     background-color: #ecf0f3!important;
@@ -500,4 +513,55 @@ tr:hover {
 }
 .select2-results__option {
     padding: 3px 6px;
+}
+.contenedor_alerta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #dff0d8;
+    border: 1px solid #d6e9c6;
+    color: #3c763d;
+    padding: 15px;
+    margin: 15px;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    position: fixed;
+    top: 60px;
+    right: 0px;
+}
+
+.contenedor_alerta .icon_alert {
+    margin-right: 10px;
+    font-size: 24px;
+}
+
+.contenedor_alerta .content_alert {
+    flex: 1;
+}
+
+.contenedor_alerta .title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.contenedor_alerta .icon_remove button {
+    background: none;
+    border: none;
+    color: #3c763d;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.contenedor_alerta .icon_remove button:hover {
+    color: #2b542c;
+}
+
+.contenedor_alerta .body {
+    word-wrap: break-word;
+}
+
+.contenedor_alerta .content_alert {
+    display: grid;
+ gap: 0px !important; 
+    width: 100%;
 }
