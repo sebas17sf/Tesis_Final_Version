@@ -362,7 +362,7 @@ class AdminController extends Controller
 
             ->get()
             ->groupBy(function ($item) {
-                return $item->ProyectoID . '_' . $item->IdPeriodo . "_" . $item->ParticipanteID;
+                return $item->proyectoId . '_' . $item->idPeriodo . "_" . $item->participanteId;
             });
 
         $total = $asignacionesAgrupadas->count();
