@@ -7,7 +7,7 @@
 @section('content')
 
 @if (session('success'))
-<script>
+
 <div class="contenedor_alerta success">
     <div class="icon_alert"><i class="fa-regular fa-check"></i></div>
     <div class="content_alert">
@@ -87,6 +87,7 @@
             });
         </script>
     @endif
+
     <br>
     <section class="contenedor_agregar_periodo">
         <section>
@@ -420,7 +421,7 @@
                                                                             <input type="email" id="correoEditarMaestro"
                                                                                 name="correo"
                                                                                 class="form-control input input_select1"
-                                                                                value="{{ $profesor->correo }}" required>
+                                                                                value="{{ $profesor->correo }}"  readonly>
                                                                             <small id="emailHelp"
                                                                                 class="form-text text-danger"
                                                                                 style="display: none;"></small>
@@ -438,7 +439,7 @@
                                                                             <input type="text" id="Usuario"
                                                                                 name="Usuario"
                                                                                 class="form-control input input_select1"
-                                                                                value="{{ $profesor->usuario }}" required>
+                                                                                value="{{ $profesor->usuario }}" readonly>
                                                                         </div>
                                                                         <div class="form-group col-md-4">
                                                                             <label class="label"
@@ -447,7 +448,7 @@
                                                                             <input type="text" id="espeEditarMaestro"
                                                                                 name="espe_id"
                                                                                 class="form-control input input_select1"
-                                                                                value="{{ $profesor->espeId }}" required>
+                                                                                value="{{ $profesor->espeId }}" readonly>
                                                                             <small id="espeHelp"
                                                                                 class="form-text text-danger"
                                                                                 style="display: none;"></small>
@@ -463,7 +464,7 @@
                                                                             <input type="text" id="cedulaEditarMaestro"
                                                                                 name="cedula"
                                                                                 class="form-control input input_select1"
-                                                                                value="{{ $profesor->cedula }}" required>
+                                                                                value="{{ $profesor->cedula }}" readonly>
                                                                             <small id="cedulaHelp"
                                                                                 class="form-text text-danger"
                                                                                 style="display: none;"></small>

@@ -393,7 +393,7 @@
                     <option value="">Todos los docentes</option>
                     @foreach ($profesores as $profesor)
                         <option value="{{ $profesor->id }}" {{ request('profesor') == $profesor->id ? 'selected' : '' }}>
-                            {{ $profesor->Apellidos }} {{ $profesor->Nombres }}
+                            {{ $profesor->apellidos }} {{ $profesor->nombres }}
                         </option>
                     @endforeach
                 </select>
