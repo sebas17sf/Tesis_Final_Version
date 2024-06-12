@@ -133,7 +133,7 @@
         <button type="button" class="close" onclick="document.getElementById('editCard{{ $profesor->id }}').style.display='none'">&times;</button>
     </div>
     <div class="card-body">
-        <form method="POST" action="{{ route('admin.updateEstado', ['id' => $profesor->userid]) }}">
+        <form method="POST" action="{{ route('admin.updateEstado', ['id' => $profesor->userId]) }}">
             @csrf
             @method('PUT')
             <div class="form-group">
@@ -693,7 +693,7 @@
                                         </div>
                                     </form>
                                 </div>
-                            </div>  
+                            </div>
                 <!-- ----------------------------------------------------------------------------------- -->
 
                 <!-- Tarjeta movible para Editar Periodo -->
