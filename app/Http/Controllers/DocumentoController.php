@@ -1783,6 +1783,11 @@ class DocumentoController extends Controller
 
         $proyectoID = Proyecto::find($proyecto->proyectoId);
 
+        $inicioFecha = $proyecto->inicioFecha;
+        $finalizacionFecha = $proyecto->finalizacionFecha;
+
+
+
         ///obtener nombre del proyecto
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('B7', $proyectoID->nombreProyecto);

@@ -15,6 +15,8 @@ use App\Models\PracticaII;
 use App\Models\PracticaIII;
 use App\Models\PracticaIV;
 use App\Models\PracticaV;
+use Illuminate\Support\Facades\Auth;
+
 
 
 use DateTime;
@@ -24,7 +26,21 @@ class DocumentosVinculacion extends Controller
 {
     public function documentos()
     {
-        return view('ParticipanteVinculacion.documentos');
+        $profesor = Auth::user()->profesorUniversidad;
+
+        $proyecto = AsignacionProyecto::where('participanteId', $profesor->id)
+            ->whereHas('estudiante', function ($query) {
+                $query->where('estado', 'Aprobado');
+            })->first();
+
+
+        $inicioFecha = $proyecto->inicioFecha;
+        $finalizacionFecha = $proyecto->finalizacionFecha;
+
+
+
+
+        return view('ParticipanteVinculacion.documentos', compact( 'inicioFecha', 'finalizacionFecha'));
     }
 
     public function generarEvaluacionEstudiante()
