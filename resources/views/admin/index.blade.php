@@ -15,10 +15,10 @@
         <div class="body">{{ session('success') }}</div>
     </div>
     <div class="icon_remove">
-        <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+        <button class="button4"><i class="fa-regular fa-xmark"></i></button>
     </div>
 </div>
-</script>
+
 <script>
     document.querySelector('.contenedor_alerta .icon_remove button').addEventListener('click', function() {
         this.closest('.contenedor_alerta').style.display = 'none';
