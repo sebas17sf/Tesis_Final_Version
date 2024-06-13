@@ -15,7 +15,7 @@
         <div class="body">{{ session('success') }}</div>
     </div>
     <div class="icon_remove">
-        <button class="button4"><i class="fa-regular fa-xmark"></i></button>
+    <button class="button4 btn_3_2"><i class="fa-sharp fa-regular fa-xmark"></i></button>
     </div>
 </div>
 
@@ -112,6 +112,7 @@
                                         </tr>
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
+                                        
                                         @foreach ($profesoresPendientes as $profesor)
                                             <tr>
                                                 <td class="table1">{{ strtoupper($profesor->nombreUsuario) }}</td>
@@ -354,8 +355,8 @@
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
                                     @if ($profesores->isEmpty())
-                                        <tr class="noExisteRegistro ng-star-inserted" style="text-align:center">
-                                            <td colspan="6">No se encontraron resultados para la búsqueda.</td>
+                                    <tr style="text-align:center">
+                                            <td class="noExisteRegistro1"  style="font-size: 16px !important;"colspan="10">No hay estudiantes en proceso de revisión.</td>
                                         </tr>
                                     @else
                                         @foreach ($profesores as $profesor)

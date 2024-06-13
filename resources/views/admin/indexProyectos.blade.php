@@ -101,6 +101,7 @@
                                     <option value="Terminado" {{ request('estado') == 'Terminado' ? 'selected' : '' }}>Terminado</option>
                                 </select>
                             </div>
+
                             <div class="form-group">
                                 <label for="departamento" class="mr-2">Departamento:</label>
                                 <select name="departamento" id="departamento" class="form-control input input_select">
@@ -155,9 +156,9 @@
                     </thead>
                     <tbody class="mdc-data-table__content ng-star-inserted">
                         @if ($proyectos->isEmpty())
-                            <tr class="noExisteRegistro ng-star-inserted" style="text-align:center">
-                                <td colspan="6">No se encontraron resultados para la busqueda</td>
-                            </tr>
+                        <tr style="text-align:center">
+                                            <td class="noExisteRegistro1"  style="font-size: 16px !important;"colspan="10">No hay estudiantes en proceso de revisión.</td>
+                                        </tr>
                         @else
                             @foreach ($proyectos as $proyecto)
                                 <tr>
@@ -166,7 +167,8 @@
                                     </td>
                                     <td style="text-transform: uppercase; word-wrap: break-word; text-align: left;">
                                         @if ($proyecto->director)
-                                            {{ strtoupper($proyecto->director->apellidos) }} {{ strtoupper($proyecto->director->nombres) }}
+                                            {{ strtoupper($proyecto->director->apellidos) }}
+                                            {{ strtoupper($proyecto->director->nombres) }}
                                         @else
                                             DIRECTOR NO ASIGNADO
                                         @endif
@@ -202,7 +204,8 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="button3 efects_button btn_eliminar3"
-                                                onclick="confirmDeleteProject(event)"><i class='bx bx-trash'></i></button>
+                                                onclick="confirmDeleteProject(event)"><i
+                                                    class='bx bx-trash'></i></button>
                                         </form>
                                     </td>
                                 </tr>
@@ -218,8 +221,7 @@
                 <ul class="pagination">
                     <li class="page-item mx-3">
                         <form method="GET" action="{{ route('admin.indexProyectos') }}#tablaProyectos">
-                            <select class="form-control page-item" class="input" name="perPage"
-                                id="perPage" onchange="this.form.submit()">
+                            <select class="form-control page-item" name="perPage" id="perPage" onchange="this.form.submit()">
                                 <option value="10" @if ($perPage == 10) selected @endif>10</option>
                                 <option value="20" @if ($perPage == 20) selected @endif>20</option>
                                 <option value="50" @if ($perPage == 50) selected @endif>50</option>
@@ -259,6 +261,7 @@
 </div>
 
 
+
     <br>
 
 
@@ -290,54 +293,39 @@
                             </form>
 
                             <!-- Botón de Importar archivo -->
-                            <div class="tooltip-container mx-1">
-                                <span class="tooltip-text">Importar archivo</span>
-                                <button type="button" class="button3 efects_button btn_copy" data-toggle="modal"
-                                    data-target="#modalImportar2">
-                                    <i class="fa fa-upload"></i>
-                                </button>
-                            </div>
+<div class="tooltip-container mx-1">
+    <span class="tooltip-text">Importar archivo</span>
+    <button type="button" class="button3 efects_button btn_copy" onclick="openCard('cardImportarArchivo');">
+        <i class="fa fa-upload"></i>
+    </button>
+</div>
 
-                            <!-- Modal de Importar archivo -->
-                            <div class="modal fade" id="modalImportar2" tabindex="-1" role="dialog"
-                                aria-labelledby="modalImportarLabel2" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <form id="idModalImportar2" action="{{ route('import') }}" method="POST"
-                                            enctype="multipart/form-data">
-                                            @csrf
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Importar archivo</h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="form-group">
-                                                    <div class="input_file">
-                                                        <span id="fileText2" class="fileText">
-                                                            <i class="fa fa-upload"></i> Haz clic aquí para subir el
-                                                            documento
-                                                        </span>
-                                                        <input type="file" class="form-control-file input input_file"
-                                                            id="file2" name="file"
-                                                            onchange="displayFileName(this, 'fileText2')" required>
-                                                        <span title="Eliminar archivo"
-                                                            onclick="removeFile('file2', 'fileText2')"
-                                                            class="remove-icon">✖</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button id="cerrar_modal2" type="button" class="button"
-                                                    data-dismiss="modal">Cerrar</button>
-                                                <button type="submit" class="button">Importar Archivo</button>
-                                            </div>
-                                        </form>
+<!-- Card de Importar archivo -->
+<div class="draggable-card1_4" id="cardImportarArchivo" style="display: none;">
+    <div class="card-header">
+        <span class="card-title">Importar archivo</span>
+        <button type="button" class="close" onclick="closeCard('cardImportarArchivo')">&times;</button>
+    </div>
+    <div class="card-body">
+        <form id="idModalImportar2" action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <div class="input_file input">
+                    <span id="fileText2" class="fileText">
+                        <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
+                    </span>
+                     <input type="file" class="form-control-file input input_file" id="file2" name="file"
+                        onchange="displayFileName(this, 'fileText2')" required>
+                        <span title="Eliminar archivo" onclick="removeFile(this)"
+                        class="remove-icon">✖</span>
                                     </div>
-                                </div>
-                            </div>
+            </div>
+            <div class="card-footer d-flex justify-content-center align-items-center">
+                <button type="submit" class="button">Importar Archivo</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 
 
@@ -429,7 +417,12 @@
                                         <th>FECHA FIN</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="mdc-data-table__content ng-star-inserted">
+                        @if ($asignacionesAgrupadas->isEmpty())
+                        <tr style="text-align:center">
+                                            <td class="noExisteRegistro1"  style="font-size: 16px !important;"colspan="10">No hay estudiantes en proceso de revisión.</td>
+                                        </tr>
+                        @else
                                     @foreach ($asignacionesAgrupadas as $grupo)
                                         <tr>
                                             <td style="text-transform: uppercase; text-align: justify; padding: 5px 8px;">
@@ -466,6 +459,7 @@
                                             <td>{{ $grupo->first()->finalizacionFecha ?? '' }}</td>
                                         </tr>
                                     @endforeach
+                                @endif
                                 </tbody>
                             </table>
                     
@@ -655,7 +649,7 @@
             </form>
         </div>
     </div>
-
+</section>
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -681,7 +675,17 @@
             }, 500);
         });
     </script>
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const nrcSelect = document.getElementById('nrc');
+            const periodoInput = document.getElementById('periodo');
+            nrcSelect.addEventListener('change', function() {
+                const selectedOption = nrcSelect.options[nrcSelect.selectedIndex];
+                const periodo = selectedOption.getAttribute('data-periodo');
+                periodoInput.value = periodo ? periodo : '';
+            });
+        });
+        </script>
     <script>
         var delayTimer;
         $('#formBusquedaAsignaciones input[name="search2"]').on('keyup', function() {
@@ -792,7 +796,13 @@
         containment: "window"
     });
 });
-
+$(document).ready(function() {
+    // Hacer que los cards sean draggable
+    $('.draggable-card1_4').draggable({
+        handle: ".card-header",
+        containment: "window"
+    });
+});
 $(document).ready(function() {
     // Hacer que el card sea draggable
     $('.draggable-card1_2').draggable({
@@ -861,17 +871,7 @@ function resetFiltersProfesores() {
             });
         });
 
-        function displayFileName(input) {
-            const fileName = input.files[0].name;
-            document.getElementById('fileText').textContent = fileName;
-        }
 
-        function removeFile(span) {
-            const input = span.previousElementSibling;
-            input.value = ""; // Clear the input
-            document.getElementById('fileText').innerHTML =
-                '<i class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir el documento'; // Reset the text
-        }
 
         $('#modalImportar').on('hidden.bs.modal', function() {
             console.log('Modal hidden');
@@ -882,5 +882,15 @@ function resetFiltersProfesores() {
         });
 
 
+        function displayFileName(input, fileTextId) {
+        const fileName = input.files[0].name;
+        document.getElementById(fileTextId).textContent = fileName;
+        document.querySelector('.remove-icon').style.display = 'inline'; // Mostrar la "X"
+    }
 
+    function removeFile(inputId, fileTextId) {
+        document.getElementById(inputId).value = ""; // Clear the input
+        document.getElementById(fileTextId).innerHTML = '<i class="fa fa-upload"></i> Haz clic aquí para subir el documento'; // Reset the text
+        document.querySelector('.remove-icon').style.display = 'none'; // Ocultar la "X"
+    }
     @endsection

@@ -311,3 +311,11 @@
     }
   }
 }
+.noExisteRegistro {
+  display: grid;
+  height: 40%;
+  font-size: fonts.$text-error;
+  text-align: center;
+  align-content: end;
+  color: colors.$gray;
+}

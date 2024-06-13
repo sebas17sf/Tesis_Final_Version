@@ -167,9 +167,11 @@
             a {
               @include items-sidebar-styles;
               height: 30px;
+
            
               .icon-sidebar-item {
                 height: 23px;
+                width: 30px;
                 padding: 5px;
                 margin-right: 1px;
 

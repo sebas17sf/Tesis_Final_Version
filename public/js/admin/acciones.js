@@ -129,6 +129,15 @@ $(document).ready(function(){
         containment: "window"
     });
 });
+$(document).ready(function() {
+    // Hacer que los cards sean draggable
+    $('.draggable-card1_4').draggable({
+        handle: ".card-header",
+        containment: "window"
+    });
+});
+
+
 $(document).ready(function(){
     $(".draggable-card1").draggable({
         handle: ".card-header",

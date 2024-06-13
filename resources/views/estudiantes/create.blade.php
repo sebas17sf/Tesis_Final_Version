@@ -44,6 +44,22 @@
                 <input id="Nombres" type="text" class="form-control input" name="Nombres" required autofocus placeholder="Ingrese sus Nombres" pattern="[A-Za-zÁ-úñÑ\s]+" title="Ingrese solo letras (sin caracteres especiales)">
                 <small id="error-message-name" style="color: red; display: none;">Debe ingresar solo caracteres</small>
             </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="espe_id">ESPE ID:</label>
+                        <input id="espe_id" type="text" class="form-control input" name="espe_id" required placeholder="Ingrese su ESPE ID">
+                        <small id="espe_id_error" class="form-text text-danger" style="display: none;">El ESPE ID es de 9 caracteres.</small>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="Cohorte">Cohorte:</label>
+                        <input type="text" class="form-control input" id="Cohorte" name="Cohorte" readonly>
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
                 <label for="celular">Celular:</label>
                 <div class="input-group">
@@ -54,15 +70,7 @@
                 </div>
                 <small id="error-message-cell" style="color: red; display: none;">Número de celular no válido</small>
             </div>
-            <div class="form-group">
-                <label for="Periodo">Periodo:</label>
-                <select class="form-control input input_select" id="Periodo" name="Periodo" required>
-                    <option value="">Seleccione su Periodo</option>
-                    @foreach ($periodos as $periodo)
-                    <option value="{{ $periodo->id }}" data-numero="{{ $periodo->numeroPeriodo }}">{{ $periodo->numeroPeriodo }} {{ $periodo->periodo }}</option>
-                    @endforeach
-                </select>
-            </div>
+            
         </div>
 
         <div class="col-md-4">
@@ -97,21 +105,14 @@
 
         <div class="col-md-4">
             <!-- Tercera columna con dos sub-columnas -->
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="espe_id">ESPE ID:</label>
-                        <input id="espe_id" type="text" class="form-control input" name="espe_id" required placeholder="Ingrese su ESPE ID">
-                        <small id="espe_id_error" class="form-text text-danger" style="display: none;">El ESPE ID es de 9 caracteres.</small>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="Cohorte">Cohorte:</label>
-                        <input type="text" class="form-control input" id="Cohorte" name="Cohorte" readonly>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="Periodo">Periodo:</label>
+                <select class="form-control input input_select" id="Periodo" name="Periodo" required>
+                    <option value="">Seleccione su Periodo</option>
+                    @foreach ($periodos as $periodo)
+                    <option value="{{ $periodo->id }}" data-numero="{{ $periodo->numeroPeriodo }}">{{ $periodo->numeroPeriodo }} {{ $periodo->periodo }}</option>
+                    @endforeach
+                </select>
             </div>
 
             <div class="form-group">

@@ -281,6 +281,19 @@ tr:hover {
     top: 100px; /* Adjusted top position to avoid the top navigation bar */
     left: 50px; /* Adjust as necessary to avoid other elements */
 }
+.draggable-card1_4 {
+    width: 330px;
+    border: 3px solid #40456c;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background-color: white;
+    position: fixed; /* Fixed positioning */
+    z-index: 1000;
+    padding: 0;
+    display: none; /* Oculto por defecto */
+    top: 100px; /* Adjusted top position to avoid the top navigation bar */
+    left: 50px; /* Adjust as necessary to avoid other elements */
+}
 .draggable-card1_3 {
     width: 730px;
     border: 3px solid #40456c;
@@ -367,8 +380,19 @@ tr:hover {
     cursor: pointer;
     color: red;
     font-size: 10px;
-    display: none; /* Initially hidden */
+    display: none; 
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
 }
+.input_file {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+
 .label {
     font-size: 0.7rem !important; /* Increase font size for label */
 }
@@ -496,6 +520,7 @@ tr:hover {
     padding: 0.375rem 0.75rem !important;
     background-color: #ecf0f3 !important;
     border: none !important;
+    font-size: 70% !important;
 }
 .select2-container {
     width: 100% !important; /* Asegura que el contenedor de select2 tome el ancho completo */
@@ -513,6 +538,7 @@ tr:hover {
 }
 .select2-results__option {
     padding: 3px 6px;
+    font-size: 12px !important;
 }
 .contenedor_alerta {
     display: flex;
@@ -565,3 +591,10 @@ tr:hover {
  gap: 0px !important; 
     width: 100%;
 }
+.noExisteRegistro1 {
+    font-size: 12px;
+    text-align: center;
+    height: 40%;
+    align-content: space-around;
+    color: #808080;
+  }

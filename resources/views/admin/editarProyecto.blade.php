@@ -7,9 +7,22 @@
         <h4>Editar Proyecto</h4>
 
         @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
+        <div class="contenedor_alerta error">
+    <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
+    <div class="content_alert">
+        <div class="title">Error!</div>
+        <div class="body">{{ session('error') }}</div>
+    </div>
+    <div class="icon_remove">
+        <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+    </div>
+</div>
+
+<script>
+    document.querySelector('.contenedor_alerta.error .icon_remove button').addEventListener('click', function() {
+        this.closest('.contenedor_alerta').style.display = 'none';
+    });
+</script>
         @endif
 
         <form action="{{ route('admin.updateProyecto', ['ProyectoID' => $proyecto->proyectoId]) }}" method="POST">
