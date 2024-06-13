@@ -65,7 +65,7 @@ class LoginController extends Controller
                 // Generar un identificador único
                 $uuid = (string) Str::uuid();
 
-                $existingSession = UsuariosSession::where('userId', $user->UserID)
+                $existingSession = UsuariosSession::where('userId', $user->userId)
                     ->where('user_agent', $userAgent)
                     ->where('ip_address', $ipAddress)
                     ->first();
