@@ -554,6 +554,7 @@ tr:hover {
     position: fixed;
     top: 60px;
     right: 0px;
+    z-index: 1000;
 }
 
 .contenedor_alerta .icon_alert {
@@ -598,3 +599,21 @@ tr:hover {
     align-content: space-around;
     color: #808080;
   }
+
+
+        .tamanio {
+          width: 90px;
+          min-width: 370px;
+          padding: .3rem !important;
+        } 
+        .tamanio12 {
+          width: 90px;
+          min-width: 220px;
+          padding: .3rem !important;
+        } 
+      
+        .tamanio2 {
+          width: 30px;
+          min-width: 100px;
+          padding: .3rem !important;
+        } 

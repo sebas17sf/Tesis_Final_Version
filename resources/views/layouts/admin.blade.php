@@ -22,7 +22,7 @@
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
     <style>
-        <style>
+  
         .contenedor_alerta {
             display: flex;
             align-items: center;
@@ -72,7 +72,7 @@
             word-wrap: break-word;
         }
     </style>
-    </style>
+
 
 </head>
 

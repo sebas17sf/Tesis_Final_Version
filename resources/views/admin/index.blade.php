@@ -306,21 +306,7 @@
                                 </button>
                             </form>
                         </div>
-                        <!--filtros
-                        <div class="tooltip-container">
-                            <span class="tooltip-text">Filtros</span>
-                        <button class="button3 efects_button btn_filtro" pTooltip="Filtros" tooltipPosition="top"><i
-                                        class="fa-solid fa-filter-list"></i></button>
-                                        </div>
 
-
-<div class="tooltip-container">
-    <span class="tooltip-text">Eliminar Filtros</span>
-    <button class="button3 efects_button btn_delete_filter" onclick="resetFilters()">
-        <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
-    </button>
-</div>
--->
                     </div>
 
                     <!-- Buscador -->

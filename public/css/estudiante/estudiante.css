@@ -36,18 +36,7 @@
 }
 
 
-/* Reduce padding and margins for a smaller table */
-.table-sm th, .table-sm td {
-    padding: 0.3rem;
-}
 
-.table-sm th {
-    font-size: 0.875rem;
-}
-
-.table-sm td {
-    font-size: 0.875rem;
-}
 
 /* Adjust the size of buttons within the table */
 .table-sm .button1 {

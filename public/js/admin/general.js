@@ -16,7 +16,7 @@ $(document).ready(function () {
         $("#toggleFormBtn2").text("Ocultar Registro");
     } else {
         $("#registrarPeriodos").hide();
-        $("#toggleFormBtn2").text("Agregar Cohoerte/Periodo/NRC");
+        $("#toggleFormBtn2").text("Crear Informe de Servicio a la comunidad");
     }
 
     $("#toggleFormBtn").click(function (event) {
@@ -39,7 +39,7 @@ $(document).ready(function () {
             $(this).text("Ocultar Registro");
             localStorage.setItem('periodosVisible', 'true');
         } else {
-            $(this).text("Agregar Cohoerte/Periodo/NRC");
+            $(this).text("Crear Informe de Servicio a la comunidad");
             localStorage.setItem('periodosVisible', 'false');
         }
     });

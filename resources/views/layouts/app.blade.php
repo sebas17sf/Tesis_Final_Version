@@ -18,7 +18,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
 
-@vite(['resources/scss/app.scss', 'resources/js/app.js'])
+    @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 </head>
 <style>
     body {
@@ -139,8 +139,8 @@
         {{--   <button id="btn_top" ><i class='bx bxs-chevrons-up'></i></button> --}}
 
     </section>
- <!-- Scripts de jQuery y Popper.js -->
- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Scripts de jQuery y Popper.js -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <!-- Script de Bootstrap 4.5.2 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -148,10 +148,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="{{ asset('js/estudiante/general.js') }}" ></script>
-
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-      <script src="{{ asset('js/input_file.js') }}"></script>
+    <script src="{{ asset('js/admin/general.js') }}"></script>
+    <script src="{{ asset('js/admin/empresa.js') }}"></script>
+    <script src="{{ asset('js/input_file.js') }}"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="{{ asset('js/menu.js') }}"></script>

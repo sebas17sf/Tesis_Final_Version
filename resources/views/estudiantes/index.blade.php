@@ -3,30 +3,48 @@
 @section('title', 'Información del Estudiante')
 
 @section('title_component', 'Información del Estudiante')
-
 @section('content')
-    @if (session('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Éxito',
-                text: '{{ session('success') }}',
-            });
-        </script>
-    @endif
+@if (session('success'))
+<div class="contenedor_alerta success">
+    <div class="icon_alert"><i class="fa-regular fa-check"></i></div>
+    <div class="content_alert">
+        <div class="title">Éxito!</div>
+        <div class="body">{{ session('success') }}</div>
+    </div>
+    <div class="icon_remove">
+        <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+    </div>
+</div>
 
-    @if (session('error'))
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: '{{ session('error') }}',
-                confirmButtonText: 'Ok'
-            });
-        </script>
-    @endif
+<script>
+    document.querySelector('.contenedor_alerta .icon_remove button').addEventListener('click', function() {
+        this.closest('.contenedor_alerta').style.display = 'none';
+    });
+</script>
+@endif
+
+
+@if (session('error'))
+<div class="contenedor_alerta error">
+    <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
+    <div class="content_alert">
+        <div class="title">Error!</div>
+        <div class="body">{{ session('error') }}</div>
+    </div>
+    <div class="icon_remove">
+        <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+    </div>
+</div>
+
+<script>
+    document.querySelector('.contenedor_alerta.error .icon_remove button').addEventListener('click', function() {
+        this.closest('.contenedor_alerta').style.display = 'none';
+    });
+</script>
+@endif
+
     <section class="contenedor_agregar_periodo">
-        <section>
+
 
     <div class="contenedor_general mat-elevation-z8 ">
 
@@ -206,9 +224,8 @@
 
         </div>
     </div>
-    <section class="contenedor_agregar_periodo">
     <!-- Estado y botón de reenvío de información con ícono -->
-    <div class="formulario agregar_">
+    <div >
     <div class="mt-4">
         <h4><b>
                 <div class="icon-sidebar-item">Estado-Aprobación</div>
@@ -272,7 +289,7 @@
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                         <th class="tamanio">NOMBRE DEL PROYECTO</th>
                         <th>DOCENTE DIRECTOR</th>
-                        <th>DESCRIPCIÓN</th>
+                        <th class="tamanio">DESCRIPCIÓN</th>
                         <th>FECHA DE ASIGNACIÓN</th>
                         <th>PERIODO</th>
                      </tr>
@@ -308,4 +325,15 @@
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+    <style>
+        .contenedor_tabla .table-container table td {
+    width: 200px;
+    min-width: 150px;
+    font-size: 11px !important;
+    padding: .5rem !important;
+}
+.contenedor_tabla .table-container table th {
+    position: sticky;
+    font-size: .8em !important;
+        </style>
 @endsection
