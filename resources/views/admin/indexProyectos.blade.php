@@ -65,13 +65,13 @@
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
                             </div>
-                            <form method="POST" action="{{ route('coordinador.reportesProyectos') }}"
-                                class="form-inline mr-2 d-flex align-items-center">
+                            <form method="POST" action="{{ route('coordinador.reportesProyectos') }}" class="form-inline mr-2 d-flex align-items-center">
                                 @csrf
+                                <input type="hidden" name="estado" id="hiddenEstado" value="{{ request('estado') }}">
+                                <input type="hidden" name="departamento" id="hiddenDepartamento" value="{{ request('departamento') }}">
                                 <div class="tooltip-container">
                                     <span class="tooltip-text">Excel</span>
-                                    <button type="submit" class="button3 efects_button btn_excel" pTooltip="Excel"
-                                        tooltipPosition="top">
+                                    <button type="submit" class="button3 efects_button btn_excel" pTooltip="Excel" tooltipPosition="top">
                                         <i class="fa-solid fa-file-excel"></i>
                                     </button>
                                 </div>
@@ -82,7 +82,9 @@
 
 
 
-                          <!-- Botón para abrir el card de filtros -->
+
+
+                            <!-- Botón para abrir el card de filtros -->
 <div class="tooltip-container">
     <span class="tooltip-text">Filtros</span>
     <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCard');">
@@ -91,26 +93,38 @@
 </div>
 
 <!-- Card de Filtros -->
-<div class="draggable-card1_2" id="filtersCard" style="display: none;">
-    <div class="card-header">
-        <span class="card-title">Filtros</span>
-        <button type="button" class="close" onclick="closeCard('filtersCard')">&times;</button>
-    </div>
-    <div class="card-body">
-        <form id="filtersForm" method="GET" action="{{ route('admin.indexProyectos') }}">
-            <div class="form-group">
-                <label for="estado" class="mr-2">Estado del Proyecto:</label>
-                <select name="estado" id="estado" class="form-control input input_select">
-                    <option value="">Todos</option>
-                    <option value="Ejecucion" {{ request('estado') == 'Ejecucion' ? 'selected' : '' }}>En Ejecución</option>
-                    <option value="Terminado" {{ request('estado') == 'Terminado' ? 'selected' : '' }}>Terminado</option>
-                </select>
-            </div>
-        </form>
-    </div>
-</div>
+                            <div class="draggable-card1_2" id="filtersCard" style="display: none;">
+                                <div class="card-header">
+                                    <span class="card-title">Filtros</span>
+                                    <button type="button" class="close" onclick="closeCard('filtersCard')">&times;</button>
+                                </div>
+                                <div class="card-body">
+                                    <form id="filtersForm" method="GET" action="{{ route('admin.indexProyectos') }}">
+                                        <div class="form-group">
+                                            <label for="estado" class="mr-2">Estado del Proyecto:</label>
+                                            <select name="estado" id="estado" class="form-control input input_select">
+                                                <option value="">Todos</option>
+                                                <option value="Ejecucion" {{ request('estado') == 'Ejecucion' ? 'selected' : '' }}>En Ejecución</option>
+                                                <option value="Terminado" {{ request('estado') == 'Terminado' ? 'selected' : '' }}>Terminado</option>
+                                            </select>
+                                        </div>
 
-<!-- Botón de Eliminar Filtros -->
+                                        <div class="form-group">
+                                            <label for="departamento" class="mr-2">Departamento:</label>
+                                            <select name="departamento" id="departamento" class="form-control input input_select">
+                                                <option value="">Todos</option>
+                                                <option value="Ciencias de la Computación" {{ request('departamento') == 'Ciencias de la Computación' ? 'selected' : '' }}>Ciencias de la Computación</option>
+                                                <option value="Ciencias Exactas" {{ request('departamento') == 'Ciencias Exactas' ? 'selected' : '' }}>Ciencias Exactas</option>
+                                                <option value="Ciencias de la Vida y Agricultura" {{ request('departamento') == 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>Ciencias de la Vida y Agricultura</option>
+                                            </select>
+                                        </div>
+
+                                     </form>
+                                </div>
+                            </div>
+
+
+                            <!-- Botón de Eliminar Filtros -->
 <div class="tooltip-container mx-2">
     <span class="tooltip-text">Eliminar Filtros</span>
     <button class="button3 efects_button btn_delete_filter" onclick="resetFilters()">

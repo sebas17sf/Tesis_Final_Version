@@ -275,6 +275,7 @@ class AdminController extends Controller
     public function indexProyectos(Request $request)
     {
         $estadoProyecto = $request->input('estado');
+        $departamento = $request->input('departamento');
 
         $periodos = Periodo::all();
         $nrcs = NrcVinculacion::all();
@@ -310,7 +311,14 @@ class AdminController extends Controller
         if ($estadoProyecto) {
             $query->where('estado', $estadoProyecto);
         }
+
+        if ($departamento) {
+            $query->where('departamentoTutor', $departamento);
+        }
+
         $proyectos = $query->paginate($perPage, ['*'], 'page', $page);
+
+
 
         $proyectosDisponibles = Proyecto::where('estado', 'Ejecucion')->get();
         $estudiantesAprobados = Estudiante::where('estado', 'Aprobado')

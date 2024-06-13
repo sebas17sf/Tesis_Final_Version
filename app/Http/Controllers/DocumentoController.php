@@ -801,10 +801,16 @@ class DocumentoController extends Controller
 
     public function reportesProyectos(Request $request)
     {
-        try {
+         try {
+            // Ruta de la plantilla
             $plantillaPath = public_path('Plantillas/Reporte-Proyectos.xlsx');
             $spreadsheet = IOFactory::load($plantillaPath);
+
+            // Obtener los parámetros de entrada
             $estado = $request->input('estado');
+            $departamento = $request->input('departamento');
+
+            // Construir la consulta
             $query = DB::table('proyectos')
                 ->select(
                     'proyectos.nombreProyecto',
@@ -814,43 +820,70 @@ class DocumentoController extends Controller
                     'proyectos.departamentoTutor',
                     'proyectos.estado',
                     'proyectos.descripcionProyecto',
-                    'proyectos.directorId',
+                    'proyectos.directorId'
                 )
                 ->orderBy('proyectos.nombreProyecto', 'asc');
 
+            // Agregar filtros a la consulta
             if ($estado) {
                 $query->where('estado', $estado);
             }
 
+            if ($departamento) {
+                $query->where('departamentoTutor', $departamento);
+            }
+
+            // Obtener los resultados
             $datosProyectos = $query->get();
+
+            // Obtener la hoja activa del documento Excel
             $sheet = $spreadsheet->getActiveSheet();
+
+            // Configuración para insertar datos en la fila adecuada
             $filaInicio = 9;
             $cantidadFilas = count($datosProyectos);
-            $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
+
+            // Insertar nuevas filas si es necesario
+            if ($cantidadFilas > 1) {
+                $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
+            }
+
             $contador = 1;
 
+            // Función auxiliar para convertir texto a mayúsculas
+            function convertirAMayusculas($texto)
+            {
+                return mb_strtoupper($texto, 'UTF-8');
+            }
+
+            // Rellenar la hoja de cálculo con los datos del proyecto
             foreach ($datosProyectos as $index => $proyecto) {
                 $director = ProfesUniversidad::find($proyecto->directorId);
+
                 $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-                $sheet->setCellValue('B' . ($filaInicio + $index), mb_strtoupper($proyecto->nombreProyecto, 'UTF-8'));
+                $sheet->setCellValue('B' . ($filaInicio + $index), convertirAMayusculas($proyecto->nombreProyecto));
                 $sheet->getStyle('B' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
                 $sheet->setCellValue('C' . ($filaInicio + $index), $proyecto->codigoProyecto);
-                $sheet->setCellValue('E' . ($filaInicio + $index), mb_strtoupper($proyecto->departamentoTutor, 'UTF-8'));
-                $sheet->setCellValue('F' . ($filaInicio + $index), mb_strtoupper($proyecto->estado, 'UTF-8'));
+                $sheet->setCellValue('D' . ($filaInicio + $index), convertirAMayusculas($proyecto->descripcionProyecto));
                 $sheet->getStyle('D' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
-                $sheet->setCellValue('D' . ($filaInicio + $index), mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
+                $sheet->setCellValue('E' . ($filaInicio + $index), convertirAMayusculas($proyecto->departamentoTutor));
+                $sheet->setCellValue('F' . ($filaInicio + $index), convertirAMayusculas($proyecto->estado));
+
                 $contador++;
             }
 
+            // Crear el archivo Excel
             $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
             $nombreArchivo = 'Reporte-Proyectos.xlsx';
             $writer->save($nombreArchivo);
 
+            // Descargar el archivo y eliminarlo después de enviar
             return response()->download($nombreArchivo)->deleteFileAfterSend(true);
         } catch (\Exception $e) {
             return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
         }
     }
+
 
 
 
