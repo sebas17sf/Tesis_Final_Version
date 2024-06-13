@@ -55,13 +55,13 @@ class DocumentoController extends Controller
         }
 
         // Obtener el ProyectoID del modelo AsignacionProyecto del estudiante
-        $asignacionProyecto = $estudiante->asignaciones->first();
+        $asignacionProyecto = $estudiante->asignaciones-> first();
+
         if ($asignacionProyecto) {
             $proyectoID = $asignacionProyecto->proyectoId;
         } else {
-            return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
+             return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
         }
-
 
         $datosEstudiantes = DB::table('estudiantes')
             ->join('asignacionproyectos', 'estudiantes.estudianteId', '=', 'asignacionproyectos.estudianteId')
@@ -75,9 +75,10 @@ class DocumentoController extends Controller
                 'asignacionproyectos.inicioFecha',
                 'proyectos.nombreProyecto',
             )
-            ->where('asignacionproyectos.proyectoId', '=', $proyectoID)
-            ->orderBy('estudiantes.apellidos', 'asc')
-            ->get();
+            ->where('asignacionproyectos.proyectoId', $proyectoID)
+        ->where('estudiantes.estado', 'Aprobado')
+        ->orderBy('estudiantes.apellidos', 'asc')
+        ->get();
 
         // Obtener Carrera, Provincia y FechaInicio del primer estudiante asignado al proyecto
         $primerEstudiante = $datosEstudiantes->first();

@@ -161,7 +161,7 @@
                         <tbody class="mdc-data-table__content ng-star-inserted">
                             @if ($actividadesRegistradas->isEmpty())
                             <tr style="text-align:center">
-                                <td class="noExisteRegistro1" style="font-size: 16px !important;" colspan="10">No hay estudiantes en proceso de revisión.</td>
+                                <td class="noExisteRegistro1" style="font-size: 16px !important;" colspan="10">No hay actividades en este momento.</td>
                             </tr>
                             @else
                                 @foreach ($actividadesRegistradas as $actividad)
