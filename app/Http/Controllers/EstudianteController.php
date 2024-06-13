@@ -66,16 +66,16 @@ class EstudianteController extends Controller
         $periodoSeleccionado = $validatedData['Periodo'];
         $periodo = Periodo::find($periodoSeleccionado); // Obtener el periodo utilizando su ID
 
+         $numeroPeriodo = $periodo->numeroPeriodo;
+
+
         if (!$periodo) {
             return Redirect::back()->with('error', 'El periodo seleccionado no existe.');
         }
 
         $fechaFinPeriodo = $periodo->finPeriodo;
 
-        // Comprueba si la fecha actual es mayor que la fecha de finalización del período
-        if ($fechaActual > $fechaFinPeriodo) {
-            return Redirect::back()->with('error', 'No puedes registrar un estudiante en un período académico que ya ha finalizado.');
-        }
+
 
         // Crea un nuevo registro de Estudiante y asocia el UserID
         Estudiante::create([
@@ -85,7 +85,7 @@ class EstudianteController extends Controller
             'espeId' => $validatedData['espe_id'],
             'celular' => $validatedData['celular'],
             'cedula' => $validatedData['cedula'],
-            'Cohorte' => $validatedData['Cohorte'], // Utiliza el ID de cohorte proporcionado en el formulario
+            'Cohorte' =>  $numeroPeriodo,
             'idPeriodo' => $validatedData['Periodo'], // Utiliza el ID de periodo proporcionado en el formulario
             'carrera' => $validatedData['Carrera'],
             'correo' => $CorreoElectronico,

@@ -59,7 +59,7 @@
                 <select class="form-control input input_select" id="Periodo" name="Periodo" required>
                     <option value="">Seleccione su Periodo</option>
                     @foreach ($periodos as $periodo)
-                        <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }} {{ $periodo->Periodo }}</option>
+                    <option value="{{ $periodo->id }}" data-numero="{{ $periodo->numeroPeriodo }}">{{ $periodo->numeroPeriodo }} {{ $periodo->periodo }}</option>
                     @endforeach
                 </select>
             </div>
@@ -109,12 +109,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="Cohorte">Cohorte:</label>
-                        <select class="form-control input input_select" id="Cohorte" name="Cohorte" required>
-                            <option value="">Seleccione su Cohorte</option>
-                            @foreach ($periodos as $periodo)
-                                <option value="{{ $periodo->numeroPeriodo }}">{{ $periodo->numeroPeriodo }}</option>
-                            @endforeach
-                        </select>
+                        <input type="text" class="form-control input" id="Cohorte" name="Cohorte" readonly>
                     </div>
                 </div>
             </div>
@@ -147,4 +142,25 @@
             </div>
         </div>
     </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var periodoSelect = document.getElementById('Periodo');
+        var cohorteInput = document.getElementById('Cohorte');
+
+        // Evento para actualizar el valor del input de Cohorte al cambiar el Periodo seleccionado
+        periodoSelect.addEventListener('change', function () {
+            var selectedOption = periodoSelect.options[periodoSelect.selectedIndex];
+            var numeroPeriodo = selectedOption.getAttribute('data-numero');
+            cohorteInput.value = numeroPeriodo;
+        });
+
+        // Disparar el evento inicialmente para mostrar el valor del primer Periodo seleccionado, si lo hay
+        if (periodoSelect.selectedIndex !== -1) {
+            var selectedOption = periodoSelect.options[periodoSelect.selectedIndex];
+            var numeroPeriodo = selectedOption.getAttribute('data-numero');
+            cohorteInput.value = numeroPeriodo;
+        }
+    });
+</script>
 @endsection

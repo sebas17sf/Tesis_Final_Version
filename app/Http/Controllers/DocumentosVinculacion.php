@@ -558,6 +558,7 @@ class DocumentosVinculacion extends Controller
                     'espeId' => $row[0],
                     'correo' => $row[2],
                     'apellidos' => $row[3],
+                    'cedula' => $row[1],
                     'nombres' => $row[4],
                     'Cohorte' => $row[5],
                     'idPeriodo' => $periodo ? $periodo->id : null,
