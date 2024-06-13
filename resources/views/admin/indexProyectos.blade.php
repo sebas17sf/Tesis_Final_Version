@@ -641,7 +641,7 @@
                                 @foreach ($estudiantesAprobados as $estudiante)
                                     <option value="{{ $estudiante->estudianteId }}">
                                         {{ $estudiante->nombres }} {{ $estudiante->apellidos }} -
-                                        {{ $estudiante->carrera }}
+                                        {{ trim($estudiante->carrera) === 'Ingeniería en Tecnologías de la información' ? 'ITIN' : $estudiante->carrera }}
                                     </option>
                                 @endforeach
                             </select>

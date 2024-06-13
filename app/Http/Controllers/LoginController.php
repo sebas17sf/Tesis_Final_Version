@@ -193,7 +193,7 @@ class LoginController extends Controller
                 $uuid = $_COOKIE['session_uuid'] ?? null;
 
                 if ($uuid) {
-                    $existingSession = UsuariosSession::where('UserID', $user->UserID)
+                    $existingSession = UsuariosSession::where('UserID', $user->userId)
                         ->where('session_id', $uuid)
                         ->first();
 

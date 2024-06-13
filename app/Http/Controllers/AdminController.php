@@ -1398,16 +1398,21 @@ class AdminController extends Controller
 
 
     ////////////////////////////cambiar credenciales
-    public function cambiarCredencialesUsuario()
+    public function cambiarCredencialesUsuario(Request $request)
     {
+        $paginacion = 10;
         $usuario = Auth::user();
-        $userSessions = UsuariosSession::where('userId', $usuario->userId)->get();
+
+        // Obtener las sesiones del usuario paginadas
+        $userSessions = UsuariosSession::where('userId', $usuario->userId)->paginate($paginacion);
 
         foreach ($userSessions as $session) {
             $session->browser = $this->getBrowserFromUserAgent($session->user_agent);
         }
 
-        return view('admin.cambiarCredencialesUsuario', compact('usuario', 'userSessions'));
+        $perPage = $request->input('perPage', 10); // Obtener el valor de perPage del request o usar un valor por defecto
+
+        return view('admin.cambiarCredencialesUsuario', compact('usuario', 'userSessions', 'perPage'));
     }
     private function getBrowserFromUserAgent($userAgent)
     {
