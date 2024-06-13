@@ -425,7 +425,7 @@
 
                         <div id="tablaAsignaciones">
                             <table id="tablaAsignaciones" class="mat-mdc-table">
-                                
+
                             <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
@@ -487,11 +487,11 @@
                                 @endif
                                 </tbody>
                             </table>
-                    
+
                         </div>
 
                     </div>
-                  
+
                     <div class="paginator-container">
                         <nav aria-label="...">
                             <ul class="pagination d-flex align-items-center">
@@ -681,6 +681,14 @@
     <script src="js\admin\acciones.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#estado, #departamento').change(function() {
+            $('#hiddenEstado').val($('#estado').val());
+            $('#hiddenDepartamento').val($('#departamento').val());
+        });
+    });
+</script>
     <script>
         var delayTimer;
         $('#formBusquedaProyectos input[name="search"]').on('keyup', function() {
@@ -813,7 +821,7 @@
         });
 
         // Hacer el card draggable
-        
+
         $(document).ready(function() {
     // Hacer que los cards sean draggable
     $('.draggable-card1_1').draggable({

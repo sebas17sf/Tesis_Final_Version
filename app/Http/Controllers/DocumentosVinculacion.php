@@ -190,6 +190,11 @@ class DocumentosVinculacion extends Controller
             })
             ->first();
 
+        //////verificar si esta asignado a un proyecto
+        if ($asignacionProyecto == null) {
+            return redirect()->back()->with('error', 'No tiene proyectos asignados');
+        }
+
         $proyecto = Proyecto::where('proyectoId', $asignacionProyecto->proyectoId)->first();
 
         if ($proyecto->estado != 'Ejecucion') {
@@ -300,8 +305,14 @@ class DocumentosVinculacion extends Controller
             })
             ->first();
 
+        //////verificar si esta asignado a un proyecto
+        if ($asignacionProyecto == null) {
+            return redirect()->back()->with('error', 'No tiene proyectos asignados');
+        }
+
         ///obtener la id del director de AsiignacionProyecto
         $proyecto = Proyecto::where('proyectoId', $asignacionProyecto->proyectoId)->first();
+
 
         if ($proyecto->estado != 'Ejecucion') {
             return redirect()->back()->with('error', 'No tiene Proyectos en ejecucion.');

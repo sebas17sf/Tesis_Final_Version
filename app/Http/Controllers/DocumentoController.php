@@ -55,13 +55,13 @@ class DocumentoController extends Controller
         }
 
         // Obtener el ProyectoID del modelo AsignacionProyecto del estudiante
-        $asignacionProyecto = $estudiante->asignaciones->first();
+        $asignacionProyecto = $estudiante->asignaciones-> first();
+
         if ($asignacionProyecto) {
             $proyectoID = $asignacionProyecto->proyectoId;
         } else {
-            return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
+             return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
         }
-
 
         $datosEstudiantes = DB::table('estudiantes')
             ->join('asignacionproyectos', 'estudiantes.estudianteId', '=', 'asignacionproyectos.estudianteId')
@@ -75,9 +75,10 @@ class DocumentoController extends Controller
                 'asignacionproyectos.inicioFecha',
                 'proyectos.nombreProyecto',
             )
-            ->where('asignacionproyectos.proyectoId', '=', $proyectoID)
-            ->orderBy('estudiantes.apellidos', 'asc')
-            ->get();
+            ->where('asignacionproyectos.proyectoId', $proyectoID)
+        ->where('estudiantes.estado', 'Aprobado')
+        ->orderBy('estudiantes.apellidos', 'asc')
+        ->get();
 
         // Obtener Carrera, Provincia y FechaInicio del primer estudiante asignado al proyecto
         $primerEstudiante = $datosEstudiantes->first();
@@ -802,15 +803,11 @@ class DocumentoController extends Controller
     public function reportesProyectos(Request $request)
     {
          try {
-            // Ruta de la plantilla
             $plantillaPath = public_path('Plantillas/Reporte-Proyectos.xlsx');
             $spreadsheet = IOFactory::load($plantillaPath);
-
-            // Obtener los parámetros de entrada
             $estado = $request->input('estado');
             $departamento = $request->input('departamento');
 
-            // Construir la consulta
             $query = DB::table('proyectos')
                 ->select(
                     'proyectos.nombreProyecto',
@@ -824,7 +821,6 @@ class DocumentoController extends Controller
                 )
                 ->orderBy('proyectos.nombreProyecto', 'asc');
 
-            // Agregar filtros a la consulta
             if ($estado) {
                 $query->where('estado', $estado);
             }
@@ -833,56 +829,36 @@ class DocumentoController extends Controller
                 $query->where('departamentoTutor', $departamento);
             }
 
-            // Obtener los resultados
             $datosProyectos = $query->get();
-
-            // Obtener la hoja activa del documento Excel
             $sheet = $spreadsheet->getActiveSheet();
-
-            // Configuración para insertar datos en la fila adecuada
             $filaInicio = 9;
             $cantidadFilas = count($datosProyectos);
-
-            // Insertar nuevas filas si es necesario
-            if ($cantidadFilas > 1) {
-                $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
-            }
-
+            $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
             $contador = 1;
 
-            // Función auxiliar para convertir texto a mayúsculas
-            function convertirAMayusculas($texto)
-            {
-                return mb_strtoupper($texto, 'UTF-8');
-            }
-
-            // Rellenar la hoja de cálculo con los datos del proyecto
             foreach ($datosProyectos as $index => $proyecto) {
                 $director = ProfesUniversidad::find($proyecto->directorId);
-
                 $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-                $sheet->setCellValue('B' . ($filaInicio + $index), convertirAMayusculas($proyecto->nombreProyecto));
+                $sheet->setCellValue('B' . ($filaInicio + $index), mb_strtoupper($proyecto->nombreProyecto, 'UTF-8'));
                 $sheet->getStyle('B' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
                 $sheet->setCellValue('C' . ($filaInicio + $index), $proyecto->codigoProyecto);
-                $sheet->setCellValue('D' . ($filaInicio + $index), convertirAMayusculas($proyecto->descripcionProyecto));
+                $sheet->setCellValue('E' . ($filaInicio + $index), mb_strtoupper($proyecto->departamentoTutor, 'UTF-8'));
+                $sheet->setCellValue('F' . ($filaInicio + $index), mb_strtoupper($proyecto->estado, 'UTF-8'));
                 $sheet->getStyle('D' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
-                $sheet->setCellValue('E' . ($filaInicio + $index), convertirAMayusculas($proyecto->departamentoTutor));
-                $sheet->setCellValue('F' . ($filaInicio + $index), convertirAMayusculas($proyecto->estado));
-
+                $sheet->setCellValue('D' . ($filaInicio + $index), mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
                 $contador++;
             }
 
-            // Crear el archivo Excel
             $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
             $nombreArchivo = 'Reporte-Proyectos.xlsx';
             $writer->save($nombreArchivo);
 
-            // Descargar el archivo y eliminarlo después de enviar
             return response()->download($nombreArchivo)->deleteFileAfterSend(true);
         } catch (\Exception $e) {
             return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
         }
     }
+
 
 
 
@@ -1754,32 +1730,32 @@ class DocumentoController extends Controller
             $template->setValue('contador#' . $numFila, $numFila); // Asignar valor de contador
         }
 
-         $template->setValue('participante', $profesor->Apellidos . ' ' . $profesor->Nombres);
+        $template->setValue('participante', $profesor->Apellidos . ' ' . $profesor->Nombres);
         $template->setValue('Correo', $profesor->Correo);
         $template->setValue('Celular', '0912345678');
 
-         $proyectoID = Proyecto::find($proyecto->ProyectoID);
-         $director = ProfesUniversidad::find($proyectoID->DirectorID);
-            $template->setValue('director', $director->Apellidos . ' ' . $director->Nombres);
-            $template->setValue('correoDirector', $director->Correo);
-            $template->setValue('celularDirector', '0912345238');
+        $proyectoID = Proyecto::find($proyecto->ProyectoID);
+        $director = ProfesUniversidad::find($proyectoID->DirectorID);
+        $template->setValue('director', $director->Apellidos . ' ' . $director->Nombres);
+        $template->setValue('correoDirector', $director->Correo);
+        $template->setValue('celularDirector', '0912345238');
 
 
-            /////obtener todos los estudiantes asignados al proyecto del profesor con estado aprobado
-            $estudiantes = Estudiante::where('Estado', 'Aprobado')
+        /////obtener todos los estudiantes asignados al proyecto del profesor con estado aprobado
+        $estudiantes = Estudiante::where('Estado', 'Aprobado')
             ->whereHas('asignaciones', function ($query) use ($profesor) {
                 $query->where('ParticipanteID', $profesor->id);
             })->get();
 
-            $contadorEstudiantes = count($estudiantes);
-            $template->cloneRow('estudiantes', $contadorEstudiantes);
-            foreach ($estudiantes as $index => $estudiante) {
-                $numFila = $index + 1;
-                $template->setValue('estudiantes#' . $numFila, $estudiante->Apellidos . ' ' . $estudiante->Nombres);
-                $template->setValue('entidad#' . $numFila, 'Universidad de las Fuerzas Armadas ESPE Sede Santo Domingo');
-                 $template->setValue('correoEstudiante#' . $numFila, $estudiante->Correo);
-                $template->setValue('celularEstudiante#' . $numFila, $estudiante->celular);
-            }
+        $contadorEstudiantes = count($estudiantes);
+        $template->cloneRow('estudiantes', $contadorEstudiantes);
+        foreach ($estudiantes as $index => $estudiante) {
+            $numFila = $index + 1;
+            $template->setValue('estudiantes#' . $numFila, $estudiante->Apellidos . ' ' . $estudiante->Nombres);
+            $template->setValue('entidad#' . $numFila, 'Universidad de las Fuerzas Armadas ESPE Sede Santo Domingo');
+            $template->setValue('correoEstudiante#' . $numFila, $estudiante->Correo);
+            $template->setValue('celularEstudiante#' . $numFila, $estudiante->celular);
+        }
 
 
         $nombreArchivo = 'Acta-de-Reunión.docx';
@@ -1792,14 +1768,15 @@ class DocumentoController extends Controller
 
     ///////////////baremos
 
-    public function baremo(Request $request){
+    public function baremo(Request $request)
+    {
         $plantillaPath = public_path('Plantillas/baremos.xlsx');
 
         $spreadsheet = IOFactory::load($plantillaPath);
 
         $profesor = Auth::user()->profesorUniversidad;
 
-        $proyecto = AsignacionProyecto::where('participanteId', $profesor ->id)
+        $proyecto = AsignacionProyecto::where('participanteId', $profesor->id)
             ->whereHas('estudiante', function ($query) {
                 $query->where('estado', 'Aprobado');
             })->first();
@@ -1823,7 +1800,7 @@ class DocumentoController extends Controller
 
 
 
-         $tabla1 = $request->input('tabla1');
+        $tabla1 = $request->input('tabla1');
         $tabla2 = $request->input('tabla2');
         $tabla3 = $request->input('tabla3');
         $tabla4 = $request->input('tabla4');

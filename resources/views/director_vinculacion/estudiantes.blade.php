@@ -80,13 +80,16 @@
                         @foreach ($estudiantesConNotasPendientes as $estudiante)
                             <tr>
                                 <td class="wide-cell">{{ $estudiante->apellidos }} {{ $estudiante->nombres }}</td>
-                                <td>{{ $estudiante->espe_id }}</td>
-                                <td class="wide-cell">{{ $estudiante->Carrera }}</td>
-                                <td>{{ $estudiante->Departamento }}</td>
+                                <td>{{ $estudiante->espeId }}</td>
+                                <td class="wide-cell">{{ $estudiante->carrera }}</td>
+                                <td>{{ $estudiante->departamento }}</td>
                                 <td>
                                     <input type="hidden" class="input input_select1" name="estudiante_id[]" value="{{ $estudiante->estudianteId }}">
-                                    <input type="text" class="input"  name="informe_servicio[]" value="{{ $estudiante->notas->first()->Informe !== 'Pendiente' ? $estudiante->notas->first()->informe : '' }}" required>
-                                    <small class="form-text text-danger" style="display: none;"></small>
+                                    <input type="text" class="input" name="informe_servicio[]" value="{{ $estudiante->notas->first()->Informe !== 'Pendiente' ? $estudiante->notas->first()->Informe : '' }}" @if($estudiante->notas->first()->Informe === 'Pendiente') style="display: none;" @endif required>
+
+                                     <small class="form-text text-danger" style="display: none;"></small>
+
+
                                 </td>
                             </tr>
                         @endforeach
@@ -96,7 +99,7 @@
 </div>
 </div>
                 <br>
-                <button type="submit" class="button1">Guardar Informe</button>
+                <button type="submit" class="button1">Guardar calificacion</button>
                 <br>
                 <hr>
             </form>
@@ -210,7 +213,7 @@
                                                         id="modalEditarNota{{ $estudiante->estudianteId }}Label">
                                                         Nota de Informe {{ $estudiante->Apellidos }}
                                                         {{ $estudiante->Nombres }}</h5>
-                                                    
+
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
