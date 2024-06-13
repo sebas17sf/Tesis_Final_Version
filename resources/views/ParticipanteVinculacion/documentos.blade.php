@@ -362,61 +362,59 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="generarBaremoForm" action="{{ route('ParticipanteVinculacion.generarBaremo') }}"
-                        method="post">
+                    <form id="generarBaremoForm" action="{{ route('ParticipanteVinculacion.generarBaremo') }}" method="post">
                         @csrf
                         <img src="{{ asset('img/puntajeBaremo.jpeg') }}" alt="puntajeBaremo" class="img-fluid">
                         <br>
-                        <div class="form-group">
-                            <label for="tabla1"><strong>Ingrese el puntaje de la primera tabla:</strong></label>
-                            <input type="number" id="tabla1" name="tabla1" class="form-control input">
-                            <small id="errorTabla1" class="text-danger"></small>
+                        <div class="form-row">
+                            <div class="col-md-4 mb-3">
+                                <label for="tabla1"><strong>Tabla 1:</strong></label>
+                                <input type="number" id="tabla1" name="tabla1" class="form-control input">
+                                <small id="errorTabla1" class="text-danger"></small>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="tabla2"><strong>Tabla 2:</strong></label>
+                                <input type="number" id="tabla2" name="tabla2" class="form-control input">
+                                <small id="errorTabla2" class="text-danger"></small>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="tabla3"><strong>Tabla 3:</strong></label>
+                                <input type="number" id="tabla3" name="tabla3" class="form-control input">
+                                <small id="errorTabla3" class="text-danger"></small>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="tabla2"><strong>Ingrese el puntaje de la segunda tabla:</strong></label>
-                            <input type="number" id="tabla2" name="tabla2" class="form-control input">
-                            <small id="errorTabla2" class="text-danger"></small>
+                        <div class="form-row">
+                            <div class="col-md-4 mb-3">
+                                <label for="tabla4"><strong>Tabla 4:</strong></label>
+                                <input type="number" id="tabla4" name="tabla4" class="form-control input">
+                                <small id="errorTabla4" class="text-danger"></small>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="puntajeTotal"><strong>Puntaje Total:</strong></label>
+                                <input type="number" id="puntajeTotal" name="puntajeTotal" class="form-control input" readonly>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="horasTotales"><strong>Horas Totales:</strong></label>
+                                <input type="text" id="horasTotales" name="horasTotales" class="form-control input" readonly>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="tabla3"><strong>Ingrese el puntaje de la tercera tabla:</strong></label>
-                            <input type="number" id="tabla3" name="tabla3" class="form-control input">
-                            <small id="errorTabla3" class="text-danger"></small>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="tabla4"><strong>Ingrese el puntaje de la cuarta tabla:</strong></label>
-                            <input type="number" id="tabla4" name="tabla4" class="form-control input">
-                            <small id="errorTabla4" class="text-danger"></small>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="puntajeTotal"><strong>Puntaje Total:</strong></label>
-                            <input type="number" id="puntajeTotal" name="puntajeTotal" class="form-control input"
-                                readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="horasTotales"><strong>Horas Totales:</strong></label>
-                            <input type="text" id="horasTotales" name="horasTotales" class="form-control input"
-                                readonly>
-                        </div>
-
-
-
-                        <!-- Campo para mostrar las horas totales entre fechas -->
                         <div class="form-group">
                             <label for="horasEntreFechas"><strong>Horas Totales Entre Fechas:</strong></label>
                             <input type="text" id="horasEntreFechas" name="horasEntreFechas" class="form-control input" readonly>
                         </div>
-
 
                         <button type="submit" class="button">
                             <i class="fas fa-file-excel"></i> Generar Baremo
                         </button>
                     </form>
                 </div>
+
             </div>
         </div>
     </div>
@@ -491,7 +489,7 @@
 
                 // Calcular las horas totales entre las fechas de inicio y finalización
                 var horasEntreFechasCalculadas = calcularHorasTotalesEntreFechas(inicioFecha, finalizacionFecha, horasTotalesPorDia);
-                horasEntreFechas.value = horasEntreFechasCalculadas.toFixed(2); // Mostrar resultado en un campo específico
+                horasEntreFechas.value = Math.floor(horasEntreFechasCalculadas); // Redondear hacia abajo y mostrar solo horas enteras
             }
 
             // Agrega un evento 'input' a cada campo de entrada para validar su valor y actualizar los totales cuando cambie
@@ -522,8 +520,8 @@
             // Llamar a actualizarTotales inicialmente para calcular los valores al cargar la página
             actualizarTotales();
         });
+    </script>
 
-        </script>
 
 
 
