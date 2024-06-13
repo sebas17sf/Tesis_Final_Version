@@ -71,12 +71,37 @@
                     <input type="hidden" name="departamento" id="hiddenDepartamento" value="{{ request('departamento') }}">
                     <div class="tooltip-container">
                         <span class="tooltip-text">Excel</span>
-                        <button type="submit" class="button3 efects_button btn_excel" pTooltip="Excel" tooltipPosition="top">
-                            <i class="fa-solid fa-file-excel"></i>
-                        </button>
+                        <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+            <span id="loadingIcon" style="display: none !important; ">
+                <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+            </span>
+            <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+        </button>
                     </div>
                 </form>
+<!-- Success alert -->
+<div class="contenedor_alerta success" id="successAlert" style="display: none !important;">
+    <div class="icon_alert"><i class="fa-regular fa-check"></i></div>
+    <div class="content_alert">
+        <div class="title">Éxito!</div>
+        <div class="body">El archivo Excel ha sido exportado.</div>
+    </div>
+    <div class="icon_remove">
+        <button class="button4 btn_3_2" onclick="closeAlert('successAlert')"><i class="fa-sharp fa-regular fa-xmark"></i></button>
+    </div>
+</div>
 
+<!-- Error alert -->
+<div class="contenedor_alerta error" id="errorAlert" style="display: none !important;">
+    <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
+    <div class="content_alert">
+        <div class="title">Error!</div>
+        <div class="body">Ha ocurrido un error al exportar el archivo Excel.</div>
+    </div>
+    <div class="icon_remove">
+        <button class="button4 btn_3_2" onclick="closeAlert('errorAlert')"><i class="fa-sharp fa-regular fa-xmark"></i></button>
+    </div>
+</div>
                 <!-- Botón para abrir el card de filtros -->
                 <div class="tooltip-container">
                     <span class="tooltip-text">Filtros</span>

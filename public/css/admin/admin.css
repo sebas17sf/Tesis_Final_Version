@@ -541,7 +541,7 @@ tr:hover {
     font-size: 12px !important;
 }
 .contenedor_alerta {
-    display: flex;
+    display: flex !important; /* Fuerza el uso de flex */
     align-items: center;
     justify-content: space-between;
     background-color: #dff0d8;
@@ -552,9 +552,10 @@ tr:hover {
     border-radius: 4px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
     position: fixed;
-    top: 60px;
-    right: 0px;
+    top: 60px !important;
+    right: 0px !important;
     z-index: 1000;
+    max-width: none !important; 
 }
 
 .contenedor_alerta .icon_alert {
@@ -599,7 +600,9 @@ tr:hover {
     align-content: space-around;
     color: #808080;
   }
-
+  .button4 {
+    width: none !important
+  }
 
         .tamanio {
           width: 90px;
