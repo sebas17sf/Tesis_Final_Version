@@ -38,57 +38,57 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th class="tamanio1">Nombre del Reporte</th>
-                                            <th class="tamanio1">Acción</th>
+                                        <th class="tamanio1">NOMBRE DEL REPORTE</th>
+                                            <th class="tamanio1">ACCIÓN</th>
                                         </tr>
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
                                         <tr>
-                                            <td>Generar Evaluación de Estudiantes</td>
+                                            <td style=" font-size: 11px !important;">GENERAR EVALUACIÓN DE DOCENTE</td>
                                             <td>
                                                 <form
                                                     action="{{ route('ParticipanteVinculacion.generarEvaluacionEstudiante') }}"
                                                     method="post">
                                                     @csrf
-                                                    <center><button type="submit" class="button1 btn_excel efects_button">
+                                                    <center><button type="submit" class="button1 btn_excel efects_button input_select1">
                                                             <i class="fas fa-file-excel"></i> Generar
                                                         </button></center>
                                                 </form>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>Generar Número de Horas de Docentes</td>
+                                            <td style=" font-size: 11px !important;">GENERAR NUMERO DE HORAS DE DOCENTE</td>
                                             <td>
                                                 <form action="{{ route('ParticipanteVinculacion.generarHorasDocente') }}"
                                                     method="post">
                                                     @csrf
-                                                    <center><button type="submit" class="button1 btn_excel efects_button">
+                                                    <center><button type="submit" class="button1 btn_excel efects_button input_select1">
                                                             <i class="fas fa-file-excel"></i> Generar
                                                         </button></center>
                                                 </form>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>Registro de Estudiantes</td>
+                                            <td style=" font-size: 11px !important;">REGISTRO DE ESTUDIANTES</td>
                                             <td>
                                                 <form action="{{ route('ParticipanteVinculacion.generarAsistencia') }}"
                                                     method="post">
                                                     @csrf
                                                     <div class="form-group">
-                                                        <label for="fecha"class="label">Fecha de asistencia:</label>
+                                                        <label for="fecha" class="label"><b>Fecha de asistencia:</b></label>
                                                         <input type="date" id="fecha" name="fecha"
-                                                            class="form-control input">
+                                                            class="form-control input input_select1">
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="lugar">Lugar de la actividad:</label>
+                                                        <label for="lugar" class="label"><b>Lugar de la actividad:</b></label>
                                                         <input type="text" id="lugar" name="lugar"
-                                                            class="form-control input">
+                                                            class="form-control input input_select1">
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="actividades">Actividades a realizar:</label>
-                                                        <textarea id="actividades" name="actividades" class="form-control input"></textarea>
+                                                        <label for="actividades" class="label"><b>Actividades a realizar:</b></label>
+                                                        <textarea id="actividades" name="actividades" class="form-control input input_select1"></textarea>
                                                     </div>
-                                                    <center> <button type="submit" class="button1">
+                                                    <center> <button type="submit" class="button1 input_select1">
                                                             <i class="fas fa-save"></i> Generar
                                                         </button></center>
                                                 </form>

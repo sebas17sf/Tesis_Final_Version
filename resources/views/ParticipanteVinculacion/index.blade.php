@@ -2,30 +2,45 @@
 @section('title_component', 'Lista de Proyectos')
 
 @section('title', 'Proyectos')
-
 @section('content')
-    @if (session('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Éxito',
-                text: '{{ session('success') }}',
-                confirmButtonText: 'Ok'
-            });
-        </script>
-    @endif
+@if (session('success'))
+<div class="contenedor_alerta success">
+    <div class="icon_alert"><i class="fa-regular fa-check"></i></div>
+    <div class="content_alert">
+        <div class="title">Éxito!</div>
+        <div class="body">{{ session('success') }}</div>
+    </div>
+    <div class="icon_remove">
+        <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+    </div>
+</div>
 
-    @if (session('error'))
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: '{{ session('error') }}',
-                confirmButtonText: 'Ok'
-            });
-        </script>
-    @endif
+<script>
+    document.querySelector('.contenedor_alerta .icon_remove button').addEventListener('click', function() {
+        this.closest('.contenedor_alerta').style.display = 'none';
+    });
+</script>
+@endif
 
+
+@if (session('error'))
+<div class="contenedor_alerta error">
+    <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
+    <div class="content_alert">
+        <div class="title">Error!</div>
+        <div class="body">{{ session('error') }}</div>
+    </div>
+    <div class="icon_remove">
+        <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+    </div>
+</div>
+
+<script>
+    document.querySelector('.contenedor_alerta.error .icon_remove button').addEventListener('click', function() {
+        this.closest('.contenedor_alerta').style.display = 'none';
+    });
+</script>
+@endif
 
     <div class="container" style="overflow-x: auto;">
 <br>
@@ -57,7 +72,7 @@
                                         {{ strtoupper($proyecto->proyecto->director->nombres ?? "No asignado") }}</td>
                                     <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify;">{{ $proyecto->proyecto->descripcionProyecto }}</td>
                                     <td>{{ $proyecto->docenteParticipante->correo }}</td>
-                                    <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify;">{{ $proyecto->proyecto->departamentoTutor }}</td>
+                                    <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">{{ $proyecto->proyecto->departamentoTutor }}</td>
                                     <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $proyecto->inicioFecha }}</td>
                                     <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $proyecto->finalizacionFecha }}</td>
                                      <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $proyecto->proyecto->estado }}</td>
@@ -75,7 +90,16 @@
 
     </div>
 
-
-
+    <style>
+        .contenedor_tabla .table-container table td {
+    width: 200px;
+    min-width: 150px;
+    font-size: 11px !important;
+    padding: .5rem !important;
+}
+.contenedor_tabla .table-container table th {
+    position: sticky;
+    font-size: .8em !important;
+        </style>
 
 @endsection
