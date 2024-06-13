@@ -1,27 +1,45 @@
 @extends('layouts.directorVinculacion')
 
 @section('content')
-    @if (session('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Éxito',
-                text: '{{ session('success') }}',
-                confirmButtonText: 'Ok'
-            });
-        </script>
-    @endif
+@if (session('success'))
+<div class="contenedor_alerta success">
+    <div class="icon_alert"><i class="fa-regular fa-check"></i></div>
+    <div class="content_alert">
+        <div class="title">Éxito!</div>
+        <div class="body">{{ session('success') }}</div>
+    </div>
+    <div class="icon_remove">
+        <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+    </div>
+</div>
 
-    @if (session('error'))
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: '{{ session('error') }}',
-                confirmButtonText: 'Ok'
-            });
-        </script>
-    @endif
+<script>
+    document.querySelector('.contenedor_alerta .icon_remove button').addEventListener('click', function() {
+        this.closest('.contenedor_alerta').style.display = 'none';
+    });
+</script>
+@endif
+
+
+@if (session('error'))
+<div class="contenedor_alerta error">
+    <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
+    <div class="content_alert">
+        <div class="title">Error!</div>
+        <div class="body">{{ session('error') }}</div>
+    </div>
+    <div class="icon_remove">
+        <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+    </div>
+</div>
+
+<script>
+    document.querySelector('.contenedor_alerta.error .icon_remove button').addEventListener('click', function() {
+        this.closest('.contenedor_alerta').style.display = 'none';
+    });
+</script>
+@endif
+
 
 
 
@@ -41,10 +59,15 @@
             <h4>Actualizar Informe de Servicio Comunitario</h4>
             <form method="post" action="{{ route('director_vinculacion.actualizarInforme') }}">
                 @csrf
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nombres</th>
+                <div class="contenedor_tabla">
+                <div class="table-container mat-elevation-z8">
+
+                    <div id="tablaProyectos">
+                        <table class="mat-mdc-table">
+                            <thead class="ng-star-inserted">
+                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+
+                                        <th>Nombres</th>
                             <th>Espe ID</th>
                             <th>Carrera</th>
                             <th>Departamento</th>
@@ -61,17 +84,21 @@
                                 <td class="wide-cell">{{ $estudiante->Carrera }}</td>
                                 <td>{{ $estudiante->Departamento }}</td>
                                 <td>
-                                    <input type="hidden" name="estudiante_id[]" value="{{ $estudiante->estudianteId }}">
-                                    <input type="text" name="informe_servicio[]" value="{{ $estudiante->notas->first()->Informe !== 'Pendiente' ? $estudiante->notas->first()->informe : '' }}" required>
+                                    <input type="hidden" class="input input_select1" name="estudiante_id[]" value="{{ $estudiante->estudianteId }}">
+                                    <input type="text" class="input"  name="informe_servicio[]" value="{{ $estudiante->notas->first()->Informe !== 'Pendiente' ? $estudiante->notas->first()->informe : '' }}" required>
                                     <small class="form-text text-danger" style="display: none;"></small>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-
+</div>
+</div>
+</div>
                 <br>
-                <button type="submit" class="btn btn-primary">Guardar Informe</button>
+                <button type="submit" class="button1">Guardar Informe</button>
+                <br>
+                <hr>
             </form>
         @endif
 
@@ -103,7 +130,7 @@
                         <th>EDITAR NOTAS</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="mdc-data-table__content ng-star-inserted">
                     @foreach ($estudiantesCalificados as $estudiante)
                         <tr>
                             <td class="wide-cell" style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">{{ $estudiante->apellidos }} {{ $estudiante->nombres }}</td>
@@ -219,6 +246,16 @@
     </div>
 
     <script src="{{ asset('js/ParticipanteDirectorVinculacion/notas.js') }}"></script>
-
+    <style>
+        .contenedor_tabla .table-container table td {
+    width: 200px;
+    min-width: 150px;
+    font-size: 11px !important;
+    padding: .5rem !important;
+}
+.contenedor_tabla .table-container table th {
+    position: sticky;
+    font-size: .8em !important;
+        </style>
 @endsection
 

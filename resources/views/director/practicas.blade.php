@@ -3,23 +3,40 @@
 @section('title_component', 'Practicas')
 @section('content')
 @if (session('success'))
+<div class="contenedor_alerta success">
+    <div class="icon_alert"><i class="fa-regular fa-check"></i></div>
+    <div class="content_alert">
+        <div class="title">Éxito!</div>
+        <div class="body">{{ session('success') }}</div>
+    </div>
+    <div class="icon_remove">
+        <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+    </div>
+</div>
+
 <script>
-    Swal.fire({
-        icon: 'success',
-        title: 'Éxito',
-        text: '{{ session('success') }}',
-        confirmButtonText: 'Ok'
+    document.querySelector('.contenedor_alerta .icon_remove button').addEventListener('click', function() {
+        this.closest('.contenedor_alerta').style.display = 'none';
     });
 </script>
 @endif
 
+
 @if (session('error'))
+<div class="contenedor_alerta error">
+    <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
+    <div class="content_alert">
+        <div class="title">Error!</div>
+        <div class="body">{{ session('error') }}</div>
+    </div>
+    <div class="icon_remove">
+        <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+    </div>
+</div>
+
 <script>
-    Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: '{{ session('error') }}',
-        confirmButtonText: 'Ok'
+    document.querySelector('.contenedor_alerta.error .icon_remove button').addEventListener('click', function() {
+        this.closest('.contenedor_alerta').style.display = 'none';
     });
 </script>
 @endif
