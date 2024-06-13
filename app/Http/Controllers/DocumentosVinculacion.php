@@ -552,19 +552,19 @@ class DocumentosVinculacion extends Controller
             if (!empty($row[0]) && !empty($row[1]) && !empty($row[2]) && !empty($row[3]) && !empty($row[4]) && !empty($row[5]) && !empty($row[6])) {
                 $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
 
-                $estudiante = Estudiante::where('espe_id', $row[0])->first();
+                $estudiante = Estudiante::where('espeId', $row[0])->first();
 
                 $data = [
-                    'espe_id' => $row[0],
-                    'Correo' => $row[2],
-                    'Apellidos' => $row[3],
-                    'Nombres' => $row[4],
+                    'espeId' => $row[0],
+                    'correo' => $row[2],
+                    'apellidos' => $row[3],
+                    'nombres' => $row[4],
                     'Cohorte' => $row[5],
-                    'id_periodo' => $periodo ? $periodo->id : null,
-                    'Carrera' => 'Ingeniería en Tecnologías de la información',
-                    'Departamento' => 'Ciencias de la Computación',
+                    'idPeriodo' => $periodo ? $periodo->id : null,
+                    'carrera' => 'Ingeniería en Tecnologías de la información',
+                    'departamento' => 'Ciencias de la Computación',
                     'comentario' => 'Importado desde Excel',
-                    'Estado' => 'Desactivados',
+                    'estado' => 'Desactivados',
                 ];
 
                 if ($estudiante) {
@@ -579,8 +579,8 @@ class DocumentosVinculacion extends Controller
         foreach ($dataRows as $row) {
             $participante = null;
             if (!empty($row[7]) && !empty($row[8]) && !empty($row[6]) && !empty($row[9]) && !empty($row[10]) && !empty($row[11]) && !empty($row[21])) {
-                $estudiante = Estudiante::where('espe_id', $row[0])->first();
-                $proyecto = Proyecto::where('NombreProyecto', $row[24])->first();
+                $estudiante = Estudiante::where('espeId', $row[0])->first();
+                $proyecto = Proyecto::where('nombreProyecto', $row[24])->first();
                 $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
 
                 $nombreCompleto = $row[8];
@@ -589,8 +589,8 @@ class DocumentosVinculacion extends Controller
                     $apellido = trim($partesNombre[0]);
                     $nombre = trim($partesNombre[1]);
 
-                    $participante = ProfesUniversidad::where('Apellidos', 'like', '%' . $nombre . '%')
-                        ->where('Nombres', 'like', '%' . $apellido . '%')
+                    $participante = ProfesUniversidad::where('apellidos', 'like', '%' . $nombre . '%')
+                        ->where('nombres', 'like', '%' . $apellido . '%')
                         ->first();
                 }
 
@@ -601,19 +601,19 @@ class DocumentosVinculacion extends Controller
                 $fechaFinalizacionFormatted = $fechaFinalizacion ? $fechaFinalizacion->format('Y-m-d') : null;
 
                 // Buscar la asignación existente
-                $asignacion = AsignacionProyecto::where('EstudianteID', $estudiante ? $estudiante->EstudianteID : null)
-                    ->where('ProyectoID', $proyecto ? $proyecto->ProyectoID : null)
-                    ->where('IdPeriodo', $periodo ? $periodo->id : null)
+                $asignacion = AsignacionProyecto::where('estudianteId', $estudiante ? $estudiante->estudianteId : null)
+                    ->where('proyectoId', $proyecto ? $proyecto->proyectoId : null)
+                    ->where('idPeriodo', $periodo ? $periodo->id : null)
                     ->first();
 
                 $data = [
-                    'EstudianteID' => $estudiante ? $estudiante->EstudianteID : null,
-                    'ProyectoID' => $proyecto ? $proyecto->ProyectoID : null,
-                    'ParticipanteID' => $participante ? $participante->id : null,
-                    'IdPeriodo' => $periodo ? $periodo->id : null,
-                    'FechaInicio' => $fechaInicioFormatted,
-                    'FechaFinalizacion' => $fechaFinalizacionFormatted,
-                    'FechaAsignacion' => now(),
+                    'estudianteId' => $estudiante ? $estudiante->estudianteId : null,
+                    'proyectoId' => $proyecto ? $proyecto->proyectoId : null,
+                    'participanteId' => $participante ? $participante->id : null,
+                    'idPeriodo' => $periodo ? $periodo->id : null,
+                    'inicioFecha' => $fechaInicioFormatted,
+                    'finalizacionFecha' => $fechaFinalizacionFormatted,
+                    'asignacionFecha' => now(),
                 ];
 
                 if ($asignacion) {
@@ -625,17 +625,17 @@ class DocumentosVinculacion extends Controller
         }
 
          foreach ($dataRows as $row) {
-            $estudiante = Estudiante::where('espe_id', $row[0])->first();
-            $notas = NotasEstudiante::where('EstudianteID', $estudiante ? $estudiante->EstudianteID : null)->first();
+            $estudiante = Estudiante::where('espeId', $row[0])->first();
+            $notas = NotasEstudiante::where('estudianteId', $estudiante ? $estudiante->estudianteId : null)->first();
             if ($notas) {
                 $notas->update([
-                    'EstudianteID' => $estudiante ? $estudiante->EstudianteID : null,
-                    'Nota_Final' => $row[12] ?? '0',
+                    'estudianteId' => $estudiante ? $estudiante->estudianteId : null,
+                    'notaFinal' => $row[12] ?? '0',
                 ]);
             } else {
                 NotasEstudiante::create([
-                    'EstudianteID' => $estudiante ? $estudiante->EstudianteID : null,
-                    'Nota_Final' => $row[12] ?? '0',
+                    'estudianteId' => $estudiante ? $estudiante->estudianteId : null,
+                    'notaFinal' => $row[12] ?? '0',
                 ]);
             }
         }

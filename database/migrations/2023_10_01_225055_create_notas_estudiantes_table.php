@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('aplicacion', 5, 2)->nullable();
             $table->decimal('CapacidadLiderazgo', 5, 2)->nullable();
             $table->decimal('asistencia', 5, 2)->nullable();
-            $table->string('informe');
+            $table->string('informe')->nullable();
             $table->decimal('notaFinal', 5, 2)->nullable();
             $table->timestamps();
         });

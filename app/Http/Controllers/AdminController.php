@@ -112,7 +112,7 @@ class AdminController extends Controller
             return redirect()->route('admin.index')->with('error', 'Usuario no encontrado');
         }
 
-        $usuario->estado = $request->input('estado');
+        $usuario->estado = $request->input('Estado');
         $usuario->contrasena = bcrypt($request->input('password'));
         $usuario->save();
 
@@ -193,7 +193,7 @@ class AdminController extends Controller
         $estudiantesEnRevision = $queryEstudiantesEnRevision->get();
 
         // Consulta y paginación para estudiantes aprobados
-        $queryEstudiantesAprobados = Estudiante::whereIn('estado', ['Aprobado', 'Aprobado-prácticas','Desactivados']);
+        $queryEstudiantesAprobados = Estudiante::whereIn('estado', ['Aprobado', 'Aprobado-prácticas', 'Desactivados']);
 
         // Búsqueda de estudiantes aprobados
         if ($request->has('search2')) {
@@ -339,26 +339,27 @@ class AdminController extends Controller
             ->when($search2, function ($query, $search2) {
                 return $query->where(function ($query) use ($search2) {
                     $query->whereHas('estudiante', function ($query) use ($search2) {
-                        $query->where('nombres', 'like', '%' . $search2 . '%')
-                            ->orWhere('apellidos', 'like', '%' . $search2 . '%');
+                        $query->where('nombres', 'like', "%{$search2}%")
+                              ->orWhere('apellidos', 'like', "%{$search2}%")
+                              ->orWhere('espeId', 'like', "%{$search2}%")
+                              ->orWhere('cedula', 'like', "%{$search2}%");
                     })
-                        ->orWhereHas('proyecto', function ($query) use ($search2) {
-                            $query->where('nombreProyecto', 'like', '%' . $search2 . '%');
-                        })
-                        ->orWhereHas('docenteParticipante', function ($query) use ($search2) {
-                            $query->where('nombres', 'like', '%' . $search2 . '%')
-                                ->orWhere('apellidos', 'like', '%' . $search2 . '%');
-                        })
-                        ->orWhereHas('periodo', function ($query) use ($search2) {
-                            $query->where('numeroPeriodo', 'like', '%' . $search2 . '%');
-                        })
-                        ->orWhereHas('proyecto.director', function ($query) use ($search2) {
-                            $query->where('nombres', 'like', '%' . $search2 . '%')
-                                ->orWhere('apellidos', 'like', '%' . $search2 . '%');
-                        });
+                    ->orWhereHas('proyecto', function ($query) use ($search2) {
+                        $query->where('nombreProyecto', 'like', "%{$search2}%");
+                    })
+                    ->orWhereHas('docenteParticipante', function ($query) use ($search2) {
+                        $query->where('nombres', 'like', "%{$search2}%")
+                              ->orWhere('apellidos', 'like', "%{$search2}%");
+                    })
+                    ->orWhereHas('periodo', function ($query) use ($search2) {
+                        $query->where('numeroPeriodo', 'like', "%{$search2}%");
+                    })
+                    ->orWhereHas('proyecto.director', function ($query) use ($search2) {
+                        $query->where('nombres', 'like', "%{$search2}%")
+                              ->orWhere('apellidos', 'like', "%{$search2}%");
+                    });
                 });
             })
-
 
             ->get()
             ->groupBy(function ($item) {
@@ -693,14 +694,8 @@ class AdminController extends Controller
             $request->validate([
                 'nombres' => 'required',
                 'apellidos' => 'required',
-                'correo' => 'required|email|unique:profesuniversidad,Correo,' . $id,
-                'cedula' => 'required|digits:10|unique:profesuniversidad,Cedula,' . $id,
                 'departamento' => 'required',
-                'espe_id' => 'required|unique:profesuniversidad,espeId,' . $id,
-            ], [
-                'correo.unique' => 'El correo electrónico ya está en uso.',
-                'cedula.unique' => 'La cédula ya está en uso.',
-                'espe_id.unique' => 'El ID ya está en uso.',
+
             ]);
 
 
@@ -713,11 +708,9 @@ class AdminController extends Controller
             $maestro->update([
                 'nombres' => $request->nombres,
                 'apellidos' => $request->apellidos,
-                'correo' => $request->correo,
-                'cedula' => $request->cedula,
+
                 'departamento' => $request->departamento,
-                'espeId' => $request->espe_id,
-            ]);
+             ]);
 
             return redirect()->route('admin.index')->with('success', 'Maestro actualizado con éxito.');
         } catch (ValidationException $e) {
@@ -1044,10 +1037,10 @@ class AdminController extends Controller
     public function aceptarFasei(Request $request)
     {
 
-        $search= $request->input('search');
-        $search2= $request->input('search2');
-        $search3= $request->input('search3');
-        $search4= $request->input('search4');
+        $search = $request->input('search');
+        $search2 = $request->input('search2');
+        $search3 = $request->input('search3');
+        $search4 = $request->input('search4');
 
 
 
@@ -1089,8 +1082,8 @@ class AdminController extends Controller
                             ->orWhere('provincia', 'LIKE', '%' . $search . '%')
                             ->orWhere('ciudad', 'LIKE', '%' . $search . '%')
 
-                     ->orWhere('NombreTutorEmpresarial', 'LIKE', '%' . $search . '%')
-                             ->orWhere('tipoPractica', 'LIKE', '%' . $search . '%');
+                            ->orWhere('NombreTutorEmpresarial', 'LIKE', '%' . $search . '%')
+                            ->orWhere('tipoPractica', 'LIKE', '%' . $search . '%');
                     });
 
             })
