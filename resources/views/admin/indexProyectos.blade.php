@@ -78,10 +78,6 @@
                             </form>
 
 
-
-
-
-
                           <!-- Botón para abrir el card de filtros -->
 <div class="tooltip-container">
     <span class="tooltip-text">Filtros</span>
@@ -117,8 +113,6 @@
         <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
     </button>
 </div>
-
-
                         </div>
                     </div>
 
@@ -284,14 +278,10 @@
 
                 </div>
             </div>
-    </section>
+
     <br>
-    <style>
 
 
-
-    </style>
-    <section>
         <div class="contenedor_registro_genero ">
             <h4><b>Listado de asignaciones</b></h4>
             <hr>
@@ -421,6 +411,7 @@
     </button>
 </div>
 
+
                         </div>
                     </div>
 
@@ -441,7 +432,8 @@
 
                         <div id="tablaAsignaciones">
                             <table id="tablaAsignaciones" class="mat-mdc-table">
-                                <thead class="ng-star-inserted">
+                                
+                            <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                         <th class="tamanio"> NOMBRE DE PROYECTO</th>
@@ -496,9 +488,11 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                    
                         </div>
 
                     </div>
+                  
                     <div class="paginator-container">
                         <nav aria-label="...">
                             <ul class="pagination d-flex align-items-center">
@@ -810,14 +804,16 @@
         });
 
         // Hacer el card draggable
+        
         $(document).ready(function() {
-            $('.draggable-card1_1').draggable({
-                handle: ".card-header",
-                containment: "window"
-            });
-        });
+    // Hacer que los cards sean draggable
+    $('.draggable-card1_1').draggable({
+        handle: ".card-header",
+        containment: "window"
+    });
+});
 
-        $(document).ready(function() {
+$(document).ready(function() {
     // Hacer que el card sea draggable
     $('.draggable-card1_2').draggable({
         handle: ".card-header",
@@ -826,11 +822,12 @@
 
     // Enviar el formulario cuando cambian los select
     $('#filtersForm select').change(function() {
-        applyFilter();
+        applyFilter('#filtersForm', '#tablaProyectos');
     });
-    $('#filterFormProfesores select').change(function() {
+    $('#filterFormProfesores input').change(function() {
         applyFilter('#filterFormProfesores', '#tablaAsignaciones');
     });
+
 });
 
 function openCard(cardId) {
@@ -844,22 +841,31 @@ function closeCard(cardId) {
     $('#' + cardId).hide();
 }
 
-function applyFilter() {
-    $.ajax({
-        url: $('#filtersForm').attr('action'),
-        data: $('#filtersForm').serialize(),
-        success: function(data) {
-            $('#tablaProyectos').html($(data).find('#tablaProyectos').html());
-        },
-        error: function() {
-            alert('Error al aplicar el filtro');
-        }
-    });
-}
+function applyFilter(formId = '#filtersForm', tableId = '#tablaProyectos') {
+        $.ajax({
+            url: $(formId).attr('action'),
+            data: $(formId).serialize(),
+            success: function(data) {
+                if (tableId === '#tablaProyectos') {
+                    $(tableId).html($(data).find('#tablaProyectos').html());
+                } else if (tableId === '#tablaAsignaciones') {
+                    $(tableId).html($(data).find('#tablaAsignaciones').html());
+                }
+            },
+            error: function() {
+                alert('Error al aplicar el filtro');
+            }
+        });
+    }
 
 function resetFilters() {
     $('#filtersForm')[0].reset();
-    applyFilter();
+    applyFilter('#filtersForm', '#tablaProyectos');
+}
+
+function resetFiltersProfesores() {
+    $('#filterFormProfesores')[0].reset();
+    applyFilter('#filterFormProfesores', '#tablaAsignaciones');
 }
 
     </script>
