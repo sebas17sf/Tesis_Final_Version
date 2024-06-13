@@ -294,18 +294,41 @@
 
                         </div>
                         <div class="tooltip-container">
-                            <span class="tooltip-text">Excel</span>
-                            <form id="reportForm" action="{{ route('admin.reportesDocentes') }}" method="POST"
-                                onsubmit="submitForm(event)">
-                                @csrf
-                                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
-                                    <span id="loadingIcon" style="display: none;">
-                                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
-                                    </span>
-                                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
-                                </button>
-                            </form>
-                        </div>
+    <span class="tooltip-text">Excel</span>
+    <form id="reportForm" action="{{ route('admin.reportesDocentes') }}" method="POST" onsubmit="submitForm(event)">
+        @csrf
+        <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+            <span id="loadingIcon" style="display: none !important; ">
+                <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+            </span>
+            <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+        </button>
+    </form>
+</div>
+<!-- Success alert -->
+<div class="contenedor_alerta success" id="successAlert" style="display: none !important;">
+    <div class="icon_alert"><i class="fa-regular fa-check"></i></div>
+    <div class="content_alert">
+        <div class="title">Éxito!</div>
+        <div class="body">El archivo Excel ha sido exportado.</div>
+    </div>
+    <div class="icon_remove">
+        <button class="button4 btn_3_2" onclick="closeAlert('successAlert')"><i class="fa-sharp fa-regular fa-xmark"></i></button>
+    </div>
+</div>
+
+<!-- Error alert -->
+<div class="contenedor_alerta error" id="errorAlert" style="display: none !important;">
+    <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
+    <div class="content_alert">
+        <div class="title">Error!</div>
+        <div class="body">Ha ocurrido un error al exportar el archivo Excel.</div>
+    </div>
+    <div class="icon_remove">
+        <button class="button4 btn_3_2" onclick="closeAlert('errorAlert')"><i class="fa-sharp fa-regular fa-xmark"></i></button>
+    </div>
+</div>
+
 
                     </div>
 
@@ -777,7 +800,25 @@
         });
     </script>
 
+<script>
+    function closeAlert(alertId) {
+        const alertElement = document.getElementById(alertId);
+        if (alertElement) {
+            alertElement.style.display = 'none';
+        }
+    }
 
+    function showAlert(alertId) {
+        const alertElement = document.getElementById(alertId);
+        if (alertElement) {
+            alertElement.style.display = 'block';
+        }
+    }
+    function closeAlert(alertId) {
+    const alert = document.getElementById(alertId);
+    alert.style.display = 'none';
+}
+</script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
     <script src="js\admin\acciones.js"></script>
     <script src="js\admin\index.js"></script>

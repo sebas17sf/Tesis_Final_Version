@@ -34,14 +34,27 @@ function submitForm(event) {
         a.remove();
         window.URL.revokeObjectURL(url);
         hideLoading();
-
-        alert('Exportación exitosa: El archivo Excel ha sido creado y descargado con éxito.');
+        showAlert('successAlert');
     }).catch(error => {
         console.error('Error:', error);
         hideLoading();
-        alert('Error de Exportación: Hubo un problema al crear el archivo Excel. Por favor, inténtelo de nuevo.');
+        showAlert('errorAlert');
     });
 }
+
+function showAlert(alertId) {
+    const alert = document.getElementById(alertId);
+    alert.style.display = 'block';
+    setTimeout(() => {
+        closeAlert(alertId);
+    }, 50000); // Ocultar automáticamente después de 5 segundos
+}
+
+function closeAlert(alertId) {
+    const alert = document.getElementById(alertId);
+    alert.style.display = 'none';
+}
+
 
 function copyDataToClipboard(event) {
     const button = event.currentTarget;
