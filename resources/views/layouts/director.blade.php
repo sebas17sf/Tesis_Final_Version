@@ -92,7 +92,7 @@
                 <button class="profile-icon dropdown" id="profile-button">
 
                     <div class="name-profile">
-                        <span><?php echo Auth::user()->NombreUsuario; ?></span>
+                        <span><?php echo Auth::user()->nombreUsuario; ?></span>
                     </div>
                     <div class="icon-profile">
                         <img src="../img/default/user.svg">

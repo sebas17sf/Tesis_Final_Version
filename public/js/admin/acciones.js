@@ -29,7 +29,7 @@ function submitForm(event) {
         var a = document.createElement('a');
         a.href = url;
         a.download = 'report.xlsx'; // specify the file name
-        document.body.appendChild(a); 
+        document.body.appendChild(a);
         a.click();
         a.remove();
         window.URL.revokeObjectURL(url);
@@ -47,7 +47,7 @@ function showAlert(alertId) {
     alert.style.display = 'block';
     setTimeout(() => {
         closeAlert(alertId);
-    }, 50000); // Ocultar automáticamente después de 5 segundos
+    }, 5000); // Ocultar automáticamente después de 5 segundos
 }
 
 function closeAlert(alertId) {
@@ -60,7 +60,7 @@ function copyDataToClipboard(event) {
     const button = event.currentTarget;
     const icon = button.querySelector('#icon');
     const dataForClipboard = formatDataForClipboard();
-    
+
     navigator.clipboard.writeText(dataForClipboard).then(() => {
         // Cambia el ícono al de verificación
         toggleIcon(icon, true);

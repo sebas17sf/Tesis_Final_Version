@@ -114,9 +114,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/coordinador/agregar-proyecto', [CoordinadorController::class, 'crearProyecto'])->name('coordinador.crearProyecto');
     ///editar proyecto
 // Rutas para editar proyectos y eliminar
-    Route::get('/coordinador/proyectos/{ProyectoID}/edit', [CoordinadorController::class, 'editProyectoForm'])->name('coordinador.editarProyecto');
-    Route::put('/coordinador/proyectos/{ProyectoID}', [CoordinadorController::class, 'editProyecto'])->name('coordinador.updateProyecto');
-    Route::delete('/coordinador/proyectos/{ProyectoID}', [CoordinadorController::class, 'deleteProyecto'])->name('coordinador.deleteProyecto');
+    Route::get('/coordinador/proyectos/{proyectoId}/edit', [CoordinadorController::class, 'editProyectoForm'])->name('coordinador.editarProyecto');
+    Route::put('/coordinador/proyectos/{proyectoId}', [CoordinadorController::class, 'editProyecto'])->name('coordinador.updateProyecto');
+    Route::delete('/coordinador/proyectos/{proyectoId}', [CoordinadorController::class, 'deleteProyecto'])->name('coordinador.deleteProyecto');
     ///mostrar los estudiantes aprobados
     Route::get('/coordinador/estudiantes-aprobados', [CoordinadorController::class, 'mostrarEstudiantesAprobados'])->name('coordinador.estudiantesAprobados');
 

@@ -7,24 +7,34 @@
 @section('content')
 
 @if (session('success'))
-
 <div class="contenedor_alerta success">
-    <div class="icon_alert"><i class="fa-regular fa-check"></i></div>
+    <div class="icon_alert"><i class="far fa-check"></i></div>
     <div class="content_alert">
         <div class="title">Éxito!</div>
         <div class="body">{{ session('success') }}</div>
     </div>
     <div class="icon_remove">
-    <button class="button4 btn_3_2"><i class="fa-sharp fa-regular fa-xmark"></i></button>
+        <button class="button4 btn_3_2"><i class="far fa-times"></i></button>
     </div>
 </div>
 
 <script>
-    document.querySelector('.contenedor_alerta .icon_remove button').addEventListener('click', function() {
-        this.closest('.contenedor_alerta').style.display = 'none';
+    // Espera a que el DOM esté completamente cargado
+    document.addEventListener('DOMContentLoaded', function() {
+        // Agrega un evento 'click' al botón de cierre
+        document.querySelector('.contenedor_alerta .icon_remove button').addEventListener('click', function() {
+            // Encuentra el contenedor de alerta más cercano y ocúltalo
+            var contenedorAlerta = this.closest('.contenedor_alerta');
+            if (contenedorAlerta) {
+                contenedorAlerta.style.display = 'none';
+            }
+        });
     });
 </script>
 @endif
+
+
+
 
 
 
@@ -112,7 +122,7 @@
                                         </tr>
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
-                                        
+
                                         @foreach ($profesoresPendientes as $profesor)
                                             <tr>
                                                 <td class="table1">{{ strtoupper($profesor->nombreUsuario) }}</td>
