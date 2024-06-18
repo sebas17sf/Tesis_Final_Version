@@ -50,7 +50,7 @@
             @csrf
             <button type="submit" class="switch">
                 <span class="title">VINCULACIÓN Y PRÁCTICAS</span>
-                <img src="{{ asset('img/default/Modul1.png') }}">
+                <img src="{{ asset('img/default/modulo1b.png') }}">
             </button>
         </form>
 
