@@ -34,8 +34,8 @@ class DocumentosVinculacion extends Controller
             })->first();
 
 
-        $inicioFecha = $proyecto->inicioFecha;
-        $finalizacionFecha = $proyecto->finalizacionFecha;
+        $inicioFecha = $proyecto->inicioFecha ?? null;
+        $finalizacionFecha = $proyecto->finalizacionFecha ?? null;
 
 
 
