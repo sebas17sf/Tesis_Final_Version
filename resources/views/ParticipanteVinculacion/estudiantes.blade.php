@@ -319,11 +319,16 @@
                                 </div>
                                 <div class="modal-body">
                                     <h4><b>Actividades registradas del estudiante</b></h4>
-                                    <table class="table">
-                                        <thead>
-                                            <tr
-                                                class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                                <th>Fecha</th>
+                                    
+                                    <div class="contenedor_tabla">
+                    <div class="table-container mat-elevation-z8">
+
+                        <div id="tablaDocentes">
+                            <table class="mat-mdc-table">
+                                <thead class="ng-star-inserted">
+                                    <tr
+                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                         <th>Fecha</th>
                                                 <th>Actividades</th>
                                                 <th>Numero de Horas</th>
                                                 <th>Nombre de la Actividad</th>
