@@ -380,7 +380,7 @@ tr:hover {
     cursor: pointer;
     color: red;
     font-size: 10px;
-    display: none; 
+    display: none;
     position: absolute;
     right: 10px;
     top: 50%;
@@ -410,7 +410,7 @@ tr:hover {
     }
 }
 
-.draggable-card .card-header, 
+.draggable-card .card-header,
 .draggable-card1_2 .card-header {
     justify-content: space-between;
     align-items: center;
@@ -424,7 +424,7 @@ tr:hover {
     border: none #000 !important;
     border-radius: 4px;
     min-height: 40px !important;
-    min-width: 100% !important; 
+    min-width: 100% !important;
     cursor: text;}
 /* Estilos personalizados para los checkboxes en Select2 */
 .styled-checkbox {
@@ -554,8 +554,9 @@ tr:hover {
     position: fixed;
     top: 60px !important;
     right: 0px !important;
-    z-index: 1000;
-    max-width: none !important; 
+    z-index: 1000 ;
+
+    max-width: none !important;
 }
 
 .contenedor_alerta .icon_alert {
@@ -590,7 +591,7 @@ tr:hover {
 
 .contenedor_alerta .content_alert {
     display: grid;
- gap: 0px !important; 
+ gap: 0px !important;
     width: 100%;
 }
 .noExisteRegistro1 {
@@ -608,15 +609,15 @@ tr:hover {
           width: 90px;
           min-width: 370px;
           padding: .3rem !important;
-        } 
+        }
         .tamanio12 {
           width: 90px;
           min-width: 220px;
           padding: .3rem !important;
-        } 
-      
+        }
+
         .tamanio2 {
           width: 30px;
           min-width: 100px;
           padding: .3rem !important;
-        } 
+        }

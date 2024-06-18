@@ -261,12 +261,13 @@ class LoginController extends Controller
                 return redirect()->route('admin.index')->with('token', $token);
             } elseif ($userRole->Tipo === 'Director-Departamento' || $userRole->Tipo === 'Director-Carrera') {
                 return redirect()->route('director.indexProyectos')->with('token', $token);
-            } elseif ($userRole->Tipo === 'Vinculacion') {
+            } elseif ($userRole->Tipo === 'Vinculacion' || $userRole->Tipo === 'Practicas') {
                 return redirect()->route('coordinador.index')->with('token', $token);
             } elseif ($userRole->Tipo === 'DirectorVinculacion') {
                 return redirect()->route('director_vinculacion.index')->with('token', $token);
             } elseif ($userRole->Tipo === 'ParticipanteVinculacion') {
                 return redirect()->route('ParticipanteVinculacion.index')->with('token', $token);
+
             } else {
                 return redirect()->route('estudiantes.create')->with('token', $token);
             }
@@ -357,7 +358,7 @@ class LoginController extends Controller
                     return redirect()->route('admin.index')->with('token', $encryptedToken);
                 } elseif ($userRole->tipo === 'Director-Departamento' || $userRole->tipo === 'Director-Carrera') {
                     return redirect()->route('director.indexProyectos')->with('token', $encryptedToken);
-                } elseif ($userRole->tipo === 'Vinculacion') {
+                } elseif ($userRole->tipo === 'Vinculacion' || $userRole->tipo === 'Practicas') {
                     return redirect()->route('coordinador.index')->with('token', $encryptedToken);
                 } elseif ($userRole->tipo === 'DirectorVinculacion') {
                     return redirect()->route('director_vinculacion.index')->with('token', $encryptedToken);

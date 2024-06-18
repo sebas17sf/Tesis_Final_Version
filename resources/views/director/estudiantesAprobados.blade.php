@@ -57,21 +57,21 @@
                             @else
                             @foreach ($estudiantesAprobados as $estudiante)
                             <tr>
-                                <td>{{ strtoupper($estudiante->Apellidos . ' ' . $estudiante->Nombres) }}
+                                <td>{{ strtoupper($estudiante->apellidos . ' ' . $estudiante->nombres) }}
                                 </td>
-                                <td>{{ $estudiante->espe_id }}</td>
-                                <td>{{ strtoupper($estudiante->Carrera) }}</td>
+                                <td>{{ $estudiante->espeId }}</td>
+                                <td>{{ strtoupper($estudiante->carrera) }}</td>
                                 <td>{{ $estudiante->cedula }}</td>
                                 <td>{{ $estudiante->periodos->numeroPeriodo }}</td>
-                                <td>{{ $estudiante->periodos->Periodo }}</td>
-                                <td>{{ strtoupper($estudiante->Departamento) }}</td>
+                                <td>{{ $estudiante->periodos->periodo }}</td>
+                                <td>{{ strtoupper($estudiante->departamento) }}</td>
                                 <td>
-                                    @if ($estudiante->Estado == 'Aprobado')
+                                    @if ($estudiante->estado == 'Aprobado')
                                     {{ strtoupper('Vinculacion') }}
-                                    @elseif ($estudiante->Estado == 'Aprobado-practicas')
+                                    @elseif ($estudiante->estado == 'Aprobado-practicas')
                                     {{ strtoupper('Practicas') }}
                                     @else
-                                    {{ strtoupper($estudiante->Estado) }}
+                                    {{ strtoupper($estudiante->estado) }}
                                     @endif
                                 </td>
                             </tr>
@@ -89,7 +89,7 @@
 
                         <ul class="pagination">
                             <li class="page-item mx-3">
-                                <form method="GET" action="{{ route('admin.estudiantes') }}#tablaEstudiantes">
+                                <form method="GET" action="{{ route('director.estudiantesAprobados') }}#tablaEstudiantes">
                                     <select class="form-control page-item" name="elementosPorPaginaAprobados" id="elementosPorPaginaAprobados" onchange="this.form.submit()">
                                         <option value="10" @if ($elementosPorPaginaAprobados == 10) selected @endif>10</option>
                                         <option value="20" @if ($elementosPorPaginaAprobados == 20) selected @endif>20</option>
