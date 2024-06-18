@@ -329,6 +329,24 @@
     </div>
 </div>
 
+<script>
+    function closeAlert(alertId) {
+        const alertElement = document.getElementById(alertId);
+        if (alertElement) {
+            alertElement.style.display = 'none';
+        }
+    }
+
+    // Para asegurarse de que el evento de clic esté registrado
+    document.querySelectorAll('.icon_remove button').forEach(button => {
+        button.addEventListener('click', function() {
+            const alertId = this.closest('.contenedor_alerta').id;
+            closeAlert(alertId);
+        });
+    });
+</script>
+
+
 
                     </div>
 
@@ -800,24 +818,7 @@
         });
     </script>
 
-<script>
-    function closeAlert(alertId) {
-        const alertElement = document.getElementById(alertId);
-        if (alertElement) {
-            alertElement.style.display = 'none';
-        }
-    }
 
-    function showAlert(alertId) {
-        const alertElement = document.getElementById(alertId);
-        if (alertElement) {
-            alertElement.style.display = 'block';
-        }
-    }
-    function closeAlert(alertId) {
-    const alert = document.getElementById(alertId);
-    alert.style.display = 'none';
-}
 </script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
     <script src="js\admin\acciones.js"></script>

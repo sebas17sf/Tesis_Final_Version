@@ -44,7 +44,7 @@ function submitForm(event) {
 
 function showAlert(alertId) {
     const alert = document.getElementById(alertId);
-    alert.style.display = 'block';
+    alert.style.display = 'flex';
     setTimeout(() => {
         closeAlert(alertId);
     }, 50000); // Ocultar automáticamente después de 5 segundos
@@ -54,7 +54,15 @@ function closeAlert(alertId) {
     const alert = document.getElementById(alertId);
     alert.style.display = 'none';
 }
-
+    // Asegurarse de que el evento de clic esté registrado
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.icon_remove button').forEach(button => {
+            button.addEventListener('click', function() {
+                const alertId = this.closest('.contenedor_alerta').id;
+                closeAlert(alertId);
+            });
+        });
+    });
 
 function copyDataToClipboard(event) {
     const button = event.currentTarget;
