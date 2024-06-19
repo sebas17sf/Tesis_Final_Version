@@ -47,7 +47,7 @@
                         <ul class="nav-list">
                             <a class="p-element" href="{{ route('ParticipanteVinculacion.index') }}">
                                 <div class="icon-sidebar-item">
-                                    <i class="material-icons">assignment</i>
+                                <i class="fa-solid fa-layer-plus"></i>
                                 </div>
                                 <div class="name-sidebar-item">
                                     <li>Proyectos</li>
@@ -55,8 +55,7 @@
                             </a>
                             <a href="{{ route('ParticipanteVinculacion.estudiantes') }}" class="p-element">
                                 <div class="icon-sidebar-item">
-                                    <i class="material-icons">spellcheck</i>
-                                </div>
+                                <i class="fa-solid fa-memo-circle-check"></i>                                </div>
                                 <div class="name-sidebar-item">
                                     <li>Calificar Estudiantes</li>
                                 </div>
@@ -64,13 +63,19 @@
 
                             <a href="{{ route('ParticipanteVinculacion.documentos') }}" class="p-element">
                                 <div class="icon-sidebar-item">
-                                    <i class="material-icons">assignment_turned_in</i>
-                                </div>
+                                <i class="fa-solid fa-folder-open"></i>                                </div>
                                 <div class="name-sidebar-item">
                                     <li>Documentacion</li>
                                 </div>
                             </a>
-
+                            <a href="{{ route('ParticipanteVinculacion.baremo') }}" class="p-element">
+                                <div class="icon-sidebar-item">
+                                <i class="fa-solid fa-file-chart-column"></i>
+                                </div>
+                                <div class="name-sidebar-item">
+                                    <li>Baremo</li>
+                                </div>
+                            </a>
                         </ul>
                     </nav>
                 </div>
@@ -108,7 +113,7 @@
                         <i class="fa-regular fa-rectangle-vertical-history"></i>
                         <span>Cambiar modulo</span>
                     </a>
-                    <a href="{{ route('participante-vinculacion.cambio-credenciales') }}" class="change_password">
+                    <a href="{{ route('participante-vinculacion.cambio-credenciales') }}" class="change_password p-element">
                         <i class="far fa-cog"></i>
                         <span>Configuracion</span>
                     </a>

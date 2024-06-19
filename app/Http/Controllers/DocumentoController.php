@@ -1834,39 +1834,6 @@ class DocumentoController extends Controller
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /////////entrar a la vista
     public function mostrarFormulario()
     {

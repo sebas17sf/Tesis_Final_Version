@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 use App\Models\ProfesUniversidad;
 use Illuminate\Http\Request;
@@ -52,15 +53,6 @@ class ParticipanteVinculacionController extends Controller
             })
             ->with('proyecto')
             ->get();
-
-
-
-
-
-
-
-
-
 
 
 
@@ -139,7 +131,13 @@ class ParticipanteVinculacionController extends Controller
 
 
 
+    ///////////////baremos
 
+    public function baremo(Request $request)
+    {
+
+ return view('ParticipanteVinculacion.baremo');
+    }
 
 
 
@@ -305,3 +303,4 @@ class ParticipanteVinculacionController extends Controller
 
 
 }
+
