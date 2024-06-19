@@ -746,9 +746,14 @@ class DocumentosVinculacion extends Controller
 
             foreach ($dataRows as $row) {
                 $estudiante = Estudiante::where('espeId', $row[4])->first();
-                $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
+                 if (!$estudiante) {
+                    $estudiante = Estudiante::where('nombres', $row[2])
+                        ->where('apellidos', $row[1])
+                        ->first();
+                }
 
                 if (!$estudiante) {
+                    $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
                     $estudiante = Estudiante::create([
                         'nombres' => $row[2],
                         'apellidos' => $row[1],
@@ -844,9 +849,15 @@ class DocumentosVinculacion extends Controller
 
             foreach ($dataRows as $row) {
                 $estudiante = Estudiante::where('espeId', $row[4])->first();
-                $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
+                if (!$estudiante) {
+                    $estudiante = Estudiante::where('nombres', $row[2])
+                        ->where('apellidos', $row[1])
+                        ->first();
+                }
+
 
                 if (!$estudiante) {
+                    $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
                     $estudiante = Estudiante::create([
                         'nombres' => $row[2],
                         'apellidos' => $row[1],
@@ -940,9 +951,15 @@ class DocumentosVinculacion extends Controller
 
             foreach ($dataRows as $row) {
                 $estudiante = Estudiante::where('espeId', $row[4])->first();
-                $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
+                if (!$estudiante) {
+                    $estudiante = Estudiante::where('nombres', $row[2])
+                        ->where('apellidos', $row[1])
+                        ->first();
+                }
+
 
                 if (!$estudiante) {
+                    $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
                     $estudiante = Estudiante::create([
                         'nombres' => $row[2],
                         'apellidos' => $row[1],
@@ -1036,9 +1053,15 @@ class DocumentosVinculacion extends Controller
 
             foreach ($dataRows as $row) {
                 $estudiante = Estudiante::where('espeId', $row[4])->first();
-                $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
+                if (!$estudiante) {
+                    $estudiante = Estudiante::where('nombres', $row[2])
+                        ->where('apellidos', $row[1])
+                        ->first();
+                }
 
                 if (!$estudiante) {
+                    $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
+
                     $estudiante = Estudiante::create([
                         'nombres' => $row[2],
                         'apellidos' => $row[1],
@@ -1132,9 +1155,15 @@ class DocumentosVinculacion extends Controller
 
             foreach ($dataRows as $row) {
                 $estudiante = Estudiante::where('espeId', $row[4])->first();
-                $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
+                if (!$estudiante) {
+                    $estudiante = Estudiante::where('nombres', $row[2])
+                        ->where('apellidos', $row[1])
+                        ->first();
+                }
+
 
                 if (!$estudiante) {
+                    $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
                     $estudiante = Estudiante::create([
                         'nombres' => $row[2],
                         'apellidos' => $row[1],
