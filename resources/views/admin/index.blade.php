@@ -282,7 +282,6 @@
                 </div>
             </div>
             <div class="card-footer1">
-                <button type="button" class="button01" onclick="document.getElementById('draggableCardAgregarMaestro').style.display='none'">Cerrar</button>
                 <button type="submit" class="button01">Guardar Cambios</button>
             </div>
         </form>
@@ -680,7 +679,7 @@
                                     <small class="form-text text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
-                            <div class="card-footer d-flex justify-content-center align-items-center">
+                            <div class="card-footer1 d-flex justify-content-center align-items-center">
                                 <button type="submit" class="button01">Guardar NRC</button>
                             </div>
                         </form>
@@ -786,7 +785,7 @@
                                     <input type="text" name="numeroPeriodo" id="numeroPeriodo"
                                         class="form-control input" value="{{ $periodo->numeroPeriodo }}" required>
                                 </div>
-                                <div class="card-footer d-flex justify-content-center align-items-center"">
+                                <div class="card-footer1 d-flex justify-content-center align-items-center"">
                                     <center><button type="submit" class="button01">Guardar Cambios</button></center>
                                 </div>
                             </form>

@@ -76,7 +76,7 @@
                         <ul class="nav-list">
                             <a class="p-element active-section" href="{{ route('coordinador.index') }}">
                                 <div class="icon-sidebar-item">
-                                    <i class="material-icons">assignment</i>
+                                <i class="fa-solid fa-layer-plus"></i>
                                 </div>
                                 <div class="name-sidebar-item">
                                     <li>Proyectos</li>
@@ -84,7 +84,7 @@
 
                                 <a class="p-element" href="{{ route('coordinador.estudiantesAprobados') }}">
                                     <div class="icon-sidebar-item">
-                                        <i class="material-icons">people</i>
+                                    <i class="fa-solid fa-users fontawesome"></i>
                                     </div>
                                     <div class="name-sidebar-item">
                                         <li>Estudiantes</li>
@@ -92,7 +92,7 @@
                                 </a>
                                 <a class="p-element submenu" class="p-element">
                                     <div class="icon-sidebar-item">
-                                        <i class="material-icons">business</i>
+                                    <i class="fa-solid fa-building"></i>
                                     </div>
                                     <div class="name-sidebar-item">
                                         <li>Prácticas</li>
@@ -101,7 +101,7 @@
                                 <div class="item-list sublista">
                                     <a class="p-element mb-1 subitem" href="{{ route('coordinador.agregarEmpresa') }}">
                                         <div class="icon-sidebar-item">
-                                            <i class="material-icons">add_business</i>
+                                        <i class="fa-solid fa-grid-2-plus"></i>
                                         </div>
                                         <div class="name-sidebar-item">
                                             <li>Agregar-Empresa</li>
@@ -137,6 +137,12 @@
             <i
                 class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
         </div>
+
+            <div class="nameDirector">
+    <label>Usuario</label>
+    <span>{{ Auth::user()->role->tipo }}</span>
+  </div>  
+            </div>
         <!-- contenido -->
         <main class="navbar">
             <button class="profile-icon dropdown" id="profile-button">

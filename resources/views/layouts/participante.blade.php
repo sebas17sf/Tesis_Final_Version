@@ -94,6 +94,11 @@
         <div class="icon-menu-sidebar" onclick="toggleSidebar()">
             <i class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
         </div>
+        <div class="nameDirector">
+    <label>Usuario</label>
+    <span>Docente_Participante</span>
+  </div>  
+            </div>
         <!-- contenido -->
         <main class="navbar">
             <button class="profile-icon dropdown" id="profile-button">
