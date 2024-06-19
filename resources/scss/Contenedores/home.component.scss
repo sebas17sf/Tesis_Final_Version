@@ -1,0 +1,214 @@
+// Imports
+@use "../vars/colors" as colors;
+@use "../vars/fonts" as fonts;
+@use "../components/table";
+@use "../components/scroll";
+
+
+.content_info_itin {
+  display: grid;
+  position: relative;
+  width: 100%;
+
+  iframe {
+    width: 100%;
+    height: 600px;
+    transition: all 0.3s;
+  }
+}
+
+// Sidebar activo
+.content_info_itin_active {
+  iframe {
+    transition: all 0.3s;
+  }
+}
+
+// PERFIL
+.content_profile {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  padding-top: 10px;
+  gap: 10px;
+
+  @media (max-width: 1300px) {
+    grid-template-columns: 1fr !important;
+  }
+
+  .section1 {
+    display: grid;
+    gap: 10px;
+  }
+
+  // Contenedor de informacion personal estatica
+  .content_static {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(colors.$primary, 0.2);
+
+    .title_edit_profile {
+      display: flex;
+    }
+
+    .elements_static {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      text-align: center;
+      justify-content: center;
+      font-size: 18px;
+
+      .last-element {
+        grid-column: span 2;
+      }
+
+      label {
+        justify-content: center;
+        padding-bottom: 3px;
+      }
+
+      .icon_block {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-size: 50px;
+        color: rgba(colors.$primary, 0.6);
+        align-items: center;
+        justify-content: center;
+        transform: translate(-50%, -80%);
+      }
+    }
+  }
+
+  // Contenedor de cambio de contraseña
+  .content_change_pass {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(colors.$primary, 0.2);
+
+    .title_edit_profile {
+      display: flex;
+    }
+
+    .form_change_passwd {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+
+      div {
+        display: grid;
+        width: 100% !important;
+      }
+
+      .content_button {
+        display: grid;
+        justify-content: center;
+        grid-column: span 2;
+      }
+    }
+  }
+
+  // Contenedor de actualizacion de datos
+  .content_info {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(colors.$primary, 0.2);
+
+    .title_edit_profile {
+      display: flex;
+    }
+
+    .form_profile {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+
+      .content_button {
+        display: grid;
+        justify-content: center;
+        grid-column: span 2;
+      }
+
+      div {
+        display: grid;
+        width: 100% !important;
+      }
+    }
+  }
+
+  // Contenedor de sesiones
+  .sesion_history {
+    grid-column: span 2;
+    display: flex;
+    max-height: 197px;
+    height: 197px;
+    gap: 5px;
+    overflow-y: auto;
+    overflow-x: auto;
+    padding-bottom: 3px;
+
+    @media (max-width: 1300px) {
+      grid-column: span 1;
+    }
+
+    .card {
+      position: relative;
+      display: grid;
+      min-width: 270.5px;
+      padding: 10px;
+      height: 294px;
+      border-radius: 10px;
+      border: 1px solid rgba(colors.$primary, 0.2);
+      gap: 5px;
+
+      .icon_card {
+        position: absolute;
+        top: 15px;
+        left: 25px;
+        font-size: 40px;
+        color: rgba(colors.$primary, 0.6);
+        align-items: center;
+        justify-content: center;
+      }
+
+      .dispositive {
+        display: grid;
+        padding-left: 90px;
+        padding-bottom: 10px;
+
+        .agente_usuario {
+          color: colors.$primary;
+          font-weight: bold;
+        }
+
+        div {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+        }
+      }
+
+      .time_sesion {
+        display: grid;
+        gap: 5px;
+
+        .data_time {
+          display: grid;
+          font-size: 15px;
+          text-align: center;
+
+          label {
+            justify-content: center;
+          }
+        }
+      }
+
+      .location {
+        span {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}

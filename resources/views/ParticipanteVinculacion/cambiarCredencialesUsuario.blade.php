@@ -47,6 +47,7 @@
 
 
 
+
     <form action="{{ route('participante-vinculacion.updateCredenciales') }}" method="POST">
         @csrf
         @method('PUT')

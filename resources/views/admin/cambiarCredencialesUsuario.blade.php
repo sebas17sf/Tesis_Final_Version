@@ -2,7 +2,7 @@
 
 @section('title', 'Configuracion de Usuario')
 
-@section('title_component', 'Configuracion de Usuario')
+@section('title_component', 'Credenciales de Usuario')
 
 @section('content')
 
@@ -44,8 +44,194 @@
     });
 </script>
 @endif
+<section class="content_profile">
+
+  <div class="section1">
+    <!-- Informacion estatica -->
+    <div class="content_static">
+
+      <div>
+        <span class="title_edit_profile"><b>Información personal</b>
+        </span>
+        <hr>
+      </div>
+
+      <div class="elements_static">
+
+        <div class="icon_block">
+          <i class="fa-brands fa-expeditedssl"></i>
+        </div>
+
+        <div>
+          <label>ID Espe</label>
+          <span></span>
+        </div>
+
+        <div >
+          <label for= "nombre">Usuario</label>
+          <span type="text" id="nombre" name="nombre"
+          required value="{{ $usuario->nombreUsuario }}"></span>
+        </div>
+
+        <div>
+          <label>Cédula</label>
+          <span></span>
+        </div>
+
+        <div>
+          <label>Teléfono</label>
+          <span></span>
+        </div>
+
+        <div class="last-element">
+          <label>Correo institucional</label>
+          <span></span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Cambiar contraseña -->
+    <div class="content_change_pass">
+      <div>
+        <span class="title_edit_profile"><b>Cambiar contraseña</b>
+
+          <!-- Informacion sobre los datos -->
+          <div class="info-icon">
+            <i class="fa-regular fa-circle-info"></i>
+          </div>
+        </span>
+        <hr>
+      </div>
+
+      <form class="form_change_passwd">
+
+        <div>
+          <label for="firstname_student">Nueva contraseña <span class="requerido">*</span></label>
+          <input type="text" id="firstname_student" class="input" placeholder="Ingrese sus nombres">
+        </div>
+
+        <div>
+          <label for="firstname_student">Confirmar contraseña <span class="requerido">*</span></label>
+          <input type="text" id="firstname_student" class="input" placeholder="Ingrese sus nombres">
+        </div>
+
+        <div class="content_button">
+          <button class="button1 efects_button">Actualizar</button>
+        </div>
+      </form>
+    </div>
 
 
+  </div>
+
+
+  <div>
+    <!-- Informacion de perfil -->
+    <div class="content_info">
+      <div>
+        <span class="title_edit_profile"><b>Actualizar datos personales</b>
+
+          <!-- Informacion sobre los datos -->
+          <div class="info-icon">
+            <i class="fa-regular fa-circle-info"></i>
+          </div>
+        </span>
+        <hr>
+      </div>
+
+      <form class="form_profile">
+        <div>
+          <label for="firstname_student">Nombres <span class="requerido">*</span></label>
+          <input type="text" id="firstname_student" class="input" placeholder="Ingrese sus nombres">
+        </div>
+
+        <div>
+          <label for="lastname_student">Apellidos <span class="requerido">*</span></label>
+          <input type="text" id="lastname_student" class="input" placeholder="Ingrese sus apellidos">
+        </div>
+
+        <div>
+          <label for="cohorte_student">Cohorte <span class="requerido">*</span></label>
+          <input type="text" id="cohorte_student" class="input" placeholder="Ingrese su cohorte">
+        </div>
+
+        <div>
+          <label for="period_student">Período <span class="requerido">*</span></label>
+          <select name="period_student" id="period_student" class="input input_select">
+            <option value="0">Seleccione su período</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="race_student">Carrera <span class="requerido">*</span></label>
+          <select name="race_student" id="race_student" class="input input_select">
+            <option value="0">Seleccione su carrera</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="departament_student">Departamento <span class="requerido">*</span></label>
+          <select name="departament_student" id="departament_student" class="input input_select">
+            <option value="0">Seleccione su departamento</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="locality_student">Localidad <span class="requerido">*</span></label>
+          <select name="locality_student" id="locality_student" class="input input_select">
+            <option value="0">Seleccione su localidad</option>
+          </select>
+        </div>
+
+        <div class="content_button">
+          <button class="button1 efects_button">Actualizar</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- Historial de sesiones -->
+<!-- Historial de sesiones -->
+<div class="sesion_history scroll_element" >
+    @foreach ($userSessions as $session)
+    <div class="card">
+        <div class="icon_card">
+            <i class="fa-regular fa-laptop-mobile"></i>
+        </div>
+
+        <div class="dispositive">
+            <span class="agente_usuario">{{ $session->browser }}</span>
+            <div>
+                <label>IP:</label>
+                <span class="text_sesion">{{ $session->ip_address }}</span>
+            </div>
+        </div>
+
+        <div class="time_sesion">
+            <div class="data_time">
+                <label>Hora ingreso</label>
+                <span class="text_sesion">{{ $session->start_time }}</span>
+            </div>
+
+            <div class="data_time">
+                <label>Hora salida</label>
+                <span class="text_sesion">{{ $session->end_time }}</span>
+            </div>
+        </div>
+
+        <div class="location">
+            <label>Ubicación</label>
+            <span class="text_sesion">{{ $session->locality }}</span>
+        </div>
+        
+    </div>
+    @endforeach
+</div>
+
+</section>
+<!--
     <form action="{{ route('admin.updateCredenciales') }}" method="POST">
         @csrf
         @method('PUT')
@@ -85,85 +271,7 @@
         <button type="submit" class="button">Guardar Cambios</button>
     </form>
 
-    <hr>
-    <span><b>Sessiones iniciadas del usuario</b></span>
-    <br>
-
-<div class="contenedor_tabla">
-    <div class="table-container mat-elevation-z8">
-        <table id="credenciales" class="mat-mdc-table">
-            <thead>
-            <tr>
-                <th>Hora de Inicio</th>
-                <th>Hora de salida</th>
-                <th>Dirección IP</th>
-                <th>Agente de Usuario</th>
-                <th>Ubicación</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach ($userSessions as $session)
-            <tr>
-                <td style="text-align: center;">{{ $session->start_time }}</td>
-                <td style="text-align: center;">{{ $session->end_time }}</td>
-                <td style="text-align: center;">{{ $session->ip_address }}</td>
-                <td style="text-align: center;">{{ $session->browser }}</td>
-                <td style="text-align: justify;">{{ $session->locality }}</td>
-            </tr>
-            @endforeach
-            </tbody>
-        </table>
-    </div>
-
-    <div class="paginator-container">
-        <nav aria-label="Paginación">
-            <ul class="pagination">
-                <li class="page-item mx-3">
-                    <form method="GET" action="{{ route('admin.cambio-credenciales') }}#credenciales">
-                        <select class="form-control page-item" name="perPage" id="perPage" onchange="this.form.submit()">
-                            <option value="10" @if ($perPage == 10) selected @endif>10</option>
-                            <option value="20" @if ($perPage == 20) selected @endif>20</option>
-                            <option value="50" @if ($perPage == 50) selected @endif>50</option>
-                            <option value="100" @if ($perPage == 100) selected @endif>100</option>
-                        </select>
-                    </form>
-                </li>
-
-                @if ($userSessions->onFirstPage())
-                <li class="page-item disabled">
-                    <span class="page-link">Anterior</span>
-                </li>
-                @else
-                <li class="page-item">
-                    <a class="page-link" href="{{ $userSessions->previousPageUrl() }}#credenciales" aria-label="Anterior">Anterior</a>
-                </li>
-                @endif
-
-                @foreach ($userSessions as $page => $session)
-                <li class="page-item {{ $userSessions->currentPage() == $page + 1 ? 'active' : '' }}">
-                    <a class="page-link" href="{{ $userSessions->url($page + 1) }}#credenciales">{{ $page + 1 }}</a>
-                </li>
-                @endforeach
-
-                @if ($userSessions->hasMorePages())
-                <li class="page-item">
-                    <a class="page-link" href="{{ $userSessions->nextPageUrl() }}#credenciales" aria-label="Siguiente">Siguiente</a>
-                </li>
-                @else
-                <li class="page-item disabled">
-                    <span class="page-link">Siguiente</span>
-                </li>
-                @endif
-            </ul>
-        </nav>
-    </div>
-</div>
-
-
-
-
-
-
+-->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>

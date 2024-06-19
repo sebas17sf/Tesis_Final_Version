@@ -376,6 +376,11 @@ tr:hover {
     border-radius: 0.25rem;
     font-size: 0.7rem !important; /* Increase font size for select */
 }
+.text_sesion {
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8rem !important; /* Increase font size for select */
+}
 .remove-icon {
     cursor: pointer;
     color: red;

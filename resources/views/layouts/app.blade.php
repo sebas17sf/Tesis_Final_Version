@@ -108,8 +108,8 @@
                     </a>
 
                     <a href="{{ route('estudiantes.cambio-credenciales') }}" class="change_password">
-                        <i class="far fa-cog"></i>
-                        <span>Configuracion</span>
+                    <i class="fa-regular fa-user"></i>
+                    <span>Credenciales</span>
                     </a>
 
                     <a class="logout" href="{{ route('logout') }}">
