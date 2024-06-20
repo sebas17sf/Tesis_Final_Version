@@ -56,83 +56,84 @@
 </head>
 
 @if (session('show_alert'))
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let timeout;
-        let countdown;
-        let timeLeft = 5 * 60; // 5 minutos en segundos
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let timeout;
+            let countdown;
+            let timeLeft = 5 * 60; // 5 minutos en segundos
 
-        window.onload = resetTimer;
-        document.onmousemove = resetTimer;
-        document.onkeypress = resetTimer;
+            window.onload = resetTimer;
+            document.onmousemove = resetTimer;
+            document.onkeypress = resetTimer;
 
-        function showSessionAlert() {
-            Swal.fire({
-                title: 'Tu sesión está a punto de expirar',
-                html: "¿Deseas mantener la sesión activa? <br> <span id='countdown'></span>",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#7066e0',
-                cancelButtonColor: '#808080',
-                confirmButtonText: 'Mantener sesión',
-                cancelButtonText: 'Salir',
-                allowOutsideClick: false,
-                onOpen: () => {
-                    countdown = setInterval(function() {
-                        document.getElementById('countdown').innerText = `${Math.floor(timeLeft / 60)} minutos y ${timeLeft % 60} segundos restantes`;
-                        timeLeft--;
-                    }, 1000);
-                },
-                onClose: () => {
-                    clearInterval(countdown);
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    fetch('{{ route('keep-alive') }}', {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                Swal.fire({
-                                    title: 'Sesión extendida',
-                                    text: 'Tu sesión se ha extendido exitosamente.',
-                                    icon: 'success',
-                                    allowOutsideClick: false
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: 'Error',
-                                    text: 'No se pudo extender la sesión.',
-                                    icon: 'error',
-                                    allowOutsideClick: false
-                                });
-                            }
-                        });
-                } else {
-                    window.location.href = '{{ route('logout') }}';
-                }
-            });
-        }
+            function showSessionAlert() {
+                Swal.fire({
+                    title: 'Tu sesión está a punto de expirar',
+                    html: "¿Deseas mantener la sesión activa? <br> <span id='countdown'></span>",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#7066e0',
+                    cancelButtonColor: '#808080',
+                    confirmButtonText: 'Mantener sesión',
+                    cancelButtonText: 'Salir',
+                    allowOutsideClick: false,
+                    onOpen: () => {
+                        countdown = setInterval(function() {
+                            document.getElementById('countdown').innerText =
+                                `${Math.floor(timeLeft / 60)} minutos y ${timeLeft % 60} segundos restantes`;
+                            timeLeft--;
+                        }, 1000);
+                    },
+                    onClose: () => {
+                        clearInterval(countdown);
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch('{{ route('keep-alive') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        title: 'Sesión extendida',
+                                        text: 'Tu sesión se ha extendido exitosamente.',
+                                        icon: 'success',
+                                        allowOutsideClick: false
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: 'No se pudo extender la sesión.',
+                                        icon: 'error',
+                                        allowOutsideClick: false
+                                    });
+                                }
+                            });
+                    } else {
+                        window.location.href = '{{ route('logout') }}';
+                    }
+                });
+            }
 
-        function resetTimer() {
-            // Limpiar el temporizador existente
-            clearTimeout(timeout);
+            function resetTimer() {
+                // Limpiar el temporizador existente
+                clearTimeout(timeout);
 
-            // Restablecer el tiempo restante
-            timeLeft = 5 * 60;
+                // Restablecer el tiempo restante
+                timeLeft = 5 * 60;
 
-            // Establecer un nuevo temporizador
-            timeout = setTimeout(showSessionAlert, 5 * 60 * 1000); // 5 minutos
-        }
+                // Establecer un nuevo temporizador
+                timeout = setTimeout(showSessionAlert, 5 * 60 * 1000); // 5 minutos
+            }
 
-        resetTimer();
-    });
-</script>
+            resetTimer();
+        });
+    </script>
 @endif
 
 <body>
@@ -155,7 +156,7 @@
                         <ul class="nav-list">
                             <a class="p-element active-section" href="{{ route('coordinador.index') }}">
                                 <div class="icon-sidebar-item">
-                                <i class="fa-solid fa-layer-plus"></i>
+                                    <i class="fa-solid fa-layer-plus"></i>
                                 </div>
                                 <div class="name-sidebar-item">
                                     <li>Proyectos</li>
@@ -163,7 +164,7 @@
 
                                 <a class="p-element" href="{{ route('coordinador.estudiantesAprobados') }}">
                                     <div class="icon-sidebar-item">
-                                    <i class="fa-solid fa-users fontawesome"></i>
+                                        <i class="fa-solid fa-users fontawesome"></i>
                                     </div>
                                     <div class="name-sidebar-item">
                                         <li>Estudiantes</li>
@@ -171,7 +172,7 @@
                                 </a>
                                 <a class="p-element submenu" class="p-element">
                                     <div class="icon-sidebar-item">
-                                    <i class="fa-solid fa-building"></i>
+                                        <i class="fa-solid fa-building"></i>
                                     </div>
                                     <div class="name-sidebar-item">
                                         <li>Prácticas</li>
@@ -180,7 +181,7 @@
                                 <div class="item-list sublista">
                                     <a class="p-element mb-1 subitem" href="{{ route('coordinador.agregarEmpresa') }}">
                                         <div class="icon-sidebar-item">
-                                        <i class="fa-solid fa-grid-2-plus"></i>
+                                            <i class="fa-solid fa-grid-2-plus"></i>
                                         </div>
                                         <div class="name-sidebar-item">
                                             <li>Agregar-Empresa</li>
@@ -217,11 +218,19 @@
                 class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
         </div>
 
-            <div class="nameDirector">
-    <label>Usuario</label>
-    <span>{{ Auth::user()->role->tipo }}</span>
-  </div>
-            </div>
+        <div class="nameDirector">
+            <label>Usuario</label>
+            <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                @if (Auth::user()->role->tipo == 'Vinculacion')
+                    Coordinador de Vinculación
+                @elseif (Auth::user()->role->tipo == 'Practicas')
+                    Coordinador de Prácticas
+                @else
+                    {{ Str::limit(Auth::user()->role->tipo, 30) }}
+                @endif
+            </span>
+        </div>
+        </div>
         <!-- contenido -->
         <main class="navbar">
             <button class="profile-icon dropdown" id="profile-button">
@@ -242,8 +251,8 @@
                     </a>
 
                     <a href="{{ route('coordinador.cambio-credenciales') }}" class="change_password">
-                    <i class="fa-regular fa-user"></i>
-                    <span>Credenciales</span>
+                        <i class="fa-regular fa-user"></i>
+                        <span>Credenciales</span>
                     </a>
 
                     <a class="logout" href="{{ route('logout') }}">

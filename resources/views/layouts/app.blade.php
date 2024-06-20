@@ -166,6 +166,16 @@
         <div class="icon-menu-sidebar" onclick="toggleSidebar()">
                 <i class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
         </div>
+        <div class="nameDirector">
+            <label>Usuario</label>
+            <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                @if (Auth::user()->role->tipo == 'ParticipanteVinculacion')
+                    Docente Participante
+                @else
+                    {{ Str::limit(Auth::user()->role->tipo, 30) }}
+                @endif
+            </span>
+        </div>
         <!-- contenido -->
         <main class="navbar">
             <button class="profile-icon dropdown" id="profile-button">
@@ -213,6 +223,8 @@
 
         <div class="views {{ session('menuState') == 'collapsed' ? 'views-active' : '' }}">
             @yield('content')
+
+
         </div>
         {{--   <button id="btn_top" ><i class='bx bxs-chevrons-up'></i></button> --}}
 

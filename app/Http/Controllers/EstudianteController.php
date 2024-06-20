@@ -541,42 +541,31 @@ class EstudianteController extends Controller
             'EstudianteID' => 'required',
             'PracticasI' => 'required',
             'Actividad' => 'required',
-            'horas' => 'required',
-            'observaciones' => 'required',
-            'fechaActividad' => 'required',
-            'departamento' => 'required',
-            'funcion' => 'required',
-            'evidencia' => 'required',
-        ]);
-
+            'horas' => 'required|integer',
+            'observaciones' => 'required|string',
+            'fechaActividad' => 'required|date',
+            'departamento' => 'required|string',
+            'funcion' => 'required|string',
+         ]);
 
         $datosActividad = $request->only([
-            'EstudianteID',
-            'PracticasI',
-            'Actividad',
-            'horas',
+             'horas',
             'observaciones',
             'fechaActividad',
             'departamento',
             'funcion',
         ]);
 
-
-
-        $evidencia = $request->file('evidencia');
-
         try {
+            $evidencia = $request->file('evidencia');
             if ($evidencia) {
-                $maxFileSize = 500000;
-                if ($evidencia->getSize() > $maxFileSize) {
-                    return redirect()->back()->with('error', 'La imagen es muy pesada. El tamaño máximo permitido es de 500 KB.');
-                }
-
                 $img = Image::make($evidencia)->encode('jpg', 75);
                 $datosActividad['evidencia'] = base64_encode($img->encoded);
             }
 
-            $datosActividad['IDPracticasI'] = $request->PracticasI;
+            $datosActividad['estudianteId'] = $request->EstudianteID;
+            $datosActividad['idPracticasi'] = $request->PracticasI;
+            $datosActividad['actividad'] = $request->Actividad;
 
             ActividadesPracticas::create($datosActividad);
 

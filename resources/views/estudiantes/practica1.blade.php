@@ -97,7 +97,7 @@
 
 
 
- 
+
                     <br>
                     <button type="button" class="button" data-toggle="modal" data-target="#modalAgregarActividad">
                         Agregar actividad
@@ -121,9 +121,9 @@
                                         enctype="multipart/form-data">
                                         @csrf
                                         <input type="hidden" id="EstudianteID" name="EstudianteID"
-                                            value="{{ $practicaPendiente->estudiante->EstudianteID }}">
+                                            value="{{ $practicaPendiente->estudiante->estudianteId }}">
                                         <input type="hidden" id="PracticasI" name="PracticasI"
-                                            value="{{ $practicaPendiente->PracticasI }}">
+                                            value="{{ $practicaPendiente->practicasi }}">
                                         <div class="form-group">
                                             <label for="Actividad">Actividad Realizada:</label>
                                             <textarea id="Actividad" name="Actividad" class="form-control input"></textarea>
@@ -185,7 +185,7 @@
                             <tbody>
                                 @foreach ($actividades as $actividad)
                                     <tr>
-                                        <td>{{ $actividad->Actividad }}</td>
+                                        <td>{{ $actividad->actividad }}</td>
                                         <td>{{ $actividad->horas }}</td>
                                         <td>{{ $actividad->observaciones }}</td>
                                         <td>{{ $actividad->fechaActividad }}</td>
@@ -239,7 +239,7 @@
                                                                 <div class="form-group">
                                                                     <label for="Actividad">Actividad Realizada:</label>
                                                                     <input type="text" id="Actividad" name="Actividad"
-                                                                        value="{{ $actividad->Actividad }}"
+                                                                        value="{{ $actividad->actividad }}"
                                                                         class="form-control">
                                                                 </div>
                                                                 <div class="form-group">
