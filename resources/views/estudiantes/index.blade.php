@@ -52,173 +52,16 @@
             <div id="tablaDocentes">
 
                 <div class="container mt-3">
-                    <div class="card" style="max-width: 750px; margin: auto;">
-                        <div class="card-header1">
-                            <div class=" justify-content-between align-items-center">
-                                <div></div>
-                                <div class="d-flex">
-                                    <form action="{{ route('estudiantes.certificadoMatricula') }}" method="get"
-                                        class="mr-2">
-                                        <div class="tooltip-container">
-                                            <span class="tooltip-text">Pdf</span>
-                                            <button type="submit" class="button3_1_1  btn_pdf"
-                                                tooltipPosition="top">
-                                                <i class="fa-solid fa-file-pdf"></i>
-                                            </button>
-                                        </div>
-                                    </form>
-                                    <div class="tooltip-container">
-                                        <span class="tooltip-text">Editar</span>
-                                        <a  type="submit" href="{{ route('estudiantes.edit', ['estudiante' => $estudiante->estudianteId]) }}"
-                                            class="button3_1_1 btn_editar" tooltipPosition="top">
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card-body tamanio1">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group row">
-                                        <label for="Nombres" class="col-sm-4 font-weight-bold">
-                                        <div class="icon-sidebar-item">
-                                            <i class="fas fa-user"></i>
-                                            </div>
-                                            <div class="icon-sidebar-item">
-                                            Nombres:
-                                        </div>
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <div class="input-group">
-                                                <label class="form-control">{{ strtoupper($estudiante->nombres) }}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="Apellidos" class="col-sm-4 font-weight-bold">
-                                        <div class="icon-sidebar-item">
-                                            <i class="fas fa-user"></i>
-                                            </div>
-                                            <div class="icon-sidebar-item">
-                                            Apellidos:
-                                        </div>
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <div class="input-group">
-                                                <label class="form-control">{{ strtoupper($estudiante->apellidos) }}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="espe_id" class="col-sm-4 font-weight-bold">
-                                        <div class="icon-sidebar-item">
-                                            <i class="fas fa-id-card"></i>
-                                        </div>
-                                        <div class="icon-sidebar-item">
-                                            ESPE ID:
-                                        </div>
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <div class="input-group">
-                                                <label class="form-control">{{ strtoupper($estudiante->espeId) }}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="celular" class="col-sm-4 font-weight-bold">
-                                        <div class="icon-sidebar-item">
-                                        <i class="fas fa-mobile-alt"></i>
-                                        </div>
-                                        <div class="icon-sidebar-item">
-                                        Celular:
-                                    </div>
-                                    </label>
-                                        <div class="col-sm-8">
-                                            <div class="input-group">
-                                                <label class="form-control">{{ strtoupper($estudiante->celular) }}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group row">
-                                        <label for="cedula" class="col-sm-4 font-weight-bold">
-                                        <div class="icon-sidebar-item">
-                                        <i  class="fas fa-id-card"></i>
-                                        </div>
-                                        <div class="icon-sidebar-item">
-                                        Cédula:
-                                    </div>
-                                    </label>
-                                        <div class="col-sm-8">
-                                            <div class="input-group">
-                                                <label class="form-control">{{ strtoupper($estudiante->cedula) }}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="Cohorte" class="col-sm-4 font-weight-bold">
-                                        <div class="icon-sidebar-item">
-                                        <i class="fas fa-calendar-alt"></i>
-                                        </div>
-                                        <div class="icon-sidebar-item">
-                                        Cohorte:
-                                    </div>
-                                    </label>
-                                        <div class="col-sm-8">
-                                            <div class="input-group">
-                                                <label class="form-control">
-                                                    @if(isset($periodo) && $periodo->numeroPeriodo)
-                                                    {{ strtoupper($periodo->numeroPeriodo) }}
-                                                    @else
-                                                    No tiene periodo
-                                                    @endif
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="Departamento" class="col-sm-4 font-weight-bold">
-                                        <div class="icon-sidebar-item">
-                                            <i class="fa-solid fa-envelope"></i>
-                                            </div>
-                                            <div class="icon-sidebar-item">
-                                         Correo:
-                                        </div>
-                                        </label>
-                                        <div class="col-sm-8">
-                                            <div class="input-group">
-                                                <label
-                                                    class="form-control label">{{ ($estudiante->correo) }}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="Departamento" class="col-sm-4 font-weight-bold">
-                                        <div class="icon-sidebar-item">
-                                        <i class="fas fa-building"></i>
-                                        </div>
-                                        <div class="icon-sidebar-item">
-                                        Departamento:
-                                    </div>
-                                    </label>
-                                        <div class="col-sm-8">
-                                            <div class="input-group">
-                                                <label style="text-transform: uppercase; "
-                                                    class="form-control label">{{ strtoupper($estudiante->departamento) }}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <form action="{{ route('estudiantes.certificadoMatricula') }}" method="get"
+                    class="mr-2">
+                    <div class="tooltip-container">
+                        <span class="tooltip-text">Pdf</span>
+                        <button type="submit" class="button3_1_1  btn_pdf"
+                            tooltipPosition="top">
+                            <i class="fa-solid fa-file-pdf"></i>
+                        </button>
                     </div>
-
-
+                </form>
                 </div>
             </div>
 
@@ -257,7 +100,7 @@
             @csrf
             <div class="text-center">
             <center> <button type="submit" class="button3  ">
-                    <i class="fa-solid fa-paper-plane-top"></i> 
+                    <i class="fa-solid fa-paper-plane-top"></i>
                 </button> </center>
             </div>
         </form>
