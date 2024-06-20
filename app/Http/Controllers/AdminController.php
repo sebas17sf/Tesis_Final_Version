@@ -276,6 +276,8 @@ class AdminController extends Controller
     {
         $estadoProyecto = $request->input('estado');
         $departamento = $request->input('departamento');
+        $profesorId = $request->input('profesor');
+        $periodoId = $request->input('periodos');
 
         $periodos = Periodo::all();
         $nrcs = NrcVinculacion::all();
@@ -375,14 +377,14 @@ class AdminController extends Controller
             });
 
         $total = $asignacionesAgrupadas->count();
-        $paginatedData = $asignacionesAgrupadas->forPage($page2, $perPage2);
-        $paginator = new LengthAwarePaginator(
-            $paginatedData,
-            $total,
-            $perPage2,
-            $page2,
-            ['path' => route('admin.indexProyectos'), 'pageName' => 'page2']
-        );
+    $paginatedData = $asignacionesAgrupadas->forPage($request->input('page2', 1), $request->input('perPage2', 10));
+    $paginator = new LengthAwarePaginator(
+        $paginatedData,
+        $total,
+        $request->input('perPage2', 10),
+        $request->input('page2', 1),
+        ['path' => route('admin.indexProyectos'), 'pageName' => 'page2']
+    );
         return view('admin.indexProyectos', [
             'proyectos' => $proyectos,
             'proyectosDisponibles' => $proyectosDisponibles,
@@ -396,6 +398,11 @@ class AdminController extends Controller
             'periodos' => $periodos,
             'search' => $search,
             'search2' => $search2,
+            'estadoProyecto' => $estadoProyecto,
+            'profesorId' => $profesorId,
+            'periodoId' => $periodoId,
+            'paginatedData' => $paginatedData,
+            'total' => $total
         ]);
         if ($estadoProyecto) {
             $query->where('estado', $estadoProyecto);
@@ -416,11 +423,18 @@ class AdminController extends Controller
         $proyectos = $query->paginate($perPage, ['*'], 'page', $page);
 
         if ($request->ajax()) {
-            return view('tablaProyectos', compact('proyectos'))->render();
+            if ($request->has('search2')) {
+                return response()->json([
+                    'html' => view('partials.tablaAsignaciones', compact('asignacionesAgrupadas', 'paginator'))->render()
+                ]);
+            } else {
+                return response()->json([
+                    'html' => view('partials.tablaProyectos', compact('proyectos'))->render()
+                ]);
+            }
         }
-
-        return view('admin.indexProyectos', compact('proyectos', 'periodos', 'nrcs', 'profesores', 'estadoProyecto', 'search'));
-
+    
+        return view('admin.indexProyectos', compact('proyectos', 'periodos', 'nrcs', 'profesores', 'asignacionesAgrupadas', 'paginator'));
     }
 
 

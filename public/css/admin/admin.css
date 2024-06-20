@@ -586,14 +586,6 @@ tr:hover {
     cursor: pointer;
 }
 
-.contenedor_alerta .icon_remove button:hover {
-    color: #2b542c;
-}
-
-.contenedor_alerta .body {
-    word-wrap: break-word;
-}
-
 .contenedor_alerta .content_alert {
     display: grid;
  gap: 0px !important;
