@@ -92,16 +92,16 @@
         <p>Por motivos de seguridad, te proporcionamos algunos detalles de tu cuenta:</p>
         <ul>
             @if ($estudiante)
-                <li><strong>Nombre:</strong> {{ $estudiante->Nombres }}</li>
-                <li><strong>Apellido:</strong> {{ $estudiante->Apellidos }}</li>
-                <li><strong>ID ESPE:</strong> {{ $estudiante->espe_id }}</li>
+                <li><strong>Nombre:</strong> {{ $estudiante->nombres}}</li>
+                <li><strong>Apellido:</strong> {{ $estudiante->apellidos }}</li>
+                <li><strong>ID ESPE:</strong> {{ $estudiante->espeId }}</li>
                 <li><strong>Celular:</strong> {{ $estudiante->celular }}</li>
                 <li><strong>Cedula:</strong> {{ $estudiante->cedula }}</li>
-                <li><strong>Carrera:</strong> {{ $estudiante->Carrera }}</li>
+                <li><strong>Carrera:</strong> {{ $estudiante->carrera }}</li>
                 <li><strong>Cohorte:</strong> {{ $estudiante->periodos->numeroPeriodo }}</li>
-                <li><strong>Cohorte:</strong> {{ $estudiante->periodos->Periodo }}</li>
-                <li><strong>Correo Electrónico:</strong> {{ $estudiante->Correo }}</li>
-                <li><strong>Departamento:</strong> {{ $estudiante->Departamento }}</li>
+                <li><strong>Cohorte:</strong> {{ $estudiante->periodos->periodo }}</li>
+                <li><strong>Correo Electrónico:</strong> {{ $estudiante->correo }}</li>
+                <li><strong>Departamento:</strong> {{ $estudiante->departamento }}</li>
             @else
                 <p>Aún no has proporcionado tu información académica.</p>
             @endif

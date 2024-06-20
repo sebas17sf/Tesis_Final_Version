@@ -278,7 +278,7 @@
                                                     <span class="text-muted">No disponible</span>
                                                 @endif
                                             </td>
-            
+
                                             <td>
                                                 @if ($empresa->convenio)
                                                     <a
@@ -289,7 +289,7 @@
                                                     <span class="text-muted">No disponible</span>
                                                 @endif
                                             </td>
-            
+
                                             <td>
                                                 <form action="{{ route('coordinador.eliminarEmpresa', ['id' => $empresa->id]) }}"
                                                     method="POST">
@@ -299,7 +299,7 @@
                                                         <i class="material-icons text-muted" style="font-size: 1.5em;">delete</i>
                                                     </button>
                                                 </form>
-            
+
                                                 <form action="{{ route('coordinador.editarEmpresa', ['id' => $empresa->id]) }}"
                                                     method="POST">
                                                     @csrf
@@ -308,13 +308,13 @@
                                                         <i class="material-icons text-muted" style="font-size: 1.5em;">edit</i>
                                                     </button>
                                                 </form>
-            
+
                                             </td>
-            
-            
-            
-            
-            
+
+
+
+
+
                                         </tr>
                                     @endforeach
                                     </tbody>
@@ -324,7 +324,8 @@
 
 
                         <div class="paginator-container">
-                            <nav aria-label="...">
+                            <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                                <div id="totalRows">Empresas: {{ $empresas->total() }}</div>
 
                                 <ul class="pagination">
                                     <li class="page-item mx-3">
@@ -560,7 +561,7 @@
 
 
 
-{{-- 
+{{--
 <style>
     table {
         width: 100%;

@@ -13,7 +13,11 @@ class SessionController extends Controller
         if ($user) {
             $user->token_expires_at = now()->addMinutes(10);
             $user->save();
-            return response()->json(['success' => true]);
+            $showAlert = now()->diffInMinutes($user->token_expires_at) <= 5;
+
+             session(['alert_shown' => false]);
+
+            return response()->json(['success' => true, 'showAlert' => $showAlert]);
         }
 
         return response()->json(['success' => false]);

@@ -242,7 +242,8 @@
         </div>
 
         <div class="paginator-container">
-            <nav aria-label="...">
+            <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                <div id="totalRows">Proyectos: {{ $proyectos->total() }}</div>
                 <ul class="pagination">
                     <li class="page-item mx-3">
                         <form method="GET" action="{{ route('coordinador.index') }}#tablaProyectos">
@@ -493,7 +494,8 @@
                     </div>
 
                     <div class="paginator-container">
-                        <nav aria-label="...">
+                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                            <div id="totalRows">Asignaciones: {{ $paginator->total() }}</div>
                             <ul class="pagination d-flex align-items-center">
 
 

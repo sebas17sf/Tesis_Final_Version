@@ -2,7 +2,7 @@
 
 @section('title', 'Configuracion de Usuario')
 
-@section('title_component', 'Configuracion de Usuario')
+@section('title_component', 'Credenciales de Usuario')
 
 @section('content')
 
@@ -44,11 +44,194 @@
     });
 </script>
 @endif
+<section class="content_profile">
+
+    <div class="section1">
+        <!-- Informacion estatica -->
+        <div class="content_static">
+
+            <div>
+        <span class="title_edit_profile"><b>Información personal</b>
+        </span>
+                <hr>
+            </div>
+
+            <div class="elements_static">
+
+                <div class="icon_block">
+                    <i class="fa-brands fa-expeditedssl"></i>
+                </div>
+
+                <div>
+                    <label>ID Espe</label>
+                    <span></span>
+                </div>
+
+                <div >
+                    <label for= "nombre">Usuario</label>
+                    <span type="text" id="nombre" name="nombre"
+                          required value="{{ $usuario->nombreUsuario }}"></span>
+                </div>
+
+                <div>
+                    <label>Cédula</label>
+                    <span></span>
+                </div>
+
+                <div>
+                    <label>Teléfono</label>
+                    <span></span>
+                </div>
+
+                <div class="last-element">
+                    <label>Correo institucional</label>
+                    <span></span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Cambiar contraseña -->
+        <div class="content_change_pass">
+            <div>
+        <span class="title_edit_profile"><b>Cambiar contraseña</b>
+
+            <!-- Informacion sobre los datos -->
+          <div class="info-icon">
+            <i class="fa-regular fa-circle-info"></i>
+          </div>
+        </span>
+                <hr>
+            </div>
+
+            <form class="form_change_passwd">
+
+                <div>
+                    <label for="firstname_student">Nueva contraseña <span class="requerido">*</span></label>
+                    <input type="text" id="firstname_student" class="input" placeholder="Ingrese sus nombres">
+                </div>
+
+                <div>
+                    <label for="firstname_student">Confirmar contraseña <span class="requerido">*</span></label>
+                    <input type="text" id="firstname_student" class="input" placeholder="Ingrese sus nombres">
+                </div>
+
+                <div class="content_button">
+                    <button class="button1 efects_button">Actualizar</button>
+                </div>
+            </form>
+        </div>
 
 
+    </div>
 
 
-    <form action="{{ route('participante-vinculacion.updateCredenciales') }}" method="POST">
+    <div>
+        <!-- Informacion de perfil -->
+        <div class="content_info">
+            <div>
+        <span class="title_edit_profile"><b>Actualizar datos personales</b>
+
+            <!-- Informacion sobre los datos -->
+          <div class="info-icon">
+            <i class="fa-regular fa-circle-info"></i>
+          </div>
+        </span>
+                <hr>
+            </div>
+
+            <form class="form_profile">
+                <div>
+                    <label for="firstname_student">Nombres <span class="requerido">*</span></label>
+                    <input type="text" id="firstname_student" class="input" placeholder="Ingrese sus nombres">
+                </div>
+
+                <div>
+                    <label for="lastname_student">Apellidos <span class="requerido">*</span></label>
+                    <input type="text" id="lastname_student" class="input" placeholder="Ingrese sus apellidos">
+                </div>
+
+                <div>
+                    <label for="cohorte_student">Cohorte <span class="requerido">*</span></label>
+                    <input type="text" id="cohorte_student" class="input" placeholder="Ingrese su cohorte">
+                </div>
+
+                <div>
+                    <label for="period_student">Período <span class="requerido">*</span></label>
+                    <select name="period_student" id="period_student" class="input input_select">
+                        <option value="0">Seleccione su período</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="race_student">Carrera <span class="requerido">*</span></label>
+                    <select name="race_student" id="race_student" class="input input_select">
+                        <option value="0">Seleccione su carrera</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="departament_student">Departamento <span class="requerido">*</span></label>
+                    <select name="departament_student" id="departament_student" class="input input_select">
+                        <option value="0">Seleccione su departamento</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="locality_student">Localidad <span class="requerido">*</span></label>
+                    <select name="locality_student" id="locality_student" class="input input_select">
+                        <option value="0">Seleccione su localidad</option>
+                    </select>
+                </div>
+
+                <div class="content_button">
+                    <button class="button1 efects_button">Actualizar</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Historial de sesiones -->
+    <div class="sesion_history scroll_element" >
+        @foreach ($userSessions as $session)
+        <div class="card">
+            <div class="icon_card">
+                <i class="fa-regular fa-laptop-mobile"></i>
+            </div>
+
+            <div class="dispositive">
+                <span class="agente_usuario">{{ $session->browser }}</span>
+                <div>
+                    <label>IP:</label>
+                    <span class="text_sesion">{{ $session->ip_address }}</span>
+                </div>
+            </div>
+
+            <div class="time_sesion">
+                <div class="data_time">
+                    <label>Hora ingreso</label>
+                    <span class="text_sesion">{{ $session->start_time }}</span>
+                </div>
+
+                <div class="data_time">
+                    <label>Hora salida</label>
+                    <span class="text_sesion">{{ $session->end_time }}</span>
+                </div>
+            </div>
+
+            <div class="location">
+                <label>Ubicación</label>
+                <span class="text_sesion">{{ $session->locality }}</span>
+            </div>
+
+        </div>
+        @endforeach
+    </div>
+
+</section>
+<!--
+    <form action="{{ route('admin.updateCredenciales') }}" method="POST">
         @csrf
         @method('PUT')
         <div class="form-group">
@@ -87,56 +270,23 @@
         <button type="submit" class="button">Guardar Cambios</button>
     </form>
 
-    <hr>
-    <span><b>Sessiones iniciadas del usuario</b></span>
-    <br>
+-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <div class="contenedor_tabla">
-        <div class="table-container mat-elevation-z8">
-
-            <table class="mat-mdc-table">
-                <thead class="ng-star-inserted">
-                    <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-
-                        <th>Hora de Inicio</th>
-                        <th>Dirección IP</th>
-                        <th>Agente de Usuario</th>
-                        <th>Ubicacion</th>
-                    </tr>
-                </thead>
-                <tbody class="mdc-data-table__content ng-star-inserted">
-                    @foreach ($userSessions as $session)
-                        <tr>
-                            <td>{{ $session->start_time }}</td>
-                            <td>{{ $session->ip_address }}</td>
-                            <td>{{ $session->browser }}</td>
-                            <td>{{ $session->locality }}</td>
-                        </tr>
-                    @endforeach
-
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('#togglePassword').click(function() {
-                var passwordField = $('#password');
-                passwordField.attr('type', passwordField.attr('type') === 'password' ? 'text' : 'password');
-            });
-
-            $('#toggleConfirmPassword').click(function() {
-                var confirmPasswordField = $('#password_confirmation');
-                confirmPasswordField.attr('type', confirmPasswordField.attr('type') === 'password' ?
-                    'text' : 'password');
-            });
+<script>
+    $(document).ready(function() {
+        $('#togglePassword').click(function() {
+            var passwordField = $('#password');
+            passwordField.attr('type', passwordField.attr('type') === 'password' ? 'text' : 'password');
         });
-    </script>
+
+        $('#toggleConfirmPassword').click(function() {
+            var confirmPasswordField = $('#password_confirmation');
+            confirmPasswordField.attr('type', confirmPasswordField.attr('type') === 'password' ?
+                'text' : 'password');
+        });
+    });
+</script>
 
 
 

@@ -289,7 +289,8 @@
                         </div>
                     </div>
                     <div class="paginator-container">
-                        <nav aria-label="...">
+                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                            <div id="totalRows">Estudiantes: {{ $estudiantesPracticas->total() }}</div>
                             <ul class="pagination">
                                 <li class="page-item mx-3">
                                     <form method="GET" action="{{ route('coordinador.aceptarFaseI') }}#practicas1">
@@ -492,7 +493,8 @@
 
                     </div>
                     <div class="paginator-container">
-                        <nav aria-label="...">
+                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                            <div id="totalRows">Estudiantes: {{ $estudiantesPracticasII->total() }}</div>
                             <ul class="pagination">
                                 <li class="page-item mx-3">
                                     <form method="GET" action="{{ route('coordinador.aceptarFaseI') }}#practicas2">
@@ -683,7 +685,8 @@
                         </div>
                     </div>
                     <div class="paginator-container">
-                        <nav aria-label="...">
+                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                            <div id="totalRows">Estudiantes: {{ $estudiantesPracticasIII->total() }}</div>
                             <ul class="pagination">
                                 <li class="page-item mx-3">
                                     <form method="GET" action="{{ route('coordinador.aceptarFaseI') }}#practicas3">
@@ -875,7 +878,8 @@
                         </div>
                     </div>
                     <div class="paginator-container">
-                        <nav aria-label="...">
+                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                            <div id="totalRows">Estudiantes: {{ $estudiantesPracticasIV->total() }}</div>
                             <ul class="pagination">
                                 <li class="page-item mx-3">
                                     <form method="GET" action="{{ route('coordinador.aceptarFaseI') }}#practicas4">

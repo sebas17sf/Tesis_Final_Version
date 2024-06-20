@@ -35,8 +35,8 @@
 
                     <dl class="row">
                         <dt class="col-sm-5 text-nowrap">Estudiante:</dt>
-                        <dd class="col-sm-7">{{ $practicaPendiente->estudiante->Apellidos }}
-                            {{ $practicaPendiente->estudiante->Nombres }}</dd>
+                        <dd class="col-sm-7">{{ $practicaPendiente->estudiante->apellidos }}
+                            {{ $practicaPendiente->estudiante->nombres }}</dd>
                         <dt class="col-sm-5 text-nowrap">Práctica:</dt>
                         <dd class="col-sm-7">{{ $practicaPendiente->tipoPractica }}</dd>
                         <dt class="col-sm-5 text-nowrap">Docente Tutor:</dt>
@@ -96,10 +96,8 @@
                 </div>
 
 
-                <button id="toggleFormBtn2" class="btn btn-outline-secondary btn-block">Cargar Actividades de la practica
-                </button>
-                <div id="registrarPeriodos" style="display: none;">
 
+ 
                     <br>
                     <button type="button" class="button" data-toggle="modal" data-target="#modalAgregarActividad">
                         Agregar actividad
@@ -348,7 +346,7 @@
                             <tbody>
                                 <tr>
                                     <th>ID de Estudiante:</th>
-                                    <td>{{ strtoupper($estudiante->espe_id) }}</td>
+                                    <td>{{ strtoupper($estudiante->espeId) }}</td>
                                 </tr>
                                 <tr>
                                     <th>Cédula:</th>
@@ -356,8 +354,8 @@
                                 </tr>
                                 <tr>
                                     <th>Nombres Completos:</th>
-                                    <td>{{ strtoupper($estudiante->Apellidos) }}
-                                        {{ strtoupper($estudiante->Nombres) }}
+                                    <td>{{ strtoupper($estudiante->apellidos) }}
+                                        {{ strtoupper($estudiante->nombres) }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -379,7 +377,7 @@
                                 </tr>
                                 <tr>
                                     <th>Departamento:</th>
-                                    <td>{{ strtoupper($estudiante->Departamento) }}</td>
+                                    <td>{{ strtoupper($estudiante->departamento) }}</td>
                                 </tr>
                                 <tr>
                                     <th>Escoja Práctica:</th>
@@ -480,8 +478,8 @@
                                         <select name="ID_tutorAcademico" class="form-control input input select" required>
                                             <option value="">Seleccionar el Docente</option>
                                             @foreach ($profesores as $profesor)
-                                                <option value="{{ $profesor->id }}"> {{ $profesor->Apellidos }}
-                                                    {{ $profesor->Nombres }}
+                                                <option value="{{ $profesor->id }}"> {{ $profesor->apellidos }}
+                                                    {{ $profesor->nombres }}
                                                     {{ $profesor->Departamento }} {{ $profesor->Correo }} </option>
                                             @endforeach
                                         </select>

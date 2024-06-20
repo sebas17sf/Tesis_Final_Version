@@ -57,5 +57,11 @@ class PracticaI extends Model
         return $this->hasMany(ActividadesPracticas::class, 'IDPracticasI', 'PracticasI');
     }
 
+    ////nrc
+    public function nrc()
+    {
+        return $this->belongsTo(NrcVinculacion::class, 'nrc', 'nrc');
+    }
+
 
 }

@@ -32,13 +32,13 @@ class EstudianteController extends Controller
 {
     public function create()
     {
-         $periodos = Periodo::all();
-         if (Auth::check() && Auth::user()->estudiante) {
-             return redirect()->route('estudiantes.index')->with('token', Session::get('user_token'));
+        $periodos = Periodo::all();
+        if (Auth::check() && Auth::user()->estudiante) {
+            return redirect()->route('estudiantes.index')->with('token', Session::get('user_token'));
         }
 
 
-         return view('estudiantes.create', compact( 'periodos'));
+        return view('estudiantes.create', compact('periodos'));
     }
 
     public function store(Request $request)
@@ -55,7 +55,7 @@ class EstudianteController extends Controller
             'Carrera' => '',
             'Provincia' => '',
             'Departamento' => '',
-         ]);
+        ]);
 
 
         // Obtén el UserID del usuario autenticado
@@ -66,7 +66,7 @@ class EstudianteController extends Controller
         $periodoSeleccionado = $validatedData['Periodo'];
         $periodo = Periodo::find($periodoSeleccionado); // Obtener el periodo utilizando su ID
 
-         $numeroPeriodo = $periodo->numeroPeriodo;
+        $numeroPeriodo = $periodo->numeroPeriodo;
 
 
         if (!$periodo) {
@@ -85,13 +85,13 @@ class EstudianteController extends Controller
             'espeId' => $validatedData['espe_id'],
             'celular' => $validatedData['celular'],
             'cedula' => $validatedData['cedula'],
-            'Cohorte' =>  $numeroPeriodo,
+            'Cohorte' => $numeroPeriodo,
             'idPeriodo' => $validatedData['Periodo'], // Utiliza el ID de periodo proporcionado en el formulario
             'carrera' => $validatedData['Carrera'],
             'correo' => $CorreoElectronico,
             'departamento' => $validatedData['Departamento'],
             'provincia' => $validatedData['Provincia'],
-             'comentario' => 'Sin comentarios',
+            'comentario' => 'Sin comentarios',
             'estado' => 'En proceso de revisión'
         ]);
 
@@ -131,7 +131,7 @@ class EstudianteController extends Controller
     public function edit(Estudiante $estudiante)
     {
         $periodos = Periodo::all();
-         return view('estudiantes.edit', compact('estudiante', 'periodos'));
+        return view('estudiantes.edit', compact('estudiante', 'periodos'));
     }
 
 
@@ -171,11 +171,11 @@ class EstudianteController extends Controller
                 'estado' => 'En proceso de revisión'
             ]);
 
-             \Log::info('Estudiante actualizado:', $estudiante->toArray());
+            \Log::info('Estudiante actualizado:', $estudiante->toArray());
 
             return redirect()->route('estudiantes.index')->with('success', 'Información del Estudiante actualizada correctamente');
         } catch (\Exception $e) {
-             \Log::error('Error al actualizar el estudiante:', ['error' => $e->getMessage()]);
+            \Log::error('Error al actualizar el estudiante:', ['error' => $e->getMessage()]);
             return redirect()->route('estudiantes.index')->with('error', 'Hubo un problema al actualizar la información del estudiante.');
         }
     }
@@ -212,7 +212,7 @@ class EstudianteController extends Controller
 
         $estudiante = $user->estudiante;
 
-         $actividades = ActividadesPracticas::where('estudianteId', $estudiante->estudianteId)->get();
+        $actividades = ActividadesPracticas::where('estudianteId', $estudiante->estudianteId)->get();
 
 
 
@@ -221,13 +221,13 @@ class EstudianteController extends Controller
             $correoEstudiante = $estudiante->Usuario->correoElectronico;
             $empresas = Empresa::all();
 
-            $practicaPendiente = PracticaI::where('estudianteId', $estudiante->EstudianteID)->where('estado', 'En ejecucion')->first();
-             $totalHoras = $actividades->sum('horas');
+            $practicaPendiente = PracticaI::where('estudianteId', $estudiante->estudianteId)->where('estado', 'En ejecucion')->first();
+            $totalHoras = $actividades->sum('horas');
 
-             $estadoPractica = PracticaI::where('estudianteId', $estudiante->EstudianteID)->where('estado', 'Terminado')->first();
+            $estadoPractica = PracticaI::where('estudianteId', $estudiante->estudianteId)->where('estado', 'Terminado')->first();
 
             if ($estadoPractica) {
-                 return redirect()->route('estudiantes.practica2');
+                return redirect()->route('estudiantes.practica2');
             }
 
             return view('estudiantes.practica1', compact('estudiante', 'correoEstudiante', 'empresas', 'practicaPendiente', 'estadoPractica', 'profesores', 'nrcpracticas1', 'actividades', 'totalHoras'));
@@ -244,7 +244,7 @@ class EstudianteController extends Controller
         $user = Auth::user();
         $estudiante = $user->estudiante;
 
-        if ($estudiante && $estudiante->estadp === 'Aprobado-practicas') {
+        if ($estudiante && $estudiante->estado === 'Aprobado-practicas') {
             $correoEstudiante = $estudiante->Usuario->correoElectronico;
             $empresas = Empresa::all();
 
@@ -269,7 +269,7 @@ class EstudianteController extends Controller
     ///////guardar practicas
     public function guardarPracticas(Request $request)
     {
-         $validatedData = $request->validate([
+        $validatedData = $request->validate([
             'Practicas' => 'required',
             'Empresa' => 'required',
             'ID_tutorAcademico' => 'required',
@@ -290,17 +290,17 @@ class EstudianteController extends Controller
         ]);
 
 
-         $userId = Auth::id();
+        $userId = Auth::id();
 
-         $estudiante = Estudiante::where('UserID', $userId)->first();
+        $estudiante = Estudiante::where('userId', $userId)->first();
 
-         if ($estudiante) {
+        if ($estudiante) {
             PracticaI::create([
-                'EstudianteID' => $estudiante->EstudianteID,
+                'estudianteId' => $estudiante->EstudianteID,
                 'tipoPractica' => $validatedData['Practicas'],
-                'IDEmpresa' => $validatedData['Empresa'],
-                'ID_tutorAcademico' => $validatedData['ID_tutorAcademico'],
-                'id_nrc_practicas1' => $validatedData['nrc'],
+                'idEmpresa' => $validatedData['Empresa'],
+                'idTutorAcademico' => $validatedData['ID_tutorAcademico'],
+                'nrc' => $validatedData['nrc'],
                 'CedulaTutorEmpresarial' => $validatedData['CedulaTutorEmpresarial'],
                 'NombreTutorEmpresarial' => $validatedData['NombreTutorEmpresarial'],
                 'Funcion' => $validatedData['Funcion'],
@@ -320,10 +320,10 @@ class EstudianteController extends Controller
             return redirect()->route('estudiantes.index')->with('success', 'Práctica guardada exitosamente');
         }
 
-         return redirect()->route('estudiantes.index')->with('error', 'No se encontró información del estudiante.');
+        return redirect()->route('estudiantes.index')->with('error', 'No se encontró información del estudiante.');
     }
 
-     public function guardarPracticas2(Request $request)
+    public function guardarPracticas2(Request $request)
     {
         // Valida los datos del formulario antes de intentar crear la práctica
         $validatedData = $request->validate([
@@ -390,49 +390,49 @@ class EstudianteController extends Controller
 
     ////////////////////guardar actividades
     public function guardarActividad(Request $request)
-{
-    $request->validate([
-        'fecha' => 'required|date',
-        'actividades' => 'required|string',
-        'horas' => 'required|integer',
-        'evidencias' => 'required|file|mimes:jpeg,jpg,png|max:500000',
-        'nombre_actividad' => 'required|string',
-    ]);
-
-    $estudiante = Auth::user()->estudiante;
-    $asignaciones = $estudiante->asignaciones;
-
-    if (!$asignaciones->count()) {
-        return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');
-    }
-
-    if ($request->hasFile('evidencias')) {
-        $evidencia = $request->file('evidencias');
-
-        // Comprimir la imagen y convertirla en base64
-        $compressedImage = Image::make($evidencia)->encode('jpg', 75);
-        $evidenciaBase64 = base64_encode($compressedImage->encoded);
-
-        $actividadEstudiante = new ActividadEstudiante([
-            'estudianteId' => $estudiante->estudianteId,
-            'fecha' => $request->input('fecha'),
-            'actividades' => $request->input('actividades'),
-            'numeroHoras' => $request->input('horas'),
-            'evidencias' => $evidenciaBase64,
-            'nombreActividad' => $request->input('nombre_actividad'),
+    {
+        $request->validate([
+            'fecha' => 'required|date',
+            'actividades' => 'required|string',
+            'horas' => 'required|integer',
+            'evidencias' => 'required|file|mimes:jpeg,jpg,png|max:500000',
+            'nombre_actividad' => 'required|string',
         ]);
 
-        try {
-            $actividadEstudiante->save();
+        $estudiante = Auth::user()->estudiante;
+        $asignaciones = $estudiante->asignaciones;
 
-            return redirect()->route('estudiantes.documentos')->with('success', 'Actividad registrada exitosamente.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error al guardar la actividad: ' . $e->getMessage());
+        if (!$asignaciones->count()) {
+            return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');
         }
-    } else {
-        return redirect()->back()->with('error', 'Verifica el ingreso de los datos en la Actividad.');
+
+        if ($request->hasFile('evidencias')) {
+            $evidencia = $request->file('evidencias');
+
+            // Comprimir la imagen y convertirla en base64
+            $compressedImage = Image::make($evidencia)->encode('jpg', 75);
+            $evidenciaBase64 = base64_encode($compressedImage->encoded);
+
+            $actividadEstudiante = new ActividadEstudiante([
+                'estudianteId' => $estudiante->estudianteId,
+                'fecha' => $request->input('fecha'),
+                'actividades' => $request->input('actividades'),
+                'numeroHoras' => $request->input('horas'),
+                'evidencias' => $evidenciaBase64,
+                'nombreActividad' => $request->input('nombre_actividad'),
+            ]);
+
+            try {
+                $actividadEstudiante->save();
+
+                return redirect()->route('estudiantes.documentos')->with('success', 'Actividad registrada exitosamente.');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', 'Error al guardar la actividad: ' . $e->getMessage());
+            }
+        } else {
+            return redirect()->back()->with('error', 'Verifica el ingreso de los datos en la Actividad.');
+        }
     }
-}
 
 
     ////eliminar actividad
@@ -453,34 +453,34 @@ class EstudianteController extends Controller
     }
 
     public function updateActividad(Request $request, $id)
-{
+    {
 
-    $actividad = ActividadEstudiante::findOrFail($id);
+        $actividad = ActividadEstudiante::findOrFail($id);
 
-    if ($request->hasFile('evidencias')) {
-        $evidencia = $request->file('evidencias');
+        if ($request->hasFile('evidencias')) {
+            $evidencia = $request->file('evidencias');
 
 
-        $maxFileSize = 500000;
-        if ($evidencia->getSize() > $maxFileSize) {
-            return redirect()->back()->with('error', 'La imagen es muy pesada. El tamaño máximo permitido es de 500 KB.');
+            $maxFileSize = 500000;
+            if ($evidencia->getSize() > $maxFileSize) {
+                return redirect()->back()->with('error', 'La imagen es muy pesada. El tamaño máximo permitido es de 500 KB.');
+            }
+
+            $evidenciaBase64 = base64_encode(File::get($evidencia));
+
+            $actividad->update([
+                'fecha' => $request->input('fecha'),
+                'actividades' => $request->input('actividades'),
+                'numeroHoras' => $request->input('numero_horas'),
+                'evidencias' => $evidenciaBase64,
+                'nombreActividad' => $request->input('nombre_actividad'),
+            ]);
+
+            return redirect()->route('estudiantes.documentos')->with('success', 'Actividad actualizada exitosamente.');
+        } else {
+            return redirect()->back()->with('error', 'Verifica el ingreso de los datos en la Actividad.');
         }
-
-        $evidenciaBase64 = base64_encode(File::get($evidencia));
-
-        $actividad->update([
-            'fecha' => $request->input('fecha'),
-            'actividades' => $request->input('actividades'),
-            'numeroHoras' => $request->input('numero_horas'),
-            'evidencias' => $evidenciaBase64,
-            'nombreActividad' => $request->input('nombre_actividad'),
-        ]);
-
-        return redirect()->route('estudiantes.documentos')->with('success', 'Actividad actualizada exitosamente.');
-    } else {
-        return redirect()->back()->with('error', 'Verifica el ingreso de los datos en la Actividad.');
     }
-}
 
 
 
@@ -521,14 +521,14 @@ class EstudianteController extends Controller
 
     public function certificadoMatricula()
     {
-         $estudiante = Auth::user()->estudiante;
+        $estudiante = Auth::user()->estudiante;
 
         if ($estudiante) {
-             $pdf = PDF::loadView('estudiantes.certificadoMatricula', compact('estudiante'));
+            $pdf = PDF::loadView('estudiantes.certificadoMatricula', compact('estudiante'));
 
-             return $pdf->download('certificadoMatricula.pdf');
+            return $pdf->download('certificadoMatricula.pdf');
         } else {
-             return redirect()->back()->with('error', 'No se pudo encontrar al estudiante.');
+            return redirect()->back()->with('error', 'No se pudo encontrar al estudiante.');
         }
     }
 
@@ -572,7 +572,7 @@ class EstudianteController extends Controller
                     return redirect()->back()->with('error', 'La imagen es muy pesada. El tamaño máximo permitido es de 500 KB.');
                 }
 
-                 $img = Image::make($evidencia)->encode('jpg', 75);
+                $img = Image::make($evidencia)->encode('jpg', 75);
                 $datosActividad['evidencia'] = base64_encode($img->encoded);
             }
 
@@ -647,6 +647,7 @@ class EstudianteController extends Controller
     public function cambiarCredencialesUsuario()
     {
         $usuario = Auth::user();
+
         $userSessions = UsuariosSession::where('userId', $usuario->userId)->get();
 
         foreach ($userSessions as $session) {
@@ -681,31 +682,29 @@ class EstudianteController extends Controller
     public function actualizarCredenciales(Request $request)
     {
         $request->validate([
-            'email' => 'required',
             'password' => 'required',
             'password_confirmation' => 'required',
-            'nombre' => 'required',
         ]);
+        dd($request->all());
+
 
         if ($request->password !== $request->password_confirmation) {
             return redirect()->back()->with('error', 'Las contraseñas no coinciden')->withInput();
         }
 
-        //////las credenciales deben ser minimo de 6 caracteres
         if (strlen($request->password) < 6) {
             return redirect()->back()->with('error', 'La contraseña debe tener al menos 6 caracteres')->withInput();
         }
 
         $usuario = Auth::user();
 
-        $usuario->correoElectronico = $request->email;
-        $usuario->nombreUsuario = $request->nombre;
         $usuario->contrasena = bcrypt($request->password);
-
         $usuario->save();
 
-        return redirect()->route('estudiantes.index')->with('success', 'Credenciales actualizadas exitosamente');
-    }
+        return redirect()->back()->with('success', 'Contraseña actualizada correctamente');
+
+     }
+
 
 
 

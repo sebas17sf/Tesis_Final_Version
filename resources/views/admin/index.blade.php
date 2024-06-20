@@ -6,39 +6,39 @@
 
 @section('content')
 
-@if (session('success'))
-<div class="contenedor_alerta success">
-    <div class="icon_alert"><i class="far fa-check"></i></div>
-    <div class="content_alert">
-        <div class="title">Éxito!</div>
-        <div class="body">{{ session('success') }}</div>
-    </div>
-    <div class="icon_remove">
-        <button class="button4 btn_3_2"><i class="far fa-times"></i></button>
-    </div>
-</div>
+    @if (session('success'))
+        <div class="contenedor_alerta success">
+            <div class="icon_alert"><i class="far fa-check"></i></div>
+            <div class="content_alert">
+                <div class="title">Éxito!</div>
+                <div class="body">{{ session('success') }}</div>
+            </div>
+            <div class="icon_remove">
+                <button class="button4 btn_3_2"><i class="far fa-times"></i></button>
+            </div>
+        </div>
 
-<script>
-    // Espera a que el DOM esté completamente cargado
-    document.addEventListener('DOMContentLoaded', function() {
-        // Agrega un evento 'click' al botón de cierre
-        document.querySelector('.contenedor_alerta .icon_remove button').addEventListener('click', function() {
-            // Encuentra el contenedor de alerta más cercano y ocúltalo
-            var contenedorAlerta = this.closest('.contenedor_alerta');
-            if (contenedorAlerta) {
-                contenedorAlerta.style.display = 'none';
-            }
-        });
-    });
-</script>
-@endif
-
-
+        <script>
+            // Espera a que el DOM esté completamente cargado
+            document.addEventListener('DOMContentLoaded', function() {
+                // Agrega un evento 'click' al botón de cierre
+                document.querySelector('.contenedor_alerta .icon_remove button').addEventListener('click', function() {
+                    // Encuentra el contenedor de alerta más cercano y ocúltalo
+                    var contenedorAlerta = this.closest('.contenedor_alerta');
+                    if (contenedorAlerta) {
+                        contenedorAlerta.style.display = 'none';
+                    }
+                });
+            });
+        </script>
+    @endif
 
 
 
 
-@if (session('maestro_con_proyectos'))
+
+
+    @if (session('maestro_con_proyectos'))
         <script>
             Swal.fire({
                 icon: 'warning',
@@ -53,26 +53,26 @@
         </script>
     @endif
 
-@if (session('error'))
-<div class="contenedor_alerta error">
-    <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
-    <div class="content_alert">
-        <div class="title">Error!</div>
-        <div class="body">{{ session('error') }}</div>
-    </div>
-    <div class="icon_remove">
-        <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
-    </div>
-</div>
+    @if (session('error'))
+        <div class="contenedor_alerta error">
+            <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
+            <div class="content_alert">
+                <div class="title">Error!</div>
+                <div class="body">{{ session('error') }}</div>
+            </div>
+            <div class="icon_remove">
+                <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+            </div>
+        </div>
 
-<script>
-    document.querySelector('.contenedor_alerta.error .icon_remove button').addEventListener('click', function() {
-        this.closest('.contenedor_alerta').style.display = 'none';
-    });
-</script>
-@endif
+        <script>
+            document.querySelector('.contenedor_alerta.error .icon_remove button').addEventListener('click', function() {
+                this.closest('.contenedor_alerta').style.display = 'none';
+            });
+        </script>
+    @endif
 
-<style>
+    <style>
         .modal-backdrop {
             display: none !important;
             /* Oculta el fondo oscuro */
@@ -130,56 +130,82 @@
                                                 <td class="table1">{{ $profesor->correoElectronico }}</td>
                                                 <td class="table1">{{ $profesor->estado }}</td>
                                                 <td>
-    <!-- Botón de Editar -->
-    <center>
-        <button type="button" class="button3 efects_button btn_editar3" onclick="openCard('editCard{{ $profesor->id }}');">
-            <i class="bx bx-edit-alt"></i>
-        </button>
-    </center>
-</td>
+                                                    <!-- Botón de Editar -->
+                                                    <center>
+                                                        <button type="button" class="button3 efects_button btn_editar3"
+                                                            onclick="openCard('editCard{{ $profesor->id }}');">
+                                                            <i class="bx bx-edit-alt"></i>
+                                                        </button>
+                                                    </center>
+                                                </td>
 
-<!-- Card para Editar Profesor -->
-<div class="draggable-card" id="editCard{{ $profesor->id }}" style="display: none;">
-    <div class="card-header">
-        <span class="card-title">Editar Profesor</span>
-        <button type="button" class="close" onclick="document.getElementById('editCard{{ $profesor->id }}').style.display='none'">&times;</button>
-    </div>
-    <div class="card-body">
-        <form method="POST" action="{{ route('admin.updateEstado', ['id' => $profesor->userId]) }}">
-            @csrf
-            @method('PUT')
-            <div class="form-group">
-                <label for="NombreUsuario{{ $profesor->id }}"><b>Nombre de Usuario</b></label>
-                <input type="text" class="form-control input" id="NombreUsuario{{ $profesor->id }}" name="NombreUsuario" value="{{ $profesor->nombreUsuario }}" required disabled>
-            </div>
-            <div class="form-group">
-                <label for="CorreoElectronico{{ $profesor->id }}"><b>Correo Electrónico</b></label>
-                <input type="email" class="form-control input" id="CorreoElectronico{{ $profesor->id }}" name="CorreoElectronico" value="{{ $profesor->correoElectronico }}" required disabled>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="Estado{{ $profesor->id }}"><b>Estado</b></label>
-                        <select class="form-control input input_select" id="Estado{{ $profesor->id }}" name="Estado" required>
-                            <option value="activo" {{ $profesor->Estado == 'Activo' ? 'selected' : '' }}>Activo</option>
-                            <option value="inactivo" {{ $profesor->Estado == 'Inactivo' ? 'selected' : '' }}>Inactivo</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="password{{ $profesor->id }}"><b>Cambiar Contraseña</b></label>
-                        <input type="password" class="form-control input" id="password{{ $profesor->id }}" name="password" required>
-                    </div>
-                </div>
-            </div>
-            <div class="card-footer">
-                <button type="button" class="button0" onclick="document.getElementById('editCard{{ $profesor->id }}').style.display='none'">Cerrar</button>
-                <button type="submit" class="button0">Guardar Cambios</button>
-            </div>
-        </form>
-    </div>
-</div>
+                                                <!-- Card para Editar Profesor -->
+                                                <div class="draggable-card" id="editCard{{ $profesor->id }}"
+                                                    style="display: none;">
+                                                    <div class="card-header">
+                                                        <span class="card-title">Editar Profesor</span>
+                                                        <button type="button" class="close"
+                                                            onclick="document.getElementById('editCard{{ $profesor->id }}').style.display='none'">&times;</button>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <form method="POST"
+                                                            action="{{ route('admin.updateEstado', ['id' => $profesor->userId]) }}">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <div class="form-group">
+                                                                <label for="NombreUsuario{{ $profesor->id }}"><b>Nombre de
+                                                                        Usuario</b></label>
+                                                                <input type="text" class="form-control input"
+                                                                    id="NombreUsuario{{ $profesor->id }}"
+                                                                    name="NombreUsuario"
+                                                                    value="{{ $profesor->nombreUsuario }}" required
+                                                                    disabled>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="CorreoElectronico{{ $profesor->id }}"><b>Correo
+                                                                        Electrónico</b></label>
+                                                                <input type="email" class="form-control input"
+                                                                    id="CorreoElectronico{{ $profesor->id }}"
+                                                                    name="CorreoElectronico"
+                                                                    value="{{ $profesor->correoElectronico }}" required
+                                                                    disabled>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label
+                                                                            for="Estado{{ $profesor->id }}"><b>Estado</b></label>
+                                                                        <select class="form-control input input_select"
+                                                                            id="Estado{{ $profesor->id }}" name="Estado"
+                                                                            required>
+                                                                            <option value="activo"
+                                                                                {{ $profesor->Estado == 'Activo' ? 'selected' : '' }}>
+                                                                                Activo</option>
+                                                                            <option value="inactivo"
+                                                                                {{ $profesor->Estado == 'Inactivo' ? 'selected' : '' }}>
+                                                                                Inactivo</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label for="password{{ $profesor->id }}"><b>Cambiar
+                                                                                Contraseña</b></label>
+                                                                        <input type="password" class="form-control input"
+                                                                            id="password{{ $profesor->id }}"
+                                                                            name="password" required>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-footer">
+                                                                <button type="button" class="button0"
+                                                                    onclick="document.getElementById('editCard{{ $profesor->id }}').style.display='none'">Cerrar</button>
+                                                                <button type="submit" class="button0">Guardar
+                                                                    Cambios</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -226,67 +252,76 @@
 
             </div>
 
-<!-- Tarjeta movible para Agregar Maestro -->
-<div class="draggable-card1_1" id="draggableCardAgregarMaestro">
-    <div class="card-header">
-        <span class="card-title">Agregar Docentes</span>
-        <button type="button" class="close" onclick="document.getElementById('draggableCardAgregarMaestro').style.display='none'">&times;</button>
-    </div>
-    <div class="card-body">
-        <form action="{{ route('admin.guardarMaestro') }}" method="post">
-            @csrf
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="nombres"><strong>Ingrese Nombres:</strong></label>
-                    <input type="text" id="nombres" name="nombres" class="form-control input" placeholder="Ingrese los dos Nombres" required>
-                    <small id="nombresError" class="form-text text-danger" style="display: none;"></small>
+            <!-- Tarjeta movible para Agregar Maestro -->
+            <div class="draggable-card1_1" id="draggableCardAgregarMaestro">
+                <div class="card-header">
+                    <span class="card-title">Agregar Docentes</span>
+                    <button type="button" class="close"
+                        onclick="document.getElementById('draggableCardAgregarMaestro').style.display='none'">&times;</button>
                 </div>
-                <div class="form-group col-md-4">
-                    <label for="apellidos"><strong>Ingrese Apellidos:</strong></label>
-                    <input type="text" id="apellidos" name="apellidos" class="form-control input" placeholder="Ingrese los dos Apellidos" required>
-                    <small id="apellidosError" class="form-text text-danger" style="display: none;"></small>
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="correo"><strong>Ingrese Correo:</strong></label>
-                    <input type="email" id="correo" name="correo" class="form-control input" placeholder="Ingrese el Correo Electrónico" required>
-                    <small id="correoError" class="form-text text-danger" style="display: none;"></small>
-                    @error('correo')
-                        <small class="form-text text-danger">{{ $message }}</small>
-                    @enderror
+                <div class="card-body">
+                    <form action="{{ route('admin.guardarMaestro') }}" method="post">
+                        @csrf
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="nombres"><strong>Ingrese Nombres:</strong></label>
+                                <input type="text" id="nombres" name="nombres" class="form-control input"
+                                    placeholder="Ingrese los dos Nombres" required>
+                                <small id="nombresError" class="form-text text-danger" style="display: none;"></small>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="apellidos"><strong>Ingrese Apellidos:</strong></label>
+                                <input type="text" id="apellidos" name="apellidos" class="form-control input"
+                                    placeholder="Ingrese los dos Apellidos" required>
+                                <small id="apellidosError" class="form-text text-danger" style="display: none;"></small>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="correo"><strong>Ingrese Correo:</strong></label>
+                                <input type="email" id="correo" name="correo" class="form-control input"
+                                    placeholder="Ingrese el Correo Electrónico" required>
+                                <small id="correoError" class="form-text text-danger" style="display: none;"></small>
+                                @error('correo')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="cedula"><strong>Ingrese la Cédula:</strong></label>
+                                <input type="text" id="cedula" name="cedula" class="form-control input"
+                                    placeholder="Ingrese Cédula (10 dígitos)" pattern="\d{10}"
+                                    title="Debe ingresar exactamente 10 números" required>
+                                <small id="cedulaError" class="form-text text-danger" style="display: none;"></small>
+                                @error('cedula')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="espe_id"><strong>Ingrese el la ID de la ESPE:</strong></label>
+                                <input type="text" id="espe_id" name="espe_id" class="form-control input"
+                                    placeholder="Ingrese la ID de la ESPE" required>
+                                <small id="espeIdError" class="form-text text-danger" style="display: none;"></small>
+                                @error('espe_id')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="departamento"><strong>Seleccione el departamento al que
+                                        pertenece:</strong></label>
+                                <select id="departamento" name="departamento" class="form-control input_select input"
+                                    required>
+                                    <option value="Ciencias de la Computación">Ciencias de la Computación</option>
+                                    <option value="Ciencias de la Vida">Ciencias de la Vida</option>
+                                    <option value="Ciencias Exactas">Ciencias Exactas</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card-footer1">
+                            <button type="submit" class="button01">Guardar Cambios</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="cedula"><strong>Ingrese la Cédula:</strong></label>
-                    <input type="text" id="cedula" name="cedula" class="form-control input" placeholder="Ingrese Cédula (10 dígitos)" pattern="\d{10}" title="Debe ingresar exactamente 10 números" required>
-                    <small id="cedulaError" class="form-text text-danger" style="display: none;"></small>
-                    @error('cedula')
-                        <small class="form-text text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="espe_id"><strong>Ingrese el la ID de la ESPE:</strong></label>
-                    <input type="text" id="espe_id" name="espe_id" class="form-control input" placeholder="Ingrese la ID de la ESPE" required>
-                    <small id="espeIdError" class="form-text text-danger" style="display: none;"></small>
-                    @error('espe_id')
-                        <small class="form-text text-danger">{{ $message }}</small>
-                    @enderror
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="departamento"><strong>Seleccione el departamento al que pertenece:</strong></label>
-                    <select id="departamento" name="departamento" class="form-control input_select input" required>
-                        <option value="Ciencias de la Computación">Ciencias de la Computación</option>
-                        <option value="Ciencias de la Vida">Ciencias de la Vida</option>
-                        <option value="Ciencias Exactas">Ciencias Exactas</option>
-                    </select>
-                </div>
-            </div>
-            <div class="card-footer1">
-                <button type="submit" class="button01">Guardar Cambios</button>
-            </div>
-        </form>
-    </div>
-</div>
 
             <!--------------------------------------- -->
 
@@ -298,62 +333,66 @@
                         <div class="tooltip-container">
                             <span class="tooltip-text">Agregar</span>
 
-                            <button type="button" class="button3 efects_button btn_primary" onclick="openCard('draggableCardAgregarMaestro');">
-                            <i class="fa-solid fa-plus"></i></button>
+                            <button type="button" class="button3 efects_button btn_primary"
+                                onclick="openCard('draggableCardAgregarMaestro');">
+                                <i class="fa-solid fa-plus"></i></button>
 
                         </div>
                         <div class="tooltip-container">
-    <span class="tooltip-text">Excel</span>
-    <form id="reportForm" action="{{ route('admin.reportesDocentes') }}" method="POST" onsubmit="submitForm(event)">
-        @csrf
-        <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
-            <span id="loadingIcon" style="display: none !important; ">
-                <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
-            </span>
-            <i class="fa-solid fa-file-excel" id="excelIcon"></i>
-        </button>
-    </form>
-</div>
-<!-- Success alert -->
-<div class="contenedor_alerta success" id="successAlert" style="display: none !important;">
-    <div class="icon_alert"><i class="fa-regular fa-check"></i></div>
-    <div class="content_alert">
-        <div class="title">Éxito!</div>
-        <div class="body">El archivo Excel ha sido exportado.</div>
-    </div>
-    <div class="icon_remove">
-        <button class="button4 btn_3_2" onclick="closeAlert('successAlert')"><i class="fa-sharp fa-regular fa-xmark"></i></button>
-    </div>
-</div>
+                            <span class="tooltip-text">Excel</span>
+                            <form id="reportForm" action="{{ route('admin.reportesDocentes') }}" method="POST"
+                                onsubmit="submitForm(event)">
+                                @csrf
+                                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+                                    <span id="loadingIcon" style="display: none !important; ">
+                                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+                                    </span>
+                                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <!-- Success alert -->
+                        <div class="contenedor_alerta success" id="successAlert" style="display: none !important;">
+                            <div class="icon_alert"><i class="fa-regular fa-check"></i></div>
+                            <div class="content_alert">
+                                <div class="title">Éxito!</div>
+                                <div class="body">El archivo Excel ha sido exportado.</div>
+                            </div>
+                            <div class="icon_remove">
+                                <button class="button4 btn_3_2" onclick="closeAlert('successAlert')"><i
+                                        class="fa-sharp fa-regular fa-xmark"></i></button>
+                            </div>
+                        </div>
 
-<!-- Error alert -->
-<div class="contenedor_alerta error" id="errorAlert" style="display: none !important;">
-    <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
-    <div class="content_alert">
-        <div class="title">Error!</div>
-        <div class="body">Ha ocurrido un error al exportar el archivo Excel.</div>
-    </div>
-    <div class="icon_remove">
-        <button class="button4 btn_3_2" onclick="closeAlert('errorAlert')"><i class="fa-sharp fa-regular fa-xmark"></i></button>
-    </div>
-</div>
+                        <!-- Error alert -->
+                        <div class="contenedor_alerta error" id="errorAlert" style="display: none !important;">
+                            <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
+                            <div class="content_alert">
+                                <div class="title">Error!</div>
+                                <div class="body">Ha ocurrido un error al exportar el archivo Excel.</div>
+                            </div>
+                            <div class="icon_remove">
+                                <button class="button4 btn_3_2" onclick="closeAlert('errorAlert')"><i
+                                        class="fa-sharp fa-regular fa-xmark"></i></button>
+                            </div>
+                        </div>
 
-<script>
-    function closeAlert(alertId) {
-        const alertElement = document.getElementById(alertId);
-        if (alertElement) {
-            alertElement.style.display = 'none';
-        }
-    }
+                        <script>
+                            function closeAlert(alertId) {
+                                const alertElement = document.getElementById(alertId);
+                                if (alertElement) {
+                                    alertElement.style.display = 'none';
+                                }
+                            }
 
-    // Para asegurarse de que el evento de clic esté registrado
-    document.querySelectorAll('.icon_remove button').forEach(button => {
-        button.addEventListener('click', function() {
-            const alertId = this.closest('.contenedor_alerta').id;
-            closeAlert(alertId);
-        });
-    });
-</script>
+                            // Para asegurarse de que el evento de clic esté registrado
+                            document.querySelectorAll('.icon_remove button').forEach(button => {
+                                button.addEventListener('click', function() {
+                                    const alertId = this.closest('.contenedor_alerta').id;
+                                    closeAlert(alertId);
+                                });
+                            });
+                        </script>
 
 
 
@@ -391,22 +430,23 @@
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
                                     @if ($profesores->isEmpty())
-                                    <tr style="text-align:center">
-                                            <td class="noExisteRegistro1"  style="font-size: 16px !important;"colspan="10">No hay estudiantes en proceso de revisión.</td>
+                                        <tr style="text-align:center">
+                                            <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">
+                                                No hay estudiantes en proceso de revisión.</td>
                                         </tr>
                                     @else
                                         @foreach ($profesores as $profesor)
                                             <tr>
-                                                <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left; padding: 5px 8px;">
-                                                    {{ strtoupper
-                                                        ($profesor->apellidos) }}
-                                                    {{ strtoupper( $profesor->nombres ?? '' ) }}
+                                                <td
+                                                    style=" text-transform: uppercase; word-wrap: break-word; text-align: left; padding: 5px 8px;">
+                                                    {{ strtoupper($profesor->apellidos) }}
+                                                    {{ strtoupper($profesor->nombres ?? '') }}
                                                 </td>
                                                 <td>{{ $profesor->correo }}</td>
                                                 <td class="center_size">{{ $profesor->usuario }}</td>
                                                 <td class="center_size">{{ $profesor->cedula }}</td>
                                                 <td class="medium_size" style=" text-transform: uppercase;">
-                                                    {{ strtoupper( $profesor->departamento) }}
+                                                    {{ strtoupper($profesor->departamento) }}
                                                 </td>
                                                 <td class="center_size">{{ $profesor->espeId }}</td>
                                                 <td>
@@ -458,7 +498,7 @@
                                                                             <input type="email" id="correoEditarMaestro"
                                                                                 name="correo"
                                                                                 class="form-control input input_select1"
-                                                                                value="{{ $profesor->correo }}"  readonly>
+                                                                                value="{{ $profesor->correo }}" readonly>
                                                                             <small id="emailHelp"
                                                                                 class="form-text text-danger"
                                                                                 style="display: none;"></small>
@@ -535,7 +575,8 @@
                                                                             </select>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="card-footer1 d-flex justify-content-center align-items-center"">
+                                                                    <div
+                                                                        class="card-footer1 d-flex justify-content-center align-items-center"">
 
                                                                         <button type="submit"
                                                                             class="button input_select1">Guardar
@@ -559,8 +600,10 @@
                                                             onclick="confirmDelete(event)"><i
                                                                 class='bx bx-trash'></i></button>
                                                     </form>
-                        </div>
-                        </td>
+
+                    </div>
+
+                         </td>
                         </tr>
                         @endforeach
                         @endif
@@ -571,50 +614,62 @@
 
 
                 <div class="paginator-container">
-                    <nav aria-label="...">
+
+                    <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                        <div id="totalRows">Docentes: {{ $profesores->total() }}</div>
 
                         <ul class="pagination">
                             <li class="page-item mx-3">
                                 <form method="GET" action="{{ route('admin.index') }}#tablaDocentes">
-                                    <select class="form-control page-item" name="perPage" id="perPage" onchange="this.form.submit()">
-                                        <option value="10" @if ($perPage == 10) selected @endif>10</option>
-                                        <option value="20" @if ($perPage == 20) selected @endif>20</option>
-                                        <option value="50" @if ($perPage == 50) selected @endif>50</option>
-                                        <option value="100" @if ($perPage == 100) selected @endif>100</option>
+                                    <select class="form-control page-item" name="perPage" id="perPage"
+                                        onchange="this.form.submit()">
+                                        <option value="10" @if ($perPage == 10) selected @endif>10
+                                        </option>
+                                        <option value="20" @if ($perPage == 20) selected @endif>20
+                                        </option>
+                                        <option value="50" @if ($perPage == 50) selected @endif>50
+                                        </option>
+                                        <option value="100" @if ($perPage == 100) selected @endif>100
+                                        </option>
                                     </select>
                                 </form>
                             </li>
 
                             @if ($profesores->onFirstPage())
-                            <li class="page-item disabled">
-                                <span class="page-link">Anterior</span>
-                            </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link">Anterior</span>
+                                </li>
                             @else
-                            <li class="page-item">
-                                <a class="page-link" href="{{ $profesores->appends(['perPage' => $perPage])->previousPageUrl() }}#tablaDocentes" aria-label="Anterior">Anterior</a>
-                            </li>
+                                <li class="page-item">
+                                    <a class="page-link"
+                                        href="{{ $profesores->appends(['perPage' => $perPage])->previousPageUrl() }}#tablaDocentes"
+                                        aria-label="Anterior">Anterior</a>
+                                </li>
                             @endif
 
                             @foreach ($profesores->getUrlRange(1, $profesores->lastPage()) as $page => $url)
-                            @if ($page == $profesores->currentPage())
-                            <li class="page-item active">
-                                <span class="page-link">{{ $page }}</span>
-                            </li>
-                            @else
-                            <li class="page-item">
-                                <a class="page-link" href="{{ $profesores->appends(['perPage' => $perPage])->url($page) }}#tablaDocentes">{{ $page }}</a>
-                            </li>
-                            @endif
+                                @if ($page == $profesores->currentPage())
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ $page }}</span>
+                                    </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="{{ $profesores->appends(['perPage' => $perPage])->url($page) }}#tablaDocentes">{{ $page }}</a>
+                                    </li>
+                                @endif
                             @endforeach
 
                             @if ($profesores->hasMorePages())
-                            <li class="page-item">
-                                <a class="page-link" href="{{ $profesores->appends(['perPage' => $perPage])->nextPageUrl() }}#tablaDocentes" aria-label="Siguiente">Siguiente</a>
-                            </li>
+                                <li class="page-item">
+                                    <a class="page-link"
+                                        href="{{ $profesores->appends(['perPage' => $perPage])->nextPageUrl() }}#tablaDocentes"
+                                        aria-label="Siguiente">Siguiente</a>
+                                </li>
                             @else
-                            <li class="page-item disabled">
-                                <span class="page-link">Siguiente</span>
-                            </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link">Siguiente</span>
+                                </li>
                             @endif
 
 
@@ -645,8 +700,8 @@
                             <div class="form-group">
                                 <label class="label" for="nrc"><strong>Ingrese el NRC:</strong></label>
                                 <input type="text" id="nrc" name="nrc" class="form-control input"
-                                    placeholder="Ingrese 5 números" pattern="\d{5}"
-                                    title="Ingrese exactamente 5 dígitos" value="{{ old('nrc') }}" required>
+                                    placeholder="Ingrese 5 números" pattern="\d{5}" title="Ingrese exactamente 5 dígitos"
+                                    value="{{ old('nrc') }}" required>
                                 <small id="nrcError" class="form-text text-danger" style="display: none;"></small>
                                 @error('nrc')
                                     <small class="form-text text-danger">{{ $message }}</small>
@@ -654,8 +709,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="periodo"><strong>Seleccione el período:</strong></label>
-                                <select id="periodo" name="periodo" class="form-control input_select input"
-                                    required>
+                                <select id="periodo" name="periodo" class="form-control input_select input" required>
                                     <option value="">Seleccione un período</option>
                                     @foreach ($periodos as $periodo)
                                         <option value="{{ $periodo->id }}"
@@ -686,52 +740,52 @@
                     </div>
                 </div>
 
-                  <!-- Tarjeta movible para Agregar Periodo -->
-                            <div class="draggable-card" id="draggableCardPeriodo">
-                                <div class="card-header">
-                                    <span class="card-title">Agregar Periodo</span>
-                                    <button type="button" class="close"
-                                        onclick="$('#draggableCardPeriodo').hide()">&times;</button>
-                                </div>
-                                <div class="card-body">
-                                    <form action="{{ route('admin.guardarPeriodo') }}" method="post">
-                                        @csrf
-                                        <div class="form-group">
-                                            <label for="periodoInicio"><strong>Ingrese el inicio del Periodo
-                                                    Académico:</strong></label>
-                                            <input type="date" id="periodoInicio" name="periodoInicio"
-                                                class="form-control input" value="{{ old('periodoInicio') }}" required>
-                                            @error('periodoInicio')
-                                                <small class="form-text text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="periodoFin"><strong>Ingrese el fin del Periodo Académico:</strong></label>
-                                            <input type="date" id="periodoFin" name="periodoFin" class="form-control input"
-                                                value="{{ old('periodoFin') }}" required>
-                                            @error('periodoFin')
-                                                <small class="form-text text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="numeroPeriodo"><strong>Ingrese el número identificador del
-                                                    periodo:</strong></label>
-                                            <input type="text" id="numeroPeriodo" name="numeroPeriodo"
-                                                placeholder="Ingrese 6 números" class="form-control input" pattern="[0-9]{1,6}"
-                                                title="Ingrese un número no negativo de hasta 6 dígitos"
-                                                value="{{ old('numeroPeriodo') }}" required>
-                                            <small id="numeroPeriodoError" class="form-text text-danger"
-                                                style="display: none;"></small>
-                                            @error('numeroPeriodo')
-                                                <small class="form-text text-danger">{{ $message }}</small>
-                                            @enderror
-                                        </div>
-                                        <div class="card-footer1 d-flex justify-content-center align-items-center">
-                                            <button type="submit" class="button01">Guardar Periodo</button>
-                                        </div>
-                                    </form>
-                                </div>
+                <!-- Tarjeta movible para Agregar Periodo -->
+                <div class="draggable-card" id="draggableCardPeriodo">
+                    <div class="card-header">
+                        <span class="card-title">Agregar Periodo</span>
+                        <button type="button" class="close"
+                            onclick="$('#draggableCardPeriodo').hide()">&times;</button>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('admin.guardarPeriodo') }}" method="post">
+                            @csrf
+                            <div class="form-group">
+                                <label for="periodoInicio"><strong>Ingrese el inicio del Periodo
+                                        Académico:</strong></label>
+                                <input type="date" id="periodoInicio" name="periodoInicio" class="form-control input"
+                                    value="{{ old('periodoInicio') }}" required>
+                                @error('periodoInicio')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
+                            <div class="form-group">
+                                <label for="periodoFin"><strong>Ingrese el fin del Periodo Académico:</strong></label>
+                                <input type="date" id="periodoFin" name="periodoFin" class="form-control input"
+                                    value="{{ old('periodoFin') }}" required>
+                                @error('periodoFin')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label for="numeroPeriodo"><strong>Ingrese el número identificador del
+                                        periodo:</strong></label>
+                                <input type="text" id="numeroPeriodo" name="numeroPeriodo"
+                                    placeholder="Ingrese 6 números" class="form-control input" pattern="[0-9]{1,6}"
+                                    title="Ingrese un número no negativo de hasta 6 dígitos"
+                                    value="{{ old('numeroPeriodo') }}" required>
+                                <small id="numeroPeriodoError" class="form-text text-danger"
+                                    style="display: none;"></small>
+                                @error('numeroPeriodo')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div class="card-footer1 d-flex justify-content-center align-items-center">
+                                <button type="submit" class="button01">Guardar Periodo</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
                 <!-- ----------------------------------------------------------------------------------- -->
 
                 <!-- Tarjeta movible para Editar Periodo -->
@@ -827,8 +881,16 @@
         });
     </script>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var table = document.getElementById('tablaDocentes');
+            var rows = table.getElementsByTagName('tr').length;
+            document.getElementById('rowCounter').innerText = 'Total de filas: ' + rows;
+        });
+    </script>
 
-</script>
+
+    </script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
     <script src="js\admin\acciones.js"></script>
     <script src="js\admin\index.js"></script>

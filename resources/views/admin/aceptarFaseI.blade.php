@@ -80,15 +80,15 @@
                                                     {{ strtoupper($practicaI->tutorAcademico->nombres) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->Empresa->nombreEmpresa) }}</td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->nrc) }}</td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->periodo->numeroPeriodo) }}</td>
+                                                <td>{{ strtoupper($practicaI->nrc) }}</td>
+                                                <td>{{ strtoupper($practicaI->nrc) }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                                                 <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
                                                 <td>{{ $practicaI->Estado }}</td>
                                                 <td>
                                                     <form
-                                                        action="{{ route('admin.actualizarEstadoEstudiante', ['id' => $practicaI->estudiante->EstudianteID]) }}"
+                                                        action="{{ route('admin.actualizarEstadoEstudiante', ['id' => $practicaI->estudiante->estudianteId]) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('PUT')
@@ -100,7 +100,7 @@
                                                     </form>
 
                                                     <form
-                                                        action="{{ route('admin.editarNombreEmpresa', ['id' => $practicaI->estudiante->EstudianteID]) }}"
+                                                        action="{{ route('admin.editarNombreEmpresa', ['id' => $practicaI->estudiante->estudianteId]) }}"
                                                         method="GET">
                                                         <button type="submit">Cambiar Empresa</button>
                                                     </form>
@@ -289,7 +289,8 @@
                         </div>
                     </div>
                     <div class="paginator-container">
-                        <nav aria-label="...">
+                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                            <div id="totalRows">Estudiantes: {{ $estudiantesPracticas->total() }}</div>
                             <ul class="pagination">
                                 <li class="page-item mx-3">
                                     <form method="GET" action="{{ route('admin.aceptarFaseI') }}#practicas1">
@@ -492,7 +493,8 @@
 
                     </div>
                     <div class="paginator-container">
-                        <nav aria-label="...">
+                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                            <div id="totalRows">Estudiantes: {{ $estudiantesPracticasII->total() }}</div>
                             <ul class="pagination">
                                 <li class="page-item mx-3">
                                     <form method="GET" action="{{ route('admin.aceptarFaseI') }}#practicas2">
@@ -683,7 +685,8 @@
                         </div>
                     </div>
                     <div class="paginator-container">
-                        <nav aria-label="...">
+                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                            <div id="totalRows">Estudiantes: {{ $estudiantesPracticasIII->total() }}</div>
                             <ul class="pagination">
                                 <li class="page-item mx-3">
                                     <form method="GET" action="{{ route('admin.aceptarFaseI') }}#practicas3">
@@ -875,8 +878,8 @@
                         </div>
                     </div>
                     <div class="paginator-container">
-                        <nav aria-label="...">
-                            <ul class="pagination">
+                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                            <div id="totalRows">Estudiantes: {{ $estudiantesPracticasIV->total() }}</div>                            <ul class="pagination">
                                 <li class="page-item mx-3">
                                     <form method="GET" action="{{ route('admin.aceptarFaseI') }}#practicas4">
                                         <select class="form-control page-item" name="paginacion4" id="perPage" onchange="this.form.submit()">

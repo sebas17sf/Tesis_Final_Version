@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use App\Models\UsuariosSession;
 
 class VerifyTokenExpiration
@@ -23,17 +24,17 @@ class VerifyTokenExpiration
                 return redirect()->route('login')->with('error', 'Tu sesión ha expirado.');
             }
 
-             if (!session('show_alert') && now()->diffInMinutes($user->token_expires_at) <= 5) {
-                session(['show_alert' => true]);
+            if (now()->diffInMinutes($user->token_expires_at) <= 5 && !session('alert_shown')) {
+                session(['show_alert' => true, 'alert_shown' => true]);
             }
         }
 
         return $next($request);
     }
+
     private function updateSessionEndTime($user)
     {
-        $existingSession = UsuariosSession::where('userId', $user->UserID)
-             ->first();
+        $existingSession = UsuariosSession::where('userId', $user->UserID)->first();
 
         if ($existingSession) {
             $existingSession->end_time = now();

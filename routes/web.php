@@ -19,6 +19,7 @@ use Laravel\Socialite\Facades\Socialite;
 
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
 
+Route::get('/keep-alive', [SessionController::class, 'keepAlive']);
 Route::post('/keep-alive', [SessionController::class, 'keepAlive'])->name('keep-alive');
 
 // Ruta para procesar el inicio de sesión (POST)

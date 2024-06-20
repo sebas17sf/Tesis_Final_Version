@@ -1276,7 +1276,7 @@ class AdminController extends Controller
 
         // Actualiza el estado de la práctica
         $nuevoEstado = $request->input('nuevoEstado');
-        $practica->Estado = $nuevoEstado;
+        $practica->estado = $nuevoEstado;
         $practica->save();
 
         if ($nuevoEstado === 'En ejecucion') {

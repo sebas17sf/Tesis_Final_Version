@@ -218,7 +218,9 @@
 
 
                     <div class="paginator-container">
-                        <nav aria-label="...">
+                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                            <div id="totalRows">Estudiantes: {{ $estudiantesAprobados->total() }}</div>
+
 
                             <ul class="pagination">
                                 <li class="page-item mx-3">

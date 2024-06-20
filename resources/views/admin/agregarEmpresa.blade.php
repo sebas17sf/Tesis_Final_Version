@@ -282,7 +282,7 @@
                     </div>
 
                 </div>
-                
+
             </div>
 
             <section>
@@ -394,7 +394,9 @@
 
 
                         <div class="paginator-container">
-                            <nav aria-label="...">
+                            <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                                <div id="totalRows">Empresas: {{ $empresas->total() }}</div>
+
 
                                 <ul class="pagination">
                                     <li class="page-item mx-3">

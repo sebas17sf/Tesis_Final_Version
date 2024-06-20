@@ -115,7 +115,7 @@ class LoginController extends Controller
             'email' => 'required|email',
         ]);
 
-        $usuario = Usuario::where('CorreoElectronico', $request->email)->first();
+        $usuario = Usuario::where('correoElectronico', $request->email)->first();
 
         if (!$usuario) {
             return redirect()->route('recuperar-contrasena')->withErrors(['email' => 'Correo no registrado, no cuenta con un usuario en el sistema.']);
@@ -126,9 +126,9 @@ class LoginController extends Controller
         $usuario->token_expires_at = now()->addHours(1);
         $usuario->save();
 
-        $estudiante = Estudiante::where('Correo', $request->email)->first();
+        $estudiante = Estudiante::where('correo', $request->email)->first();
 
-        Mail::to($usuario->CorreoElectronico)->send(new RecuperarContrasena($usuario, $estudiante, $token));
+        Mail::to($usuario->correoElectronico)->send(new RecuperarContrasena($usuario, $estudiante, $token));
 
         return redirect('/')->with('success', 'Se ha enviado un enlace de restablecimiento de contraseña a su correo electrónico.');
     }
