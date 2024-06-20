@@ -110,10 +110,43 @@
     </div>
 </div>
 </section>
-    <!-- Sección para mostrar la información del proyecto asignado -->
-    <div class="mt-4">
+<div class="mt-4">
         <h4><b>Proyecto Asignado</b></h4>
         <hr>
+        @if ($asignacionProyecto)
+        <div class="contenedor_tabla">
+                    <div class="table-container mat-elevation-z8">
+
+                        <div id="tablaDocentes">
+                            <table class="mat-mdc-table">
+                                <thead class="ng-star-inserted">
+                                    <tr
+                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                        <th class="tamanio">NOMBRE DEL PROYECTO</th>
+                        <th>DOCENTE DIRECTOR</th>
+                        <th class="tamanio">DESCRIPCIÓN</th>
+                        <th>FECHA DE ASIGNACIÓN</th>
+                        <th>PERIODO</th>
+                     </tr>
+                </thead>
+                <tbody class="mdc-data-table__content ng-star-inserted">
+                    <tr>
+                        <td style=" text-transform: uppercase ; text-align:justify">{{ strtoupper($asignacionProyecto->proyecto->nombreProyecto) }}</td>
+                        <td style=" text-transform: uppercase; text-align:left">{{ strtoupper($asignacionProyecto->proyecto->director->nombres . ' ' . $asignacionProyecto->proyecto->director->apellidos) }}
+
+                        <td style=" text-transform: uppercase; text-align:justify">{{ strtoupper($asignacionProyecto->proyecto->descripcionProyecto) }}</td>
+                        <td style=" text-transform: uppercase; text-align:center;">{{ $asignacionProyecto->asignacionFecha }}</td>
+                        <td style=" text-transform: uppercase; text-align:center;">{{ strtoupper($asignacionProyecto->periodo->numeroPeriodo ?? '') }}</td>
+
+                     </tr>
+
+                </tbody>
+            </table>
+        @else
+            <p>Aun no está asignado un Proyecto. Estar pendiente de su asignación.</p>
+        @endif
+    </div>
+
     </div>
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
