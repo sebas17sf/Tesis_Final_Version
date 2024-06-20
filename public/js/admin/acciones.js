@@ -47,7 +47,7 @@ function showAlert(alertId) {
     alert.style.display = 'flex';
     setTimeout(() => {
         closeAlert(alertId);
-    }, 5000); // Ocultar automáticamente después de 5 segundos
+    }, 9000); // Ocultar automáticamente después de 5 segundos
 }
 
 function closeAlert(alertId) {

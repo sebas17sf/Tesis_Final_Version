@@ -377,25 +377,6 @@
                             </div>
                         </div>
 
-                        <script>
-                            function closeAlert(alertId) {
-                                const alertElement = document.getElementById(alertId);
-                                if (alertElement) {
-                                    alertElement.style.display = 'none';
-                                }
-                            }
-
-                            // Para asegurarse de que el evento de clic esté registrado
-                            document.querySelectorAll('.icon_remove button').forEach(button => {
-                                button.addEventListener('click', function() {
-                                    const alertId = this.closest('.contenedor_alerta').id;
-                                    closeAlert(alertId);
-                                });
-                            });
-                        </script>
-
-
-
                     </div>
 
                     <!-- Buscador -->
@@ -857,8 +838,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+
 
 
     <script>

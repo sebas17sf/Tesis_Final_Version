@@ -546,7 +546,7 @@ tr:hover {
     font-size: 12px !important;
 }
 .contenedor_alerta {
-    display: flex !important; /* Fuerza el uso de flex */
+    display: none ; /* Oculta la alerta por defecto */
     align-items: center;
     justify-content: space-between;
     background-color: #dff0d8;
@@ -583,7 +583,6 @@ tr:hover {
     border: none;
     color: #3c763d;
     font-size: 24px;
-    cursor: pointer;
 }
 
 .contenedor_alerta .content_alert {
@@ -617,4 +616,13 @@ tr:hover {
           width: 30px;
           min-width: 100px;
           padding: .3rem !important;
+        }
+        .contenedor_general1 .contenedor_acciones_tabla{
+            display: grid;
+            align-items: center;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            border: 1px solid rgba(0, 0, 0, .2);
+            border-radius: 10px !important;
+            padding: 5px 10px !important;
         }

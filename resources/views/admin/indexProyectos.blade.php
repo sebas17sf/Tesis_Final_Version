@@ -353,8 +353,6 @@
     </div>
 </div>
 
-
-
 <!-- Botón de Filtros para Profesores y Periodos -->
 <div class="tooltip-container mx-1">
     <span class="tooltip-text">Filtros</span>
@@ -408,7 +406,18 @@
 
                         </div>
                     </div>
-
+<!-- Error alert -->
+<div class="contenedor_alerta error" id="errorAlert1" style="display: none !important;">
+    <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
+    <div class="content_alert">
+        <div class="title">Error!</div>
+        <div class="body">Error en el filtro.</div>
+    </div>
+    <div class="icon_remove" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>    </div>
+</div>
                     <div class="contenedor_buscador">
                         <div>
                             <form id="formBusquedaAsignaciones">
@@ -682,6 +691,7 @@
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/admin/acciones.js') }}"></script>
+    
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -879,7 +889,7 @@ function applyFilter(formId = '#filtersForm', tableId = '#tablaProyectos') {
                 }
             },
             error: function() {
-            showAlert('errorAlert', 'Error al aplicar el filtro');
+            showAlert('errorAlert1', 'Error al aplicar el filtro');
         }
         });
     }
