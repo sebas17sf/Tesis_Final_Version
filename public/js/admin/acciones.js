@@ -28,7 +28,113 @@ function submitForm(event) {
         var url = window.URL.createObjectURL(blob);
         var a = document.createElement('a');
         a.href = url;
-        a.download = 'report.xlsx'; // specify the file name
+        a.download = 'DocentesReporte.xlsx'; // specify the file name
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+        hideLoading();
+        showAlert('successAlert');
+    }).catch(error => {
+        console.error('Error:', error);
+        hideLoading();
+        showAlert('errorAlert');
+    });
+}
+
+function showAlert(alertId) {
+    const alert = document.getElementById(alertId);
+    alert.style.display = 'flex';
+    setTimeout(() => {
+        closeAlert(alertId);
+    }, 9000); // Ocultar automáticamente después de 5 segundos
+}
+
+function closeAlert(alertId) {
+    const alert = document.getElementById(alertId);
+    alert.style.display = 'none';
+}
+    // Asegurarse de que el evento de clic esté registrado
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.icon_remove button').forEach(button => {
+            button.addEventListener('click', function() {
+                const alertId = this.closest('.contenedor_alerta').id;
+                closeAlert(alertId);
+            });
+        });
+    });
+
+function copyDataToClipboard(event) {
+    const button = event.currentTarget;
+    const icon = button.querySelector('#icon');
+    const dataForClipboard = formatDataForClipboard();
+
+    navigator.clipboard.writeText(dataForClipboard).then(() => {
+        // Cambia el ícono al de verificación
+        toggleIcon(icon, true);
+        // Vuelve al ícono original después de 1 segundo
+        setTimeout(() => toggleIcon(icon, false), 1000);
+        console.log('Los datos han sido copiados en el portapapeles.');
+    }).catch((err) => {
+        console.error('Error al copiar!', err);
+        alert('Hubo un error al copiar los datos en el portapapeles.');
+    });
+}
+
+function toggleIcon(icon, isCheck) {
+    if (isCheck) {
+        icon.classList.remove('fa-regular', 'fa-copy');
+        icon.classList.add('fa-solid', 'fa-circle-check');
+    } else {
+        icon.classList.remove('fa-solid', 'fa-circle-check');
+        icon.classList.add('fa-regular', 'fa-copy');
+    }
+}
+
+// Formatea los datos para el portapapeles
+function formatDataForClipboard() {
+    const table = document.getElementById('professorsTable');
+    const headers = Array.from(table.querySelectorAll('thead th'))
+                        .slice(0, -1) // Excluye el último encabezado ("Acciones")
+                        .map(th => th.innerText.trim())
+                        .join('\t');
+    const rows = table.querySelectorAll('tbody tr');
+    let data = headers + '\n';
+
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length > 0) {  // Asegúrate de que hay celdas para procesar
+            const rowData = Array.from(cells)
+                                .slice(0, -1) // Excluye la última celda (acciones)
+                                .map(cell => cell.innerText.trim())
+                                .join('\t');
+            data += rowData + '\n';
+        }
+    });
+
+    return data.trim(); // Elimina cualquier carácter de nueva línea al final
+}
+function submitForm(event) {
+    event.preventDefault();
+    showLoading();
+
+    var form = document.getElementById('reportForm1');
+    var formData = new FormData(form);
+
+    fetch(form.action, {
+        method: 'POST',
+        body: formData
+    }).then(response => {
+        if (response.ok) {
+            return response.blob();
+        } else {
+            throw new Error('Failed to download file');
+        }
+    }).then(blob => {
+        var url = window.URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'AsignacionReporte.xlsx'; // specify the file name
         document.body.appendChild(a);
         a.click();
         a.remove();

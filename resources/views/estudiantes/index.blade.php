@@ -114,46 +114,6 @@
     <div class="mt-4">
         <h4><b>Proyecto Asignado</b></h4>
         <hr>
-        
-        <div class="contenedor_tabla">
-    <div class="table-container mat-elevation-z8">
-        <div id="tablaDocentes">
-            <table class="mat-mdc-table">
-                <thead class="ng-star-inserted">
-                    <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                        <th class="tamanio">NOMBRE DEL PROYECTO</th>
-                        <th>DOCENTE DIRECTOR</th>
-                        <th class="tamanio">DESCRIPCIÓN</th>
-                        <th>FECHA DE ASIGNACIÓN</th>
-                        <th>PERIODO</th>
-                    </tr>
-                </thead>
-                <tbody class="mdc-data-table__content ng-star-inserted">
-                    @if ($asignacionProyecto && $asignacionProyecto->isEmpty())
-                        <tr style="text-align:center">
-                            <td class="noExisteRegistro1" style="font-size: 16px !important;" colspan="10">No hay estudiantes en proceso de revisión.</td>
-                        </tr>
-                    @elseif($asignacionProyecto)
-                        @foreach ($asignacionProyecto as $proyecto)
-                            <tr>
-                                <td style="text-transform: uppercase; text-align:justify">{{ strtoupper($proyecto->proyecto->nombreProyecto) }}</td>
-                                <td style="text-transform: uppercase; text-align:left">{{ strtoupper($proyecto->proyecto->director->nombres . ' ' . $proyecto->proyecto->director->apellidos) }}</td>
-                                <td style="text-transform: uppercase; text-align:justify">{{ strtoupper($proyecto->proyecto->descripcionProyecto) }}</td>
-                                <td style="text-transform: uppercase; text-align:center;">{{ $proyecto->asignacionFecha }}</td>
-                                <td style="text-transform: uppercase; text-align:center;">{{ strtoupper($proyecto->periodo->numeroPeriodo ?? '') }}</td>
-                            </tr>
-                        @endforeach
-                    @else
-                        <tr style="text-align:center">
-                            <td class="noExisteRegistro1" style="font-size: 16px !important;" colspan="10">Datos no disponibles.</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
     </div>
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>

@@ -172,6 +172,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/participante-vinculacion/estudiantes', [ParticipanteVinculacionController::class, 'estudiantes'])->name('ParticipanteVinculacion.estudiantes');
     Route::get('/participante-vinculacion/baremo', [ParticipanteVinculacionController::class, 'baremo'])->name('ParticipanteVinculacion.baremo');
 
+    Route::get('/director-vinculacion/baremo', [DirectorVinculacionController::class, 'baremo'])->name('director.baremo');
+
     ///rutas para guardar las notas del estudiante, participante
     Route::post('/participante-vinculacion/guardar-notas', [ParticipanteVinculacionController::class, 'guardarNotas'])->name('guardar-notas');
     ///ruta para actualizar las notas del estudiante

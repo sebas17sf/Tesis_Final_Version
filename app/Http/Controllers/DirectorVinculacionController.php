@@ -169,7 +169,7 @@ class DirectorVinculacionController extends Controller
             $estudiantesCalificados = Estudiante::whereIn('estudianteId', $estudiantesCalificadosIds)
                 ->whereHas('proyectos', function ($query) use ($director) {
                     $query->where('directorId', $director->id)
-                    ->where('estado', 'Aprobado');
+                        ->where('estado', 'Aprobado');
                 })
                 ->get();
         }
@@ -278,11 +278,11 @@ class DirectorVinculacionController extends Controller
         $Director = ProfesUniversidad::where('correo', $correoDirector)->first();
         // Obtener la relación AsignacionProyecto para este DirectorVinculación
         $asignacion = AsignacionProyecto::where('participanteId', $Director->id)
-        ->whereHas('estudiante', function ($query) {
-            $query->where('estado', 'Aprobado');
-        })
-        ->first();
-         $proyecto = Proyecto::find($asignacion->proyectoId);
+            ->whereHas('estudiante', function ($query) {
+                $query->where('estado', 'Aprobado');
+            })
+            ->first();
+        $proyecto = Proyecto::find($asignacion->proyectoId);
 
         $plantilla->setValue('NombreProyecto', $proyecto->nombreProyecto);
         $plantilla->setValue('Objetivos', $request->input('Objetivos'));
@@ -462,6 +462,13 @@ class DirectorVinculacionController extends Controller
         $usuario->save();
 
         return redirect()->route('director_vinculacion.index')->with('success', 'Credenciales actualizadas exitosamente');
+    }
+
+
+    public function baremo(Request $request)
+    {
+
+        return view('director_vinculacion.baremo');
     }
 
 

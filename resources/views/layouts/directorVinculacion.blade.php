@@ -150,6 +150,15 @@
                                 </div>
                             </a>
 
+                            <a href="{{ route('director.baremo') }}" class="p-element">
+                                <div class="icon-sidebar-item">
+                                    <i class="fa-solid fa-file-chart-column"></i>
+                                </div>
+                                <div class="name-sidebar-item">
+                                    <li>Baremo</li>
+                                </div>
+                            </a>
+
 
                         </ul>
                     </nav>

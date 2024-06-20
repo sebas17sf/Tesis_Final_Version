@@ -304,7 +304,7 @@
                         <div class="col-md-12 d-flex">
 
                             <!-- Botón de Matriz de Vinculación -->
-                            <form id="reportForm" action="{{ route('reporte.matrizVinculacion') }}" method="POST"
+                            <form id="reportForm1" action="{{ route('reporte.matrizVinculacion') }}" method="POST"
                                 onsubmit="submitForm(event)" class="mx-1">
                                 @csrf
                                 <div class="tooltip-container">
@@ -691,7 +691,7 @@
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/admin/acciones.js') }}"></script>
-    
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
