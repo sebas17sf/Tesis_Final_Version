@@ -27,14 +27,14 @@
 
 
 @if (session('error'))
-<div class="contenedor_alerta error">
+<div class="contenedor_alerta error" id="errorAlert">
     <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
     <div class="content_alert">
         <div class="title">Error!</div>
         <div class="body">{{ session('error') }}</div>
     </div>
     <div class="icon_remove">
-        <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+        <button class="button4 btn_3_2" onclick="closeAlert('errorAlert')"><i class="fa-regular fa-xmark"></i></button>
     </div>
 </div>
 
@@ -681,7 +681,7 @@
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="js\admin\acciones.js"></script>
+    <script src="{{ asset('js/admin/acciones.js') }}"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -850,7 +850,7 @@ $(document).ready(function() {
     $('#filtersForm select').change(function() {
         applyFilter('#filtersForm', '#tablaProyectos');
     });
-    $('#filterFormProfesores input').change(function() {
+    $('#filterFormProfesores select').change(function() {
         applyFilter('#filterFormProfesores', '#tablaAsignaciones');
     });
 
@@ -879,8 +879,8 @@ function applyFilter(formId = '#filtersForm', tableId = '#tablaProyectos') {
                 }
             },
             error: function() {
-                alert('Error al aplicar el filtro');
-            }
+            showAlert('errorAlert', 'Error al aplicar el filtro');
+        }
         });
     }
 
@@ -929,4 +929,17 @@ function resetFiltersProfesores() {
         document.getElementById(fileTextId).innerHTML = '<i class="fa fa-upload"></i> Haz clic aquí para subir el documento'; // Reset the text
         document.querySelector('.remove-icon').style.display = 'none'; // Ocultar la "X"
     }
+    function showAlert(alertId, message) {
+    const alert = document.getElementById(alertId);
+    alert.querySelector('.body').textContent = message;
+    alert.style.display = 'flex';
+    setTimeout(() => {
+        closeAlert(alertId);
+    }, 5000); // Ocultar automáticamente después de 5 segundos
+}
+
+function closeAlert(alertId) {
+    const alert = document.getElementById(alertId);
+    alert.style.display = 'none';
+}
     @endsection
