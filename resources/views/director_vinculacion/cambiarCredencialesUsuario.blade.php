@@ -64,28 +64,28 @@
 
                 <div>
                     <label>ID Espe</label>
-                    <span></span>
+                    <span>{{ $usuario->profesorUniversidad->espeId }}</span>
                 </div>
 
                 <div >
                     <label for= "nombre">Usuario</label>
-                    <span type="text" id="nombre" name="nombre"
-                          required value="{{ $usuario->nombreUsuario }}"></span>
+                    <span>{{ $usuario->nombreUsuario }}</span>
+
                 </div>
 
                 <div>
                     <label>Cédula</label>
-                    <span></span>
+                    <span>{{ $usuario->profesorUniversidad->cedula }}</span>
                 </div>
 
                 <div>
                     <label>Teléfono</label>
-                    <span></span>
+                    <span>{{ $usuario->profesorUniversidad->celular }}</span>
                 </div>
 
                 <div class="last-element">
                     <label>Correo institucional</label>
-                    <span></span>
+                    <span>{{ $usuario->profesorUniversidad->correo }}</span>
                 </div>
 
             </div>

@@ -165,6 +165,16 @@
             <div class="icon-menu-sidebar" onclick="toggleSidebar()">
                 <i class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
             </div>
+            <div class="nameDirector">
+                <label>Usuario</label>
+                <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    @if (Auth::user()->role->tipo == 'Director-Departamento')
+                        Director de Departamento
+                    @else
+                        {{ Str::limit(Auth::user()->role->tipo, 30) }}
+                    @endif
+                </span>
+            </div>
             <!-- contenido -->
             <main class="navbar">
                 <button class="profile-icon dropdown" id="profile-button">

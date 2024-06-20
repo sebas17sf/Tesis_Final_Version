@@ -55,12 +55,12 @@ class DocumentoController extends Controller
         }
 
         // Obtener el ProyectoID del modelo AsignacionProyecto del estudiante
-        $asignacionProyecto = $estudiante->asignaciones-> first();
+        $asignacionProyecto = $estudiante->asignaciones->first();
 
         if ($asignacionProyecto) {
             $proyectoID = $asignacionProyecto->proyectoId;
         } else {
-             return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
+            return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
         }
 
         $datosEstudiantes = DB::table('estudiantes')
@@ -76,9 +76,9 @@ class DocumentoController extends Controller
                 'proyectos.nombreProyecto',
             )
             ->where('asignacionproyectos.proyectoId', $proyectoID)
-        ->where('estudiantes.estado', 'Aprobado')
-        ->orderBy('estudiantes.apellidos', 'asc')
-        ->get();
+            ->where('estudiantes.estado', 'Aprobado')
+            ->orderBy('estudiantes.apellidos', 'asc')
+            ->get();
 
         // Obtener Carrera, Provincia y FechaInicio del primer estudiante asignado al proyecto
         $primerEstudiante = $datosEstudiantes->first();
@@ -802,7 +802,7 @@ class DocumentoController extends Controller
 
     public function reportesProyectos(Request $request)
     {
-         try {
+        try {
             $plantillaPath = public_path('Plantillas/Reporte-Proyectos.xlsx');
             $spreadsheet = IOFactory::load($plantillaPath);
             $estado = $request->input('estado');
@@ -1533,17 +1533,21 @@ class DocumentoController extends Controller
 
         $estudiante = Auth::user()->estudiante;
 
-        $datosEstudiantes = PracticaI::where('EstudianteID', $estudiante->EstudianteID)->get();
+        $datosEstudiantes = PracticaI::where('estudianteId', $estudiante->estudianteId)->get();
 
-        $template->setValue('estudiante', $estudiante->Nombres . ' ' . $estudiante->Apellidos);
+        $template->setValue('estudiante', $estudiante->nombres . ' ' . $estudiante->apellidos);
         $template->setValue('cedula', $estudiante->cedula);
-        $template->setValue('espe_id', $estudiante->espe_id);
+        $template->setValue('espe_id', $estudiante->espeId);
         $template->setValue('celular', $estudiante->celular);
-        $template->setValue('correo', $estudiante->Correo);
+        $template->setValue('correo', $estudiante->correo);
 
         $template->setValue('empresa', $datosEstudiantes->first()->empresa->nombreEmpresa);
-        $template->setValue('periodo', $datosEstudiantes->first()->nrcPractica->periodo->numeroPeriodo);
-
+        $estudiante = $datosEstudiantes->first();
+        if (is_object($estudiante) && is_object($estudiante->nrc) && is_object($estudiante->nrc->periodo)) {
+            $template->setValue('periodo', $estudiante->nrc->periodo->numeroPeriodo);
+        } else {
+            $template->setValue('periodo', 'Default Periodo Value');
+        }
 
         ///////descargar el documento generado
         $nombreArchivo = 'EncuestaEstudiantes.docx';
@@ -1564,14 +1568,18 @@ class DocumentoController extends Controller
 
         $estudiante = Auth::user()->estudiante;
 
-        $datosEstudiantes = PracticaI::where('EstudianteID', $estudiante->EstudianteID)->get();
+        $datosEstudiantes = PracticaI::where('estudianteId', $estudiante->estudianteId)->get();
 
-        $template->setValue('Nombre', $datosEstudiantes->first()->tutorAcademico->Nombres . ' ' . $datosEstudiantes->first()->tutorAcademico->Apellidos);
-        $template->setValue('Cedula', $datosEstudiantes->first()->tutorAcademico->Cedula);
-        $template->setValue('Departamento', $datosEstudiantes->first()->tutorAcademico->Departamento);
-        $template->setValue('Correo', $datosEstudiantes->first()->tutorAcademico->Correo);
-        $template->setValue('periodo', $datosEstudiantes->first()->nrcPractica->periodo->numeroPeriodo);
-
+        $template->setValue('Nombre', $datosEstudiantes->first()->tutorAcademico->nombres . ' ' . $datosEstudiantes->first()->tutorAcademico->apellidos);
+        $template->setValue('Cedula', $datosEstudiantes->first()->tutorAcademico->c);
+        $template->setValue('Departamento', $datosEstudiantes->first()->tutorAcademico->departamento);
+        $template->setValue('Correo', $datosEstudiantes->first()->tutorAcademico->correo);
+        $estudiante = $datosEstudiantes->first();
+        if (is_object($estudiante) && is_object($estudiante->nrc) && is_object($estudiante->nrc->periodo)) {
+            $template->setValue('periodo', $estudiante->nrc->periodo->numeroPeriodo);
+        } else {
+            $template->setValue('periodo', 'Default Periodo Value');
+        }
         $nombreArchivo = 'EncuestaDocentes.docx';
         $template->saveAs($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
@@ -1588,13 +1596,19 @@ class DocumentoController extends Controller
 
         $estudiante = Auth::user()->estudiante;
 
-        $datosEstudiantes = PracticaI::where('EstudianteID', $estudiante->EstudianteID)->get();
-        $template->setValue('periodo', $datosEstudiantes->first()->nrcPractica->periodo->numeroPeriodo);
-        $template->setValue('estudiante', $estudiante->Nombres . ' ' . $estudiante->Apellidos);
+        $datosEstudiantes = PracticaI::where('estudianteId', $estudiante->estudianteId)->get();
+
+        $template->setValue('estudiante', $estudiante->nombres . ' ' . $estudiante->apellidos);
         $template->setValue('cedula', $estudiante->cedula);
-        $template->setValue('espe_id', $estudiante->espe_id);
+        $template->setValue('espe_id', $estudiante->espeId);
         $template->setValue('celular', $estudiante->celular);
-        $template->setValue('correo', $estudiante->Correo);
+        $template->setValue('correo', $estudiante->correo);
+        $estudiante = $datosEstudiantes->first();
+        if (is_object($estudiante) && is_object($estudiante->nrc) && is_object($estudiante->nrc->periodo)) {
+            $template->setValue('periodo', $estudiante->nrc->periodo->numeroPeriodo);
+        } else {
+            $template->setValue('periodo', 'Default Periodo Value');
+        }
 
 
         $fechaInicio = $datosEstudiantes->first()->FechaInicio;
@@ -1632,13 +1646,19 @@ class DocumentoController extends Controller
 
         $estudiante = Auth::user()->estudiante;
 
-        $datosEstudiantes = PracticaI::where('EstudianteID', $estudiante->EstudianteID)->get();
-        $template->setValue('periodo', $datosEstudiantes->first()->nrcPractica->periodo->numeroPeriodo);
-        $template->setValue('estudiante', $estudiante->Nombres . ' ' . $estudiante->Apellidos);
+        $datosEstudiantes = PracticaI::where('estudianteId', $estudiante->estudianteId)->get();
+         $template->setValue('estudiante', $estudiante->nombres . ' ' . $estudiante->apellidos);
         $template->setValue('cedula', $estudiante->cedula);
-        $template->setValue('espe_id', $estudiante->espe_id);
+        $template->setValue('espe_id', $estudiante->espeId);
         $template->setValue('celular', $estudiante->celular);
         $template->setValue('correo', $estudiante->Correo);
+        $estudiante = $datosEstudiantes->first();
+        if (is_object($estudiante) && is_object($estudiante->nrc) && is_object($estudiante->nrc->periodo)) {
+            $template->setValue('periodo', $estudiante->nrc->periodo->numeroPeriodo);
+        } else {
+            $template->setValue('periodo', 'Default Periodo Value');
+        }
+
 
         $template->setValue('Empresa', $datosEstudiantes->first()->empresa->nombreEmpresa);
         $template->setValue('Actividades', $datosEstudiantes->first()->empresa->actividadesMacro);
@@ -1651,10 +1671,10 @@ class DocumentoController extends Controller
         $template->setValue('Funcion', $datosEstudiantes->first()->Funcion);
 
 
-        $template->setValue('NombresAcademico', $datosEstudiantes->first()->tutorAcademico->Nombres . ' ' . $datosEstudiantes->first()->tutorAcademico->Apellidos);
-        $template->setValue('CedulaAcademico', $datosEstudiantes->first()->tutorAcademico->Cedula);
-        $template->setValue('CorreoAcademico', $datosEstudiantes->first()->tutorAcademico->Correo);
-        $template->setValue('id_espeAcademico', $datosEstudiantes->first()->tutorAcademico->espe_id);
+        $template->setValue('NombresAcademico', $datosEstudiantes->first()->tutorAcademico->nombres . ' ' . $datosEstudiantes->first()->tutorAcademico->apellidos);
+        $template->setValue('CedulaAcademico', $datosEstudiantes->first()->tutorAcademico->cedula);
+        $template->setValue('CorreoAcademico', $datosEstudiantes->first()->tutorAcademico->correo);
+        $template->setValue('id_espeAcademico', $datosEstudiantes->first()->tutorAcademico->espeId);
 
 
 
