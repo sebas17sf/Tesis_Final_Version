@@ -18,7 +18,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Empresa;
 use App\Models\ProfesUniversidad;
 use App\Models\PracticaI;
+use App\Models\Usuarios;
 use App\Models\PracticaII;
+use App\Models\Role;
 use App\Models\UsuariosSession;
 
 use App\Models\ActividadEstudiante;
@@ -43,63 +45,59 @@ class EstudianteController extends Controller
 
     public function store(Request $request)
     {
-        // Valida los datos del formulario antes de intentar crear el estudiante
         $validatedData = $request->validate([
-            'Nombres' => '',
-            'Apellidos' => '',
-            'espe_id' => '',
-            'celular' => '',
-            'cedula' => '',
-            'Cohorte' => '',
-            'Periodo' => '',
-            'Carrera' => '',
-            'Provincia' => '',
-            'Departamento' => '',
+            'Nombres' => 'required',
+            'Apellidos' => 'required',
+            'espe_id' => 'required',
+            'celular' => 'required',
+            'cedula' => 'required',
+            'Cohorte' => 'required',
+            'Periodo' => 'required',
+            'Carrera' => 'required',
+            'correo' => 'required',
+            'Departamento' => 'required',
         ]);
 
+        $correoElectronico = explode('@', $validatedData['correo'])[0];
 
-        // Obtén el UserID del usuario autenticado
-        $userId = Auth::id();
-        $CorreoElectronico = Auth::user()->correoElectronico;
+        $role = Role::where('tipo', 'Estudiante')->first();
 
-        $fechaActual = now();
-        $periodoSeleccionado = $validatedData['Periodo'];
-        $periodo = Periodo::find($periodoSeleccionado); // Obtener el periodo utilizando su ID
+        $estudiante = Estudiante::updateOrCreate(
+            ['cedula' => $validatedData['cedula']],
+            [
+                'nombres' => $validatedData['Nombres'],
+                'apellidos' => $validatedData['Apellidos'],
+                'espeId' => $validatedData['espe_id'],
+                'celular' => $validatedData['celular'],
+                'cedula' => $validatedData['cedula'],
+                'Cohorte' => $validatedData['Cohorte'],
+                'idPeriodo' => $validatedData['Periodo'],
+                'carrera' => $validatedData['Carrera'],
+                 'departamento' => $validatedData['Departamento'],
+                'comentario' => 'Sin comentarios',
+                'estado' => 'En proceso de revisión'
+            ]
+        );
 
-        $numeroPeriodo = $periodo->numeroPeriodo;
+       $user = Usuario::updateOrCreate(
+            ['nombreUsuario' => $correoElectronico],
+            [
+                'correoElectronico' => $validatedData['correo'],
+                'contrasena' => bcrypt($validatedData['cedula']),
+                'role_id' => $role->id,
+                'estado' => 'Aprobado',
+            ]
+        );
 
+        $estudiante->update(['userId' => $user->userId]);
 
-        if (!$periodo) {
-            return Redirect::back()->with('error', 'El periodo seleccionado no existe.');
-        }
+        $mensaje = $estudiante->wasRecentlyCreated ? 'Estudiante creado correctamente' : 'Datos del estudiante actualizados correctamente';
 
-        $fechaFinPeriodo = $periodo->finPeriodo;
-
-
-
-        // Crea un nuevo registro de Estudiante y asocia el UserID
-        Estudiante::create([
-            'userId' => $userId,
-            'nombres' => $validatedData['Nombres'],
-            'apellidos' => $validatedData['Apellidos'],
-            'espeId' => $validatedData['espe_id'],
-            'celular' => $validatedData['celular'],
-            'cedula' => $validatedData['cedula'],
-            'Cohorte' => $numeroPeriodo,
-            'idPeriodo' => $validatedData['Periodo'], // Utiliza el ID de periodo proporcionado en el formulario
-            'carrera' => $validatedData['Carrera'],
-            'correo' => $CorreoElectronico,
-            'departamento' => $validatedData['Departamento'],
-            'provincia' => $validatedData['Provincia'],
-            'comentario' => 'Sin comentarios',
-            'estado' => 'En proceso de revisión'
-        ]);
-
-        return redirect()->route('estudiantes.index')->with('success', 'Datos del Estudiante ingresados correctamente');
+        return redirect()->route('login')->with('success', $mensaje);
     }
 
 
-    // Controlador Estudiante
+
 
     public function index()
     {
@@ -546,10 +544,10 @@ class EstudianteController extends Controller
             'fechaActividad' => 'required|date',
             'departamento' => 'required|string',
             'funcion' => 'required|string',
-         ]);
+        ]);
 
         $datosActividad = $request->only([
-             'horas',
+            'horas',
             'observaciones',
             'fechaActividad',
             'departamento',
@@ -692,7 +690,7 @@ class EstudianteController extends Controller
 
         return redirect()->back()->with('success', 'Contraseña actualizada correctamente');
 
-     }
+    }
 
 
 

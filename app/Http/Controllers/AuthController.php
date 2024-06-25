@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Usuario;
-use App\Models\Role;
+ use App\Models\Estudiante;
+    use App\Models\Periodo;
+
 
 
 class AuthController extends Controller
@@ -17,43 +17,38 @@ class AuthController extends Controller
     }
 
     // Procesar el registro de usuarios
+
+
     public function register(Request $request)
     {
+
+        ////obtener todos los periodos
+        $periodos = Periodo::all();
+
+
+
         // Validar los datos del formulario
         $validatedData = $request->validate([
-            'CorreoElectronico' => 'required|string|email|unique:usuarios',
-            'Contrasena' => 'required|string|min:6',
+            'cedula' => [
+                'required',
+                'string',
+                function($attribute, $value, $fail) {
+                    if (!Estudiante::where('cedula', $value)->exists()) {
+                        return $fail('La cédula no está registrada en la tabla de estudiantes.');
+                    }
+                },
+            ],
         ], [
-            'CorreoElectronico.required' => 'El correo electrónico es requerido',
-            'CorreoElectronico.email' => 'El correo electrónico no es válido',
-            'CorreoElectronico.unique' => 'El correo electrónico ya ha sido registrado',
-            'Contrasena.required' => 'La contraseña es requerida',
-            'Contrasena.min' => 'La contraseña debe tener al menos 6 caracteres',
+            'cedula.required' => 'La cédula es requerida',
+            'cedula.string' => 'La cédula debe ser una cadena de texto',
         ]);
 
+        // Si los datos son válidos, continuamos aquí
+        $estudiante = Estudiante::where('cedula', $request->cedula)->firstOrFail();
 
-
-        // Obtener el ID del rol 'Estudiante' de la tabla 'roles'
-        $estudianteRoleId = Role::where('Tipo', 'Estudiante')->value('id');
-
-        // Crear un nuevo usuario
-        $user = new Usuario;
-        $user->NombreUsuario = $request->NombreUsuario;
-        $user->CorreoElectronico = $request->CorreoElectronico;
-        $user->Contrasena = bcrypt($request->Contrasena);
-        $user->role_id = $estudianteRoleId;
-
-        // Verificar si el rol del usuario es 'Estudiante' y establecer el estado en 'Aprobado'
-        if ($user->role_id === $estudianteRoleId) {
-            $user->Estado = 'Aprobado';
-            $mensaje = 'Usuario creado y aprobado';
-        } else {
-            $mensaje = 'Usuario creado';
-        }
-
-        $user->save();
-
-        return redirect()->route('login')->with('success', $mensaje);
+        // Retornar la vista con los datos del estudiante
+        return view('estudiantes.create', compact('estudiante', 'periodos'));
     }
+
 
 }

@@ -42,44 +42,28 @@
                     <div class="contenedor_inputs">
                         <div>
                             <!-- Campo de nombre -->
-                            <label class="description" for="NombreUsuario">Cédula</label>
-                            <input type="text" class="input form_input" id="NombreUsuario" name="NombreUsuario" placeholder="Ingrese su nombre" required>
-                            @error('NombreUsuario')
+                            <label class="description" for="cedula">Cédula</label>
+                            <input type="text" class="input form_input" id="cedula" name="cedula" placeholder="Ingrese su cedula" required>
+                            @error('cedula')
                             <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
                         <div>
                             <!-- Campo de correo electronico -->
-                            <label class="description" for="CorreoElectronico">Correo Electrónico</label>
-                            <input type="email" class="input form_input" id="CorreoElectronico" name="CorreoElectronico" placeholder="Ingrese su correo eléctronico" required>
-                            @error('CorreoElectronico')
-                            <small class="form-text text-danger">{{ $message }}</small>
-                            @enderror
+                            <label class="description" for="cedula">Repetir Cedula</label>
+                            <input type="text" class="input form_input" id="cedula" name="cedula" placeholder="Repita su cedula" required>
+
                         </div>
 
-                        <div>
-                            <!-- Campo de contraseña -->
-                            <label class="description" for="Contrasena">Contraseña</label>
-                            <div class="input-group" style="position: relative;">
-                                <input type="password" class="input form_input" id="Contrasena" name="Contrasena" placeholder="Ingrese su contraseña" required>
-                                <div id="togglePassword" style="position: absolute; top: 55%; right: 10px; transform: translateY(-50%); cursor: pointer;">
-                                    <span class="material-icons">
-                                        visibility
-                                    </span>
-                                </div>
-                            </div>
-                            @error('Contrasena')
-                            <small class="form-text text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
+
                     </div>
 
 
 
                     <!-- Botón de enviar -->
                     <div class="btn_contenedor_register">
-                        <button type="submit" class="button efects_button">Registrarse</button>
+                        <button type="submit" class="button efects_button">Validar</button>
                     </div>
 
                 </form>

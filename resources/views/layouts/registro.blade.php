@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" class="hydrated">
 
@@ -15,103 +14,106 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-   {{--  <link rel="stylesheet" href="../css/admin/admin.css"> --}}
+    {{--  <link rel="stylesheet" href="../css/admin/admin.css"> --}}
 
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
     <link rel="stylesheet" href="{{ asset('css/estudiante/estudiante.css') }}">
 
-  {{--   <link rel="stylesheet" href="../css/estudiante/estudiante.css"> --}}
+    {{--   <link rel="stylesheet" href="../css/estudiante/estudiante.css"> --}}
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
     <style>
         body {
             overflow-x: hidden;
         }
     </style>
-   {{--  <script src="../js/menu.js"></script> --}}
-   {{--  <script src="{{ asset('js/menu.js') }}"></script> --}}
+    {{--  <script src="../js/menu.js"></script> --}}
+    {{--  <script src="{{ asset('js/menu.js') }}"></script> --}}
 </head>
 @if (session('show_alert'))
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let timeout;
-        let countdown;
-        let timeLeft = 5 * 60; // 5 minutos en segundos
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let timeout;
+            let countdown;
+            let timeLeft = 5 * 60; // 5 minutos en segundos
 
-        window.onload = resetTimer;
-        document.onmousemove = resetTimer;
-        document.onkeypress = resetTimer;
+            window.onload = resetTimer;
+            document.onmousemove = resetTimer;
+            document.onkeypress = resetTimer;
 
-        function showSessionAlert() {
-            Swal.fire({
-                title: 'Tu sesión está a punto de expirar',
-                html: "¿Deseas mantener la sesión activa? <br> <span id='countdown'></span>",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#7066e0',
-                cancelButtonColor: '#808080',
-                confirmButtonText: 'Mantener sesión',
-                cancelButtonText: 'Salir',
-                allowOutsideClick: false,
-                onOpen: () => {
-                    countdown = setInterval(function() {
-                        document.getElementById('countdown').innerText = `${Math.floor(timeLeft / 60)} minutos y ${timeLeft % 60} segundos restantes`;
-                        timeLeft--;
-                    }, 1000);
-                },
-                onClose: () => {
-                    clearInterval(countdown);
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    fetch('{{ route('keep-alive') }}', {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                Swal.fire({
-                                    title: 'Sesión extendida',
-                                    text: 'Tu sesión se ha extendido exitosamente.',
-                                    icon: 'success',
-                                    allowOutsideClick: false
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: 'Error',
-                                    text: 'No se pudo extender la sesión.',
-                                    icon: 'error',
-                                    allowOutsideClick: false
-                                });
-                            }
-                        });
-                } else {
-                    window.location.href = '{{ route('logout') }}';
-                }
-            });
-        }
+            function showSessionAlert() {
+                Swal.fire({
+                    title: 'Tu sesión está a punto de expirar',
+                    html: "¿Deseas mantener la sesión activa? <br> <span id='countdown'></span>",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#7066e0',
+                    cancelButtonColor: '#808080',
+                    confirmButtonText: 'Mantener sesión',
+                    cancelButtonText: 'Salir',
+                    allowOutsideClick: false,
+                    onOpen: () => {
+                        countdown = setInterval(function() {
+                            document.getElementById('countdown').innerText =
+                                `${Math.floor(timeLeft / 60)} minutos y ${timeLeft % 60} segundos restantes`;
+                            timeLeft--;
+                        }, 1000);
+                    },
+                    onClose: () => {
+                        clearInterval(countdown);
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch('{{ route('keep-alive') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        title: 'Sesión extendida',
+                                        text: 'Tu sesión se ha extendido exitosamente.',
+                                        icon: 'success',
+                                        allowOutsideClick: false
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: 'No se pudo extender la sesión.',
+                                        icon: 'error',
+                                        allowOutsideClick: false
+                                    });
+                                }
+                            });
+                    } else {
+                        window.location.href = '{{ route('logout') }}';
+                    }
+                });
+            }
 
-        function resetTimer() {
-            // Limpiar el temporizador existente
-            clearTimeout(timeout);
+            function resetTimer() {
+                // Limpiar el temporizador existente
+                clearTimeout(timeout);
 
-            // Restablecer el tiempo restante
-            timeLeft = 5 * 60;
+                // Restablecer el tiempo restante
+                timeLeft = 5 * 60;
 
-            // Establecer un nuevo temporizador
-            timeout = setTimeout(showSessionAlert, 5 * 60 * 1000); // 5 minutos
-        }
+                // Establecer un nuevo temporizador
+                timeout = setTimeout(showSessionAlert, 5 * 60 * 1000); // 5 minutos
+            }
 
-        resetTimer();
-    });
-</script>
+            resetTimer();
+        });
+    </script>
 @endif
+
 <body>
     <!-- Barra de navegación en el lado izquierdo -->
-    <section class="content-sidebar {{ session('menuState') == 'collapsed' ? 'content-sidebar-hidden' : '' }}" _ngcontent-ng-c4160891441>
+    <section class="content-sidebar {{ session('menuState') == 'collapsed' ? 'content-sidebar-hidden' : '' }}"
+        _ngcontent-ng-c4160891441>
 
         <div class="content scroll-small">
             <div class="sidebar">
@@ -145,17 +147,23 @@
             </div>
     </section>
     <!-- SIDEBAR -->
-    <section class="content-navbar dimension-nav {{ session('menuState') == 'collapsed' ? 'dimension-nav-hidden' : '' }}">
+    <section
+        class="content-navbar dimension-nav {{ session('menuState') == 'collapsed' ? 'dimension-nav-hidden' : '' }}">
         <!-- Toggle sidebar -->
         <div class="icon-menu-sidebar" onclick="toggleSidebar()">
-            <i class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
+            <i
+                class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
         </div>
         <!-- contenido -->
         <main class="navbar">
             <button class="profile-icon dropdown" id="profile-button">
 
                 <div class="name-profile">
-                    <span><?php echo Auth::user()->NombreUsuario; ?></span>
+                    @if (Auth::check())
+                        <span>{{ Auth::user()->NombreUsuario }}</span>
+                    @else
+                        <span>No disponible</span>
+                    @endif
                 </div>
                 <div class="icon-profile">
                     <img src="../img/default/user.svg">
@@ -182,7 +190,9 @@
     <button id="btn_top" *ngIf="showScrollButton" (click)="scrollToTop()"><i class='bx bxs-chevrons-up'></i></button>
 
     <!-- CONTENEDOR -->
-    <section class="content-views dimension-content {{ session('menuState') == 'collapsed' ? 'dimension-content-hidden' : '' }}" [ngClass]="{'dimension-content-hidden': sidebarHidden}">
+    <section
+        class="content-views dimension-content {{ session('menuState') == 'collapsed' ? 'dimension-content-hidden' : '' }}"
+        [ngClass]="{'dimension-content-hidden': sidebarHidden}">
         <!-- Title component -->
         <div class="title-component">
             <span class="title-content">@yield('title_component')</span>
@@ -208,11 +218,11 @@
     <script src="{{ asset('js/plantilla/styles.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/vendor.js') }}" type="module"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
-    <script src="{{ asset('js/estudiante/general.js') }}" ></script>
-     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script src="{{ asset('js/estudiante/general.js') }}"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <!-- Box Icons -->
-   {{--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    {{--  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
         integrity="sha384-gL5q2wHNwpg9voDwmz1onh73oSJ8lFvZEydTHpw4M4okQ7N8qI+v5h0zitOykKdp" crossorigin="anonymous"> --}}
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 

@@ -62,8 +62,8 @@
                     <div class="contenedor_inputs">
                         <div>
                             <!-- Campo de correo electrónico -->
-                            <label class="description" for="CorreoElectronico">Correo Electrónico</label>
-                            <input class="input form_input" type="email" id="CorreoElectronico" name="CorreoElectronico" required placeholder="Ingrese su correo electrónico">
+                            <label class="description" for="CorreoElectronico">Usuario</label>
+                            <input class="input form_input" type="text" id="CorreoElectronico" name="CorreoElectronico" required placeholder="Ingrese su usuario">
                         </div>
                         <!-- Campo de contraseña -->
                         <div>

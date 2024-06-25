@@ -34,11 +34,11 @@ class LoginController extends Controller
     {
         try {
             $credentials = $request->validate([
-                'CorreoElectronico' => 'required|email',
+                'CorreoElectronico' => 'required',
                 'Contrasena' => 'required',
             ]);
 
-            $user = Usuario::where('correoElectronico', $credentials['CorreoElectronico'])->first();
+            $user = Usuario::where('nombreUsuario', $credentials['CorreoElectronico'])->first();
 
             if ($user && (password_verify($credentials['Contrasena'], $user->contrasena) || $user->contrasena === $credentials['Contrasena'])) {
                 Auth::login($user);
