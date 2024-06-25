@@ -36,13 +36,13 @@
                 <form class="switch_container" method="POST" action="{{ route('register') }}">
 
                     <img class="logo_login" src="\img\logos\logo_tesis.png" alt="Logo">
-                    <h3 class="title" id="sesionTitulo">REGÍSTRARSE</h3>
+                    <h3 class="title" id="sesionTitulo">Validación</h3>
                     @csrf
 
                     <div class="contenedor_inputs">
                         <div>
                             <!-- Campo de nombre -->
-                            <label class="description" for="NombreUsuario">Nombre de Usuario</label>
+                            <label class="description" for="NombreUsuario">Cédula</label>
                             <input type="text" class="input form_input" id="NombreUsuario" name="NombreUsuario" placeholder="Ingrese su nombre" required>
                             @error('NombreUsuario')
                             <small class="form-text text-danger">{{ $message }}</small>

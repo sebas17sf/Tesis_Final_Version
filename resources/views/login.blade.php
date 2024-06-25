@@ -26,7 +26,7 @@
 
                 <!-- Boton registrarse -->
                 <div class="button_container_register">
-                    <a href="{{ route('register') }}" class="boton_registro button1" type="button">Regístrate <i class="fa-regular fa-angles-right"></i></a>
+                    <a href="{{ route('register') }}" class="boton_registro button1" type="button">Validar <i class="fa-regular fa-angles-right"></i></a>
                 </div>
 
                 @if (session('success'))
