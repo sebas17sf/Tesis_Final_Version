@@ -57,6 +57,9 @@ class DocumentoController extends Controller
         // Obtener el ProyectoID del modelo AsignacionProyecto del estudiante
         $asignacionProyecto = $estudiante->asignaciones->first();
 
+        ////obtener el periodov de la asignacion
+        $idPeriodo = $asignacionProyecto->idPeriodo;
+
         if ($asignacionProyecto) {
             $proyectoID = $asignacionProyecto->proyectoId;
         } else {
@@ -76,7 +79,7 @@ class DocumentoController extends Controller
                 'proyectos.nombreProyecto',
             )
             ->where('asignacionproyectos.proyectoId', $proyectoID)
-            ->where('estudiantes.estado', 'Aprobado')
+            ->where('estudiantes.idPeriodo', '=', $idPeriodo)
             ->orderBy('estudiantes.apellidos', 'asc')
             ->get();
 
@@ -125,13 +128,11 @@ class DocumentoController extends Controller
         $template->setValue('FechaInicio', $fechaFormateada);
         $template->setValue('NombreProyecto', $NombreProyecto);
 
-
-
         $nombreArchivo = '1.2-Acta-Designacion-Estudiantes.docx';
         $template->saveAs($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
-
     }
+
 
 
 
@@ -1647,7 +1648,7 @@ class DocumentoController extends Controller
         $estudiante = Auth::user()->estudiante;
 
         $datosEstudiantes = PracticaI::where('estudianteId', $estudiante->estudianteId)->get();
-         $template->setValue('estudiante', $estudiante->nombres . ' ' . $estudiante->apellidos);
+        $template->setValue('estudiante', $estudiante->nombres . ' ' . $estudiante->apellidos);
         $template->setValue('cedula', $estudiante->cedula);
         $template->setValue('espe_id', $estudiante->espeId);
         $template->setValue('celular', $estudiante->celular);

@@ -73,13 +73,13 @@ class EstudianteController extends Controller
                 'Cohorte' => $validatedData['Cohorte'],
                 'idPeriodo' => $validatedData['Periodo'],
                 'carrera' => $validatedData['Carrera'],
-                 'departamento' => $validatedData['Departamento'],
+                'departamento' => $validatedData['Departamento'],
                 'comentario' => 'Sin comentarios',
                 'estado' => 'En proceso de revisión'
             ]
         );
 
-       $user = Usuario::updateOrCreate(
+        $user = Usuario::updateOrCreate(
             ['nombreUsuario' => $correoElectronico],
             [
                 'correoElectronico' => $validatedData['correo'],
@@ -633,7 +633,12 @@ class EstudianteController extends Controller
 
     public function cambiarCredencialesUsuario()
     {
+
+        $periodos = Periodo::all();
+
         $usuario = Auth::user();
+
+        $estudiante = $usuario->estudiante;
 
         $userSessions = UsuariosSession::where('userId', $usuario->userId)->get();
 
@@ -641,7 +646,7 @@ class EstudianteController extends Controller
             $session->browser = $this->getBrowserFromUserAgent($session->user_agent);
         }
 
-        return view('estudiantes.cambiarCredencialesUsuario', compact('usuario', 'userSessions'));
+        return view('estudiantes.cambiarCredencialesUsuario', compact('usuario', 'userSessions', 'estudiante', 'periodos'));
     }
     private function getBrowserFromUserAgent($userAgent)
     {
@@ -666,14 +671,12 @@ class EstudianteController extends Controller
 
 
 
-    public function actualizarCredenciales(Request $request)
+    public function actualizarCredenciales(Request $request, $userId)
     {
         $request->validate([
             'password' => 'required',
             'password_confirmation' => 'required',
         ]);
-        dd($request->all());
-
 
         if ($request->password !== $request->password_confirmation) {
             return redirect()->back()->with('error', 'Las contraseñas no coinciden')->withInput();
@@ -683,16 +686,49 @@ class EstudianteController extends Controller
             return redirect()->back()->with('error', 'La contraseña debe tener al menos 6 caracteres')->withInput();
         }
 
-        $usuario = Auth::user();
+        $usuario = Usuario::find($userId);
+
+        if (!$usuario) {
+            return redirect()->back()->with('error', 'Usuario no encontrado')->withInput();
+        }
 
         $usuario->contrasena = bcrypt($request->password);
         $usuario->save();
 
         return redirect()->back()->with('success', 'Contraseña actualizada correctamente');
-
     }
 
 
+    public function actualizarDatosEstudiantesCredenciales(Request $request, $estudianteId)
+    {
+        // Validar los datos del formulario
+        $request->validate([
+            'firstname_student' => 'required',
+            'lastname_student' => 'required',
+            'Cohorte' => 'required',
+            'Periodo' => 'required',
+            'Carrera' => 'required',
+            'Departamento' => 'required',
+        ]);
+
+ 
+        // Buscar el estudiante por ID
+        $estudiante = Estudiante::findOrFail($estudianteId);
+
+        // Actualizar los datos del estudiante
+        $estudiante->nombres = $request->input('firstname_student');
+        $estudiante->apellidos = $request->input('lastname_student');
+        $estudiante->Cohorte = $request->input('Cohorte');
+        $estudiante->idPeriodo = $request->input('Periodo');
+        $estudiante->carrera = $request->input('Carrera');
+        $estudiante->departamento = $request->input('Departamento');
+
+        // Guardar los cambios
+        $estudiante->save();
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->back()->with('success', 'Datos del estudiante actualizados correctamente.');
+    }
 
 
 

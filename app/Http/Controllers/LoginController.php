@@ -104,6 +104,7 @@ class LoginController extends Controller
     }
 
 
+
     public function recuperarContrasena()
     {
         return view('recuperarContrasena');

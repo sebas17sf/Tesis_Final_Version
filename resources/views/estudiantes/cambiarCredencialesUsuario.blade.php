@@ -104,12 +104,9 @@
                     <hr>
                 </div>
 
-                <form class="form_change_passwd" action="{{ route('estudiantes.updateCredenciales') }}" method="POST">
+                <form class="form_change_passwd" action="{{ route('estudiantes.actualizarCredenciales', ['userId' => auth()->user()->userId]) }}" method="POST">
                     @csrf
                     @method('PUT')
-
-
-
                     <div>
                         <label for="password">Nueva contraseña <span class="requerido">*</span></label>
                         <input type="password" id="password" name="password" class="input" placeholder="Ingrese la clave" required>
@@ -145,53 +142,76 @@
                     <hr>
                 </div>
 
-                <form class="form_profile">
+                <form class="form_profile" action="{{ route('estudiantes.updateDatos', ['estudianteId' => $estudiante->estudianteId]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
 
                     <div>
                         <label for="firstname_student">Nombres <span class="requerido">*</span></label>
-                        <input type="text" id="firstname_student" class="input" placeholder="Ingrese sus nombres">
+                        <input type="text" id="firstname_student" name="firstname_student" class="input" placeholder="Ingrese sus nombres" value="{{ $estudiante->nombres ?? '' }}" required>
                     </div>
 
                     <div>
                         <label for="lastname_student">Apellidos <span class="requerido">*</span></label>
-                        <input type="text" id="lastname_student" class="input" placeholder="Ingrese sus apellidos">
+                        <input type="text" id="lastname_student" name="lastname_student" class="input" placeholder="Ingrese sus apellidos" value="{{ $estudiante->apellidos ?? '' }}" required>
                     </div>
 
                     <div>
                         <label for="cohorte_student">Cohorte <span class="requerido">*</span></label>
-                        <input type="text" id="cohorte_student" class="input" placeholder="Ingrese su cohorte">
-                    </div>
+                        <input type="text" class="form-control input" id="Cohorte" name="Cohorte"
+                        readonly value="{{ old('Cohorte', $estudiante->Cohorte ?? '') }}">                    </div>
 
                     <div>
                         <label for="period_student">Período <span class="requerido">*</span></label>
-                        <select name="period_student" id="period_student" class="input input_select">
-                            <option value="0">Seleccione su período</option>
+                        <select class="form-control input input_select" id="Periodo" name="Periodo" required>
+                            <option value="">Seleccione su Periodo</option>
+                            @foreach ($periodos as $periodo)
+                                <option value="{{ $periodo->id }}"
+                                    data-numeroPeriodo="{{ $periodo->numeroPeriodo }}"
+                                    {{ old('Periodo') == $periodo->id ? 'selected' : '' }}>
+                                    {{ $periodo->numeroPeriodo }} {{ $periodo->periodo }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
 
                     <div>
                         <label for="race_student">Carrera <span class="requerido">*</span></label>
-                        <select name="race_student" id="race_student" class="input input_select">
-                            <option value="0">Seleccione su carrera</option>
+                        <select class="form-control input input_select" id="Carrera" name="Carrera" required>
+                            <option value="">Seleccione su Carrera</option>
+                            <option value="Ingeniería en Tecnologías de la información"
+                                {{ old('Carrera', $estudiante->carrera ?? '') == 'Ingeniería en Tecnologías de la información' ? 'selected' : '' }}>
+                                Tecnologías de la información</option>
+                            <option value="Ingeniería en Agropecuaria"
+                                {{ old('Carrera', $estudiante->carrera ?? '') == 'Ingeniería en Agropecuaria' ? 'selected' : '' }}>
+                                Agropecuaria</option>
+                            <option value="Ingeniería en Biotecnologia"
+                                {{ old('Carrera', $estudiante->carrera ?? '') == 'Ingeniería en Biotecnologia' ? 'selected' : '' }}>
+                                Biotecnologia</option>
                         </select>
                     </div>
 
                     <div>
                         <label for="departament_student">Departamento <span class="requerido">*</span></label>
-                        <select name="departament_student" id="departament_student" class="input input_select">
-                            <option value="0">Seleccione su departamento</option>
-                        </select>
+                        <select class="form-control input input_select" id="Departamento" name="Departamento"
+                        required>
+                        <option value="">Seleccione su Departamento</option>
+                        <option value="Ciencias de la Computación"
+                            {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias de la Computación' ? 'selected' : '' }}>
+                            DCCO - Ciencias de la Computación</option>
+                        <option value="Ciencias Exactas"
+                            {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias Exactas' ? 'selected' : '' }}>
+                            DCEX - Ciencias Exactas</option>
+                        <option value="Ciencias de la Vida y Agricultura"
+                            {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>
+                            DCVA - Ciencias de la Vida y Agricultura</option>
+                    </select>
                     </div>
 
-                    <div>
-                        <label for="locality_student">Localidad <span class="requerido">*</span></label>
-                        <select name="locality_student" id="locality_student" class="input input_select">
-                            <option value="0">Seleccione su localidad</option>
-                        </select>
-                    </div>
+
 
                     <div class="content_button">
-                        <button class="button1 efects_button">Actualizar</button>
+                        <button class="button1 efects_button" type="submit">Actualizar</button>
                     </div>
 
                 </form>
@@ -279,6 +299,30 @@
 
         -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function actualizarCohorte() {
+                const periodoSelect = document.getElementById('Periodo');
+                const cohorteInput = document.getElementById('Cohorte');
+
+                // Verifica si hay un periodo seleccionado
+                if (periodoSelect.selectedIndex > 0) {
+                    // Lee el atributo data-numeroPeriodo del periodo seleccionado
+                    const numeroPeriodo = periodoSelect.options[periodoSelect.selectedIndex].getAttribute(
+                        'data-numeroPeriodo');
+                    // Actualiza el valor de Cohorte con el numeroPeriodo
+                    cohorteInput.value = numeroPeriodo;
+                } else {
+                    // Si no hay selección, limpia el campo Cohorte
+                    cohorteInput.value = '';
+                }
+            }
+
+            // Evento para actualizar Cohorte cuando se cambia la selección de Periodo
+            document.getElementById('Periodo').addEventListener('change', actualizarCohorte);
+        });
+    </script>
 
     <script>
         $(document).ready(function() {

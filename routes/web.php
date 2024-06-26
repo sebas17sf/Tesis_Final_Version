@@ -395,7 +395,9 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/participante-vinculacion/cambio-credenciales', [ParticipanteVinculacionController::class, 'actualizarCredenciales'])->name('participante-vinculacion.updateCredenciales');
 
     Route::get('/estudiantes/cambio-credenciales', [EstudianteController::class, 'cambiarCredencialesUsuario'])->name('estudiantes.cambio-credenciales');
-    Route::put('/estudiantes/cambio-credenciales', [EstudianteController::class, 'actualizarCredenciales'])->name('estudiantes.updateCredenciales');
+    Route::put('/estudiantes/cambio-credenciales/{userId}', [EstudianteController::class, 'actualizarCredenciales'])->name('estudiantes.actualizarCredenciales');
+    Route::put('/estudiantes/cambio-datos/{estudianteId}', [EstudianteController::class, 'actualizarDatosEstudiantesCredenciales'])->name('estudiantes.updateDatos');
+
 
 
     Route::get('/coordinador/cambio-credenciales', [CoordinadorController::class, 'cambiarCredencialesUsuario'])->name('coordinador.cambio-credenciales');
@@ -408,10 +410,10 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-     Route::get('/conectar-modulos', [LoginController::class, 'conectarModulos'])->name('conectarModulos');
+    Route::get('/conectar-modulos', [LoginController::class, 'conectarModulos'])->name('conectarModulos');
     Route::post('/modulo1', [LoginController::class, 'Modulo1'])->name('modulo1');
 
-     Route::get('/{any}', function () {
+    Route::get('/{any}', function () {
         return file_get_contents(public_path('gestion-academica/index.html'));
     })->where('any', '.*');
 
