@@ -42,7 +42,7 @@
                                 <span id="errorTabla1" class="error-message" style="color: red;"></span></td>
                            
                                 <td><center><b>Comentarios:</b></center></td>
-                                <td><textarea name="comentarios_proyecto1" class="comentarios input input_select1" id="comentarios1"
+                                <td colspan="2"><textarea name="comentarios_proyecto1" class="comentarios input input_select1" id="comentarios1"
                                         placeholder="Ejemplo: 1. Carta de compromiso u otro documento"></textarea></td>
                         </tr>
                                     </tbody>
@@ -85,7 +85,7 @@
                                 <span id="errorTabla2" class="error-message" style="color: red;"></span></td>
                             
                                 <td><center><b>Comentarios:</b></center></td>
-                                <td><textarea name="comentarios_proyecto2" class="comentarios input input_select1 " id="comentarios2"
+                                <td colspan="2"><textarea name="comentarios_proyecto2" class="comentarios input input_select1 " id="comentarios2"
                                         placeholder="Ejemplo: 1. Carta de compromiso u otro documento"></textarea></td>
                             </tr>
                         </tbody>
@@ -128,7 +128,7 @@
                                 <span id="errorTabla3" class="error-message" style="color: red;"></span></td>
                             
                                 <td><center><b>Comentarios:</b><center></td>
-                                <td><textarea name="comentarios_proyecto3" class="comentarios input input_select1 " id="comentarios3"
+                                <td colspan="2"><textarea name="comentarios_proyecto3" class="comentarios input input_select1 " id="comentarios3"
                                         placeholder="Ejemplo: 1. Carta de compromiso u otro documento"></textarea></td>
                             </tr>
                         </tbody>
@@ -170,7 +170,7 @@
                                 <span id="errorTabla4" class="error-message" style="color: red;"></span></td>
                            
                                 <td><center><b>Comentarios:</b></center></td>
-                                <td> <center><textarea name="comentarios_proyecto4" class="comentarios input input_select1" id="comentarios4"
+                                <td colspan="2"> <center><textarea name="comentarios_proyecto4" class="comentarios input input_select1" id="comentarios4"
                                         placeholder="Ejemplo: 1. Carta de compromiso u otro documento"></textarea></center></td>
                             </tr>
                         </tbody>
@@ -187,11 +187,11 @@
                         <thead class="ng-star-inserted">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                 <td style="text-align: center;"><b>TOTAL:</b>
-                                <input class="input from-group1 input_select2 text-center" type="number" id="total_puntaje" readonly />
+                                <input class="input from-group1 input_select2 text-center" style="font-weight: bold;" type="number" id="total_puntaje" readonly />
                                 <td style="text-align: center;" ><b>HORAS TOTALES:</b>
-                                <input type="number" class="input from-group1 input_select2 text-center"  id="horas_totales" readonly /></td>
+                                <input type="number" class="input from-group1 input_select2 text-center" style="font-weight: bold;" id="horas_totales" readonly /></td>
                                 <td style="text-align: center;"><b>HORAS TOTALES ENTRE FECHAS:</b>
-                                <input type="number" class="input from-group1 input_select2 text-center" id="horas_entre_fechas" readonly /></td>
+                                <input type="number" class="input from-group1 input_select2 text-center" style="font-weight: bold;" id="horas_entre_fechas" readonly /></td>
                             </tr>
                         </thead>
                         <tbody>
