@@ -10,7 +10,7 @@ class PracticaI extends Model
     use HasFactory;
 
     protected $table = 'practicasi';
-    protected $primaryKey = 'PracticasI';
+    protected $primaryKey = 'practicasi';
 
     protected $fillable = [
         'estudianteId',

@@ -92,6 +92,7 @@
                                                         method="POST">
                                                         @csrf
                                                         @method('PUT')
+                                                         <input type="hidden" name="id" value="{{ $practicaI->estudiante->estudianteId }}">
                                                         <select name="nuevoEstado">
                                                             <option value="En ejecucion">Aprobado</option>
                                                             <option value="Negado">Negar</option>
@@ -99,11 +100,7 @@
                                                         <button type="submit">Enviar</button>
                                                     </form>
 
-                                                    <form
-                                                        action="{{ route('admin.editarNombreEmpresa', ['id' => $practicaI->estudiante->estudianteId]) }}"
-                                                        method="GET">
-                                                        <button type="submit">Cambiar Empresa</button>
-                                                    </form>
+
                                                 </td>
                                             </tr>
                                         @endif

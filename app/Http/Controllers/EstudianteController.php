@@ -294,7 +294,7 @@ class EstudianteController extends Controller
 
         if ($estudiante) {
             PracticaI::create([
-                'estudianteId' => $estudiante->EstudianteID,
+                'estudianteId' => $estudiante->estudianteId,
                 'tipoPractica' => $validatedData['Practicas'],
                 'idEmpresa' => $validatedData['Empresa'],
                 'idTutorAcademico' => $validatedData['ID_tutorAcademico'],
@@ -711,7 +711,7 @@ class EstudianteController extends Controller
             'Departamento' => 'required',
         ]);
 
- 
+
         // Buscar el estudiante por ID
         $estudiante = Estudiante::findOrFail($estudianteId);
 
