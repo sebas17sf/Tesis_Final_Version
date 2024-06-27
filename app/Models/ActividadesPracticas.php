@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Estudiante;
+use App\Models\PracticaI;
+use App\Models\PracticaII;
 
 class ActividadesPracticas extends Model
 {
@@ -33,6 +36,14 @@ class ActividadesPracticas extends Model
     {
         return $this->belongsTo(PracticaI::class, 'practicasi');
     }
+
+    public function practicasii()
+    {
+        return $this->belongsTo(PracticaII::class, 'practicasII');
+    }
+
+
+
 
 
 }

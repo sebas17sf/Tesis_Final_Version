@@ -58,10 +58,7 @@ class PracticaI extends Model
     }
 
     ////nrc
-    public function nrc()
-    {
-        return $this->belongsTo(NrcVinculacion::class, 'nrc', 'nrc');
-    }
+    
 
 
 }

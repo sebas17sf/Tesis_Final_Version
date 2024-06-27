@@ -374,6 +374,18 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/estudiantes/documentos-EvTutorEmpresarial', [DocumentoController::class, 'EvTutorEmpresarial'])->name('generar.EvTutorEmpresarial');
     Route::post('/estudiantes/documentos-PlanificacionPPEstudiante', [DocumentoController::class, 'PlanificacionPPEstudiante'])->name('generar.PlanificacionPPEstudiante');
 
+
+    Route::post('/estudiantes/documentos-practicas', [DocumentoController::class, 'EncuestaEstudiante2'])->name('generar.EncuestaEstudiante2');
+    Route::post('/estudiantes/documentos-EncuestaEstudiante', [DocumentoController::class, 'EncuestaDocentes2'])->name('generar.EncuestaDocentes2');
+    Route::post('/estudiantes/documentos-EvTutorEmpresarial', [DocumentoController::class, 'EvTutorEmpresarial2'])->name('generar.EvTutorEmpresarial2');
+    Route::post('/estudiantes/documentos-PlanificacionPPEstudiante', [DocumentoController::class, 'PlanificacionPPEstudiante2'])->name('generar.PlanificacionPPEstudiante2');
+
+
+
+
+
+
+
     ///////////////////guardar actividades del estudiantes de practicas 1
     Route::post('/estudiantes/guardar-actividades-practicas1', [EstudianteController::class, 'guardarActividadPractica1'])->name('estudiantes.guardarActividadesPracticas1');
     //////////////////eliminar actividades del estudiantes de practicas 1

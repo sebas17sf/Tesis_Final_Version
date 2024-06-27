@@ -9,7 +9,7 @@ class PracticaII extends Model
 {
     use HasFactory;
     protected $table = 'practicasii';
-    protected $primaryKey = 'PracticasII';
+    protected $primaryKey = 'practicasII';
 
     protected $fillable = [
         'estudianteId',
@@ -54,5 +54,10 @@ class PracticaII extends Model
     public function actividades_practicas()
     {
         return $this->hasMany(ActividadesPracticas::class, 'IDPracticasI', 'PracticasI');
+    }
+
+    public function nrc()
+    {
+        return $this->belongsTo(NrcVinculacion::class, 'nrc', 'nrc');
     }
 }

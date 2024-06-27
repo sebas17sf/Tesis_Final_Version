@@ -240,22 +240,36 @@ class EstudianteController extends Controller
     public function practica2()
     {
         $user = Auth::user();
+
+        $profesores = ProfesUniversidad::all();
+
+        $nrcpracticas1 = NrcVinculacion::all();
+
+
+
         $estudiante = $user->estudiante;
+
+         $actividades = ActividadesPracticas::where('estudianteId', $estudiante->estudianteId)->get();
+
+
 
         if ($estudiante && $estudiante->estado === 'Aprobado-practicas') {
             $correoEstudiante = $estudiante->Usuario->correoElectronico;
             $empresas = Empresa::all();
 
             // Consulta para PracticaI
-            $practicaPendienteI = PracticaI::where('estudianteId', $estudiante->EstudianteID)->where('estado', 'Terminado')->first();
-            $estadoPracticaI = PracticaI::where('estudianteId', $estudiante->EstudianteID)->where('estado', 'Terminado')->first();
+            $practicaPendienteI = PracticaI::where('estudianteId', $estudiante->estudianteId)->where('estado', 'Finalizado')->first();
+            $estadoPracticaI = PracticaI::where('estudianteId', $estudiante->estudianteId)->where('estado', 'Finalizado')->first();
             $horasPlanificadasI = $practicaPendienteI ? $practicaPendienteI->HorasPlanificadas : 0;
 
-            // Consulta para PracticaII
-            $practicaPendiente = PracticaII::where('estudianteId', $estudiante->EstudianteID)->where('estado', 'En ejecucion')->first();
-            $estadoPractica = PracticaII::where('estudianteId', $estudiante->EstudianteID)->where('estado', 'Terminado')->first();
+            $practicaPendiente = PracticaII::where('estudianteId', $estudiante->estudianteId)->where('estado', 'En ejecucion')->first();
+            $totalHoras = $actividades->sum('horas');
 
-            return view('estudiantes.practica2', compact('estudiante', 'correoEstudiante', 'empresas', 'horasPlanificadasI', 'practicaPendiente', 'estadoPractica'));
+            // Consulta para PracticaII
+            $practicaPendiente = PracticaII::where('estudianteId', $estudiante->estudianteId)->where('estado', 'En ejecucion')->first();
+            $estadoPractica = PracticaII::where('estudianteId', $estudiante->estudianteId)->where('estado', 'Finalizado')->first();
+
+            return view('estudiantes.practica2', compact('estudiante', 'correoEstudiante', 'empresas', 'horasPlanificadasI', 'practicaPendiente', 'estadoPractica', 'profesores', 'nrcpracticas1', 'actividades', 'totalHoras'));
         }
 
         return redirect()->route('estudiantes.index')->with('error', 'No tiene acceso a esta página.');
@@ -325,44 +339,42 @@ class EstudianteController extends Controller
     {
         // Valida los datos del formulario antes de intentar crear la práctica
         $validatedData = $request->validate([
-            'Nivel' => 'required|string|max:255',
-            'Practicas' => 'required|string|max:255',
-            'DocenteTutor' => 'required|string|max:255',
-            'Empresa' => 'required|string|max:255',
-            'CedulaTutorEmpresarial' => 'required|string|max:255',
-            'NombreTutorEmpresarial' => 'required|string|max:255',
-            'Funcion' => 'required|string|max:255',
-            'TelefonoTutorEmpresarial' => 'required|string|max:10',
-            'EmailTutorEmpresarial' => 'required|string|email|max:255',
-            'DepartamentoTutorEmpresarial' => 'required|string|max:255',
-            'EstadoAcademico' => 'required|string|max:255',
-            'FechaInicio' => 'required|date',
-            'FechaFinalizacion' => 'required|date',
-            'HorasPlanificadas' => 'required|string|max:255',
-            'HoraEntrada' => 'required|string|max:255',
-            'HoraSalida' => 'required|string|max:255',
-            'AreaConocimiento' => 'required|string|max:255',
+            'Practicas' => 'required',
+            'Empresa' => 'required',
+            'ID_tutorAcademico' => 'required',
+            'nrc' => 'required',
+            'CedulaTutorEmpresarial' => 'required',
+            'NombreTutorEmpresarial' => 'required',
+            'Funcion' => 'required',
+            'TelefonoTutorEmpresarial' => 'required',
+            'EmailTutorEmpresarial' => 'required',
+            'DepartamentoTutorEmpresarial' => 'required',
+            'EstadoAcademico' => 'required',
+            'FechaInicio' => 'required',
+            'FechaFinalizacion' => 'required',
+            'HorasPlanificadas' => 'required',
+            'HoraEntrada' => 'required',
+            'HoraSalida' => 'required',
+            'AreaConocimiento' => 'required',
 
         ]);
+
 
         // Obtén el UserID del usuario autenticado
         $userId = Auth::id();
 
         // Obtén el modelo Estudiante del usuario autenticado
-        $estudiante = Estudiante::where('UserID', $userId)->first();
+        $estudiante = Estudiante::where('userId', $userId)->first();
 
         // Verifica si se encontró el estudiante
         if ($estudiante) {
             // Crea un nuevo registro de PracticaI y asocia los datos del estudiante
             PracticaII::create([
-                'EstudianteID' => $estudiante->EstudianteID,
-                'NombreEstudiante' => $estudiante->Nombres,
-                'ApellidoEstudiante' => $estudiante->Apellidos,
-                'Departamento' => $estudiante->Departamento,
-                'Nivel' => $validatedData['Nivel'],
-                'Practicas' => $validatedData['Practicas'],
-                'DocenteTutor' => $validatedData['DocenteTutor'],
-                'Empresa' => $validatedData['Empresa'],
+                'estudianteId' => $estudiante->estudianteId,
+                'tipoPractica' => $validatedData['Practicas'],
+                'idEmpresa' => $validatedData['Empresa'],
+                'idTutorAcademico' => $validatedData['ID_tutorAcademico'],
+                'nrc' => $validatedData['nrc'],
                 'CedulaTutorEmpresarial' => $validatedData['CedulaTutorEmpresarial'],
                 'NombreTutorEmpresarial' => $validatedData['NombreTutorEmpresarial'],
                 'Funcion' => $validatedData['Funcion'],
