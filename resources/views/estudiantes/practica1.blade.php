@@ -65,7 +65,7 @@
                     </tr>
                     <tr>
                         <th>Docente Tutor:</th>
-                        <td>{{ $practicaPendiente->tutorAcademico->Apellidos }} {{ $practicaPendiente->tutorAcademico->Nombres }}</td>
+                        <td>{{ $practicaPendiente->tutorAcademico->apellidos }} {{ $practicaPendiente->tutorAcademico->nombres }}</td>
                     </tr>
                     <tr>
                         <th>Empresa:</th>
@@ -472,7 +472,7 @@
 <hr>
 
                 <div class="table-responsive-sm">
-                    
+
                     <table class="table2 table table-bordered">
                     <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                     <th class="tamanio1 table2th" colspan="2"> <center>DATOS DE LA PRÁCTICA</center></th>
@@ -538,7 +538,7 @@
                 <br>
                 <hr>
                 <div class="table-responsive-sm">
-                    
+
                     <table id="opcionesPracticas" class="table2 table table-bordered" style="display: none;">
                     <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                     <th class="tamanio1 table2th" colspan="2"> <center>PRÁCTICA PREPROFESIONAL NO REMUNERADA, PASANTÍA O AYUDA A LA COMUNIDAD </center></th>

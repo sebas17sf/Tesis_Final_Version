@@ -529,8 +529,8 @@
                                                         @endforeach
 
                                                     </td>
-                                                    <td>{{ $grupo->first()->estudiante->notas->first()->notaFinal ?? '' }}
-                                                    </td>
+
+                                                    <td>{{ $grupo->first()?->estudiante?->notas->first()?->notaFinal ?? 'Sin calificar' }}</td>                                                    </td>
                                                     <td>{{ $grupo->first()->periodo->numeroPeriodo ?? '' }}</td>
                                                     <td>{{ $grupo->first()->nrcVinculacion->nrc ?? 'NO REQUERIA DE NRC' }}
                                                     </td>

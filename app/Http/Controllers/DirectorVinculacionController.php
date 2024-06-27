@@ -467,8 +467,17 @@ class DirectorVinculacionController extends Controller
 
     public function baremo(Request $request)
     {
+        $profesor = Auth::user()->profesorUniversidad;
 
-        return view('director_vinculacion.baremo');
+        ////encontrar el proyectoId del director
+        $proyectos = Proyecto::where('directorId', $profesor->id)->first();
+
+
+
+            $inicioFecha = $proyectos ->inicioFecha;
+             $finalizacionFecha = $proyectos ->finFecha;
+
+        return view('director_vinculacion.baremo', compact('proyectos', 'inicioFecha', 'finalizacionFecha'));
     }
 
 

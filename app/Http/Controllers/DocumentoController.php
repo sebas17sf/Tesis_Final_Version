@@ -2070,6 +2070,85 @@ class DocumentoController extends Controller
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
     }
 
+    //////////////////////////////////////baremo director vincualion//////////////////////////////////
+    public function baremoDirector(Request $request)
+    {
+        $plantillaPath = public_path('Plantillas/baremo-director.xlsx');
+        $spreadsheet = IOFactory::load($plantillaPath);
+
+        $profesor = Auth::user()->profesorUniversidad;
+
+        //////encontrar el proyecto del docente director en estado Ejecucion
+        $proyecto = Proyecto::where('directorId', $profesor->id)
+            ->where('estado', 'Ejecucion')
+            ->first();
+
+        if (!$proyecto) {
+            return redirect()->back()->with('error', 'No tienes un proyecto asignado.');
+        }
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Obtener y asignar valores a celdas específicas
+        $sheet->setCellValue('B7', $proyecto->nombreProyecto);
+        $director = ProfesUniversidad::find($proyecto->directorId);
+        $nombreDirector = $director->apellidos . ' ' . $director->nombres;
+        $sheet->setCellValue('B8', $nombreDirector);
+        $sheet->setCellValue('B10', $proyecto->departamentoTutor);
+        $sheet->setCellValue('B11', $proyecto->inicioFecha);
+        $sheet->setCellValue('B12', $proyecto->finFecha);
+
+        $tabla1 = $request->input('puntaje_proyecto1');
+        $tabla2 = $request->input('puntaje_proyecto2');
+        $tabla3 = $request->input('puntaje_proyecto3');
+        $tabla4 = $request->input('puntaje_proyecto4');
+        $tabla5 = $request->input('puntaje_proyecto5');
+        $tabla6 = $request->input('puntaje_proyecto6');
+        $tabla7 = $request->input('puntaje_proyecto7');
+
+
+
+        $texto1 = $request->input('comentarios_proyecto1');
+        $texto2 = $request->input('comentarios_proyecto2');
+        $texto3 = $request->input('comentarios_proyecto3');
+        $texto4 = $request->input('comentarios_proyecto4');
+        $texto5 = $request->input('comentarios_proyecto5');
+        $texto6 = $request->input('comentarios_proyecto6');
+        $texto7 = $request->input('comentarios_proyecto7');
+        $sumasTablas = $tabla1 + $tabla2 + $tabla3 + $tabla4 + $tabla5 + $tabla6 + $tabla7;
+
+        $sheet->setCellValue('B19', $tabla1);
+        $sheet->setCellValue('F19', $tabla2);
+        $sheet->setCellValue('J19', $tabla3);
+        $sheet->setCellValue('N19', $tabla4);
+        $sheet->setCellValue('R19', $tabla5);
+        $sheet->setCellValue('V19', $tabla6);
+        $sheet->setCellValue('Z19', $tabla7);
+
+
+        $sheet->setCellValue('AD19', $sumasTablas);
+        $sheet->setCellValue('B13', $sumasTablas);
+
+        $sheet->setCellValue('B20', $texto1);
+        $sheet->setCellValue('F20', $texto2);
+        $sheet->setCellValue('J20', $texto3);
+        $sheet->setCellValue('N20', $texto4);
+        $sheet->setCellValue('R20', $texto5);
+        $sheet->setCellValue('V20', $texto6);
+        $sheet->setCellValue('Z20', $texto7);
+
+        $sheet->setCellValue('B26', $nombreDirector . "\n" . 'DIRECTOR DEL PROYECTO');
+        $sheet->getStyle('B26')->getAlignment()->setWrapText(true);
+        $sheet->getStyle('B26')->getFont()->setSize(11);
+
+
+        // Descargar el archivo
+        $nombreArchivo = 'baremo.xlsx';
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+    }
+
     /////////entrar a la vista
     public function mostrarFormulario()
     {
