@@ -15,7 +15,9 @@ use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 use App\Models\NrcVinculacion;
+
 use App\Models\PracticaI;
+use App\Models\Periodo;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\ActividadEstudiante;
@@ -1543,12 +1545,12 @@ class DocumentoController extends Controller
         $template->setValue('correo', $estudiante->correo);
 
         $template->setValue('empresa', $datosEstudiantes->first()->empresa->nombreEmpresa);
-        $estudiante = $datosEstudiantes->first();
-        if (is_object($estudiante) && is_object($estudiante->nrc) && is_object($estudiante->nrc->periodo)) {
-            $template->setValue('periodo', $estudiante->nrc->periodo->numeroPeriodo);
-        } else {
-            $template->setValue('periodo', 'Default Periodo Value');
-        }
+        $estudianteNrc = $datosEstudiantes->first()->nrc;
+        $periodo = Periodo::find($estudianteNrc);
+        $numeroPeriodo = $periodo ? $periodo->numeroPeriodo : null;
+
+        $estudiante = $numeroPeriodo;
+        $template->setValue('periodo', $estudiante);
 
         ///////descargar el documento generado
         $nombreArchivo = 'EncuestaEstudiantes.docx';
@@ -1575,12 +1577,13 @@ class DocumentoController extends Controller
         $template->setValue('Cedula', $datosEstudiantes->first()->tutorAcademico->c);
         $template->setValue('Departamento', $datosEstudiantes->first()->tutorAcademico->departamento);
         $template->setValue('Correo', $datosEstudiantes->first()->tutorAcademico->correo);
-        $estudiante = $datosEstudiantes->first();
-        if (is_object($estudiante) && is_object($estudiante->nrc) && is_object($estudiante->nrc->periodo)) {
-            $template->setValue('periodo', $estudiante->nrc->periodo->numeroPeriodo);
-        } else {
-            $template->setValue('periodo', 'Default Periodo Value');
-        }
+        $estudianteNrc = $datosEstudiantes->first()->nrc;
+        $periodo = Periodo::find($estudianteNrc);
+        $numeroPeriodo = $periodo ? $periodo->numeroPeriodo : null;
+
+        $estudiante = $numeroPeriodo;
+        $template->setValue('periodo', $estudiante);
+
         $nombreArchivo = 'EncuestaDocentes.docx';
         $template->saveAs($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
@@ -1604,12 +1607,12 @@ class DocumentoController extends Controller
         $template->setValue('espe_id', $estudiante->espeId);
         $template->setValue('celular', $estudiante->celular);
         $template->setValue('correo', $estudiante->correo);
-        $estudiante = $datosEstudiantes->first();
-        if (is_object($estudiante) && is_object($estudiante->nrc) && is_object($estudiante->nrc->periodo)) {
-            $template->setValue('periodo', $estudiante->nrc->periodo->numeroPeriodo);
-        } else {
-            $template->setValue('periodo', 'Default Periodo Value');
-        }
+        $estudianteNrc = $datosEstudiantes->first()->nrc;
+        $periodo = Periodo::find($estudianteNrc);
+        $numeroPeriodo = $periodo ? $periodo->numeroPeriodo : null;
+
+        $estudiante = $numeroPeriodo;
+        $template->setValue('periodo', $estudiante);
 
 
         $fechaInicio = $datosEstudiantes->first()->FechaInicio;
@@ -1653,12 +1656,12 @@ class DocumentoController extends Controller
         $template->setValue('espe_id', $estudiante->espeId);
         $template->setValue('celular', $estudiante->celular);
         $template->setValue('correo', $estudiante->Correo);
-        $estudiante = $datosEstudiantes->first();
-        if (is_object($estudiante) && is_object($estudiante->nrc) && is_object($estudiante->nrc->periodo)) {
-            $template->setValue('periodo', $estudiante->nrc->periodo->numeroPeriodo);
-        } else {
-            $template->setValue('periodo', 'Default Periodo Value');
-        }
+        $estudianteNrc = $datosEstudiantes->first()->nrc;
+        $periodo = Periodo::find($estudianteNrc);
+        $numeroPeriodo = $periodo ? $periodo->numeroPeriodo : null;
+
+        $estudiante = $numeroPeriodo;
+        $template->setValue('periodo', $estudiante);
 
 
         $template->setValue('Empresa', $datosEstudiantes->first()->empresa->nombreEmpresa);
@@ -1702,6 +1705,221 @@ class DocumentoController extends Controller
 
 
     }
+
+
+    ///////////////////////////////////DOCUEMNTOS PRACTICAS2/////////////////////////////////////////
+
+    public function EncuestaEstudiante2()
+    {
+        $plantillaPath = public_path('Plantillas/practicas/EncuestaEstudiantes.docx');
+        if (!file_exists($plantillaPath)) {
+            abort(404, 'El archivo de plantilla no existe.');
+        }
+
+        $template = new TemplateProcessor($plantillaPath);
+
+        $estudiante = Auth::user()->estudiante;
+
+        $datosEstudiantes = PracticaII::where('estudianteId', $estudiante->estudianteId)->get();
+
+        $template->setValue('estudiante', $estudiante->nombres . ' ' . $estudiante->apellidos);
+        $template->setValue('cedula', $estudiante->cedula);
+        $template->setValue('espe_id', $estudiante->espeId);
+        $template->setValue('celular', $estudiante->celular);
+        $template->setValue('correo', $estudiante->correo);
+
+        $template->setValue('empresa', $datosEstudiantes->first()->empresa->nombreEmpresa);
+
+        $estudianteNrc = $datosEstudiantes->first()->nrc;
+        $periodo = Periodo::find($estudianteNrc);
+        $numeroPeriodo = $periodo ? $periodo->numeroPeriodo : null;
+
+        $estudiante = $numeroPeriodo;
+        $template->setValue('periodo', $estudiante);
+
+
+        ///////descargar el documento generado
+        $nombreArchivo = 'EncuestaEstudiantes.docx';
+        $template->saveAs($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+
+
+    }
+
+
+    public function EncuestaDocentes2()
+    {
+        $plantillaPath = public_path('Plantillas/practicas/EncuestaDocentes.docx');
+        if (!file_exists($plantillaPath)) {
+            abort(404, 'El archivo de plantilla no existe.');
+        }
+        $template = new TemplateProcessor($plantillaPath);
+
+        $estudiante = Auth::user()->estudiante;
+
+        $datosEstudiantes = PracticaII::where('estudianteId', $estudiante->estudianteId)->get();
+
+        $template->setValue('Nombre', $datosEstudiantes->first()->tutorAcademico->nombres . ' ' . $datosEstudiantes->first()->tutorAcademico->apellidos);
+        $template->setValue('Cedula', $datosEstudiantes->first()->tutorAcademico->cedula);
+        $template->setValue('Departamento', $datosEstudiantes->first()->tutorAcademico->departamento);
+        $template->setValue('Correo', $datosEstudiantes->first()->tutorAcademico->correo);
+        $estudianteNrc = $datosEstudiantes->first()->nrc;
+        $periodo = Periodo::find($estudianteNrc);
+        $numeroPeriodo = $periodo ? $periodo->numeroPeriodo : null;
+
+        $estudiante = $numeroPeriodo;
+        $template->setValue('periodo', $estudiante);
+        $nombreArchivo = 'EncuestaDocentes.docx';
+        $template->saveAs($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+
+    }
+
+    public function EvTutorEmpresarial2()
+    {
+        $plantillaPath = public_path('Plantillas/practicas/EvTutorEmpresarial.docx');
+        if (!file_exists($plantillaPath)) {
+            abort(404, 'El archivo de plantilla no existe.');
+        }
+        $template = new TemplateProcessor($plantillaPath);
+
+        $estudiante = Auth::user()->estudiante;
+
+        $datosEstudiantes = PracticaII::where('estudianteId', $estudiante->estudianteId)->get();
+
+        $template->setValue('estudiante', $estudiante->nombres . ' ' . $estudiante->apellidos);
+        $template->setValue('cedula', $estudiante->cedula);
+        $template->setValue('espe_id', $estudiante->espeId);
+        $template->setValue('celular', $estudiante->celular);
+        $template->setValue('correo', $estudiante->correo);
+        $estudianteNrc = $datosEstudiantes->first()->nrc;
+        $periodo = Periodo::find($estudianteNrc);
+        $numeroPeriodo = $periodo ? $periodo->numeroPeriodo : null;
+
+        $estudiante = $numeroPeriodo;
+        $template->setValue('periodo', $estudiante);
+
+
+        $fechaInicio = $datosEstudiantes->first()->FechaInicio;
+        $formattedFechaInicio = date('d/m/Y', strtotime($fechaInicio));
+        $template->setValue('FechaInicio', $formattedFechaInicio);
+
+        $fechaFinalizacion = $datosEstudiantes->first()->FechaFinalizacion;
+        $formattedFechaFinalizacion = date('d/m/Y', strtotime($fechaFinalizacion));
+        $template->setValue('FechaFinalizacion', $formattedFechaFinalizacion);
+
+
+        $template->setValue('HorasPlanificadas', $datosEstudiantes->first()->HorasPlanificadas);
+        $template->setValue('HoraEntrada', $datosEstudiantes->first()->HoraEntrada);
+        $template->setValue('HoraSalida', $datosEstudiantes->first()->HoraSalida);
+
+        $template->setValue('NombresEmpresarial', $datosEstudiantes->first()->NombreTutorEmpresarial);
+        $template->setValue('CedulaEmpresarial', $datosEstudiantes->first()->CedulaTutorEmpresarial);
+
+
+        $nombreArchivo = 'EvTutorEmpresarial.docx';
+        $template->saveAs($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+
+
+    }
+
+
+    public function PlanificacionPPEstudiante2()
+    {
+        $plantillaPath = public_path('Plantillas/practicas/PlanificacionPPEstudiante.docx');
+        if (!file_exists($plantillaPath)) {
+            abort(404, 'El archivo de plantilla no existe.');
+        }
+        $template = new TemplateProcessor($plantillaPath);
+
+        $estudiante = Auth::user()->estudiante;
+
+        $datosEstudiantes = PracticaII::where('estudianteId', $estudiante->estudianteId)->get();
+        $template->setValue('estudiante', $estudiante->nombres . ' ' . $estudiante->apellidos);
+        $template->setValue('cedula', $estudiante->cedula);
+        $template->setValue('espe_id', $estudiante->espeId);
+        $template->setValue('celular', $estudiante->celular);
+        $template->setValue('correo', $estudiante->Correo);
+        $estudianteNrc = $datosEstudiantes->first()->nrc;
+        $periodo = Periodo::find($estudianteNrc);
+        $numeroPeriodo = $periodo ? $periodo->numeroPeriodo : null;
+
+        $estudiante = $numeroPeriodo;
+        $template->setValue('periodo', $estudiante);
+
+
+        $template->setValue('Empresa', $datosEstudiantes->first()->empresa->nombreEmpresa);
+        $template->setValue('Actividades', $datosEstudiantes->first()->empresa->actividadesMacro);
+        $template->setValue('Direccion', $datosEstudiantes->first()->empresa->direccion);
+
+        $template->setValue('NombresEmpresarial', $datosEstudiantes->first()->NombreTutorEmpresarial);
+        $template->setValue('CedulaEmpresarial', $datosEstudiantes->first()->CedulaTutorEmpresarial);
+        $template->setValue('TelefonoEmpresarial', $datosEstudiantes->first()->TelefonoTutorEmpresarial);
+        $template->setValue('CorreoEmpresarial', $datosEstudiantes->first()->EmailTutorEmpresarial);
+        $template->setValue('Funcion', $datosEstudiantes->first()->Funcion);
+
+
+        $template->setValue('NombresAcademico', $datosEstudiantes->first()->tutorAcademico->nombres . ' ' . $datosEstudiantes->first()->tutorAcademico->apellidos);
+        $template->setValue('CedulaAcademico', $datosEstudiantes->first()->tutorAcademico->cedula);
+        $template->setValue('CorreoAcademico', $datosEstudiantes->first()->tutorAcademico->correo);
+        $template->setValue('id_espeAcademico', $datosEstudiantes->first()->tutorAcademico->espeId);
+
+
+
+
+
+        $fechaInicio = $datosEstudiantes->first()->FechaInicio;
+        $formattedFechaInicio = date('d/m/Y', strtotime($fechaInicio));
+        $template->setValue('FechaInicio', $formattedFechaInicio);
+
+        $fechaFinalizacion = $datosEstudiantes->first()->FechaFinalizacion;
+        $formattedFechaFinalizacion = date('d/m/Y', strtotime($fechaFinalizacion));
+        $template->setValue('FechaFinalizacion', $formattedFechaFinalizacion);
+
+
+        $template->setValue('HorasPlanificadas', $datosEstudiantes->first()->HorasPlanificadas);
+        $template->setValue('HoraEntrada', $datosEstudiantes->first()->HoraEntrada);
+        $template->setValue('HoraSalida', $datosEstudiantes->first()->HoraSalida);
+
+
+
+        $nombreArchivo = 'PlanificacionPPEstudiante.docx';
+        $template->saveAs($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////FIN DOCUMENTOS PRACTICAS2/////////////////////////////////////////
+
+
+
+
+
+
+
 
 
 

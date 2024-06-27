@@ -2,7 +2,7 @@
 
 
 @section('content')
-@if (session('success'))
+    @if (session('success'))
         <script>
             Swal.fire({
                 icon: 'success',
@@ -30,62 +30,308 @@
 
     <div class="container">
         @if (isset($practicaPendiente))
-            <h4>Proceso activo</h4>
-            <p>Detalles de la práctica pendiente:</p>
-            <div class="form-group">
-                <label for="NombreEstudiante">Estudiante:</label>
-                <input type="text" id="NombreEstudiante" name="NombreEstudiante" class="form-control input"
-                    value="{{ $practicaPendiente->NombreEstudiante }} {{ $practicaPendiente->ApellidoEstudiante }}" readonly>
-            </div>
-            <div class="form-group">
-                <label for="Nivel">Nivel:</label>
-                <input type="text" id="Nivel" name="Nivel" class="form-control input"
-                    value="{{ $practicaPendiente->Nivel }}" readonly>
-            </div>
-            <div class="form-group">
-                <label for="Practicas">Práctica:</label>
-                <input type="text" id="Practicas" name="Practicas" class="form-control input"
-                    value="{{ $practicaPendiente->Practicas }}" readonly>
-            </div>
-            <div class="form-group">
-                <label for="DocenteTutor">Docente Tutor:</label>
-                <input type="text" id="DocenteTutor" name="DocenteTutor" class="form-control"
-                    value="{{ $practicaPendiente->DocenteTutor }}" readonly>
-            </div>
-            <div class="form-group">
-                <label for="Empresa">Empresa:</label>
-                <input type="text" id="Empresa" name="Empresa" class="form-control input"
-                    value="{{ $practicaPendiente->Empresa }}" readonly>
-            </div>
-            <div class="form-group">
-                <label for="NombreTutorEmpresarial">Nombre del tutor empresarial:</label>
-                <input type="text" id="NombreTutorEmpresarial" name="NombreTutorEmpresarial" class="form-control input"
-                    value="{{ $practicaPendiente->NombreTutorEmpresarial }}" readonly>
+            <h4>Detalles de la Práctica en Ejecución:</h4>
+            <div class="row">
+                <div class="col-md-6">
+
+                    <dl class="row">
+                        <dt class="col-sm-5 text-nowrap">Estudiante:</dt>
+                        <dd class="col-sm-7">{{ $practicaPendiente->estudiante->apellidos }}
+                            {{ $practicaPendiente->estudiante->nombres }}</dd>
+                        <dt class="col-sm-5 text-nowrap">Práctica:</dt>
+                        <dd class="col-sm-7">{{ $practicaPendiente->tipoPractica }}</dd>
+                        <dt class="col-sm-5 text-nowrap">Docente Tutor:</dt>
+                        <dd class="col-sm-7">{{ $practicaPendiente->tutorAcademico->Apellidos }}
+                            {{ $practicaPendiente->tutorAcademico->Nombres }}</dd>
+                        <dt class="col-sm-5 text-nowrap">Empresa:</dt>
+                        <dd class="col-sm-7">{{ $practicaPendiente->Empresa->nombreEmpresa }}</dd>
+                        <dt class="col-sm-5 text-nowrap">Tutor Empresarial:</dt>
+                        <dd class="col-sm-7">{{ $practicaPendiente->NombreTutorEmpresarial }}</dd>
+                        <dt class="col-sm-5 text-nowrap">Cédula Tutor Empresarial:</dt>
+                        <dd class="col-sm-7">{{ $practicaPendiente->CedulaTutorEmpresarial }}</dd>
+                        <dt class="col-sm-5 text-nowrap">Función:</dt>
+                        <dd class="col-sm-7">{{ $practicaPendiente->Funcion }}</dd>
+                        <dt class="col-sm-5 text-nowrap">Teléfono Tutor Empresarial:</dt>
+                        <dd class="col-sm-7">{{ $practicaPendiente->TelefonoTutorEmpresarial }}</dd>
+                        <dt class="col-sm-5 text-nowrap">Estado de Fase I:</dt>
+                        <dd class="col-sm-7">{{ $practicaPendiente->Estado }}</dd>
+                    </dl>
+                </div>
+                <div class="col-md-6">
+                    <div class="card-body">
+                        <form action="{{ route('generar.EncuestaEstudiante2') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-light btn-block">
+                                <i class="fas fa-file-excel"></i> Generar Encuesta Estudiantes
+                            </button>
+                        </form>
+                    </div>
+
+
+                    <div class="card-body">
+                        <form action="{{ route('generar.EncuestaDocentes2') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-light btn-block">
+                                <i class="fas fa-file-excel"></i> Generar Encuesta Docente
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="card-body">
+                        <form action="{{ route('generar.EvTutorEmpresarial2') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-light btn-block">
+                                <i class="fas fa-file-excel"></i> Generar Evaluacion Tutor Empresarial
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="card-body">
+                        <form action="{{ route('generar.PlanificacionPPEstudiante2') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-light btn-block">
+                                <i class="fas fa-file-excel"></i> Generar Planificacion Estudiante
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+
+
+
+                <br>
+                <button type="button" class="button" data-toggle="modal" data-target="#modalAgregarActividad">
+                    Agregar actividad
+                </button>
+                <br>
+
+
+                <div class="modal fade" id="modalAgregarActividad" tabindex="-1" role="dialog"
+                    aria-labelledby="modalAgregarActividadLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalAgregarActividadLabel">Agregar Actividad</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="actividadForm" action="{{ route('estudiantes.guardarActividadesPracticas1') }}"
+                                    method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="hidden" id="EstudianteID" name="EstudianteID"
+                                        value="{{ $practicaPendiente->estudiante->estudianteId }}">
+                                    <input type="hidden" id="PracticasI" name="PracticasI"
+                                        value="{{ $practicaPendiente->practicasi }}">
+                                    <div class="form-group">
+                                        <label for="Actividad">Actividad Realizada:</label>
+                                        <textarea id="Actividad" name="Actividad" class="form-control input"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="horas">Número de Horas:</label>
+                                        <input type="text" id="horas" name="horas" class="form-control input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="observaciones">Observación:</label>
+                                        <input type="text" id="observaciones" name="observaciones"
+                                            class="form-control input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fechaActividad">Fecha de la Actividad:</label>
+                                        <input type="date" id="fechaActividad" name="fechaActividad"
+                                            class="form-control input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="departamento">Departamento:</label>
+                                        <input type="text" id="departamento" name="departamento"
+                                            class="form-control input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="funcion">Función Asignada:</label>
+                                        <input type="text" id="funcion" name="funcion" class="form-control input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="evidencia">Evidencia:</label>
+                                        <input type="file" id="evidencia" name="evidencia"
+                                            class="form-control-file input">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="button" data-dismiss="modal">Cerrar</button>
+                                        <button type="submit" class="button">Guardar Actividad</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <div class="table-responsive-sm">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Actividad Realizada</th>
+                                <th>Horas</th>
+                                <th>Observaciones</th>
+                                <th>Fecha de la Actividad</th>
+                                <th>Departamento</th>
+                                <th>Función Asignada</th>
+                                <th>Evidencia</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($actividades as $actividad)
+                                <tr>
+                                    <td>{{ $actividad->actividad }}</td>
+                                    <td>{{ $actividad->horas }}</td>
+                                    <td>{{ $actividad->observaciones }}</td>
+                                    <td>{{ $actividad->fechaActividad }}</td>
+                                    <td>{{ $actividad->departamento }}</td>
+                                    <td>{{ $actividad->funcion }}</td>
+                                    <td><img src="data:image/png;base64,{{ $actividad->evidencia }}"
+                                            alt="Evidencia de la actividad" width="100px"></td>
+                                    <td>
+                                        <form
+                                            action="{{ route('estudiantes.eliminarActividadPracticas1', $actividad->id) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <div class="tooltip-container">
+                                                <span class="tooltip-text">Eliminar</span>
+                                                <button type="submit" class="button3 efects_button btn_eliminar3"> <i
+                                                        class="material-icons">delete</i></button>
+                                            </div>
+                                        </form>
+                                        <div class="tooltip-container">
+                                            <span class="tooltip-text">Editar</span>
+                                            <button type="button" class="button3 efects_button btn_editar3"
+                                                data-toggle="modal"
+                                                data-target="#modalEditarActividad{{ $actividad->id }}">
+                                                <i class="material-icons">edit</i>
+                                            </button>
+                                        </div>
+
+                                        <!-- Modal para editar actividad -->
+                                        <div class="modal fade" id="modalEditarActividad{{ $actividad->id }}"
+                                            tabindex="-1" role="dialog"
+                                            aria-labelledby="modalEditarActividadLabel{{ $actividad->id }}"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title"
+                                                            id="modalEditarActividadLabel{{ $actividad->id }}">Editar
+                                                            Actividad</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form
+                                                            action="{{ route('estudiantes.actualizarActividadPracticas1', $actividad->id) }}"
+                                                            method="POST" enctype="multipart/form-data">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <div class="form-group">
+                                                                <label for="Actividad">Actividad Realizada:</label>
+                                                                <input type="text" id="Actividad" name="Actividad"
+                                                                    value="{{ $actividad->actividad }}"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="horas">Horas:</label>
+                                                                <input type="text" id="horas" name="horas"
+                                                                    value="{{ $actividad->horas }}" class="form-control">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="observaciones">Observaciones:</label>
+                                                                <input type="text" id="observaciones"
+                                                                    name="observaciones"
+                                                                    value="{{ $actividad->observaciones }}"
+                                                                    class="form-control">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="fechaActividad">Fecha de la
+                                                                    Actividad:</label>
+                                                                <input type="date" id="fechaActividad"
+                                                                    name="fechaActividad"
+                                                                    value="{{ $actividad->fechaActividad }}"
+                                                                    class="form-control">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="departamento">Departamento:</label>
+                                                                <input type="text" id="departamento"
+                                                                    name="departamento"
+                                                                    value="{{ $actividad->departamento }}"
+                                                                    class="form-control">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="funcion">Función Asignada:</label>
+                                                                <input type="text" id="funcion" name="funcion"
+                                                                    value="{{ $actividad->funcion }}"
+                                                                    class="form-control">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="evidencia">Evidencia:</label>
+                                                                <input type="file" id="evidencia" name="evidencia"
+                                                                    class="form-control-file">
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="button"
+                                                                    data-dismiss="modal">Cerrar</button>
+                                                                <button type="submit" class="button">Guardar
+                                                                    Cambios</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </td>
+
+
+
+                                </tr>
+                            @endforeach
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td colspan="7" align="left"><strong>Total horas realizadas:</strong>
+                                    {{ $totalHoras }} / {{ $practicaPendiente->HorasPlanificadas }}
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+
+                </div>
+
+
+
             </div>
 
-            <div class="form-group">
-                <label for="CedulaTutorEmpresarial">Cédula del tutor empresarial:</label>
-                <input type="text" id="CedulaTutorEmpresarial" name="CedulaTutorEmpresarial" class="form-control input"
-                    value="{{ $practicaPendiente->CedulaTutorEmpresarial }}" readonly>
-            </div>
 
-            <div class="form-group">
-                <label for="Funcion">Función:</label>
-                <input type="text" id="Funcion" name="Funcion" class="form-control input"
-                    value="{{ $practicaPendiente->Funcion }}" readonly>
-            </div>
 
-            <div class="form-group">
-                <label for="TelefonoTutorEmpresarial">Teléfono del tutor empresarial:</label>
-                <input type="text" id="TelefonoTutorEmpresarial" name="TelefonoTutorEmpresarial" class="form-control input"
-                    value="{{ $practicaPendiente->TelefonoTutorEmpresarial }}" readonly>
-            </div>
 
-            <div class="form-group">
-                <label for="Estado">Estado de Fase II:</label>
-                <input type="text" id="Estado" name="Estado" class="form-control input"
-                    value="{{ $practicaPendiente->Estado }}" readonly>
-            </div>
+
+
+
+
+
+
+            <!--------------------------------- De aqui para abajo es otra zona de trabajoooooooooooooooooooooo------------------>
         @else
             <br>
             <hr>
@@ -98,7 +344,7 @@
                         <tbody>
                             <tr>
                                 <th>ID de Estudiante:</th>
-                                <td>{{ strtoupper($estudiante->espe_id) }}</td>
+                                <td>{{ strtoupper($estudiante->espeId) }}</td>
                             </tr>
                             <tr>
                                 <th>Cédula:</th>
@@ -106,7 +352,7 @@
                             </tr>
                             <tr>
                                 <th>Nombres Completos:</th>
-                                <td>{{ strtoupper($estudiante->Apellidos) }} {{ strtoupper($estudiante->Nombres) }}
+                                <td>{{ strtoupper($estudiante->apellidos) }} {{ strtoupper($estudiante->nombres) }}
                                 </td>
                             </tr>
                             <tr>
@@ -128,7 +374,7 @@
                             </tr>
                             <tr>
                                 <th>Departamento:</th>
-                                <td>{{ strtoupper($estudiante->Departamento) }}</td>
+                                <td>{{ strtoupper($estudiante->departamento) }}</td>
                             </tr>
                             <tr>
                                 <th>Escoja Práctica:</th>
@@ -232,69 +478,46 @@
                 <br><br>
                 <table id="opcionesPracticas" class="table table-bordered" style="display: none;">
                     <tbody>
+
                         <tr>
                             <th>Sugiera un docente como tutor académico:</th>
                             <td>
-                                <select id="DocenteTutor" name="DocenteTutor" class="form-control">
-                                    <option value="CORONEL GUERRERO CHRISTIAN ALFREDO - DCCO">CORONEL GUERRERO
-                                        CHRISTIAN ALFREDO
-                                        - DCCO</option>
-                                    <option value="SALAZAR ARMIJOS DIEGO RICARDO - DCCO">SALAZAR ARMIJOS DIEGO RICARDO
-                                        - DCCO
-                                    </option>
-                                    <option value="NÚÑEZ AGURTO ALBERTO DANIEL - DCCO">NÚÑEZ AGURTO ALBERTO DANIEL -
-                                        DCCO
-                                    </option>
-                                    <option value="ORTIZ DELGADO LUIS ARMANDO - DCCO">ORTIZ DELGADO LUIS ARMANDO - DCCO
-                                    </option>
-                                    <option value="BENAVIDES ASTUDILLO DIEGO EDUARDO - DCCO">BENAVIDES ASTUDILLO DIEGO
-                                        EDUARDO -
-                                        DCCO</option>
-                                    <option value="ANDRADE SALAZAR MILTON TEMISTOCLES - DCCO">ANDRADE SALAZAR MILTON
-                                        TEMISTOCLES
-                                        - DCCO</option>
-                                    <option value="RODRIGUEZ GALÁN GERMÁN EDUARDO - DCCO">RODRIGUEZ GALÁN GERMÁN
-                                        EDUARDO - DCCO
-                                    </option>
-                                    <option value="CAMINO ZAMBRANO EDWIN PATRICIO - DCCO">CAMINO ZAMBRANO EDWIN
-                                        PATRICIO - DCCO
-                                    </option>
-                                    <option value="REVELO HERRERA HÉCTOR MAURICIO - DCCO">REVELO HERRERA HÉCTOR
-                                        MAURICIO - DCCO
-                                    </option>
-                                    <option value="CHICA MONCAYO LUIS MANUEL - DCCO">CHICA MONCAYO LUIS MANUEL - DCCO
-                                    </option>
-                                    <option value="GUARACA MOYOTA MARGOTH ELISA - DCCO">GUARACA MOYOTA MARGOTH ELISA -
-                                        DCCO
-                                    </option>
-                                    <option value="MARTÍNEZ CEPEDA VERÓNICA ISABEL - DCCO">MARTÍNEZ CEPEDA VERÓNICA
-                                        ISABEL -
-                                        DCCO</option>
-                                    <option value="CASTILLO SALINAS LUIS ALBERTO - DCCO">CASTILLO SALINAS LUIS ALBERTO
-                                        - DCCO
-                                    </option>
-                                    <option value="CISNEROS BASURTO WILSON EDMUNDO - DCCO">CISNEROS BASURTO WILSON
-                                        EDMUNDO -
-                                        DCCO</option>
-                                    <option value="PÉREZ AGURTO FRANKLIN RAMIRO - DCCO">PÉREZ AGURTO FRANKLIN RAMIRO -
-                                        DCCO
-                                    </option>
-                                    <option value="JAVIER JOSÉ CEVALLOS FARÍAS - DCCO">JAVIER JOSÉ CEVALLOS FARÍAS -
-                                        DCCO
-                                    </option>
-                                    <option value="PABLO FRANCISCO PUENTE PONCE - DCCO">PABLO FRANCISCO PUENTE PONCE -
-                                        DCCO
-                                    </option>
-                                </select>
+                                <div class="form-group">
+                                    <label for="ID_tutorAcademico">
+                                    </label>
+                                    <select name="ID_tutorAcademico" class="form-control input input select" required>
+                                        <option value="">Seleccionar el Docente</option>
+                                        @foreach ($profesores as $profesor)
+                                            <option value="{{ $profesor->id }}"> {{ $profesor->apellidos }}
+                                                {{ $profesor->nombres }}
+                                                {{ $profesor->Departamento }} {{ $profesor->Correo }} </option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
                             </td>
                         </tr>
+
+                        <tr>
+                            <th>NRC Practica</th>
+                            <td>
+                                <div class="form-group">
+                                    <select name="nrc" class="form-control input input-select" required>
+                                        <option value="">Seleccionar NRC</option>
+                                        @foreach ($nrcpracticas1 as $nrc)
+                                            <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+
                         <tr>
                             <th>Empresa:</th>
                             <td>
                                 <select id="Empresa" name="Empresa" class="form-control">
                                     @foreach ($empresas as $empresa)
-                                        <option value="{{ $empresa->nombreEmpresa }}">{{ $empresa->nombreEmpresa }} -
+                                        <option value="{{ $empresa->id }}">{{ $empresa->nombreEmpresa }} -
                                             Requiere: {{ $empresa->actividadesMacro }} </option>
                                     @endforeach
                                 </select>

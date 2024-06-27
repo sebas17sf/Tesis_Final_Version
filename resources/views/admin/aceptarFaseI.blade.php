@@ -109,20 +109,22 @@
                                     @foreach ($estudiantesConPracticaII as $practicaII)
                                         @if ($practicaII->estudiante)
                                             <tr>
-                                                <td>{{ strtoupper($practicaII->estudiante->apellidos) }}
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaII->estudiante->apellidos) }}
                                                     {{ strtoupper($practicaII->estudiante->nombres) }}</td>
-                                                <td>{{ strtoupper($practicaII->Practicas) }}</td>
-                                                <td>{{ strtoupper($practicaII->DocenteTutor) }}</td>
-                                                <td>{{ strtoupper($practicaII->NombreTutorEmpresarial) }}</td>
-                                                <td>{{ strtoupper($practicaII->Empresa) }}</td>
-                                                <td>{{ strtoupper($practicaII->Nivel) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaII->tipoPractica) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaII->tutorAcademico->apellidos) }}
+                                                    {{ strtoupper($practicaII->tutorAcademico->nombres) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaII->NombreTutorEmpresarial) }}</td>
+                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaII->Empresa->nombreEmpresa) }}</td>
+                                                <td>{{ strtoupper($practicaII->nrc) }}</td>
+                                                <td>{{ strtoupper($practicaII->nrc) }}</td>
                                                 <td>{{ strtoupper($practicaII->FechaInicio) }}</td>
                                                 <td>{{ strtoupper($practicaII->FechaFinalizacion) }}</td>
                                                 <td>{{ strtoupper($practicaII->HorasPlanificadas) }}</td>
                                                 <td>{{ $practicaII->Estado }}</td>
                                                 <td>
                                                     <form
-                                                        action="{{ route('admin.actualizarEstadoEstudiante2', ['id' => $practicaII->estudiante->EstudianteID]) }}"
+                                                        action="{{ route('admin.actualizarEstadoEstudiante2', ['id' => $practicaII->estudiante->estudianteId]) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('PUT')
@@ -133,11 +135,7 @@
                                                         <button type="submit">Enviar</button>
                                                     </form>
 
-                                                    <form
-                                                        action="{{ route('admin.editarNombreEmpresa', ['id' => $practicaII->estudiante->EstudianteID]) }}"
-                                                        method="get">
-                                                        <button type="submit">Cambiar</button>
-                                                    </form>
+
                                                 </td>
                                             </tr>
                                         @endif
