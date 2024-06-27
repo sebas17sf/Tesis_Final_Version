@@ -55,8 +55,8 @@
                         <dt class="col-sm-5 text-nowrap">Práctica:</dt>
                         <dd class="col-sm-7">{{ $practicaPendiente->tipoPractica }}</dd>
                         <dt class="col-sm-5 text-nowrap">Docente Tutor:</dt>
-                        <dd class="col-sm-7">{{ $practicaPendiente->tutorAcademico->Apellidos }}
-                            {{ $practicaPendiente->tutorAcademico->Nombres }}</dd>
+                        <dd class="col-sm-7">{{ $practicaPendiente->tutorAcademico->apellidos }}
+                            {{ $practicaPendiente->tutorAcademico->nombres }}</dd>
                         <dt class="col-sm-5 text-nowrap">Empresa:</dt>
                         <dd class="col-sm-7">{{ $practicaPendiente->Empresa->nombreEmpresa }}</dd>
                         <dt class="col-sm-5 text-nowrap">Tutor Empresarial:</dt>
@@ -423,7 +423,7 @@
 <hr>
 
                 <div class="table-responsive-sm">
-                    
+
                     <table class="table2 table table-bordered">
                     <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                     <th class="tamanio1 table2th" colspan="2"> <center>DATOS DE LA PRÁCTICA</center></th>
@@ -489,7 +489,7 @@
                 <br>
                 <hr>
                 <div class="table-responsive-sm">
-                    
+
                     <table id="opcionesPracticas" class="table2 table table-bordered" style="display: none;">
                     <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                     <th class="tamanio1 table2th" colspan="2"> <center>PRÁCTICA PREPROFESIONAL NO REMUNERADA, PASANTÍA O AYUDA A LA COMUNIDAD </center></th>

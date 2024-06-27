@@ -187,6 +187,7 @@ Route::middleware(['auth'])->group(function () {
 
     ////baremos
     Route::post('/participante-vinculacion/generar-baremo', [DocumentoController::class, 'baremo'])->name('ParticipanteVinculacion.generarBaremo');
+    Route::post('/director-vinculacion/generar-baremo', [DocumentoController::class, 'baremoDirector'])->name('director.generarBaremo');
 
     //////////matriz vinculacion de DocumentosVinculacion
     Route::post('/reporte/matriz-vinculacion', [DocumentosVinculacion::class, 'matrizVinculacion'])->name('reporte.matrizVinculacion');
