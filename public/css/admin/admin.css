@@ -383,7 +383,24 @@ tr:hover {
     border-radius: 0.25rem;
     font-size: 0.7rem !important; /* Increase font size for select */
 }
-
+.input_select3 {
+    width: 60%;
+    padding-left: 10px !important;
+    padding-right: 5px !important;
+    border: 1px solid #40456c;
+    border-radius: 0.25rem;
+    font-size: 0.8rem !important;
+    color: rgb(34, 34, 34) !important; /* Increase font size for select */
+}
+.input_select4 {
+    width: 100%;
+    padding-left: 10px !important;
+    padding-right: 5px !important;
+    border: 1px solid #40456c;
+    border-radius: 0.25rem;
+    font-size: 0.8rem !important;
+    color: rgb(34, 34, 34) !important; /* Increase font size for select */
+}
 .text_sesion {
     width: 100%;
     padding: 0.375rem 0.75rem;
@@ -656,4 +673,20 @@ tr:hover {
             border-radius: 0.25rem;
             font-size: 0.7rem !important; /* Increase font size for select */
         }
-        
+        .table2 {
+            width: 70% !important;
+            margin: 0 auto !important;
+        }
+
+        .table2th{
+            background: linear-gradient(to bottom, #ffffff, #ffffff), 
+            linear-gradient(to bottom, rgba(64, 69, 108, 0.3), rgba(64, 69, 108, 0.2));
+background-blend-mode: multiply;
+
+
+        }
+        .colorth{
+            background: linear-gradient(to bottom, #ffffff, #ffffff), 
+            linear-gradient(to bottom, rgba(64, 69, 108, 0.192), rgba(64, 69, 108, 0.055));
+background-blend-mode: multiply;
+        }
