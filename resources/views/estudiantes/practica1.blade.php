@@ -348,13 +348,15 @@
             <!--------------------------------- De aqui para abajo es otra zona de trabajoooooooooooooooooooooo------------------>
         @else
             <br>
+            <h3><b>Fase 1 - Inicio del proceso de prácticas pre profesionales del estudiante</b></h3>
             <hr>
-
-            <h3>Fase 1 - Inicio del proceso de prácticas pre profesionales del estudiante</h3>
             <form action="{{ route('guardarPracticas') }}" method="POST">
                 @csrf
                 <div class="table-responsive-sm">
-                    <table class="table table-bordered">
+                    <table class="table2 table table-bordered">
+                    <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                    <th class="tamanio1 table2th" colspan="2"> <center>DATOS DEL ESTUDIANTE</center></th>
+                    </tr>
                         <tbody>
                             <tr>
                                 <th>ID de Estudiante:</th>
@@ -372,35 +374,37 @@
                             </tr>
                             <tr>
                                 <th>Correo:</th>
-                                <td>{{ strtoupper($correoEstudiante) }}</td>
+                                <td >{{ $correoEstudiante }}</td>
                             </tr>
                             <tr>
                                 <th>Nivel:</th>
                                 <td>
-                                    <select id="Nivel" name="Nivel" class="form-control">
-                                        <option value="Pregrado">Pregrado</option>
-                                        <option value="Posgrado">Posgrado</option>
+                                    <select id="Nivel" name="Nivel" class="form-control input input_select3">
+                                        <option value="1">Seleccione un nivel</option>
+                                        <option value="Pregrado">PREGRADO</option>
+                                        <option value="Posgrado">POSTGRADO</option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <th>Campus:</th>
-                                <td>EXTENSION SANTO DOMINGO</td>
+                                <td>EXTENSIÓN SANTO DOMINGO</td>
                             </tr>
                             <tr>
                                 <th>Departamento:</th>
-                                <td>{{ strtoupper($estudiante->departamento) }}</td>
+                                <td style=" text-transform: uppercase;">{{ strtoupper($estudiante->departamento) }}</td>
                             </tr>
                             <tr>
                                 <th>Escoja Práctica:</th>
                                 <td>
-                                    <select id="Practicas" name="Practicas" class="form-control">
+                                    <select id="Practicas" name="Practicas" class="form-control input input_select3">
+                                        <option value="1">Seleccione una práctica</option>
                                         <option value="SERVICIO A LA COMUNIDAD">SERVICIO A LA COMUNIDAD</option>
-                                        <option value="PASANTIAS">PASANTIAS</option>
-                                        <option value="PRACTICAS PRE PROFESIONALES">PRACTICAS PRE PROFESIONALES
+                                        <option value="PASANTIAS">PASANTÍAS</option>
+                                        <option value="PRACTICAS PRE PROFESIONALES">PRÁCTICAS PRE PROFESIONALES
                                         </option>
-                                        <option value="AYUDANDIA DE CATEDRA">AYUDANDIA DE CATEDRA</option>
-                                        <option value="AYUDANTIA DE INVESTIGACION">AYUDANTIA DE INVESTIGACION
+                                        <option value="AYUDANDIA DE CATEDRA">AYUDANTÍA DE CATEDRA</option>
+                                        <option value="AYUDANTIA DE INVESTIGACION">AYUDANTÍA DE INVESTIGACION
                                         </option>
                                         <option value="RECONOCE EXPERIENCIA LABORAL">RECONOCE EXPERIENCIA LABORAL
                                         </option>
@@ -415,16 +419,21 @@
                         </tbody>
                     </table>
                 </div>
-
+<br>
+<hr>
 
                 <div class="table-responsive-sm">
-                    <h3>Datos de la Práctica</h3>
-                    <table class="table table-bordered">
+                    
+                    <table class="table2 table table-bordered">
+                    <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                    <th class="tamanio1 table2th" colspan="2"> <center>DATOS DE LA PRÁCTICA</center></th>
+                    </tr>
                         <tbody>
                             <tr>
                                 <th>Estado Académico Actual:</th>
                                 <td>
-                                    <select id="EstadoAcademico" name="EstadoAcademico" class="form-control">
+                                    <select id="EstadoAcademico" name="EstadoAcademico" class="form-control input input_select3">
+                                        <option value="1">Seleccione un estado académico</option>
                                         <option value="FINALIZANDO ESTUDIOS">FINALIZANDO ESTUDIOS</option>
                                         <option value="CURSANDO ESTUDIOS">CURSANDO ESTUDIOS</option>
                                     </select>
@@ -433,53 +442,58 @@
                             <tr>
                                 <th>Fecha de inicio de la práctica:</th>
                                 <td>
-                                    <input type="date" id="FechaInicio" name="FechaInicio" class="form-control">
+                                    <input type="date" id="FechaInicio" name="FechaInicio" class="form-control input input_select3">
                                 </td>
                             </tr>
                             <tr>
                                 <th>Fecha de finalización de la práctica:</th>
                                 <td>
                                     <input type="date" id="FechaFinalizacion" name="FechaFinalizacion"
-                                        class="form-control">
+                                        class="form-control input input_select3">
                                 </td>
                             </tr>
                             <tr>
                                 <th>Horas planificadas:</th>
                                 <td>
                                     <input type="number" id="HorasPlanificadas" name="HorasPlanificadas"
-                                    class="form-control" min="80" max="144">
+                                    class="form-control input input_select3" min="80" max="144">
                                 </td>
                             </tr>
                             <tr>
                                 <th>Horario de entrada:</th>
                                 <td>
-                                    <input type="time" id="HoraEntrada" name="HoraEntrada" class="form-control">
+                                    <input type="time" id="HoraEntrada" name="HoraEntrada" class="form-control input input_select3">
                                 </td>
                             </tr>
                             <tr>
                                 <th>Horario de salida:</th>
                                 <td>
-                                    <input type="time" id="HoraSalida" name="HoraSalida" class="form-control">
+                                    <input type="time" id="HoraSalida" name="HoraSalida" class="form-control input input_select3">
                                 </td>
                             </tr>
                             <tr>
                                 <th>Área de conocimiento:</th>
                                 <td>
                                     <input type="text" id="AreaConocimiento" name="AreaConocimiento"
-                                        class="form-control">
+                                        class="form-control input input_select3">
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
+<br>
 
-
-
-                <button type="button" id="verOpcionesBtn" class="btn btn-sm btn-secondary">Ver opciones de
+                <button type="button" id="verOpcionesBtn" class="button1 btn3"><i class="fa-regular fa-magnifying-glass-plus"></i> Ver opciones de
                     prácticas</button>
-                <br><br>
-                <table id="opcionesPracticas" class="table table-bordered" style="display: none;">
+                <br>
+                <hr>
+                <div class="table-responsive-sm">
+                    
+                    <table id="opcionesPracticas" class="table2 table table-bordered" style="display: none;">
+                    <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                    <th class="tamanio1 table2th" colspan="2"> <center>PRÁCTICA PREPROFESIONAL NO REMUNERADA, PASANTÍA O AYUDA A LA COMUNIDAD </center></th>
+                    </tr>
                     <tbody>
                         <tr>
                             <th>Sugiera un docente como tutor académico:</th>
@@ -487,8 +501,8 @@
                                 <div class="form-group">
                                     <label for="ID_tutorAcademico">
                                     </label>
-                                    <select name="ID_tutorAcademico" class="form-control input input select" required>
-                                        <option value="">Seleccionar el Docente</option>
+                                    <select name="ID_tutorAcademico" class="form-control input input_select3" required>
+                                        <option value="">Seleccione un tutor académico</option>
                                         @foreach ($profesores as $profesor)
                                             <option value="{{ $profesor->id }}"> {{ $profesor->apellidos }}
                                                 {{ $profesor->nombres }}
@@ -504,7 +518,7 @@
                             <th>NRC Practica</th>
                             <td>
                                 <div class="form-group">
-                                    <select name="nrc" class="form-control input input-select" required>
+                                    <select name="nrc" class="form-control input input_select3" required>
                                         <option value="">Seleccionar NRC</option>
                                         @foreach ($nrcpracticas1 as $nrc)
                                             <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
@@ -517,7 +531,8 @@
                         <tr>
                             <th>Empresa:</th>
                             <td>
-                                <select id="Empresa" name="Empresa" class="form-control">
+                                <select id="Empresa" name="Empresa" class="form-control input input_select4 ">
+                                    <option value="1">Seleccione una empresa</option>
                                     @foreach ($empresas as $empresa)
                                         <option value="{{ $empresa->id }}">{{ $empresa->nombreEmpresa }} -
                                             Requiere: {{ $empresa->actividadesMacro }} </option>
@@ -530,7 +545,7 @@
                             <th>Cédula del tutor empresarial:</th>
                             <td>
                                 <input type="text" id="CedulaTutorEmpresarial" name="CedulaTutorEmpresarial"
-                                    class="form-control">
+                                    class="form-control input input_select3">
                                 <div id="errorCedula" style="color: red;"></div>
                             </td>
 
@@ -539,7 +554,7 @@
                         <tr>
                             <th>Nombre del tutor empresarial:</th>
                             <td>
-                                <input type="text" id="NombreTutorEmpresarial" name="NombreTutorEmpresarial" class="form-control">
+                                <input type="text" id="NombreTutorEmpresarial" name="NombreTutorEmpresarial" class="form-control input input_select3">
                                 <div id="errorNombre" style="color: red;"></div>
                             </td>
 
@@ -548,7 +563,7 @@
                         <tr>
                             <th>Funcion:</th>
                             <td>
-                                <input type="text" id="Funcion" name="Funcion" class="form-control">
+                                <input type="text" id="Funcion" name="Funcion" class="form-control input input_select3">
                             </td>
 
                         </tr>
@@ -556,7 +571,7 @@
                         <tr>
                             <th>Telefono:</th>
                             <td>
-                                <input type="text" id="TelefonoTutorEmpresarial" name="TelefonoTutorEmpresarial" class="form-control">
+                                <input type="text" id="TelefonoTutorEmpresarial" name="TelefonoTutorEmpresarial" class="form-control input input_select3">
                                 <div id="errorTelefono" style="color: red;"></div>
                             </td>
 
@@ -565,7 +580,7 @@
                         <tr>
                             <th>Email:</th>
                             <td>
-                                <input type="text" id="EmailTutorEmpresarial" name="EmailTutorEmpresarial" class="form-control">
+                                <input type="text" id="EmailTutorEmpresarial" name="EmailTutorEmpresarial" class="form-control input input_select3">
                                 <div id="errorEmail" style="color: red;"></div>
                             </td>
                         </tr>
@@ -574,7 +589,7 @@
                             <th>Departamento dentro de la empresa:</th>
                             <td>
                                 <input type="text" id="DepartamentoTutorEmpresarial"
-                                    name="DepartamentoTutorEmpresarial" class="form-control">
+                                    name="DepartamentoTutorEmpresarial" class="form-control input input_select3">
                             </td>
 
                         </tr>
@@ -584,9 +599,11 @@
                     </tbody>
 
                 </table>
-                <button type="submit" id="iniciarPracticasBtn" class="btn btn-sm btn-secondary"
+                </div>
+                <br>
+                <center><button type="submit" id="iniciarPracticasBtn" class="button1 btn_excel"
                     style="display: none;">Iniciar
-                    prácticas</button>
+                    prácticas</button></center>
             </form>
     @endif
     </div>

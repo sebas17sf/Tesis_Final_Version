@@ -55,18 +55,18 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th>Estudiante</th>
-                                        <th>Práctica</th>
-                                        <th>Tutor Académico</th>
-                                        <th>Tutor Empresarial</th>
-                                        <th>Empresa</th>
+                                        <th>ESTUDIANTE</th>
+                                        <th>PRÁCTICA</th>
+                                        <th>TUTOR ACADÉMICO</th>
+                                        <th>TUTOR EMPRESARIAL</th>
+                                        <th>EMPRESA</th>
                                         <th>NRC</th>
-                                        <th>Periodo</th>
-                                        <th>Fecha Inicio</th>
-                                        <th>Fecha Fin</th>
-                                        <th>Horas planificadas</th>
-                                        <th>Estado</th>
-                                        <th>Acción</th>
+                                        <th>PERIODO</th>
+                                        <th>FECHA INICIO</th>
+                                        <th>FECHA FIN</th>
+                                        <th>HORAS PLANIFICADAS</th>
+                                        <th>ESTADO</th>
+                                        <th class="tamanio1">ACCIÓN</th>
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
@@ -87,20 +87,17 @@
                                                 <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
                                                 <td>{{ $practicaI->Estado }}</td>
                                                 <td>
-                                                    <form
-                                                        action="{{ route('admin.actualizarEstadoEstudiante', ['id' => $practicaI->estudiante->estudianteId]) }}"
-                                                        method="POST">
+                                                    <form action="{{ route('admin.actualizarEstadoEstudiante', ['id' => $practicaI->estudiante->estudianteId]) }}" method="POST" style="display: flex; align-items: center; justify-content: center;">
                                                         @csrf
                                                         @method('PUT')
-                                                         <input type="hidden" name="id" value="{{ $practicaI->estudiante->estudianteId }}">
-                                                        <select name="nuevoEstado">
+                                                        <input type="hidden" name="id" value="{{ $practicaI->estudiante->estudianteId }}" class="input">
+                                                        <select name="nuevoEstado" class="form-control input1 input input_select1" style="margin-right: 10px;">
+                                                            <option value="1">Seleccione</option>
                                                             <option value="En ejecucion">Aprobado</option>
                                                             <option value="Negado">Negar</option>
                                                         </select>
-                                                        <button type="submit">Enviar</button>
+                                                        <button type="submit" class="button3"><i class="bx bx-check"></i></button>
                                                     </form>
-
-
                                                 </td>
                                             </tr>
                                         @endif
