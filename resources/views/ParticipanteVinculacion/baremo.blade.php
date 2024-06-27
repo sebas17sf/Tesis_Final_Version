@@ -7,7 +7,8 @@
     <h5><b>Baremo 2: Para calcular la distribución de carga horaria de docente colaborador de proyectos de vinculación con
             la sociedad</b></h5>
     <hr>
-    <form id="generarBaremoForm" method="POST">
+    <form id="generarBaremoForm" method="POST" action="{{ route('ParticipanteVinculacion.generarBaremo') }}">
+        @csrf
         <div class="contenedor_tabla">
             <div class="table-container mat-elevation-z8">
                 <div id="tablaProyectos">

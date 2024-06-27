@@ -1792,7 +1792,6 @@ class DocumentoController extends Controller
     public function baremo(Request $request)
     {
         $plantillaPath = public_path('Plantillas/baremos.xlsx');
-
         $spreadsheet = IOFactory::load($plantillaPath);
 
         $profesor = Auth::user()->profesorUniversidad;
@@ -1800,59 +1799,57 @@ class DocumentoController extends Controller
         $proyecto = AsignacionProyecto::where('participanteId', $profesor->id)
             ->whereHas('estudiante', function ($query) {
                 $query->where('estado', 'Aprobado');
-            })->first();
+            })
+            ->first();
 
-        $proyectoID = Proyecto::find($proyecto->proyectoId);
+        if (!$proyecto) {
+            return redirect()->back()->with('error', 'No tienes un proyecto asignado.');
+        }
 
-        $inicioFecha = $proyecto->inicioFecha;
-        $finalizacionFecha = $proyecto->finalizacionFecha;
-
-
-
-        ///obtener nombre del proyecto
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('B7', $proyectoID->nombreProyecto);
 
-        ////nombre del director del proyecto
-        $director = ProfesUniversidad::find($proyectoID->directorId);
-        $sheet->setCellValue('B8', $director->apellidos . ' ' . $director->nombres);
-
-        $sheet->setCellValue('B10', $proyectoID->departamentoTutor);
-        $sheet->setCellValue('B11', $proyectoID->first()->asignaciones->first()->inicioFecha);
-        $sheet->setCellValue('B12', $proyectoID->first()->asignaciones->first()->finalizacionFecha);
-
+        // Obtener y asignar valores a celdas específicas
+        $sheet->setCellValue('B7', $proyecto->proyecto->nombreProyecto);
+        $director = ProfesUniversidad::find($proyecto->proyecto->directorId);
+        $nombreDirector = $director->apellidos . ' ' . $director->nombres;
+        $sheet->setCellValue('B8', $nombreDirector);
+        $sheet->setCellValue('B10', $proyecto->proyecto->departamentoTutor);
+        $sheet->setCellValue('B11', $proyecto->inicioFecha);
+        $sheet->setCellValue('B12', $proyecto->finalizacionFecha);
         $sheet->setCellValue('B13', $profesor->apellidos . ' ' . $profesor->nombres);
         $sheet->setCellValue('B14', $profesor->departamento);
 
-
-
-        $tabla1 = $request->input('tabla1');
-        $tabla2 = $request->input('tabla2');
-        $tabla3 = $request->input('tabla3');
-        $tabla4 = $request->input('tabla4');
-
+        $tabla1 = $request->input('puntaje_proyecto1');
+        $tabla2 = $request->input('puntaje_proyecto2');
+        $tabla3 = $request->input('puntaje_proyecto3');
+        $tabla4 = $request->input('puntaje_proyecto4');
+        $texto1 = $request->input('comentarios_proyecto1');
+        $texto2 = $request->input('comentarios_proyecto2');
+        $texto3 = $request->input('comentarios_proyecto3');
+        $texto4 = $request->input('comentarios_proyecto4');
         $sumasTablas = $tabla1 + $tabla2 + $tabla3 + $tabla4;
 
-        ///mandar cada uno a una celda
         $sheet->setCellValue('B22', $tabla1);
         $sheet->setCellValue('F22', $tabla2);
         $sheet->setCellValue('J22', $tabla3);
         $sheet->setCellValue('N22', $tabla4);
         $sheet->setCellValue('R22', $sumasTablas);
         $sheet->setCellValue('B15', $sumasTablas);
+        $sheet->setCellValue('B23', $texto1);
+        $sheet->setCellValue('F23', $texto2);
+        $sheet->setCellValue('J23', $texto3);
+        $sheet->setCellValue('N23', $texto4);
+
+        $sheet->setCellValue('B26', $nombreDirector . "\n" . 'DIRECTOR DEL PROYECTO');
+        $sheet->getStyle('B26')->getAlignment()->setWrapText(true);
+        $sheet->getStyle('B26')->getFont()->setSize(11);
 
 
-
-
-
-
-
-        /////descarga del documento
+        // Descargar el archivo
         $nombreArchivo = 'baremo.xlsx';
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
-
     }
 
     /////////entrar a la vista

@@ -350,24 +350,24 @@ class AdminController extends Controller
                 return $query->where(function ($query) use ($search2) {
                     $query->whereHas('estudiante', function ($query) use ($search2) {
                         $query->where('nombres', 'like', "%{$search2}%")
-                              ->orWhere('apellidos', 'like', "%{$search2}%")
-                              ->orWhere('espeId', 'like', "%{$search2}%")
-                              ->orWhere('cedula', 'like', "%{$search2}%");
+                            ->orWhere('apellidos', 'like', "%{$search2}%")
+                            ->orWhere('espeId', 'like', "%{$search2}%")
+                            ->orWhere('cedula', 'like', "%{$search2}%");
                     })
-                    ->orWhereHas('proyecto', function ($query) use ($search2) {
-                        $query->where('nombreProyecto', 'like', "%{$search2}%");
-                    })
-                    ->orWhereHas('docenteParticipante', function ($query) use ($search2) {
-                        $query->where('nombres', 'like', "%{$search2}%")
-                              ->orWhere('apellidos', 'like', "%{$search2}%");
-                    })
-                    ->orWhereHas('periodo', function ($query) use ($search2) {
-                        $query->where('numeroPeriodo', 'like', "%{$search2}%");
-                    })
-                    ->orWhereHas('proyecto.director', function ($query) use ($search2) {
-                        $query->where('nombres', 'like', "%{$search2}%")
-                              ->orWhere('apellidos', 'like', "%{$search2}%");
-                    });
+                        ->orWhereHas('proyecto', function ($query) use ($search2) {
+                            $query->where('nombreProyecto', 'like', "%{$search2}%");
+                        })
+                        ->orWhereHas('docenteParticipante', function ($query) use ($search2) {
+                            $query->where('nombres', 'like', "%{$search2}%")
+                                ->orWhere('apellidos', 'like', "%{$search2}%");
+                        })
+                        ->orWhereHas('periodo', function ($query) use ($search2) {
+                            $query->where('numeroPeriodo', 'like', "%{$search2}%");
+                        })
+                        ->orWhereHas('proyecto.director', function ($query) use ($search2) {
+                            $query->where('nombres', 'like', "%{$search2}%")
+                                ->orWhere('apellidos', 'like', "%{$search2}%");
+                        });
                 });
             })
 
@@ -377,14 +377,14 @@ class AdminController extends Controller
             });
 
         $total = $asignacionesAgrupadas->count();
-    $paginatedData = $asignacionesAgrupadas->forPage($request->input('page2', 1), $request->input('perPage2', 10));
-    $paginator = new LengthAwarePaginator(
-        $paginatedData,
-        $total,
-        $request->input('perPage2', 10),
-        $request->input('page2', 1),
-        ['path' => route('admin.indexProyectos'), 'pageName' => 'page2']
-    );
+        $paginatedData = $asignacionesAgrupadas->forPage($request->input('page2', 1), $request->input('perPage2', 10));
+        $paginator = new LengthAwarePaginator(
+            $paginatedData,
+            $total,
+            $request->input('perPage2', 10),
+            $request->input('page2', 1),
+            ['path' => route('admin.indexProyectos'), 'pageName' => 'page2']
+        );
         return view('admin.indexProyectos', [
             'proyectos' => $proyectos,
             'proyectosDisponibles' => $proyectosDisponibles,
@@ -433,7 +433,7 @@ class AdminController extends Controller
                 ]);
             }
         }
-    
+
         return view('admin.indexProyectos', compact('proyectos', 'periodos', 'nrcs', 'profesores', 'asignacionesAgrupadas', 'paginator'));
     }
 
@@ -597,7 +597,7 @@ class AdminController extends Controller
         // Validación de datos
         $request->validate([
             'proyecto_id' => 'required',
-            'estudiante_id' => 'required|array',
+            'estudiante_id' => '',
             'estudiante_id.*' => 'numeric',
             'ProfesorParticipante' => 'required',
             'nrc' => 'required',
@@ -607,10 +607,23 @@ class AdminController extends Controller
 
         $nrc = NrcVinculacion::where('id', $request->nrc)->first();
 
-        foreach ($request->estudiante_id as $estudianteID) {
+        if (!empty($request->estudiante_id)) {
+            foreach ($request->estudiante_id as $estudianteID) {
+                AsignacionProyecto::create([
+                    'proyectoId' => $request->proyecto_id,
+                    'estudianteId' => $estudianteID,
+                    'participanteId' => $request->ProfesorParticipante,
+                    'asignacionFecha' => now(),
+                    'idPeriodo' => $nrc->idPeriodo,
+                    'nrc' => $request->nrc,
+                    'inicioFecha' => $request->FechaInicio,
+                    'finalizacionFecha' => $request->FechaFinalizacion,
+                ]);
+            }
+        } else {
             AsignacionProyecto::create([
                 'proyectoId' => $request->proyecto_id,
-                'estudianteId' => $estudianteID,
+                'estudianteId' => null,
                 'participanteId' => $request->ProfesorParticipante,
                 'asignacionFecha' => now(),
                 'idPeriodo' => $nrc->idPeriodo,
@@ -621,7 +634,7 @@ class AdminController extends Controller
         }
         $this->actualizarUsuarioYRol($request->ProfesorParticipante, 'ParticipanteVinculacion');
 
-        return redirect()->route('admin.indexProyectos')->with('success', 'Estudiante asignado correctamente');
+        return redirect()->route('admin.indexProyectos')->with('success', 'Asignacion realizada correctamente');
 
     }
 
@@ -732,7 +745,7 @@ class AdminController extends Controller
                 'apellidos' => $request->apellidos,
 
                 'departamento' => $request->departamento,
-             ]);
+            ]);
 
             return redirect()->route('admin.index')->with('success', 'Maestro actualizado con éxito.');
         } catch (ValidationException $e) {
