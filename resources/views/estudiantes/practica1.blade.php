@@ -44,7 +44,7 @@
 
     @if (isset($practicaPendiente))
         <div class="container">
-           
+
         <div class="row">
     <div class="col-md-7">
         <div class="table-responsive-sm">
@@ -97,13 +97,13 @@
     </div>
     <div class="col-md-4">
        <br>
-      <br> 
-    <br> 
+      <br>
+    <br>
         <br>
         <center><h3><b>Acciones</b></h3></center>
         <hr>
         <div class="card-body">
-            <form action="#" method="POST"> 
+            <form action="{{ route('generar.EncuestaEstudiante') }}" method="POST">
                 @csrf
                 <button type="submit" class="button1_1">
                 <i class="fa-solid fa-square-poll-vertical"></i>  Generar Encuesta Estudiantes
@@ -111,7 +111,7 @@
             </form>
         </div>
         <div class="card-body">
-            <form action="{{ route('generar.EncuestaDocentes') }}" method="POST"> 
+            <form action="{{ route('generar.EncuestaDocentes') }}" method="POST">
                 @csrf
                 <button type="submit" class="button1_1">
                 <i class="fa-solid fa-square-poll-vertical"></i> Generar Encuesta Docente
@@ -119,7 +119,7 @@
             </form>
         </div>
         <div class="card-body">
-            <form action="{{ route('generar.EvTutorEmpresarial') }}" method="POST"> 
+            <form action="{{ route('generar.EvTutorEmpresarial') }}" method="POST">
                 @csrf
                 <button type="submit" class="button1_1">
                     <i class="fas fa-file-excel"></i> Generar Evaluacion Tutor Empresarial
@@ -142,7 +142,7 @@
 
 
                 <br>
-                
+
 
 
                <!-- Botón para abrir el card -->
@@ -243,7 +243,7 @@
                                                     style="font-size: 16px !important;"colspan="10">No hay actividades agregadas.</td>
                                             </tr>
                                         @else
-                                          
+
                             @foreach ($actividades as $actividad)
                                 <tr>
                                     <td>{{ $actividad->actividad }}</td>
