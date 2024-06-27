@@ -1088,9 +1088,15 @@ class AdminController extends Controller
             ->where('estado', 'PracticaI')
             ->get();
 
+
+
+
+
         $estudiantesConPracticaII = PracticaII::with('estudiante')
             ->where('estado', 'PracticaII')
             ->get();
+
+
 
         $estudiantesPracticas = PracticaI::with('estudiante')
             ->where(function ($query) use ($search) {
@@ -1262,31 +1268,30 @@ class AdminController extends Controller
             'nuevoEstado' => 'required|in:En ejecucion,Negado,Terminado',
         ]);
 
-
+        // Encuentra la práctica del estudiante
         $practica = PracticaI::where('estudianteId', $id)->first();
 
         if (!$practica) {
             return redirect()->route('admin.aceptarFaseI')->with('error', 'Práctica no encontrada.');
         }
 
-        // Actualiza el estado de la práctica
+        // Actualiza el estado usando update()
         $nuevoEstado = $request->input('nuevoEstado');
-        $practica->Estado = $nuevoEstado;
-        $practica->save();
+        $practica->update(['Estado' => $nuevoEstado]);
 
+
+        // Maneja las redirecciones según el estado seleccionado
         if ($nuevoEstado === 'En ejecucion') {
             return redirect()->route('admin.aceptarFaseI')->with('success', 'Práctica aprobada correctamente.');
-        }
-
-        // Si el nuevo estado es 'Negado', elimina la práctica
-        if ($nuevoEstado === 'Negado') {
+        } elseif ($nuevoEstado === 'Negado') {
             $practica->delete();
             return redirect()->route('admin.index')->with('success', 'Práctica negada y eliminada correctamente.');
+        } else {
+            return redirect()->route('admin.aceptarFaseI')->with('success', 'Estado de la práctica actualizado correctamente.');
         }
-
-        // Redirecciona de regreso con un mensaje de éxito
-        return redirect()->route('admin.aceptarFaseI')->with('success', 'Estado de la práctica actualizado correctamente.');
     }
+
+
 
     public function actualizarEstadoEstudiante2(Request $request, $id)
     {
