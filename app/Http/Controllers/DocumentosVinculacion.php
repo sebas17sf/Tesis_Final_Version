@@ -522,11 +522,12 @@ class DocumentosVinculacion extends Controller
             $hojaCalculo->setCellValue("N$filaActual", $proyecto->departamentoTutor);
             $hojaCalculo->setCellValue("F$filaActual", $periodo->numeroPeriodo);
 
-            $hojaCalculo->setCellValue("A$filaActual", $asignacion->estudiante->apellidos . ' ' . $asignacion->estudiante->nombres);
-            $hojaCalculo->setCellValue("C$filaActual", $asignacion->estudiante->cedula);
-            $hojaCalculo->setCellValue("B$filaActual", $asignacion->estudiante->espeId);
-            $hojaCalculo->setCellValue("D$filaActual", $asignacion->estudiante->correo);
-            $hojaCalculo->setCellValue("E$filaActual", $asignacion->estudiante->Cohorte);
+            $nombreCompleto = ($asignacion->estudiante->apellidos ?? '') . ' ' . ($asignacion->estudiante->nombres ?? '');
+            $hojaCalculo->setCellValue("A$filaActual", $nombreCompleto);
+            $hojaCalculo->setCellValue("C$filaActual", $asignacion->estudiante->cedula ?? '');
+            $hojaCalculo->setCellValue("B$filaActual", $asignacion->estudiante->espeId ?? '');
+            $hojaCalculo->setCellValue("D$filaActual", $asignacion->estudiante->correo ?? '');
+            $hojaCalculo->setCellValue("E$filaActual", $asignacion->estudiante->Cohorte ?? '');
 
              $hojaCalculo->setCellValue("G$filaActual", $asignacion->first()->estudiante->notas->first()->notaFinal ?? '0');
 
