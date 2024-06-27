@@ -4,13 +4,13 @@
 @section('title_component', 'Panel Baremo')
 @section('content')
     <br>
-    <h5><b>Baremo 2: Para calcular la distribución de carga horaria de docente colaborador de proyectos de vinculación con
-            la sociedad</b></h5>
+    <h5><center><b>Baremo 2: Para calcular la distribución de carga horaria de docente colaborador de proyectos de vinculación con
+            la sociedad</b></center></h5>
     <hr>
+    <div class="contenedor_tabla">
+    <div class="table-container mat-elevation-z8">
     <form id="generarBaremoForm" method="POST" action="{{ route('ParticipanteVinculacion.generarBaremo') }}">
         @csrf
-        <div class="contenedor_tabla">
-            <div class="table-container mat-elevation-z8">
                 <div id="tablaProyectos">
                     <table class="mat-mdc-table">
                         <thead class="ng-star-inserted">
@@ -37,16 +37,19 @@
                             </tr>
                             <tr>
                                 <td><b>Puntaje del Proyecto:</b></td>
-                                <td colspan="4"><input type="number" name="puntaje_proyecto1" class="puntaje_proyecto"
-                                        id="tabla1" /></td>
-                                <td><span id="errorTabla1" class="error-message"></span></td>
-                            </tr>
-                        </tbody>
+                                <td><center><input type="number" name="puntaje_proyecto1" class="puntaje_proyecto input input_select2 text-center "
+                                        id="tabla1" /></center>
+                                <span id="errorTabla1" class="error-message" style="color: red;"></span></td>
+                           
+                                <td><center><b>Comentarios:</b></center></td>
+                                <td><textarea name="comentarios_proyecto1" class="comentarios input input_select1" id="comentarios1"
+                                        placeholder="Ejemplo: 1. Carta de compromiso u otro documento"></textarea></td>
+                        </tr>
+                                    </tbody>
                     </table>
                 </div>
             </div>
-            <textarea name="comentarios_proyecto1" class="comentarios" id="comentarios1" rows="4"
-                placeholder="Ejemplo: 1. Carta de compromiso u otro documento"></textarea>
+           
         </div>
         <br>
         <div class="contenedor_tabla">
@@ -77,16 +80,19 @@
                             </tr>
                             <tr>
                                 <td><b>Puntaje del Proyecto:</b></td>
-                                <td colspan="4"><input type="number" name="puntaje_proyecto2" class="puntaje_proyecto"
-                                        id="tabla2" /></td>
-                                <td><span id="errorTabla2" class="error-message"></span></td>
+                                <td><center><input type="number" name="puntaje_proyecto2 " class="puntaje_proyecto text-center input input_select2"
+                                        id="tabla2" /></center>
+                                <span id="errorTabla2" class="error-message" style="color: red;"></span></td>
+                            
+                                <td><center><b>Comentarios:</b></center></td>
+                                <td><textarea name="comentarios_proyecto2" class="comentarios input input_select1 " id="comentarios2"
+                                        placeholder="Ejemplo: 1. Carta de compromiso u otro documento"></textarea></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <textarea name="comentarios_proyecto2" class="comentarios" id="comentarios2" rows="4"
-            placeholder="Ejemplo: 1. Carta de compromiso u otro documento"></textarea>
+           
         </div>
         <br>
         <div class="contenedor_tabla">
@@ -117,16 +123,19 @@
                             </tr>
                             <tr>
                                 <td><b>Puntaje del Proyecto:</b></td>
-                                <td colspan="4"><input type="number" name="puntaje_proyecto3" class="puntaje_proyecto"
-                                        id="tabla3" /></td>
-                                <td><span id="errorTabla3" class="error-message"></span></td>
+                                <td><center><input type="number" name="puntaje_proyecto3" class="puntaje_proyecto text-center input input_select2"
+                                        id="tabla3" /></center>
+                                <span id="errorTabla3" class="error-message" style="color: red;"></span></td>
+                            
+                                <td><center><b>Comentarios:</b><center></td>
+                                <td><textarea name="comentarios_proyecto3" class="comentarios input input_select1 " id="comentarios3"
+                                        placeholder="Ejemplo: 1. Carta de compromiso u otro documento"></textarea></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <textarea name="comentarios_proyecto3" class="comentarios" id="comentarios3" rows="4"
-            placeholder="Ejemplo: 1. Carta de compromiso u otro documento"></textarea>
+            
         </div>
         <br>
         <div class="contenedor_tabla">
@@ -156,45 +165,49 @@
                             </tr>
                             <tr>
                                 <td><b>Puntaje del Proyecto:</b></td>
-                                <td colspan="4"><input type="number" name="puntaje_proyecto4" class="puntaje_proyecto"
-                                        id="tabla4" /></td>
-                                <td><span id="errorTabla4" class="error-message"></span></td>
+                                <td><center><input type="number" name="puntaje_proyecto4" class="puntaje_proyecto input input_select2 text-center"
+                                        id="tabla4" /></center>
+                                <span id="errorTabla4" class="error-message" style="color: red;"></span></td>
+                           
+                                <td><center><b>Comentarios:</b></center></td>
+                                <td> <center><textarea name="comentarios_proyecto4" class="comentarios input input_select1" id="comentarios4"
+                                        placeholder="Ejemplo: 1. Carta de compromiso u otro documento"></textarea></center></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <textarea name="comentarios_proyecto4" class="comentarios" id="comentarios4" rows="4"
-            placeholder="Ejemplo: 1. Carta de compromiso u otro documento"></textarea>
+            
         </div>
         <br>
         <div class="contenedor_tabla">
-            <div class="table-container mat-elevation-z8">
+            <div class="table-container1 mat-elevation-z8">
                 <div id="tablaProyectos">
-                    <table class="mat-mdc-table">
+                    <table class="mat-mdc-table1">
                         <thead class="ng-star-inserted">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                <td style="text-align: center;"><b>TOTAL:</b></td>
-                                <td><input type="number" id="total_puntaje" readonly /></td>
-                                <td style="text-align: center;"><b>Horas Totales:</b></td>
-                                <td><input type="number" id="horas_totales" readonly /></td>
-                                <td style="text-align: center;"><b>Horas Totales Entre Fechas:</b></td>
-                                <td><input type="number" id="horas_entre_fechas" readonly /></td>
+                                <td style="text-align: center;"><b>TOTAL:</b>
+                                <input class="input from-group1 input_select2 text-center" type="number" id="total_puntaje" readonly />
+                                <td style="text-align: center;" ><b>HORAS TOTALES:</b>
+                                <input type="number" class="input from-group1 input_select2 text-center"  id="horas_totales" readonly /></td>
+                                <td style="text-align: center;"><b>HORAS TOTALES ENTRE FECHAS:</b>
+                                <input type="number" class="input from-group1 input_select2 text-center" id="horas_entre_fechas" readonly /></td>
                             </tr>
                         </thead>
                         <tbody>
                     </table>
                 </div>
-            </div>
-        </div>
+           
         <hr>
         <center>
             <button type="submit" class="button1 btn_excel">
                 <i class="fas fa-file-excel"></i> Generar Baremo
             </button>
         </center>
+        <br>
     </form>
-
+    </div>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var tabla1 = document.getElementById('tabla1');
