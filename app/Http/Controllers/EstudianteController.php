@@ -222,7 +222,7 @@ class EstudianteController extends Controller
             $practicaPendiente = PracticaI::where('estudianteId', $estudiante->estudianteId)->where('estado', 'En ejecucion')->first();
             $totalHoras = $actividades->sum('horas');
 
-            $estadoPractica = PracticaI::where('estudianteId', $estudiante->estudianteId)->where('estado', 'Terminado')->first();
+            $estadoPractica = PracticaI::where('estudianteId', $estudiante->estudianteId)->where('estado', 'Finalizado')->first();
 
             if ($estadoPractica) {
                 return redirect()->route('estudiantes.practica2');
