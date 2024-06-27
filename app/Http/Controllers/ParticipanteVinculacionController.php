@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 use App\Models\ProfesUniversidad;
@@ -37,22 +38,22 @@ class ParticipanteVinculacionController extends Controller
 
             // Obtener el proyecto asociado al participante en AsignacionProyecto
             $proyectosEnEjecucion = AsignacionProyecto::where('participanteId', $participanteID)
-            ->whereHas('proyecto', function ($query) {
-                $query->where('estado', 'Ejecucion');
-            })
-            ->whereHas('estudiante', function ($query) {
-                $query->where('estado', 'Aprobado');
-            })
-            ->with(['proyecto', 'estudiante'])
-            ->distinct('proyectoId')
-            ->get();
+                ->whereHas('proyecto', function ($query) {
+                    $query->where('estado', 'Ejecucion');
+                })
+                ->whereHas('estudiante', function ($query) {
+                    $query->where('estado', 'Aprobado');
+                })
+                ->with(['proyecto', 'estudiante'])
+                ->distinct('proyectoId')
+                ->get();
 
             $proyectosTerminados = AsignacionProyecto::where('participanteId', $participanteID)
-            ->whereHas('proyecto', function ($query) {
-                $query->where('estado', 'Terminado');
-            })
-            ->with('proyecto')
-            ->get();
+                ->whereHas('proyecto', function ($query) {
+                    $query->where('estado', 'Terminado');
+                })
+                ->with('proyecto')
+                ->get();
 
 
 
@@ -135,8 +136,19 @@ class ParticipanteVinculacionController extends Controller
 
     public function baremo(Request $request)
     {
+        $profesor = Auth::user()->profesorUniversidad;
 
- return view('ParticipanteVinculacion.baremo');
+        $proyecto = AsignacionProyecto::where('participanteId', $profesor->id)
+            ->whereHas('estudiante', function ($query) {
+                $query->where('estado', 'Aprobado');
+            })->first();
+
+
+        $inicioFecha = $proyecto->inicioFecha ?? null;
+        $finalizacionFecha = $proyecto->finalizacionFecha ?? null;
+
+
+        return view('ParticipanteVinculacion.baremo', compact('inicioFecha', 'finalizacionFecha'));
     }
 
 
@@ -231,7 +243,7 @@ class ParticipanteVinculacionController extends Controller
         $nota->aplicacion = $request->input('Aplicacion');
         $nota->CapacidadLiderazgo = $request->input('capacidad_liderazgo');
         $nota->asistencia = $request->input('asistencia_puntual');
-         $nota->save();
+        $nota->save();
 
         return redirect()->route('ParticipanteVinculacion.estudiantes')->with('success', 'Notas actualizadas exitosamente.');
     }

@@ -1787,7 +1787,7 @@ class DocumentoController extends Controller
     }
 
 
-    ///////////////baremos
+    ///////////////baremo
 
     public function baremo(Request $request)
     {
