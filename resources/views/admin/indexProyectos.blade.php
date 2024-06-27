@@ -334,7 +334,7 @@
 
                                 <!-- Botón de Matriz de Vinculación -->
                                 <!-- Botones -->
-                                <div class="tooltip-container">
+                                <div class="tooltip-container mx-1">
                                     <span class="tooltip-text">Excel</span>
                                     <form action="{{ route('reporte.matrizVinculacion') }}" method="POST">
                                         @csrf
@@ -433,7 +433,7 @@
                                 </div>
 
                                 <!-- Botón de Eliminar Filtros Profesores y Periodos -->
-                                <div class="tooltip-container mx-2">
+                                <div class="tooltip-container mx-1">
                                     <span class="tooltip-text">Eliminar Filtros</span>
                                     <button class="button3 efects_button btn_delete_filter"
                                         onclick="resetFiltersProfesores()">
