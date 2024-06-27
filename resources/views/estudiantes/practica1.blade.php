@@ -44,148 +44,189 @@
 
     @if (isset($practicaPendiente))
         <div class="container">
-            <h4>Detalles de la Práctica en Ejecución:</h4>
-            <div class="row">
-                <div class="col-md-6">
-
-                    <dl class="row">
-                        <dt class="col-sm-5 text-nowrap">Estudiante:</dt>
-                        <dd class="col-sm-7">{{ $practicaPendiente->estudiante->apellidos }}
-                            {{ $practicaPendiente->estudiante->nombres }}</dd>
-                        <dt class="col-sm-5 text-nowrap">Práctica:</dt>
-                        <dd class="col-sm-7">{{ $practicaPendiente->tipoPractica }}</dd>
-                        <dt class="col-sm-5 text-nowrap">Docente Tutor:</dt>
-                        <dd class="col-sm-7">{{ $practicaPendiente->tutorAcademico->Apellidos }}
-                            {{ $practicaPendiente->tutorAcademico->Nombres }}</dd>
-                        <dt class="col-sm-5 text-nowrap">Empresa:</dt>
-                        <dd class="col-sm-7">{{ $practicaPendiente->Empresa->nombreEmpresa }}</dd>
-                        <dt class="col-sm-5 text-nowrap">Tutor Empresarial:</dt>
-                        <dd class="col-sm-7">{{ $practicaPendiente->NombreTutorEmpresarial }}</dd>
-                        <dt class="col-sm-5 text-nowrap">Cédula Tutor Empresarial:</dt>
-                        <dd class="col-sm-7">{{ $practicaPendiente->CedulaTutorEmpresarial }}</dd>
-                        <dt class="col-sm-5 text-nowrap">Función:</dt>
-                        <dd class="col-sm-7">{{ $practicaPendiente->Funcion }}</dd>
-                        <dt class="col-sm-5 text-nowrap">Teléfono Tutor Empresarial:</dt>
-                        <dd class="col-sm-7">{{ $practicaPendiente->TelefonoTutorEmpresarial }}</dd>
-                        <dt class="col-sm-5 text-nowrap">Estado de Fase I:</dt>
-                        <dd class="col-sm-7">{{ $practicaPendiente->Estado }}</dd>
-                    </dl>
-                </div>
-                <div class="col-md-6">
-                    <div class="card-body">
-                        <form action="{{ route('generar.EncuestaEstudiante') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-light btn-block">
-                                <i class="fas fa-file-excel"></i> Generar Encuesta Estudiantes
-                            </button>
-                        </form>
-                    </div>
-
-
-                    <div class="card-body">
-                        <form action="{{ route('generar.EncuestaDocentes') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-light btn-block">
-                                <i class="fas fa-file-excel"></i> Generar Encuesta Docente
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="card-body">
-                        <form action="{{ route('generar.EvTutorEmpresarial') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-light btn-block">
-                                <i class="fas fa-file-excel"></i> Generar Evaluacion Tutor Empresarial
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="card-body">
-                        <form action="{{ route('generar.PlanificacionPPEstudiante') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-light btn-block">
-                                <i class="fas fa-file-excel"></i> Generar Planificacion Estudiante
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
-
-
-
-                <br>
-                <button type="button" class="button" data-toggle="modal" data-target="#modalAgregarActividad">
-                    Agregar actividad
+           
+        <div class="row">
+    <div class="col-md-7">
+        <div class="table-responsive-sm">
+            <table class="table2 table table-bordered">
+                <thead>
+                    <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                        <th class="tamanio1 table2th" colspan="2">DETALLES DE LA PRÁCTICA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Estudiante:</th>
+                        <td>{{ $practicaPendiente->estudiante->apellidos }} {{ $practicaPendiente->estudiante->nombres }}</td>
+                    </tr>
+                    <tr>
+                        <th>Práctica:</th>
+                        <td>{{ $practicaPendiente->tipoPractica }}</td>
+                    </tr>
+                    <tr>
+                        <th>Docente Tutor:</th>
+                        <td>{{ $practicaPendiente->tutorAcademico->Apellidos }} {{ $practicaPendiente->tutorAcademico->Nombres }}</td>
+                    </tr>
+                    <tr>
+                        <th>Empresa:</th>
+                        <td>{{ $practicaPendiente->Empresa->nombreEmpresa }}</td>
+                    </tr>
+                    <tr>
+                        <th>Tutor Empresarial:</th>
+                        <td>{{ strtoupper($practicaPendiente->NombreTutorEmpresarial) }}</td>
+                    </tr>
+                    <tr>
+                        <th>Cédula Tutor Empresarial:</th>
+                        <td>{{ $practicaPendiente->CedulaTutorEmpresarial }}</td>
+                    </tr>
+                    <tr>
+                        <th>Función:</th>
+                        <td>{{ strtoupper($practicaPendiente->Funcion) }}</td>
+                    </tr>
+                    <tr>
+                        <th>Teléfono Tutor Empresarial:</th>
+                        <td>{{ $practicaPendiente->TelefonoTutorEmpresarial }}</td>
+                    </tr>
+                    <tr>
+                        <th>Estado de Fase I:</th>
+                        <td>{{ strtoupper($practicaPendiente->Estado) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-4">
+       <br>
+      <br> 
+    <br> 
+        <br>
+        <center><h3><b>Acciones</b></h3></center>
+        <hr>
+        <div class="card-body">
+            <form action="#" method="POST"> 
+                @csrf
+                <button type="submit" class="button1_1">
+                <i class="fa-solid fa-square-poll-vertical"></i>  Generar Encuesta Estudiantes
                 </button>
+            </form>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('generar.EncuestaDocentes') }}" method="POST"> 
+                @csrf
+                <button type="submit" class="button1_1">
+                <i class="fa-solid fa-square-poll-vertical"></i> Generar Encuesta Docente
+                </button>
+            </form>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('generar.EvTutorEmpresarial') }}" method="POST"> 
+                @csrf
+                <button type="submit" class="button1_1">
+                    <i class="fas fa-file-excel"></i> Generar Evaluacion Tutor Empresarial
+                </button>
+            </form>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('generar.PlanificacionPPEstudiante') }}" method="POST">
+                @csrf
+                <button type="submit" class="button1_1">
+                    <i class="fas fa-file-excel"></i> Generar Planificacion Estudiante
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
                 <br>
+                
 
 
-                <div class="modal fade" id="modalAgregarActividad" tabindex="-1" role="dialog"
-                    aria-labelledby="modalAgregarActividadLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="modalAgregarActividadLabel">Agregar Actividad</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="actividadForm" action="{{ route('estudiantes.guardarActividadesPracticas1') }}"
-                                    method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    <input type="hidden" id="EstudianteID" name="EstudianteID"
-                                        value="{{ $practicaPendiente->estudiante->estudianteId }}">
-                                    <input type="hidden" id="PracticasI" name="PracticasI"
-                                        value="{{ $practicaPendiente->practicasi }}">
-                                    <div class="form-group">
-                                        <label for="Actividad">Actividad Realizada:</label>
-                                        <textarea id="Actividad" name="Actividad" class="form-control input"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="horas">Número de Horas:</label>
-                                        <input type="text" id="horas" name="horas" class="form-control input">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="observaciones">Observación:</label>
-                                        <input type="text" id="observaciones" name="observaciones"
-                                            class="form-control input">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="fechaActividad">Fecha de la Actividad:</label>
-                                        <input type="date" id="fechaActividad" name="fechaActividad"
-                                            class="form-control input">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="departamento">Departamento:</label>
-                                        <input type="text" id="departamento" name="departamento"
-                                            class="form-control input">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="funcion">Función Asignada:</label>
-                                        <input type="text" id="funcion" name="funcion" class="form-control input">
-                                    </div>
-                                    <div class="form-group">
+               <!-- Botón para abrir el card -->
+<button type="button" class="button1" onclick="openCard('draggableCardActividad')">
+    Agregar actividad
+</button>
+<br>
+
+<!-- Card para agregar actividad -->
+<div class="draggable-card" id="draggableCardActividad" style="display: none;">
+    <div class="card-header">
+        <span class="card-title">Agregar Actividad</span>
+        <button type="button" class="close" onclick="closeCard('draggableCardActividad')">&times;</button>
+    </div>
+    <div class="card-body">
+        <form id="actividadForm" action="{{ route('estudiantes.guardarActividadesPracticas1') }}"
+            method="POST" enctype="multipart/form-data">
+            @csrf
+            <input type="hidden" id="EstudianteID" name="EstudianteID"
+                value="{{ $practicaPendiente->estudiante->estudianteId }}">
+            <input type="hidden" id="PracticasI" name="PracticasI"
+                value="{{ $practicaPendiente->practicasi }}">
+            <div class="form-group">
+                <label class="label" for="Actividad"><strong>Actividad Realizada:</strong></label>
+                <textarea id="Actividad" name="Actividad" class="form-control input"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="label" for="horas"><strong>Número de Horas:</strong></label>
+                <input type="text" id="horas" name="horas" class="form-control input">
+            </div>
+            <div class="form-group">
+                <label class="label" for="observaciones"><strong>Observación:</strong></label>
+                <input type="text" id="observaciones" name="observaciones"
+                    class="form-control input">
+            </div>
+            <div class="form-group">
+                <label class="label" for="fechaActividad"><strong>Fecha de la Actividad:</strong></label>
+                <input type="date" id="fechaActividad" name="fechaActividad"
+                    class="form-control input">
+            </div>
+            <div class="form-group">
+                <label class="label" for="departamento"><strong>Departamento:</strong></label>
+                <input type="text" id="departamento" name="departamento"
+                    class="form-control input">
+            </div>
+            <div class="form-group">
+                <label class="label" for="funcion"><strong>Función Asignada:</strong></label>
+                <input type="text" id="funcion" name="funcion" class="form-control input">
+            </div>
+            <div class="form-group">
                                         <label for="evidencia">Evidencia:</label>
                                         <input type="file" id="evidencia" name="evidencia"
                                             class="form-control-file input">
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="button" data-dismiss="modal">Cerrar</button>
-                                        <button type="submit" class="button">Guardar Actividad</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="modal-footer card-footer1">
+                <button type="submit" class="button">Guardar Actividad</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Script para abrir y cerrar el card -->
+<script>
+    function openCard(cardId) {
+        document.getElementById(cardId).style.display = 'block';
+    }
+
+    function closeCard(cardId) {
+        document.getElementById(cardId).style.display = 'none';
+    }
+</script>
+
                 <br>
 
-                <div class="table-responsive-sm">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Actividad Realizada</th>
+                <div class="contenedor_tabla">
+                        <div class="table-container mat-elevation-z8">
+
+                            <div id="tablaActividades">
+                                <table id="tablaAsignaciones" class="mat-mdc-table">
+
+                                    <thead class="ng-star-inserted">
+                                        <tr
+                                            class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                            <th>Actividad Realizada</th>
                                 <th>Horas</th>
                                 <th>Observaciones</th>
                                 <th>Fecha de la Actividad</th>
@@ -195,7 +236,14 @@
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="mdc-data-table__content ng-star-inserted">
+                                        @if ($actividades->isEmpty())
+                                            <tr style="text-align:center">
+                                                <td class="noExisteRegistro1"
+                                                    style="font-size: 16px !important;"colspan="10">No hay actividades agregadas.</td>
+                                            </tr>
+                                        @else
+                                          
                             @foreach ($actividades as $actividad)
                                 <tr>
                                     <td>{{ $actividad->actividad }}</td>
@@ -318,6 +366,7 @@
 
                                 </tr>
                             @endforeach
+                            @endif
                         </tbody>
 
                         <tfoot>
@@ -332,7 +381,7 @@
 
                 </div>
 
-
+</div>
 
             </div>
 
@@ -608,13 +657,16 @@
     @endif
     </div>
 
-
-
-
-
-@endsection
-
-
+    @endsection
+<link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    <script src="js\admin\acciones.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
 <script src="{{ asset('js/estudiante/practicas.js') }}"></script>
 
 <script>
@@ -642,4 +694,17 @@
             // Aquí puedes agregar la lógica para cuando se hace clic en "Iniciar prácticas"
         });
     });
+    $(document).ready(function() {
+            // Hacer que el card sea draggable
+            $('.draggable-card').draggable({
+                handle: ".card-header",
+                containment: "window"
+            });
+             // Hacer el card draggable
+    document.addEventListener('DOMContentLoaded', function() {
+        $("#draggableCardActividad").draggable({
+            handle: ".card-header"
+        });
+    });
+        });
 </script>

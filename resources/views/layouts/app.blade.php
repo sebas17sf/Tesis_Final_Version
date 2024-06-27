@@ -19,11 +19,60 @@
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
 
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
+
 </head>
 <style>
     body {
         overflow-x: hidden;
     }
+    .contenedor_alerta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #dff0d8;
+            border: 1px solid #d6e9c6;
+            color: #3c763d;
+            padding: 15px;
+            margin: 15px;
+            border-radius: 4px;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 300px;
+            width: auto;
+        }
+
+        .contenedor_alerta .icon_alert {
+            margin-right: 10px;
+            font-size: 24px;
+        }
+
+        .contenedor_alerta .content_alert {
+            flex: 1;
+        }
+
+        .contenedor_alerta .title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .contenedor_alerta .icon_remove button {
+            background: none;
+            border: none;
+            color: #3c763d;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .contenedor_alerta .icon_remove button:hover {
+            color: #2b542c;
+        }
+
+        .contenedor_alerta .body {
+            word-wrap: break-word;
+        }
 </style>
 @if (session('show_alert'))
 <script>
@@ -229,8 +278,8 @@
         {{--   <button id="btn_top" ><i class='bx bxs-chevrons-up'></i></button> --}}
 
     </section>
-  <!-- Scripts de jQuery y Popper.js -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <!-- Scripts de jQuery y Popper.js -->
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <!-- Script de Bootstrap 4.5.2 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -239,14 +288,14 @@
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-     <script src="{{ asset('js/input_file.js') }}"></script>
+    <script src="{{ asset('js/admin/general.js') }}"></script>
+    <script src="{{ asset('js/admin/empresa.js') }}"></script>
+    <script src="{{ asset('js/input_file.js') }}"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="{{ asset('js/menu.js') }}"></script>
-    
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script>
         function toggleSidebar() {
             var menuState = localStorage.getItem('menuState') === 'expanded' ? 'collapsed' : 'expanded';

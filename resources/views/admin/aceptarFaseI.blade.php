@@ -122,16 +122,18 @@
                                                 <td>
                                                     <form
                                                         action="{{ route('admin.actualizarEstadoEstudiante2', ['id' => $practicaII->estudiante->estudianteId]) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <select name="nuevoEstado">
-                                                            <option value="En ejecucion">Aprobado</option>
-                                                            <option value="Negado">Negar</option>
-                                                        </select>
-                                                        <button type="submit">Enviar</button>
-                                                    </form>
-
+                                                        method="POST" style="display: flex; align-items: center; justify-content: center;">
+        @csrf
+        @method('PUT')
+        <input type="hidden" name="id" value="{{ $practicaII->estudiante->estudianteId }}" class="input">
+        <select name="nuevoEstado" class="form-control input1 input input_select1" style="margin-right: 10px;">
+            <option value="1">Seleccione</option>
+            <option value="En ejecucion">Aprobado</option>
+            <option value="Negado">Negar</option>
+        </select>
+        <button type="submit" class="button3"><i class="bx bx-check"></i></button>
+    </form>
+</td>
 
                                                 </td>
                                             </tr>
