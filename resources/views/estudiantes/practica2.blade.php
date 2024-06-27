@@ -34,17 +34,17 @@
             <p>Detalles de la práctica pendiente:</p>
             <div class="form-group">
                 <label for="NombreEstudiante">Estudiante:</label>
-                <input type="text" id="NombreEstudiante" name="NombreEstudiante" class="form-control"
+                <input type="text" id="NombreEstudiante" name="NombreEstudiante" class="form-control input"
                     value="{{ $practicaPendiente->NombreEstudiante }} {{ $practicaPendiente->ApellidoEstudiante }}" readonly>
             </div>
             <div class="form-group">
                 <label for="Nivel">Nivel:</label>
-                <input type="text" id="Nivel" name="Nivel" class="form-control"
+                <input type="text" id="Nivel" name="Nivel" class="form-control input"
                     value="{{ $practicaPendiente->Nivel }}" readonly>
             </div>
             <div class="form-group">
                 <label for="Practicas">Práctica:</label>
-                <input type="text" id="Practicas" name="Practicas" class="form-control"
+                <input type="text" id="Practicas" name="Practicas" class="form-control input"
                     value="{{ $practicaPendiente->Practicas }}" readonly>
             </div>
             <div class="form-group">
@@ -54,36 +54,36 @@
             </div>
             <div class="form-group">
                 <label for="Empresa">Empresa:</label>
-                <input type="text" id="Empresa" name="Empresa" class="form-control"
+                <input type="text" id="Empresa" name="Empresa" class="form-control input"
                     value="{{ $practicaPendiente->Empresa }}" readonly>
             </div>
             <div class="form-group">
                 <label for="NombreTutorEmpresarial">Nombre del tutor empresarial:</label>
-                <input type="text" id="NombreTutorEmpresarial" name="NombreTutorEmpresarial" class="form-control"
+                <input type="text" id="NombreTutorEmpresarial" name="NombreTutorEmpresarial" class="form-control input"
                     value="{{ $practicaPendiente->NombreTutorEmpresarial }}" readonly>
             </div>
 
             <div class="form-group">
                 <label for="CedulaTutorEmpresarial">Cédula del tutor empresarial:</label>
-                <input type="text" id="CedulaTutorEmpresarial" name="CedulaTutorEmpresarial" class="form-control"
+                <input type="text" id="CedulaTutorEmpresarial" name="CedulaTutorEmpresarial" class="form-control input"
                     value="{{ $practicaPendiente->CedulaTutorEmpresarial }}" readonly>
             </div>
 
             <div class="form-group">
                 <label for="Funcion">Función:</label>
-                <input type="text" id="Funcion" name="Funcion" class="form-control"
+                <input type="text" id="Funcion" name="Funcion" class="form-control input"
                     value="{{ $practicaPendiente->Funcion }}" readonly>
             </div>
 
             <div class="form-group">
                 <label for="TelefonoTutorEmpresarial">Teléfono del tutor empresarial:</label>
-                <input type="text" id="TelefonoTutorEmpresarial" name="TelefonoTutorEmpresarial" class="form-control"
+                <input type="text" id="TelefonoTutorEmpresarial" name="TelefonoTutorEmpresarial" class="form-control input"
                     value="{{ $practicaPendiente->TelefonoTutorEmpresarial }}" readonly>
             </div>
 
             <div class="form-group">
                 <label for="Estado">Estado de Fase II:</label>
-                <input type="text" id="Estado" name="Estado" class="form-control"
+                <input type="text" id="Estado" name="Estado" class="form-control input"
                     value="{{ $practicaPendiente->Estado }}" readonly>
             </div>
         @else
@@ -116,7 +116,7 @@
                             <tr>
                                 <th>Nivel:</th>
                                 <td>
-                                    <select id="Nivel" name="Nivel" class="form-control">
+                                    <select id="Nivel" name="Nivel" class="form-control input">
                                         <option value="Pregrado">Pregrado</option>
                                         <option value="Posgrado">Posgrado</option>
                                     </select>
