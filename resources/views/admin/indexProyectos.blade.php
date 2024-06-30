@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', 'Proyectos')
+@section('title', 'Panel Proyectos')
 
-@section('title_component', 'Proyectos')
+@section('title_component', 'Panel Proyectos')
 
 @section('content')
 

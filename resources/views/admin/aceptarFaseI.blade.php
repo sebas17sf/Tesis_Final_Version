@@ -1,6 +1,6 @@
 @extends('layouts.admin')
-@section('title', 'Practicas')
-@section('title_component', 'Practicas')
+@section('title', 'Panel Practicas')
+@section('title_component', 'Panel Practicas')
 @section('content')
 @if (session('success'))
 <div class="contenedor_alerta success">

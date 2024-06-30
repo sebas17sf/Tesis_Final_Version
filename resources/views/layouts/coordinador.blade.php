@@ -219,7 +219,7 @@
         </div>
 
         <div class="nameDirector">
-            <label>Usuario</label>
+            <label class="labell">Usuario</label>
             <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                 @if (Auth::user()->role->tipo == 'Vinculacion')
                     Coordinador de Vinculación

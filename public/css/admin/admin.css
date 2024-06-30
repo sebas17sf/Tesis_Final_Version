@@ -690,3 +690,7 @@ background-blend-mode: multiply;
             linear-gradient(to bottom, rgba(64, 69, 108, 0.192), rgba(64, 69, 108, 0.055));
 background-blend-mode: multiply;
         }
+
+        .labell{
+            color: #c2c2c2 !important;
+        }

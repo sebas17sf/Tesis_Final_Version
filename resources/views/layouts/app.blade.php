@@ -216,7 +216,7 @@
                 <i class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
         </div>
         <div class="nameDirector">
-            <label>Usuario</label>
+            <label class="labell">Usuario</label>
             <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                 @if (Auth::user()->role->tipo == 'ParticipanteVinculacion')
                     Docente Participante

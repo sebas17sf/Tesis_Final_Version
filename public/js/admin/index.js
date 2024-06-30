@@ -15,7 +15,6 @@ $(document).ready(function () {
     $("#desplegarEditarPeriodo").hide();
 
     $("#selectPeriodo").on("change", function () {
-
         $('#editarPeriodoForm').submit();
     });
 
@@ -27,11 +26,10 @@ $(document).ready(function () {
         var fin = $('#selectPeriodo option:selected').data('fin');
         var numero = $('#selectPeriodo option:selected').data('numero');
 
-        $('#editarPeriodoModal').find('form').attr('action', '/admin/actualizar-periodo/' +
-            periodoId);
-        $('#editarPeriodoModal').find('input[name="periodoInicio"]').val(inicio);
-        $('#editarPeriodoModal').find('input[name="periodoFin"]').val(fin);
-        $('#editarPeriodoModal').find('input[name="numeroPeriodo"]').val(numero);
+        $('#draggableCardEditarPeriodo').find('form').attr('action', '/admin/actualizar-periodo/' + periodoId);
+        $('#draggableCardEditarPeriodo').find('input[name="periodoInicio"]').val(inicio);
+        $('#draggableCardEditarPeriodo').find('input[name="periodoFin"]').val(fin);
+        $('#draggableCardEditarPeriodo').find('input[name="numeroPeriodo"]').val(numero);
 
     });
 });

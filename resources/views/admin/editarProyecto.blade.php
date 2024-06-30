@@ -2,6 +2,8 @@
 
 @section('title', 'Editar Proyecto')
 
+@section('title_component', 'Panel Editar Proyecto')
+
 @section('content')
     <div class="container">
         <h4>Editar Proyecto</h4>
