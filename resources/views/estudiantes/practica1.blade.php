@@ -56,39 +56,39 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <th>Estudiante:</th>
+                        <th>ESTUDIANTE:</th>
                         <td>{{ $practicaPendiente->estudiante->apellidos }} {{ $practicaPendiente->estudiante->nombres }}</td>
                     </tr>
                     <tr>
-                        <th>Práctica:</th>
+                        <th>PRÁCTICA:</th>
                         <td>{{ $practicaPendiente->tipoPractica }}</td>
                     </tr>
                     <tr>
-                        <th>Docente Tutor:</th>
+                        <th>DOCENTE TUTOR:</th>
                         <td>{{ $practicaPendiente->tutorAcademico->apellidos }} {{ $practicaPendiente->tutorAcademico->nombres }}</td>
                     </tr>
                     <tr>
-                        <th>Empresa:</th>
+                        <th>EMPRESA:</th>
                         <td>{{ $practicaPendiente->Empresa->nombreEmpresa }}</td>
                     </tr>
                     <tr>
-                        <th>Tutor Empresarial:</th>
+                        <th>TUTOR EMPRESARIAL:</th>
                         <td>{{ strtoupper($practicaPendiente->NombreTutorEmpresarial) }}</td>
                     </tr>
                     <tr>
-                        <th>Cédula Tutor Empresarial:</th>
+                        <th>CÉDULA TUTOR EMPRESARIAL:</th>
                         <td>{{ $practicaPendiente->CedulaTutorEmpresarial }}</td>
                     </tr>
                     <tr>
-                        <th>Función:</th>
+                        <th>FUNCIÓN:</th>
                         <td>{{ strtoupper($practicaPendiente->Funcion) }}</td>
                     </tr>
                     <tr>
-                        <th>Teléfono Tutor Empresarial:</th>
+                        <th>TTELÉFONO TUTOR EMPRESARIAL:</th>
                         <td>{{ $practicaPendiente->TelefonoTutorEmpresarial }}</td>
                     </tr>
                     <tr>
-                        <th>Estado de Fase I:</th>
+                        <th>ESTADO DE FASE I:</th>
                         <td>{{ strtoupper($practicaPendiente->Estado) }}</td>
                     </tr>
                 </tbody>
