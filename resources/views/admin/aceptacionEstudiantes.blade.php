@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', 'Aceptación de Estudiantes')
+@section('title', 'Panel Aceptación ')
 
-@section('title_component', 'Aceptación de Estudiantes')
+@section('title_component', 'Panel Estudiantes')
 
 @section('content')
 

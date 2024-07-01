@@ -249,7 +249,7 @@
 
             </div>
             <div class="nameDirector">
-    <label>Usuario</label>
+    <label class="labell">Usuario</label>
     <span>{{ Auth::user()->role->tipo }}</span>
   </div>
             </div>

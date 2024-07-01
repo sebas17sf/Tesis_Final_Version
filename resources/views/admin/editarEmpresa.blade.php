@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 @section('title', 'Editar Empresa')
+@section('title_component', 'Panel Editar Estudiantes')
 @section('content')
     <div class="container">
 

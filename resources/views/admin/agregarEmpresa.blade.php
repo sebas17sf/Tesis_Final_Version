@@ -1,6 +1,6 @@
 @extends('layouts.admin')
-@section('title', 'Agregar Empresa')
-@section('title_component', 'Agregar Empresa')
+@section('title', 'Panel Empresa')
+@section('title_component', 'Panel Empresa')
 @section('content')
 
     <section class="contenedor_agregar_periodo">

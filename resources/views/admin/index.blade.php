@@ -769,63 +769,56 @@
                 </div>
                 <!-- ----------------------------------------------------------------------------------- -->
 
-                <!-- Tarjeta movible para Editar Periodo -->
-                <div class="draggable-card" id="draggableCardEditarPeriodo">
-                    <div class="card-header">
-                        <span class="card-title">Editar Periodo</span>
-                        <button type="button" class="close"
-                            onclick="$('#draggableCardEditarPeriodo').hide()">&times;</button>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group col-md-12">
-                            <label for="periodo"><strong>Periodos Agregados (Seleccione el periodo a
-                                    editar):</strong></label>
-                            <select id="selectPeriodo" class="form-control input input_select ">
-                                <option value="" data-inicio="" data-fin="" data-numero="">Seleccionar Periodo
-                                </option>
-                                @foreach ($periodos as $periodo)
-                                    <option value="{{ $periodo->id }}" data-inicio="{{ $periodo->inicioPeriodo }}"
-                                        data-fin="{{ $periodo->finPeriodo }}"
-                                        data-numero="{{ $periodo->numeroPeriodo }}">
-                                        {{ $periodo->numeroPeriodo }} {{ $periodo->periodo }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-12" hidden>
-                            <div class="form-group col-md-6">
-                                <form id="editarPeriodoForm" method="GET">
-                                    @csrf
-                                    <button type="submit" class="button">Editar</button>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-md-12" id="desplegarEditarPeriodo">
-                            <form class="formulario" method="POST"
-                                action="{{ route('admin.actualizarPeriodo', ['id' => $periodo->id]) }}">
-                                @csrf
-                                @method('PUT')
-                                <div class="form-group">
-                                    <label for="periodoInicio">Fecha de Inicio:</label>
-                                    <input type="date" name="periodoInicio" class="form-control input"
-                                        value="{{ $periodo->inicioPeriodo }}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="periodoFin">Fecha de Fin:</label>
-                                    <input type="date" name="periodoFin" class="form-control input"
-                                        value="{{ $periodo->finPeriodo }}" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="numeroPeriodo">Ingrese el numero identificador del periodo:</label>
-                                    <input type="text" name="numeroPeriodo" id="numeroPeriodo"
-                                        class="form-control input" value="{{ $periodo->numeroPeriodo }}" required>
-                                </div>
-                                <div class="card-footer1 d-flex justify-content-center align-items-center"">
-                                    <center><button type="submit" class="button01">Guardar Cambios</button></center>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+              <!-- Tarjeta movible para Editar Periodo -->
+<div class="draggable-card" id="draggableCardEditarPeriodo">
+    <div class="card-header">
+        <span class="card-title">Editar Periodo</span>
+        <button type="button" class="close" onclick="$('#draggableCardEditarPeriodo').hide()">&times;</button>
+    </div>
+    <div class="card-body">
+        <div class="form-group col-md-12">
+            <label for="periodo"><strong>Periodos Agregados (Seleccione el periodo a editar):</strong></label>
+            <select id="selectPeriodo" class="form-control input input_select">
+                <option value="" data-inicio="" data-fin="" data-numero="">Seleccionar Periodo</option>
+                @foreach ($periodos as $periodo)
+                    <option value="{{ $periodo->id }}" data-inicio="{{ $periodo->inicioPeriodo }}"
+                        data-fin="{{ $periodo->finPeriodo }}" data-numero="{{ $periodo->numeroPeriodo }}">
+                        {{ $periodo->numeroPeriodo }} {{ $periodo->periodo }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-md-12" hidden>
+            <div class="form-group col-md-6">
+                <form id="editarPeriodoForm" method="GET">
+                    @csrf
+                    <button type="submit" class="button">Editar</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12" id="desplegarEditarPeriodo">
+            <form class="formulario" method="POST" action="{{ route('admin.actualizarPeriodo', ['id' => $periodo->id]) }}">
+                @csrf
+                @method('PUT')
+                <div class="form-group">
+                    <label for="periodoInicio">Fecha de Inicio:</label>
+                    <input type="date" name="periodoInicio" id="periodoInicio" class="form-control input" value="" required>
+                </div>
+                <div class="form-group">
+                    <label for="periodoFin">Fecha de Fin:</label>
+                    <input type="date" name="periodoFin" id="periodoFin" class="form-control input" value="" required>
+                </div>
+                <div class="form-group">
+                    <label for="numeroPeriodo">Ingrese el numero identificador del periodo:</label>
+                    <input type="text" name="numeroPeriodo" id="numeroPeriodo" class="form-control input" value="" required>
+                </div>
+                <div class="card-footer1 d-flex justify-content-center align-items-center">
+                    <center><button type="submit" class="button01">Guardar Cambios</button></center>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
                 </div>
             </div>
         </section>

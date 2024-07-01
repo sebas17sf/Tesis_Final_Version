@@ -2,7 +2,7 @@
 
 @section('title', 'Agregar Proyecto')
 
-@section('title_component', 'Agregar Proyecto')
+@section('title_component', 'Panel Agregar Proyecto')
 
 @if (session('success'))
 <div class="contenedor_alerta success">
