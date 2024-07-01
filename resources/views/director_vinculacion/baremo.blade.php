@@ -69,7 +69,6 @@
                         <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                             <th>Ítem</th>
                             <th colspan="4">Provincias donde se ejecuta el proyecto por periodo académico</th>
-                            <th colspan="4"> </th>
                         </tr>
                         <tr>
                             <th>Variable</th>
@@ -90,8 +89,9 @@
                         <tr>
                             <td><b>Puntaje del Proyecto:</b></td>
                             <td>
-                                <center><input type="number" name="puntaje_proyecto2 "
-                                        class="puntaje_proyecto text-center input input_select2" id="tabla2" /></center>
+                                <center><input type="number" name="puntaje_proyecto2"
+                                        class="puntaje_proyecto input input_select2 text-center " id="tabla2" />
+                                </center>
                                 <span id="errorTabla2" class="error-message" style="color: red;"></span>
                             </td>
 
@@ -243,7 +243,7 @@
                                 <center><input type="number" name="puntaje_proyecto5"
                                         class="puntaje_proyecto input input_select2 text-center" id="tabla5" />
                                 </center>
-                                <span id="errorTabla4" class="error-message" style="color: red;"></span>
+                                <span id="errorTabla5" class="error-message" style="color: red;"></span>
                             </td>
 
                             <td>
@@ -294,7 +294,7 @@
                                 <center><input type="number" name="puntaje_proyecto6"
                                         class="puntaje_proyecto input input_select2 text-center" id="tabla6" />
                                 </center>
-                                <span id="errorTabla4" class="error-message" style="color: red;"></span>
+                                <span id="errorTabla6" class="error-message" style="color: red;"></span>
                             </td>
 
                             <td>
@@ -347,7 +347,7 @@
                                 <center><input type="number" name="puntaje_proyecto7"
                                         class="puntaje_proyecto input input_select2 text-center" id="tabla7" />
                                 </center>
-                                <span id="errorTabla4" class="error-message" style="color: red;"></span>
+                                <span id="errorTabla7" class="error-message" style="color: red;"></span>
                             </td>
 
                             <td>
@@ -391,19 +391,18 @@
                     <tbody>
                 </table>
             </div>
+
+            <hr>
+            <center>
+                <button type="submit" class="button1 btn_excel">
+                    <i class="fas fa-file-excel"></i> Generar Baremo
+                </button>
+            </center>
+            <br>
+            </form>
         </div>
     </div>
 
-    <hr>
-    <center>
-        <button type="submit" class="button1 btn_excel">
-            <i class="fas fa-file-excel"></i> Generar Baremo
-        </button>
-    </center>
-    <br>
-    </form>
-    </div>
-    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -427,9 +426,17 @@
             var horasEntreFechas = document.getElementById('horas_entre_fechas');
             var inputs = document.querySelectorAll('.puntaje_proyecto');
 
+            if (!errorTabla1 || !errorTabla2 || !errorTabla3 || !errorTabla4 || !errorTabla5 || !errorTabla6 || !
+                errorTabla7) {
+                console.error('Some error elements are missing in the DOM.');
+                return;
+            }
+
             function updateTotal() {
                 var total = 0;
-                var errorMessages = [errorTabla1, errorTabla2, errorTabla3, errorTabla4];
+                var errorMessages = [errorTabla1, errorTabla2, errorTabla3, errorTabla4, errorTabla5, errorTabla6,
+                    errorTabla7
+                ];
                 var valid = true;
 
                 inputs.forEach(function(input, index) {
@@ -449,16 +456,19 @@
                 } else {
                     totalPuntaje.value = '';
                     horasTotales.value = '';
+                    horasEntreFechas.value = '';
                 }
             }
 
             function calculateHours(total) {
                 var hours = 0;
-                if (total >= 26) {
+                if (total >= 59) {
+                    hours = 12;
+                } else if (total >= 49) {
                     hours = 10;
-                } else if (total >= 16) {
+                } else if (total >= 38) {
                     hours = 8;
-                } else if (total >= 6) {
+                } else if (total >= 28) {
                     hours = 6;
                 } else {
                     hours = 4;
@@ -466,6 +476,7 @@
                 horasTotales.value = hours;
                 calculateHoursBetweenDates(hours);
             }
+
 
             function calculateHoursBetweenDates(hours) {
                 var startDate = new Date('{{ $inicioFecha }}');
@@ -481,5 +492,6 @@
             });
         });
     </script>
+
 
 @endsection

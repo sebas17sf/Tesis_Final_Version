@@ -53,7 +53,7 @@ Swal.fire({
                     </tr>
                     <tr>
                         <th>Docente Tutor:</th>
-                        <td>{{ $practicaPendiente->tutorAcademico->Apellidos }} {{ $practicaPendiente->tutorAcademico->Nombres }}</td>
+                        <td>{{ $practicaPendiente->tutorAcademico->apellidos }} {{ $practicaPendiente->tutorAcademico->nombres }}</td>
                     </tr>
                     <tr>
                         <th>Empresa:</th>
@@ -477,6 +477,8 @@ Swal.fire({
                         <td>
                             <input type="number" id="HorasPlanificadas" name="HorasPlanificadas"
                                 class="form-control input input_select4" min="80" max="144">
+                                <div id="errorHorasPlanificadas" style="color: red;"></div>
+
                         </td>
                     </tr>
                     <tr>
@@ -580,6 +582,8 @@ Swal.fire({
                         <td>
                             <input type="text" id="CedulaTutorEmpresarial" name="CedulaTutorEmpresarial"
                                 class="form-control input input_select3">
+                                <div id="errorCedula" style="color: red;"></div>
+
                         </td>
 
                     </tr>
@@ -589,6 +593,8 @@ Swal.fire({
                         <td>
                             <input type="text" id="NombreTutorEmpresarial" name="NombreTutorEmpresarial"
                                 class="form-control input input_select3">
+                                <div id="errorNombre" style="color: red;"></div>
+
                         </td>
 
                     </tr>
@@ -606,6 +612,8 @@ Swal.fire({
                         <td>
                             <input type="text" id="TelefonoTutorEmpresarial" name="TelefonoTutorEmpresarial"
                                 class="form-control input input_select3">
+                                <div id="errorTelefono" style="color: red;"></div>
+
                         </td>
 
                     </tr>
@@ -615,6 +623,8 @@ Swal.fire({
                         <td>
                             <input type="text" id="EmailTutorEmpresarial" name="EmailTutorEmpresarial"
                                 class="form-control input input_select3">
+                                <div id="errorEmail" style="color: red;"></div>
+
                         </td>
                     </tr>
 
@@ -649,8 +659,9 @@ Swal.fire({
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
-<script src="{{ asset('js/estudiante/practicas.js') }}"></script>
-@endsection
+    <script src="{{ asset('js/estudiante/practicas2.js') }}"></script>
+
+ @endsection
 
 
 <script>
