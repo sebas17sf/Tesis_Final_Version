@@ -128,7 +128,7 @@
                                                 <td class="table1">{{ strtoupper($profesor->nombreUsuario) }}</td>
                                                 <td class="table1">{{ strtoupper($profesor->nombreUsuario) }}</td>
                                                 <td class="table1">{{ $profesor->correoElectronico }}</td>
-                                                <td class="table1">{{ $profesor->estado }}</td>
+                                                <td class="table1">{{ strtoupper($profesor->estado) }}</td>
                                                 <td>
                                                     <!-- Botón de Editar -->
                                                     <center>
@@ -145,7 +145,7 @@
                                                     <div class="card-header">
                                                         <span class="card-title">Editar Profesor</span>
                                                         <button type="button" class="close"
-                                                            onclick="document.getElementById('editCard{{ $profesor->id }}').style.display='none'">&times;</button>
+                                                            onclick="document.getElementById('editCard{{ $profesor->id }}').style.display='none'"><i class="fa-thin fa-xmark"></i></button>
                                                     </div>
                                                     <div class="card-body">
                                                         <form method="POST"
@@ -257,7 +257,7 @@
                 <div class="card-header">
                     <span class="card-title">Agregar Docentes</span>
                     <button type="button" class="close"
-                        onclick="document.getElementById('draggableCardAgregarMaestro').style.display='none'">&times;</button>
+                        onclick="document.getElementById('draggableCardAgregarMaestro').style.display='none'"><i class="fa-thin fa-xmark"></i></button>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.guardarMaestro') }}" method="post">
@@ -339,45 +339,15 @@
 
                         </div>
                         <div class="tooltip-container">
-                            <span class="tooltip-text">Excel</span>
-                            <form id="reportForm" action="{{ route('admin.reportesDocentes') }}" method="POST"
-                                onsubmit="submitForm(event)">
-                                @csrf
-                                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
-                                    <span id="loadingIcon" style="display: none !important; ">
-                                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
-                                    </span>
-                                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
-                                </button>
-                            </form>
+                                    <span class="tooltip-text">Excel</span>
+                                    <form action="{{ route('admin.reportesDocentes') }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="button3 efects_button btn_excel">
+                                            <i class="fas fa-file-excel"></i>
+                                        </button>
+                                    </form>
+                                </div>
                         </div>
-                        <!-- Success alert -->
-                        <div class="contenedor_alerta success" id="successAlert" style="display: none !important;">
-                            <div class="icon_alert"><i class="fa-regular fa-check"></i></div>
-                            <div class="content_alert">
-                                <div class="title">Éxito!</div>
-                                <div class="body">El archivo Excel ha sido exportado.</div>
-                            </div>
-                            <div class="icon_remove">
-                                <button class="button4 btn_3_2" onclick="closeAlert('successAlert')"><i
-                                        class="fa-sharp fa-regular fa-xmark"></i></button>
-                            </div>
-                        </div>
-
-                        <!-- Error alert -->
-                        <div class="contenedor_alerta error" id="errorAlert" style="display: none !important;">
-                            <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
-                            <div class="content_alert">
-                                <div class="title">Error!</div>
-                                <div class="body">Ha ocurrido un error al exportar el archivo Excel.</div>
-                            </div>
-                            <div class="icon_remove">
-                                <button class="button4 btn_3_2" onclick="closeAlert('errorAlert')"><i
-                                        class="fa-sharp fa-regular fa-xmark"></i></button>
-                            </div>
-                        </div>
-
-                    </div>
 
                     <!-- Buscador -->
                     <div class="contenedor_buscador">
@@ -404,7 +374,7 @@
                                         <th>CORREO</th>
                                         <th>USUARIO</th>
                                         <th>CEDULA</th>
-                                        <th class="tamanio1">DEPARTAMENTO</th>
+                                        <th class="tamanio2">DEPARTAMENTO</th>
                                         <th>ID ESPE</th>
                                         <th>ACCIONES</th>
                                     </tr>
@@ -441,9 +411,9 @@
                                                         <div class="draggable-card1_1"
                                                             id="draggableCardEditarMaestro{{ $profesor->id }}">
                                                             <div class="card-header">
-                                                                <span class="card-title1">Editar Docentes</span>
+                                                                <span class="card-title1 ">Editar Docentes</span>
                                                                 <button type="button" class="close"
-                                                                    onclick="$('#draggableCardEditarMaestro{{ $profesor->id }}').hide()">&times;</button>
+                                                                    onclick="$('#draggableCardEditarMaestro{{ $profesor->id }}').hide()"><i class="fa-thin fa-xmark"></i></button>
                                                             </div>
                                                             <div class="card-body">
                                                                 <form
@@ -596,7 +566,7 @@
 
                 <div class="paginator-container">
 
-                    <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                    <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
                         <div id="totalRows">Docentes: {{ $profesores->total() }}</div>
 
                         <ul class="pagination">
@@ -624,7 +594,7 @@
                                 <li class="page-item">
                                     <a class="page-link"
                                         href="{{ $profesores->appends(['perPage' => $perPage])->previousPageUrl() }}#tablaDocentes"
-                                        aria-label="Anterior">Anterior</a>
+                                        aria-label="Anterior" >Anterior</a>
                                 </li>
                             @endif
 
@@ -673,7 +643,7 @@
                 <div class="draggable-card" id="draggableCardNRC">
                     <div class="card-header">
                         <span class="card-title">Agregar NRC</span>
-                        <button type="button" class="close" onclick="$('#draggableCardNRC').hide()">&times;</button>
+                        <button type="button" class="close" onclick="$('#draggableCardNRC').hide()"><i class="fa-thin fa-xmark"></i></button>
                     </div>
                     <div class="card-body">
                         <form class="FormularioNRC" action="{{ route('admin.nrcVinculacion') }}" method="post">
@@ -726,7 +696,7 @@
                     <div class="card-header">
                         <span class="card-title">Agregar Periodo</span>
                         <button type="button" class="close"
-                            onclick="$('#draggableCardPeriodo').hide()">&times;</button>
+                            onclick="$('#draggableCardPeriodo').hide()"><i class="fa-thin fa-xmark"></i></button>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('admin.guardarPeriodo') }}" method="post">
@@ -773,7 +743,7 @@
 <div class="draggable-card" id="draggableCardEditarPeriodo">
     <div class="card-header">
         <span class="card-title">Editar Periodo</span>
-        <button type="button" class="close" onclick="$('#draggableCardEditarPeriodo').hide()">&times;</button>
+        <button type="button" class="close" onclick="$('#draggableCardEditarPeriodo').hide()"><i class="fa-thin fa-xmark"></i></button>
     </div>
     <div class="card-body">
         <div class="form-group col-md-12">

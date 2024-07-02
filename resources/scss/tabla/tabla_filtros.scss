@@ -131,29 +131,53 @@
     }
   }
 
-  .page-item.active .page-link {
-    z-index: 3;
-    color: #fff;
-    background-color: #40456c;
-    border-color: #40456c;
-  }
+  .pagination {
+    display: flex;
+    justify-content: center;
+    padding-left: 0;
+    list-style: none;
+    border-radius: 0.25rem;
+    background-color: #fff;
+    padding: 10px;
+}
 
-  .page-link {
+.page-link {
     position: relative;
     display: block;
-    padding: .5rem .75rem;
+    padding: 0.5rem 0.75rem;
     margin-left: -1px;
     line-height: 1.25;
     color: #101010;
     background-color: #fff;
-    border: 1px solid #dee2e6;
-  }
+}
 
-  .pagination {
+.page-link:hover {
+    z-index: 2;
+    color: #44227a;
+    text-decoration: none;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #40456c;
+    border-color: #40456c;
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
     background-color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-  }
+    border-color: #dee2e6;
+}
+
+.page-link:focus {
+    z-index: 2;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
 
 
   // TODO: Estado activo
@@ -166,8 +190,6 @@
       }
     }
   }
-
-  
 
   .contenedor_tabla {
     display: grid;
@@ -184,10 +206,10 @@
         box-shadow: none !important;
   
         td {
-          width: 200px;
-          min-width: 150px;
+          width: 100px;
+          min-width: 90px;
           font-size: 11px;
-          padding: 0.4rem;
+          padding: 0.4rem !important;
           border-bottom: 1px solid rgba(240, 240, 240, 1); // Add bottom border
           border-top: none;
           border-left: none;
@@ -198,6 +220,7 @@
           position: sticky;
           top: 0;
           font-size: fonts.$text-p;
+          padding: 0 16px 0 16px !important;
           font-weight: bold;
           background: linear-gradient(to bottom, colors.$white, colors.$white),
             linear-gradient(to bottom, rgba(colors.$primary, 0.3), rgba(colors.$primary, 0.2));
@@ -222,14 +245,31 @@
         .tamanio1 {
           width: 90px;
           min-width: 220px;
+          
+
           padding: .3rem !important;
         } 
       
         .tamanio2 {
-          width: 30px;
-          min-width: 100px;
+          width: 25px;
+          min-width: 90px;
           padding: .3rem !important;
         } 
+        .tamanio3 {
+          width: 30px;
+          min-width: 130px;
+          padding: .3rem !important;
+        }
+        .tamanio4 {
+          width: 45px;
+          min-width: 150px;
+          padding: .3rem !important;
+        }
+        .tamanio5 {
+          width: 30px;
+          min-width: 190px;
+          padding: .3rem !important;
+        }
       }
     }
 

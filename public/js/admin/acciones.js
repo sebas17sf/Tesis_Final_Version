@@ -2,19 +2,15 @@ function showLoading() {
     document.getElementById('excelIcon').style.display = 'none';
     document.getElementById('loadingIcon').style.display = 'inline-block';
 }
-
 function hideLoading() {
     document.getElementById('loadingIcon').style.display = 'none';
     document.getElementById('excelIcon').style.display = 'inline-block';
 }
-
 function submitForm(event) {
     event.preventDefault();
     showLoading();
-
     var form = document.getElementById('reportForm');
     var formData = new FormData(form);
-
     fetch(form.action, {
         method: 'POST',
         body: formData
@@ -28,17 +24,17 @@ function submitForm(event) {
         var url = window.URL.createObjectURL(blob);
         var a = document.createElement('a');
         a.href = url;
-        a.download = 'DocentesReporte.xlsx'; // specify the file name
-        document.body.appendChild(a);
+        a.download = 'Reporte-Docentes.xlsx'; // specify the file name
+        document.body.appendChild(a); 
         a.click();
         a.remove();
         window.URL.revokeObjectURL(url);
         hideLoading();
-        showAlert('successAlert');
+        alert('Exportación exitosa: El archivo Excel ha sido creado y descargado con éxito.');
     }).catch(error => {
         console.error('Error:', error);
         hideLoading();
-        showAlert('errorAlert');
+        alert('Error de Exportación: Hubo un problema al crear el archivo Excel. Por favor, inténtelo de nuevo.');
     });
 }
 

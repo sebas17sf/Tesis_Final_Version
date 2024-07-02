@@ -50,25 +50,27 @@
     <section class="contenedor_agregar_periodo">
         <h4><b>Estudiantes en Proceso de Revisión</b></h4>
         <hr>
-        <section>
-            <div class="mat-elevation-z8 contenedor_general">
+        <div class="mat-elevation-z8 contenedor_general">
 
-                <div class="contenedor_acciones_tabla ">
-                    <form action="{{ route('admin.estudiantes') }}" method="GET">
+<div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+        <!-- Botones -->
+        <div class="contenedor_botones">
+            </div>
+            <div class="contenedor_buscador">
+            <div>
+                    <form action="{{ route('admin.estudiantes') }}" method="GET" id="formBusquedaEstudiantes">
                         @csrf
-                        <div class="form-group d-flex align-items-center">
+                        
 
                             <input type="text" class="form-control input" name="buscarEstudiantesEnRevision"
                                 id="buscarEstudiantesEnRevision" matInput placeholder="Buscar estudiantes...">
-                            <div class="btn-group ml-2 shadow-0">
-                                <button type="submit" class="button5">Buscar
-                                    <i class="bx bx-search-alt"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                                <i class='bx bx-search-alt'></i>
+                            </form>
 
+                        </div>
+                    </div>
+                </div>
+           
 
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
@@ -91,9 +93,11 @@
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
                                     @if ($estudiantesEnRevision->isEmpty())
-                                        <tr style="text-align:center">
-                                            <td colspan="10">No hay estudiantes en proceso de revisión.</td>
-                                        </tr>
+                                    <tr style="text-align:center">
+                                                <td class="noExisteRegistro1"
+                                                    style="font-size: 16px !important;"colspan="10">No hay estudiantes en proceso de revisión.</td>
+                                            </tr>
+                                        
                                     @else
                                         @foreach ($estudiantesEnRevision as $estudiante)
                                             <tr>
@@ -176,8 +180,8 @@
                                         <th class="tamanio1">CARRERA</th>
                                          <th>CÉDULA</th>
                                         <th>COHORTE</th>
-                                        <th>PERIODO</th>
-                                        <th class="tamanio1">DEPARTAMENTO</th>
+                                        <th class="tamanio3">PERIODO</th>
+                                        <th class="tamanio2">DEPARTAMENTO</th>
                                         <th>ESTADO</th>
 
                                     </tr>
@@ -197,7 +201,7 @@
                                                  <td>{{ $estudiante->cedula }}</td>
                                                 <td>{{ $estudiante->periodos->numeroPeriodo }}</td>
                                                 <td>{{ $estudiante->periodos->periodo }}</td>
-                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($estudiante->departamento) }}</td>
+                                                <td style="text-transform: uppercase; ">{{ strtoupper($estudiante->departamento) }}</td>
                                                 <td style="text-transform: uppercase;">
                                                     @if ($estudiante->estado == 'Aprobado')
                                                         {{ strtoupper('Vinculación') }}
@@ -218,7 +222,7 @@
 
 
                     <div class="paginator-container">
-                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
                             <div id="totalRows">Estudiantes: {{ $estudiantesAprobados->total() }}</div>
 
 
@@ -235,36 +239,38 @@
                                 </li>
 
                                 @if ($estudiantesAprobados->onFirstPage())
-                                <li class="page-item disabled">
-                                    <span class="page-link">Anterior</span>
-                                </li>
-                                @else
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $estudiantesAprobados->appends(['elementosPorPaginaAprobados' => $elementosPorPaginaAprobados])->previousPageUrl() }}#tablaEstudiantes" aria-label="Anterior">Anterior</a>
-                                </li>
-                                @endif
+    <li class="page-item disabled">
+        <span class="page-link">Anterior</span>
+    </li>
+@else
+    <li class="page-item">
+        <a class="page-link" href="{{ $estudiantesAprobados->appends(['elementosPorPaginaAprobados' => $elementosPorPaginaAprobados])->previousPageUrl() }}#tablaEstudiantes" aria-label="Anterior">Anterior</a>
+    </li>
+@endif
 
-                                @foreach ($estudiantesAprobados->getUrlRange(1, $estudiantesAprobados->lastPage()) as $page => $url)
-                                @if ($page == $estudiantesAprobados->currentPage())
-                                <li class="page-item active">
-                                    <span class="page-link">{{ $page }}</span>
-                                </li>
-                                @else
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $estudiantesAprobados->appends(['elementosPorPaginaAprobados' => $elementosPorPaginaAprobados])->url($page) }}#tablaEstudiantes">{{ $page }}</a>
-                                </li>
-                                @endif
-                                @endforeach
+@if ($estudiantesAprobados->lastPage() > 1)
+    @for ($page = 1; $page <= $estudiantesAprobados->lastPage(); $page++)
+        @if ($page == 1 || $page == $estudiantesAprobados->lastPage() || ($page >= $estudiantesAprobados->currentPage() - 2 && $page <= $estudiantesAprobados->currentPage() + 2))
+            @if ($page == $estudiantesAprobados->currentPage())
+                <li class="page-item active"><span class="page-link">{{ $page }}</span></li>
+            @else
+                <li class="page-item"><a class="page-link" href="{{ $estudiantesAprobados->appends(['elementosPorPaginaAprobados' => $elementosPorPaginaAprobados])->url($page) }}#tablaEstudiantes">{{ $page }}</a></li>
+            @endif
+        @elseif ($page == 2 || $page == $estudiantesAprobados->lastPage() - 1)
+            <li class="page-item"><span class="page-link">...</span></li>
+        @endif
+    @endfor
+@endif
 
-                                @if ($estudiantesAprobados->hasMorePages())
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $estudiantesAprobados->appends(['elementosPorPaginaAprobados' => $elementosPorPaginaAprobados])->nextPageUrl() }}#tablaEstudiantes" aria-label="Siguiente">Siguiente</a>
-                                </li>
-                                @else
-                                <li class="page-item disabled">
-                                    <span class="page-link">Siguiente</span>
-                                </li>
-                                @endif
+@if ($estudiantesAprobados->hasMorePages())
+    <li class="page-item">
+        <a class="page-link" href="{{ $estudiantesAprobados->appends(['elementosPorPaginaAprobados' => $elementosPorPaginaAprobados])->nextPageUrl() }}#tablaEstudiantes" aria-label="Siguiente">Siguiente</a>
+    </li>
+@else
+    <li class="page-item disabled">
+        <span class="page-link">Siguiente</span>
+    </li>
+@endif
 
 
 
@@ -334,5 +340,40 @@
                 }, 500);
             });
         </script>
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const nrcSelect = document.getElementById('nrc');
+            const periodoInput = document.getElementById('periodo');
 
+            nrcSelect.addEventListener('change', function() {
+                const selectedOption = nrcSelect.options[nrcSelect.selectedIndex];
+                const periodo = selectedOption.getAttribute('data-periodo');
+                periodoInput.value = periodo ? periodo : '';
+            });
+        });
+
+
+
+        $('#modalImportar').on('hidden.bs.modal', function() {
+            console.log('Modal hidden');
+            $('#idModalImportar')[0].reset();
+            $('#idModalImportar').find('.form-group').removeClass('has-error');
+            $('#idModalImportar').find('.help-block').text('');
+            removeFile();
+        });
+
+
+        function displayFileName(input, fileTextId) {
+            const fileName = input.files[0].name;
+            document.getElementById(fileTextId).textContent = fileName;
+            document.querySelector('.remove-icon').style.display = 'inline'; // Mostrar la "X"
+        }
+
+        function removeFile(inputId, fileTextId) {
+            document.getElementById(inputId).value = ""; // Clear the input
+            document.getElementById(fileTextId).innerHTML =
+                '<i class="fa fa-upload"></i> Haz clic aquí para subir el documento'; // Reset the text
+            document.querySelector('.remove-icon').style.display = 'none'; // Ocultar la "X"
+        }
+       </script> 
 @endsection

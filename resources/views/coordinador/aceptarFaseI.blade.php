@@ -57,7 +57,7 @@
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                         <th>Estudiante</th>
                                         <th>Práctica</th>
-                                        <th>Tutor Académico</th>
+                                        <th >Tutor Académico</th>
                                         <th>Tutor Empresarial</th>
                                         <th>Empresa</th>
                                         <th>NRC</th>

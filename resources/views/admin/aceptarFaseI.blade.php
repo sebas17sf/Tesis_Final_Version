@@ -55,11 +55,11 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th>ESTUDIANTE</th>
+                                        <th class="tamanio1">ESTUDIANTE</th>
                                         <th>PRÁCTICA</th>
-                                        <th>TUTOR ACADÉMICO</th>
-                                        <th>TUTOR EMPRESARIAL</th>
-                                        <th>EMPRESA</th>
+                                        <th class="tamanio4">TUTOR ACADÉMICO</th>
+                                        <th class="tamanio4">TUTOR EMPRESARIAL</th>
+                                        <th class="tamanio1">EMPRESA</th>
                                         <th>NRC</th>
                                         <th>PERIODO</th>
                                         <th>FECHA INICIO</th>
@@ -73,13 +73,13 @@
                                     @foreach ($estudiantesConPracticaI as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->apellidos) }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->estudiante->apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->nombres) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->apellidos) }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->tipoPractica) }}</td>
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->tutorAcademico->apellidos) }}
                                                     {{ strtoupper($practicaI->tutorAcademico->nombres) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->Empresa->nombreEmpresa) }}</td>
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->Empresa->nombreEmpresa) }}</td>
                                                 <td>{{ strtoupper($practicaI->nrc) }}</td>
                                                 <td>{{ strtoupper($practicaI->nrc) }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
@@ -106,13 +106,13 @@
                                     @foreach ($estudiantesConPracticaII as $practicaII)
                                         @if ($practicaII->estudiante)
                                             <tr>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaII->estudiante->apellidos) }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaII->estudiante->apellidos) }}
                                                     {{ strtoupper($practicaII->estudiante->nombres) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaII->tipoPractica) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaII->tutorAcademico->apellidos) }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaII->tipoPractica) }}</td>
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaII->tutorAcademico->apellidos) }}
                                                     {{ strtoupper($practicaII->tutorAcademico->nombres) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaII->NombreTutorEmpresarial) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaII->Empresa->nombreEmpresa) }}</td>
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaII->NombreTutorEmpresarial) }}</td>
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaII->Empresa->nombreEmpresa) }}</td>
                                                 <td>{{ strtoupper($practicaII->nrc) }}</td>
                                                 <td>{{ strtoupper($practicaII->nrc) }}</td>
                                                 <td>{{ strtoupper($practicaII->FechaInicio) }}</td>
@@ -144,6 +144,7 @@
 
                         </div>
                     </div>
+                   
                 </div>
 
             </div>
@@ -170,55 +171,46 @@
                                 </button>
                             </form>
                         </div>
-
-                        <div class="tooltip-container">
-                            <span class="tooltip-text">Importar archivo</span>
-                            <button type="button" class="button3 efects_button btn_copy" data-toggle="modal"
-                                data-target="#modalImportar">
-                                <i class="fa fa-upload"></i>
-                            </button>
-                        </div>
-
-                        <div class="modal fade" id="modalImportar" tabindex="-1" role="dialog"
-                            aria-labelledby="modalImportarLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <form id="idModalImportar" action="{{ route('import-practicas1') }}" method="POST"
-                                        enctype="multipart/form-data">
-                                        @csrf
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Importar archivo</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
+ <!-- Botón de Importar archivo -->
+ <div class="tooltip-container">
+                                    <span class="tooltip-text">Importar archivo</span>
+                                    <button type="button" class="button3 efects_button btn_copy"
+                                        onclick="openCard('cardImportarArchivo');">
+                                        <i class="fa fa-upload"></i>
+                                    </button>
+                                </div>
+                        <!-- Card de Importar archivo -->
+                        <div class="draggable-card1_4" id="cardImportarArchivo" style="display: none;">
+                                    <div class="card-header">
+                                        <span class="card-title">Importar archivo</span>
+                                        <button type="button" class="close"
+                                            onclick="closeCard('cardImportarArchivo')"><i class="fa-thin fa-xmark"></i></button>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="idModalImportar2" action="{{ route('import-practicas1') }}" method="POST"
+                                            enctype="multipart/form-data">
+                                            @csrf
                                             <div class="form-group">
-                                                <div class="input input_file">
-                                                    <span id="fileText" class="fileText">
-                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el
-                                                        documento
+                                                <div class="input_file input">
+                                                    <span id="fileText2" class="fileText">
+                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
                                                     </span>
                                                     <input type="file" class="form-control-file input input_file"
-                                                        id="file" name="file" onchange="displayFileName(this)"
-                                                        required>
+                                                        id="file2" name="file"
+                                                        onchange="displayFileName(this, 'fileText2')" required>
                                                     <span title="Eliminar archivo" onclick="removeFile(this)"
                                                         class="remove-icon">✖</span>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button id="cerrar_modal" type="button" class="button"
-                                                data-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="button">Importar Archivo</button>
-                                        </div>
-                                    </form>
+                                            <div class="card-footer d-flex justify-content-center align-items-center">
+                                                <button type="submit" class="button">Importar Archivo</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
-
                         </div>
 
-                    </div>
+                    
 
                     <div class="contenedor_buscador">
                         <div>
@@ -239,17 +231,17 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th>Estudiante</th>
-                                        <th>Práctica</th>
-                                        <th>Tutor Académico</th>
-                                        <th>Tutor Empresarial</th>
-                                        <th>Empresa</th>
+                                        <th class="tamanio1">ESTUDIANTE</th>
+                                        <th>PRÁCTICA</th>
+                                        <th class="tamanio4">TUTOR ACADÉMICO</th>
+                                        <th class="tamanio4">TUTOR EMPRESARIAL</th>
+                                        <th class="tamanio1">EMPRESA</th>
                                         <th>NRC</th>
-                                        <th>Periodo</th>
-                                        <th>Fecha Inicio</th>
-                                        <th>Fecha Fin</th>
-                                        <th>Horas planificadas</th>
-                                        <th>Estado</th>
+                                        <th>PERIODO</th>
+                                        <th>FECHA INICIO</th>
+                                        <th>FECHA FIN</th>
+                                        <th>HORAS PLANIFICADAS</th>
+                                        <th>ESTADO</th>
 
                                     </tr>
                                 </thead>
@@ -257,14 +249,14 @@
                                     @foreach ($estudiantesPracticas as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->apellidos) }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->estudiante->apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->nombres) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->apellidos ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->tutorAcademico->apellidos ?? 'No por el momento') }}
                                                     {{ strtoupper($practicaI->tutorAcademico->nombres ?? 'No por el momento') }}
                                                 </td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
                                                 <td>{{ strtoupper($practicaI->nrc->nrc ?? 'No cuenta con NRC') }}
                                                 </td>
@@ -273,7 +265,7 @@
                                                 <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                                                 <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
-                                                <td>{{ $practicaI->Estado }}</td>
+                                                <td>{{ strtoupper($practicaI->Estado) }}</td>
                                             </tr>
                                         @endif
                                     @endforeach
@@ -283,7 +275,7 @@
                         </div>
                     </div>
                     <div class="paginator-container">
-                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
                             <div id="totalRows">Estudiantes: {{ $estudiantesPracticas->total() }}</div>
                             <ul class="pagination">
                                 <li class="page-item mx-3">
@@ -303,41 +295,47 @@
                                 </li>
 
                                 @if ($estudiantesPracticas->onFirstPage())
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Anterior</span>
-                                    </li>
-                                @else
-                                    <li class="page-item">
-                                        <a class="page-link"
-                                            href="{{ $estudiantesPracticas->appends(['paginacion1' => $perPage1])->previousPageUrl() }}#practicas1"
-                                            aria-label="Anterior">Anterior</a>
-                                    </li>
-                                @endif
+    <li class="page-item disabled">
+        <span class="page-link">Anterior</span>
+    </li>
+@else
+    <li class="page-item">
+        <a class="page-link" href="{{ $estudiantesPracticas->appends(['paginacion1' => $perPage1])->previousPageUrl() }}#practicas1" aria-label="Anterior">Anterior</a>
+    </li>
+@endif
 
-                                @foreach (range(1, $estudiantesPracticas->lastPage()) as $i)
-                                    @if ($i == $estudiantesPracticas->currentPage())
-                                        <li class="page-item active">
-                                            <span class="page-link">{{ $i }}</span>
-                                        </li>
-                                    @else
-                                        <li class="page-item">
-                                            <a class="page-link"
-                                                href="{{ $estudiantesPracticas->appends(['paginacion1' => $perPage1])->url($i) }}#practicas1">{{ $i }}</a>
-                                        </li>
-                                    @endif
-                                @endforeach
+@if ($estudiantesPracticas->lastPage() > 1)
+    @if ($estudiantesPracticas->currentPage() > 3)
+        <li class="page-item"><a class="page-link" href="{{ $estudiantesPracticas->appends(['paginacion1' => $perPage1])->url(1) }}#practicas1">1</a></li>
+        @if ($estudiantesPracticas->currentPage() > 4)
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+        @endif
+    @endif
+    @foreach (range(max(1, $estudiantesPracticas->currentPage() - 2), min($estudiantesPracticas->currentPage() + 2, $estudiantesPracticas->lastPage())) as $i)
+        @if ($i == $estudiantesPracticas->currentPage())
+            <li class="page-item active"><span class="page-link">{{ $i }}</span></li>
+        @else
+            <li class="page-item"><a class="page-link" href="{{ $estudiantesPracticas->appends(['paginacion1' => $perPage1])->url($i) }}#practicas1">{{ $i }}</a></li>
+        @endif
+    @endforeach
+    @if ($estudiantesPracticas->currentPage() < $estudiantesPracticas->lastPage() - 2)
+        @if ($estudiantesPracticas->currentPage() < $estudiantesPracticas->lastPage() - 3)
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+        @endif
+        <li class="page-item"><a class="page-link" href="{{ $estudiantesPracticas->appends(['paginacion1' => $perPage1])->url($estudiantesPracticas->lastPage()) }}#practicas1">{{ $estudiantesPracticas->lastPage() }}</a></li>
+    @endif
+@endif
 
-                                @if ($estudiantesPracticas->hasMorePages())
-                                    <li class="page-item">
-                                        <a class="page-link"
-                                            href="{{ $estudiantesPracticas->appends(['paginacion1' => $perPage1])->nextPageUrl() }}#practicas1"
-                                            aria-label="Siguiente">Siguiente</a>
-                                    </li>
-                                @else
-                                    <li class="page-item disabled">
-                                        <span class="page-link">Siguiente</span>
-                                    </li>
-                                @endif
+@if ($estudiantesPracticas->hasMorePages())
+    <li class="page-item">
+        <a class="page-link" href="{{ $estudiantesPracticas->appends(['paginacion1' => $perPage1])->nextPageUrl() }}#practicas1" aria-label="Siguiente">Siguiente</a>
+    </li>
+@else
+    <li class="page-item disabled">
+        <span class="page-link">Siguiente</span>
+    </li>
+@endif
+
 
 
                             </ul>
@@ -374,52 +372,44 @@
                                 </button>
                             </form>
                         </div>
+                        <!-- Botón de Importar archivo -->
                         <div class="tooltip-container">
-                            <span class="tooltip-text">Importar archivo</span>
-                            <button type="button" class="button3 efects_button btn_copy" data-toggle="modal"
-                                data-target="#modalImportar2">
-                                <i class="fa fa-upload"></i>
-                            </button>
-                        </div>
-
-                        <div class="modal fade" id="modalImportar2" tabindex="-1" role="dialog"
-                            aria-labelledby="modalImportarLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <form id="idModalImportar" action="{{ route('import-practicas2') }}" method="POST"
-                                        enctype="multipart/form-data">
-                                        @csrf
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Importar archivo</h5>
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
+                                    <span class="tooltip-text">Importar archivo</span>
+                                    <button type="button" class="button3 efects_button btn_copy"
+                                        onclick="openCard('cardImportarArchivo');">
+                                        <i class="fa fa-upload"></i>
+                                    </button>
+                                </div>
+                        <!-- Card de Importar archivo -->
+                        <div class="draggable-card1_4" id="cardImportarArchivo" style="display: none;">
+                                    <div class="card-header">
+                                        <span class="card-title">Importar archivo</span>
+                                        <button type="button" class="close"
+                                            onclick="closeCard('cardImportarArchivo')"><i class="fa-thin fa-xmark"></i></button>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="idModalImportar2" action="{{ route('import-practicas2') }}" method="POST"
+                                            enctype="multipart/form-data">
+                                            @csrf
                                             <div class="form-group">
-                                                <div class="input input_file">
-                                                    <span id="fileText" class="fileText">
-                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el
-                                                        documento
+                                                <div class="input_file input">
+                                                    <span id="fileText2" class="fileText">
+                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
                                                     </span>
                                                     <input type="file" class="form-control-file input input_file"
-                                                        id="file" name="file" onchange="displayFileName(this)"
-                                                        required>
+                                                        id="file2" name="file"
+                                                        onchange="displayFileName(this, 'fileText2')" required>
                                                     <span title="Eliminar archivo" onclick="removeFile(this)"
                                                         class="remove-icon">✖</span>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button id="cerrar_modal" type="button" class="button"
-                                                data-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="button">Importar Archivo</button>
-                                        </div>
-                                    </form>
+                                            <div class="card-footer d-flex justify-content-center align-items-center">
+                                                <button type="submit" class="button">Importar Archivo</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                    
                     </div>
 
                     <div class="contenedor_buscador">
@@ -442,17 +432,17 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th>Estudiante</th>
-                                        <th>Práctica</th>
-                                        <th>Tutor Académico</th>
-                                        <th>Tutor Empresarial</th>
-                                        <th>Empresa</th>
+                                        <th class="tamanio1">ESTUDIANTE</th>
+                                        <th>PRÁCTICA</th>
+                                        <th class="tamanio4">TUTOR ACADÉMICO</th>
+                                        <th class="tamanio4">TUTOR EMPRESARIAL</th>
+                                        <th class="tamanio1">EMPRESA</th>
                                         <th>NRC</th>
-                                        <th>Periodo</th>
-                                        <th>Fecha Inicio</th>
-                                        <th>Fecha Fin</th>
-                                        <th>Horas planificadas</th>
-                                        <th>Estado</th>
+                                        <th>PERIODO</th>
+                                        <th>FECHA INICIO</th>
+                                        <th>FECHA FIN</th>
+                                        <th>HORAS PLANIFICADAS</th>
+                                        <th>ESTADO</th>
 
                                     </tr>
                                 </thead>
@@ -460,14 +450,14 @@
                                     @foreach ($estudiantesPracticasII as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->apellidos) }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->estudiante->apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->nombres) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->apellidos ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->tutorAcademico->apellidos ?? 'No por el momento') }}
                                                     {{ strtoupper($practicaI->tutorAcademico->nombres ?? 'No por el momento') }}
                                                 </td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
                                                 <td>{{ strtoupper($practicaI->nrcPractica->nrc ?? 'No cuenta con NRC') }}
                                                 </td>
@@ -487,7 +477,7 @@
 
                     </div>
                     <div class="paginator-container">
-                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
                             <div id="totalRows">Estudiantes: {{ $estudiantesPracticasII->total() }}</div>
                             <ul class="pagination">
                                 <li class="page-item mx-3">
@@ -502,36 +492,46 @@
                                 </li>
 
                                 @if ($estudiantesPracticasII->onFirstPage())
-                                <li class="page-item disabled">
-                                    <span class="page-link">Anterior</span>
-                                </li>
-                                @else
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $estudiantesPracticasII->previousPageUrl() }}&paginacion2={{ $perPage2 }}#practicas2" aria-label="Anterior">Anterior</a>
-                                </li>
-                                @endif
+    <li class="page-item disabled">
+        <span class="page-link">Anterior</span>
+    </li>
+@else
+    <li class="page-item">
+        <a class="page-link" href="{{ $estudiantesPracticasII->previousPageUrl() }}&paginacion2={{ $perPage2 }}#practicas2" aria-label="Anterior">Anterior</a>
+    </li>
+@endif
 
-                                @foreach (range(1, $estudiantesPracticasII->lastPage()) as $i)
-                                @if ($i == $estudiantesPracticasII->currentPage())
-                                <li class="page-item active">
-                                    <span class="page-link">{{ $i }}</span>
-                                </li>
-                                @else
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $estudiantesPracticasII->url($i) }}&paginacion2={{ $perPage2 }}#practicas2">{{ $i }}</a>
-                                </li>
-                                @endif
-                                @endforeach
+@if ($estudiantesPracticasII->lastPage() > 1)
+    @if ($estudiantesPracticasII->currentPage() > 3)
+        <li class="page-item"><a class="page-link" href="{{ $estudiantesPracticasII->url(1) }}&paginacion2={{ $perPage2 }}#practicas2">1</a></li>
+        @if ($estudiantesPracticasII->currentPage() > 4)
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+        @endif
+    @endif
+    @foreach (range(max(1, $estudiantesPracticasII->currentPage() - 2), min($estudiantesPracticasII->currentPage() + 2, $estudiantesPracticasII->lastPage())) as $i)
+        @if ($i == $estudiantesPracticasII->currentPage())
+            <li class="page-item active"><span class="page-link">{{ $i }}</span></li>
+        @else
+            <li class="page-item"><a class="page-link" href="{{ $estudiantesPracticasII->url($i) }}&paginacion2={{ $perPage2 }}#practicas2">{{ $i }}</a></li>
+        @endif
+    @endforeach
+    @if ($estudiantesPracticasII->currentPage() < $estudiantesPracticasII->lastPage() - 2)
+        @if ($estudiantesPracticasII->currentPage() < $estudiantesPracticasII->lastPage() - 3)
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+        @endif
+        <li class="page-item"><a class="page-link" href="{{ $estudiantesPracticasII->url($estudiantesPracticasII->lastPage()) }}&paginacion2={{ $perPage2 }}#practicas2">{{ $estudiantesPracticasII->lastPage() }}</a></li>
+    @endif
+@endif
 
-                                @if ($estudiantesPracticasII->hasMorePages())
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $estudiantesPracticasII->nextPageUrl() }}&paginacion2={{ $perPage2 }}#practicas2" aria-label="Siguiente">Siguiente</a>
-                                </li>
-                                @else
-                                <li class="page-item disabled">
-                                    <span class="page-link">Siguiente</span>
-                                </li>
-                                @endif
+@if ($estudiantesPracticasII->hasMorePages())
+    <li class="page-item">
+        <a class="page-link" href="{{ $estudiantesPracticasII->nextPageUrl() }}&paginacion2={{ $perPage2 }}#practicas2" aria-label="Siguiente">Siguiente</a>
+    </li>
+@else
+    <li class="page-item disabled">
+        <span class="page-link">Siguiente</span>
+    </li>
+@endif
 
 
                             </ul>
@@ -566,53 +566,44 @@
                                 </button>
                             </form>
                         </div>
-
-                        <div class="tooltip-container">
-                            <span class="tooltip-text">Importar archivo</span>
-                            <button type="button" class="button3 efects_button btn_copy" data-toggle="modal"
-                                data-target="#modalImportar3">
-                                <i class="fa fa-upload"></i>
-                            </button>
-                        </div>
-
-                        <div class="modal fade" id="modalImportar3" tabindex="-1" role="dialog"
-                            aria-labelledby="modalImportarLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <form id="idModalImportar" action="{{ route('import-practicas3') }}" method="POST"
-                                        enctype="multipart/form-data">
-                                        @csrf
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Importar archivo</h5>
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
+ <!-- Botón de Importar archivo -->
+ <div class="tooltip-container">
+                                    <span class="tooltip-text">Importar archivo</span>
+                                    <button type="button" class="button3 efects_button btn_copy"
+                                        onclick="openCard('cardImportarArchivo');">
+                                        <i class="fa fa-upload"></i>
+                                    </button>
+                                </div>
+                        <!-- Card de Importar archivo -->
+                        <div class="draggable-card1_4" id="cardImportarArchivo" style="display: none;">
+                                    <div class="card-header">
+                                        <span class="card-title">Importar archivo</span>
+                                        <button type="button" class="close"
+                                            onclick="closeCard('cardImportarArchivo')"><i class="fa-thin fa-xmark"></i></button>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="idModalImportar2" action="{{ route('import-practicas3') }}" method="POST"
+                                            enctype="multipart/form-data">
+                                            @csrf
                                             <div class="form-group">
-                                                <div class="input input_file">
-                                                    <span id="fileText" class="fileText">
-                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el
-                                                        documento
+                                                <div class="input_file input">
+                                                    <span id="fileText2" class="fileText">
+                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
                                                     </span>
                                                     <input type="file" class="form-control-file input input_file"
-                                                        id="file" name="file" onchange="displayFileName(this)"
-                                                        required>
+                                                        id="file2" name="file"
+                                                        onchange="displayFileName(this, 'fileText2')" required>
                                                     <span title="Eliminar archivo" onclick="removeFile(this)"
                                                         class="remove-icon">✖</span>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button id="cerrar_modal" type="button" class="button"
-                                                data-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="button">Importar Archivo</button>
-                                        </div>
-                                    </form>
+                                            <div class="card-footer d-flex justify-content-center align-items-center">
+                                                <button type="submit" class="button">Importar Archivo</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                    
                     </div>
                     <div class="contenedor_buscador">
                         <div>
@@ -633,17 +624,17 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th>Estudiante</th>
-                                        <th>Práctica</th>
-                                        <th>Tutor Académico</th>
-                                        <th>Tutor Empresarial</th>
-                                        <th>Empresa</th>
+                                        <th class="tamanio1">ESTUDIANTE</th>
+                                        <th>PRÁCTICA</th>
+                                        <th class="tamanio4">TUTOR ACADÉMICO</th>
+                                        <th class="tamanio4">TUTOR EMPRESARIAL</th>
+                                        <th class="tamanio1">EMPRESA</th>
                                         <th>NRC</th>
-                                        <th>Periodo</th>
-                                        <th>Fecha Inicio</th>
-                                        <th>Fecha Fin</th>
-                                        <th>Horas planificadas</th>
-                                        <th>Estado</th>
+                                        <th>PERIODO</th>
+                                        <th>FECHA INICIO</th>
+                                        <th>FECHA FIN</th>
+                                        <th>HORAS PLANIFICADAS</th>
+                                        <th>ESTADO</th>
 
                                     </tr>
                                 </thead>
@@ -651,14 +642,14 @@
                                     @foreach ($estudiantesPracticasIII as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->apellidos) }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->estudiante->apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->nombres) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->apellidos ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->tutorAcademico->apellidos ?? 'No por el momento') }}
                                                     {{ strtoupper($practicaI->tutorAcademico->nombres ?? 'No por el momento') }}
                                                 </td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
                                                 <td>{{ strtoupper($practicaI->nrcPractica->nrc ?? 'No cuenta con NRC') }}
                                                 </td>
@@ -679,7 +670,7 @@
                         </div>
                     </div>
                     <div class="paginator-container">
-                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
                             <div id="totalRows">Estudiantes: {{ $estudiantesPracticasIII->total() }}</div>
                             <ul class="pagination">
                                 <li class="page-item mx-3">
@@ -759,52 +750,45 @@
                                 </button>
                             </form>
                         </div>
-                        <div class="tooltip-container">
-                            <span class="tooltip-text">Importar archivo</span>
-                            <button type="button" class="button3 efects_button btn_copy" data-toggle="modal"
-                                data-target="#modalImportar4">
-                                <i class="fa fa-upload"></i>
-                            </button>
-                        </div>
-
-                        <div class="modal fade" id="modalImportar4" tabindex="-1" role="dialog"
-                            aria-labelledby="modalImportarLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <form id="idModalImportar" action="{{ route('import-practicas4') }}" method="POST"
-                                        enctype="multipart/form-data">
-                                        @csrf
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Importar archivo</h5>
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
+                         <!-- Botón de Importar archivo -->
+ <div class="tooltip-container">
+                                    <span class="tooltip-text">Importar archivo</span>
+                                    <button type="button" class="button3 efects_button btn_copy"
+                                        onclick="openCard('cardImportarArchivo');">
+                                        <i class="fa fa-upload"></i>
+                                    </button>
+                                </div>
+                        <!-- Card de Importar archivo -->
+                        <div class="draggable-card1_4" id="cardImportarArchivo" style="display: none;">
+                                    <div class="card-header">
+                                        <span class="card-title">Importar archivo</span>
+                                        <button type="button" class="close"
+                                            onclick="closeCard('cardImportarArchivo')"><i class="fa-thin fa-xmark"></i></button>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="idModalImportar2" action="{{ route('import-practicas4') }}" method="POST"
+                                            enctype="multipart/form-data">
+                                            @csrf
                                             <div class="form-group">
-                                                <div class="input input_file">
-                                                    <span id="fileText" class="fileText">
-                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el
-                                                        documento
+                                                <div class="input_file input">
+                                                    <span id="fileText2" class="fileText">
+                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
                                                     </span>
                                                     <input type="file" class="form-control-file input input_file"
-                                                        id="file" name="file" onchange="displayFileName(this)"
-                                                        required>
+                                                        id="file2" name="file"
+                                                        onchange="displayFileName(this, 'fileText2')" required>
                                                     <span title="Eliminar archivo" onclick="removeFile(this)"
                                                         class="remove-icon">✖</span>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button id="cerrar_modal" type="button" class="button"
-                                                data-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="button">Importar Archivo</button>
-                                        </div>
-                                    </form>
+                                            <div class="card-footer d-flex justify-content-center align-items-center">
+                                                <button type="submit" class="button">Importar Archivo</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                    
+                       
 
                     </div>
                     <div class="contenedor_buscador">
@@ -826,17 +810,17 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th>Estudiante</th>
-                                        <th>Práctica</th>
-                                        <th>Tutor Académico</th>
-                                        <th>Tutor Empresarial</th>
-                                        <th>Empresa</th>
+                                        <th class="tamanio1">ESTUDIANTE</th>
+                                        <th>PRÁCTICA</th>
+                                        <th class="tamanio4">TUTOR ACADÉMICO</th>
+                                        <th class="tamanio4">TUTOR EMPRESARIAL</th>
+                                        <th class="tamanio1">EMPRESA</th>
                                         <th>NRC</th>
-                                        <th>Periodo</th>
-                                        <th>Fecha Inicio</th>
-                                        <th>Fecha Fin</th>
-                                        <th>Horas planificadas</th>
-                                        <th>Estado</th>
+                                        <th>PERIODO</th>
+                                        <th>FECHA INICIO</th>
+                                        <th>FECHA FIN</th>
+                                        <th>HORAS PLANIFICADAS</th>
+                                        <th>ESTADO</th>
 
                                     </tr>
                                 </thead>
@@ -844,14 +828,14 @@
                                     @foreach ($estudiantesPracticasIV as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->apellidos) }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->estudiante->apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->nombres) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->apellidos ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->tutorAcademico->apellidos ?? 'No por el momento') }}
                                                     {{ strtoupper($practicaI->tutorAcademico->nombres ?? 'No por el momento') }}
                                                 </td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
                                                 <td >{{ strtoupper($practicaI->nrcPractica->nrc ?? 'No cuenta con NRC') }}
                                                 </td>
@@ -872,7 +856,7 @@
                         </div>
                     </div>
                     <div class="paginator-container">
-                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
                             <div id="totalRows">Estudiantes: {{ $estudiantesPracticasIV->total() }}</div>                            <ul class="pagination">
                                 <li class="page-item mx-3">
                                     <form method="GET" action="{{ route('admin.aceptarFaseI') }}#practicas4">
@@ -886,36 +870,47 @@
                                 </li>
 
                                 @if ($estudiantesPracticasIV->onFirstPage())
-                                <li class="page-item disabled">
-                                    <span class="page-link">Anterior</span>
-                                </li>
-                                @else
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $estudiantesPracticasIV->previousPageUrl() }}&paginacion4={{ $perPage4 }}#practicas4" aria-label="Anterior">Anterior</a>
-                                </li>
-                                @endif
+    <li class="page-item disabled">
+        <span class="page-link">Anterior</span>
+    </li>
+@else
+    <li class="page-item">
+        <a class="page-link" href="{{ $estudiantesPracticasIV->previousPageUrl() }}&paginacion4={{ $perPage4 }}#practicas4" aria-label="Anterior">Anterior</a>
+    </li>
+@endif
 
-                                @foreach (range(1, $estudiantesPracticasIV->lastPage()) as $i)
-                                @if ($i == $estudiantesPracticasIV->currentPage())
-                                <li class="page-item active">
-                                    <span class="page-link">{{ $i }}</span>
-                                </li>
-                                @else
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $estudiantesPracticasIV->url($i) }}&paginacion4={{ $perPage4 }}#practicas4">{{ $i }}</a>
-                                </li>
-                                @endif
-                                @endforeach
+@if ($estudiantesPracticasIV->lastPage() > 1)
+    @if ($estudiantesPracticasIV->currentPage() > 3)
+        <li class="page-item"><a class="page-link" href="{{ $estudiantesPracticasIV->url(1) }}&paginacion4={{ $perPage4 }}#practicas4">1</a></li>
+        @if ($estudiantesPracticasIV->currentPage() > 4)
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+        @endif
+    @endif
+    @foreach (range(max(1, $estudiantesPracticasIV->currentPage() - 2), min($estudiantesPracticasIV->currentPage() + 2, $estudiantesPracticasIV->lastPage())) as $i)
+        @if ($i == $estudiantesPracticasIV->currentPage())
+            <li class="page-item active"><span class="page-link">{{ $i }}</span></li>
+        @else
+            <li class="page-item"><a class="page-link" href="{{ $estudiantesPracticasIV->url($i) }}&paginacion4={{ $perPage4 }}#practicas4">{{ $i }}</a></li>
+        @endif
+    @endforeach
+    @if ($estudiantesPracticasIV->currentPage() < $estudiantesPracticasIV->lastPage() - 2)
+        @if ($estudiantesPracticasIV->currentPage() < $estudiantesPracticasIV->lastPage() - 3)
+            <li class="page-item disabled"><span class="page-link">...</span></li>
+        @endif
+        <li class="page-item"><a class="page-link" href="{{ $estudiantesPracticasIV->url($estudiantesPracticasIV->lastPage()) }}&paginacion4={{ $perPage4 }}#practicas4">{{ $estudiantesPracticasIV->lastPage() }}</a></li>
+    @endif
+@endif
 
-                                @if ($estudiantesPracticasIV->hasMorePages())
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $estudiantesPracticasIV->nextPageUrl() }}&paginacion4={{ $perPage4 }}#practicas4" aria-label="Siguiente">Siguiente</a>
-                                </li>
-                                @else
-                                <li class="page-item disabled">
-                                    <span class="page-link">Siguiente</span>
-                                </li>
-                                @endif
+@if ($estudiantesPracticasIV->hasMorePages())
+    <li class="page-item">
+        <a class="page-link" href="{{ $estudiantesPracticasIV->nextPageUrl() }}&paginacion4={{ $perPage4 }}#practicas4" aria-label="Siguiente">Siguiente</a>
+    </li>
+@else
+    <li class="page-item disabled">
+        <span class="page-link">Siguiente</span>
+    </li>
+@endif
+
 
 
                             </ul>
@@ -949,52 +944,45 @@
                                 </button>
                             </form>
                         </div>
-                        <div class="tooltip-container">
-                            <span class="tooltip-text">Importar archivo</span>
-                            <button type="button" class="button3 efects_button btn_copy" data-toggle="modal"
-                                data-target="#modalImportar5">
-                                <i class="fa fa-upload"></i>
-                            </button>
-                        </div>
-
-                        <div class="modal fade" id="modalImportar5" tabindex="-1" role="dialog"
-                            aria-labelledby="modalImportarLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <form id="idModalImportar" action="{{ route('import-practicas5') }}" method="POST"
-                                        enctype="multipart/form-data">
-                                        @csrf
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Importar archivo</h5>
-                                            <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
+                         <!-- Botón de Importar archivo -->
+ <div class="tooltip-container">
+                                    <span class="tooltip-text">Importar archivo</span>
+                                    <button type="button" class="button3 efects_button btn_copy"
+                                        onclick="openCard('cardImportarArchivo');">
+                                        <i class="fa fa-upload"></i>
+                                    </button>
+                                </div>
+                        <!-- Card de Importar archivo -->
+                        <div class="draggable-card1_4" id="cardImportarArchivo" style="display: none;">
+                                    <div class="card-header">
+                                        <span class="card-title">Importar archivo</span>
+                                        <button type="button" class="close"
+                                            onclick="closeCard('cardImportarArchivo')"><i class="fa-thin fa-xmark"></i></button>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="idModalImportar2" action="{{ route('import-practicas5') }}" method="POST"
+                                            enctype="multipart/form-data">
+                                            @csrf
                                             <div class="form-group">
-                                                <div class="input input_file">
-                                                    <span id="fileText" class="fileText">
-                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el
-                                                        documento
+                                                <div class="input_file input">
+                                                    <span id="fileText2" class="fileText">
+                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
                                                     </span>
                                                     <input type="file" class="form-control-file input input_file"
-                                                        id="file" name="file" onchange="displayFileName(this)"
-                                                        required>
+                                                        id="file2" name="file"
+                                                        onchange="displayFileName(this, 'fileText2')" required>
                                                     <span title="Eliminar archivo" onclick="removeFile(this)"
                                                         class="remove-icon">✖</span>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button id="cerrar_modal" type="button" class="button"
-                                                data-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="button">Importar Archivo</button>
-                                        </div>
-                                    </form>
+                                            <div class="card-footer d-flex justify-content-center align-items-center">
+                                                <button type="submit" class="button">Importar Archivo</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                    
+                       
 
                     </div>
                 </div>
@@ -1007,17 +995,17 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th>Estudiante</th>
-                                        <th>Práctica</th>
-                                        <th>Tutor Académico</th>
-                                        <th>Tutor Empresarial</th>
-                                        <th>Empresa</th>
+                                        <th class="tamanio1">ESTUDIANTE</th>
+                                        <th>PRÁCTICA</th>
+                                        <th class="tamanio4">TUTOR ACADÉMICO</th>
+                                        <th class="tamanio4">TUTOR EMPRESARIAL</th>
+                                        <th class="tamanio1">EMPRESA</th>
                                         <th>NRC</th>
-                                        <th>Periodo</th>
-                                        <th>Fecha Inicio</th>
-                                        <th>Fecha Fin</th>
-                                        <th>Horas planificadas</th>
-                                        <th>Estado</th>
+                                        <th>PERIODO</th>
+                                        <th>FECHA INICIO</th>
+                                        <th>FECHA FIN</th>
+                                        <th>HORAS PLANIFICADAS</th>
+                                        <th>ESTADO</th>
 
                                     </tr>
                                 </thead>
@@ -1025,14 +1013,14 @@
                                     @foreach ($estudiantesPracticasV as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->apellidos) }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->estudiante->apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->nombres) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tutorAcademico->apellidos ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->tutorAcademico->apellidos ?? 'No por el momento') }}
                                                     {{ strtoupper($practicaI->tutorAcademico->nombres ?? 'No por el momento') }}
                                                 </td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
-                                                <td style="text-transform: uppercase;">{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
                                                 <td>{{ strtoupper($practicaI->nrcPractica->nrc ?? 'No cuenta con NRC') }}
                                                 </td>
@@ -1060,16 +1048,13 @@
     </section>
 
 
-
-
-
-    <style>
-        table tr td {
-            font-weight: normal;
-        }
     </style>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('js/admin/acciones.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
 
 <script>
     var delayTimer;
@@ -1148,7 +1133,42 @@
         }, 500);
     });
 </script>
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const nrcSelect = document.getElementById('nrc');
+            const periodoInput = document.getElementById('periodo');
 
+            nrcSelect.addEventListener('change', function() {
+                const selectedOption = nrcSelect.options[nrcSelect.selectedIndex];
+                const periodo = selectedOption.getAttribute('data-periodo');
+                periodoInput.value = periodo ? periodo : '';
+            });
+        });
+
+
+
+        $('#modalImportar').on('hidden.bs.modal', function() {
+            console.log('Modal hidden');
+            $('#idModalImportar')[0].reset();
+            $('#idModalImportar').find('.form-group').removeClass('has-error');
+            $('#idModalImportar').find('.help-block').text('');
+            removeFile();
+        });
+
+
+        function displayFileName(input, fileTextId) {
+            const fileName = input.files[0].name;
+            document.getElementById(fileTextId).textContent = fileName;
+            document.querySelector('.remove-icon').style.display = 'inline'; // Mostrar la "X"
+        }
+
+        function removeFile(inputId, fileTextId) {
+            document.getElementById(inputId).value = ""; // Clear the input
+            document.getElementById(fileTextId).innerHTML =
+                '<i class="fa fa-upload"></i> Haz clic aquí para subir el documento'; // Reset the text
+            document.querySelector('.remove-icon').style.display = 'none'; // Ocultar la "X"
+        }
+        </script>
 
 
 @endsection
