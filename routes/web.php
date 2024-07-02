@@ -57,11 +57,6 @@ Route::get('/estudiantes/create', [EstudianteController::class, 'create'])->name
 //////Protecion para los accesos importantes
 
 Route::middleware(['auth'])->group(function () {
-    //Ruta para controlar el menu expandido a comprimido
-
-    // Ruta para mostrar el formulario de ingreso de datos del Estudiante
-
-    // Ruta para procesar y guardar los datos del Estudiante
 
     Route::get('/estudiantes', [EstudianteController::class, 'index'])->name('estudiantes.index');
 
@@ -111,6 +106,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/admin/{id}/eliminar-periodo', [AdminController::class, 'eliminarPeriodo'])->name('admin.eliminarPeriodo');
     ////eliminarCohorte
     Route::delete('/admin/{id}/eliminar-cohorte', [AdminController::class, 'eliminarCohorte'])->name('admin.eliminarCohorte');
+
+    ///guardarDocentesProyectos
+    Route::post('/admin/guardar-docentes-proyectos', [AdminController::class, 'guardarDocentesProyectos'])->name('admin.guardarDocentesProyectos');
 
     ///ruta cordinador index
     Route::get('/coordinador', [CoordinadorController::class, 'index'])->name('coordinador.index');

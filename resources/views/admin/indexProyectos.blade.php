@@ -530,7 +530,9 @@
 
                                                     </td>
 
-                                                    <td>{{ $grupo->first()?->estudiante?->notas->first()?->notaFinal ?? 'Sin calificar' }}</td>                                                    </td>
+                                                    <td>{{ $grupo->first()?->estudiante?->notas->first()?->notaFinal ?? 'Sin calificar' }}
+                                                    </td>
+                                                    </td>
                                                     <td>{{ $grupo->first()->periodo->numeroPeriodo ?? '' }}</td>
                                                     <td>{{ $grupo->first()->nrcVinculacion->nrc ?? 'NO REQUERIA DE NRC' }}
                                                     </td>
@@ -625,6 +627,9 @@
     <center>
         <button type="button" class="button1_1 efects_button"
             onclick="$('#draggableCardAsignarEstudiante').show();">Asignar estudiante</button>
+
+        <button type="button" class="button1_1 efects_button"
+            onclick="$('#draggableCardAsignarDocente').show();">Asignar Docente</button>
     </center>
     <!-- Tarjeta movible para Asignar Estudiante -->
     <div class="draggable-card1_3" id="draggableCardAsignarEstudiante">
@@ -736,6 +741,107 @@
             </form>
         </div>
     </div>
+
+
+
+
+    <!-- Asignar proyecto al docenteeeeeeeeeeeeeeeeeeeeeeeeeeee -->
+
+
+    <div class="draggable-card1_3" id="draggableCardAsignarDocente">
+        <div class="card-header">
+            <span class="card-title">Asignar Docente</span>
+            <button type="button" class="close" onclick="$('#draggableCardAsignarDocente').hide()">&times;</button>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="{{ route('admin.guardarDocentesProyectos') }}">
+                @csrf
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="label" for="proyecto_id"><strong>Proyecto Disponible:</strong></label>
+                            <select name="proyecto_id" id="proyecto_id" class="form-control input input_select">
+                                <option value="">Seleccione un proyecto</option>
+                                @foreach ($proyectosDisponibles as $proyecto)
+                                    <option value="{{ $proyecto->proyectoId }}">
+                                        @if ($proyecto->director)
+                                            {{ $proyecto->director->apellidos }} {{ $proyecto->director->nombres }}
+                                        @endif
+                                        {{ $proyecto->codigoProyecto }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="label" for="ProfesorParticipante">Docente Participante:</label>
+                            <select name="ProfesorParticipante" class="form-control input input_select" required>
+                                <option value="">Seleccionar Docente Participante</option>
+                                @foreach ($profesores as $profesor)
+                                    <option value="{{ $profesor->id }}">
+                                        Nombres: {{ $profesor->apellidos }} {{ $profesor->nombres }} - Departamento:
+                                        {{ $profesor->departamento }} - Correo: {{ $profesor->correo }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="label" for="periodo"><strong>Periodo:</strong></label>
+                            <select id="periodo" class="form-control input" name="periodo">
+                                @foreach ($periodoAsignacion as $periodo)
+                                    <option value="{{ $periodo->id }}">{{ $periodo->numeroPeriodo }}
+                                        {{ $periodo->periodo }} </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="label" for="FechaInicio">Fecha de Inicio de intervención en el
+                                proyecto:</label>
+                            <input type="date" name="FechaInicio" class="form-control input" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="label" for="FechaFinalizacion">Fecha de Fin de intervención en el
+                                proyecto:</label>
+                            <input type="date" name="FechaFinalizacion"
+                                class="form-control input {{ $errors->has('FechaFinalizacion') ? 'is-invalid' : '' }}"
+                                required>
+                            @if ($errors->has('FechaFinalizacion'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('FechaFinalizacion') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer  d-flex justify-content-center align-items-center">
+                    <button type="submit" class="button">Asignar Docente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
     </section>
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
