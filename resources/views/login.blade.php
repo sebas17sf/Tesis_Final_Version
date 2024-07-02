@@ -26,31 +26,30 @@
 
                 <!-- Boton registrarse -->
                 <div class="button_container_register">
-                    <a href="{{ route('register') }}" class="boton_registro button1" type="button">Validar <i class="fa-regular fa-angles-right"></i></a>
+                    <a href="{{ route('register') }}" class="boton_registro button1" type="button">Validar <i
+                            class="fa-regular fa-angles-right"></i></a>
                 </div>
 
                 @if (session('success'))
-                <script>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Éxito',
-                        text: '{{ session('
-                        success ') }}',
-                        confirmButtonText: 'Ok'
-                    });
-                </script>
+                    <script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Éxito',
+                            text: '{{ session('success') }}',
+                            confirmButtonText: 'Ok'
+                        });
+                    </script>
                 @endif
 
                 @if (session('error'))
-                <script>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: '{{ session('
-                        error ') }}',
-                        confirmButtonText: 'Ok'
-                    });
-                </script>
+                    <script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: '{{ session('error') }}',
+                            confirmButtonText: 'Ok'
+                        });
+                    </script>
                 @endif
 
                 <form class="switch_container" action="{{ route('login') }}" method="POST">
@@ -63,16 +62,19 @@
                         <div>
                             <!-- Campo de correo electrónico -->
                             <label class="description" for="CorreoElectronico">Usuario</label>
-                            <input class="input form_input" type="text" id="CorreoElectronico" name="CorreoElectronico" required placeholder="Ingrese su usuario">
+                            <input class="input form_input" type="text" id="CorreoElectronico"
+                                name="CorreoElectronico" required placeholder="Ingrese su usuario">
                         </div>
                         <!-- Campo de contraseña -->
                         <div>
                             <!-- Campo de contraseña -->
                             <label class="description" for="Contrasena">Contraseña</label>
                             <div class="input-group" style="position: relative;">
-                                <input type="password" class="input form_input" id="Contrasena" name="Contrasena" placeholder="Ingrese su contraseña" required>
+                                <input type="password" class="input form_input" id="Contrasena" name="Contrasena"
+                                    placeholder="Ingrese su contraseña" required>
 
-                                <div id="togglePassword" style="position: absolute; top: 55%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+                                <div id="togglePassword"
+                                    style="position: absolute; top: 55%; right: 10px; transform: translateY(-50%); cursor: pointer;">
                                     <span class="material-icons">
                                         visibility
                                     </span>

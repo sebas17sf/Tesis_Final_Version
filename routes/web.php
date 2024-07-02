@@ -21,6 +21,7 @@ Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
 
 Route::get('/keep-alive', [SessionController::class, 'keepAlive']);
 Route::post('/keep-alive', [SessionController::class, 'keepAlive'])->name('keep-alive');
+Route::post('/update-token-expiration', [SessionController::class, 'updateTokenExpiration'])->name('update-token-expiration');
 
 // Ruta para procesar el inicio de sesión (POST)
 Route::post('/', [LoginController::class, 'login']);
