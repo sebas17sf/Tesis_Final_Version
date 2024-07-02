@@ -952,8 +952,42 @@
             $('#filterFormProfesores')[0].reset();
             applyFilter('#filterFormProfesores', '#tablaAsignaciones');
         }
-    </script>
-    
+   
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const nrcSelect = document.getElementById('nrc');
+            const periodoInput = document.getElementById('periodo');
+
+            nrcSelect.addEventListener('change', function() {
+                const selectedOption = nrcSelect.options[nrcSelect.selectedIndex];
+                const periodo = selectedOption.getAttribute('data-periodo');
+                periodoInput.value = periodo ? periodo : '';
+            });
+        });
+
+
+
+        $('#modalImportar').on('hidden.bs.modal', function() {
+            console.log('Modal hidden');
+            $('#idModalImportar')[0].reset();
+            $('#idModalImportar').find('.form-group').removeClass('has-error');
+            $('#idModalImportar').find('.help-block').text('');
+            removeFile();
+        });
+
+
+        function displayFileName(input, fileTextId) {
+            const fileName = input.files[0].name;
+            document.getElementById(fileTextId).textContent = fileName;
+            document.querySelector('.remove-icon').style.display = 'inline'; // Mostrar la "X"
+        }
+
+        function removeFile(inputId, fileTextId) {
+            document.getElementById(inputId).value = ""; // Clear the input
+            document.getElementById(fileTextId).innerHTML =
+                '<i class="fa fa-upload"></i> Haz clic aquí para subir el documento'; // Reset the text
+            document.querySelector('.remove-icon').style.display = 'none'; // Ocultar la "X"
+        }
 
         function showAlert(alertId, message) {
             const alert = document.getElementById(alertId);
@@ -968,5 +1002,5 @@
             const alert = document.getElementById(alertId);
             alert.style.display = 'none';
         }
-      </script>  
+        </script>
     @endsection
