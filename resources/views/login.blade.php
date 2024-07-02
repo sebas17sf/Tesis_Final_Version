@@ -94,21 +94,8 @@
                         <button type="submit" class="button efects_button">Iniciar Sesión</button>
                     </div>
 
-                    <!-- Divisor de botones -->
-                    <div class="contenedor_divisor">
-                        <hr>
-                        <span>o</span>
-                        <hr>
-                    </div>
+                  
 
-                    <!-- Boton de google -->
-                    <div class="row">
-                        <a href="/auth/github/redirect" class="btn_google">
-                            <img src="/img/logos/github.png" alt="GitHub Icon" width="20">
-                            <span>Continuar con GitHub</span>
-                        </a>
-                    </div>
-                    <!-- Botón de GitHub -->
                 </form>
             </div>
         </div>

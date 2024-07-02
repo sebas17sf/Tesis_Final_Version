@@ -184,14 +184,10 @@
                     <div class="contenedor_botones">
                         <div class="tooltip-container">
                             <span class="tooltip-text">Excel</span>
-                            <form id="reportForm" action="{{ route('coordinador.reportesPracticaI') }}" method="POST"
-                                onsubmit="submitForm(event)">
+                            <form action="{{ route('coordinador.reportesPracticaI') }}" method="POST">
                                 @csrf
-                                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
-                                    <span id="loadingIcon" style="display: none;">
-                                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
-                                    </span>
-                                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                                <button type="submit" class="button3 efects_button btn_excel">
+                                    <i class="fas fa-file-excel"></i>
                                 </button>
                             </form>
                         </div>
@@ -402,7 +398,7 @@
 
                     <div class="tooltip-container">
                                     <span class="tooltip-text">Excel</span>
-                                    <form action="{{ route('coordinador.reportesPracticaII') }}" method="POST">
+                                    <form action="{{ route('coordinador.reportesPracticaIII') }}" method="POST">
                                         @csrf
                                         <button type="submit" class="button3 efects_button btn_excel">
                                             <i class="fas fa-file-excel"></i>
@@ -414,15 +410,15 @@
                         <div class="tooltip-container">
                             <span class="tooltip-text">Importar archivo</span>
                             <button type="button" class="button3 efects_button btn_copy"
-                                onclick="openCard('cardImportarArchivo');">
+                                onclick="openCard('cardImportarArchivo2');">
                                 <i class="fa fa-upload"></i>
                             </button>
                         </div>
                         <!-- Card de Importar archivo -->
-                        <div class="draggable-card1_4" id="cardImportarArchivo" style="display: none;">
+                        <div class="draggable-card1_4" id="cardImportarArchivo2" style="display: none;">
                             <div class="card-header">
                                 <span class="card-title">Importar archivo</span>
-                                <button type="button" class="close" onclick="closeCard('cardImportarArchivo')"><i
+                                <button type="button" class="close" onclick="closeCard('cardImportarArchivo2')"><i
                                         class="fa-thin fa-xmark"></i></button>
                             </div>
                             <div class="card-body">
@@ -485,7 +481,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
-                                    @foreach ($estudiantesPracticasII as $practicaI)
+                                    @foreach ($estudiantesPracticasIII as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
                                                 <td style="text-transform: uppercase; text-align: left;">
@@ -522,7 +518,7 @@
                     <div class="paginator-container">
                         <nav aria-label="..."
                             style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
-                            <div id="totalRows">Estudiantes: {{ $estudiantesPracticasII->total() }}</div>
+                            <div id="totalRows">Estudiantes: {{ $estudiantesPracticasIII->total() }}</div>
                             <ul class="pagination">
                                 <li class="page-item mx-3">
                                     <form method="GET" action="{{ route('admin.aceptarFaseI') }}#practicas2">
@@ -540,51 +536,51 @@
                                     </form>
                                 </li>
 
-                                @if ($estudiantesPracticasII->onFirstPage())
+                                @if ($estudiantesPracticasIII->onFirstPage())
                                     <li class="page-item disabled">
                                         <span class="page-link">Anterior</span>
                                     </li>
                                 @else
                                     <li class="page-item">
                                         <a class="page-link"
-                                            href="{{ $estudiantesPracticasII->previousPageUrl() }}&paginacion2={{ $perPage2 }}#practicas2"
+                                            href="{{ $estudiantesPracticasIII->previousPageUrl() }}&paginacion2={{ $perPage2 }}#practicas2"
                                             aria-label="Anterior">Anterior</a>
                                     </li>
                                 @endif
 
-                                @if ($estudiantesPracticasII->lastPage() > 1)
-                                    @if ($estudiantesPracticasII->currentPage() > 3)
+                                @if ($estudiantesPracticasIII->lastPage() > 1)
+                                    @if ($estudiantesPracticasIII->currentPage() > 3)
                                         <li class="page-item"><a class="page-link"
-                                                href="{{ $estudiantesPracticasII->url(1) }}&paginacion2={{ $perPage2 }}#practicas2">1</a>
+                                                href="{{ $estudiantesPracticasIII->url(1) }}&paginacion2={{ $perPage2 }}#practicas2">1</a>
                                         </li>
-                                        @if ($estudiantesPracticasII->currentPage() > 4)
+                                        @if ($estudiantesPracticasIII->currentPage() > 4)
                                             <li class="page-item disabled"><span class="page-link">...</span></li>
                                         @endif
                                     @endif
-                                    @foreach (range(max(1, $estudiantesPracticasII->currentPage() - 2), min($estudiantesPracticasII->currentPage() + 2, $estudiantesPracticasII->lastPage())) as $i)
-                                        @if ($i == $estudiantesPracticasII->currentPage())
+                                    @foreach (range(max(1, $estudiantesPracticasIII->currentPage() - 2), min($estudiantesPracticasIII->currentPage() + 2, $estudiantesPracticasIII->lastPage())) as $i)
+                                        @if ($i == $estudiantesPracticasIII->currentPage())
                                             <li class="page-item active"><span
                                                     class="page-link">{{ $i }}</span></li>
                                         @else
                                             <li class="page-item"><a class="page-link"
-                                                    href="{{ $estudiantesPracticasII->url($i) }}&paginacion2={{ $perPage2 }}#practicas2">{{ $i }}</a>
+                                                    href="{{ $estudiantesPracticasIII->url($i) }}&paginacion2={{ $perPage2 }}#practicas2">{{ $i }}</a>
                                             </li>
                                         @endif
                                     @endforeach
-                                    @if ($estudiantesPracticasII->currentPage() < $estudiantesPracticasII->lastPage() - 2)
-                                        @if ($estudiantesPracticasII->currentPage() < $estudiantesPracticasII->lastPage() - 3)
+                                    @if ($estudiantesPracticasIII->currentPage() < $estudiantesPracticasIII->lastPage() - 2)
+                                        @if ($estudiantesPracticasIII->currentPage() < $estudiantesPracticasIII->lastPage() - 3)
                                             <li class="page-item disabled"><span class="page-link">...</span></li>
                                         @endif
                                         <li class="page-item"><a class="page-link"
-                                                href="{{ $estudiantesPracticasII->url($estudiantesPracticasII->lastPage()) }}&paginacion2={{ $perPage2 }}#practicas2">{{ $estudiantesPracticasII->lastPage() }}</a>
+                                                href="{{ $estudiantesPracticasIII->url($estudiantesPracticasIII->lastPage()) }}&paginacion2={{ $perPage2 }}#practicas2">{{ $estudiantesPracticasIII->lastPage() }}</a>
                                         </li>
                                     @endif
                                 @endif
 
-                                @if ($estudiantesPracticasII->hasMorePages())
+                                @if ($estudiantesPracticasIII->hasMorePages())
                                     <li class="page-item">
                                         <a class="page-link"
-                                            href="{{ $estudiantesPracticasII->nextPageUrl() }}&paginacion2={{ $perPage2 }}#practicas2"
+                                            href="{{ $estudiantesPracticasIII->nextPageUrl() }}&paginacion2={{ $perPage2 }}#practicas2"
                                             aria-label="Siguiente">Siguiente</a>
                                     </li>
                                 @else
@@ -615,14 +611,10 @@
 
                         <div class="tooltip-container">
                             <span class="tooltip-text">Excel</span>
-                            <form id="reportForm" action="{{ route('coordinador.reportesPracticaIII') }}" method="POST"
-                                onsubmit="submitForm(event)">
+                            <form action="{{ route('coordinador.reportesPracticaIV') }}" method="POST">
                                 @csrf
-                                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
-                                    <span id="loadingIcon" style="display: none;">
-                                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
-                                    </span>
-                                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                                <button type="submit" class="button3 efects_button btn_excel">
+                                    <i class="fas fa-file-excel"></i>
                                 </button>
                             </form>
                         </div>
@@ -630,15 +622,15 @@
                         <div class="tooltip-container">
                             <span class="tooltip-text">Importar archivo</span>
                             <button type="button" class="button3 efects_button btn_copy"
-                                onclick="openCard('cardImportarArchivo');">
+                                onclick="openCard('cardImportarArchivo3');">
                                 <i class="fa fa-upload"></i>
                             </button>
                         </div>
                         <!-- Card de Importar archivo -->
-                        <div class="draggable-card1_4" id="cardImportarArchivo" style="display: none;">
+                        <div class="draggable-card1_4" id="cardImportarArchivo3" style="display: none;">
                             <div class="card-header">
                                 <span class="card-title">Importar archivo</span>
-                                <button type="button" class="close" onclick="closeCard('cardImportarArchivo')"><i
+                                <button type="button" class="close" onclick="closeCard('cardImportarArchivo3')"><i
                                         class="fa-thin fa-xmark"></i></button>
                             </div>
                             <div class="card-body">
@@ -699,7 +691,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
-                                    @foreach ($estudiantesPracticasIII as $practicaI)
+                                    @foreach ($estudiantesPracticasIV as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
                                                 <td style="text-transform: uppercase; text-align: left;">
@@ -737,7 +729,7 @@
                     <div class="paginator-container">
                         <nav aria-label="..."
                             style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
-                            <div id="totalRows">Estudiantes: {{ $estudiantesPracticasIII->total() }}</div>
+                            <div id="totalRows">Estudiantes: {{ $estudiantesPracticasIV->total() }}</div>
                             <ul class="pagination">
                                 <li class="page-item mx-3">
                                     <form method="GET" action="{{ route('admin.aceptarFaseI') }}#practicas3">
@@ -755,35 +747,35 @@
                                     </form>
                                 </li>
 
-                                @if ($estudiantesPracticasIII->onFirstPage())
+                                @if ($estudiantesPracticasIV->onFirstPage())
                                     <li class="page-item disabled">
                                         <span class="page-link">Anterior</span>
                                     </li>
                                 @else
                                     <li class="page-item">
                                         <a class="page-link"
-                                            href="{{ $estudiantesPracticasIII->previousPageUrl() }}&paginacion3={{ $perPage3 }}#practicas3"
+                                            href="{{ $estudiantesPracticasIV->previousPageUrl() }}&paginacion3={{ $perPage3 }}#practicas3"
                                             aria-label="Anterior">Anterior</a>
                                     </li>
                                 @endif
 
-                                @foreach (range(1, $estudiantesPracticasIII->lastPage()) as $i)
-                                    @if ($i == $estudiantesPracticasIII->currentPage())
+                                @foreach (range(1, $estudiantesPracticasIV->lastPage()) as $i)
+                                    @if ($i == $estudiantesPracticasIV->currentPage())
                                         <li class="page-item active">
                                             <span class="page-link">{{ $i }}</span>
                                         </li>
                                     @else
                                         <li class="page-item">
                                             <a class="page-link"
-                                                href="{{ $estudiantesPracticasIII->url($i) }}&paginacion3={{ $perPage3 }}#practicas3">{{ $i }}</a>
+                                                href="{{ $estudiantesPracticasIV->url($i) }}&paginacion3={{ $perPage3 }}#practicas3">{{ $i }}</a>
                                         </li>
                                     @endif
                                 @endforeach
 
-                                @if ($estudiantesPracticasIII->hasMorePages())
+                                @if ($estudiantesPracticasIV->hasMorePages())
                                     <li class="page-item">
                                         <a class="page-link"
-                                            href="{{ $estudiantesPracticasIII->nextPageUrl() }}&paginacion3={{ $perPage3 }}#practicas3"
+                                            href="{{ $estudiantesPracticasIV->nextPageUrl() }}&paginacion3={{ $perPage3 }}#practicas3"
                                             aria-label="Siguiente">Siguiente</a>
                                     </li>
                                 @else
@@ -815,14 +807,10 @@
                     <div class="contenedor_botones">
                         <div class="tooltip-container">
                             <span class="tooltip-text">Excel</span>
-                            <form id="reportForm" action="{{ route('coordinador.reportesPracticaIV') }}" method="POST"
-                                onsubmit="submitForm(event)">
+                            <form action="{{ route('coordinador.reportesPracticaII') }}" method="POST">
                                 @csrf
-                                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
-                                    <span id="loadingIcon" style="display: none;">
-                                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
-                                    </span>
-                                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                                <button type="submit" class="button3 efects_button btn_excel">
+                                    <i class="fas fa-file-excel"></i>
                                 </button>
                             </form>
                         </div>
@@ -830,15 +818,15 @@
                         <div class="tooltip-container">
                             <span class="tooltip-text">Importar archivo</span>
                             <button type="button" class="button3 efects_button btn_copy"
-                                onclick="openCard('cardImportarArchivo');">
+                                onclick="openCard('cardImportarArchivo4');">
                                 <i class="fa fa-upload"></i>
                             </button>
                         </div>
                         <!-- Card de Importar archivo -->
-                        <div class="draggable-card1_4" id="cardImportarArchivo" style="display: none;">
+                        <div class="draggable-card1_4" id="cardImportarArchivo4" style="display: none;">
                             <div class="card-header">
                                 <span class="card-title">Importar archivo</span>
-                                <button type="button" class="close" onclick="closeCard('cardImportarArchivo')"><i
+                                <button type="button" class="close" onclick="closeCard('cardImportarArchivo4')"><i
                                         class="fa-thin fa-xmark"></i></button>
                             </div>
                             <div class="card-body">
@@ -901,7 +889,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
-                                    @foreach ($estudiantesPracticasIV as $practicaI)
+                                    @foreach ($estudiantesPracticasII as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
                                                 <td style="text-transform: uppercase; text-align: left;">
@@ -939,7 +927,7 @@
                     <div class="paginator-container">
                         <nav aria-label="..."
                             style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
-                            <div id="totalRows">Estudiantes: {{ $estudiantesPracticasIV->total() }}</div>
+                            <div id="totalRows">Estudiantes: {{ $estudiantesPracticasII->total() }}</div>
                             <ul class="pagination">
                                 <li class="page-item mx-3">
                                     <form method="GET" action="{{ route('admin.aceptarFaseI') }}#practicas4">
@@ -957,51 +945,51 @@
                                     </form>
                                 </li>
 
-                                @if ($estudiantesPracticasIV->onFirstPage())
+                                @if ($estudiantesPracticasII->onFirstPage())
                                     <li class="page-item disabled">
                                         <span class="page-link">Anterior</span>
                                     </li>
                                 @else
                                     <li class="page-item">
                                         <a class="page-link"
-                                            href="{{ $estudiantesPracticasIV->previousPageUrl() }}&paginacion4={{ $perPage4 }}#practicas4"
+                                            href="{{ $estudiantesPracticasII->previousPageUrl() }}&paginacion4={{ $perPage4 }}#practicas4"
                                             aria-label="Anterior">Anterior</a>
                                     </li>
                                 @endif
 
-                                @if ($estudiantesPracticasIV->lastPage() > 1)
-                                    @if ($estudiantesPracticasIV->currentPage() > 3)
+                                @if ($estudiantesPracticasII->lastPage() > 1)
+                                    @if ($estudiantesPracticasII->currentPage() > 3)
                                         <li class="page-item"><a class="page-link"
-                                                href="{{ $estudiantesPracticasIV->url(1) }}&paginacion4={{ $perPage4 }}#practicas4">1</a>
+                                                href="{{ $estudiantesPracticasII->url(1) }}&paginacion4={{ $perPage4 }}#practicas4">1</a>
                                         </li>
-                                        @if ($estudiantesPracticasIV->currentPage() > 4)
+                                        @if ($estudiantesPracticasII->currentPage() > 4)
                                             <li class="page-item disabled"><span class="page-link">...</span></li>
                                         @endif
                                     @endif
-                                    @foreach (range(max(1, $estudiantesPracticasIV->currentPage() - 2), min($estudiantesPracticasIV->currentPage() + 2, $estudiantesPracticasIV->lastPage())) as $i)
-                                        @if ($i == $estudiantesPracticasIV->currentPage())
+                                    @foreach (range(max(1, $estudiantesPracticasII->currentPage() - 2), min($estudiantesPracticasII->currentPage() + 2, $estudiantesPracticasII->lastPage())) as $i)
+                                        @if ($i == $estudiantesPracticasII->currentPage())
                                             <li class="page-item active"><span
                                                     class="page-link">{{ $i }}</span></li>
                                         @else
                                             <li class="page-item"><a class="page-link"
-                                                    href="{{ $estudiantesPracticasIV->url($i) }}&paginacion4={{ $perPage4 }}#practicas4">{{ $i }}</a>
+                                                    href="{{ $estudiantesPracticasII->url($i) }}&paginacion4={{ $perPage4 }}#practicas4">{{ $i }}</a>
                                             </li>
                                         @endif
                                     @endforeach
-                                    @if ($estudiantesPracticasIV->currentPage() < $estudiantesPracticasIV->lastPage() - 2)
-                                        @if ($estudiantesPracticasIV->currentPage() < $estudiantesPracticasIV->lastPage() - 3)
+                                    @if ($estudiantesPracticasII->currentPage() < $estudiantesPracticasII->lastPage() - 2)
+                                        @if ($estudiantesPracticasII->currentPage() < $estudiantesPracticasII->lastPage() - 3)
                                             <li class="page-item disabled"><span class="page-link">...</span></li>
                                         @endif
                                         <li class="page-item"><a class="page-link"
-                                                href="{{ $estudiantesPracticasIV->url($estudiantesPracticasIV->lastPage()) }}&paginacion4={{ $perPage4 }}#practicas4">{{ $estudiantesPracticasIV->lastPage() }}</a>
+                                                href="{{ $estudiantesPracticasII->url($estudiantesPracticasII->lastPage()) }}&paginacion4={{ $perPage4 }}#practicas4">{{ $estudiantesPracticasII->lastPage() }}</a>
                                         </li>
                                     @endif
                                 @endif
 
-                                @if ($estudiantesPracticasIV->hasMorePages())
+                                @if ($estudiantesPracticasII->hasMorePages())
                                     <li class="page-item">
                                         <a class="page-link"
-                                            href="{{ $estudiantesPracticasIV->nextPageUrl() }}&paginacion4={{ $perPage4 }}#practicas4"
+                                            href="{{ $estudiantesPracticasII->nextPageUrl() }}&paginacion4={{ $perPage4 }}#practicas4"
                                             aria-label="Siguiente">Siguiente</a>
                                     </li>
                                 @else
@@ -1022,7 +1010,7 @@
 
 
         <br>
-        <h4><b>Estudiantes Practica 2.1</b></h4>
+        <h4><b>Estudiantes Practica 2.2</b></h4>
 
         <hr>
         <section>
@@ -1032,14 +1020,10 @@
                     <div class="contenedor_botones">
                         <div class="tooltip-container">
                             <span class="tooltip-text">Excel</span>
-                            <form id="reportForm" action="{{ route('coordinador.reportesPracticaV') }}" method="POST"
-                                onsubmit="submitForm(event)">
+                            <form action="{{ route('coordinador.reportesPracticaV') }}" method="POST">
                                 @csrf
-                                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
-                                    <span id="loadingIcon" style="display: none;">
-                                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
-                                    </span>
-                                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                                <button type="submit" class="button3 efects_button btn_excel">
+                                    <i class="fas fa-file-excel"></i>
                                 </button>
                             </form>
                         </div>
@@ -1047,15 +1031,15 @@
                         <div class="tooltip-container">
                             <span class="tooltip-text">Importar archivo</span>
                             <button type="button" class="button3 efects_button btn_copy"
-                                onclick="openCard('cardImportarArchivo');">
+                                onclick="openCard('cardImportarArchivo5');">
                                 <i class="fa fa-upload"></i>
                             </button>
                         </div>
                         <!-- Card de Importar archivo -->
-                        <div class="draggable-card1_4" id="cardImportarArchivo" style="display: none;">
+                        <div class="draggable-card1_4" id="cardImportarArchivo5" style="display: none;">
                             <div class="card-header">
                                 <span class="card-title">Importar archivo</span>
-                                <button type="button" class="close" onclick="closeCard('cardImportarArchivo')"><i
+                                <button type="button" class="close" onclick="closeCard('cardImportarArchivo5')"><i
                                         class="fa-thin fa-xmark"></i></button>
                             </div>
                             <div class="card-body">

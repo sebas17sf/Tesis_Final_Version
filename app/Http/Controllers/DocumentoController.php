@@ -76,19 +76,17 @@ class DocumentoController extends Controller
                 'estudiantes.nombres',
                 'estudiantes.cedula',
                 'estudiantes.carrera',
-                'estudiantes.provincia',
                 'asignacionproyectos.inicioFecha',
                 'proyectos.nombreProyecto',
             )
             ->where('asignacionproyectos.proyectoId', $proyectoID)
-            ->where('estudiantes.idPeriodo', '=', $idPeriodo)
+            ->where('asignacionproyectos.idPeriodo', $asignacionProyecto->idPeriodo)
             ->orderBy('estudiantes.apellidos', 'asc')
             ->get();
 
         // Obtener Carrera, Provincia y FechaInicio del primer estudiante asignado al proyecto
         $primerEstudiante = $datosEstudiantes->first();
         $carreraEstudiante = mb_strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú'], ['A', 'E', 'I', 'O', 'U'], $primerEstudiante->carrera));
-        $provinciaEstudiante = $primerEstudiante->provincia;
         $carreraNormal = $primerEstudiante->carrera;
         $fechaInicioProyecto = $primerEstudiante->inicioFecha;
         $meses = [
@@ -126,7 +124,6 @@ class DocumentoController extends Controller
         // Reemplazar los valores constantes en la plantilla
         $template->setValue('Carrera', $carreraEstudiante);
         $template->setValue('CarreraNormal', $carreraNormal);
-        $template->setValue('Provincia', $provinciaEstudiante);
         $template->setValue('FechaInicio', $fechaFormateada);
         $template->setValue('NombreProyecto', $NombreProyecto);
 
@@ -213,7 +210,7 @@ class DocumentoController extends Controller
         $nombresEstudiante = $estudiante->nombres;
         $cedulaEstudiante = $estudiante->cedula;
         $carreraEstudiante = $estudiante->carrera;
-        $provinciaEstudiante = $estudiante->provincia;
+        $provinciaEstudiante = 'Santo Domingo';
 
         // Reemplazar los valores en la plantilla
         $template->setValue('Apellidos', $apellidosEstudiante);
@@ -267,7 +264,6 @@ class DocumentoController extends Controller
         // Verificar si el archivo de plantilla existe
         if (!file_exists($plantillaPath)) {
             abort(404, 'El archivo de plantilla no existe.');
-
         }
 
         // Cargar la plantilla XLSX existente
@@ -294,41 +290,40 @@ class DocumentoController extends Controller
 
         if ($asignacionProyecto) {
             $proyectoID = $asignacionProyecto->proyectoId;
+            $idPeriodo = $asignacionProyecto->idPeriodo;
         } else {
-            // Manejar el caso en que no se encontró la asignación de proyecto para el estudiante
-            return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
+             return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');
         }
 
         // Consulta para obtener los datos de los estudiantes asignados a un proyecto específico
         $datosEstudiantes = DB::table('estudiantes')
-            ->join('asignacionproyectos', 'estudiantes.estudianteId', '=', 'asignacionproyectos.estudianteId')
-            ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
-            ->join('usuarios', 'estudiantes.userId', '=', 'usuarios.userId')
-            ->join('profesuniversidad as director', 'proyectos.directorId', '=', 'director.id')
-            ->join('profesuniversidad as participante', 'asignacionproyectos.participanteId', '=', 'participante.id')
-            ->select(
-                'estudiantes.apellidos',
-                'estudiantes.nombres',
-                'estudiantes.cedula',
-                'estudiantes.departamento',
-                'estudiantes.celular',
-                'estudiantes.carrera',
-                'estudiantes.provincia',
-                'usuarios.correoElectronico',
-                'asignacionproyectos.inicioFecha',
-                'asignacionproyectos.finalizacionFecha',
-                'proyectos.nombreProyecto',
-                'proyectos.departamentoTutor',
-                'director.nombres as NombreProfesor',
-                'director.apellidos as ApellidoProfesor',
-                'participante.nombres as NombreParticipante',
-                'participante.apellidos as ApellidoParticipante'
-            )
-            ->where('proyectos.estado', '=', 'Ejecucion')
-            ->where('asignacionproyectos.proyectoId', '=', $proyectoID)
-            ->orderBy('estudiantes.apellidos', 'asc')
+        ->join('asignacionproyectos', 'estudiantes.estudianteId', '=', 'asignacionproyectos.estudianteId')
+        ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
+          ->join('profesuniversidad as director', 'proyectos.directorId', '=', 'director.id')
+        ->join('profesuniversidad as participante', 'asignacionproyectos.participanteId', '=', 'participante.id')
+        ->select(
+            'estudiantes.apellidos',
+            'estudiantes.nombres',
+            'estudiantes.cedula',
+            'estudiantes.departamento',
+            'estudiantes.celular',
+            'estudiantes.carrera',
+            'estudiantes.correo',
+            'asignacionproyectos.inicioFecha',
+            'asignacionproyectos.finalizacionFecha',
+            'proyectos.nombreProyecto',
+            'proyectos.departamentoTutor',
+            'director.nombres as NombreProfesor',
+            'director.apellidos as ApellidoProfesor',
+            'participante.nombres as NombreParticipante',
+            'participante.apellidos as ApellidoParticipante'
+        )
+        ->where('proyectos.estado', '=', 'Ejecucion')
+        ->where('asignacionproyectos.idPeriodo', $asignacionProyecto->idPeriodo)
+        ->where('asignacionproyectos.proyectoId', '=', $proyectoID)
+        ->orderBy('estudiantes.apellidos', 'asc')
+        ->get();
 
-            ->get();
 
 
         // Verificar si se recuperaron datos
@@ -360,9 +355,7 @@ class DocumentoController extends Controller
         ];
 
         $fechaFormateada = date('d F Y', strtotime($fechaInicioProyecto));
-
         $fechaFormateada = strtr($fechaFormateada, $meses);
-
 
         $NombreProyecto = $primerEstudiante->nombreProyecto;
         $horasVinculacionConstante = 96;
@@ -371,78 +364,56 @@ class DocumentoController extends Controller
         $apellidoProfesor = $primerEstudiante->ApellidoProfesor;
         $nombreCombinado = "Ing. {$nombreProfesor} {$apellidoProfesor}, Mgtr";
 
-
-
         // Obtener la hoja activa del archivo XLSX
         $sheet = $spreadsheet->getActiveSheet();
 
         // Clonar filas en la plantilla
-        $filaInicio = 5; // La primera fila de datos comienza en la fila 2
+        $filaInicio = 5; // La primera fila de datos comienza en la fila 5
         $cantidadFilas = count($datosEstudiantes);
-        $proyectoCellStart = 'B5';
-        $proyectoN = 'A5';
-        $proyectoCellEnd = 'B' . (5 + count($datosEstudiantes) - 1);
-        $proyectoNEnd = 'A' . (5 + count($datosEstudiantes) - 1);
-
         $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
 
         // Bucle para reemplazar los valores en la plantilla
         foreach ($datosEstudiantes as $index => $estudiante) {
+            $filaActual = $filaInicio + $index;
             $apellidoNombre = $estudiante->apellidos . ' ' . $estudiante->nombres;
-            $sheet->setCellValue('C' . ($filaInicio + $index), $apellidoNombre);
-            $sheet->setCellValue('D' . ($filaInicio + $index), $estudiante->cedula);
-            $sheet->setCellValue('E' . ($filaInicio + $index), $estudiante->celular);
+            $sheet->setCellValue('C' . $filaActual, $apellidoNombre);
+            $sheet->setCellValue('D' . $filaActual, $estudiante->cedula);
+            $sheet->setCellValue('E' . $filaActual, $estudiante->celular);
             $horasVinculacionConstanteEntero = round($horasVinculacionConstante);
-            $sheet->setCellValue('L' . ($filaInicio + $index), $horasVinculacionConstanteEntero);
-            $sheet->setCellValue('H' . ($filaInicio + $index), $estudiante->departamento);
-            $sheet->setCellValue('I' . ($filaInicio + $index), $estudiante->carrera);
-            $sheet->setCellValue('J' . ($filaInicio + $index), $fechaInicioProyecto);
-            $sheet->setCellValue('K' . ($filaInicio + $index), $fechaFinProyecto);
-            $sheet->setCellValue('G' . ($filaInicio + $index), $matriz);
-            $sheet->setCellValue('F' . ($filaInicio + $index), $estudiante->correoElectronico);
-
-
+            $sheet->setCellValue('L' . $filaActual, $horasVinculacionConstanteEntero);
+            $sheet->setCellValue('H' . $filaActual, $estudiante->departamento);
+            $sheet->setCellValue('I' . $filaActual, $estudiante->carrera);
+            $sheet->setCellValue('J' . $filaActual, $fechaInicioProyecto);
+            $sheet->setCellValue('K' . $filaActual, $fechaFinProyecto);
+            $sheet->setCellValue('G' . $filaActual, $matriz);
+            $sheet->setCellValue('F' . $filaActual, $estudiante->correo);
         }
 
-
-        $sheet->mergeCells($proyectoCellStart . ':' . $proyectoCellEnd);
-        $sheet->mergeCells($proyectoN . ':' . $proyectoNEnd);
+        // Unir celdas para los encabezados y el proyecto
+        $sheet->mergeCells("B5:B" . (5 + $cantidadFilas - 1));
+        $sheet->mergeCells("A5:A" . (5 + $cantidadFilas - 1));
         $sheet->setCellValue('B5', $NombreProyecto);
+        $sheet->setCellValue('A5', '1');
+
         $sheet->mergeCells('B18:D18');
         $sheet->mergeCells('B17:D17');
         $sheet->mergeCells('B19:D19');
-        $sheet->setCellValue('A5', '1');
-
-
-
-        // Reemplazar los valores constantes en la plantilla
+        $sheet->setCellValue('B17', $nombreCombinado);
+        $sheet->setCellValue('B18', $departamento);
+        $sheet->setCellValue('B19', 'Director del proyecto');
+        $sheet->setCellValue('B9', 'Fecha:');
         $sheet->setCellValue('C9', $fechaFormateada);
-        $style = $sheet->getStyle('C9');
-        $style->getFont()->setName('Calibri')->setSize(16);
-
-
-
         $sheet->setCellValue('C2', $departamentoProyecto);
 
-        $sheet->setCellValue('B17', $nombreCombinado);
-        $style = $sheet->getStyle('B17');
-        $style->getFont()->setName('Calibri')->setSize(16)->setBold(true);
-        $style->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
-        $sheet->setCellValue('B18', $departamento);
-        $style = $sheet->getStyle('B18');
-        $style->getFont()->setName('Calibri')->setSize(16)->setBold(true);
-        $style->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
-        $sheet->setCellValue('B19', 'Director del proyecto');
-        $style = $sheet->getStyle('B19');
-        $style->getFont()->setName('Calibri')->setSize(16)->setBold(true);
-        $style->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
-        $sheet->setCellValue('B9', 'Fecha:');
-        $style = $sheet->getStyle('B9');
-        $style->getFont()->setName('Calibri')->setSize(16)->setBold(true);
-
+        // Formatear celdas
+        $sheet->getStyle('C9')->getFont()->setName('Calibri')->setSize(16);
+        $sheet->getStyle('B17')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
+        $sheet->getStyle('B17')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('B18')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
+        $sheet->getStyle('B18')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('B19')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
+        $sheet->getStyle('B19')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('B9')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
 
         // Descargar el documento generado
         $nombreArchivo = '1.3-Número-Horas-Estudiantes.xlsx';
@@ -450,6 +421,7 @@ class DocumentoController extends Controller
         $writer->save($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
     }
+
 
 
     ////////////////////////Creacion de infomreeeeeeeeeee///////////////////////////////////
@@ -497,7 +469,6 @@ class DocumentoController extends Controller
                 'estudiantes.cedula',
                 'estudiantes.carrera',
                 'estudiantes.departamento',
-                'estudiantes.provincia',
                 'asignacionproyectos.inicioFecha',
                 'asignacionproyectos.finalizacionFecha',
                 'proyectos.NombreProyecto',
@@ -507,6 +478,7 @@ class DocumentoController extends Controller
                 'participante.apellidos as ApellidoAsignado'
             )
             ->where('asignacionproyectos.proyectoId', '=', $proyectoID)
+            ->where('asignacionproyectos.idPeriodo', $asignacionProyecto->idPeriodo)
             ->orderBy('estudiantes.apellidos', 'asc')
             ->get();
 
@@ -538,7 +510,7 @@ class DocumentoController extends Controller
         // Obtener Carrera, Provincia y FechaInicio del primer estudiante asignado al proyecto
         $primerEstudiante = $datosEstudiantes->first();
         $carreraEstudiante = strtoupper($primerEstudiante->carrera);
-        $provinciaEstudiante = $primerEstudiante->provincia;
+        $provinciaEstudiante = 'Santo Domingo';
         $departamento = mb_strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú'], ['A', 'E', 'I', 'O', 'U'], $primerEstudiante->departamento));
         $fechaInicioProyecto = $primerEstudiante->inicioFecha;
         $fechaFinProyecto = $primerEstudiante->finalizacionFecha;
@@ -1506,7 +1478,7 @@ class DocumentoController extends Controller
             $nombreCompleto = mb_strtoupper($docente->apellidos . ', ' . $docente->nombres, 'UTF-8');
             $sheet->setCellValue('B' . ($filaInicio + $index), $nombreCompleto);
             $sheet->setCellValue('C' . ($filaInicio + $index), $docente->correo); // No convertir a mayúsculas
-            $sheet->setCellValue('D' . ($filaInicio + $index), mb_strtoupper($docente->usuario, 'UTF-8'));
+            $sheet->setCellValue('D' . ($filaInicio + $index), ($docente->usuario));
             $sheet->setCellValue('E' . ($filaInicio + $index), mb_strtoupper($docente->cedula, 'UTF-8'));
             $sheet->setCellValue('F' . ($filaInicio + $index), mb_strtoupper($docente->departamento, 'UTF-8'));
             $sheet->setCellValue('G' . ($filaInicio + $index), mb_strtoupper($docente->espeId, 'UTF-8'));
@@ -2155,7 +2127,7 @@ class DocumentoController extends Controller
         $estudiante = Auth::user()->estudiante;
 
         // Verificar el estado del estudiante
-        if ($estudiante->estado === 'En proceso de revision' || $estudiante->estado === 'Aprobado-practicas') {
+        if ($estudiante->estado === 'En proceso de revision') {
             // Redirigir o mostrar un mensaje de error, según tus necesidades
             return redirect()->back()->with('error', 'No tienes acceso a esta página en este momento.');
         }

@@ -891,8 +891,12 @@ class DocumentosVinculacion extends Controller
                 }
 
                 // Importar prácticas
-                $practica1 = PracticaII::where('estudianteId', $estudiante->estudianteId)->first();
-                $empresa = Empresa::where('nombreEmpresa', $row[18])->first();
+                $practica1 = PracticaIII::where('estudianteId', $estudiante->estudianteId)->first();
+                $empresa = Empresa::where('nombreEmpresa', $row[18])
+                ->orWhere(function($query) use ($row) {
+                    $query->where('rucEmpresa', $row[19]);
+                })
+                ->first();
                 $tutorAcademico = ProfesUniversidad::where('apellidos', $row[33])->first();
                 $nombreTutorEmpresarial = $row[27] . ' ' . $row[28];
 
@@ -911,7 +915,7 @@ class DocumentosVinculacion extends Controller
                     'HoraSalida' => $row[14],
                     'HorasPlanificadas' => $row[15],
                     'tipoPractica' => $row[16],
-                    'idEmpresa' => $empresa ? $empresa->id : null,
+                    'idEmpresa' => $empresa -> id,
                     'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
                     'CedulaTutorEmpresarial' => $row[29],
                     'nrc' => null,
@@ -925,7 +929,7 @@ class DocumentosVinculacion extends Controller
                 ];
 
                 if (!$practica1) {
-                    PracticaII::create($practicaData);
+                    PracticaIII::create($practicaData);
                 } else {
                     $practica1->update($practicaData);
                 }
@@ -993,9 +997,13 @@ class DocumentosVinculacion extends Controller
                 }
 
                 // Importar prácticas
-                $practica1 = PracticaIII::where('estudianteId', $estudiante->estudianteId)->first();
-                $empresa = Empresa::where('nombreEmpresa', $row[18])->first();
-                $tutorAcademico = ProfesUniversidad::where('apellidos', $row[33])->first();
+                $practica1 = PracticaIV::where('estudianteId', $estudiante->estudianteId)->first();
+                $empresa = Empresa::where('nombreEmpresa', $row[18])
+                ->orWhere(function($query) use ($row) {
+                    $query->where('rucEmpresa', $row[19]);
+                })
+                ->first();
+                 $tutorAcademico = ProfesUniversidad::where('apellidos', $row[33])->first();
                 $nombreTutorEmpresarial = $row[27] . ' ' . $row[28];
 
                 $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[11]);
@@ -1013,7 +1021,7 @@ class DocumentosVinculacion extends Controller
                     'HoraSalida' => $row[14],
                     'HorasPlanificadas' => $row[15],
                     'tipoPractica' => $row[16],
-                    'idEmpresa' => $empresa ? $empresa->id : null,
+                    'idEmpresa' => $empresa -> id,
                     'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
                     'CedulaTutorEmpresarial' => $row[29],
                     'nrc' => null,
@@ -1027,7 +1035,7 @@ class DocumentosVinculacion extends Controller
                 ];
 
                 if (!$practica1) {
-                    PracticaIII::create($practicaData);
+                    PracticaIV::create($practicaData);
                 } else {
                     $practica1->update($practicaData);
                 }
@@ -1095,8 +1103,12 @@ class DocumentosVinculacion extends Controller
                 }
 
                 // Importar prácticas
-                $practica1 = PracticaIV::where('estudianteId', $estudiante->estudianteId)->first();
-                $empresa = Empresa::where('nombreEmpresa', $row[18])->first();
+                $practica1 = PracticaII::where('estudianteId', $estudiante->estudianteId)->first();
+                $empresa = Empresa::where('nombreEmpresa', $row[18])
+                ->orWhere(function($query) use ($row) {
+                    $query->where('rucEmpresa', $row[19]);
+                })
+                ->first();
                 $tutorAcademico = ProfesUniversidad::where('apellidos', $row[33])->first();
                 $nombreTutorEmpresarial = $row[27] . ' ' . $row[28];
 
@@ -1115,7 +1127,7 @@ class DocumentosVinculacion extends Controller
                     'HoraSalida' => $row[14],
                     'HorasPlanificadas' => $row[15],
                     'tipoPractica' => $row[16],
-                    'idEmpresa' => $empresa ? $empresa->id : null,
+                    'idEmpresa' => $empresa -> id,
                     'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
                     'CedulaTutorEmpresarial' => $row[29],
                     'nrc' => null,
@@ -1129,7 +1141,7 @@ class DocumentosVinculacion extends Controller
                 ];
 
                 if (!$practica1) {
-                    PracticaIV::create($practicaData);
+                    PracticaII::create($practicaData);
                 } else {
                     $practica1->update($practicaData);
                 }
