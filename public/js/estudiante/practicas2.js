@@ -1,4 +1,57 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const horasPracticaI = document.getElementById('horasPracticaI');
+    const horasPlanificadasInput = document.getElementById('HorasPlanificadas');
+    const horasTotales = document.getElementById('horasTotales');
+
+    // Función para actualizar las horas totales
+    function actualizarHorasTotales() {
+        const horasPracticaIValue = parseInt(horasPracticaI.textContent) || 0;
+        const horasPlanificadasValue = parseInt(horasPlanificadasInput.value) || 0;
+
+        // Suma y muestra el resultado
+        horasTotales.textContent = horasPracticaIValue + horasPlanificadasValue;
+    }
+
+    // Escucha el evento de entrada en el campo de horas planificadas
+    horasPlanificadasInput.addEventListener('input', actualizarHorasTotales);
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const inputHorasPlanificadas = document.getElementById('HorasPlanificadas');
+    const errorHorasPlanificadas = document.getElementById('errorHorasPlanificadas');
+
+    inputHorasPlanificadas.addEventListener('input', function () {
+        const horas = parseInt(inputHorasPlanificadas.value, 10);
+
+        if (horas > 96 || horas < 60) {
+            errorHorasPlanificadas.textContent = 'Debe ingresar un valor entre 60 y 96 horas.';
+            errorHorasPlanificadas.style.color = 'red';
+        } else {
+            errorHorasPlanificadas.textContent = '';
+        }
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const inputNombre = document.getElementById('NombreTutorEmpresarial');
+    const errorNombre = document.getElementById('errorNombre');
+
+    inputNombre.addEventListener('input', function () {
+        const nombre = inputNombre.value;
+        // Verifica si el nombre contiene números
+        if (/[0-9]/.test(nombre)) {
+            errorNombre.textContent = 'El nombre no debe contener números.';
+            // Opcional: Puedes limpiar el input o eliminar los números ingresados
+            // inputNombre.value = nombre.replace(/[0-9]/g, '');
+        } else {
+            errorNombre.textContent = ''; // Limpia el mensaje de error si el nombre es válido
+        }
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
     const inputCedula = document.getElementById('CedulaTutorEmpresarial');
     const errorCedula = document.getElementById('errorCedula');
 
@@ -43,24 +96,6 @@ function validarCedulaEcuatoriana(cedula) {
     return digitoVerificador === decimoDigito;
 }
 
-
-document.addEventListener('DOMContentLoaded', function () {
-    const inputNombre = document.getElementById('NombreTutorEmpresarial');
-    const errorNombre = document.getElementById('errorNombre');
-
-    inputNombre.addEventListener('input', function () {
-        const nombre = inputNombre.value;
-        // Verifica si el nombre contiene números
-        if (/[0-9]/.test(nombre)) {
-            errorNombre.textContent = 'El nombre no debe contener números.';
-            // Opcional: Puedes limpiar el input o eliminar los números ingresados
-            // inputNombre.value = nombre.replace(/[0-9]/g, '');
-        } else {
-            errorNombre.textContent = ''; // Limpia el mensaje de error si el nombre es válido
-        }
-    });
-});
-
 document.addEventListener('DOMContentLoaded', function () {
     const inputTelefono = document.getElementById('TelefonoTutorEmpresarial');
     const errorTelefono = document.getElementById('errorTelefono');
@@ -90,39 +125,6 @@ document.addEventListener('DOMContentLoaded', function () {
             errorEmail.textContent = 'Ingrese un correo electrónico válido.';
         } else {
             errorEmail.textContent = ''; // Limpia el mensaje de error si el correo es válido
-        }
-    });
-});
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    const inputHorasPlanificadas = document.getElementById('HorasPlanificadas');
-    const errorHorasPlanificadas = document.getElementById('errorHorasPlanificadas');
-
-    inputHorasPlanificadas.addEventListener('input', function () {
-        const horas = parseInt(inputHorasPlanificadas.value, 10);
-
-        if (horas !== 144) {
-            errorHorasPlanificadas.textContent = 'Debe ingresar exactamente 144 horas.';
-        } else {
-            errorHorasPlanificadas.textContent = ''; // Limpia el mensaje de error si el valor es 144
-        }
-    });
-});
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    const inputHorasPlanificadas = document.getElementById('HorasPlanificadas');
-    const errorHorasPlanificadas = document.getElementById('errorHorasPlanificadas');
-
-    inputHorasPlanificadas.addEventListener('input', function () {
-        const horas = parseInt(inputHorasPlanificadas.value, 10);
-
-        if (horas > 144 || horas < 80) {
-            errorHorasPlanificadas.textContent = 'Debe ingresar un valor entre 80 y 144 horas.';
-            errorHorasPlanificadas.style.color = 'red';
-        } else {
-            errorHorasPlanificadas.textContent = '';
         }
     });
 });

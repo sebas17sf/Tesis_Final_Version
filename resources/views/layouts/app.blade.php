@@ -25,134 +25,137 @@
     body {
         overflow-x: hidden;
     }
+
     .contenedor_alerta {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #dff0d8;
-            border: 1px solid #d6e9c6;
-            color: #3c763d;
-            padding: 15px;
-            margin: 15px;
-            border-radius: 4px;
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            max-width: 300px;
-            width: auto;
-        }
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #dff0d8;
+        border: 1px solid #d6e9c6;
+        color: #3c763d;
+        padding: 15px;
+        margin: 15px;
+        border-radius: 4px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        max-width: 300px;
+        width: auto;
+    }
 
-        .contenedor_alerta .icon_alert {
-            margin-right: 10px;
-            font-size: 24px;
-        }
+    .contenedor_alerta .icon_alert {
+        margin-right: 10px;
+        font-size: 24px;
+    }
 
-        .contenedor_alerta .content_alert {
-            flex: 1;
-        }
+    .contenedor_alerta .content_alert {
+        flex: 1;
+    }
 
-        .contenedor_alerta .title {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
+    .contenedor_alerta .title {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
 
-        .contenedor_alerta .icon_remove button {
-            background: none;
-            border: none;
-            color: #3c763d;
-            font-size: 24px;
-            cursor: pointer;
-        }
+    .contenedor_alerta .icon_remove button {
+        background: none;
+        border: none;
+        color: #3c763d;
+        font-size: 24px;
+        cursor: pointer;
+    }
 
-        .contenedor_alerta .icon_remove button:hover {
-            color: #2b542c;
-        }
+    .contenedor_alerta .icon_remove button:hover {
+        color: #2b542c;
+    }
 
-        .contenedor_alerta .body {
-            word-wrap: break-word;
-        }
+    .contenedor_alerta .body {
+        word-wrap: break-word;
+    }
 </style>
 @if (session('show_alert'))
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let timeout;
-        let countdown;
-        let timeLeft = 5 * 60; // 5 minutos en segundos
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let timeout;
+            let countdown;
+            let timeLeft = 5 * 60; // 5 minutos en segundos
 
-        window.onload = resetTimer;
-        document.onmousemove = resetTimer;
-        document.onkeypress = resetTimer;
+            window.onload = resetTimer;
+            document.onmousemove = resetTimer;
+            document.onkeypress = resetTimer;
 
-        function showSessionAlert() {
-            Swal.fire({
-                title: 'Tu sesión está a punto de expirar',
-                html: "¿Deseas mantener la sesión activa? <br> <span id='countdown'></span>",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#7066e0',
-                cancelButtonColor: '#808080',
-                confirmButtonText: 'Mantener sesión',
-                cancelButtonText: 'Salir',
-                allowOutsideClick: false,
-                onOpen: () => {
-                    countdown = setInterval(function() {
-                        document.getElementById('countdown').innerText = `${Math.floor(timeLeft / 60)} minutos y ${timeLeft % 60} segundos restantes`;
-                        timeLeft--;
-                    }, 1000);
-                },
-                onClose: () => {
-                    clearInterval(countdown);
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    fetch('{{ route('keep-alive') }}', {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                Swal.fire({
-                                    title: 'Sesión extendida',
-                                    text: 'Tu sesión se ha extendido exitosamente.',
-                                    icon: 'success',
-                                    allowOutsideClick: false
-                                });
-                            } else {
-                                Swal.fire({
-                                    title: 'Error',
-                                    text: 'No se pudo extender la sesión.',
-                                    icon: 'error',
-                                    allowOutsideClick: false
-                                });
-                            }
-                        });
-                } else {
-                    window.location.href = '{{ route('logout') }}';
-                }
-            });
-        }
+            function showSessionAlert() {
+                Swal.fire({
+                    title: 'Tu sesión está a punto de expirar',
+                    html: "¿Deseas mantener la sesión activa? <br> <span id='countdown'></span>",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#7066e0',
+                    cancelButtonColor: '#808080',
+                    confirmButtonText: 'Mantener sesión',
+                    cancelButtonText: 'Salir',
+                    allowOutsideClick: false,
+                    onOpen: () => {
+                        countdown = setInterval(function() {
+                            document.getElementById('countdown').innerHTML =
+                                `${Math.floor(timeLeft / 60)} minutos y ${timeLeft % 60} segundos restantes`;
+                            timeLeft--;
+                        }, 1000);
+                    },
+                    onClose: () => {
+                        clearInterval(countdown);
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch('{{ route('keep-alive') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'Content-Type': 'application/json'
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire({
+                                        title: 'Sesión extendida',
+                                        text: 'Tu sesión se ha extendido exitosamente.',
+                                        icon: 'success',
+                                        allowOutsideClick: false
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: 'No se pudo extender la sesión.',
+                                        icon: 'error',
+                                        allowOutsideClick: false
+                                    });
+                                }
+                            });
+                    } else {
+                        window.location.href = '{{ route('logout') }}';
+                    }
+                });
+            }
 
-        function resetTimer() {
-            // Limpiar el temporizador existente
-            clearTimeout(timeout);
+            function resetTimer() {
+                // Limpiar el temporizador existente
+                clearTimeout(timeout);
 
-            // Restablecer el tiempo restante
-            timeLeft = 5 * 60;
+                // Restablecer el tiempo restante
+                timeLeft = 5 * 60;
 
-            // Establecer un nuevo temporizador
-            timeout = setTimeout(showSessionAlert, 5 * 60 * 1000); // 5 minutos
-        }
+                // Establecer un nuevo temporizador
+                timeout = setTimeout(showSessionAlert, 5 * 60 * 1000); // 5 minutos
+            }
 
-        resetTimer();
-    });
-</script>
+            resetTimer();
+        });
+    </script>
 @endif
+
 <body>
     <!-- Barra de navegación en el lado izquierdo -->
     <section class="content-sidebar {{ session('menuState') == 'collapsed' ? 'content-sidebar-hidden' : '' }}"
@@ -213,7 +216,8 @@
         class="content-navbar dimension-nav {{ session('menuState') == 'collapsed' ? 'dimension-nav-hidden' : '' }}">
         <!-- Toggle sidebar -->
         <div class="icon-menu-sidebar" onclick="toggleSidebar()">
-                <i class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
+            <i
+                class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
         </div>
         <div class="nameDirector">
             <label class="labell">Usuario</label>
@@ -229,7 +233,7 @@
         <main class="navbar">
             <button class="profile-icon dropdown" id="profile-button">
                 <div class="name-profile">
-                    <span>  {{ explode(' ', Auth::user()->estudiante->nombres)[0] }}
+                    <span> {{ explode(' ', Auth::user()->estudiante->nombres)[0] }}
                         {{ explode(' ', Auth::user()->estudiante->apellidos)[0] }}</span>
                 </div>
                 <div class="icon-profile">
@@ -245,8 +249,8 @@
                     </a>
 
                     <a href="{{ route('estudiantes.cambio-credenciales') }}" class="change_password">
-                    <i class="fa-regular fa-user"></i>
-                    <span>Credenciales</span>
+                        <i class="fa-regular fa-user"></i>
+                        <span>Credenciales</span>
                     </a>
 
                     <a class="logout" href="{{ route('logout') }}">
@@ -278,8 +282,8 @@
         {{--   <button id="btn_top" ><i class='bx bxs-chevrons-up'></i></button> --}}
 
     </section>
-     <!-- Scripts de jQuery y Popper.js -->
-     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Scripts de jQuery y Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <!-- Script de Bootstrap 4.5.2 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -346,8 +346,7 @@ class LoginController extends Controller
 
                 // Update token and token_expires_at
                 $user->token = Str::random(60);
-                $user->token_expires_at = now()->addMinutes(10);
-                $user->save();
+                 $user->save();
 
                 $encryptedToken = $user->token;
 

@@ -22,7 +22,6 @@
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
 
     <style>
-
         .contenedor_alerta {
             display: flex;
             align-items: center;
@@ -73,88 +72,11 @@
         }
     </style>
 
-    @if (session('show_alert'))
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let timeout;
-            let countdown;
-            let timeLeft = 5 * 60; // 5 minutos en segundos
-
-            window.onload = resetTimer;
-            document.onmousemove = resetTimer;
-            document.onkeypress = resetTimer;
-
-            function showSessionAlert() {
-                Swal.fire({
-                    title: 'Tu sesión está a punto de expirar',
-                    html: "¿Deseas mantener la sesión activa? <br> <span id='countdown'></span>",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#7066e0',
-                    cancelButtonColor: '#808080',
-                    confirmButtonText: 'Mantener sesión',
-                    cancelButtonText: 'Salir',
-                    allowOutsideClick: false,
-                    onOpen: () => {
-                        countdown = setInterval(function() {
-                            document.getElementById('countdown').innerText = `${Math.floor(timeLeft / 60)} minutos y ${timeLeft % 60} segundos restantes`;
-                            timeLeft--;
-                        }, 1000);
-                    },
-                    onClose: () => {
-                        clearInterval(countdown);
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        fetch('{{ route('keep-alive') }}', {
-                            method: 'POST',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                'Content-Type': 'application/json'
-                            }
-                        })
-                    .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    Swal.fire({
-                                        title: 'Sesión extendida',
-                                        text: 'Tu sesión se ha extendido exitosamente.',
-                                        icon: 'success',
-                                        allowOutsideClick: false
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        title: 'Error',
-                                        text: 'No se pudo extender la sesión.',
-                                        icon: 'error',
-                                        allowOutsideClick: false
-                                    });
-                                }
-                            });
-                    } else {
-                        window.location.href = '{{ route('logout') }}';
-                    }
-                });
-            }
-
-            function resetTimer() {
-                // Limpiar el temporizador existente
-                clearTimeout(timeout);
-
-                // Restablecer el tiempo restante
-                timeLeft = 5 * 60;
-
-                // Establecer un nuevo temporizador
-                timeout = setTimeout(showSessionAlert, 5 * 60 * 1000); // 5 minutos
-            }
-
-            resetTimer();
-        });
-    </script>
-    @endif
 
 </head>
+
+
+
 
 <body>
     <!-- Barra de navegación en el lado izquierdo -->
@@ -247,12 +169,12 @@
             <i
                 class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu menu-icono' : 'bx bx-menu-alt-left menu-icono' }}'></i>
 
-            </div>
-            <div class="nameDirector">
-    <label class="labell">Usuario</label>
-    <span>{{ Auth::user()->role->tipo }}</span>
-  </div>
-            </div>
+        </div>
+        <div class="nameDirector">
+            <label class="labell">Usuario</label>
+            <span>{{ Auth::user()->role->tipo }}</span>
+        </div>
+        </div>
         <!-- contenido -->
         <main class="navbar">
             <button class="profile-icon dropdown" id="profile-button">
@@ -273,8 +195,8 @@
                     </a>
 
                     <a href="{{ route('admin.cambio-credenciales') }}" class="change_password">
-                    <i class="fa-regular fa-user"></i>
-                    <span>Credenciales</span>
+                        <i class="fa-regular fa-user"></i>
+                        <span>Credenciales</span>
                     </a>
 
                     <a class="logout" href="{{ route('logout') }}">
@@ -300,6 +222,86 @@
         <div class="views {{ session('menuState') == 'collapsed' ? 'views-active' : '' }}">
             <!-- Contenido específico de la página -->
             @yield('content')
+            @if (session('show_alert'))
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        let timeout;
+                        let countdown;
+                        let timeLeft = 5 * 60; // 5 minutos en segundos
+
+                        window.onload = resetTimer;
+                        document.onmousemove = resetTimer;
+                        document.onkeypress = resetTimer;
+
+                        function showSessionAlert() {
+                            Swal.fire({
+                                title: 'Tu sesión está a punto de expirar',
+                                html: "¿Deseas mantener la sesión activa? <br> <span id='countdown'></span>",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#7066e0',
+                                cancelButtonColor: '#808080',
+                                confirmButtonText: 'Mantener sesión',
+                                cancelButtonText: 'Salir',
+                                allowOutsideClick: false,
+                                onOpen: () => {
+                                    countdown = setInterval(function() {
+                                        document.getElementById('countdown').innerText =
+                                            `${Math.floor(timeLeft / 60)} minutos y ${timeLeft % 60} segundos restantes`;
+                                        timeLeft--;
+                                    }, 1000);
+                                },
+                                onClose: () => {
+                                    clearInterval(countdown);
+                                }
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    fetch('{{ route('keep-alive') }}', {
+                                            method: 'POST',
+                                            headers: {
+                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                                'Content-Type': 'application/json'
+                                            }
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.success) {
+                                                Swal.fire({
+                                                    title: 'Sesión extendida',
+                                                    text: 'Tu sesión se ha extendido exitosamente.',
+                                                    icon: 'success',
+                                                    allowOutsideClick: false
+                                                });
+                                            } else {
+                                                Swal.fire({
+                                                    title: 'Error',
+                                                    text: 'No se pudo extender la sesión.',
+                                                    icon: 'error',
+                                                    allowOutsideClick: false
+                                                });
+                                            }
+                                        });
+                                } else {
+                                    window.location.href = '{{ route('logout') }}';
+                                }
+                            });
+                        }
+
+                        function resetTimer() {
+                            // Limpiar el temporizador existente
+                            clearTimeout(timeout);
+
+                            // Restablecer el tiempo restante
+                            timeLeft = 5 * 60;
+
+                            // Establecer un nuevo temporizador
+                            timeout = setTimeout(showSessionAlert, 5 * 60 * 1000); // 5 minutos
+                        }
+
+                        resetTimer();
+                    });
+                </script>
+            @endif
         </div>
     </section>
 
@@ -321,6 +323,8 @@
     <script src="{{ asset('js/menu.js') }}"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('js/sesiones.js') }}"></script>
+
     <script>
         function toggleSidebar() {
             var menuState = localStorage.getItem('menuState') === 'expanded' ? 'collapsed' : 'expanded';

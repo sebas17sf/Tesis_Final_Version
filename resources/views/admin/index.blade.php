@@ -311,7 +311,7 @@
                                 <select id="departamento" name="departamento" class="form-control input_select input"
                                     required>
                                     <option value="Ciencias de la Computación">Ciencias de la Computación</option>
-                                    <option value="Ciencias de la Vida">Ciencias de la Vida y agricultura</option>
+                                    <option value="Ciencias de la Vida y Agricultura">Ciencias de la Vida y Agricultura</option>
                                     <option value="Ciencias Exactas">Ciencias Exactas</option>
                                 </select>
                             </div>
@@ -515,8 +515,8 @@
                                                                                     {{ $profesor->departamento === 'Ciencias de la Computación' ? 'selected' : '' }}>
                                                                                     Departamento de Ciencias de Computación
                                                                                 </option>
-                                                                                <option value="Ciencias de la Vida"
-                                                                                    {{ $profesor->departamento === 'Ciencias de la Vida' ? 'selected' : '' }}>
+                                                                                <option value="Ciencias de la Vida y Agricultura"
+                                                                                    {{ $profesor->departamento === 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>
                                                                                     Departamento de Ciencias de la Vida
                                                                                 </option>
                                                                                 <option value="Ciencias Exactas"
