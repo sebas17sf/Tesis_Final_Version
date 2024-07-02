@@ -114,7 +114,7 @@
                 <div class="draggable-card1_2" id="filtersCard" style="display: none;">
                     <div class="card-header">
                         <span class="card-title">Filtros</span>
-                        <button type="button" class="close" onclick="closeCard('filtersCard')">&times;</button>
+                        <button type="button" class="close" onclick="closeCard('filtersCard')"><i class="fa-thin fa-xmark"></i>;</button>
                     </div>
                     <div class="card-body">
                         <form id="filtersForm" method="GET" action="{{ route('admin.indexProyectos') }}">
@@ -168,15 +168,15 @@
                 <table class="mat-mdc-table">
                     <thead class="ng-star-inserted">
                         <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                            <th class="tamanio">NOMBRE DEL PROYECTO</th>
-                            <th>DIRECTOR</th>
-                            <th class="tamanio">DESCRIPCION</th>
-                            <th>DEPARTAMENTO</th>
-                            <th>CODIGO DEL PROYECTO SOCIAL</th>
-                            <th>FECHA INICIO</th>
-                            <th>FECHA FIN</th>
-                            <th>ESTADO DEL PROYECTO</th>
-                            <th>ACCIONES</th>
+                        <th class="tamanio">NOMBRE DEL PROYECTO</th>
+                                        <th class="tamanio4">DIRECTOR</th>
+                                        <th class="tamanio">DESCRIPCION</th>
+                                        <th>DEPARTAMENTO</th>
+                                        <th class="tamanio3">CODIGO DEL PROYECTO SOCIAL</th>
+                                        <th>FECHA INICIO</th>
+                                        <th>FECHA FIN</th>
+                                        <th>ESTADO DEL PROYECTO</th>
+                                        <th>ACCIONES</th>
                         </tr>
                     </thead>
                     <tbody class="mdc-data-table__content ng-star-inserted">
@@ -242,7 +242,7 @@
         </div>
 
         <div class="paginator-container">
-            <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+            <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
                 <div id="totalRows">Proyectos: {{ $proyectos->total() }}</div>
                 <ul class="pagination">
                     <li class="page-item mx-3">
@@ -330,7 +330,7 @@
 <div class="draggable-card1_4" id="cardImportarArchivo" style="display: none;">
     <div class="card-header">
         <span class="card-title">Importar archivo</span>
-        <button type="button" class="close" onclick="closeCard('cardImportarArchivo')">&times;</button>
+        <button type="button" class="close" onclick="closeCard('cardImportarArchivo')"><i class="fa-thin fa-xmark"></i>;</button>
     </div>
     <div class="card-body">
         <form id="idModalImportar2" action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
@@ -367,7 +367,7 @@
 <div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
     <div class="card-header">
         <span class="card-title">Filtros Profesores y Periodos</span>
-        <button type="button" class="close" onclick="closeCard('filtersCardProfesores')">&times;</button>
+        <button type="button" class="close" onclick="closeCard('filtersCardProfesores')"><i class="fa-thin fa-xmark"></i></button>
     </div>
     <div class="card-body">
         <form id="filterFormProfesores" method="GET" action="{{ route('admin.indexProyectos') }}">
@@ -431,16 +431,16 @@
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                         <th class="tamanio"> NOMBRE DE PROYECTO</th>
-                                        <th>CODIGO DE PROYECTO</th>
-                                        <th class="tamanio1">DIRECTOR</th>
-                                        <th class="tamanio1">DOCENTES PARTICIPANTES</th>
-                                        <th>FECHA ASIGNACION</th>
-                                        <th class="tamanio">ESTUDIANTES</th>
-                                        <th>Nota</th>
-                                        <th>PERIODO</th>
-                                        <th>NRC</th>
-                                        <th>FECHA INICIO</th>
-                                        <th>FECHA FIN</th>
+                                            <th class="tamanio3">CODIGO DE PROYECTO</th>
+                                            <th class="tamanio4">DIRECTOR</th>
+                                            <th class="tamanio4">DOCENTES PARTICIPANTES</th>
+                                            <th>FECHA ASIGNACION</th>
+                                            <th>ESTUDIANTES</th>
+                                            <th>Nota</th>
+                                            <th>PERIODO</th>
+                                            <th>NRC</th>
+                                            <th>FECHA INICIO</th>
+                                            <th>FECHA FIN</th>
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
@@ -494,7 +494,7 @@
                     </div>
 
                     <div class="paginator-container">
-                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
                             <div id="totalRows">Asignaciones: {{ $paginator->total() }}</div>
                             <ul class="pagination d-flex align-items-center">
 
@@ -570,7 +570,7 @@
     <div class="draggable-card1_3" id="draggableCardAsignarEstudiante">
         <div class="card-header">
             <span class="card-title">Asignar Proyecto</span>
-            <button type="button" class="close" onclick="$('#draggableCardAsignarEstudiante').hide()">&times;</button>
+            <button type="button" class="close" onclick="$('#draggableCardAsignarEstudiante').hide()"><i class="fa-thin fa-xmark"></i>;</button>
         </div>
         <div class="card-body">
             <form method="POST" action="{{ route('admin.guardarAsignacion') }}">

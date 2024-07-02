@@ -1,154 +1,201 @@
 @extends('layouts.coordinador')
-
+@section('title', 'Panel Empresa')
+@section('title_component', 'Panel Editar Empresa')
 @section('content')
-    <div class="container">
+<section class="contenedor_agregar_periodo">
 
 
-        @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+    @if (session('success'))
+        <div class="contenedor_alerta success">
+            <div class="icon_alert"><i class="fa-regular fa-check"></i></div>
+            <div class="content_alert">
+                <div class="title">Éxito!</div>
+                <div class="body">{{ session('success') }}</div>
+            </div>
+            <div class="icon_remove">
+                <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+            </div>
+        </div>
 
-@if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
+        <script>
+            document.querySelector('.contenedor_alerta .icon_remove button').addEventListener('click', function() {
+                this.closest('.contenedor_alerta').style.display = 'none';
+            });
+        </script>
+        @endif
 
 
-        <h3>Editar Empresa</h3>
+        @if (session('error'))
+        <div class="contenedor_alerta error">
+            <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
+            <div class="content_alert">
+                <div class="title">Error!</div>
+                <div class="body">{{ session('error') }}</div>
+            </div>
+            <div class="icon_remove">
+                <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+            </div>
+        </div>
+
+        <script>
+            document.querySelector('.contenedor_alerta.error .icon_remove button').addEventListener('click', function() {
+                this.closest('.contenedor_alerta').style.display = 'none';
+            });
+        </script>
+        @endif
+
+
+
+        <div class="container">
         <form action="{{ route('coordinador.actualizarEmpresa', ['id' => $empresa->id]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            <div class="table-responsive-sm">
-                <table class="table table-bordered">
-                    <tbody>
-                        <tr>
-                            <td><label for="nombreEmpresa">Nombre de la Empresa:</label></td>
-                            <td>
-                                <input type="text" class="form-control" id="nombreEmpresa" name="nombreEmpresa" required
-                                    value="{{ $empresa->nombreEmpresa }}">
-                            </td>
-                        </tr>
+            <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="nombreEmpresa">Nombre de la Empresa:</label>
+                                <input type="text" class="form-control input" id="nombreEmpresa" name="nombreEmpresa"
+                                    required value="{{ $empresa->nombreEmpresa }}">
+                                <span id="error-message" style="color: red;"></span>
 
-                        <tr>
-                            <td><label for="rucEmpresa">RUC de la Empresa:</label></td>
-                            <td>
-                                <input type="text"  class="form-control" id="rucEmpresa" name="rucEmpresa" required
-                                    value="{{ $empresa->rucEmpresa }}">
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td><label for="provincia">Provincia:</label></td>
-                            <td>
-                                <select class="form-control" id="provincia" name="provincia" required>
-                                    <option value="" disabled selected>Selecciona una provincia</option>
-                                    <option value="Azuay" @if ($empresa->provincia == 'Azuay') selected @endif>Azuay</option>
-                                    <option value="Bolívar" @if ($empresa->provincia == 'Bolívar') selected @endif>Bolívar</option>
-                                    <!-- Otras opciones -->
+                            </div>
+                            <!-- Inicio de la fila para RUC y Teléfono -->
+    <div class="row">
+        <!-- Columna para RUC de la Empresa -->
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="rucEmpresa">RUC de la Empresa:</label>
+                <input type="text" class="form-control input" id="rucEmpresa" name="rucEmpresa" required
+                    value="{{ $empresa->rucEmpresa }}">
+                <span id="error-message-rucEmpresa" style="color: red;"></span>
+            </div>
+        </div>
+        <!-- Columna para Teléfono del contacto de la Empresa -->
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="telefonoContacto">Teléfono del contacto de la Empresa:</label>
+                <input type="text" class="form-control input" id="telefonoContacto"
+                    name="telefonoContacto" required value="{{ $empresa->telefonoContacto }}">
+                <span id="error-message-telefono" style="color: red; display: none;">Número de teléfono no
+                    válido</span>
+            </div>
+        </div>
+    </div>
+                            <div class="form-group">
+                                <label for="provincia">Provincia:</label>
+                                <select class="form-control input" id="provincia" name="provincia" required>
+                                    <option value="" disabled>Selecciona una provincia</option>
+                                    <option value="Azuay" {{ $empresa->provincia == 'Azuay' ? 'selected' : '' }}>Azuay</option>
+                                    <option value="Bolívar" {{ $empresa->provincia == 'Bolívar' ? 'selected' : '' }}>Bolívar</option>
+                                    <option value="Cañar" {{ $empresa->provincia == 'Cañar' ? 'selected' : '' }}>Cañar</option>
+                                    <option value="Carchi" {{ $empresa->provincia == 'Carchi' ? 'selected' : '' }}>Carchi</option>
+                                    <option value="Chimborazo" {{ $empresa->provincia == 'Chimborazo' ? 'selected' : '' }}>Chimborazo</option>
+                                    <option value="Cotopaxi" {{ $empresa->provincia == 'Cotopaxi' ? 'selected' : '' }}>Cotopaxi</option>
+                                    <option value="El Oro" {{ $empresa->provincia == 'El Oro' ? 'selected' : '' }}>El Oro</option>
+                                    <option value="Esmeraldas" {{ $empresa->provincia == 'Esmeraldas' ? 'selected' : '' }}>Esmeraldas</option>
+                                    <option value="Galápagos" {{ $empresa->provincia == 'Galápagos' ? 'selected' : '' }}>Galápagos</option>
+                                    <option value="Guayas" {{ $empresa->provincia == 'Guayas' ? 'selected' : '' }}>Guayas</option>
+                                    <option value="Imbabura" {{ $empresa->provincia == 'Imbabura' ? 'selected' : '' }}>Imbabura</option>
+                                    <option value="Loja" {{ $empresa->provincia == 'Loja' ? 'selected' : '' }}>Loja</option>
+                                    <option value="Los Ríos" {{ $empresa->provincia == 'Los Ríos' ? 'selected' : '' }}>Los Ríos</option>
+                                    <option value="Manabí" {{ $empresa->provincia == 'Manabí' ? 'selected' : '' }}>Manabí</option>
+                                    <option value="Morona Santiago" {{ $empresa->provincia == 'Morona Santiago' ? 'selected' : '' }}>Morona Santiago</option>
+                                    <option value="Napo" {{ $empresa->provincia == 'Napo' ? 'selected' : '' }}>Napo</option>
+                                    <option value="Orellana" {{ $empresa->provincia == 'Orellana' ? 'selected' : '' }}>Orellana</option>
+                                    <option value="Pastaza" {{ $empresa->provincia == 'Pastaza' ? 'selected' : '' }}>Pastaza</option>
+                                    <option value="Pichincha" {{ $empresa->provincia == 'Pichincha' ? 'selected' : '' }}>Pichincha</option>
+                                    <option value="Santa Elena" {{ $empresa->provincia == 'Santa Elena' ? 'selected' : '' }}>Santa Elena</option>
+                                    <option value="Santo Domingo de los Tsáchilas" {{ $empresa->provincia == 'Santo Domingo de los Tsáchilas' ? 'selected' : '' }}>Santo Domingo de los Tsáchilas</option>
+                                    <option value="Sucumbíos" {{ $empresa->provincia == 'Sucumbíos' ? 'selected' : '' }}>Sucumbíos</option>
+                                    <option value="Tungurahua" {{ $empresa->provincia == 'Tungurahua' ? 'selected' : '' }}>Tungurahua</option>
+                                    <option value="Zamora Chinchipe" {{ $empresa->provincia == 'Zamora Chinchipe' ? 'selected' : '' }}>Zamora Chinchipe</option>
                                 </select>
-                            </td>
-                        </tr>
+                            </div>
 
-                        <tr>
-                            <td><label for="ciudad">Ciudad:</label></td>
-                            <td>
-                                <input type="text" class="form-control" id="ciudad" name="ciudad" required
+                            <div class="form-group">
+                                <label for="ciudad">Ciudad:</label>
+                                <input type="text" class="form-control input" id="ciudad" name="ciudad" required
                                     value="{{ $empresa->ciudad }}">
-                            </td>
-                        </tr>
+                                <span id="error-message-ciudad" style="color: red;"></span>
 
-                        <tr>
-                            <td><label for="direccion">Dirección:</label></td>
-                            <td>
-                                <input type="text" class="form-control" id="direccion" name="direccion" required
+                            </div>
+
+                            <div class="form-group">
+                                <label for="direccion">Dirección:</label>
+                                <input type="text" class="form-control input" id="direccion" name="direccion" required
                                     value="{{ $empresa->direccion }}">
-                            </td>
-                        </tr>
+                                <span id="error-message-direccion" style="color: red;"></span>
 
-                        <tr>
-                            <td><label for="correo">Correo de contacto de la Empresa:</label></td>
-                            <td>
-                                <input type="email" class="form-control" id="correo" name="correo" required
+                            </div>
+
+                            <div class="form-group">
+                                <label for="correo">Correo de contacto de la Empresa:</label>
+                                <input type="email" class="form-control input" id="correo" name="correo" required
                                     value="{{ $empresa->correo }}">
-                            </td>
-                        </tr>
+                            </div>
+                        </div>
 
-                        <tr>
-                            <td><label for="nombreContacto">Nombre del contacto de la Empresa:</label></td>
-                            <td>
-                                <input type="text" class="form-control" id="nombreContacto" name="nombreContacto" required
-                                    value="{{ $empresa->nombreContacto }}">
-                            </td>
-                        </tr>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="nombreContacto">Nombre del contacto de la Empresa:</label>
+                                <input type="text" class="form-control input" id="nombreContacto" name="nombreContacto"
+                                    required value="{{ $empresa->nombreContacto }}">
+                                <span id="error-message-nombreContacto" style="color: red;"></span>
 
-                        <tr>
-                            <td><label for="telefonoContacto">Teléfono del contacto de la Empresa:</label></td>
-                            <td>
-                                <input type="text" class="form-control" id="telefonoContacto" name="telefonoContacto" required
-                                    value="{{ $empresa->telefonoContacto }}">
-                            </td>
-                        </tr>
+                            </div>
 
-                        <tr>
-                            <td><label for="actividadesMacro">Actividades Macro requeridas:</label></td>
-                            <td>
-                                <textarea class="form-control" id="actividadesMacro" name="actividadesMacro" rows="4" required>
+                            
+
+                            <div class="form-group">
+                                <label for="actividadesMacro">Actividades Macro requeridas:</label>
+                                <textarea class="form-control input" id="actividadesMacro" name="actividadesMacro" rows="4" required>
                                     {{ $empresa->actividadesMacro }}
                                 </textarea>
-                            </td>
-                        </tr>
+                                <span id="error-message-actividadesMacro" style="color: red;"></span>
 
-                        <tr>
-                            <td><label for="cuposDisponibles">Cupos Disponibles:</label></td>
-                            <td>
-                                <input type="text" class="form-control" id="cuposDisponibles" name="cuposDisponibles" required
-                                    value="{{ $empresa->cuposDisponibles }}">
-                            </td>
-                        </tr>
+                            </div>
 
-                        <tr>
-                            <td><label for="cartaCompromiso">Carta Compromiso (PDF):</label></td>
-                            <td>
-                                @if ($empresa->cartaCompromiso)
-                                    <a href="{{ route('admin.descargar', ['tipo' => 'carta', 'id' => $empresa->id]) }}">
-                                        <i class="material-icons">cloud_download</i> Descargar
-                                    </a>
-                                @else
-                                    <span class="text-muted">No disponible</span>
-                                @endif
-                                <input type="file" class="form-control-file" id="cartaCompromiso" name="cartaCompromiso">
-                            </td>
-                        </tr>
+                            <div class="form-group">
+                                <label for="cuposDisponibles">Cupos Disponibles:</label>
+                                <input type="text" class="form-control input" id="cuposDisponibles"
+                                    name="cuposDisponibles" required value="{{ $empresa->cuposDisponibles }}">
+                            </div>
 
-                        <tr>
-                            <td><label for="convenio">Convenio (PDF):</label></td>
-                            <td>
-                                @if ($empresa->convenio)
-                                    <a href="{{ route('admin.descargar', ['tipo' => 'convenio', 'id' => $empresa->id]) }}">
-                                        <i class="material-icons">cloud_download</i> Descargar
-                                    </a>
-                                @else
-                                    <span class="text-muted">No disponible</span>
-                                @endif
-                                <input type="file" class="form-control-file" id="convenio" name="convenio">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <button type="submit" class="btn btn-secondary">Actualizar Empresa</button>
-        </form>
+                            <div class="form-group">
+                                <label for="cartaCompromiso">Carta Compromiso (PDF):</label>
+                                <div class="input input_file">
+                                    <span id="fileText" class="fileText"><i
+                                            class="fa-solid fa-arrow-up-from-bracket"></i>
+                                        Haz clic aquí para subir el documento</span>
+                                    <input type="file" class="form-control-file input input_file" id="cartaCompromiso"
+                                        name="cartaCompromiso" onchange="displayFileName(this)">
+                                    <span title="Eliminar archivo" onclick="removeFile(this)"
+                                        class="remove-icon">✖</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="convenio">Convenio (PDF):</label>
+                                <div class="input input_file">
+                                    <span id="fileText" class="fileText"><i
+                                            class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir el
+                                        documento</span>
+                                    <input type="file" class="form-control-file input input_file" id="convenio"
+                                        name="convenio" onchange="displayFileName(this)">
+                                    <span title="Eliminar archivo" onclick="removeFile(this)"
+                                        class="remove-icon">✖</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             <center>  <button type="submit" class="button1 efects_button">Actualizar Empresa</button> </center>
+            </form>
     </div>
 </div>
+<script src="{{ asset('js/admin/editarEmpresa.js') }}"></script>
+
+
 @endsection
 
-<style>
-    /* Estilos CSS */
-</style>

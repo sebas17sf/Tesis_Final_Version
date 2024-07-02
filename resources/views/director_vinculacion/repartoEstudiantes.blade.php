@@ -1,5 +1,7 @@
 @extends('layouts.directorVinculacion')
+@section('title', 'Panel Estudiantes')
 
+@section('title_component', 'Panel Asignaciones')
 @section('content')
 @if (session('success'))
 <div class="contenedor_alerta success">
@@ -41,9 +43,7 @@
 @endif
 
     <div class="container">
-
-
-        <h4>Estudiantes Asignados a Docentes</h4>
+        <br>
 
         <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
@@ -89,8 +89,8 @@
             @endforeach
         </table>
         </div>
-        </div>
-        </div>
+
+
         <br>
 
         <form id="finalizarForm" action="{{ route('director_vinculacion.cerrarProcesoEstudiantes') }}" method="POST">
@@ -101,7 +101,8 @@
 
         <hr>
 
-        <h4>Control de actividades de los estudiantes</h4>
+        <h4><b>Control de actividades de los estudiantes</b></h4>
+        <hr>
 
         <div class="container mt-5">
             <div class="d-flex flex-wrap">

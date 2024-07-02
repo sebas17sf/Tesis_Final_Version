@@ -83,8 +83,8 @@
                                         <th class="tamanio1">CARRERA</th>
                                          <th>CÉDULA</th>
                                         <th>COHORTE</th>
-                                        <th>PERIODO</th>
-                                        <th class="tamanio1">DEPARTAMENTO</th>
+                                        <th class="tamanio3">PERIODO</th>
+                                        <th class="tamanio2">DEPARTAMENTO</th>
                                         <th>ESTADO</th>
 
                                     </tr>
@@ -125,7 +125,7 @@
 
 
                     <div class="paginator-container">
-                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
                             <div id="totalRows">Estudiantes: {{ $estudiantesAprobados->total() }}</div>
 
                             <ul class="pagination">
@@ -141,36 +141,38 @@
                                 </li>
 
                                 @if ($estudiantesAprobados->onFirstPage())
-                                <li class="page-item disabled">
-                                    <span class="page-link">Anterior</span>
-                                </li>
-                                @else
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $estudiantesAprobados->appends(['elementosPorPaginaAprobados' => $elementosPorPaginaAprobados])->previousPageUrl() }}#tablaEstudiantes" aria-label="Anterior">Anterior</a>
-                                </li>
-                                @endif
+    <li class="page-item disabled">
+        <span class="page-link">Anterior</span>
+    </li>
+@else
+    <li class="page-item">
+        <a class="page-link" href="{{ $estudiantesAprobados->appends(['elementosPorPaginaAprobados' => $elementosPorPaginaAprobados])->previousPageUrl() }}#tablaEstudiantes" aria-label="Anterior">Anterior</a>
+    </li>
+@endif
 
-                                @foreach ($estudiantesAprobados->getUrlRange(1, $estudiantesAprobados->lastPage()) as $page => $url)
-                                @if ($page == $estudiantesAprobados->currentPage())
-                                <li class="page-item active">
-                                    <span class="page-link">{{ $page }}</span>
-                                </li>
-                                @else
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $estudiantesAprobados->appends(['elementosPorPaginaAprobados' => $elementosPorPaginaAprobados])->url($page) }}#tablaEstudiantes">{{ $page }}</a>
-                                </li>
-                                @endif
-                                @endforeach
+@if ($estudiantesAprobados->lastPage() > 1)
+    @for ($page = 1; $page <= $estudiantesAprobados->lastPage(); $page++)
+        @if ($page == 1 || $page == $estudiantesAprobados->lastPage() || ($page >= $estudiantesAprobados->currentPage() - 2 && $page <= $estudiantesAprobados->currentPage() + 2))
+            @if ($page == $estudiantesAprobados->currentPage())
+                <li class="page-item active"><span class="page-link">{{ $page }}</span></li>
+            @else
+                <li class="page-item"><a class="page-link" href="{{ $estudiantesAprobados->appends(['elementosPorPaginaAprobados' => $elementosPorPaginaAprobados])->url($page) }}#tablaEstudiantes">{{ $page }}</a></li>
+            @endif
+        @elseif ($page == 2 || $page == $estudiantesAprobados->lastPage() - 1)
+            <li class="page-item"><span class="page-link">...</span></li>
+        @endif
+    @endfor
+@endif
 
-                                @if ($estudiantesAprobados->hasMorePages())
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $estudiantesAprobados->appends(['elementosPorPaginaAprobados' => $elementosPorPaginaAprobados])->nextPageUrl() }}#tablaEstudiantes" aria-label="Siguiente">Siguiente</a>
-                                </li>
-                                @else
-                                <li class="page-item disabled">
-                                    <span class="page-link">Siguiente</span>
-                                </li>
-                                @endif
+@if ($estudiantesAprobados->hasMorePages())
+    <li class="page-item">
+        <a class="page-link" href="{{ $estudiantesAprobados->appends(['elementosPorPaginaAprobados' => $elementosPorPaginaAprobados])->nextPageUrl() }}#tablaEstudiantes" aria-label="Siguiente">Siguiente</a>
+    </li>
+@else
+    <li class="page-item disabled">
+        <span class="page-link">Siguiente</span>
+    </li>
+@endif
 
 
 

@@ -1,5 +1,7 @@
 @extends('layouts.directorVinculacion')
+@section('title', 'Panel Estudiante')
 
+@section('title_component', 'Panel Estudiantes')
 @section('content')
 @if (session('success'))
 <div class="contenedor_alerta success">
@@ -41,18 +43,12 @@
 @endif
 
 
-
-
-
-
     <div class="container" style="overflow-x: auto;">
 
 
+        <h4><b>Estudiantes por calificar</b></h4>
 
-
-
-        <h4>Estudiantes por calificar</h4>
-
+        <hr>
         @if (count($estudiantesConNotasPendientes) === 0)
             <p>El docente participante aun no a calificado a los estudiantes.</p>
         @else
@@ -105,7 +101,8 @@
             </form>
         @endif
 
-        <h4>Estudiantes Calificados</h4>
+        <h4><b>Estudiantes Calificados</b></h4>
+        <hr>
         @if (count($estudiantesCalificados) === 0)
             <p>No hay estudiantes calificados en este momento.</p>
         @else
