@@ -1,7 +1,10 @@
 @extends('layouts.coordinador')
 
+@section('title', 'Panel Empresas')
+
+@section('title_component', 'Panel Empresas')
+
 @section('content')
-    {{--  <div class="container"> --}}
     <section class="contenedor_agregar_periodo">
         @if (session('success'))
             <script>

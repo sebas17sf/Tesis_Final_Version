@@ -51,8 +51,7 @@
             border-radius: 5px;
         }
     </style>
-    {{--  <script src="{{ asset('js/menu.js') }}"></script> --}}
-    {{--  <script src="../js/menu.js"></script> --}}
+
 </head>
 
 @if (session('show_alert'))
@@ -230,7 +229,7 @@
                 @endif
             </span>
         </div>
-        </div>
+
         <!-- contenido -->
         <main class="navbar">
             <button class="profile-icon dropdown" id="profile-button">

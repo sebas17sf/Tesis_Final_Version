@@ -224,14 +224,46 @@
                         </form>
                     </div>
 
-                    <div class="tooltip-container">
-                        <span class="tooltip-text">Importar archivo</span>
-                        <button type="button" class="button3 efects_button btn_copy" data-toggle="modal"
-                            data-target="#modalImportar">
-                            <i class="fa fa-upload"></i>
-                        </button>
+                  
+                      <!-- Botón de Importar archivo -->
+                      <div class="tooltip-container">
+                                    <span class="tooltip-text">Importar archivo</span>
+                                    <button type="button" class="button3 efects_button btn_copy"
+                                        onclick="openCard('cardImportarArchivo');">
+                                        <i class="fa fa-upload"></i>
+                                    </button>
+                                </div>
 
-                    </div>
+                                <!-- Card de Importar archivo -->
+                                <div class="draggable-card1_4" id="cardImportarArchivo" style="display: none;">
+                                    <div class="card-header">
+                                        <span class="card-title">Importar archivo</span>
+                                        <button type="button" class="close"
+                                            onclick="closeCard('cardImportarArchivo')"><i class="fa-thin fa-xmark"></i></button>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="idModalImportar" action="{{ route('import-empresas') }}"  method="POST"
+                                            enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="form-group">
+                                                <div class="input_file input">
+                                                    <span id="fileText2" class="fileText">
+                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
+                                                    </span>
+                                                    <input type="file" class="form-control-file input input_file"
+                                                        id="file2" name="file"
+                                                        onchange="displayFileName(this, 'fileText2')" required>
+                                                    <span title="Eliminar archivo" onclick="removeFile(this)"
+                                                        class="remove-icon">✖</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer d-flex justify-content-center align-items-center">
+                                                <button type="submit" class="button">Importar Archivo</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
 
                 </div>
                 <div class="contenedor_buscador">
@@ -245,45 +277,7 @@
                     </div>
             </div>
 
-            <div class="modal fade" id="modalImportar" tabindex="-1" role="dialog"
-                aria-labelledby="modalImportarLabel" aria-hidden="true">
-
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <form id="idModalImportar" action="{{ route('import-empresas') }}" method="POST"
-                            enctype="multipart/form-data">
-                            @csrf
-                            <div class="modal-header">
-                                <h5 class="modal-title">Importar archivo</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <div class="input input_file">
-                                        <span id="fileText" class="fileText">
-                                            <i class="fa fa-upload"></i> Haz clic aquí para subir el
-                                            documento
-                                        </span>
-                                        <input type="file" class="form-control-file input input_file" id="file"
-                                            name="file" onchange="displayFileName(this)" required>
-                                        <span title="Eliminar archivo" onclick="removeFile(this)"
-                                            class="remove-icon">✖</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button id="cerrar_modal" type="button" class="button"
-                                    data-dismiss="modal">Cerrar</button>
-                                <button type="submit" class="button">Importar Archivo</button>
-                            </div>
-                        </form>
-                    </div>
-
-                </div>
-
-            </div>
+           
 
             <section>
                 @if ($empresas->isEmpty())
@@ -297,42 +291,42 @@
                                     <thead class="ng-star-inserted">
                                         <tr
                                             class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                            <th>Nombre de la Empresa</th>
-                                            <th>RUC de la Empresa</th>
-                                            <th>Provincia</th>
-                                            <th>Ciudad</th>
-                                            <th>Dirección</th>
-                                            <th>Correo de Contacto</th>
-                                            <th>Nombre del Contacto</th>
-                                            <th>Teléfono del Contacto</th>
-                                            <th class="tamanio">Actividades Macro</th>
-                                            <th>Cupos Disponibles</th>
-                                            <th>Descargar Carta</th>
-                                            <th>Descargar Convenio</th>
-                                            <th>Acción</th>
+                                            <th class="tamanio1">NOMBRE DE LA EMPRESA</th>
+                                            <th>RUC DE LA EMPRESA</th>
+                                            <th class="tamanio3">PROVINCIA</th>
+                                            <th class="tamanio3">CIUDAD</th>
+                                            <th class="tamanio5">DIRECCIÓN</th>
+                                            <th>CORREO DEL CONTACTO</th>
+                                            <th class="tamanio5">NOMBRE DEL CONTACTO</th>
+                                            <th>TELÉFONO DEL CONTACTO</th>
+                                            <th class="tamanio">ACTIVIDADES MACRO</th>
+                                            <th>CUPOS DISPONIBLES</th>
+                                            <th>DESCARGAR CARTA</th>
+                                            <th>DESCARGAR CONVENIO</th>
+                                            <th>ACCIÓN</th>
                                         </tr>
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
 
                                         @foreach ($empresas as $empresa)
                                             <tr>
-                                                <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->nombreEmpresa)) }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->nombreEmpresa)) }}
                                                 </td>
-                                                <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->rucEmpresa)) }}
+                                                <td >{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->rucEmpresa)) }}
                                                 </td>
-                                                <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->provincia)) }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->provincia)) }}
                                                 </td>
-                                                <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->ciudad)) }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->ciudad)) }}
                                                 </td>
-                                                <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->direccion)) }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->direccion)) }}
                                                 </td>
-                                                <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->correo)) }}
+                                                <td>{{$empresa->correo}}
                                                 </td>
-                                                <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->nombreContacto)) }}
+                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->nombreContacto)) }}
                                                 </td>
                                                 <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->telefonoContacto)) }}
                                                 </td>
-                                                <td style="text-transform: uppercase; text-align: justify; padding: 5px 8px;">{{ strtoupper($empresa->actividadesMacro) }}
+                                                <td style="text-transform: uppercase; text-align: justify;">{{ strtoupper($empresa->actividadesMacro) }}
                                                 </td>
                                                 <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->cuposDisponibles)) }}
                                                 </td>
@@ -394,7 +388,7 @@
 
 
                         <div class="paginator-container">
-                            <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                            <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
                                 <div id="totalRows">Empresas: {{ $empresas->total() }}</div>
 
 
@@ -469,6 +463,8 @@
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('js/admin/acciones.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>>
     <script>
         var delayTimer;
         $('#formBusquedaEmpresa input[name="search"]').on('keyup', function() {
@@ -487,6 +483,41 @@
                 });
             }, 500);
         });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const nrcSelect = document.getElementById('nrc');
+            const periodoInput = document.getElementById('periodo');
+
+            nrcSelect.addEventListener('change', function() {
+                const selectedOption = nrcSelect.options[nrcSelect.selectedIndex];
+                const periodo = selectedOption.getAttribute('data-periodo');
+                periodoInput.value = periodo ? periodo : '';
+            });
+        });
+
+
+
+        $('#modalImportar').on('hidden.bs.modal', function() {
+            console.log('Modal hidden');
+            $('#idModalImportar')[0].reset();
+            $('#idModalImportar').find('.form-group').removeClass('has-error');
+            $('#idModalImportar').find('.help-block').text('');
+            removeFile();
+        });
+
+
+        function displayFileName(input, fileTextId) {
+            const fileName = input.files[0].name;
+            document.getElementById(fileTextId).textContent = fileName;
+            document.querySelector('.remove-icon').style.display = 'inline'; // Mostrar la "X"
+        }
+
+        function removeFile(inputId, fileTextId) {
+            document.getElementById(inputId).value = ""; // Clear the input
+            document.getElementById(fileTextId).innerHTML =
+                '<i class="fa fa-upload"></i> Haz clic aquí para subir el documento'; // Reset the text
+            document.querySelector('.remove-icon').style.display = 'none'; // Ocultar la "X"
+        }
     </script>
 
 

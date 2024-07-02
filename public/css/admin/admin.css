@@ -269,7 +269,7 @@ tr:hover {
 }
 /* Estilos para el card de filtros */
 .draggable-card1_2 {
-    width: 250px;
+    width: 270px;
     border: 3px solid #40456c;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -335,15 +335,61 @@ tr:hover {
     border-top: 1px solid #e9ecef;
     justify-content: left;
 }
+
 .close {
-    color: white;
-    font-size: 1.5rem;
-    padding: 0;
-    background: none;
-    border: none;
-    cursor: pointer;
-    opacity: .7 !important;
+    position: relative;
+    display: inline-block;
+    width: 20px; /* Tamaño del botón */
+    height: 20px; /* Tamaño del botón */
+    line-height: 20px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: transparent;
+    color: #fff; /* Color del icono blanco inicialmente */
+    font-size: 13px; /* Tamaño del icono */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border: none; /* Sin borde */
+    cursor: pointer; /* Cursor de puntero */
+    overflow: hidden; /* Ocultar el contenido desbordante */
+    opacity: 20;
 }
+
+.close i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: color 0.3s ease;
+    color: inherit; /* Usa el color del padre */
+    font-size: 13px; /* Tamaño del icono */
+}
+
+.close:hover {
+    background-color: #fff; /* Fondo blanco al hacer hover */
+}
+
+.close:hover i {
+    color: #000; /* Color negro del icono al hacer hover */
+}
+
+.close::before {
+    content: '';
+    position: absolute;
+    width: 20px; /* Tamaño del círculo */
+    height: 20px; /* Tamaño del círculo */
+    border-radius: 50%;
+    background-color: transparent;
+    top: 0;
+    left: 0;
+    transition: background-color 0.3s ease;
+}
+
+.close:hover::before {
+    background-color: #fff; /* Fondo blanco */
+}
+
+
+
 .form-control {
     border-radius: 0.25rem;
     box-shadow: none;
@@ -500,6 +546,7 @@ tr:hover {
     position: none !important;
     font-size: 0.875rem;
 }
+
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
     background-color: transparent;
     border: none;
@@ -642,6 +689,21 @@ tr:hover {
           min-width: 100px;
           padding: .3rem !important;
         }
+        .tamanio3 {
+            width: 30px;
+            min-width: 130px;
+            padding: .3rem !important;
+          }
+          .tamanio4 {
+            width: 45px;
+            min-width: 150px;
+            padding: .3rem !important;
+          }
+          .tamanio5 {
+            width: 30px;
+            min-width: 190px;
+            padding: .3rem !important;
+          }
         .contenedor_general1 .contenedor_acciones_tabla{
             display: grid;
             align-items: center;

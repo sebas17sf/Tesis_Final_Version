@@ -120,7 +120,7 @@
                                 <div class="card-header">
                                     <span class="card-title">Filtros</span>
                                     <button type="button" class="close"
-                                        onclick="closeCard('filtersCard')">&times;</button>
+                                        onclick="closeCard('filtersCard')"><i class="fa-thin fa-xmark"></i></button>
                                 </div>
                                 <div class="card-body">
                                     <form id="filtersForm" method="GET" action="{{ route('admin.indexProyectos') }}">
@@ -187,10 +187,10 @@
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                         <th class="tamanio">NOMBRE DEL PROYECTO</th>
-                                        <th>DIRECTOR</th>
+                                        <th class="tamanio4">DIRECTOR</th>
                                         <th class="tamanio">DESCRIPCION</th>
                                         <th>DEPARTAMENTO</th>
-                                        <th>CODIGO DEL PROYECTO SOCIAL</th>
+                                        <th class="tamanio3">CODIGO DEL PROYECTO SOCIAL</th>
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
                                         <th>ESTADO DEL PROYECTO</th>
@@ -264,7 +264,7 @@
                     </div>
 
                     <div class="paginator-container">
-                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
                             <div id="totalRows">Proyectos: {{ $proyectos->total() }}</div>
                             <ul class="pagination">
                                 <li class="page-item mx-3">
@@ -284,7 +284,7 @@
                                 </li>
                                 @if ($proyectos->onFirstPage())
                                     <li class="page-item disabled">
-                                        <span class="page-link">Anterior</span>
+                                        <span class="page-link" >Anterior</span>
                                     </li>
                                 @else
                                     <li class="page-item">
@@ -358,7 +358,7 @@
                                     <div class="card-header">
                                         <span class="card-title">Importar archivo</span>
                                         <button type="button" class="close"
-                                            onclick="closeCard('cardImportarArchivo')">&times;</button>
+                                            onclick="closeCard('cardImportarArchivo')"><i class="fa-thin fa-xmark"></i></button>
                                     </div>
                                     <div class="card-body">
                                         <form id="idModalImportar2" action="{{ route('import') }}" method="POST"
@@ -397,7 +397,7 @@
                                     <div class="card-header">
                                         <span class="card-title">Filtros Profesores y Periodos</span>
                                         <button type="button" class="close"
-                                            onclick="closeCard('filtersCardProfesores')">&times;</button>
+                                            onclick="closeCard('filtersCardProfesores')"><i class="fa-thin fa-xmark"></i></button>
                                     </div>
                                     <div class="card-body">
                                         <form id="filterFormProfesores" method="GET"
@@ -479,11 +479,11 @@
                                         <tr
                                             class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                             <th class="tamanio"> NOMBRE DE PROYECTO</th>
-                                            <th>CODIGO DE PROYECTO</th>
-                                            <th class="tamanio1">DIRECTOR</th>
-                                            <th class="tamanio1">DOCENTES PARTICIPANTES</th>
+                                            <th class="tamanio3">CODIGO DE PROYECTO</th>
+                                            <th class="tamanio4">DIRECTOR</th>
+                                            <th class="tamanio4">DOCENTES PARTICIPANTES</th>
                                             <th>FECHA ASIGNACION</th>
-                                            <th class="tamanio">ESTUDIANTES</th>
+                                            <th>ESTUDIANTES</th>
                                             <th>Nota</th>
                                             <th>PERIODO</th>
                                             <th>NRC</th>
@@ -548,7 +548,7 @@
 
                         <div class="paginator-container">
                             <nav aria-label="..."
-                                style="display: flex; justify-content: space-between; align-items: center;">
+                                style="display: flex; justify-content: space-between; align-items: center; align-items: baseline; color: gray;">
                                 <div id="totalRows">Asignaciones: {{ $paginator->total() }}</div>
 
                                 <ul class="pagination d-flex align-items-center">
@@ -630,7 +630,7 @@
     <div class="draggable-card1_3" id="draggableCardAsignarEstudiante">
         <div class="card-header">
             <span class="card-title">Asignar Proyecto</span>
-            <button type="button" class="close" onclick="$('#draggableCardAsignarEstudiante').hide()">&times;</button>
+            <button type="button" class="close" onclick="$('#draggableCardAsignarEstudiante').hide()"><i class="fa-thin fa-xmark"></i></button>
         </div>
         <div class="card-body">
             <form method="POST" action="{{ route('admin.guardarAsignacion') }}">
@@ -953,41 +953,7 @@
             applyFilter('#filterFormProfesores', '#tablaAsignaciones');
         }
     </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const nrcSelect = document.getElementById('nrc');
-            const periodoInput = document.getElementById('periodo');
-
-            nrcSelect.addEventListener('change', function() {
-                const selectedOption = nrcSelect.options[nrcSelect.selectedIndex];
-                const periodo = selectedOption.getAttribute('data-periodo');
-                periodoInput.value = periodo ? periodo : '';
-            });
-        });
-
-
-
-        $('#modalImportar').on('hidden.bs.modal', function() {
-            console.log('Modal hidden');
-            $('#idModalImportar')[0].reset();
-            $('#idModalImportar').find('.form-group').removeClass('has-error');
-            $('#idModalImportar').find('.help-block').text('');
-            removeFile();
-        });
-
-
-        function displayFileName(input, fileTextId) {
-            const fileName = input.files[0].name;
-            document.getElementById(fileTextId).textContent = fileName;
-            document.querySelector('.remove-icon').style.display = 'inline'; // Mostrar la "X"
-        }
-
-        function removeFile(inputId, fileTextId) {
-            document.getElementById(inputId).value = ""; // Clear the input
-            document.getElementById(fileTextId).innerHTML =
-                '<i class="fa fa-upload"></i> Haz clic aquí para subir el documento'; // Reset the text
-            document.querySelector('.remove-icon').style.display = 'none'; // Ocultar la "X"
-        }
+    
 
         function showAlert(alertId, message) {
             const alert = document.getElementById(alertId);
@@ -1002,4 +968,5 @@
             const alert = document.getElementById(alertId);
             alert.style.display = 'none';
         }
+      </script>  
     @endsection
