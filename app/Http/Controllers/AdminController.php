@@ -22,6 +22,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 
 
+
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 
@@ -30,6 +31,7 @@ use App\Models\Periodo;
 use App\Models\ProfesUniversidad;
 use Illuminate\Support\Facades\Mail;
 use App\Models\EstudiantesVinculacion;
+use App\Models\AsignacionSinEstudiante;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -281,8 +283,15 @@ class AdminController extends Controller
 
         $periodos = Periodo::all();
         $nrcs = NrcVinculacion::all();
-        $profesores = ProfesUniversidad::whereDoesntHave('proyectosDirigidos')->get();
+        $profesores = ProfesUniversidad::whereDoesntHave('proyectosDirigidos')
+            ->orWhereHas('proyectosDirigidos', function ($query) {
+                $query->where('estado', 'Terminado');
+            })->get();
 
+        ///obtener los periodos que tengan fecha de inicio y fin con la fecha actual
+        $periodoAsignacion = Periodo::where('inicioPeriodo', '<=', now())
+            ->where('finPeriodo', '>=', now())
+            ->get();
 
 
         $perPage = $request->input('perPage', 10);
@@ -402,7 +411,8 @@ class AdminController extends Controller
             'profesorId' => $profesorId,
             'periodoId' => $periodoId,
             'paginatedData' => $paginatedData,
-            'total' => $total
+            'total' => $total,
+            'periodoAsignacion' => $periodoAsignacion,
         ]);
         if ($estadoProyecto) {
             $query->where('estado', $estadoProyecto);
@@ -434,7 +444,27 @@ class AdminController extends Controller
             }
         }
 
-        return view('admin.indexProyectos', compact('proyectos', 'periodos', 'nrcs', 'profesores', 'asignacionesAgrupadas', 'paginator'));
+        return view('admin.indexProyectos', [
+            'proyectos' => $proyectos,
+            'proyectosDisponibles' => $proyectosDisponibles,
+            'estudiantesAprobados' => $estudiantesAprobados,
+            'perPage' => $perPage,
+            'perPage2' => $perPage2,
+            'paginator' => $paginator,
+            'profesores' => $profesores,
+            'nrcs' => $nrcs,
+            'asignacionesAgrupadas' => $paginator,
+            'periodos' => $periodos,
+            'search' => $search,
+            'search2' => $search2,
+            'estadoProyecto' => $estadoProyecto,
+            'profesorId' => $profesorId,
+            'periodoId' => $periodoId,
+            'paginatedData' => $paginatedData,
+            'total' => $total,
+            'periodoAsignacion' => $periodoAsignacion,
+        ]);
+
     }
 
 
@@ -635,6 +665,38 @@ class AdminController extends Controller
         $this->actualizarUsuarioYRol($request->ProfesorParticipante, 'ParticipanteVinculacion');
 
         return redirect()->route('admin.indexProyectos')->with('success', 'Asignacion realizada correctamente');
+
+    }
+
+
+
+    /////////////////////////////////////////////////asignacion sin estudiantes///////////////////////////////////////////////////////////////////////
+    public function guardarDocentesProyectos(Request $request)
+    {
+        $request->validate([
+            'proyecto_id' => 'required',
+            'ProfesorParticipante' => 'required',
+            'periodo' => 'required',
+            'FechaInicio' => 'required|date',
+            'FechaFinalizacion' => 'required|date|after:FechaInicio',
+        ], [
+            'FechaFinalizacion.after' => 'La fecha de finalización debe ser posterior a la fecha de inicio',
+        ]);
+
+ 
+        AsignacionSinEstudiante::create([
+            'proyectoId' => $request->proyecto_id,
+            'participanteId' => $request->ProfesorParticipante,
+            'idPeriodo' => $request->periodo,
+            'inicioFecha' => $request->FechaInicio,
+            'finalizacionFecha' => $request->FechaFinalizacion,
+        ]);
+
+        $this->actualizarUsuarioYRol($request->ProfesorParticipante, 'ParticipanteVinculacion');
+
+
+        return redirect()->route('admin.indexProyectos')->with('success', 'Asignación realizada correctamente');
+
 
     }
 

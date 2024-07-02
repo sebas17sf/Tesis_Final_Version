@@ -10,12 +10,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Proyecto;
 use App\Models\Usuario;
+use Carbon\Carbon;
+use App\Models\AsignacionSinEstudiante;
 use App\Models\ActividadEstudiante;
-use Illuminate\Support\Collection;
 use App\Models\AsignacionProyecto;
-use App\Models\ParticipanteAdicional;
 use App\Models\Estudiante;
-use App\Models\AsignacionEstudiantesDirector;
 use App\Models\NotasEstudiante;
 use App\Models\UsuariosSession;
 
@@ -47,6 +46,18 @@ class ParticipanteVinculacionController extends Controller
                 ->with(['proyecto', 'estudiante'])
                 ->distinct('proyectoId')
                 ->get();
+
+            if ($proyectosEnEjecucion->isEmpty()) {
+                $fechaActual = Carbon::now()->format('Y-m-d');
+
+                $proyectosEnEjecucion = AsignacionSinEstudiante::where('participanteId', $participanteID)
+                    ->where('inicioFecha', '<=', $fechaActual)
+                    ->where('finalizacionFecha', '>=', $fechaActual)
+                    ->with(['proyecto'])
+                    ->get();
+            }
+
+
 
             $proyectosTerminados = AsignacionProyecto::where('participanteId', $participanteID)
                 ->whereHas('proyecto', function ($query) {
@@ -141,11 +152,26 @@ class ParticipanteVinculacionController extends Controller
         $proyecto = AsignacionProyecto::where('participanteId', $profesor->id)
             ->whereHas('estudiante', function ($query) {
                 $query->where('estado', 'Aprobado');
-            })->first();
+            })
+            ->with(['proyecto', 'estudiante'])
+            ->first();
+
+        if (!$proyecto) {
+            $fechaActual = Carbon::now()->format('Y-m-d');
+
+            $proyecto = AsignacionSinEstudiante::where('participanteId', $profesor->id)
+                ->where('inicioFecha', '<=', $fechaActual)
+                ->where('finalizacionFecha', '>=', $fechaActual)
+                ->with(['proyecto'])
+                ->first();
+
+
+        }
 
 
         $inicioFecha = $proyecto->inicioFecha ?? null;
         $finalizacionFecha = $proyecto->finalizacionFecha ?? null;
+
 
 
         return view('ParticipanteVinculacion.baremo', compact('inicioFecha', 'finalizacionFecha'));
