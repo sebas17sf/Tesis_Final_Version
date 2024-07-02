@@ -50,25 +50,27 @@
     <section class="contenedor_agregar_periodo">
         <h4><b>Estudiantes en Proceso de Revisión</b></h4>
         <hr>
-        <section>
-            <div class="mat-elevation-z8 contenedor_general">
+        <div class="mat-elevation-z8 contenedor_general">
 
-                <div class="contenedor_acciones_tabla ">
-                    <form action="{{ route('admin.estudiantes') }}" method="GET">
+<div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+        <!-- Botones -->
+        <div class="contenedor_botones">
+            </div>
+            <div class="contenedor_buscador">
+            <div>
+                    <form action="{{ route('admin.estudiantes') }}" method="GET" id="formBusquedaEstudiantes">
                         @csrf
-                        <div class="form-group d-flex align-items-center">
+                        
 
                             <input type="text" class="form-control input" name="buscarEstudiantesEnRevision"
                                 id="buscarEstudiantesEnRevision" matInput placeholder="Buscar estudiantes...">
-                            <div class="btn-group ml-2 shadow-0">
-                                <button type="submit" class="button5">Buscar
-                                    <i class="bx bx-search-alt"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                                <i class='bx bx-search-alt'></i>
+                            </form>
 
+                        </div>
+                    </div>
+                </div>
+           
 
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
