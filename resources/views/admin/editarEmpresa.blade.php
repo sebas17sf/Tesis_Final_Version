@@ -2,27 +2,51 @@
 @section('title', 'Editar Empresa')
 @section('title_component', 'Panel Editar Estudiantes')
 @section('content')
-    <div class="container">
 
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+
+    @if (session('success'))
+        <div class="contenedor_alerta success">
+            <div class="icon_alert"><i class="fa-regular fa-check"></i></div>
+            <div class="content_alert">
+                <div class="title">Éxito!</div>
+                <div class="body">{{ session('success') }}</div>
             </div>
-        @endif
-
-        @if (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
+            <div class="icon_remove">
+                <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
             </div>
-        @endif
+        </div>
+
+        <script>
+            document.querySelector('.contenedor_alerta .icon_remove button').addEventListener('click', function() {
+                this.closest('.contenedor_alerta').style.display = 'none';
+            });
+        </script>
+    @endif
 
 
-        <h3>Editar Empresa</h3>
+    @if (session('error'))
+        <div class="contenedor_alerta error" id="errorAlert">
+            <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
+            <div class="content_alert">
+                <div class="title">Error!</div>
+                <div class="body">{{ session('error') }}</div>
+            </div>
+            <div class="icon_remove">
+                <button class="button4 btn_3_2" onclick="closeAlert('errorAlert')"><i
+                        class="fa-regular fa-xmark"></i></button>
+            </div>
+        </div>
+
+        <script>
+            document.querySelector('.contenedor_alerta.error .icon_remove button').addEventListener('click', function() {
+                this.closest('.contenedor_alerta').style.display = 'none';
+            });
+        </script>
+    @endif
+
+<br>
+<div class="container">
         <form action="{{ route('admin.actualizarEmpresa', ['id' => $empresa->id]) }}" method="POST"
             enctype="multipart/form-data">
             @csrf
@@ -41,17 +65,28 @@
                                 <span id="error-message" style="color: red;"></span>
 
                             </div>
-
-                            <div class="form-group">
-                                <label for="rucEmpresa">RUC de la Empresa:</label>
-                                <input type="text" class="form-control input" id="rucEmpresa" name="rucEmpresa" required
-                                    value="{{ $empresa->rucEmpresa }}">
-                                <span id="error-message-rucEmpresa" style="color: red;"></span>
-
-
-
-                            </div>
-
+                            <!-- Inicio de la fila para RUC y Teléfono -->
+    <div class="row">
+        <!-- Columna para RUC de la Empresa -->
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="rucEmpresa">RUC de la Empresa:</label>
+                <input type="text" class="form-control input" id="rucEmpresa" name="rucEmpresa" required
+                    value="{{ $empresa->rucEmpresa }}">
+                <span id="error-message-rucEmpresa" style="color: red;"></span>
+            </div>
+        </div>
+        <!-- Columna para Teléfono del contacto de la Empresa -->
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="telefonoContacto">Teléfono del contacto de la Empresa:</label>
+                <input type="text" class="form-control input" id="telefonoContacto"
+                    name="telefonoContacto" required value="{{ $empresa->telefonoContacto }}">
+                <span id="error-message-telefono" style="color: red; display: none;">Número de teléfono no
+                    válido</span>
+            </div>
+        </div>
+    </div>
                             <div class="form-group">
                                 <label for="provincia">Provincia:</label>
                                 <select class="form-control input" id="provincia" name="provincia" required>
@@ -82,9 +117,6 @@
                                     <option value="Zamora Chinchipe" {{ $empresa->provincia == 'Zamora Chinchipe' ? 'selected' : '' }}>Zamora Chinchipe</option>
                                 </select>
                             </div>
-
-
-
 
                             <div class="form-group">
                                 <label for="ciudad">Ciudad:</label>
@@ -118,13 +150,7 @@
 
                             </div>
 
-                            <div class="form-group">
-                                <label for="telefonoContacto">Teléfono del contacto de la Empresa:</label>
-                                <input type="text" class="form-control input" id="telefonoContacto"
-                                    name="telefonoContacto" required value="{{ $empresa->telefonoContacto }}">
-                                    <span id="error-message-telefono" style="color: red; display: none;">Número de teléfono no
-                                        válido</span>
-                            </div>
+                            
 
                             <div class="form-group">
                                 <label for="actividadesMacro">Actividades Macro requeridas:</label>
@@ -169,12 +195,18 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="button efects_button">Actualizar Empresa</button>
+             <center>  <button type="submit" class="button1 efects_button">Actualizar Empresa</button> </center>
             </form>
 
         </form>
     </div>
     </div>
-
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    <script src="{{ asset('js/admin/acciones.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <script src="{{ asset('js/admin/editarEmpresa.js') }}"></script>
 @endsection

@@ -165,8 +165,6 @@
                         </div>
                         <div class="col-md-6">
 
-
-
                             <div class="form-group">
                                 <label for="cartaCompromiso">Carta Compromiso (PDF):</label>
                                 <div class="input input_file">
@@ -210,6 +208,7 @@
         <br>
 
         <h4><b>Listado de Empresas Agregadas</b></h4>
+        <hr>
         <div class="mat-elevation-z8 contenedor_general">
             <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
             <div class="contenedor_botones">

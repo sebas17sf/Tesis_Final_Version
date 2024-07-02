@@ -1,5 +1,7 @@
 @extends('layouts.directorVinculacion')
+@section('title', 'Panel Proyectos')
 
+@section('title_component', 'Panel Proyectos')
 @section('content')
 @if (session('success'))
 <div class="contenedor_alerta success">

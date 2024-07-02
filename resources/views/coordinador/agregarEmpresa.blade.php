@@ -6,31 +6,47 @@
 
 @section('content')
     <section class="contenedor_agregar_periodo">
-        @if (session('success'))
-            <script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Éxito',
-                    text: '{{ session('success') }}',
-                    confirmButtonText: 'Ok'
-                });
-            </script>
-        @endif
+    @if (session('success'))
+    <div class="contenedor_alerta success">
+        <div class="icon_alert"><i class="fa-regular fa-check"></i></div>
+        <div class="content_alert">
+            <div class="title">Éxito!</div>
+            <div class="body">{{ session('success') }}</div>
+        </div>
+        <div class="icon_remove">
+            <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+        </div>
+    </div>
 
-        @if (session('error'))
-            <script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: '{{ session('error') }}',
-                    confirmButtonText: 'Ok'
-                });
-            </script>
-        @endif
+    <script>
+        document.querySelector('.contenedor_alerta .icon_remove button').addEventListener('click', function() {
+            this.closest('.contenedor_alerta').style.display = 'none';
+        });
+    </script>
+    @endif
 
+
+    @if (session('error'))
+    <div class="contenedor_alerta error">
+        <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
+        <div class="content_alert">
+            <div class="title">Error!</div>
+            <div class="body">{{ session('error') }}</div>
+        </div>
+        <div class="icon_remove">
+            <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('.contenedor_alerta.error .icon_remove button').addEventListener('click', function() {
+            this.closest('.contenedor_alerta').style.display = 'none';
+        });
+    </script>
+    @endif
         <section>
             <h4><b>Agregar nueva empresa</b></h4>
-
+<hr>
             <div class="container">
                 <form action="{{ route('coordinador.guardarEmpresa') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -42,8 +58,8 @@
                                 <input type="text" class="form-control input" id="nombreEmpresa" name="nombreEmpresa"
                                     placeholder="Ingrese el Nombre de la Empresa" required pattern="[A-Za-zÁ-úñÑ\s]+"
                                     title="Ingrese solo letras (sin caracteres numéricos)">
-                                <span id="error-message-nombre" style="color: red; display: none;">Debe ingresar solo
-                                    caracteres</span>
+                                <small id="error-message-nombre" style="color: red; display: none; ">Debe ingresar solo
+                                    caracteres</small>
                             </div>
 
                         </div>
@@ -54,7 +70,7 @@
                                 <input type="text" class="form-control input" id="rucEmpresa" name="rucEmpresa"
                                     placeholder="Ingrese RUC (13 dígitos)" required pattern="[0-9]{13}"
                                     title="Ingrese 13 dígitos numéricos">
-                                <span id="error-message-rucEmpresa" style="color: red;"></span>
+                                <small id="error-message-rucEmpresa" style="color: red;"></small>
                             </div>
                         </div>
 
@@ -125,8 +141,8 @@
                                 <input type="text" class="form-control input" id="telefonoContacto"
                                     name="telefonoContacto" placeholder="Ingrese el celular de la Empresa (10 dígitos)"
                                     required pattern="09[0-9]{8}" title="Ingrese 10 dígitos numéricos">
-                                <span id="error-message-telefono" style="color: red; display: none;">Número de teléfono no
-                                    válido</span>
+                                <small id="error-message-telefono" style="color: red; display: none;">Número de teléfono no
+                                    válido</small>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -193,58 +209,88 @@
         </section>
 
         <br>
-        <h6><b>Listado de Empresas Agregadas</b></h6>
+        <h4><b>Listado de Empresas Agregadas</b></h4>
         <hr>
         <section>
             <div class="mat-elevation-z8 contenedor_general">
+            <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+            <div class="contenedor_botones">
+<div class="tooltip-container" style="    height: 33px;">
+    <span class="tooltip-text">Excel</span>
+    <form method="POST" action="{{ route('coordinador.reportesEmpresas') }}">
+        @csrf
+        <button type="submit" class="button3 efects_button btn_excel">
+            <i class="fas fa-file-excel"></i>
+        </button>
+    </form>
+</div>
+  <!-- Botón de Importar archivo -->
+  <div class="tooltip-container">
+                                    <span class="tooltip-text">Importar archivo</span>
+                                    <button type="button" class="button3 efects_button btn_copy"
+                                        onclick="openCard('cardImportarArchivo');">
+                                        <i class="fa fa-upload"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Card de Importar archivo -->
+                                <div class="draggable-card1_4" id="cardImportarArchivo" style="display: none;">
+                                    <div class="card-header">
+                                        <span class="card-title">Importar archivo</span>
+                                        <button type="button" class="close"
+                                            onclick="closeCard('cardImportarArchivo')"><i class="fa-thin fa-xmark"></i></button>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="idModalImportar" action="{{ route('import-empresas') }}"  method="POST"
+                                            enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="form-group">
+                                                <div class="input_file input">
+                                                    <span id="fileText2" class="fileText">
+                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
+                                                    </span>
+                                                    <input type="file" class="form-control-file input input_file"
+                                                        id="file2" name="file"
+                                                        onchange="displayFileName(this, 'fileText2')" required>
+                                                    <span title="Eliminar archivo" onclick="removeFile(this)"
+                                                        class="remove-icon">✖</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer d-flex justify-content-center align-items-center">
+                                                <button type="submit" class="button">Importar Archivo</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+</div>
+</div>
                 @if ($empresas->isEmpty())
                     <p>No hay empresas agregadas.</p>
                 @else
-                    <div class="contenedor_acciones_tabla">
-
-                        <div class="tooltip-container">
-                            <span class="tooltip-text">Excel</span>
-                            <form method="POST" action="{{ route('coordinador.reportesEstudiantes') }}">
-                                @csrf
-                                <button type="submit" class="button3 efects_button btn_excel">
-                                    <i class="fas fa-file-excel"></i>
-                                </button>
-                            </form>
-                        </div>
-
-                        {{-- <form action="{{ route('admin.estudiantes') }}" method="GET">
-                            @csrf
-                            <div class="form-group d-flex align-items-center">
-                                <input type="text" name="buscarEstudiantes" id="buscarEstudiantes"
-                                    class="form-control input"
-                                    placeholder="Buscar estudiantes de vinculación a la sociedad">
-
-                            </div>
-                        </form> --}}
-                    </div>
-
+                    
 
                     <div class="contenedor_tabla">
                         <div class="table-container mat-elevation-z8">
 
-                            <div id="tablaDocentes">
-                                <table class="mat-mdc-table">
+                            <div id="tablaEmpresas">
+                                <table id="tablaEmpresas" class="mat-mdc-table">
                                     <thead class="ng-star-inserted">
                                         <tr
                                             class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                            <th>Nombre de la Empresa</th>
-                                            <th>RUC de la Empresa</th>
-                                            <th>Provincia</th>
-                                            <th>Ciudad</th>
-                                            <th>Dirección</th>
-                                            <th>Correo de Contacto</th>
-                                            <th>Nombre del Contacto</th>
-                                            <th>Teléfono del Contacto</th>
-                                            <th>Actividades Macro</th>
-                                            <th>Cupos Disponibles</th>
-                                            <th>Descargar Carta</th>
-                                            <th>Descargar Convenio</th>
-                                            <th>Acción</th>
+                                            <th class="tamanio1">NOMBRE DE LA EMPRESA</th>
+                                            <th>RUC DE LA EMPRESA</th>
+                                            <th class="tamanio3">PROVINCIA</th>
+                                            <th class="tamanio3">CIUDAD</th>
+                                            <th class="tamanio5">DIRECCIÓN</th>
+                                            <th>CORREO DEL CONTACTO</th>
+                                            <th class="tamanio5">NOMBRE DEL CONTACTO</th>
+                                            <th>TELÉFONO DEL CONTACTO</th>
+                                            <th class="tamanio">ACTIVIDADES MACRO</th>
+                                            <th>CUPOS DISPONIBLES</th>
+                                            <th>DESCARGAR CARTA</th>
+                                            <th>DESCARGAR CONVENIO</th>
+                                            <th>ACCIÓN</th>
                                         </tr>
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
@@ -261,7 +307,7 @@
                                             </td>
                                             <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->direccion)) }}
                                             </td>
-                                            <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->correo)) }}
+                                            <td>{{  $empresa->correo }}
                                             </td>
                                             <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->nombreContacto)) }}
                                             </td>
@@ -278,7 +324,7 @@
                                                         <i class="material-icons">cloud_download</i>
                                                     </a>
                                                 @else
-                                                    <span class="text-muted">No disponible</span>
+                                                    <span class="text-muted">NO DISPONIBLE</span>
                                                 @endif
                                             </td>
 
@@ -289,34 +335,32 @@
                                                         <i class="material-icons">cloud_download</i>
                                                     </a>
                                                 @else
-                                                    <span class="text-muted">No disponible</span>
+                                                    <span class="text-muted">NO DISPONIBLE</span>
                                                 @endif
                                             </td>
 
                                             <td>
+                                            <div class="btn-group shadow-1 " role="group">
                                                 <form action="{{ route('coordinador.eliminarEmpresa', ['id' => $empresa->id]) }}"
                                                     method="POST">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-link p-0">
-                                                        <i class="material-icons text-muted" style="font-size: 1.5em;">delete</i>
-                                                    </button>
+                                                    <button type="submit" class="button3 efects_button btn_eliminar3" style="margin-right: 10px;">
+                                                                <i class='bx bx-trash'></i>
+                                                            </button>
                                                 </form>
 
-                                                <form action="{{ route('coordinador.editarEmpresa', ['id' => $empresa->id]) }}"
+                                                <form class="btn-group shadow-1" action="{{ route('coordinador.editarEmpresa', ['id' => $empresa->id]) }}"
                                                     method="POST">
                                                     @csrf
                                                     @method('GET')
-                                                    <button type="submit" class="btn btn-link p-0">
-                                                        <i class="material-icons text-muted" style="font-size: 1.5em;">edit</i>
-                                                    </button>
+                                                    <button type="submit" class="button3 efects_button btn_editar3" >
+                                                                <i class="bx bx-edit-alt"></i>
+                                                            </button>
                                                 </form>
+                                            </div>
 
                                             </td>
-
-
-
-
 
                                         </tr>
                                     @endforeach
@@ -327,7 +371,7 @@
 
 
                         <div class="paginator-container">
-                            <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                            <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
                                 <div id="totalRows">Empresas: {{ $empresas->total() }}</div>
 
                                 <ul class="pagination">

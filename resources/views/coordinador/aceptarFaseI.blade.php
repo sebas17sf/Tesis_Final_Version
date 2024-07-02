@@ -289,7 +289,7 @@
                         </div>
                     </div>
                     <div class="paginator-container">
-                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: center;">
+                        <nav aria-label="..." style="display: flex; justify-content: align-items: baseline; color: gray;">
                             <div id="totalRows">Estudiantes: {{ $estudiantesPracticas->total() }}</div>
                             <ul class="pagination">
                                 <li class="page-item mx-3">
