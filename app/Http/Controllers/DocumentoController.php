@@ -13,7 +13,8 @@ use PhpOffice\PhpWord\TemplateProcessor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-
+use App\Models\AsignacionSinEstudiante;
+use Carbon\Carbon;
 use App\Models\NrcVinculacion;
 
 use App\Models\PracticaI;
@@ -76,19 +77,17 @@ class DocumentoController extends Controller
                 'estudiantes.nombres',
                 'estudiantes.cedula',
                 'estudiantes.carrera',
-                'estudiantes.provincia',
                 'asignacionproyectos.inicioFecha',
                 'proyectos.nombreProyecto',
             )
             ->where('asignacionproyectos.proyectoId', $proyectoID)
-            ->where('estudiantes.idPeriodo', '=', $idPeriodo)
+            ->where('asignacionproyectos.idPeriodo', $asignacionProyecto->idPeriodo)
             ->orderBy('estudiantes.apellidos', 'asc')
             ->get();
 
         // Obtener Carrera, Provincia y FechaInicio del primer estudiante asignado al proyecto
         $primerEstudiante = $datosEstudiantes->first();
         $carreraEstudiante = mb_strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú'], ['A', 'E', 'I', 'O', 'U'], $primerEstudiante->carrera));
-        $provinciaEstudiante = $primerEstudiante->provincia;
         $carreraNormal = $primerEstudiante->carrera;
         $fechaInicioProyecto = $primerEstudiante->inicioFecha;
         $meses = [
@@ -126,7 +125,6 @@ class DocumentoController extends Controller
         // Reemplazar los valores constantes en la plantilla
         $template->setValue('Carrera', $carreraEstudiante);
         $template->setValue('CarreraNormal', $carreraNormal);
-        $template->setValue('Provincia', $provinciaEstudiante);
         $template->setValue('FechaInicio', $fechaFormateada);
         $template->setValue('NombreProyecto', $NombreProyecto);
 
@@ -213,7 +211,7 @@ class DocumentoController extends Controller
         $nombresEstudiante = $estudiante->nombres;
         $cedulaEstudiante = $estudiante->cedula;
         $carreraEstudiante = $estudiante->carrera;
-        $provinciaEstudiante = $estudiante->provincia;
+        $provinciaEstudiante = 'Santo Domingo';
 
         // Reemplazar los valores en la plantilla
         $template->setValue('Apellidos', $apellidosEstudiante);
@@ -267,7 +265,6 @@ class DocumentoController extends Controller
         // Verificar si el archivo de plantilla existe
         if (!file_exists($plantillaPath)) {
             abort(404, 'El archivo de plantilla no existe.');
-
         }
 
         // Cargar la plantilla XLSX existente
@@ -294,16 +291,15 @@ class DocumentoController extends Controller
 
         if ($asignacionProyecto) {
             $proyectoID = $asignacionProyecto->proyectoId;
+            $idPeriodo = $asignacionProyecto->idPeriodo;
         } else {
-            // Manejar el caso en que no se encontró la asignación de proyecto para el estudiante
-            return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
+            return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');
         }
 
         // Consulta para obtener los datos de los estudiantes asignados a un proyecto específico
         $datosEstudiantes = DB::table('estudiantes')
             ->join('asignacionproyectos', 'estudiantes.estudianteId', '=', 'asignacionproyectos.estudianteId')
             ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
-            ->join('usuarios', 'estudiantes.userId', '=', 'usuarios.userId')
             ->join('profesuniversidad as director', 'proyectos.directorId', '=', 'director.id')
             ->join('profesuniversidad as participante', 'asignacionproyectos.participanteId', '=', 'participante.id')
             ->select(
@@ -313,8 +309,7 @@ class DocumentoController extends Controller
                 'estudiantes.departamento',
                 'estudiantes.celular',
                 'estudiantes.carrera',
-                'estudiantes.provincia',
-                'usuarios.correoElectronico',
+                'estudiantes.correo',
                 'asignacionproyectos.inicioFecha',
                 'asignacionproyectos.finalizacionFecha',
                 'proyectos.nombreProyecto',
@@ -325,10 +320,11 @@ class DocumentoController extends Controller
                 'participante.apellidos as ApellidoParticipante'
             )
             ->where('proyectos.estado', '=', 'Ejecucion')
+            ->where('asignacionproyectos.idPeriodo', $asignacionProyecto->idPeriodo)
             ->where('asignacionproyectos.proyectoId', '=', $proyectoID)
             ->orderBy('estudiantes.apellidos', 'asc')
-
             ->get();
+
 
 
         // Verificar si se recuperaron datos
@@ -360,9 +356,7 @@ class DocumentoController extends Controller
         ];
 
         $fechaFormateada = date('d F Y', strtotime($fechaInicioProyecto));
-
         $fechaFormateada = strtr($fechaFormateada, $meses);
-
 
         $NombreProyecto = $primerEstudiante->nombreProyecto;
         $horasVinculacionConstante = 96;
@@ -371,78 +365,56 @@ class DocumentoController extends Controller
         $apellidoProfesor = $primerEstudiante->ApellidoProfesor;
         $nombreCombinado = "Ing. {$nombreProfesor} {$apellidoProfesor}, Mgtr";
 
-
-
         // Obtener la hoja activa del archivo XLSX
         $sheet = $spreadsheet->getActiveSheet();
 
         // Clonar filas en la plantilla
-        $filaInicio = 5; // La primera fila de datos comienza en la fila 2
+        $filaInicio = 5; // La primera fila de datos comienza en la fila 5
         $cantidadFilas = count($datosEstudiantes);
-        $proyectoCellStart = 'B5';
-        $proyectoN = 'A5';
-        $proyectoCellEnd = 'B' . (5 + count($datosEstudiantes) - 1);
-        $proyectoNEnd = 'A' . (5 + count($datosEstudiantes) - 1);
-
         $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
 
         // Bucle para reemplazar los valores en la plantilla
         foreach ($datosEstudiantes as $index => $estudiante) {
+            $filaActual = $filaInicio + $index;
             $apellidoNombre = $estudiante->apellidos . ' ' . $estudiante->nombres;
-            $sheet->setCellValue('C' . ($filaInicio + $index), $apellidoNombre);
-            $sheet->setCellValue('D' . ($filaInicio + $index), $estudiante->cedula);
-            $sheet->setCellValue('E' . ($filaInicio + $index), $estudiante->celular);
+            $sheet->setCellValue('C' . $filaActual, $apellidoNombre);
+            $sheet->setCellValue('D' . $filaActual, $estudiante->cedula);
+            $sheet->setCellValue('E' . $filaActual, $estudiante->celular);
             $horasVinculacionConstanteEntero = round($horasVinculacionConstante);
-            $sheet->setCellValue('L' . ($filaInicio + $index), $horasVinculacionConstanteEntero);
-            $sheet->setCellValue('H' . ($filaInicio + $index), $estudiante->departamento);
-            $sheet->setCellValue('I' . ($filaInicio + $index), $estudiante->carrera);
-            $sheet->setCellValue('J' . ($filaInicio + $index), $fechaInicioProyecto);
-            $sheet->setCellValue('K' . ($filaInicio + $index), $fechaFinProyecto);
-            $sheet->setCellValue('G' . ($filaInicio + $index), $matriz);
-            $sheet->setCellValue('F' . ($filaInicio + $index), $estudiante->correoElectronico);
-
-
+            $sheet->setCellValue('L' . $filaActual, $horasVinculacionConstanteEntero);
+            $sheet->setCellValue('H' . $filaActual, $estudiante->departamento);
+            $sheet->setCellValue('I' . $filaActual, $estudiante->carrera);
+            $sheet->setCellValue('J' . $filaActual, $fechaInicioProyecto);
+            $sheet->setCellValue('K' . $filaActual, $fechaFinProyecto);
+            $sheet->setCellValue('G' . $filaActual, $matriz);
+            $sheet->setCellValue('F' . $filaActual, $estudiante->correo);
         }
 
-
-        $sheet->mergeCells($proyectoCellStart . ':' . $proyectoCellEnd);
-        $sheet->mergeCells($proyectoN . ':' . $proyectoNEnd);
+        // Unir celdas para los encabezados y el proyecto
+        $sheet->mergeCells("B5:B" . (5 + $cantidadFilas - 1));
+        $sheet->mergeCells("A5:A" . (5 + $cantidadFilas - 1));
         $sheet->setCellValue('B5', $NombreProyecto);
+        $sheet->setCellValue('A5', '1');
+
         $sheet->mergeCells('B18:D18');
         $sheet->mergeCells('B17:D17');
         $sheet->mergeCells('B19:D19');
-        $sheet->setCellValue('A5', '1');
-
-
-
-        // Reemplazar los valores constantes en la plantilla
+        $sheet->setCellValue('B17', $nombreCombinado);
+        $sheet->setCellValue('B18', $departamento);
+        $sheet->setCellValue('B19', 'Director del proyecto');
+        $sheet->setCellValue('B9', 'Fecha:');
         $sheet->setCellValue('C9', $fechaFormateada);
-        $style = $sheet->getStyle('C9');
-        $style->getFont()->setName('Calibri')->setSize(16);
-
-
-
         $sheet->setCellValue('C2', $departamentoProyecto);
 
-        $sheet->setCellValue('B17', $nombreCombinado);
-        $style = $sheet->getStyle('B17');
-        $style->getFont()->setName('Calibri')->setSize(16)->setBold(true);
-        $style->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
-        $sheet->setCellValue('B18', $departamento);
-        $style = $sheet->getStyle('B18');
-        $style->getFont()->setName('Calibri')->setSize(16)->setBold(true);
-        $style->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
-        $sheet->setCellValue('B19', 'Director del proyecto');
-        $style = $sheet->getStyle('B19');
-        $style->getFont()->setName('Calibri')->setSize(16)->setBold(true);
-        $style->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
-        $sheet->setCellValue('B9', 'Fecha:');
-        $style = $sheet->getStyle('B9');
-        $style->getFont()->setName('Calibri')->setSize(16)->setBold(true);
-
+        // Formatear celdas
+        $sheet->getStyle('C9')->getFont()->setName('Calibri')->setSize(16);
+        $sheet->getStyle('B17')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
+        $sheet->getStyle('B17')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('B18')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
+        $sheet->getStyle('B18')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('B19')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
+        $sheet->getStyle('B19')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('B9')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
 
         // Descargar el documento generado
         $nombreArchivo = '1.3-Número-Horas-Estudiantes.xlsx';
@@ -450,6 +422,7 @@ class DocumentoController extends Controller
         $writer->save($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
     }
+
 
 
     ////////////////////////Creacion de infomreeeeeeeeeee///////////////////////////////////
@@ -497,7 +470,6 @@ class DocumentoController extends Controller
                 'estudiantes.cedula',
                 'estudiantes.carrera',
                 'estudiantes.departamento',
-                'estudiantes.provincia',
                 'asignacionproyectos.inicioFecha',
                 'asignacionproyectos.finalizacionFecha',
                 'proyectos.NombreProyecto',
@@ -507,6 +479,7 @@ class DocumentoController extends Controller
                 'participante.apellidos as ApellidoAsignado'
             )
             ->where('asignacionproyectos.proyectoId', '=', $proyectoID)
+            ->where('asignacionproyectos.idPeriodo', $asignacionProyecto->idPeriodo)
             ->orderBy('estudiantes.apellidos', 'asc')
             ->get();
 
@@ -538,7 +511,7 @@ class DocumentoController extends Controller
         // Obtener Carrera, Provincia y FechaInicio del primer estudiante asignado al proyecto
         $primerEstudiante = $datosEstudiantes->first();
         $carreraEstudiante = strtoupper($primerEstudiante->carrera);
-        $provinciaEstudiante = $primerEstudiante->provincia;
+        $provinciaEstudiante = 'Santo Domingo';
         $departamento = mb_strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú'], ['A', 'E', 'I', 'O', 'U'], $primerEstudiante->departamento));
         $fechaInicioProyecto = $primerEstudiante->inicioFecha;
         $fechaFinProyecto = $primerEstudiante->finalizacionFecha;
@@ -815,6 +788,7 @@ class DocumentoController extends Controller
                 ->select(
                     'proyectos.nombreProyecto',
                     'proyectos.codigoProyecto',
+                    'proyectos.directorId',
                     'proyectos.inicioFecha',
                     'proyectos.finFecha',
                     'proyectos.departamentoTutor',
@@ -841,19 +815,38 @@ class DocumentoController extends Controller
 
             foreach ($datosProyectos as $index => $proyecto) {
                 $director = ProfesUniversidad::find($proyecto->directorId);
-                $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-                $sheet->setCellValue('B' . ($filaInicio + $index), mb_strtoupper($proyecto->nombreProyecto, 'UTF-8'));
-                $sheet->getStyle('B' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
-                $sheet->setCellValue('C' . ($filaInicio + $index), $proyecto->codigoProyecto);
-                $sheet->setCellValue('E' . ($filaInicio + $index), mb_strtoupper($proyecto->departamentoTutor, 'UTF-8'));
-                $sheet->setCellValue('F' . ($filaInicio + $index), mb_strtoupper($proyecto->estado, 'UTF-8'));
-                $sheet->getStyle('D' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
-                $sheet->setCellValue('D' . ($filaInicio + $index), mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
+                $currentRow = $filaInicio + $index;
+
+                $sheet->setCellValue('A' . $currentRow, $contador);
+                $sheet->setCellValue('B' . $currentRow, mb_strtoupper($proyecto->nombreProyecto, 'UTF-8'));
+                $sheet->getStyle('B' . $currentRow)->getAlignment()->setWrapText(true)->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheet->setCellValue('D' . $currentRow, $proyecto->codigoProyecto);
+                $sheet->setCellValue('F' . $currentRow, mb_strtoupper($proyecto->departamentoTutor, 'UTF-8'));
+                $sheet->setCellValue('I' . $currentRow, mb_strtoupper($proyecto->estado, 'UTF-8'));
+                /////fecha inicio
+                $fechaInicio = date('d/m/Y', strtotime($proyecto->inicioFecha));
+                $sheet->setCellValue('G' . $currentRow, $fechaInicio);
+                /////fecha fin
+                $fechaFin = date('d/m/Y', strtotime($proyecto->finFecha));
+                $sheet->setCellValue('H' . $currentRow, $fechaFin);
+                $sheet->getStyle('D' . $currentRow)->getAlignment()->setWrapText(true)->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheet->setCellValue('E' . $currentRow, mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
+                ////OBTENER NOMBRE DEK DIRECTOR
+                $sheet->setCellValue('C' . $currentRow, $director->apellidos . ' ' . $director->nombres);
+                // Ajustar estilo de las celdas
+                $sheet->getStyle('A' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheet->getStyle('B' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheet->getStyle('C' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheet->getStyle('E' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheet->getStyle('F' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheet->getStyle('I' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheet->getStyle('G' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheet->getStyle('H' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
                 $contador++;
             }
 
             $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-            $nombreArchivo = 'Reporte-Proyectos.xlsx';
+            $nombreArchivo = 'Reporte_proyectos_sociales.xlsx';
             $writer->save($nombreArchivo);
 
             return response()->download($nombreArchivo)->deleteFileAfterSend(true);
@@ -861,6 +854,7 @@ class DocumentoController extends Controller
             return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
         }
     }
+
 
 
 
@@ -958,12 +952,11 @@ class DocumentoController extends Controller
                 'empresas.actividadesMacro',
                 'empresas.cuposDisponibles',
                 'empresas.created_at',
-                'empresas.updated_at',
-
+                'empresas.updated_at'
             )
             ->get();
-        $sheet = $spreadsheet->getActiveSheet();
 
+        $sheet = $spreadsheet->getActiveSheet();
 
         $filaInicio = 9;
         $cantidadFilas = count($datosEstudiantes);
@@ -973,26 +966,39 @@ class DocumentoController extends Controller
 
         // Bucle para reemplazar los valores en la plantilla
         foreach ($datosEstudiantes as $index => $estudiante) {
-            $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-            $sheet->setCellValue('B' . ($filaInicio + $index), mb_strtoupper($estudiante->nombreEmpresa, 'UTF-8'));
-            $sheet->setCellValue('C' . ($filaInicio + $index), mb_strtoupper($estudiante->rucEmpresa, 'UTF-8'));
-            $sheet->setCellValue('D' . ($filaInicio + $index), mb_strtoupper($estudiante->provincia, 'UTF-8'));
-            $sheet->setCellValue('E' . ($filaInicio + $index), mb_strtoupper($estudiante->ciudad, 'UTF-8'));
-            $sheet->setCellValue('F' . ($filaInicio + $index), mb_strtoupper($estudiante->direccion, 'UTF-8'));
-            $sheet->setCellValue('G' . ($filaInicio + $index), strtolower($estudiante->correo));
-            $sheet->setCellValue('H' . ($filaInicio + $index), mb_strtoupper($estudiante->nombreContacto, 'UTF-8'));
-            $sheet->setCellValue('I' . ($filaInicio + $index), mb_strtoupper($estudiante->telefonoContacto, 'UTF-8'));
-            $sheet->setCellValue('J' . ($filaInicio + $index), mb_strtoupper($estudiante->actividadesMacro, 'UTF-8'));
-            $sheet->setCellValue('K' . ($filaInicio + $index), mb_strtoupper($estudiante->cuposDisponibles, 'UTF-8'));
-            $sheet->setCellValue('L' . ($filaInicio + $index), mb_strtoupper($estudiante->created_at, 'UTF-8'));
-            $sheet->setCellValue('M' . ($filaInicio + $index), mb_strtoupper($estudiante->updated_at, 'UTF-8'));
+            $currentRow = $filaInicio + $index;
+
+            $sheet->setCellValue('A' . $currentRow, $contador);
+            $sheet->setCellValue('B' . $currentRow, mb_strtoupper($estudiante->nombreEmpresa, 'UTF-8'));
+            $sheet->setCellValue('C' . $currentRow, mb_strtoupper($estudiante->rucEmpresa, 'UTF-8'));
+            $sheet->setCellValue('D' . $currentRow, mb_strtoupper($estudiante->provincia, 'UTF-8'));
+            $sheet->setCellValue('E' . $currentRow, mb_strtoupper($estudiante->ciudad, 'UTF-8'));
+            $sheet->setCellValue('F' . $currentRow, mb_strtoupper($estudiante->direccion, 'UTF-8'));
+            $sheet->setCellValue('G' . $currentRow, strtolower($estudiante->correo));
+            $sheet->setCellValue('H' . $currentRow, mb_strtoupper($estudiante->nombreContacto, 'UTF-8'));
+            $sheet->setCellValue('I' . $currentRow, mb_strtoupper($estudiante->telefonoContacto, 'UTF-8'));
+            $sheet->setCellValue('J' . $currentRow, mb_strtoupper($estudiante->actividadesMacro, 'UTF-8'));
+            $sheet->setCellValue('K' . $currentRow, mb_strtoupper($estudiante->cuposDisponibles, 'UTF-8'));
+            $sheet->setCellValue('L' . $currentRow, mb_strtoupper($estudiante->created_at, 'UTF-8'));
+            $sheet->setCellValue('M' . $currentRow, mb_strtoupper($estudiante->updated_at, 'UTF-8'));
+
+            // Ajustar estilo de las celdas
+            $sheet->getStyle('A' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('B' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('C' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('D' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('E' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('F' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('G' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('H' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('I' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('J' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('K' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('L' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('M' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
 
             $contador++;
         }
-
-
-
-
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $documentoGeneradoPath = storage_path('app/public/Reporte-Empresas.xlsx');
@@ -1067,24 +1073,20 @@ class DocumentoController extends Controller
             $sheet->setCellValue('AJ' . ($filaInicio + $index), 'Tecnologias de la Informacion');
 
 
-
-
-
-
-
-
             $contador++;
 
         }
 
+        /////estilos para justificar y centrar
+        $sheet->getStyle('A9:AJ' . ($filaInicio + $cantidadFilas))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+        $sheet->getStyle('Q9:Q' . ($filaInicio + $cantidadFilas))->getNumberFormat()->setFormatCode('0000000000001');
+
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $documentoGeneradoPath = storage_path('app/public/Reporte-PracticasI.xlsx');
+        $nombreArchivo = 'Reporte_estudiantes_practica_1.xlsx';
+        $writer->save($nombreArchivo);
 
-        $writer->save($documentoGeneradoPath);
-
-        // Descargar el documento generado
-        return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
     }
 
 
@@ -1157,19 +1159,22 @@ class DocumentoController extends Controller
 
 
 
-
             $contador++;
 
         }
 
+
+        ///justificar y centrar
+        $sheet->getStyle('A9:AJ' . ($filaInicio + $cantidadFilas))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+        $sheet->getStyle('Q9:Q' . ($filaInicio + $cantidadFilas))->getNumberFormat()->setFormatCode('0000000000001');
+
+
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $documentoGeneradoPath = storage_path('app/public/Reporte-PracticasI.xlsx');
+        $nombreArchivo = 'Reporte_estudiantes_practica_2.xlsx';
+        $writer->save($nombreArchivo);
 
-        $writer->save($documentoGeneradoPath);
-
-        // Descargar el documento generado
-        return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
     }
 
     public function reportesPracticaIII(Request $request)
@@ -1244,14 +1249,16 @@ class DocumentoController extends Controller
 
         }
 
+        ////justificar y centrar
+        $sheet->getStyle('A9:AJ' . ($filaInicio + $cantidadFilas))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+        $sheet->getStyle('Q9:Q' . ($filaInicio + $cantidadFilas))->getNumberFormat()->setFormatCode('0000000000001');
+
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $documentoGeneradoPath = storage_path('app/public/Reporte-PracticasI.xlsx');
+        $nombreArchivo = 'Reporte_estudiantes_practica_1.2.xlsx';
+        $writer->save($nombreArchivo);
 
-        $writer->save($documentoGeneradoPath);
-
-        // Descargar el documento generado
-        return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
     }
 
     public function reportesPracticaIV(Request $request)
@@ -1326,14 +1333,16 @@ class DocumentoController extends Controller
 
         }
 
+        ////justificar y centrar
+        $sheet->getStyle('A9:AJ' . ($filaInicio + $cantidadFilas))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+        $sheet->getStyle('Q9:Q' . ($filaInicio + $cantidadFilas))->getNumberFormat()->setFormatCode('0000000000001');
+
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $documentoGeneradoPath = storage_path('app/public/Reporte-PracticasI.xlsx');
+        $nombreArchivo = 'Reporte-estudiantes_practica_1.3.xlsx';
+        $writer->save($nombreArchivo);
 
-        $writer->save($documentoGeneradoPath);
-
-        // Descargar el documento generado
-        return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
     }
 
     public function reportesPracticaV(Request $request)
@@ -1408,14 +1417,17 @@ class DocumentoController extends Controller
 
         }
 
+        ////justificar y centrar
+        $sheet->getStyle('A9:AJ' . ($filaInicio + $cantidadFilas))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+        $sheet->getStyle('Q9:Q' . ($filaInicio + $cantidadFilas))->getNumberFormat()->setFormatCode('0000000000001');
+
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $documentoGeneradoPath = storage_path('app/public/Reporte-PracticasI.xlsx');
+        $nombreArchivo = 'Reporte-estudiantes_practica_2.2.xlsx';
+        $writer->save($nombreArchivo);
 
-        $writer->save($documentoGeneradoPath);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
 
-        // Descargar el documento generado
-        return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
     }
 
     /////////////////////reporte de estudiantes con proyectos en vinculacion//////////////////////////
@@ -1471,13 +1483,11 @@ class DocumentoController extends Controller
 
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $documentoGeneradoPath = storage_path('app/public/Proyectos_Vinculacion.xlsx');
-
-        $writer->save($documentoGeneradoPath);
-
+        $nombreArchivo = 'Reporte_proyectos_sociales.xlsx';
+         $writer->save($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
         // Descargar el documento generado
-        return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
-    }
+     }
 
 
     ////////////////////////reporte de docentes///////////////////////
@@ -1502,19 +1512,31 @@ class DocumentoController extends Controller
 
         // Bucle para reemplazar los valores en la plantilla
         foreach ($docentes as $index => $docente) {
-            $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
+            $currentRow = $filaInicio + $index;
+
+            $sheet->setCellValue('A' . $currentRow, $contador);
             $nombreCompleto = mb_strtoupper($docente->apellidos . ', ' . $docente->nombres, 'UTF-8');
-            $sheet->setCellValue('B' . ($filaInicio + $index), $nombreCompleto);
-            $sheet->setCellValue('C' . ($filaInicio + $index), $docente->correo); // No convertir a mayúsculas
-            $sheet->setCellValue('D' . ($filaInicio + $index), mb_strtoupper($docente->usuario, 'UTF-8'));
-            $sheet->setCellValue('E' . ($filaInicio + $index), mb_strtoupper($docente->cedula, 'UTF-8'));
-            $sheet->setCellValue('F' . ($filaInicio + $index), mb_strtoupper($docente->departamento, 'UTF-8'));
-            $sheet->setCellValue('G' . ($filaInicio + $index), mb_strtoupper($docente->espeId, 'UTF-8'));
+            $sheet->setCellValue('B' . $currentRow, $nombreCompleto);
+            $sheet->setCellValue('C' . $currentRow, $docente->correo); // No convertir a mayúsculas
+            $sheet->setCellValue('D' . $currentRow, $docente->usuario);
+            $sheet->setCellValue('E' . $currentRow, mb_strtoupper($docente->cedula, 'UTF-8'));
+            $sheet->setCellValue('F' . $currentRow, mb_strtoupper($docente->departamento, 'UTF-8'));
+            $sheet->setCellValue('G' . $currentRow, mb_strtoupper($docente->espeId, 'UTF-8'));
+
+            // Ajustar estilo de las celdas
+            $sheet->getStyle('A' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('B' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('C' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('D' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('E' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('F' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('G' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+
             $contador++;
         }
 
         // Guardar el documento generado
-        $nombreArchivo = 'Reporte-Docentes.xlsx';
+        $nombreArchivo = 'Reporte_docentes_participantes_y_directores.xlsx';
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
@@ -2021,6 +2043,16 @@ class DocumentoController extends Controller
             ->first();
 
         if (!$proyecto) {
+            $fechaActual = Carbon::now()->format('Y-m-d');
+            $proyecto = AsignacionSinEstudiante::where('participanteId', $profesor->id)
+                ->where('inicioFecha', '<=', $fechaActual)
+                ->where('finalizacionFecha', '>=', $fechaActual)
+                ->with(['proyecto'])
+                ->first();
+
+        }
+
+        if (!$proyecto) {
             return redirect()->back()->with('error', 'No tienes un proyecto asignado.');
         }
 
@@ -2155,7 +2187,7 @@ class DocumentoController extends Controller
         $estudiante = Auth::user()->estudiante;
 
         // Verificar el estado del estudiante
-        if ($estudiante->estado === 'En proceso de revision' || $estudiante->estado === 'Aprobado-practicas') {
+        if ($estudiante->estado === 'En proceso de revision') {
             // Redirigir o mostrar un mensaje de error, según tus necesidades
             return redirect()->back()->with('error', 'No tienes acceso a esta página en este momento.');
         }

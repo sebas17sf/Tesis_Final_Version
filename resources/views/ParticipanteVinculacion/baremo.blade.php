@@ -83,10 +83,13 @@
                             <tr>
                                 <td><b>Puntaje del Proyecto:</b></td>
                                 <td>
-                                    <center><input type="number" name="puntaje_proyecto1"
-                                            class="puntaje_proyecto input input_select2 text-center " id="tabla1" />
-                                    </center>
-                                    <span id="errorTabla1" class="error-message" style="color: red;"></span>
+                                    <div style="text-align: center;">
+                                        <input type="number" name="puntaje_proyecto1"
+                                            class="puntaje_proyecto input input_select2 text-center" id="tabla1" />
+                                        <br>
+                                        <span id="errorTabla1" class="error-message"
+                                            style="color: red; display: block;"></span>
+                                    </div>
                                 </td>
 
                                 <td>
@@ -133,9 +136,11 @@
                         <tr>
                             <td><b>Puntaje del Proyecto:</b></td>
                             <td>
-                                <center><input type="number" name="puntaje_proyecto2 "
-                                        class="puntaje_proyecto text-center input input_select2" id="tabla2" /></center>
-                                <span id="errorTabla2" class="error-message" style="color: red;"></span>
+                                <div style="text-align: center;">
+                                    <input type="number" name="puntaje_proyecto2"
+                                        class="puntaje_proyecto input input_select2 text-center" id="tabla2" />
+                                    <span id="errorTabla2" class="error-message" style="color: red; display: block;"></span>
+                                </div>
                             </td>
 
                             <td>
@@ -182,9 +187,12 @@
                         <tr>
                             <td><b>Puntaje del Proyecto:</b></td>
                             <td>
-                                <center><input type="number" name="puntaje_proyecto3"
-                                        class="puntaje_proyecto text-center input input_select2" id="tabla3" /></center>
-                                <span id="errorTabla3" class="error-message" style="color: red;"></span>
+                                <div style="text-align: center;">
+                                    <input type="number" name="puntaje_proyecto3"
+                                        class="puntaje_proyecto text-center input input_select2" id="tabla3" />
+                                    <br>
+                                    <span id="errorTabla3" class="error-message" style="display: block; color: red;"></span>
+                                </div>
                             </td>
 
                             <td>
@@ -231,10 +239,13 @@
                         <tr>
                             <td><b>Puntaje del Proyecto:</b></td>
                             <td>
-                                <center><input type="number" name="puntaje_proyecto4"
+                                <div style="text-align: center;">
+                                    <input type="number" name="puntaje_proyecto4"
                                         class="puntaje_proyecto input input_select2 text-center" id="tabla4" />
-                                </center>
-                                <span id="errorTabla4" class="error-message" style="color: red;"></span>
+                                    <br>
+                                    <span id="errorTabla4" class="error-message"
+                                        style="display: block; color: red;"></span>
+                                </div>
                             </td>
 
                             <td>
@@ -310,8 +321,8 @@
                 inputs.forEach(function(input, index) {
                     var value = parseInt(input.value) || 0;
                     var error = '';
-                    if (value < 0 || value > 10) {
-                        error = 'El valor debe estar entre 0 y 10';
+                    if (![10, 8, 6, 4, 0].includes(value)) {
+                        error = 'El valor no es valido.';
                         valid = false;
                     }
                     total += value;
@@ -333,7 +344,7 @@
                     hours = 6;
                 } else if (total >= 25) {
                     hours = 4;
-                } else if (total >= 24) {
+                } else if (total <= 24) {
                     hours = 2;
                 } else {
                     hours = 0;

@@ -91,7 +91,14 @@ class EstudianteController extends Controller
 
         $estudiante->update(['userId' => $user->userId]);
 
+         $asignacionProyecto = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->first();
+         if ($asignacionProyecto) {
+            $estudiante->update(['estado' => 'Aprobado-practicas']);
+        }
+
+
         $mensaje = $estudiante->wasRecentlyCreated ? 'Estudiante creado correctamente' : 'Datos del estudiante actualizados correctamente';
+
 
         return redirect()->route('login')->with('success', $mensaje);
     }
@@ -249,7 +256,7 @@ class EstudianteController extends Controller
 
         $estudiante = $user->estudiante;
 
-         $actividades = ActividadesPracticas::where('estudianteId', $estudiante->estudianteId)->get();
+        $actividades = ActividadesPracticas::where('estudianteId', $estudiante->estudianteId)->get();
 
 
 
