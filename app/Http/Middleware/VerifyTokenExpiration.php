@@ -24,17 +24,19 @@ class VerifyTokenExpiration
                 return redirect()->route('login')->with('error', 'Tu sesión ha expirado.');
             }
 
-            // Calcular la mitad del tiempo restante hasta que expire el token
-            $timeRemaining = now()->diffInMinutes($user->token_expires_at);
-            $halfTimeRemaining = floor($timeRemaining / 2);
-
-            // Mostrar la alerta si se cumple la condición y no se ha mostrado antes
-            if ($timeRemaining <= $halfTimeRemaining && !session('alert_shown')) {
+            if ($this->shouldShowAlert($user)) {
                 session(['show_alert' => true, 'alert_shown' => true]);
             }
         }
 
         return $next($request);
+    }
+
+    private function shouldShowAlert($user)
+    {
+        $timeRemaining = now()->diffInMinutes($user->token_expires_at);
+        $halfTimeRemaining = floor($timeRemaining / 2);
+        return $timeRemaining <= $halfTimeRemaining && !session('alert_shown');
     }
 
     private function updateSessionEndTime($user)

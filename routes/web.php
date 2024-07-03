@@ -20,6 +20,7 @@ use Laravel\Socialite\Facades\Socialite;
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
 
 Route::get('/keep-alive', [SessionController::class, 'keepAlive']);
+Route::get('/check-session-status', [SessionController::class, 'checkSessionStatus']);
 Route::post('/keep-alive', [SessionController::class, 'keepAlive'])->name('keep-alive');
 Route::post('/update-token-expiration', [SessionController::class, 'updateTokenExpiration'])->name('update-token-expiration');
 
