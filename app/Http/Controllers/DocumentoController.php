@@ -846,7 +846,7 @@ class DocumentoController extends Controller
             }
 
             $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-            $nombreArchivo = 'Reporte-Proyectos.xlsx';
+            $nombreArchivo = 'Reporte_proyectos_sociales.xlsx';
             $writer->save($nombreArchivo);
 
             return response()->download($nombreArchivo)->deleteFileAfterSend(true);
@@ -1083,12 +1083,10 @@ class DocumentoController extends Controller
 
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $documentoGeneradoPath = storage_path('app/public/Reporte-PracticasI.xlsx');
+        $nombreArchivo = 'Reporte_estudiantes_practica_1.xlsx';
+        $writer->save($nombreArchivo);
 
-        $writer->save($documentoGeneradoPath);
-
-        // Descargar el documento generado
-        return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
     }
 
 
@@ -1173,12 +1171,10 @@ class DocumentoController extends Controller
 
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $documentoGeneradoPath = storage_path('app/public/Reporte-PracticasI.xlsx');
+        $nombreArchivo = 'Reporte_estudiantes_practica_2.xlsx';
+        $writer->save($nombreArchivo);
 
-        $writer->save($documentoGeneradoPath);
-
-        // Descargar el documento generado
-        return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
     }
 
     public function reportesPracticaIII(Request $request)
@@ -1259,12 +1255,10 @@ class DocumentoController extends Controller
 
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $documentoGeneradoPath = storage_path('app/public/Reporte-PracticasI.xlsx');
+        $nombreArchivo = 'Reporte_estudiantes_practica_1.2.xlsx';
+        $writer->save($nombreArchivo);
 
-        $writer->save($documentoGeneradoPath);
-
-        // Descargar el documento generado
-        return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
     }
 
     public function reportesPracticaIV(Request $request)
@@ -1345,12 +1339,10 @@ class DocumentoController extends Controller
 
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $documentoGeneradoPath = storage_path('app/public/Reporte-PracticasI.xlsx');
+        $nombreArchivo = 'Reporte-estudiantes_practica_1.3.xlsx';
+        $writer->save($nombreArchivo);
 
-        $writer->save($documentoGeneradoPath);
-
-        // Descargar el documento generado
-        return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
     }
 
     public function reportesPracticaV(Request $request)
@@ -1431,12 +1423,11 @@ class DocumentoController extends Controller
 
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $documentoGeneradoPath = storage_path('app/public/Reporte-PracticasI.xlsx');
+        $nombreArchivo = 'Reporte-estudiantes_practica_2.2.xlsx';
+        $writer->save($nombreArchivo);
 
-        $writer->save($documentoGeneradoPath);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
 
-        // Descargar el documento generado
-        return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
     }
 
     /////////////////////reporte de estudiantes con proyectos en vinculacion//////////////////////////
@@ -1492,13 +1483,11 @@ class DocumentoController extends Controller
 
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $documentoGeneradoPath = storage_path('app/public/Proyectos_Vinculacion.xlsx');
-
-        $writer->save($documentoGeneradoPath);
-
+        $nombreArchivo = 'Reporte_proyectos_sociales.xlsx';
+         $writer->save($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
         // Descargar el documento generado
-        return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
-    }
+     }
 
 
     ////////////////////////reporte de docentes///////////////////////
@@ -1547,7 +1536,7 @@ class DocumentoController extends Controller
         }
 
         // Guardar el documento generado
-        $nombreArchivo = 'Reporte-Docentes.xlsx';
+        $nombreArchivo = 'Reporte_docentes_participantes_y_directores.xlsx';
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
@@ -2053,15 +2042,15 @@ class DocumentoController extends Controller
             })
             ->first();
 
-            if (!$proyecto) {
-                $fechaActual = Carbon::now()->format('Y-m-d');
-                $proyecto = AsignacionSinEstudiante::where('participanteId', $profesor->id)
-                    ->where('inicioFecha', '<=', $fechaActual)
-                    ->where('finalizacionFecha', '>=', $fechaActual)
-                    ->with(['proyecto'])
-                    ->first();
+        if (!$proyecto) {
+            $fechaActual = Carbon::now()->format('Y-m-d');
+            $proyecto = AsignacionSinEstudiante::where('participanteId', $profesor->id)
+                ->where('inicioFecha', '<=', $fechaActual)
+                ->where('finalizacionFecha', '>=', $fechaActual)
+                ->with(['proyecto'])
+                ->first();
 
-            }
+        }
 
         if (!$proyecto) {
             return redirect()->back()->with('error', 'No tienes un proyecto asignado.');

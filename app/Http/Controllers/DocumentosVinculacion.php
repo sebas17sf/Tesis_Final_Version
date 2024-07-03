@@ -539,7 +539,7 @@ class DocumentosVinculacion extends Controller
         }
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $nombreArchivo = "Reporte-MatrizVinculacion.xlsx";
+        $nombreArchivo = "Reporte_asignación_proyectos_sociales.xlsx";
         $writer->save($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
 
