@@ -13,7 +13,8 @@ use PhpOffice\PhpWord\TemplateProcessor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-
+use App\Models\AsignacionSinEstudiante;
+use Carbon\Carbon;
 use App\Models\NrcVinculacion;
 
 use App\Models\PracticaI;
@@ -292,37 +293,37 @@ class DocumentoController extends Controller
             $proyectoID = $asignacionProyecto->proyectoId;
             $idPeriodo = $asignacionProyecto->idPeriodo;
         } else {
-             return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');
+            return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');
         }
 
         // Consulta para obtener los datos de los estudiantes asignados a un proyecto específico
         $datosEstudiantes = DB::table('estudiantes')
-        ->join('asignacionproyectos', 'estudiantes.estudianteId', '=', 'asignacionproyectos.estudianteId')
-        ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
-          ->join('profesuniversidad as director', 'proyectos.directorId', '=', 'director.id')
-        ->join('profesuniversidad as participante', 'asignacionproyectos.participanteId', '=', 'participante.id')
-        ->select(
-            'estudiantes.apellidos',
-            'estudiantes.nombres',
-            'estudiantes.cedula',
-            'estudiantes.departamento',
-            'estudiantes.celular',
-            'estudiantes.carrera',
-            'estudiantes.correo',
-            'asignacionproyectos.inicioFecha',
-            'asignacionproyectos.finalizacionFecha',
-            'proyectos.nombreProyecto',
-            'proyectos.departamentoTutor',
-            'director.nombres as NombreProfesor',
-            'director.apellidos as ApellidoProfesor',
-            'participante.nombres as NombreParticipante',
-            'participante.apellidos as ApellidoParticipante'
-        )
-        ->where('proyectos.estado', '=', 'Ejecucion')
-        ->where('asignacionproyectos.idPeriodo', $asignacionProyecto->idPeriodo)
-        ->where('asignacionproyectos.proyectoId', '=', $proyectoID)
-        ->orderBy('estudiantes.apellidos', 'asc')
-        ->get();
+            ->join('asignacionproyectos', 'estudiantes.estudianteId', '=', 'asignacionproyectos.estudianteId')
+            ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
+            ->join('profesuniversidad as director', 'proyectos.directorId', '=', 'director.id')
+            ->join('profesuniversidad as participante', 'asignacionproyectos.participanteId', '=', 'participante.id')
+            ->select(
+                'estudiantes.apellidos',
+                'estudiantes.nombres',
+                'estudiantes.cedula',
+                'estudiantes.departamento',
+                'estudiantes.celular',
+                'estudiantes.carrera',
+                'estudiantes.correo',
+                'asignacionproyectos.inicioFecha',
+                'asignacionproyectos.finalizacionFecha',
+                'proyectos.nombreProyecto',
+                'proyectos.departamentoTutor',
+                'director.nombres as NombreProfesor',
+                'director.apellidos as ApellidoProfesor',
+                'participante.nombres as NombreParticipante',
+                'participante.apellidos as ApellidoParticipante'
+            )
+            ->where('proyectos.estado', '=', 'Ejecucion')
+            ->where('asignacionproyectos.idPeriodo', $asignacionProyecto->idPeriodo)
+            ->where('asignacionproyectos.proyectoId', '=', $proyectoID)
+            ->orderBy('estudiantes.apellidos', 'asc')
+            ->get();
 
 
 
@@ -787,6 +788,7 @@ class DocumentoController extends Controller
                 ->select(
                     'proyectos.nombreProyecto',
                     'proyectos.codigoProyecto',
+                    'proyectos.directorId',
                     'proyectos.inicioFecha',
                     'proyectos.finFecha',
                     'proyectos.departamentoTutor',
@@ -813,14 +815,33 @@ class DocumentoController extends Controller
 
             foreach ($datosProyectos as $index => $proyecto) {
                 $director = ProfesUniversidad::find($proyecto->directorId);
-                $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-                $sheet->setCellValue('B' . ($filaInicio + $index), mb_strtoupper($proyecto->nombreProyecto, 'UTF-8'));
-                $sheet->getStyle('B' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
-                $sheet->setCellValue('C' . ($filaInicio + $index), $proyecto->codigoProyecto);
-                $sheet->setCellValue('E' . ($filaInicio + $index), mb_strtoupper($proyecto->departamentoTutor, 'UTF-8'));
-                $sheet->setCellValue('F' . ($filaInicio + $index), mb_strtoupper($proyecto->estado, 'UTF-8'));
-                $sheet->getStyle('D' . ($filaInicio + $index))->getAlignment()->setWrapText(true);
-                $sheet->setCellValue('D' . ($filaInicio + $index), mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
+                $currentRow = $filaInicio + $index;
+
+                $sheet->setCellValue('A' . $currentRow, $contador);
+                $sheet->setCellValue('B' . $currentRow, mb_strtoupper($proyecto->nombreProyecto, 'UTF-8'));
+                $sheet->getStyle('B' . $currentRow)->getAlignment()->setWrapText(true)->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheet->setCellValue('D' . $currentRow, $proyecto->codigoProyecto);
+                $sheet->setCellValue('F' . $currentRow, mb_strtoupper($proyecto->departamentoTutor, 'UTF-8'));
+                $sheet->setCellValue('I' . $currentRow, mb_strtoupper($proyecto->estado, 'UTF-8'));
+                /////fecha inicio
+                $fechaInicio = date('d/m/Y', strtotime($proyecto->inicioFecha));
+                $sheet->setCellValue('G' . $currentRow, $fechaInicio);
+                /////fecha fin
+                $fechaFin = date('d/m/Y', strtotime($proyecto->finFecha));
+                $sheet->setCellValue('H' . $currentRow, $fechaFin);
+                $sheet->getStyle('D' . $currentRow)->getAlignment()->setWrapText(true)->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheet->setCellValue('E' . $currentRow, mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
+                ////OBTENER NOMBRE DEK DIRECTOR
+                $sheet->setCellValue('C' . $currentRow, $director->apellidos . ' ' . $director->nombres);
+                // Ajustar estilo de las celdas
+                $sheet->getStyle('A' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheet->getStyle('B' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheet->getStyle('C' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheet->getStyle('E' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheet->getStyle('F' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheet->getStyle('I' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheet->getStyle('G' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheet->getStyle('H' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
                 $contador++;
             }
 
@@ -833,6 +854,7 @@ class DocumentoController extends Controller
             return response()->json(['error' => 'An error occurred: ' . $e->getMessage()], 500);
         }
     }
+
 
 
 
@@ -930,12 +952,11 @@ class DocumentoController extends Controller
                 'empresas.actividadesMacro',
                 'empresas.cuposDisponibles',
                 'empresas.created_at',
-                'empresas.updated_at',
-
+                'empresas.updated_at'
             )
             ->get();
-        $sheet = $spreadsheet->getActiveSheet();
 
+        $sheet = $spreadsheet->getActiveSheet();
 
         $filaInicio = 9;
         $cantidadFilas = count($datosEstudiantes);
@@ -945,26 +966,39 @@ class DocumentoController extends Controller
 
         // Bucle para reemplazar los valores en la plantilla
         foreach ($datosEstudiantes as $index => $estudiante) {
-            $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-            $sheet->setCellValue('B' . ($filaInicio + $index), mb_strtoupper($estudiante->nombreEmpresa, 'UTF-8'));
-            $sheet->setCellValue('C' . ($filaInicio + $index), mb_strtoupper($estudiante->rucEmpresa, 'UTF-8'));
-            $sheet->setCellValue('D' . ($filaInicio + $index), mb_strtoupper($estudiante->provincia, 'UTF-8'));
-            $sheet->setCellValue('E' . ($filaInicio + $index), mb_strtoupper($estudiante->ciudad, 'UTF-8'));
-            $sheet->setCellValue('F' . ($filaInicio + $index), mb_strtoupper($estudiante->direccion, 'UTF-8'));
-            $sheet->setCellValue('G' . ($filaInicio + $index), strtolower($estudiante->correo));
-            $sheet->setCellValue('H' . ($filaInicio + $index), mb_strtoupper($estudiante->nombreContacto, 'UTF-8'));
-            $sheet->setCellValue('I' . ($filaInicio + $index), mb_strtoupper($estudiante->telefonoContacto, 'UTF-8'));
-            $sheet->setCellValue('J' . ($filaInicio + $index), mb_strtoupper($estudiante->actividadesMacro, 'UTF-8'));
-            $sheet->setCellValue('K' . ($filaInicio + $index), mb_strtoupper($estudiante->cuposDisponibles, 'UTF-8'));
-            $sheet->setCellValue('L' . ($filaInicio + $index), mb_strtoupper($estudiante->created_at, 'UTF-8'));
-            $sheet->setCellValue('M' . ($filaInicio + $index), mb_strtoupper($estudiante->updated_at, 'UTF-8'));
+            $currentRow = $filaInicio + $index;
+
+            $sheet->setCellValue('A' . $currentRow, $contador);
+            $sheet->setCellValue('B' . $currentRow, mb_strtoupper($estudiante->nombreEmpresa, 'UTF-8'));
+            $sheet->setCellValue('C' . $currentRow, mb_strtoupper($estudiante->rucEmpresa, 'UTF-8'));
+            $sheet->setCellValue('D' . $currentRow, mb_strtoupper($estudiante->provincia, 'UTF-8'));
+            $sheet->setCellValue('E' . $currentRow, mb_strtoupper($estudiante->ciudad, 'UTF-8'));
+            $sheet->setCellValue('F' . $currentRow, mb_strtoupper($estudiante->direccion, 'UTF-8'));
+            $sheet->setCellValue('G' . $currentRow, strtolower($estudiante->correo));
+            $sheet->setCellValue('H' . $currentRow, mb_strtoupper($estudiante->nombreContacto, 'UTF-8'));
+            $sheet->setCellValue('I' . $currentRow, mb_strtoupper($estudiante->telefonoContacto, 'UTF-8'));
+            $sheet->setCellValue('J' . $currentRow, mb_strtoupper($estudiante->actividadesMacro, 'UTF-8'));
+            $sheet->setCellValue('K' . $currentRow, mb_strtoupper($estudiante->cuposDisponibles, 'UTF-8'));
+            $sheet->setCellValue('L' . $currentRow, mb_strtoupper($estudiante->created_at, 'UTF-8'));
+            $sheet->setCellValue('M' . $currentRow, mb_strtoupper($estudiante->updated_at, 'UTF-8'));
+
+            // Ajustar estilo de las celdas
+            $sheet->getStyle('A' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('B' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('C' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('D' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('E' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('F' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('G' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('H' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('I' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('J' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('K' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('L' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('M' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
 
             $contador++;
         }
-
-
-
-
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $documentoGeneradoPath = storage_path('app/public/Reporte-Empresas.xlsx');
@@ -1039,15 +1073,13 @@ class DocumentoController extends Controller
             $sheet->setCellValue('AJ' . ($filaInicio + $index), 'Tecnologias de la Informacion');
 
 
-
-
-
-
-
-
             $contador++;
 
         }
+
+        /////estilos para justificar y centrar
+        $sheet->getStyle('A9:AJ' . ($filaInicio + $cantidadFilas))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+        $sheet->getStyle('Q9:Q' . ($filaInicio + $cantidadFilas))->getNumberFormat()->setFormatCode('0000000000001');
 
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
@@ -1129,10 +1161,15 @@ class DocumentoController extends Controller
 
 
 
-
             $contador++;
 
         }
+
+
+        ///justificar y centrar
+        $sheet->getStyle('A9:AJ' . ($filaInicio + $cantidadFilas))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+        $sheet->getStyle('Q9:Q' . ($filaInicio + $cantidadFilas))->getNumberFormat()->setFormatCode('0000000000001');
+
 
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
@@ -1216,6 +1253,10 @@ class DocumentoController extends Controller
 
         }
 
+        ////justificar y centrar
+        $sheet->getStyle('A9:AJ' . ($filaInicio + $cantidadFilas))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+        $sheet->getStyle('Q9:Q' . ($filaInicio + $cantidadFilas))->getNumberFormat()->setFormatCode('0000000000001');
+
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $documentoGeneradoPath = storage_path('app/public/Reporte-PracticasI.xlsx');
@@ -1298,6 +1339,10 @@ class DocumentoController extends Controller
 
         }
 
+        ////justificar y centrar
+        $sheet->getStyle('A9:AJ' . ($filaInicio + $cantidadFilas))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+        $sheet->getStyle('Q9:Q' . ($filaInicio + $cantidadFilas))->getNumberFormat()->setFormatCode('0000000000001');
+
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $documentoGeneradoPath = storage_path('app/public/Reporte-PracticasI.xlsx');
@@ -1379,6 +1424,10 @@ class DocumentoController extends Controller
             $contador++;
 
         }
+
+        ////justificar y centrar
+        $sheet->getStyle('A9:AJ' . ($filaInicio + $cantidadFilas))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+        $sheet->getStyle('Q9:Q' . ($filaInicio + $cantidadFilas))->getNumberFormat()->setFormatCode('0000000000001');
 
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
@@ -1474,14 +1523,26 @@ class DocumentoController extends Controller
 
         // Bucle para reemplazar los valores en la plantilla
         foreach ($docentes as $index => $docente) {
-            $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
+            $currentRow = $filaInicio + $index;
+
+            $sheet->setCellValue('A' . $currentRow, $contador);
             $nombreCompleto = mb_strtoupper($docente->apellidos . ', ' . $docente->nombres, 'UTF-8');
-            $sheet->setCellValue('B' . ($filaInicio + $index), $nombreCompleto);
-            $sheet->setCellValue('C' . ($filaInicio + $index), $docente->correo); // No convertir a mayúsculas
-            $sheet->setCellValue('D' . ($filaInicio + $index), ($docente->usuario));
-            $sheet->setCellValue('E' . ($filaInicio + $index), mb_strtoupper($docente->cedula, 'UTF-8'));
-            $sheet->setCellValue('F' . ($filaInicio + $index), mb_strtoupper($docente->departamento, 'UTF-8'));
-            $sheet->setCellValue('G' . ($filaInicio + $index), mb_strtoupper($docente->espeId, 'UTF-8'));
+            $sheet->setCellValue('B' . $currentRow, $nombreCompleto);
+            $sheet->setCellValue('C' . $currentRow, $docente->correo); // No convertir a mayúsculas
+            $sheet->setCellValue('D' . $currentRow, $docente->usuario);
+            $sheet->setCellValue('E' . $currentRow, mb_strtoupper($docente->cedula, 'UTF-8'));
+            $sheet->setCellValue('F' . $currentRow, mb_strtoupper($docente->departamento, 'UTF-8'));
+            $sheet->setCellValue('G' . $currentRow, mb_strtoupper($docente->espeId, 'UTF-8'));
+
+            // Ajustar estilo de las celdas
+            $sheet->getStyle('A' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('B' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('C' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('D' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('E' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('F' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('G' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+
             $contador++;
         }
 
@@ -1991,6 +2052,16 @@ class DocumentoController extends Controller
                 $query->where('estado', 'Aprobado');
             })
             ->first();
+
+            if (!$proyecto) {
+                $fechaActual = Carbon::now()->format('Y-m-d');
+                $proyecto = AsignacionSinEstudiante::where('participanteId', $profesor->id)
+                    ->where('inicioFecha', '<=', $fechaActual)
+                    ->where('finalizacionFecha', '>=', $fechaActual)
+                    ->with(['proyecto'])
+                    ->first();
+
+            }
 
         if (!$proyecto) {
             return redirect()->back()->with('error', 'No tienes un proyecto asignado.');

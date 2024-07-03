@@ -78,6 +78,97 @@
 
 
 <body>
+
+    @if (session('show_alert'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                let countdown;
+                let timeLeft = 5 * 60; // 5 minutos en segundos
+                let timeout;
+
+                function showSessionAlert() {
+                    Swal.fire({
+                        title: 'Tu sesión está a punto de expirar',
+                        html: `<div>Tu sesión se cerrará automáticamente en:</div><br><div id='countdown'></div>`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#7066e0',
+                        cancelButtonColor: '#808080',
+                        confirmButtonText: 'Mantener sesión',
+                        cancelButtonText: 'Salir',
+                        allowOutsideClick: false,
+                        timer: timeLeft * 1000, // Tiempo en milisegundos
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            const timerInterval = setInterval(() => {
+                                const content = Swal.getHtmlContainer();
+                                if (content) {
+                                    const countdownElement = content.querySelector('#countdown');
+                                    if (countdownElement) {
+                                        countdownElement.textContent =
+                                            `${Math.floor(timeLeft / 60)} minutos y ${timeLeft % 60} segundos`;
+                                        timeLeft--;
+                                        if (timeLeft < 0) {
+                                            clearInterval(timerInterval);
+                                        }
+                                    }
+                                }
+                            }, 1000);
+                        },
+                        willClose: () => {
+                            clearInterval(countdown);
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetch('{{ route('keep-alive') }}', {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                        'Content-Type': 'application/json'
+                                    }
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        Swal.fire({
+                                            title: 'Sesión extendida',
+                                            text: 'Tu sesión se ha extendido exitosamente.',
+                                            icon: 'success',
+                                            allowOutsideClick: false
+                                        });
+                                        resetTimer
+                                    (); // Reiniciar el temporizador después de extender la sesión
+                                    } else {
+                                        Swal.fire({
+                                            title: 'Error',
+                                            text: 'No se pudo extender la sesión.',
+                                            icon: 'error',
+                                            allowOutsideClick: false
+                                        });
+                                    }
+                                });
+                        } else {
+                            window.location.href = '{{ route('logout') }}';
+                        }
+                    });
+                }
+
+                function resetTimer() {
+                    // Limpiar el temporizador existente
+                    clearTimeout(timeout);
+
+                    // Restablecer el tiempo restante
+                    timeLeft = 5 * 60;
+
+                    // Establecer un nuevo temporizador
+                    timeout = setTimeout(showSessionAlert, 5 * 60 * 1000); // 5 minutos
+                }
+
+                resetTimer(); // Iniciar el temporizador al cargar la página
+            });
+        </script>
+    @endif
+
     <!-- Barra de navegación en el lado izquierdo -->
     <section class="content-sidebar {{ session('menuState') == 'collapsed' ? 'content-sidebar-hidden' : '' }}"
         _ngcontent-ng-c4160891441>
@@ -221,86 +312,7 @@
         <div class="views {{ session('menuState') == 'collapsed' ? 'views-active' : '' }}">
             <!-- Contenido específico de la página -->
             @yield('content')
-            @if (session('show_alert'))
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        let timeout;
-                        let countdown;
-                        let timeLeft = 5 * 60; // 5 minutos en segundos
 
-                        window.onload = resetTimer;
-                        document.onmousemove = resetTimer;
-                        document.onkeypress = resetTimer;
-
-                        function showSessionAlert() {
-                            Swal.fire({
-                                title: 'Tu sesión está a punto de expirar',
-                                html: "¿Deseas mantener la sesión activa? <br> <span id='countdown'></span>",
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonColor: '#7066e0',
-                                cancelButtonColor: '#808080',
-                                confirmButtonText: 'Mantener sesión',
-                                cancelButtonText: 'Salir',
-                                allowOutsideClick: false,
-                                onOpen: () => {
-                                    countdown = setInterval(function() {
-                                        document.getElementById('countdown').innerText =
-                                            `${Math.floor(timeLeft / 60)} minutos y ${timeLeft % 60} segundos restantes`;
-                                        timeLeft--;
-                                    }, 1000);
-                                },
-                                onClose: () => {
-                                    clearInterval(countdown);
-                                }
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    fetch('{{ route('keep-alive') }}', {
-                                            method: 'POST',
-                                            headers: {
-                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                                'Content-Type': 'application/json'
-                                            }
-                                        })
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            if (data.success) {
-                                                Swal.fire({
-                                                    title: 'Sesión extendida',
-                                                    text: 'Tu sesión se ha extendido exitosamente.',
-                                                    icon: 'success',
-                                                    allowOutsideClick: false
-                                                });
-                                            } else {
-                                                Swal.fire({
-                                                    title: 'Error',
-                                                    text: 'No se pudo extender la sesión.',
-                                                    icon: 'error',
-                                                    allowOutsideClick: false
-                                                });
-                                            }
-                                        });
-                                } else {
-                                    window.location.href = '{{ route('logout') }}';
-                                }
-                            });
-                        }
-
-                        function resetTimer() {
-                            // Limpiar el temporizador existente
-                            clearTimeout(timeout);
-
-                            // Restablecer el tiempo restante
-                            timeLeft = 5 * 60;
-
-                            // Establecer un nuevo temporizador
-                            timeout = setTimeout(showSessionAlert, 5 * 60 * 1000); // 5 minutos
-                        }
-
-                        resetTimer();
-                    });
-                </script>
-            @endif
         </div>
     </section>
 

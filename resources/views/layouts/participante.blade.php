@@ -246,8 +246,7 @@
     </section>
     <!-- Scripts de jQuery y Popper.js -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <!-- Script de Bootstrap 4.5.2 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- Script de Bootstrap 5.3.0 -->
@@ -262,7 +261,10 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="{{ asset('js/menu.js') }}"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="{{ asset('js/sesiones.js') }}"></script>
+
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 
     <script>

@@ -158,16 +158,15 @@ class ParticipanteVinculacionController extends Controller
 
         if (!$proyecto) {
             $fechaActual = Carbon::now()->format('Y-m-d');
-
             $proyecto = AsignacionSinEstudiante::where('participanteId', $profesor->id)
                 ->where('inicioFecha', '<=', $fechaActual)
                 ->where('finalizacionFecha', '>=', $fechaActual)
                 ->with(['proyecto'])
                 ->first();
 
-
         }
 
+ 
 
         $inicioFecha = $proyecto->inicioFecha ?? null;
         $finalizacionFecha = $proyecto->finalizacionFecha ?? null;
