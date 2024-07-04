@@ -188,9 +188,9 @@
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                         <th class="tamanio">NOMBRE DEL PROYECTO</th>
                                         <th class="tamanio4">DIRECTOR</th>
-                                        <th class="tamanio">DESCRIPCION</th>
+                                        <th class="tamanio">DESCRIPCIÓN</th>
                                         <th>DEPARTAMENTO</th>
-                                        <th class="tamanio3">CODIGO DEL PROYECTO SOCIAL</th>
+                                        <th class="tamanio3">CÓDIGO DEL PROYECTO SOCIAL</th>
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
                                         <th>ESTADO DEL PROYECTO</th>
@@ -479,12 +479,12 @@
                                         <tr
                                             class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                             <th class="tamanio"> NOMBRE DE PROYECTO</th>
-                                            <th class="tamanio3">CODIGO DE PROYECTO</th>
+                                            <th class="tamanio3">CÓDIGO DE PROYECTO</th>
                                             <th class="tamanio4">DIRECTOR</th>
                                             <th class="tamanio4">DOCENTES PARTICIPANTES</th>
-                                            <th>FECHA ASIGNACION</th>
+                                            <th>FECHA ASIGNACIÓN</th>
                                             <th>ESTUDIANTES</th>
-                                            <th>Nota</th>
+                                            <th>NOTA</th>
                                             <th>PERIODO</th>
                                             <th>NRC</th>
                                             <th>FECHA INICIO</th>

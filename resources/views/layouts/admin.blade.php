@@ -144,7 +144,7 @@
                                         <i class="fa-solid fa-grid-2-plus"></i>
                                     </div>
                                     <div class="name-sidebar-item">
-                                        <li>Agregar-Empresa</li>
+                                        <li>Agregar Empresa</li>
                                     </div>
                                 </a>
                                 <a class="p-element subitem" href="{{ route('admin.aceptarFaseI') }}">
@@ -152,7 +152,7 @@
                                         <i class="fa-solid fa-circle-check"></i>
                                     </div>
                                     <div class="name-sidebar-item">
-                                        <li>Aprobar-Practicas</li>
+                                        <li>Aprobar Prácticas</li>
                                     </div>
                                 </a>
 
