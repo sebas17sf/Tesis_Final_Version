@@ -278,56 +278,7 @@ class LoginController extends Controller
     }
 
 
-    public function githubCallback()
-    {
-        try {
-            $cacheKey = 'github_user_' . session('github_id');
-            if (Cache::has($cacheKey)) {
-                $githubUser = Cache::get($cacheKey);
-            } else {
-                $githubUser = Socialite::driver('github')->user();
-                Cache::put($cacheKey, $githubUser, 60);
-            }
-
-            $user = Usuario::where('github_id', $githubUser->id)->first();
-
-            if (!$user) {
-                $user = Usuario::create([
-                    'github_id' => $githubUser->id,
-                    'NombreUsuario' => $githubUser->nickname,
-                    'CorreoElectronico' => $githubUser->email,
-                    'Estado' => 'activo',
-                    'role_id' => Role::where('Tipo', 'Estudiante')->first()->id,
-                ]);
-            }
-
-            Auth::login($user, true);
-
-            $token = Str::random(60);
-            $user->token = hash('sha256', $token);
-            $user->save();
-
-            $userRole = $user->role;
-
-            if ($userRole->Tipo === 'Administrador') {
-                return redirect()->route('admin.index')->with('token', $token);
-            } elseif ($userRole->Tipo === 'Director-Departamento' || $userRole->Tipo === 'Director-Carrera') {
-                return redirect()->route('director.indexProyectos')->with('token', $token);
-            } elseif ($userRole->Tipo === 'Vinculacion') {
-                return redirect()->route('coordinador.index')->with('token', $token);
-            } elseif ($userRole->Tipo === 'DirectorVinculacion') {
-                return redirect()->route('director_vinculacion.index')->with('token', $token);
-            } elseif ($userRole->Tipo === 'ParticipanteVinculacion') {
-                return redirect()->route('ParticipanteVinculacion.index')->with('token', $token);
-            } else {
-                return redirect()->route('estudiantes.create')->with('token', $token);
-            }
-        } catch (\Exception $e) {
-            return redirect()->route('login')->with('error', 'Ocurrió un error al iniciar sesión con GitHub.');
-        }
-
-
-    }
+    
 
     public function Modulo1()
     {

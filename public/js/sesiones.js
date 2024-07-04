@@ -1,5 +1,3 @@
-// sessions.js
-
 // Variable para almacenar el temporizador
 let timer;
 
@@ -123,6 +121,7 @@ function updateCountdown(element, endTime) {
 
         if (remainingTime <= 0) {
             clearInterval(timerInterval);
+            window.location.href = window.routes.logout; // Redirigir a logout cuando el tiempo se agote
         } else {
             const minutes = Math.floor(remainingTime / 60);
             const seconds = remainingTime % 60;
