@@ -82,32 +82,7 @@ function showSessionAlert(timeRemaining) {
         }
     }).then((result) => {
         if (result.isConfirmed) {
-            fetch(window.routes.keepAlive, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        title: 'Sesión extendida',
-                        text: 'Tu sesión se ha extendido exitosamente.',
-                        icon: 'success',
-                        allowOutsideClick: false
-                    });
-                    resetTimer(); // Reiniciar el temporizador después de extender la sesión
-                } else {
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'No se pudo extender la sesión.',
-                        icon: 'error',
-                        allowOutsideClick: false
-                    });
-                }
-            });
+            keepSessionAlive();
         } else {
             window.location.href = window.routes.logout;
         }
@@ -130,22 +105,11 @@ function updateCountdown(element, endTime) {
     }, 1000);
 }
 
-// Función para actualizar dinámicamente el tiempo restante a la mitad
-function updateHalfTimeRemaining(halfTimeRemaining) {
-    const halfTimeElement = document.getElementById('halfTimeRemaining');
-    if (halfTimeElement) {
-        halfTimeElement.textContent = `${halfTimeRemaining} minutos`;
-    }
-}
-
 // Variable para almacenar el tiempo de la última actividad
 let lastActivityTime = Date.now();
 
 // Umbral de tiempo de inactividad en milisegundos (por ejemplo, 1 minuto)
 const INACTIVITY_THRESHOLD = 60000;
-
-// Variable para controlar si ya se envió la solicitud de actualización
-let updateRequested = false;
 
 // Función para actualizar el tiempo de última actividad
 function updateLastActivityTime() {
@@ -164,30 +128,6 @@ function checkInactiveTime() {
     }
 }
 
-// Función para enviar solicitud al servidor y establecer token_expires_at a null si hay actividad
-function updateTokenExpiration() {
-    if (!updateRequested) { // Verificar si la solicitud ya se ha enviado
-        $.ajax({
-            url: '/update-token-expiration',  // Ruta a tu método en el controlador para actualizar token_expires_at
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')  // Necesario para protección CSRF en Laravel
-            },
-            success: function(response) {
-                if (response.success) {
-                    updateRequested = true; // Marcar que la solicitud se ha enviado
-                    setTimeout(() => {
-                        updateRequested = false; // Permitir nuevas solicitudes después de un tiempo
-                    }, INACTIVITY_THRESHOLD); // Puedes ajustar el tiempo según tus necesidades
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error en la solicitud AJAX:', error);
-            }
-        });
-    }
-}
-
 // Llamar checkInactiveTime al cargar la página para inicializar la sesión
 $(document).ready(function() {
     checkInactiveTime();
@@ -200,8 +140,5 @@ $(document).ready(function() {
         lastActivityTime = Date.now(); // Actualizar el tiempo de última actividad
         clearTimeout(timer);  // Reiniciar el temporizador en cada actividad
         timer = setTimeout(checkInactiveTime, INACTIVITY_THRESHOLD);  // Llamar checkInactiveTime después del tiempo de inactividad
-
-        // Llamar a la función para actualizar token_expires_at a null si se asignó un tiempo previamente
-        updateTokenExpiration();
     });
 });
