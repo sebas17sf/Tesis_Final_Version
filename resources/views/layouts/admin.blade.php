@@ -285,13 +285,9 @@
 
 
     <script>
-        var logoutButton = document.querySelector('.logout');
-
-        logoutButton.addEventListener('click', function() {
-            localStorage.removeItem('tokencomparacion');
-
-            window.location.href = "/";
-        });
+        @if (session('token'))
+            localStorage.setItem('token', '{{ session('token') }}');
+        @endif
     </script>
 
 
