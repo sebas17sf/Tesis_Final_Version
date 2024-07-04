@@ -1064,7 +1064,7 @@ class DocumentoController extends Controller
             $sheet->setCellValue('AB' . ($filaInicio + $index), $practica1->TelefonoTutorEmpresarial ?? '');
             $sheet->setCellValue('AC' . ($filaInicio + $index), $practica1->Funcion ?? '');
 
-            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
+            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->apellidos ?? '') . ' ' . ($practica1->tutorAcademico->nombres ?? ''));
             $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->cedula ?? '');
             $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espeId ?? '');
             $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->correo ?? '');
@@ -1145,7 +1145,7 @@ class DocumentoController extends Controller
             $sheet->setCellValue('AB' . ($filaInicio + $index), $practica1->TelefonoTutorEmpresarial ?? '');
             $sheet->setCellValue('AC' . ($filaInicio + $index), $practica1->Funcion ?? '');
 
-            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
+            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->apellidos ?? '') . ' ' . ($practica1->tutorAcademico->nombres ?? ''));
             $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->cedula ?? '');
             $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espeId ?? '');
             $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->correo ?? '');
@@ -1230,7 +1230,7 @@ class DocumentoController extends Controller
             $sheet->setCellValue('AB' . ($filaInicio + $index), $practica1->TelefonoTutorEmpresarial ?? '');
             $sheet->setCellValue('AC' . ($filaInicio + $index), $practica1->Funcion ?? '');
 
-            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
+            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->apellidos ?? '') . ' ' . ($practica1->tutorAcademico->nombres ?? ''));
             $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->cedula ?? '');
             $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espeId ?? '');
             $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->correo ?? '');
@@ -1314,7 +1314,7 @@ class DocumentoController extends Controller
             $sheet->setCellValue('AB' . ($filaInicio + $index), $practica1->TelefonoTutorEmpresarial ?? '');
             $sheet->setCellValue('AC' . ($filaInicio + $index), $practica1->Funcion ?? '');
 
-            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
+            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->apellidos ?? '') . ' ' . ($practica1->tutorAcademico->nombres ?? ''));
             $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->cedula ?? '');
             $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espeId ?? '');
             $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->correo ?? '');
@@ -1398,7 +1398,7 @@ class DocumentoController extends Controller
             $sheet->setCellValue('AB' . ($filaInicio + $index), $practica1->TelefonoTutorEmpresarial ?? '');
             $sheet->setCellValue('AC' . ($filaInicio + $index), $practica1->Funcion ?? '');
 
-            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->apellidos ?? '') . ' ' . ($practica1->tutorAcademico->Nombres ?? ''));
+            $sheet->setCellValue('AD' . ($filaInicio + $index), ($practica1->tutorAcademico->apellidos ?? '') . ' ' . ($practica1->tutorAcademico->nombres ?? ''));
             $sheet->setCellValue('AE' . ($filaInicio + $index), $practica1->tutorAcademico->cedula ?? '');
             $sheet->setCellValue('AF' . ($filaInicio + $index), $practica1->tutorAcademico->espeId ?? '');
             $sheet->setCellValue('AG' . ($filaInicio + $index), $practica1->tutorAcademico->correo ?? '');
