@@ -49,7 +49,7 @@
 
     <section>
         <div class="contenedor_registro_genero ">
-            <h4><b>Listado de Proyectos</b></h4>
+            <h4><b>Listado de Proyectos Sociales</b></h4>
             <hr>
 
             <div class="mat-elevation-z8 contenedor_general">
@@ -323,7 +323,7 @@
 
 
             <div class="contenedor_registro_genero ">
-                <h4><b>Listado de asignaciones</b></h4>
+                <h4><b>Listado de asignaciones de proyectos</b></h4>
                 <hr>
 
                 <div class="mat-elevation-z8 contenedor_general">
@@ -645,7 +645,7 @@
     <!-- Asignar proyecto al estudiante -->
     <center>
         <button type="button" class="button1_1 efects_button"
-            onclick="$('#draggableCardAsignarEstudiante').show();">Asignar estudiante</button>
+            onclick="$('#draggableCardAsignarEstudiante').show();">Asignar docente con estudiante</button>
 
         <button type="button" class="button1_1 efects_button"
             onclick="$('#draggableCardAsignarDocente').show();">Asignar Docente</button>
