@@ -89,6 +89,12 @@
     <script>
         @if (session('token'))
             localStorage.setItem('token', '{{ session('token') }}');
+
+            ////cuando se cierra en logout se elimina el token de localstorage
+            window.addEventListener('beforeunload', function (e) {
+                localStorage.removeItem('token');
+            });
+
         @endif
     </script>
 

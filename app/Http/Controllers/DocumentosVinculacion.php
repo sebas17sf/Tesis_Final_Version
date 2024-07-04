@@ -16,6 +16,7 @@ use App\Models\PracticaIII;
 use App\Models\PracticaIV;
 use App\Models\PracticaV;
 use Illuminate\Support\Facades\Auth;
+ use App\Models\HoraVinculacion;
 
 
 
@@ -665,6 +666,24 @@ class DocumentosVinculacion extends Controller
                 NotasEstudiante::create([
                     'estudianteId' => $estudiante ? $estudiante->estudianteId : null,
                     'notaFinal' => $row[12] ?? '0',
+                ]);
+            }
+        }
+
+
+        ////guadar en HoraVinculacion
+        foreach ($dataRows as $row) {
+            $estudiante = Estudiante::where('espeId', $row[0])->first();
+            $horas = HoraVinculacion::where('estudianteId', $estudiante ? $estudiante->estudianteId : null)->first();
+            if ($horas) {
+                $horas->update([
+                    'estudianteId' => $estudiante ? $estudiante->estudianteId : null,
+                    'horasVinculacion' => $row[11] ?? '0',
+                ]);
+            } else {
+                HoraVinculacion::create([
+                    'estudianteId' => $estudiante ? $estudiante->estudianteId : null,
+                    'horasVinculacion' => $row[11] ?? '0',
                 ]);
             }
         }

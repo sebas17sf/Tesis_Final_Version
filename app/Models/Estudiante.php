@@ -70,6 +70,11 @@ class Estudiante extends Model
         return $this->belongsTo(Periodo::class, 'idPeriodo', 'id');
     }
 
+    ////HoraVinculacion
+    public function horas_vinculacion()
+    {
+        return $this->hasMany(HoraVinculacion::class, 'estudianteId', 'estudianteId');
+    }
 
 
 
