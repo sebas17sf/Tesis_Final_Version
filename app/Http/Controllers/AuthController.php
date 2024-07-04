@@ -23,7 +23,7 @@ class AuthController extends Controller
     {
 
         ////obtener todos los periodos
-        $periodos = Periodo::all();
+        $periodos = Periodo::orderBy('inicioPeriodo', 'desc')->get();
 
 
 
