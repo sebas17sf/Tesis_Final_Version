@@ -16,7 +16,7 @@ use App\Models\PracticaIII;
 use App\Models\PracticaIV;
 use App\Models\PracticaV;
 use Illuminate\Support\Facades\Auth;
- use App\Models\HoraVinculacion;
+use App\Models\HoraVinculacion;
 
 
 
@@ -41,7 +41,7 @@ class DocumentosVinculacion extends Controller
 
 
 
-        return view('ParticipanteVinculacion.documentos', compact( 'inicioFecha', 'finalizacionFecha'));
+        return view('ParticipanteVinculacion.documentos', compact('inicioFecha', 'finalizacionFecha'));
     }
 
     public function generarEvaluacionEstudiante()
@@ -51,7 +51,7 @@ class DocumentosVinculacion extends Controller
         $usuario = auth()->user();
         $correoUsuario = $usuario->correoElectronico;
         $participanteVinculacion = ProfesUniversidad::where('correo', $correoUsuario)->first();
-         $asignacionProyecto = AsignacionProyecto::where('participanteId', $participanteVinculacion->id)
+        $asignacionProyecto = AsignacionProyecto::where('participanteId', $participanteVinculacion->id)
             ->whereHas('estudiante', function ($query) {
                 $query->where('estado', 'Aprobado');
             })
@@ -500,44 +500,45 @@ class DocumentosVinculacion extends Controller
         $hojaCalculo->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
         $asignacionProyecto = $asignacionProyecto->sortBy('proyectoId');
 
+
         foreach ($asignacionProyecto as $index => $asignacion) {
             $filaActual = $filaInicio + $index;
             $proyecto = Proyecto::where('proyectoId', $asignacion->proyectoId)->first();
             $participante = ProfesUniversidad::where('id', $asignacion->participanteId)->first();
             $director = ProfesUniversidad::where('id', $proyecto->directorId)->first();
-
-
-
-
-
             $periodo = Periodo::where('id', $asignacion->idPeriodo)->first();
 
-
-
-            $hojaCalculo->setCellValue("H$filaActual", $proyecto->nombreProyecto);
-            $hojaCalculo->setCellValue("J$filaActual", $director->apellidos . ' ' . $director->nombres);
-            $hojaCalculo->setCellValue("K$filaActual", $participante->apellidos . ' ' . $participante->nombres);
-            $hojaCalculo->setCellValue("L$filaActual", $proyecto->inicioFecha);
-            $hojaCalculo->setCellValue("I$filaActual", $proyecto->descripcionProyecto);
-            $hojaCalculo->setCellValue("M$filaActual", $proyecto->finFecha);
-            $hojaCalculo->setCellValue("N$filaActual", $proyecto->departamentoTutor);
-            $hojaCalculo->setCellValue("F$filaActual", $periodo->numeroPeriodo);
+            $hojaCalculo->setCellValue("A$filaActual", $index + 1);
+            $hojaCalculo->setCellValue("J$filaActual", $proyecto->nombreProyecto);
+            $hojaCalculo->setCellValue("L$filaActual", $director->apellidos . ' ' . $director->nombres);
+            $hojaCalculo->setCellValue("M$filaActual", $participante->apellidos . ' ' . $participante->nombres);
+            $hojaCalculo->setCellValue("N$filaActual", $proyecto->inicioFecha);
+            $hojaCalculo->setCellValue("K$filaActual", $proyecto->descripcionProyecto);
+            $hojaCalculo->setCellValue("O$filaActual", $proyecto->finFecha);
+            $hojaCalculo->setCellValue("P$filaActual", $proyecto->departamentoTutor);
+            $hojaCalculo->setCellValue("G$filaActual", $periodo->numeroPeriodo);
 
             $nombreCompleto = ($asignacion->estudiante->apellidos ?? '') . ' ' . ($asignacion->estudiante->nombres ?? '');
-            $hojaCalculo->setCellValue("A$filaActual", $nombreCompleto);
-            $hojaCalculo->setCellValue("C$filaActual", $asignacion->estudiante->cedula ?? '');
-            $hojaCalculo->setCellValue("B$filaActual", $asignacion->estudiante->espeId ?? '');
-            $hojaCalculo->setCellValue("D$filaActual", $asignacion->estudiante->correo ?? '');
-            $hojaCalculo->setCellValue("E$filaActual", $asignacion->estudiante->Cohorte ?? '');
+            $hojaCalculo->setCellValue("C$filaActual", $asignacion->estudiante->espeId ?? '');
+            $hojaCalculo->setCellValue("D$filaActual", $asignacion->estudiante->cedula ?? '');
 
-             $hojaCalculo->setCellValue("G$filaActual", $asignacion->first()->estudiante->notas->first()->notaFinal ?? '0');
+            $hojaCalculo->setCellValue("B$filaActual", $nombreCompleto);
+            $hojaCalculo->setCellValue("E$filaActual", $asignacion->estudiante->correo ?? '');
+            $hojaCalculo->setCellValue("F$filaActual", $asignacion->estudiante->Cohorte ?? '');
 
+            // Corrección: Eliminar el uso de first() en una instancia de modelo
+            $notaFinal = $asignacion->estudiante->notas->first()->notaFinal ?? '0';
+            $hojaCalculo->setCellValue("I$filaActual", $notaFinal);
 
-
-
-
+            ///HORAS REALIZADAS
+            $horasRealizadas = $asignacion->estudiante->horas_vinculacion->first()->horasVinculacion ?? '0';
+            $hojaCalculo->setCellValue("H$filaActual", $horasRealizadas);
 
         }
+
+        ////justificar y centrar
+        $hojaCalculo->getStyle('A9:P' . ($filaInicio + $cantidadFilas))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $nombreArchivo = "Reporte_asignación_proyectos_sociales.xlsx";
@@ -647,14 +648,14 @@ class DocumentosVinculacion extends Controller
                 ];
 
                 if ($asignacion) {
-                     $asignacion->update($data);
+                    $asignacion->update($data);
                 } else {
-                     AsignacionProyecto::create($data);
+                    AsignacionProyecto::create($data);
                 }
             }
         }
 
-         foreach ($dataRows as $row) {
+        foreach ($dataRows as $row) {
             $estudiante = Estudiante::where('espeId', $row[0])->first();
             $notas = NotasEstudiante::where('estudianteId', $estudiante ? $estudiante->estudianteId : null)->first();
             if ($notas) {
@@ -720,7 +721,7 @@ class DocumentosVinculacion extends Controller
                         'nombreContacto' => $row[7] ?? null,
                         'telefonoContacto' => $row[8] ?? null,
                         'actividadesMacro' => $row[9] ?? null,
-                     ]);
+                    ]);
                 }
             }
         }
@@ -741,7 +742,7 @@ class DocumentosVinculacion extends Controller
                         'nombreContacto' => $row[7] ?? null,
                         'telefonoContacto' => $row[8] ?? null,
                         'actividadesMacro' => $row[9] ?? null,
-                     ]);
+                    ]);
                 }
             }
         }
@@ -766,7 +767,7 @@ class DocumentosVinculacion extends Controller
 
             foreach ($dataRows as $row) {
                 $estudiante = Estudiante::where('espeId', $row[4])->first();
-                 if (!$estudiante) {
+                if (!$estudiante) {
                     $estudiante = Estudiante::where('nombres', $row[2])
                         ->where('apellidos', $row[1])
                         ->first();
@@ -912,10 +913,10 @@ class DocumentosVinculacion extends Controller
                 // Importar prácticas
                 $practica1 = PracticaIII::where('estudianteId', $estudiante->estudianteId)->first();
                 $empresa = Empresa::where('nombreEmpresa', $row[18])
-                ->orWhere(function($query) use ($row) {
-                    $query->where('rucEmpresa', $row[19]);
-                })
-                ->first();
+                    ->orWhere(function ($query) use ($row) {
+                        $query->where('rucEmpresa', $row[19]);
+                    })
+                    ->first();
                 $tutorAcademico = ProfesUniversidad::where('apellidos', $row[33])->first();
                 $nombreTutorEmpresarial = $row[27] . ' ' . $row[28];
 
@@ -934,7 +935,7 @@ class DocumentosVinculacion extends Controller
                     'HoraSalida' => $row[14],
                     'HorasPlanificadas' => $row[15],
                     'tipoPractica' => $row[16],
-                    'idEmpresa' => $empresa -> id,
+                    'idEmpresa' => $empresa->id,
                     'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
                     'CedulaTutorEmpresarial' => $row[29],
                     'nrc' => null,
@@ -1018,11 +1019,11 @@ class DocumentosVinculacion extends Controller
                 // Importar prácticas
                 $practica1 = PracticaIV::where('estudianteId', $estudiante->estudianteId)->first();
                 $empresa = Empresa::where('nombreEmpresa', $row[18])
-                ->orWhere(function($query) use ($row) {
-                    $query->where('rucEmpresa', $row[19]);
-                })
-                ->first();
-                 $tutorAcademico = ProfesUniversidad::where('apellidos', $row[33])->first();
+                    ->orWhere(function ($query) use ($row) {
+                        $query->where('rucEmpresa', $row[19]);
+                    })
+                    ->first();
+                $tutorAcademico = ProfesUniversidad::where('apellidos', $row[33])->first();
                 $nombreTutorEmpresarial = $row[27] . ' ' . $row[28];
 
                 $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[11]);
@@ -1040,7 +1041,7 @@ class DocumentosVinculacion extends Controller
                     'HoraSalida' => $row[14],
                     'HorasPlanificadas' => $row[15],
                     'tipoPractica' => $row[16],
-                    'idEmpresa' => $empresa -> id,
+                    'idEmpresa' => $empresa->id,
                     'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
                     'CedulaTutorEmpresarial' => $row[29],
                     'nrc' => null,
@@ -1124,10 +1125,10 @@ class DocumentosVinculacion extends Controller
                 // Importar prácticas
                 $practica1 = PracticaII::where('estudianteId', $estudiante->estudianteId)->first();
                 $empresa = Empresa::where('nombreEmpresa', $row[18])
-                ->orWhere(function($query) use ($row) {
-                    $query->where('rucEmpresa', $row[19]);
-                })
-                ->first();
+                    ->orWhere(function ($query) use ($row) {
+                        $query->where('rucEmpresa', $row[19]);
+                    })
+                    ->first();
                 $tutorAcademico = ProfesUniversidad::where('apellidos', $row[33])->first();
                 $nombreTutorEmpresarial = $row[27] . ' ' . $row[28];
 
@@ -1146,7 +1147,7 @@ class DocumentosVinculacion extends Controller
                     'HoraSalida' => $row[14],
                     'HorasPlanificadas' => $row[15],
                     'tipoPractica' => $row[16],
-                    'idEmpresa' => $empresa -> id,
+                    'idEmpresa' => $empresa->id,
                     'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
                     'CedulaTutorEmpresarial' => $row[29],
                     'nrc' => null,
