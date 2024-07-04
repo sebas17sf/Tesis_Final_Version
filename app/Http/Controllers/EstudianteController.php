@@ -34,7 +34,7 @@ class EstudianteController extends Controller
 {
     public function create()
     {
-        $periodos = Periodo::all();
+        $periodos = Periodo::orderBy('inicioPeriodo', 'desc')->get();
         if (Auth::check() && Auth::user()->estudiante) {
             return redirect()->route('estudiantes.index')->with('token', Session::get('user_token'));
         }
