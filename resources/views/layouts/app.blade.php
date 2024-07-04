@@ -75,86 +75,14 @@
         word-wrap: break-word;
     }
 </style>
-@if (session('show_alert'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            let timeout;
-            let countdown;
-            let timeLeft = 5 * 60; // 5 minutos en segundos
 
-            window.onload = resetTimer;
-            document.onmousemove = resetTimer;
-            document.onkeypress = resetTimer;
 
-            function showSessionAlert() {
-                Swal.fire({
-                    title: 'Tu sesión está a punto de expirar',
-                    html: "¿Deseas mantener la sesión activa? <br> <span id='countdown'></span>",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#7066e0',
-                    cancelButtonColor: '#808080',
-                    confirmButtonText: 'Mantener sesión',
-                    cancelButtonText: 'Salir',
-                    allowOutsideClick: false,
-                    onOpen: () => {
-                        countdown = setInterval(function() {
-                            document.getElementById('countdown').innerHTML =
-                                `${Math.floor(timeLeft / 60)} minutos y ${timeLeft % 60} segundos restantes`;
-                            timeLeft--;
-                        }, 1000);
-                    },
-                    onClose: () => {
-                        clearInterval(countdown);
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        fetch('{{ route('keep-alive') }}', {
-                                method: 'POST',
-                                headers: {
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                    'Content-Type': 'application/json'
-                                }
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.success) {
-                                    Swal.fire({
-                                        title: 'Sesión extendida',
-                                        text: 'Tu sesión se ha extendido exitosamente.',
-                                        icon: 'success',
-                                        allowOutsideClick: false
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        title: 'Error',
-                                        text: 'No se pudo extender la sesión.',
-                                        icon: 'error',
-                                        allowOutsideClick: false
-                                    });
-                                }
-                            });
-                    } else {
-                        window.location.href = '{{ route('logout') }}';
-                    }
-                });
-            }
-
-            function resetTimer() {
-                // Limpiar el temporizador existente
-                clearTimeout(timeout);
-
-                // Restablecer el tiempo restante
-                timeLeft = 5 * 60;
-
-                // Establecer un nuevo temporizador
-                timeout = setTimeout(showSessionAlert, 5 * 60 * 1000); // 5 minutos
-            }
-
-            resetTimer();
-        });
-    </script>
-@endif
+<script>
+    window.routes = {
+        keepAlive: '{{ route('keep-alive') }}',
+        logout: '{{ route('logout') }}'
+    };
+</script>
 
 <body>
     <!-- Barra de navegación en el lado izquierdo -->
@@ -300,6 +228,8 @@
     <script src="{{ asset('js/menu.js') }}"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{ asset('js/sesiones.js') }}"></script>
+
     <script>
         function toggleSidebar() {
             var menuState = localStorage.getItem('menuState') === 'expanded' ? 'collapsed' : 'expanded';

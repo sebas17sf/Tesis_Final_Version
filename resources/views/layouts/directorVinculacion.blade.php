@@ -24,89 +24,19 @@
         }
     </style>
 
-    @if (session('show_alert'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                let timeout;
-                let countdown;
-                let timeLeft = 5 * 60; // 5 minutos en segundos
 
-                window.onload = resetTimer;
-                document.onmousemove = resetTimer;
-                document.onkeypress = resetTimer;
-
-                function showSessionAlert() {
-                    Swal.fire({
-                        title: 'Tu sesión está a punto de expirar',
-                        html: "¿Deseas mantener la sesión activa? <br> <span id='countdown'></span>",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#7066e0',
-                        cancelButtonColor: '#808080',
-                        confirmButtonText: 'Mantener sesión',
-                        cancelButtonText: 'Salir',
-                        allowOutsideClick: false,
-                        onOpen: () => {
-                            countdown = setInterval(function() {
-                                document.getElementById('countdown').innerHTML =
-                                    `${Math.floor(timeLeft / 60)} minutos y ${timeLeft % 60} segundos restantes`;
-                                timeLeft--;
-                            }, 1000);
-                        },
-                        onClose: () => {
-                            clearInterval(countdown);
-                        }
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            fetch('{{ route('keep-alive') }}', {
-                                    method: 'POST',
-                                    headers: {
-                                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                        'Content-Type': 'application/json'
-                                    }
-                                })
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.success) {
-                                        Swal.fire({
-                                            title: 'Sesión extendida',
-                                            text: 'Tu sesión se ha extendido exitosamente.',
-                                            icon: 'success',
-                                            allowOutsideClick: false
-                                        });
-                                    } else {
-                                        Swal.fire({
-                                            title: 'Error',
-                                            text: 'No se pudo extender la sesión.',
-                                            icon: 'error',
-                                            allowOutsideClick: false
-                                        });
-                                    }
-                                });
-                        } else {
-                            window.location.href = '{{ route('logout') }}';
-                        }
-                    });
-                }
-
-                function resetTimer() {
-                    // Limpiar el temporizador existente
-                    clearTimeout(timeout);
-
-                    // Restablecer el tiempo restante
-                    timeLeft = 5 * 60;
-
-                    // Establecer un nuevo temporizador
-                    timeout = setTimeout(showSessionAlert, 5 * 60 * 1000); // 5 minutos
-                }
-
-                resetTimer();
-            });
-        </script>
-    @endif
 </head>
 
 <body>
+
+    <script>
+        window.routes = {
+            keepAlive: '{{ route('keep-alive') }}',
+            logout: '{{ route('logout') }}'
+        };
+    </script>
+
+
     <!-- Barra de navegación en el lado izquierdo -->
     <section class="content-sidebar {{ session('menuState') == 'collapsed' ? 'content-sidebar-hidden' : '' }}"
         _ngcontent-ng-c4160891441>
@@ -247,8 +177,7 @@
 
     </section>
     <!-- Scripts de jQuery y Popper.js -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <!-- Script de Bootstrap 4.5.2 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- Script de Bootstrap 5.3.0 -->
@@ -260,6 +189,8 @@
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="{{ asset('js/sesiones.js') }}"></script>
+
 
     <script>
         function toggleSidebar() {
