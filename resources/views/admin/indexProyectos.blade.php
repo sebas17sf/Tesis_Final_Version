@@ -687,8 +687,8 @@
                                 <option value="">Seleccionar Docente Participante</option>
                                 @foreach ($profesores as $profesor)
                                     <option value="{{ $profesor->id }}">
-                                        Nombres: {{ $profesor->apellidos }} {{ $profesor->nombres }} - Departamento:
-                                        {{ $profesor->departamento }} - Correo: {{ $profesor->correo }}
+                                        {{ $profesor->apellidos }} {{ $profesor->nombres }} -
+                                        {{ $profesor->departamento }}
                                     </option>
                                 @endforeach
                             </select>

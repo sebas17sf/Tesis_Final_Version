@@ -833,17 +833,26 @@ class DocumentoController extends Controller
                 $sheet->setCellValue('E' . $currentRow, mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
                 ////OBTENER NOMBRE DEK DIRECTOR
                 $sheet->setCellValue('C' . $currentRow, $director->apellidos . ' ' . $director->nombres);
-                // Ajustar estilo de las celdas
-                $sheet->getStyle('A' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
-                $sheet->getStyle('B' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
-                $sheet->getStyle('C' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
-                $sheet->getStyle('E' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
-                $sheet->getStyle('F' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
-                $sheet->getStyle('I' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
-                $sheet->getStyle('G' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
-                $sheet->getStyle('H' . $currentRow)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+
+                // Ajuste automático de altura de fila para la fila actual
+                $sheet->getRowDimension($currentRow)->setRowHeight(-1);
+
                 $contador++;
             }
+
+
+            ////justificar y centrar
+            $sheet->getStyle('A9:I' . ($filaInicio + $cantidadFilas - 1))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            ////QUE TODAS LAS CEDLAS SE AJUSTEN AL TEXTO para que no se vea mal
+            $sheet->getStyle('A9:I' . ($filaInicio + $cantidadFilas - 1))->getAlignment()->setWrapText(true);
+            $sheet->getStyle('A9:I' . ($filaInicio + $cantidadFilas - 1))->getAlignment()->setShrinkToFit(true);
+            $sheet->getStyle('A9:I' . ($filaInicio + $cantidadFilas - 1))->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('A9:I' . ($filaInicio + $cantidadFilas - 1))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY);
+
+            $sheet->getStyle('A9:I' . ($filaInicio + $cantidadFilas - 1))->getAlignment()->setShrinkToFit(true);
+            $sheet->getStyle('A9:I' . ($filaInicio + $cantidadFilas - 1))->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheet->getStyle('A9:I' . ($filaInicio + $cantidadFilas - 1))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY);
+
 
             $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
             $nombreArchivo = 'Reporte_proyectos_sociales.xlsx';
