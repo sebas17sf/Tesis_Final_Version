@@ -119,14 +119,15 @@
                             <div class="draggable-card1_2" id="filtersCard" style="display: none;">
                                 <div class="card-header">
                                     <span class="card-title">Filtros</span>
-                                    <button type="button" class="close"
-                                        onclick="closeCard('filtersCard')"><i class="fa-thin fa-xmark"></i></button>
+                                    <button type="button" class="close" onclick="closeCard('filtersCard')"><i
+                                            class="fa-thin fa-xmark"></i></button>
                                 </div>
                                 <div class="card-body">
                                     <form id="filtersForm" method="GET" action="{{ route('admin.indexProyectos') }}">
                                         <div class="form-group">
                                             <label for="estado" class="mr-2">Estado del Proyecto:</label>
-                                            <select name="estado" id="estado" class="form-control input input_select">
+                                            <select name="estado" id="estado"
+                                                class="form-control input input_select">
                                                 <option value="">Todos</option>
                                                 <option value="Ejecucion"
                                                     {{ request('estado') == 'Ejecucion' ? 'selected' : '' }}>En Ejecución
@@ -264,7 +265,8 @@
                     </div>
 
                     <div class="paginator-container">
-                        <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
+                        <nav aria-label="..."
+                            style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
                             <div id="totalRows">Proyectos: {{ $proyectos->total() }}</div>
                             <ul class="pagination">
                                 <li class="page-item mx-3">
@@ -284,7 +286,7 @@
                                 </li>
                                 @if ($proyectos->onFirstPage())
                                     <li class="page-item disabled">
-                                        <span class="page-link" >Anterior</span>
+                                        <span class="page-link">Anterior</span>
                                     </li>
                                 @else
                                     <li class="page-item">
@@ -358,7 +360,8 @@
                                     <div class="card-header">
                                         <span class="card-title">Importar archivo</span>
                                         <button type="button" class="close"
-                                            onclick="closeCard('cardImportarArchivo')"><i class="fa-thin fa-xmark"></i></button>
+                                            onclick="closeCard('cardImportarArchivo')"><i
+                                                class="fa-thin fa-xmark"></i></button>
                                     </div>
                                     <div class="card-body">
                                         <form id="idModalImportar2" action="{{ route('import') }}" method="POST"
@@ -397,7 +400,8 @@
                                     <div class="card-header">
                                         <span class="card-title">Filtros Profesores y Periodos</span>
                                         <button type="button" class="close"
-                                            onclick="closeCard('filtersCardProfesores')"><i class="fa-thin fa-xmark"></i></button>
+                                            onclick="closeCard('filtersCardProfesores')"><i
+                                                class="fa-thin fa-xmark"></i></button>
                                     </div>
                                     <div class="card-body">
                                         <form id="filterFormProfesores" method="GET"
@@ -484,6 +488,7 @@
                                             <th class="tamanio4">DOCENTES PARTICIPANTES</th>
                                             <th>FECHA ASIGNACIÓN</th>
                                             <th>ESTUDIANTES</th>
+                                            <th>HORAS REALIZADAS</th>
                                             <th>NOTA</th>
                                             <th>PERIODO</th>
                                             <th>NRC</th>
@@ -530,7 +535,21 @@
 
                                                     </td>
 
-                                                    <td>{{ $grupo->first()?->estudiante?->notas->first()?->notaFinal ?? 'Sin calificar' }}
+                                                    <td>
+                                                        @foreach ($grupo as $asignacion)
+                                                            @foreach ($asignacion->estudiante->horas_vinculacion as $hora)
+                                                                {{ $hora->horasVinculacion ?? '' }}<br>
+                                                            @endforeach
+                                                        @endforeach
+                                                    </td>
+
+                                                    <td>
+                                                        @foreach ($grupo as $asignacion)
+                                                            @foreach ($asignacion->estudiante->notas as $nota)
+                                                                {{ $nota->notaFinal ?? 'Sin calificar' }}<br>
+                                                            @endforeach
+                                                        @endforeach
+                                                    </td>
                                                     </td>
                                                     </td>
                                                     <td>{{ $grupo->first()->periodo->numeroPeriodo ?? '' }}</td>
@@ -635,7 +654,8 @@
     <div class="draggable-card1_3" id="draggableCardAsignarEstudiante">
         <div class="card-header">
             <span class="card-title">Asignar Proyecto</span>
-            <button type="button" class="close" onclick="$('#draggableCardAsignarEstudiante').hide()"><i class="fa-thin fa-xmark"></i></button>
+            <button type="button" class="close" onclick="$('#draggableCardAsignarEstudiante').hide()"><i
+                    class="fa-thin fa-xmark"></i></button>
         </div>
         <div class="card-body">
             <form method="POST" action="{{ route('admin.guardarAsignacion') }}">
@@ -1058,7 +1078,7 @@
             $('#filterFormProfesores')[0].reset();
             applyFilter('#filterFormProfesores', '#tablaAsignaciones');
         }
-   
+
 
         document.addEventListener('DOMContentLoaded', function() {
             const nrcSelect = document.getElementById('nrc');
@@ -1108,5 +1128,5 @@
             const alert = document.getElementById(alertId);
             alert.style.display = 'none';
         }
-        </script>
-    @endsection
+    </script>
+@endsection
