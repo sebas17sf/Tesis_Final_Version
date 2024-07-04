@@ -175,7 +175,7 @@
         </section>
 
         <br>
-        <h4><b>Estudiantes Practica 1</b></h4>
+        <h4><b>Estudiantes Práctica 1</b></h4>
         <hr>
         <section>
             <div class="mat-elevation-z8 contenedor_general">
@@ -386,7 +386,7 @@
 
 
         <br>
-        <h4><b>Estudiantes Practica 1.2 </b></h4>
+        <h4><b>Estudiantes Práctica 1.2 </b></h4>
 
         <hr>
         <section>
@@ -600,7 +600,7 @@
 
 
         <br>
-        <h4><b>Estudiantes Practica 1.3</b></h4>
+        <h4><b>Estudiantes Práctica 1.3</b></h4>
 
         <hr>
         <section>
@@ -797,7 +797,7 @@
 
 
         <br>
-        <h4><b>Estudiantes Practica 2</b></h4>
+        <h4><b>Estudiantes Práctica 2</b></h4>
 
         <hr>
         <section>
@@ -1010,7 +1010,7 @@
 
 
         <br>
-        <h4><b>Estudiantes Practica 2.2</b></h4>
+        <h4><b>Estudiantes Práctica 2.2</b></h4>
 
         <hr>
         <section>

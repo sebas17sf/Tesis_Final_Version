@@ -246,12 +246,12 @@
             <!-- Archivos de notas -->
 
             <div>
-                <span><b>Docentes agregados</b></span>
+                <span><b>Docentes participantes y directores.</b></span>
 
-                <hr>
+            
 
             </div>
-
+<br>
             <!-- Tarjeta movible para Agregar Maestro -->
             <div class="draggable-card1_1" id="draggableCardAgregarMaestro">
                 <div class="card-header">
