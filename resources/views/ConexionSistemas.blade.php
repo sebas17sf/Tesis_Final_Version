@@ -78,24 +78,63 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        console.log("Verificando token en la sesión:", "{{ session('token') }}");
+
+        // Verificar si hay un token en la sesión y almacenarlo en localStorage
         var token = "{{ session('token') }}";
         if (token) {
+            console.log("Token encontrado en la sesión, almacenando en localStorage:", token);
             localStorage.setItem('token', token);
+        } else {
+            console.log("No se encontró token en la sesión.");
         }
+
+        // Al cargar la página, verificar si hay un token en localStorage
+        document.addEventListener("DOMContentLoaded", function() {
+            var storedToken = localStorage.getItem('token');
+            if (storedToken) {
+                console.log("Token cargado desde localStorage:", storedToken);
+            } else {
+                console.log("No se encontró un token en localStorage.");
+            }
+        });
     </script>
 
 
 
+
     <script>
-        @if (session('token'))
-            localStorage.setItem('token', '{{ session('token') }}');
+        console.log("Verificando token en la sesión:", "{{ session('token') }}");
 
-            ////cuando se cierra en logout se elimina el token de localstorage
-            window.addEventListener('beforeunload', function (e) {
-                localStorage.removeItem('token');
-            });
+        // Verificar si hay un token en la sesión y almacenarlo en localStorage
+        var token = "{{ session('token') }}";
+        if (token) {
+            console.log("Token encontrado en la sesión, almacenando en localStorage:", token);
+            localStorage.setItem('token', token);
+        } else {
+            console.log("No se encontró token en la sesión.");
+        }
 
-        @endif
+        // Al cargar la página, verificar si hay un token en localStorage
+        document.addEventListener("DOMContentLoaded", function() {
+            var storedToken = localStorage.getItem('token');
+            if (storedToken) {
+                console.log("Token cargado desde localStorage:", storedToken);
+            } else {
+                console.log("No se encontró un token en localStorage.");
+            }
+        });
+    </script>
+
+        // Al cargar la página, verificar si hay un token en localStorage
+        document.addEventListener("DOMContentLoaded", function() {
+            var storedToken = localStorage.getItem('token');
+            if (storedToken) {
+                console.log("Token cargado desde localStorage:", storedToken);
+            } else {
+                console.log("No se encontró un token en localStorage.");
+            }
+        });
     </script>
 
     <script>
