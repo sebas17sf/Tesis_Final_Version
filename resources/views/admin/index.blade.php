@@ -403,7 +403,7 @@
                                                 <td>
                                                     <div class="btn-group shadow-1">
 
-                                                        <button type="button" class="button3 efects_button btn_editar3"
+                                                        <button type="button" class="button3 efects_button btn_editar3" style="margin-right: 5px;"
                                                             onclick="openCard('draggableCardEditarMaestro{{ $profesor->id }}');">
                                                             <i class="bx bx-edit-alt"></i>
                                                         </button>
