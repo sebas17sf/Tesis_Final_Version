@@ -847,9 +847,9 @@ class DocumentosVinculacion extends Controller
                 }
             }
 
-            return redirect()->back()->with('success', 'Estudiantes importados correctamente.');
+            return redirect()->back()->with('success', 'Estudiantes importados.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('success', 'Estudiantes importados correctamente.');
+            return redirect()->back()->with('success', 'Estudiantes importados.');
         }
     }
 
@@ -955,9 +955,9 @@ class DocumentosVinculacion extends Controller
                 }
             }
 
-            return redirect()->back()->with('success', 'Estudiantes importados correctamente.');
+            return redirect()->back()->with('success', 'Estudiantes importados.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('success', 'Estudiantes importados correctamente.');
+            return redirect()->back()->with('success', 'Estudiantes importados.');
         }
     }
 
@@ -1061,9 +1061,9 @@ class DocumentosVinculacion extends Controller
                 }
             }
 
-            return redirect()->back()->with('success', 'Estudiantes importados correctamente.');
+            return redirect()->back()->with('success', 'Estudiantes importados.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('success', 'Estudiantes importados correctamente.');
+            return redirect()->back()->with('success', 'Estudiantes importados.');
         }
     }
 
@@ -1167,9 +1167,9 @@ class DocumentosVinculacion extends Controller
                 }
             }
 
-            return redirect()->back()->with('success', 'Estudiantes importados correctamente.');
+            return redirect()->back()->with('success', 'Estudiantes importados.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('success', 'Estudiantes importados correctamente.');
+            return redirect()->back()->with('success', 'Estudiantes importados.');
         }
     }
 
@@ -1269,9 +1269,9 @@ class DocumentosVinculacion extends Controller
                 }
             }
 
-            return redirect()->back()->with('success', 'Estudiantes importados correctamente.');
+            return redirect()->back()->with('success', 'Estudiantes importados.');
         } catch (\Exception $e) {
-            return redirect()->back()->with('success', 'Estudiantes importados correctamente.');
+            return redirect()->back()->with('success', 'Estudiantes importados.');
         }
     }
 

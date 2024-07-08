@@ -178,7 +178,7 @@ class EstudianteController extends Controller
 
             \Log::info('Estudiante actualizado:', $estudiante->toArray());
 
-            return redirect()->route('estudiantes.index')->with('success', 'Información del Estudiante actualizada correctamente');
+            return redirect()->route('estudiantes.index')->with('success', 'Información del Estudiante actualizada.');
         } catch (\Exception $e) {
             \Log::error('Error al actualizar el estudiante:', ['error' => $e->getMessage()]);
             return redirect()->route('estudiantes.index')->with('error', 'Hubo un problema al actualizar la información del estudiante.');
@@ -714,7 +714,7 @@ class EstudianteController extends Controller
         $usuario->contrasena = bcrypt($request->password);
         $usuario->save();
 
-        return redirect()->back()->with('success', 'Contraseña actualizada correctamente');
+        return redirect()->back()->with('success', 'Contraseña actualizada.');
     }
 
 
@@ -746,7 +746,7 @@ class EstudianteController extends Controller
         $estudiante->save();
 
         // Redirigir con un mensaje de éxito
-        return redirect()->back()->with('success', 'Datos del estudiante actualizados correctamente.');
+        return redirect()->back()->with('success', 'Datos del estudiante actualizados.');
     }
 
 

@@ -1,0 +1,69 @@
+@use "../vars/colors" as colors;
+
+
+.contenedor_alerta {
+  display: flex;
+  min-height: 40px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px rgba(colors.$black, 0.1);
+  padding-top: 15px;
+  padding-bottom: 15px;
+
+  &.success {
+    background-color: #ecfaf4;
+    color: #42b791;
+    border-left: 5px solid #42b791;
+
+    button {
+      color: #42b791;
+    }
+  }
+
+  &.error {
+    background-color: #fceceb;
+    color: #ff5757;
+    border-left: 5px solid #ff5757;
+
+    button {
+      color: #ff5757;
+    }
+  }
+
+  &.info {
+    background-color: #e0ecfa;
+    color: #3b82f6;
+    border-left: 5px solid #3b82f6;
+
+    button {
+      color: #3b82f6;
+    }
+  }
+
+  .icon_alert {
+    text-align: center;
+    width: 80px;
+    font-size: 35px;
+  }
+
+  .content_alert {
+    display: grid;
+    gap: 5px;
+    width: 100%;
+
+    .title {
+      font-weight: bold;
+    }
+  }
+
+  .icon_remove {
+    display: grid;
+    width: 60px;
+    // justify-content: center;
+
+    button {
+      &:hover {
+        background-color: colors.$white;
+      }
+    }
+  }
+}

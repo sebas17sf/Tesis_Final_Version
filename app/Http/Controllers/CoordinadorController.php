@@ -231,7 +231,7 @@ class CoordinadorController extends Controller
             $proyecto->save();
 
 
-            return redirect()->route('coordinador.index')->with('success', 'Proyecto agregado correctamente');
+            return redirect()->route('coordinador.index')->with('success', 'Proyecto agregado.');
         } catch (\Exception $e) {
             return back()->with('error', 'Hubo un error al crear el proyecto: ' . $e->getMessage());
         }
@@ -283,7 +283,7 @@ class CoordinadorController extends Controller
 
         $this->actualizarUsuarioYRol($validatedData['DirectorProyecto'], 'DirectorVinculacion');
 
-        return redirect()->route('coordinador.index')->with('success', 'Proyecto actualizado correctamente');
+        return redirect()->route('coordinador.index')->with('success', 'Proyecto actualizado.');
     }
 
     ////////////////////////va con editar
@@ -341,7 +341,7 @@ class CoordinadorController extends Controller
         // Eliminar el proyecto
         $proyecto->delete();
 
-        return redirect()->route('coordinador.index')->with('success', 'Proyecto y asignaciones relacionadas eliminados correctamente');
+        return redirect()->route('coordinador.index')->with('success', 'Proyecto y asignaciones relacionadas eliminados.');
     }
 
 
@@ -436,7 +436,7 @@ class CoordinadorController extends Controller
         }
         $this->actualizarUsuarioYRol($request->ProfesorParticipante, 'ParticipanteVinculacion');
 
-        return redirect()->route('coordinador.index')->with('success', 'Estudiante asignado correctamente');
+        return redirect()->route('coordinador.index')->with('success', 'Estudiante asignado.');
 
     }
 
@@ -865,17 +865,17 @@ class CoordinadorController extends Controller
         $practica->save();
 
         if ($nuevoEstado === 'En ejecucion') {
-            return redirect()->route('coordinador.aceptarFaseI')->with('success', 'Práctica aprobada correctamente.');
+            return redirect()->route('coordinador.aceptarFaseI')->with('success', 'Práctica aprobada.');
         }
 
         // Si el nuevo estado es 'Negado', elimina la práctica
         if ($nuevoEstado === 'Negado') {
             $practica->delete();
-            return redirect()->route('coordinador.index')->with('success', 'Práctica negada y eliminada correctamente.');
+            return redirect()->route('coordinador.index')->with('success', 'Práctica negada y eliminada.');
         }
 
         // Redirecciona de regreso con un mensaje de éxito
-        return redirect()->route('coordinador.aceptarFaseI')->with('success', 'Estado de la práctica actualizado correctamente.');
+        return redirect()->route('coordinador.aceptarFaseI')->with('success', 'Estado de la práctica actualizado.');
     }
 
     public function actualizarEstadoEstudiante2(Request $request, $id)
@@ -897,15 +897,15 @@ class CoordinadorController extends Controller
         $practica->save();
 
         if ($nuevoEstado === 'En ejecucion') {
-            return redirect()->route('coordinador.aceptarFaseI')->with('success', 'Práctica II aprobada correctamente.');
+            return redirect()->route('coordinador.aceptarFaseI')->with('success', 'Práctica II aprobada.');
         }
 
         if ($nuevoEstado === 'Negado') {
             $practica->delete();
-            return redirect()->route('coordinador.index')->with('success', 'Práctica II negada y eliminada correctamente.');
+            return redirect()->route('coordinador.index')->with('success', 'Práctica II negada y eliminada.');
         }
 
-        return redirect()->route('coordinador.aceptarFaseI')->with('success', 'Estado de la Práctica II actualizado correctamente.');
+        return redirect()->route('coordinador.aceptarFaseI')->with('success', 'Estado de la Práctica II actualizado.');
     }
 
 
@@ -954,7 +954,7 @@ class CoordinadorController extends Controller
             $practicaII->save();
         }
 
-        return redirect()->route('coordinador.aceptarFaseI')->with('success', 'Empresa actualizado correctamente.');
+        return redirect()->route('coordinador.aceptarFaseI')->with('success', 'Empresa actualizado.');
     }
 
 

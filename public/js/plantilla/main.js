@@ -2760,45 +2760,7 @@ class HistoryNoteComponent {
     this.positionFilter = positionFilter;
     this.visibleFilter = true;
   }
-  //===================================================================
-  // Boton copiar en el portapapeles
-  //===================================================================
-  // Obtiene los valores anidados de la respuesta cuando hay relacion entre tablas
-  getValue(element, column) {
-    // Divide la cadena basada en puntos para manejar propiedades anidadas
-    const keys = column.split('.');
-    let value = element;
-    // Itera sobre las claves para acceder a la propiedad anidada
-    keys.forEach(key => {
-      value = value[key];
-    });
-    return value;
-  }
-  // Dar formato a los datos copiados
-  formatDataForClipboard() {
-    const dataString = this.dataSource.filteredData.map(row => {
-      return this.displayedColumns.map(column => {
-        const value = this.getValue(row, column);
-        return typeof value === 'string' ? value : value.toString();
-      }).join('\t'); // Separa cada campo con un tabulador
-    }).join('\n'); // Separa cada fila con un salto de línea
-    return dataString;
-  }
-  // Copiar los datos
-  copyDataToClipboard() {
-    const dataForClipboard = this.formatDataForClipboard();
-    navigator.clipboard.writeText(dataForClipboard).then(() => {
-      const title = 'Datos copiados correctamente!';
-      const message = 'Los datos han sido copiados en el portapapeles.';
-      this.alertService.toastMessage('success', title, message);
-      console.log(message);
-    }, err => {
-      const title = 'Error al copiar!';
-      const message = 'Hubo un error al copiar los datos en el portapapeles.';
-      this.alertService.toastMessage('error', title, message);
-      console.error(message, err);
-    });
-  }
+
   //===================================================================
   // Boton Exportar en excel
   //===================================================================

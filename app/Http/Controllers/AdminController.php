@@ -118,7 +118,7 @@ class AdminController extends Controller
         $usuario->contrasena = bcrypt($request->input('password'));
         $usuario->save();
 
-        return redirect()->route('admin.index')->with('success', 'Estado actualizado correctamente');
+        return redirect()->route('admin.index')->with('success', 'Estado actualizado.');
     }
 
 
@@ -136,7 +136,7 @@ class AdminController extends Controller
             $profesor->delete();
         }
 
-        return redirect()->route('admin.index')->with('success', 'Profesor eliminado correctamente');
+        return redirect()->route('admin.index')->with('success', 'Docente eliminado.');
     }
 
 
@@ -157,12 +157,12 @@ class AdminController extends Controller
             $usuario->estado = 'Pendiente';
             $usuario->save();
 
-            return redirect()->route('admin.index')->with('success', 'Permiso eliminado correctamente');
+            return redirect()->route('admin.index')->with('success', 'Permiso eliminado.');
         } elseif ($usuario->estado === 'Pendiente') {
             // Si el estado ya es 'Negado', elimina el usuario
             $usuario->delete();
 
-            return redirect()->route('admin.index')->with('success', 'Usuario eliminado correctamente');
+            return redirect()->route('admin.index')->with('success', 'Usuario eliminado.');
         } else {
             return redirect()->route('admin.index')->with('error', 'No se puede eliminar el permiso de este usuario');
         }
@@ -263,7 +263,7 @@ class AdminController extends Controller
             }
         }
 
-        return redirect()->route('admin.estudiantes')->with('success', 'Estado del estudiante actualizado correctamente.');
+        return redirect()->route('admin.estudiantes')->with('success', 'Estado del estudiante actualizado..');
     }
 
 
@@ -514,7 +514,7 @@ class AdminController extends Controller
             $proyecto->save();
 
 
-            return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto agregado correctamente');
+            return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto agregado.');
         } catch (\Exception $e) {
             return back()->with('error', 'Hubo un error al crear el proyecto: ' . $e->getMessage());
         }
@@ -565,7 +565,7 @@ class AdminController extends Controller
 
         $this->actualizarUsuarioYRol($validatedData['DirectorProyecto'], 'DirectorVinculacion');
 
-        return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto actualizado correctamente');
+        return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto actualizado.');
     }
 
     ////////////////////////va con editar
@@ -618,7 +618,7 @@ class AdminController extends Controller
         // Eliminar el proyecto
         $proyecto->delete();
 
-        return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto y asignaciones relacionadas eliminados correctamente');
+        return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto y asignaciones relacionadas eliminados.');
     }
     ///////asignar proyecto a estudiante/////////////
 
@@ -664,7 +664,7 @@ class AdminController extends Controller
         }
         $this->actualizarUsuarioYRol($request->ProfesorParticipante, 'ParticipanteVinculacion');
 
-        return redirect()->route('admin.indexProyectos')->with('success', 'Asignacion realizada correctamente');
+        return redirect()->route('admin.indexProyectos')->with('success', 'Asignación realizada.');
 
     }
 
@@ -695,7 +695,7 @@ class AdminController extends Controller
         $this->actualizarUsuarioYRol($request->ProfesorParticipante, 'ParticipanteVinculacion');
 
 
-        return redirect()->route('admin.indexProyectos')->with('success', 'Asignación realizada correctamente');
+        return redirect()->route('admin.indexProyectos')->with('success', 'Asignación realizada.');
 
 
     }
@@ -1344,12 +1344,12 @@ class AdminController extends Controller
 
         // Maneja las redirecciones según el estado seleccionado
         if ($nuevoEstado === 'En ejecucion') {
-            return redirect()->route('admin.aceptarFaseI')->with('success', 'Práctica aprobada correctamente.');
+            return redirect()->route('admin.aceptarFaseI')->with('success', 'Práctica aprobada..');
         } elseif ($nuevoEstado === 'Negado') {
             $practica->delete();
-            return redirect()->route('admin.index')->with('success', 'Práctica negada y eliminada correctamente.');
+            return redirect()->route('admin.index')->with('success', 'Práctica negada y eliminada..');
         } else {
-            return redirect()->route('admin.aceptarFaseI')->with('success', 'Estado de la práctica actualizado correctamente.');
+            return redirect()->route('admin.aceptarFaseI')->with('success', 'Estado de la práctica actualizado..');
         }
     }
 
@@ -1374,15 +1374,15 @@ class AdminController extends Controller
         $practica->save();
 
         if ($nuevoEstado === 'En ejecucion') {
-            return redirect()->route('admin.aceptarFaseI')->with('success', 'Práctica II aprobada correctamente.');
+            return redirect()->route('admin.aceptarFaseI')->with('success', 'Práctica II aprobada..');
         }
 
         if ($nuevoEstado === 'Negado') {
             $practica->delete();
-            return redirect()->route('admin.index')->with('success', 'Práctica II negada y eliminada correctamente.');
+            return redirect()->route('admin.index')->with('success', 'Práctica II negada y eliminada..');
         }
 
-        return redirect()->route('admin.aceptarFaseI')->with('success', 'Estado de la Práctica II actualizado correctamente.');
+        return redirect()->route('admin.aceptarFaseI')->with('success', 'Estado de la Práctica II actualizado..');
     }
 
     /////////////////////////////////EDITAR EMPRESA DEL ESTUDIANTE
@@ -1426,7 +1426,7 @@ class AdminController extends Controller
             $practicaII->save();
         }
 
-        return redirect()->route('admin.aceptarFaseI')->with('success', 'Empresa actualizado correctamente.');
+        return redirect()->route('admin.aceptarFaseI')->with('success', 'Empresa actualizado..');
     }
 
 
