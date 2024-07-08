@@ -617,51 +617,70 @@ tr:hover {
     padding: 3px 6px;
     font-size: 12px !important;
 }
+.alerts {
+    display: block;
+}
+
 .contenedor_alerta {
-    display: none ; /* Oculta la alerta por defecto */
-    align-items: center;
-    justify-content: space-between;
-    background-color: #dff0d8;
-    border: 1px solid #d6e9c6;
-    color: #3c763d;
-    padding: 15px;
-    margin: 15px;
-    border-radius: 4px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-    position: fixed;
-    top: 60px !important;
-    right: 0px !important;
-    z-index: 1000 ;
+    position: fixed; /* Posición fija para mantener las alertas en la parte superior */
+    top: 60px !important; /* Ajustado para la posición superior */
+    right: 0px !important; /* Ajustado para la posición derecha */
+    z-index: 1000 !important; /* Asegura que las alertas estén por encima de otros elementos */
+    display: flex ;
+    align-items: center !important;
+    justify-content: space-between !important;
+    height: auto !important; /* Ajusta la altura automáticamente */
+    min-height: 32px !important;
+    width: 230px !important;
+    max-width: 250px !important;
+    border-radius: 5px !important;
+    padding: 10px !important; /* Aumentado el padding */
+    margin: 10px !important; /* Añadido margen */
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3) !important; /* Reemplaza colors.$black */
+    backdrop-filter: blur(5px) !important;
+    border-left: 5px solid #40456c !important; /* Usando el color primary proporcionado */
+    border-right: 5px solid #40456c !important; /* Usando el color primary proporcionado */
+    border-top: 1px solid #40456c !important; /* Usando el color primary proporcionado */
+    border-bottom: 1px solid #40456c !important; /* Usando el color primary proporcionado */
+    background-color: rgba(255, 255, 255, 0.6) !important; /* Reemplaza colors.$white */
 
-    max-width: none !important;
+    &.success {
+      color: #42b791 !important;
+    }
+
+    &.error {
+      color: #ff5757 !important;
+    }
+
+    &.info {
+      color: #3b82f6 !important;
+    }
+
+    .icon_alert {
+      text-align: center !important;
+      font-size: 20px !important; /* Ajustado el tamaño de la fuente */
+      padding-right: 8px !important;
+      line-height: 1 !important;
+    }
+
+    .content_alert {
+      display: grid;
+      gap: 0px !important; /* Ajustado el gap */
+      width: calc(100% - 50px) !important;
+
+      .title {
+        font-weight: bold !important;
+        font-size: 12px !important;
+      }
+
+      .body {
+        font-size: 10px !important;
+      }
+    }
 }
 
-.contenedor_alerta .icon_alert {
-    margin-right: 10px;
-    font-size: 24px;
-}
 
-.contenedor_alerta .content_alert {
-    flex: 1;
-}
-
-.contenedor_alerta .title {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.contenedor_alerta .icon_remove button {
-    background: none;
-    border: none;
-    color: #3c763d;
-    font-size: 24px;
-}
-
-.contenedor_alerta .content_alert {
-    display: grid;
- gap: 0px !important;
-    width: 100%;
-}
+  
 .noExisteRegistro1 {
     font-size: 12px;
     text-align: center;

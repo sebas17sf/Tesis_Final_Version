@@ -770,7 +770,7 @@ class AdminController extends Controller
 
             $maestro->delete();
 
-            return redirect()->route('admin.index')->with('success', 'Docente eliminado con éxito.');
+            return redirect()->route('admin.index')->with('success', 'Docente eliminado.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'No se pudo eliminar el Docente. Por favor, verifica los datos e intenta de nuevo.' . $e->getMessage());
         }
@@ -809,11 +809,11 @@ class AdminController extends Controller
                 'departamento' => $request->departamento,
             ]);
 
-            return redirect()->route('admin.index')->with('success', 'Maestro actualizado con éxito.');
+            return redirect()->route('admin.index')->with('success', 'Docente actualizado.');
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'No se pudo actualizar el maestro. Por favor, verifica los datos e intenta de nuevo.');
+            return redirect()->back()->with('error', 'No se pudo actualizar el docente. Por favor, verifica los datos e intenta de nuevo.');
         }
     }
 
@@ -854,7 +854,7 @@ class AdminController extends Controller
             'numeroPeriodo' => $request->numeroPeriodo,
         ]);
 
-        return redirect()->route('admin.index')->with('success', 'Periodo académico creado con éxito.');
+        return redirect()->route('admin.index')->with('success', 'Periodo académico creado.');
     }
 
     public function editarPeriodo($id)
@@ -909,7 +909,7 @@ class AdminController extends Controller
         $periodo->numeroPeriodo = $request->numeroPeriodo;
         $periodo->save();
 
-        return redirect()->route('admin.index')->with('success', 'Período académico actualizado con éxito.');
+        return redirect()->route('admin.index')->with('success', 'Período académico actualizado.');
     }
 
 
@@ -924,7 +924,7 @@ class AdminController extends Controller
 
         $periodo->delete();
 
-        return redirect()->route('admin.index')->with('success', 'Periodo académico eliminado con éxito.');
+        return redirect()->route('admin.index')->with('success', 'Periodo académico eliminado.');
     }
 
 
@@ -1453,7 +1453,7 @@ class AdminController extends Controller
             'tipo' => $request->tipo,
         ]);
 
-        return redirect()->route('admin.index')->with('success', 'NRC guardado con éxito.');
+        return redirect()->route('admin.index')->with('success', 'NRC guardado.');
     }
 
 
@@ -1487,7 +1487,7 @@ class AdminController extends Controller
         }
 
         // Regresa a la página de inicio con un mensaje de éxito
-        return redirect()->route('admin.index')->with('success', 'Respaldo de la base de datos creado y enviado por correo electrónico con éxito.');
+        return redirect()->route('admin.index')->with('success', 'Respaldo de la base de datos creado y enviado por correo electrónico.');
     }
 
 
