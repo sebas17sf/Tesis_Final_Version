@@ -27,7 +27,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 d-flex">
-                <div class="card mb-4 w-100">
+                <div class="card custom-card mb-4 w-100">
                     <div class="card-body d-flex flex-column">
                         <h4 class="card-title flex-grow-1"><i>Generar Acta de Designación de Estudiantes</i></h4>
                         <hr>
@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="col-md-4 d-flex">
-                <div class="card mb-4 w-100">
+                <div class="card custom-card mb-4 w-100">
                     <div class="card-body d-flex flex-column">
                         <h4 class="card-title flex-grow-1"><i>Generar Carta de Compromiso de Estudiante</i></h4>
                         <hr>
@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div class="col-md-4 d-flex">
-                <div class="card mb-4 w-100">
+                <div class="card custom-card mb-4 w-100">
                     <div class="card-body d-flex flex-column">
                         <h4 class="card-title flex-grow-1"><i>Generar Número de Horas de Estudiantes</i></h4>
                         <hr>
@@ -70,6 +70,8 @@
             </div>
         </div>
     </div>
+</div>
+
 
     <!-- Card de Registro de Actividades -->
     <div class="draggable-card1_4" id="cardRegistroActividades" style="display: none;">

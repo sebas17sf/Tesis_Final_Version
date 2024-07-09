@@ -777,3 +777,43 @@ background-blend-mode: multiply;
         }
 
         
+
+        /* Estilos para las tarjetas */
+.custom-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    background-color: #fff;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.custom-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.custom-card .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.custom-card .card-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.custom-card hr {
+    margin: 10px 0;
+    border-top: 1px solid #eee;
+}
+
+
+
+
+
+.custom-card .efects_button i {
+    margin-right: 8px;
+}
