@@ -7,30 +7,16 @@
 @section('content')
 
     @if (session('success'))
-        <div class="contenedor_alerta success">
-            <div class="icon_alert"><i class="far fa-check"></i></div>
-            <div class="content_alert">
-                <div class="title">Éxito!</div>
-                <div class="body">{{ session('success') }}</div>
-            </div>
-            <div class="icon_remove">
-                <button class="button4 btn_3_2"><i class="far fa-times"></i></button>
-            </div>
-        </div>
 
-        <script>
-            // Espera a que el DOM esté completamente cargado
-            document.addEventListener('DOMContentLoaded', function() {
-                // Agrega un evento 'click' al botón de cierre
-                document.querySelector('.contenedor_alerta .icon_remove button').addEventListener('click', function() {
-                    // Encuentra el contenedor de alerta más cercano y ocúltalo
-                    var contenedorAlerta = this.closest('.contenedor_alerta');
-                    if (contenedorAlerta) {
-                        contenedorAlerta.style.display = 'none';
-                    }
-                });
-            });
-        </script>
+
+  <div class="contenedor_alerta success">
+    <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
+    <div class="content_alert">
+      <div class="title">Éxito!</div>
+      <div class="body">{{ session('success') }}</div>
+    </div>
+  </div>
+
     @endif
 
 
@@ -373,7 +359,7 @@
                                         <th class="tamanio1">NOMBRE</th>
                                         <th>CORREO</th>
                                         <th>USUARIO</th>
-                                        <th>CEDULA</th>
+                                        <th>CÉDULA</th>
                                         <th class="tamanio2">DEPARTAMENTO</th>
                                         <th>ID ESPE</th>
                                         <th>ACCIONES</th>
@@ -823,6 +809,7 @@
             }, 500);
         });
     </script>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

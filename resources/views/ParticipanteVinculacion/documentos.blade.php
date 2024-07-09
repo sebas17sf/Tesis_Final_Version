@@ -4,22 +4,13 @@
 @section('title_component', 'Desarrollo de documentación')
 @section('content')
     @if (session('success'))
-        <div class="contenedor_alerta success">
-            <div class="icon_alert"><i class="fa-regular fa-check"></i></div>
-            <div class="content_alert">
-                <div class="title">Éxito!</div>
-                <div class="body">{{ session('success') }}</div>
-            </div>
-            <div class="icon_remove">
-                <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
-            </div>
-        </div>
-
-        <script>
-            document.querySelector('.contenedor_alerta .icon_remove button').addEventListener('click', function() {
-                this.closest('.contenedor_alerta').style.display = 'none';
-            });
-        </script>
+    <div class="contenedor_alerta success">
+    <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
+    <div class="content_alert">
+      <div class="title">Éxito!</div>
+      <div class="body">{{ session('success') }}</div>
+    </div>
+  </div>
     @endif
 
 

@@ -11,15 +11,13 @@
         <hr>
 
         @if (session('success'))
-        <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Éxito',
-            text: '{{ session('
-            success ') }}',
-            confirmButtonText: 'Ok'
-        });
-        </script>
+        <div class="contenedor_alerta success">
+    <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
+    <div class="content_alert">
+      <div class="title">Éxito!</div>
+      <div class="body">{{ session('success') }}</div>
+    </div>
+  </div>
         @endif
 
         @if (session('error'))

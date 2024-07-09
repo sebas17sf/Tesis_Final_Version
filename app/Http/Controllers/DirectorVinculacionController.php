@@ -129,7 +129,7 @@ class DirectorVinculacionController extends Controller
 
         $estudiante->save();
 
-        return redirect()->route('director.repartoEstudiantes')->with('success', 'Se ha eliminado el estudiante correctamente.');
+        return redirect()->route('director.repartoEstudiantes')->with('success', 'Se ha eliminado el estudiante.');
     }
 
     public function estudiantes()
@@ -239,7 +239,7 @@ class DirectorVinculacionController extends Controller
             $notas->Informe = $request->nota_servicio;
             $notas->save();
 
-            return redirect()->route('director_vinculacion.estudiantes')->with('success', 'Se ha actualizado la nota del estudiante correctamente.');
+            return redirect()->route('director_vinculacion.estudiantes')->with('success', 'Se ha actualizado la nota del estudiante.');
         } else {
             return redirect()->back()->with('error', 'No se encontró el estudiante.');
         }
