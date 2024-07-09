@@ -727,12 +727,13 @@ class DocumentosVinculacion extends Controller
         $worksheet = $spreadsheet->getActiveSheet();
         $rows = $worksheet->toArray();
 
+        // Skip the header row
         $dataRows = array_slice($rows, 1);
 
+        // Process each row for Estudiantes
         foreach ($dataRows as $row) {
             if (!empty($row[0]) && !empty($row[1]) && !empty($row[2]) && !empty($row[3]) && !empty($row[4]) && !empty($row[5]) && !empty($row[6])) {
                 $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
-
                 $estudiante = Estudiante::where('espeId', $row[0])->first();
 
                 $data = [
@@ -757,12 +758,18 @@ class DocumentosVinculacion extends Controller
             }
         }
 
-
+        // Process each row for AsignacionProyecto and ProfesUniversidad
         foreach ($dataRows as $row) {
-            $participante = null;
-            if (!empty($row[7]) && !empty($row[8]) && !empty($row[6]) && !empty($row[9]) && !empty($row[10]) && !empty($row[11]) && !empty($row[21])) {
+            if (!empty($row[7]) && !empty($row[8]) && !empty($row[6]) && !empty($row[9]) && !empty($row[10]) && !empty($row[11]) && !empty($row[15])) {
                 $estudiante = Estudiante::where('espeId', $row[0])->first();
-                $proyecto = Proyecto::where('nombreProyecto', $row[24])->first();
+
+                // Trim any leading or trailing whitespace from the project name
+                $projectName = trim($row[15]);
+                $proyecto = Proyecto::where('nombreProyecto', 'like', '%' . $projectName . '%')->first();
+
+
+
+
                 $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
 
                 $nombreCompleto = $row[8];
@@ -771,8 +778,8 @@ class DocumentosVinculacion extends Controller
                     $apellido = trim($partesNombre[0]);
                     $nombre = trim($partesNombre[1]);
 
-                    $participante = ProfesUniversidad::where('apellidos', 'like', '%' . $nombre . '%')
-                        ->where('nombres', 'like', '%' . $apellido . '%')
+                    $participante = ProfesUniversidad::where('nombres', 'like', '%' . $apellido . '%')
+                        ->where('apellidos', 'like', '%' . $nombre . '%')
                         ->first();
                 }
 
@@ -782,7 +789,51 @@ class DocumentosVinculacion extends Controller
                 $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $row[10]);
                 $fechaFinalizacionFormatted = $fechaFinalizacion ? $fechaFinalizacion->format('Y-m-d') : null;
 
-                // Buscar la asignación existente
+                $asignacion = AsignacionProyecto::where('estudianteId', $estudiante ? $estudiante->estudianteId : null)
+                    ->where('proyectoId', $proyecto ? $proyecto->proyectoId : null)
+                    ->where('idPeriodo', $periodo ? $periodo->id : null)
+                    ->first();
+
+                $data = [
+                    'estudianteId' => $estudiante ? $estudiante->estudianteId : null,
+                    'proyectoId' => $proyecto ? $proyecto->proyectoId : null,
+                    'participanteId' => $participante ? $participante->id : null,
+                    'idPeriodo' => $periodo ? $periodo->id : null,
+                    'inicioFecha' => $fechaInicioFormatted,
+                    'finalizacionFecha' => $fechaFinalizacionFormatted,
+                    'asignacionFecha' => now(),
+                ];
+
+                if ($asignacion) {
+                    $asignacion->update($data);
+                } else {
+                    AsignacionProyecto::create($data);
+                }
+            }
+
+            ///////////////segundas asignaciones
+            if (!empty($row[16])) {
+                $projectName = trim($row[17]);
+                $proyecto = Proyecto::where('nombreProyecto', 'like', '%' . $projectName . '%')->first();
+                $periodo = Periodo::where('numeroPeriodo', $row[16])->first();
+
+                $nombreCompleto = $row[18];
+                $partesNombre = explode(" ", $nombreCompleto);
+                if (count($partesNombre) >= 2) {
+                    $apellido = trim($partesNombre[0]);
+                    $nombre = trim($partesNombre[1]);
+
+                    $participante = ProfesUniversidad::where('nombres', 'like', '%' . $apellido . '%')
+                        ->where('apellidos', 'like', '%' . $nombre . '%')
+                        ->first();
+                }
+
+                $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[19]);
+                $fechaInicioFormatted = $fechaInicio ? $fechaInicio->format('Y-m-d') : null;
+
+                $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $row[20]);
+                $fechaFinalizacionFormatted = $fechaFinalizacion ? $fechaFinalizacion->format('Y-m-d') : null;
+
                 $asignacion = AsignacionProyecto::where('estudianteId', $estudiante ? $estudiante->estudianteId : null)
                     ->where('proyectoId', $proyecto ? $proyecto->proyectoId : null)
                     ->where('idPeriodo', $periodo ? $periodo->id : null)
@@ -806,6 +857,7 @@ class DocumentosVinculacion extends Controller
             }
         }
 
+        // Process each row for NotasEstudiante
         foreach ($dataRows as $row) {
             $estudiante = Estudiante::where('espeId', $row[0])->first();
             $notas = NotasEstudiante::where('estudianteId', $estudiante ? $estudiante->estudianteId : null)->first();
@@ -822,8 +874,7 @@ class DocumentosVinculacion extends Controller
             }
         }
 
-
-        ////guadar en HoraVinculacion
+        // Process each row for HoraVinculacion
         foreach ($dataRows as $row) {
             $estudiante = Estudiante::where('espeId', $row[0])->first();
             $horas = HoraVinculacion::where('estudianteId', $estudiante ? $estudiante->estudianteId : null)->first();
@@ -840,12 +891,10 @@ class DocumentosVinculacion extends Controller
             }
         }
 
-
-
-
-
         return back()->with('success', 'Datos importados con éxito!');
     }
+
+
 
     //////////////////////////////////////////////AGREGAR EMPRESSAS POR EXCEL//////////////////////////////////////
 
