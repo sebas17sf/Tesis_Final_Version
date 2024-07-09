@@ -626,7 +626,7 @@ tr:hover {
     top: 60px !important; /* Ajustado para la posición superior */
     right: 0px !important; /* Ajustado para la posición derecha */
     z-index: 1000 !important; /* Asegura que las alertas estén por encima de otros elementos */
-    display: flex ;
+    display: flex;
     align-items: center !important;
     justify-content: space-between !important;
     height: auto !important; /* Ajusta la altura automáticamente */
