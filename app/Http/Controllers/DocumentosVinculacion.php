@@ -551,7 +551,6 @@ class DocumentosVinculacion extends Controller
     //////////////////////////////////////reporte de docentes participantes/////////////////////////////////////////////////////////////////
     public function historicoParticipante()
     {
-
         $plantillaPath = public_path('Plantillas/Reporte-MatrizVinculacion.xlsx');
         $spreadsheet = IOFactory::load($plantillaPath);
 
@@ -571,12 +570,10 @@ class DocumentosVinculacion extends Controller
             return redirect()->back()->with('error', 'No hay proyectos asignados');
         }
 
-
         $filaInicio = 9;
         $cantidadFilas = count($asignacionProyecto);
         $hojaCalculo->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
         $asignacionProyecto = $asignacionProyecto->sortBy('proyectoId');
-
 
         foreach ($asignacionProyecto as $index => $asignacion) {
             $filaActual = $filaInicio + $index;
@@ -586,22 +583,22 @@ class DocumentosVinculacion extends Controller
             $periodo = Periodo::where('id', $asignacion->idPeriodo)->first();
 
             $hojaCalculo->setCellValue("A$filaActual", $index + 1);
-            $hojaCalculo->setCellValue("J$filaActual", $proyecto->nombreProyecto);
-            $hojaCalculo->setCellValue("L$filaActual", $director->apellidos . ' ' . $director->nombres);
-            $hojaCalculo->setCellValue("M$filaActual", $participante->apellidos . ' ' . $participante->nombres);
+            $hojaCalculo->setCellValue("J$filaActual", mb_strtoupper($proyecto->nombreProyecto, 'UTF-8'));
+            $hojaCalculo->setCellValue("L$filaActual", mb_strtoupper($director->apellidos . ' ' . $director->nombres, 'UTF-8'));
+            $hojaCalculo->setCellValue("M$filaActual", mb_strtoupper($participante->apellidos . ' ' . $participante->nombres, 'UTF-8'));
             $hojaCalculo->setCellValue("N$filaActual", $proyecto->inicioFecha);
-            $hojaCalculo->setCellValue("K$filaActual", $proyecto->descripcionProyecto);
+            $hojaCalculo->setCellValue("K$filaActual", mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
             $hojaCalculo->setCellValue("O$filaActual", $proyecto->finFecha);
-            $hojaCalculo->setCellValue("P$filaActual", $proyecto->departamentoTutor);
+            $hojaCalculo->setCellValue("P$filaActual", mb_strtoupper($proyecto->departamentoTutor, 'UTF-8'));
             $hojaCalculo->setCellValue("G$filaActual", $periodo->numeroPeriodo);
 
-            $nombreCompleto = ($asignacion->estudiante->apellidos ?? '') . ' ' . ($asignacion->estudiante->nombres ?? '');
+            $nombreCompleto = mb_strtoupper(($asignacion->estudiante->apellidos ?? '') . ' ' . ($asignacion->estudiante->nombres ?? ''), 'UTF-8');
             $hojaCalculo->setCellValue("C$filaActual", $asignacion->estudiante->espeId ?? '');
             $hojaCalculo->setCellValue("D$filaActual", $asignacion->estudiante->cedula ?? '');
 
             $hojaCalculo->setCellValue("B$filaActual", $nombreCompleto);
-            $hojaCalculo->setCellValue("E$filaActual", $asignacion->estudiante->correo ?? '');
-            $hojaCalculo->setCellValue("F$filaActual", $asignacion->estudiante->Cohorte ?? '');
+            $hojaCalculo->setCellValue("E$filaActual", mb_strtoupper($asignacion->estudiante->correo ?? '', 'UTF-8'));
+            $hojaCalculo->setCellValue("F$filaActual", mb_strtoupper($asignacion->estudiante->Cohorte ?? '', 'UTF-8'));
 
             // Corrección: Eliminar el uso de first() en una instancia de modelo
             $notaFinal = $asignacion->estudiante->notas->first()->notaFinal ?? '0';
@@ -610,7 +607,6 @@ class DocumentosVinculacion extends Controller
             ///HORAS REALIZADAS
             $horasRealizadas = $asignacion->estudiante->horas_vinculacion->first()->horasVinculacion ?? '0';
             $hojaCalculo->setCellValue("H$filaActual", $horasRealizadas);
-
         }
 
         ////justificar y centrar
@@ -623,13 +619,12 @@ class DocumentosVinculacion extends Controller
         $nombreArchivo = "Historial_Participante_$nombreParticipante.xlsx";
         $writer->save($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
-
     }
+
 
     /////////////////////////////////////////HISTORIAL DE DIRECTORES DE PROYECTO///////////////////////////////////////////////
     public function historicoDirector()
     {
-
         $plantillaPath = public_path('Plantillas/Reporte-MatrizVinculacion.xlsx');
         $spreadsheet = IOFactory::load($plantillaPath);
 
@@ -655,7 +650,6 @@ class DocumentosVinculacion extends Controller
         $hojaCalculo->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
         $asignacionProyecto = $asignacionProyecto->sortBy('proyectoId');
 
-
         foreach ($asignacionProyecto as $index => $asignacion) {
             $filaActual = $filaInicio + $index;
             $proyecto = Proyecto::where('proyectoId', $asignacion->proyectoId)->first();
@@ -664,16 +658,16 @@ class DocumentosVinculacion extends Controller
             $periodo = Periodo::where('id', $asignacion->idPeriodo)->first();
 
             $hojaCalculo->setCellValue("A$filaActual", $index + 1);
-            $hojaCalculo->setCellValue("J$filaActual", $proyecto->nombreProyecto);
-            $hojaCalculo->setCellValue("L$filaActual", $director->apellidos . ' ' . $director->nombres);
-            $hojaCalculo->setCellValue("M$filaActual", $participante->apellidos . ' ' . $participante->nombres);
+            $hojaCalculo->setCellValue("J$filaActual", mb_strtoupper($proyecto->nombreProyecto, 'UTF-8'));
+            $hojaCalculo->setCellValue("L$filaActual", mb_strtoupper($director->apellidos . ' ' . $director->nombres, 'UTF-8'));
+            $hojaCalculo->setCellValue("M$filaActual", mb_strtoupper($participante->apellidos . ' ' . $participante->nombres, 'UTF-8'));
             $hojaCalculo->setCellValue("N$filaActual", $proyecto->inicioFecha);
-            $hojaCalculo->setCellValue("K$filaActual", $proyecto->descripcionProyecto);
+            $hojaCalculo->setCellValue("K$filaActual", mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
             $hojaCalculo->setCellValue("O$filaActual", $proyecto->finFecha);
-            $hojaCalculo->setCellValue("P$filaActual", $proyecto->departamentoTutor);
+            $hojaCalculo->setCellValue("P$filaActual", mb_strtoupper($proyecto->departamentoTutor, 'UTF-8'));
             $hojaCalculo->setCellValue("G$filaActual", $periodo->numeroPeriodo);
 
-            $nombreCompleto = ($asignacion->estudiante->apellidos ?? '') . ' ' . ($asignacion->estudiante->nombres ?? '');
+            $nombreCompleto = mb_strtoupper(($asignacion->estudiante->apellidos ?? '') . ' ' . ($asignacion->estudiante->nombres ?? ''), 'UTF-8');
             $hojaCalculo->setCellValue("C$filaActual", $asignacion->estudiante->espeId ?? '');
             $hojaCalculo->setCellValue("D$filaActual", $asignacion->estudiante->cedula ?? '');
 
@@ -688,7 +682,6 @@ class DocumentosVinculacion extends Controller
             ///HORAS REALIZADAS
             $horasRealizadas = $asignacion->estudiante->horas_vinculacion->first()->horasVinculacion ?? '0';
             $hojaCalculo->setCellValue("H$filaActual", $horasRealizadas);
-
         }
 
         ////justificar y centrar
@@ -697,16 +690,13 @@ class DocumentosVinculacion extends Controller
         $nombreDirector = $director->apellidos . '_' . $director->nombres;
         $nombreDirector = str_replace([' ', '/', '\\'], '_', $nombreDirector);
 
-
-
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $nombreArchivo = "Historial_Director_$nombreDirector.xlsx";
 
-
         $writer->save($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
-
     }
+
 
 
 
