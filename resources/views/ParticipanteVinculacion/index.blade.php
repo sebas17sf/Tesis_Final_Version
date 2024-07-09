@@ -64,16 +64,15 @@
 <br>
 
        
-        <div class="contenedor_tabla">
-                    <div class="table-container mat-elevation-z8">
+@if ($proyectosEnEjecucion && $proyectosEnEjecucion->isNotEmpty())
+            <div class="contenedor_tabla">
+                <div class="table-container mat-elevation-z8">
 
-                        <div id="tablaproyectos">
-                            <table class="mat-mdc-table">
-                                <thead class="ng-star-inserted">
-                                    <tr
-                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th class="tamanio">NOMBRE DEL PROYECTO</th>
-                                        <th class="tamanio4">DIRECTOR</th>
+                    <table class="mat-mdc-table">
+                        <thead class="ng-star-inserted">
+                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                <th class="tamanio">NOMBRE DEL PROYECTO</th>
+                                <th>DIRECTOR</th>
                                 <th class="tamanio">ACTIVIDADES A REALIZAR</th>
                                 <th>CORREO TUTOR</th>
                                 <th class="tamanio2">DEPARTAMENTO</th>
@@ -83,12 +82,7 @@
                             </tr>
                         </thead>
                         <tbody class="mdc-data-table__content ng-star-inserted">
-                        @if ($proyectosEnEjecucion && $proyectosEnEjecucion->isNotEmpty())
-                        <tr style="text-align:center">
-                                            <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">
-                                                No hay estudiantes en proceso de revisión.</td>
-                                        </tr>
-                                    @else
+                      
                             @foreach ($proyectosEnEjecucion as $proyecto)
                                 <tr>
                                     <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify;">
@@ -111,7 +105,8 @@
                             @endforeach
                         </tbody>
                     </table>
-                
+                    @else
+                    <p>No hay proyectos en ejecución.</p>
         @endif
     </div>
 
