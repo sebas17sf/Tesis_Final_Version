@@ -548,6 +548,167 @@ class DocumentosVinculacion extends Controller
     }
 
 
+    //////////////////////////////////////reporte de docentes participantes/////////////////////////////////////////////////////////////////
+    public function historicoParticipante()
+    {
+
+        $plantillaPath = public_path('Plantillas/Reporte-MatrizVinculacion.xlsx');
+        $spreadsheet = IOFactory::load($plantillaPath);
+
+        $hojaCalculo = $spreadsheet->getActiveSheet();
+
+        if ($hojaCalculo == null) {
+            return redirect()->back()->with('error', 'No se pudo cargar la plantilla');
+        }
+
+        $usuario = auth()->user();
+        $correoUsuario = $usuario->correoElectronico;
+        $participanteVinculacion = ProfesUniversidad::where('correo', $correoUsuario)->first();
+        $asignacionProyecto = AsignacionProyecto::where('participanteId', $participanteVinculacion->id)
+            ->get();
+
+        if ($asignacionProyecto->isEmpty()) {
+            return redirect()->back()->with('error', 'No hay proyectos asignados');
+        }
+
+
+        $filaInicio = 9;
+        $cantidadFilas = count($asignacionProyecto);
+        $hojaCalculo->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
+        $asignacionProyecto = $asignacionProyecto->sortBy('proyectoId');
+
+
+        foreach ($asignacionProyecto as $index => $asignacion) {
+            $filaActual = $filaInicio + $index;
+            $proyecto = Proyecto::where('proyectoId', $asignacion->proyectoId)->first();
+            $participante = ProfesUniversidad::where('id', $asignacion->participanteId)->first();
+            $director = ProfesUniversidad::where('id', $proyecto->directorId)->first();
+            $periodo = Periodo::where('id', $asignacion->idPeriodo)->first();
+
+            $hojaCalculo->setCellValue("A$filaActual", $index + 1);
+            $hojaCalculo->setCellValue("J$filaActual", $proyecto->nombreProyecto);
+            $hojaCalculo->setCellValue("L$filaActual", $director->apellidos . ' ' . $director->nombres);
+            $hojaCalculo->setCellValue("M$filaActual", $participante->apellidos . ' ' . $participante->nombres);
+            $hojaCalculo->setCellValue("N$filaActual", $proyecto->inicioFecha);
+            $hojaCalculo->setCellValue("K$filaActual", $proyecto->descripcionProyecto);
+            $hojaCalculo->setCellValue("O$filaActual", $proyecto->finFecha);
+            $hojaCalculo->setCellValue("P$filaActual", $proyecto->departamentoTutor);
+            $hojaCalculo->setCellValue("G$filaActual", $periodo->numeroPeriodo);
+
+            $nombreCompleto = ($asignacion->estudiante->apellidos ?? '') . ' ' . ($asignacion->estudiante->nombres ?? '');
+            $hojaCalculo->setCellValue("C$filaActual", $asignacion->estudiante->espeId ?? '');
+            $hojaCalculo->setCellValue("D$filaActual", $asignacion->estudiante->cedula ?? '');
+
+            $hojaCalculo->setCellValue("B$filaActual", $nombreCompleto);
+            $hojaCalculo->setCellValue("E$filaActual", $asignacion->estudiante->correo ?? '');
+            $hojaCalculo->setCellValue("F$filaActual", $asignacion->estudiante->Cohorte ?? '');
+
+            // Corrección: Eliminar el uso de first() en una instancia de modelo
+            $notaFinal = $asignacion->estudiante->notas->first()->notaFinal ?? '0';
+            $hojaCalculo->setCellValue("I$filaActual", $notaFinal);
+
+            ///HORAS REALIZADAS
+            $horasRealizadas = $asignacion->estudiante->horas_vinculacion->first()->horasVinculacion ?? '0';
+            $hojaCalculo->setCellValue("H$filaActual", $horasRealizadas);
+
+        }
+
+        ////justificar y centrar
+        $hojaCalculo->getStyle('A9:P' . ($filaInicio + $cantidadFilas))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+
+        $nombreParticipante = $participanteVinculacion->apellidos . '_' . $participanteVinculacion->nombres;
+        $nombreParticipante = str_replace([' ', '/', '\\'], '_', $nombreParticipante);
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $nombreArchivo = "Historial_Participante_$nombreParticipante.xlsx";
+        $writer->save($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+
+    }
+
+    /////////////////////////////////////////HISTORIAL DE DIRECTORES DE PROYECTO///////////////////////////////////////////////
+    public function historicoDirector()
+    {
+
+        $plantillaPath = public_path('Plantillas/Reporte-MatrizVinculacion.xlsx');
+        $spreadsheet = IOFactory::load($plantillaPath);
+
+        $hojaCalculo = $spreadsheet->getActiveSheet();
+
+        if ($hojaCalculo == null) {
+            return redirect()->back()->with('error', 'No se pudo cargar la plantilla');
+        }
+
+        $usuario = auth()->user();
+        $correoUsuario = $usuario->correoElectronico;
+        $director = ProfesUniversidad::where('correo', $correoUsuario)->first();
+        $proyecto = Proyecto::where('directorId', $director->id)->first();
+        $asignacionProyecto = AsignacionProyecto::where('proyectoId', $proyecto->proyectoId)
+            ->get();
+
+        if ($asignacionProyecto->isEmpty()) {
+            return redirect()->back()->with('error', 'No hay proyectos asignados como director');
+        }
+
+        $filaInicio = 9;
+        $cantidadFilas = count($asignacionProyecto);
+        $hojaCalculo->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
+        $asignacionProyecto = $asignacionProyecto->sortBy('proyectoId');
+
+
+        foreach ($asignacionProyecto as $index => $asignacion) {
+            $filaActual = $filaInicio + $index;
+            $proyecto = Proyecto::where('proyectoId', $asignacion->proyectoId)->first();
+            $participante = ProfesUniversidad::where('id', $asignacion->participanteId)->first();
+            $director = ProfesUniversidad::where('id', $proyecto->directorId)->first();
+            $periodo = Periodo::where('id', $asignacion->idPeriodo)->first();
+
+            $hojaCalculo->setCellValue("A$filaActual", $index + 1);
+            $hojaCalculo->setCellValue("J$filaActual", $proyecto->nombreProyecto);
+            $hojaCalculo->setCellValue("L$filaActual", $director->apellidos . ' ' . $director->nombres);
+            $hojaCalculo->setCellValue("M$filaActual", $participante->apellidos . ' ' . $participante->nombres);
+            $hojaCalculo->setCellValue("N$filaActual", $proyecto->inicioFecha);
+            $hojaCalculo->setCellValue("K$filaActual", $proyecto->descripcionProyecto);
+            $hojaCalculo->setCellValue("O$filaActual", $proyecto->finFecha);
+            $hojaCalculo->setCellValue("P$filaActual", $proyecto->departamentoTutor);
+            $hojaCalculo->setCellValue("G$filaActual", $periodo->numeroPeriodo);
+
+            $nombreCompleto = ($asignacion->estudiante->apellidos ?? '') . ' ' . ($asignacion->estudiante->nombres ?? '');
+            $hojaCalculo->setCellValue("C$filaActual", $asignacion->estudiante->espeId ?? '');
+            $hojaCalculo->setCellValue("D$filaActual", $asignacion->estudiante->cedula ?? '');
+
+            $hojaCalculo->setCellValue("B$filaActual", $nombreCompleto);
+            $hojaCalculo->setCellValue("E$filaActual", $asignacion->estudiante->correo ?? '');
+            $hojaCalculo->setCellValue("F$filaActual", $asignacion->estudiante->Cohorte ?? '');
+
+            // Corrección: Eliminar el uso de first() en una instancia de modelo
+            $notaFinal = $asignacion->estudiante->notas->first()->notaFinal ?? '0';
+            $hojaCalculo->setCellValue("I$filaActual", $notaFinal);
+
+            ///HORAS REALIZADAS
+            $horasRealizadas = $asignacion->estudiante->horas_vinculacion->first()->horasVinculacion ?? '0';
+            $hojaCalculo->setCellValue("H$filaActual", $horasRealizadas);
+
+        }
+
+        ////justificar y centrar
+        $hojaCalculo->getStyle('A9:P' . ($filaInicio + $cantidadFilas))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+
+        $nombreDirector = $director->apellidos . '_' . $director->nombres;
+        $nombreDirector = str_replace([' ', '/', '\\'], '_', $nombreDirector);
+
+
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $nombreArchivo = "Historial_Director_$nombreDirector.xlsx";
+
+
+        $writer->save($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+
+    }
+
+
 
 
 
