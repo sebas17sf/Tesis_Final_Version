@@ -166,12 +166,11 @@ class ParticipanteVinculacionController extends Controller
 
         }
 
- 
+
 
         $inicioFecha = $proyecto->inicioFecha ?? null;
         $finalizacionFecha = $proyecto->finalizacionFecha ?? null;
-
-
+ 
 
         return view('ParticipanteVinculacion.baremo', compact('inicioFecha', 'finalizacionFecha'));
     }
