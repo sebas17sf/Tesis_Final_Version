@@ -18,14 +18,13 @@
     @endif
 
     @if (session('error'))
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: '{{ session('error') }}',
-                confirmButtonText: 'Ok'
-            });
-        </script>
+    <div class="contenedor_alerta error">
+    <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
+    <div class="content_alert">
+      <div class="title">Error!</div>
+      <div class="body">{{ session('error') }}</div>
+    </div>
+  </div>
     @endif
 
     <div class="mat-elevation-z8 contenedor_general">

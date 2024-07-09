@@ -18,22 +18,13 @@
 
 
     @if (session('error'))
-        <div class="contenedor_alerta error">
-            <div class="icon_alert"><i class="fa-regular fa-xmark"></i></div>
-            <div class="content_alert">
-                <div class="title">Error!</div>
-                <div class="body">{{ session('error') }}</div>
-            </div>
-            <div class="icon_remove">
-                <button class="button4 btn_3_2"><i class="fa-regular fa-xmark"></i></button>
-            </div>
-        </div>
-
-        <script>
-            document.querySelector('.contenedor_alerta.error .icon_remove button').addEventListener('click', function() {
-                this.closest('.contenedor_alerta').style.display = 'none';
-            });
-        </script>
+    <div class="contenedor_alerta error">
+    <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
+    <div class="content_alert">
+      <div class="title">Error!</div>
+      <div class="body">{{ session('error') }}</div>
+    </div>
+  </div>
     @endif
     <section class="content_profile">
 
