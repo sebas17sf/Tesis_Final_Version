@@ -72,13 +72,14 @@
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                         <th class="tamanio">NOMBRE DEL PROYECTO</th>
+                                        <th class="tamanio">CODIGO DE PROYECTO</th>
                                         <th class="tamanio1">DIRECTOR</th>
                                         <th class="tamanio">ACTIVIDADES A REALIZAR</th>
                                         <th>CORREO</th>
                                         <th>DEPARTAMENTO</th>
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
-                                        <th>PERIODO</th>
+                                        <th>ESTADO</th>
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
@@ -92,6 +93,7 @@
                                             <tr>
                                                 <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify;">
                                                     {{ strtoupper($proyecto->nombreProyecto) }}</td>
+                                                <td>{{ $proyecto->codigoProyecto }}</td>
                                                 <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">{{ strtoupper($proyecto->director->apellidos) }}
                                                     {{ strtoupper($proyecto->director->nombres) }}</td>
                                                 <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify;">
@@ -100,11 +102,10 @@
                                                 <td >{{ $proyecto->director->correo }}</td>
 
                                                 <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">{{ $proyecto->departamentoTutor }}</td>
-                                                <td>{{ optional($proyecto->asignaciones->first())->inicioFecha ?? 'Fecha no disponible' }}</td>
-                                                <td>{{ optional($proyecto->asignaciones->first())->finalizacionFecha ?? 'Fecha no disponible' }}</td>
-                                                @foreach ($proyecto->asignaciones as $asignacion)
-                                                    <td>{{ $asignacion->periodo->numeroPeriodo }}</td>
-                                                @endforeach
+                                                <td>{{ $proyecto->inicioFecha ?? 'Fecha no disponible' }}</td>
+                                                <td>{{ $proyecto->finFecha ?? 'Fecha no disponible' }}</td>
+                                                <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">{{ $proyecto->estado }}</td>
+
                                             </tr>
                                         @endforeach
                                     @endif
