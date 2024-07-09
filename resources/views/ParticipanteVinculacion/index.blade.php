@@ -27,12 +27,15 @@
     <div class="container" style="overflow-x: auto;">
         <br>
         <h4><b>Proyecto en Ejecución</b></h4>
-
+        <div class="mat-elevation-z8 contenedor_general">
+                <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+                    <!-- Botones -->
+                    <div class="contenedor_botones">
         <form method="POST" action="{{ route('reporte.director') }}"
-            class="form-inline mr-2 d-flex align-items-center">
+            class="form-inline d-flex align-items-center">
             @csrf
              <div class="tooltip-container">
-                <span class="tooltip-text">Historico Director</span>
+                <span class="tooltip-text">Historial Director</span>
                 <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
                     <span id="loadingIcon" style="display: none !important; ">
                         <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
@@ -43,10 +46,10 @@
         </form>
 
         <form method="POST" action="{{ route('reporte.historicoParticipante') }}"
-            class="form-inline mr-2 d-flex align-items-center">
+            class="form-inline d-flex align-items-center">
             @csrf
              <div class="tooltip-container">
-                <span class="tooltip-text">Historico participante</span>
+                <span class="tooltip-text">Historial participante</span>
                 <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
                     <span id="loadingIcon" style="display: none !important; ">
                         <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
@@ -55,28 +58,37 @@
                 </button>
             </div>
         </form>
+</div>
+</div>
+</div>
+<br>
 
+       
+        <div class="contenedor_tabla">
+                    <div class="table-container mat-elevation-z8">
 
-        <hr>
-
-        @if ($proyectosEnEjecucion && $proyectosEnEjecucion->isNotEmpty())
-            <div class="contenedor_tabla">
-                <div class="table-container mat-elevation-z8">
-
-                    <table class="mat-mdc-table">
-                        <thead class="ng-star-inserted">
-                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                <th class="tamanio">NOMBRE DEL PROYECTO</th>
-                                <th>DIRECTOR</th>
+                        <div id="tablaproyectos">
+                            <table class="mat-mdc-table">
+                                <thead class="ng-star-inserted">
+                                    <tr
+                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                        <th class="tamanio">NOMBRE DEL PROYECTO</th>
+                                        <th class="tamanio4">DIRECTOR</th>
                                 <th class="tamanio">ACTIVIDADES A REALIZAR</th>
                                 <th>CORREO TUTOR</th>
-                                <th>DEPARTAMENTO</th>
+                                <th class="tamanio2">DEPARTAMENTO</th>
                                 <th>FECHA INICIO</th>
                                 <th>FECHA FIN</th>
                                 <th>ESTADO</th>
                             </tr>
                         </thead>
                         <tbody class="mdc-data-table__content ng-star-inserted">
+                        @if ($proyectosEnEjecucion && $proyectosEnEjecucion->isNotEmpty())
+                        <tr style="text-align:center">
+                                            <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">
+                                                No hay estudiantes en proceso de revisión.</td>
+                                        </tr>
+                                    @else
                             @foreach ($proyectosEnEjecucion as $proyecto)
                                 <tr>
                                     <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify;">
@@ -99,8 +111,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                @else
-                    <p>No hay proyectos en ejecución.</p>
+                
         @endif
     </div>
 

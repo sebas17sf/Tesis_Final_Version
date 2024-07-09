@@ -126,7 +126,10 @@
             </div>
             <div class="content-autors">
                 <span class="autors1">
-                    <i>Designed by Sebastian Flores & Karen Cueva.</i>
+                <i>Designed by </i>
+      <b><a>Sebastian Flores</a></b>
+      <i> & </i>
+      <b><a>Karen Cueva</a></b>.
                 </span>
             </div>
         </div>

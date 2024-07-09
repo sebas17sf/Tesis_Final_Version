@@ -31,11 +31,15 @@
 
 
             <h4><b>Proyecto en Ejecución</b></h4>
+            <div class="mat-elevation-z8 contenedor_general">
+                <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+                    <!-- Botones -->
+                    <div class="contenedor_botones">
             <form method="POST" action="{{ route('reporte.director') }}"
             class="form-inline mr-2 d-flex align-items-center">
             @csrf
              <div class="tooltip-container">
-                <span class="tooltip-text">Historico Director</span>
+                <span class="tooltip-text">Historial Director</span>
                 <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
                     <span id="loadingIcon" style="display: none !important; ">
                         <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
@@ -49,7 +53,7 @@
             class="form-inline mr-2 d-flex align-items-center">
             @csrf
              <div class="tooltip-container">
-                <span class="tooltip-text">Historico participante</span>
+                <span class="tooltip-text">Historial participante</span>
                 <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
                     <span id="loadingIcon" style="display: none !important; ">
                         <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
@@ -58,7 +62,10 @@
                 </button>
             </div>
         </form>
-            <hr>
+        </div>
+        </div>
+        </div>
+            <br>
 
             <div class="mat-elevation-z8 contenedor_general">
 
