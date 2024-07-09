@@ -202,7 +202,7 @@
             <div class="divisor-title"></div>
         </div>
         <!-- Contenido principal -->
-        <div class="views views-active">
+        <div class="views {{ session('menuState') == 'collapsed' ? 'views-active' : '' }}">
             <!-- Contenido específico de la página -->
             @yield('content')
         </div>

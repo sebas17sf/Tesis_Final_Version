@@ -1,17 +1,22 @@
 @use "../vars/colors" as colors;
 @use "../vars/fonts" as fonts;
 
+// ==============================
+// SIDEBAR
+// ==============================
+
 * {
+
   font-family: "Arial", sans-serif;
+
 }
 
-.no-transition {
-  transition: none !important;
-}
 
 #sublista {
-  display: none; /* Por defecto oculto */
+  display: none;
+  /* Por defecto oculto */
 }
+
 
 @mixin items-sidebar-styles {
   display: grid;
@@ -26,7 +31,7 @@
   box-shadow:
     inset 5px 5px 15px darken(colors.$sha2, 20%),
     inset -5px 10px 10px lighten(colors.$sha1, 20%);
-  transition: none !important;
+  transition: all 0.3s ease;
 
   .icon-sidebar-item {
     display: grid;
@@ -57,13 +62,14 @@
   }
 
   &:hover {
-    transition: none !important;
+    transition: all 0.3s ease;
     box-shadow:
       inset 5px 5px 15px rgba(darken(colors.$sha2, 20%), 0.5),
       inset -5px 10px 10px rgba(lighten(colors.$sha1, 20%), 0.5);
   }
 }
 
+// Expandido
 .content-sidebar {
   .content {
     position: fixed;
@@ -81,7 +87,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     scrollbar-width: none;
-    transition: none !important;
+    transition: all 0.3s ease;
 
     .sidebar {
       .logo_site {
@@ -99,7 +105,7 @@
         box-shadow:
           0px 8px 5px colors.$sha2,
           -10px -10px 10px colors.$sha1;
-        transition: none !important;
+        transition: all 0.3s ease;
 
         .img_logo {
           display: grid;
@@ -162,11 +168,13 @@
               @include items-sidebar-styles;
               height: 30px;
 
+           
               .icon-sidebar-item {
                 height: 23px;
                 width: 30px;
                 padding: 5px;
                 margin-right: 1px;
+
               }
             }
           }
@@ -179,7 +187,7 @@
             font-weight: bold;
             color: colors.$gray;
             white-space: nowrap;
-            transition: none !important;
+            transition: all 0.3s ease;
           }
         }
       }
@@ -198,8 +206,9 @@
   background: colors.$bg;
   text-align: center;
   opacity: 1;
+  /* Cambiar opacity a 1 o eliminar esta línea */
   z-index: 1000;
-  transition: none !important;
+  transition: all 5s ease;
 
   .autors1 {
     display: block;
@@ -217,9 +226,14 @@
   }
 }
 
+// RETRAIDO
 @mixin items-sidebar-styles-retraido {
   grid-template-columns: 1fr;
   padding-right: 0px;
+
+  /*  .name-sidebar-item {
+    display: none;
+  } */
 
   .icon-sidebar-item-list {
     display: grid;
@@ -232,7 +246,6 @@
 .content-sidebar-hidden {
   .content {
     max-width: 60px;
-    transition: none !important;
 
     .sidebar {
       .logo_site {
@@ -254,7 +267,7 @@
           .divider {
             text-align: center;
             padding-left: 0px;
-            transition: none !important;
+            transition: all 0.3s ease;
           }
 
           .item-list.show {
@@ -263,11 +276,14 @@
 
             a {
               @include items-sidebar-styles-retraido;
+              /*  transform: scale(0.8); */
               width: 85%;
               padding: 2px;
               margin: 0 auto;
+           
               transform-origin: top left;
-              transition: none !important;
+            
+              transition: transform 0.3s ease; 
             }
           }
         }
@@ -279,12 +295,16 @@
     display: none;
   }
 
+
+  //Mostramos cada opcion del menu cuando se comprime el menu
+
   ul {
     a {
       cursor: pointer;
-      transition: none !important;
+      transition: all ease-out 120ms;
 
       li {
+        /*    display: inline-block;  */
         position: fixed;
         background-color: #4b5563;
         padding: 12px 15px;
@@ -308,9 +328,11 @@
           height: 10px;
           background-color: inherit;
         }
+
       }
 
       &:hover {
+
         li {
           visibility: visible;
           opacity: 1;
@@ -319,14 +341,17 @@
     }
 
     div {
+
       cursor: pointer;
-      transition: none !important;
+      transition: all ease-out 120ms;
 
       a {
+
         cursor: pointer;
-        transition: none !important;
+        transition: all ease-out 120ms;
 
         li {
+          /*   display: inline-block; */
           position: fixed;
           background-color: #4b5563;
           padding: 12px 15px;
@@ -350,24 +375,34 @@
             height: 10px;
             background-color: inherit;
           }
+
         }
 
         &:hover {
+
           li {
             visibility: visible;
             opacity: 1;
           }
         }
+
       }
     }
+
+
   }
+
+
+
+
 }
 
+// Iluminaror de los items del sidebar
 @mixin active-section-style {
   box-shadow:
     inset 5px 5px 15px rgba(darken(colors.$primary, 20%), 0.5),
     inset -5px 10px 10px rgba(lighten(colors.$black, 20%), 0.5) !important;
-  transition: none !important;
+  transition: all 0s ease;
 
   .icon-sidebar-item,
   .icon-sidebar-item-list {
@@ -399,41 +434,47 @@
   background-color: rgba(colors.$primary, 0.8);
 }
 
-.tooltip-container {
-  position: relative;
-  display: inline-block;
-}
+       /* Estilos para el contenedor del tooltip */
+       .tooltip-container {
+        position: relative;
+        display: inline-block;
+    }
 
-.tooltip-text {
-  display: inline-block;
-  position: absolute;
-  background-color: #4b5563;
-  padding: 12px 15px;
-  border-radius: 5px;
-  bottom: 125%;
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  visibility: hidden;
-  font-size: 17px;
-  letter-spacing: .5px;
-  color: white;
-  transition: none !important;
-}
+    .tooltip-text {
+        display: inline-block;
+        position: absolute;
+        background-color: #4b5563;
+        padding: 12px 15px;
+        border-radius: 5px;
+        bottom: 125%;
+        /* Posiciona el tooltip arriba del contenedor */
+        left: 50%;
+        /* Centra el tooltip horizontalmente */
+        transform: translateX(-50%);
+        /* Ajusta el centrado del tooltip */
+        opacity: 0;
+        visibility: hidden;
+        font-size: 17px;
+        letter-spacing: .5px;
+        color: white;
+        transition: all ease-out 120ms;
+    }
 
-.tooltip-text::before {
-  content: '';
-  display: block;
-  position: absolute;
-  bottom: -5px;
-  left: 50%;
-  transform: translateX(-50%) rotate(45deg);
-  width: 10px;
-  height: 10px;
-  background-color: inherit;
-}
+    .tooltip-text::before {
+        content: '';
+        display: block;
+        position: absolute;
+        bottom: -5px;
+        /* Ajusta la posición de la flecha */
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+        width: 10px;
+        height: 10px;
+        background-color: inherit;
+    }
 
-.tooltip-container:hover .tooltip-text {
-  visibility: visible;
-  opacity: 1;
-}
+    /* Mostrar el tooltip cuando se pasa el ratón sobre el contenedor */
+    .tooltip-container:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
+    }

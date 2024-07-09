@@ -61,8 +61,8 @@
 
 <body>
     <!-- Barra de navegación en el lado izquierdo -->
-    <section class="content-views dimension-content dimension-content-hidden">
-
+    <section class="content-sidebar {{ session('menuState') == 'collapsed' ? 'content-sidebar-hidden' : '' }}"
+        _ngcontent-ng-c4160891441>
 
         <div class="content scroll-small">
             <div class="sidebar">
@@ -136,11 +136,13 @@
         </div>
     </section>
     <!-- SIDEBAR -->
-    <section class="content-navbar dimension-nav dimension-nav-hidden">
-    <!-- Toggle sidebar -->
-    <div class="icon-menu-sidebar" onclick="triggerToggleSidebar()">
-        <i class='menu-icono bx bx-menu'></i>
-    </div>
+    <section
+        class="content-navbar dimension-nav {{ session('menuState') == 'collapsed' ? 'dimension-nav-hidden' : '' }}">
+        <!-- Toggle sidebar -->
+        <div class="icon-menu-sidebar" onclick="toggleSidebar()">
+            <i
+                class='{{ session('menuState') == 'collapsed' ? 'bx bx-menu-alt-left menu-icono' : 'bx bx-menu menu-icono' }}'></i>
+        </div>
 
         <div class="nameDirector">
             <label class="labell">Usuario</label>
@@ -192,14 +194,15 @@
     <button id="btn_top" *ngIf="showScrollButton" (click)="scrollToTop()"><i class='bx bxs-chevrons-up'></i></button>
 
     <!-- CONTENEDOR -->
-    <section class="content-navbar dimension-nav dimension-nav-hidden">
- <!-- Title component -->
+    <section
+        class="content-views dimension-content {{ session('menuState') == 'collapsed' ? 'dimension-content-hidden' : '' }}">
+        <!-- Title component -->
         <div class="title-component">
             <span class="title-content">@yield('title_component')</span>
             <div class="divisor-title"></div>
         </div>
         <!-- Contenido principal -->
-        <div class="views views-active">
+        <div class="views {{ session('menuState') == 'collapsed' ? 'views-active' : '' }}">
             <!-- Contenido específico de la página -->
             @yield('content')
         </div>
