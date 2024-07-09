@@ -40,6 +40,33 @@
 
 
             <h4><b>Proyecto en Ejecución</b></h4>
+            <form method="POST" action="{{ route('reporte.director') }}"
+            class="form-inline mr-2 d-flex align-items-center">
+            @csrf
+             <div class="tooltip-container">
+                <span class="tooltip-text">Historico Director</span>
+                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+                    <span id="loadingIcon" style="display: none !important; ">
+                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+                    </span>
+                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                </button>
+            </div>
+        </form>
+
+        <form method="POST" action="{{ route('reporte.historicoParticipante') }}"
+            class="form-inline mr-2 d-flex align-items-center">
+            @csrf
+             <div class="tooltip-container">
+                <span class="tooltip-text">Historico participante</span>
+                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+                    <span id="loadingIcon" style="display: none !important; ">
+                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+                    </span>
+                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                </button>
+            </div>
+        </form>
             <hr>
 
             <div class="mat-elevation-z8 contenedor_general">

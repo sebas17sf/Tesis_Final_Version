@@ -348,10 +348,11 @@
             function calculateHoursBetweenDates(hours) {
                 var startDate = new Date('{{ $inicioFecha }}');
                 var endDate = new Date('{{ $finalizacionFecha }}');
-                var diffTime = Math.abs(endDate - startDate);
-                var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                var totalHoursBetweenDates = diffDays * hours;
-                horasEntreFechas.value = totalHoursBetweenDates;
+                 var weeks = Math.ceil((endDate - startDate) / (7 * 24 * 60 * 60 * 1000));
+                var hoursBetweenDates = weeks * hours;
+                horasEntreFechas.value = hoursBetweenDates;
+
+
             }
 
             inputs.forEach(function(input) {

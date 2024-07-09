@@ -192,6 +192,10 @@ Route::middleware(['auth'])->group(function () {
     //////////matriz vinculacion de DocumentosVinculacion
     Route::post('/reporte/matriz-vinculacion', [DocumentosVinculacion::class, 'matrizVinculacion'])->name('reporte.matrizVinculacion');
 
+    Route::post('/reporte/historico-participante', [DocumentosVinculacion::class, 'historicoParticipante'])->name('reporte.historicoParticipante');
+
+    Route::post('/reporte/historico-director', [DocumentosVinculacion::class, 'historicoDirector'])->name('reporte.director');
+
 
     //////////////importar de matriz de excel para los datos
     Route::post('/import', [DocumentosVinculacion::class, 'import'])->name('import');
