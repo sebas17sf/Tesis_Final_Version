@@ -26,7 +26,7 @@
     </div>
   </div>
     @endif
-    
+
         <section>
             <h4><b>Agregar nueva empresa</b></h4>
 <hr>
@@ -251,7 +251,7 @@
                 @if ($empresas->isEmpty())
                     <p>No hay empresas agregadas.</p>
                 @else
-                    
+
 
                     <div class="contenedor_tabla">
                         <div class="table-container mat-elevation-z8">
@@ -261,6 +261,7 @@
                                     <thead class="ng-star-inserted">
                                         <tr
                                             class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                            <th>N°</th>
                                             <th class="tamanio1">NOMBRE DE LA EMPRESA</th>
                                             <th>RUC DE LA EMPRESA</th>
                                             <th class="tamanio3">PROVINCIA</th>
@@ -278,8 +279,10 @@
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
 
-                                        @foreach ($empresas as $empresa)
+                                        @foreach ($empresas as $index => $empresa)
                                         <tr>
+                                            <td>{{ $empresas ->firstItem() + $index }}</td>
+
                                             <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->nombreEmpresa)) }}
                                             </td>
                                             <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->rucEmpresa)) }}

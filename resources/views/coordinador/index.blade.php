@@ -7,24 +7,24 @@
 @section('content')
 
     @if (session('success'))
-    <div class="contenedor_alerta success">
-    <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Éxito!</div>
-      <div class="body">{{ session('success') }}</div>
-    </div>
-  </div>
+        <div class="contenedor_alerta success">
+            <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Éxito!</div>
+                <div class="body">{{ session('success') }}</div>
+            </div>
+        </div>
     @endif
 
 
     @if (session('error'))
-    <div class="contenedor_alerta error">
-    <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Error!</div>
-      <div class="body">{{ session('error') }}</div>
-    </div>
-  </div>
+        <div class="contenedor_alerta error">
+            <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Error!</div>
+                <div class="body">{{ session('error') }}</div>
+            </div>
+        </div>
     @endif
 
 
@@ -107,8 +107,7 @@
                                     <form id="filtersForm" method="GET" action="{{ route('coordinador.index') }}">
                                         <div class="form-group">
                                             <label for="estado" class="mr-2">Estado del Proyecto:</label>
-                                            <select name="estado" id="estado"
-                                                class="form-control input input_select">
+                                            <select name="estado" id="estado" class="form-control input input_select">
                                                 <option value="">Todos</option>
                                                 <option value="Ejecucion"
                                                     {{ request('estado') == 'Ejecucion' ? 'selected' : '' }}>En Ejecución
@@ -168,6 +167,7 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                        <th>N°</th>
                                         <th class="tamanio">NOMBRE DEL PROYECTO</th>
                                         <th class="tamanio4">DIRECTOR</th>
                                         <th class="tamanio">DESCRIPCIÓN</th>
@@ -186,8 +186,10 @@
                                                 No hay estudiantes en proceso de revisión.</td>
                                         </tr>
                                     @else
-                                        @foreach ($proyectos as $proyecto)
+                                        @foreach ($proyectos as $index => $proyecto)
                                             <tr>
+                                                <td style="text-align: center;">{{ $proyectos->currentPage() == 1 ? $index + 1 : $index + 1 + ($proyectos->perPage() * ($proyectos->currentPage() - 1)) }}</td>
+
                                                 <td
                                                     style="text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
                                                     {{ strtoupper($proyecto->nombreProyecto) }}
@@ -463,6 +465,7 @@
                                     <thead class="ng-star-inserted">
                                         <tr
                                             class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                            <th>N°</th>
                                             <th class="tamanio"> NOMBRE DE PROYECTO</th>
                                             <th class="tamanio3">CÓDIGO DE PROYECTO</th>
                                             <th class="tamanio4">DIRECTOR</th>
@@ -485,8 +488,10 @@
                                                     proceso de revisión.</td>
                                             </tr>
                                         @else
-                                            @foreach ($asignacionesAgrupadas as $grupo)
-                                                <tr>
+                                        @foreach ($asignacionesAgrupadas as $grupo)
+                                        <tr>
+                                            <td>{{ $asignacionesAgrupadas->currentPage() == 1 ? $loop->index + 1 : $loop->index + 1 + ($asignacionesAgrupadas->perPage() * ($asignacionesAgrupadas->currentPage() - 1)) }}</td>
+
                                                     <td
                                                         style="text-transform: uppercase; text-align: justify; padding: 5px 8px;">
                                                         {{ $grupo->first()->proyecto->nombreProyecto ?? '' }}</td>
@@ -558,8 +563,7 @@
 
 
                                     <li class="page-item mx-3 d-flex align-items-center">
-                                        <form method="GET"
-                                            action="{{ route('coordinador.index') }}#tablaAsignaciones"
+                                        <form method="GET" action="{{ route('coordinador.index') }}#tablaAsignaciones"
                                             class="form-inline">
                                             <div class="form-group">
                                                 <label for="perPage2" class="sr-only">Items per page</label>

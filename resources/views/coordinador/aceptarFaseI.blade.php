@@ -227,6 +227,7 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                        <th>N°</th>
                                         <th>Estudiante</th>
                                         <th>Práctica</th>
                                         <th>Tutor Académico</th>
@@ -242,9 +243,11 @@
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
-                                    @foreach ($estudiantesPracticas as $practicaI)
+                                    @foreach ($estudiantesPracticas as $index => $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
+                                                <td>{{ $estudiantesPracticas ->firstItem() + $index }}</td>
+
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->nombres) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
@@ -430,6 +433,7 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                        <th>N°</th>
                                         <th>Estudiante</th>
                                         <th>Práctica</th>
                                         <th>Tutor Académico</th>
@@ -445,9 +449,11 @@
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
-                                    @foreach ($estudiantesPracticasII as $practicaI)
+                                    @foreach ($estudiantesPracticasIII as $index => $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
+                                                <td>{{ $estudiantesPracticasIII ->firstItem() + $index }}</td>
+
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->nombres) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
@@ -621,6 +627,7 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                        <th>N°</th>
                                         <th>Estudiante</th>
                                         <th>Práctica</th>
                                         <th>Tutor Académico</th>
@@ -636,9 +643,11 @@
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
-                                    @foreach ($estudiantesPracticasIII as $practicaI)
+                                    @foreach ($estudiantesPracticasIV as $index => $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
+                                                <td>{{ $estudiantesPracticasIV ->firstItem() + $index }}</td>
+
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->nombres) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
@@ -814,6 +823,7 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                        <th>N°</th>
                                         <th>Estudiante</th>
                                         <th>Práctica</th>
                                         <th>Tutor Académico</th>
@@ -829,9 +839,11 @@
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
-                                    @foreach ($estudiantesPracticasIV as $practicaI)
+                                    @foreach ($estudiantesPracticasII as $index => $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
+                                                <td>{{ $estudiantesPracticasII ->firstItem() + $index }}</td>
+
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->nombres) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
@@ -996,6 +1008,7 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                        <th>N°</th>
                                         <th>Estudiante</th>
                                         <th>Práctica</th>
                                         <th>Tutor Académico</th>
@@ -1014,6 +1027,8 @@
                                     @foreach ($estudiantesPracticasV as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
+                                                <td>{{ $loop->iteration }}</td>
+
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->estudiante->apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->nombres) }}</td>
                                                 <td style="text-transform: uppercase;">{{ strtoupper($practicaI->tipoPractica) }}</td>
