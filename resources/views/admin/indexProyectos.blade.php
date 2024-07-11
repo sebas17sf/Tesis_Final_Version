@@ -168,7 +168,7 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th>NO.</th>
+                                        <th>N°</th>
                                         <th class="tamanio">NOMBRE DEL PROYECTO</th>
                                         <th class="tamanio4">DIRECTOR</th>
                                         <th class="tamanio">DESCRIPCIÓN</th>
@@ -466,7 +466,7 @@
                                     <thead class="ng-star-inserted">
                                         <tr
                                             class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                            <th>NO.</th>
+                                            <th>N°</th>
                                             <th class="tamanio"> NOMBRE DE PROYECTO</th>
                                             <th class="tamanio3">CÓDIGO DE PROYECTO</th>
                                             <th class="tamanio4">DIRECTOR</th>

@@ -161,7 +161,7 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th>NO.</th>
+                                    <th>N°</th>
                                     <th class="tamanio1">NOMBRES</th>
                                     <th>ID ESPE</th>
                                     <th class="tamanio1">CARRERA</th>

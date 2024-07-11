@@ -723,6 +723,11 @@ tr:hover {
             min-width: 190px;
             padding: .3rem !important;
           }
+          .tamanio6 {
+            width: 30px !important;
+            min-width: 50px !important;
+            padding: .3rem !important;
+          }
         .contenedor_general1 .contenedor_acciones_tabla{
             display: grid;
             align-items: center;

@@ -233,7 +233,7 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th>NO.</th>
+                                        <th>N°</th>
                                         <th class="tamanio1">ESTUDIANTE</th>
                                         <th>PRÁCTICA</th>
                                         <th class="tamanio4">TUTOR ACADÉMICO</th>
@@ -452,7 +452,7 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th>NO.</th>
+                                        <th>N°</th>
                                         <th class="tamanio1">ESTUDIANTE</th>
                                         <th>PRÁCTICA</th>
                                         <th class="tamanio4">TUTOR ACADÉMICO</th>
@@ -665,7 +665,7 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th>NO.</th>
+                                        <th>N°</th>
                                         <th class="tamanio1">ESTUDIANTE</th>
                                         <th>PRÁCTICA</th>
                                         <th class="tamanio4">TUTOR ACADÉMICO</th>
@@ -865,7 +865,7 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th>NO.</th>
+                                        <th>N°</th>
                                         <th class="tamanio1">ESTUDIANTE</th>
                                         <th>PRÁCTICA</th>
                                         <th class="tamanio4">TUTOR ACADÉMICO</th>
@@ -1071,7 +1071,7 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th>NO.</th>
+                                        <th>N°</th>
                                         <th class="tamanio1">ESTUDIANTE</th>
                                         <th>PRÁCTICA</th>
                                         <th class="tamanio4">TUTOR ACADÉMICO</th>
