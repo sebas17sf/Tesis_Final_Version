@@ -640,20 +640,25 @@ class DocumentosVinculacion extends Controller
             $periodo = Periodo::where('id', $asignacion->idPeriodo)->first();
 
             $hojaCalculo->setCellValue("A$filaActual", $index + 1);
-            $hojaCalculo->setCellValue("J$filaActual", mb_strtoupper($proyecto->nombreProyecto, 'UTF-8'));
-            $hojaCalculo->setCellValue("L$filaActual", mb_strtoupper($director->apellidos . ' ' . $director->nombres, 'UTF-8'));
-            $hojaCalculo->setCellValue("M$filaActual", mb_strtoupper($participante->apellidos . ' ' . $participante->nombres, 'UTF-8'));
-            $hojaCalculo->setCellValue("N$filaActual", mb_strtoupper($participante->departamento,'UTF-8'));
+            $hojaCalculo->setCellValue("L$filaActual", mb_strtoupper($proyecto->nombreProyecto, 'UTF-8'));
+            $hojaCalculo->setCellValue("N$filaActual", mb_strtoupper($director->apellidos . ' ' . $director->nombres, 'UTF-8'));
+            $hojaCalculo->setCellValue("O$filaActual", mb_strtoupper($participante->apellidos . ' ' . $participante->nombres, 'UTF-8'));
+            $hojaCalculo->setCellValue("P$filaActual", mb_strtoupper($participante->departamento,'UTF-8'));
 
-            $hojaCalculo->setCellValue("O$filaActual", $asignacion->inicioFecha);
-            $hojaCalculo->setCellValue("K$filaActual", mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
-            $hojaCalculo->setCellValue("P$filaActual", $asignacion->finalizacionFecha);
-            $hojaCalculo->setCellValue("Q$filaActual", mb_strtoupper($proyecto->departamentoTutor, 'UTF-8'));
-            $hojaCalculo->setCellValue("G$filaActual", $periodo->numeroPeriodo);
+            $hojaCalculo->setCellValue("Q$filaActual", $asignacion->inicioFecha);
+            $hojaCalculo->setCellValue("M$filaActual", mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
+            $hojaCalculo->setCellValue("R$filaActual", $asignacion->finalizacionFecha);
+            $hojaCalculo->setCellValue("S$filaActual", mb_strtoupper($proyecto->departamentoTutor, 'UTF-8'));
+            $hojaCalculo->setCellValue("I$filaActual", $periodo->numeroPeriodo);
 
             $nombreCompleto = mb_strtoupper(($asignacion->estudiante->apellidos ?? '') . ' ' . ($asignacion->estudiante->nombres ?? ''), 'UTF-8');
             $hojaCalculo->setCellValue("C$filaActual", $asignacion->estudiante->espeId ?? '');
             $hojaCalculo->setCellValue("D$filaActual", $asignacion->estudiante->cedula ?? '');
+            $hojaCalculo->setCellValue("H$filaActual", mb_strtoupper($asignacion->estudiante->carrera, 'UTF-8' ?? ''));
+            $hojaCalculo->setCellValue("G$filaActual", mb_strtoupper($asignacion->estudiante->departamento, 'UTF-8' ?? ''));
+
+
+
 
             $hojaCalculo->setCellValue("B$filaActual", $nombreCompleto);
             $hojaCalculo->setCellValue("E$filaActual", $asignacion->estudiante->correo ?? '');
@@ -664,11 +669,11 @@ class DocumentosVinculacion extends Controller
 
             // Corrección: Eliminar el uso de first() en una instancia de modelo
             $notaFinal = $asignacion->estudiante->notas->first()->notaFinal ?? '0';
-            $hojaCalculo->setCellValue("I$filaActual", $notaFinal);
+            $hojaCalculo->setCellValue("K$filaActual", $notaFinal);
 
             ///HORAS REALIZADAS
             $horasRealizadas = $asignacion->estudiante->horas_vinculacion->first()->horasVinculacion ?? '0';
-            $hojaCalculo->setCellValue("H$filaActual", $horasRealizadas);
+            $hojaCalculo->setCellValue("J$filaActual", $horasRealizadas);
         }
 
         ////justificar y centrar
@@ -720,20 +725,25 @@ class DocumentosVinculacion extends Controller
             $periodo = Periodo::where('id', $asignacion->idPeriodo)->first();
 
             $hojaCalculo->setCellValue("A$filaActual", $index + 1);
-            $hojaCalculo->setCellValue("J$filaActual", mb_strtoupper($proyecto->nombreProyecto, 'UTF-8'));
-            $hojaCalculo->setCellValue("L$filaActual", mb_strtoupper($director->apellidos . ' ' . $director->nombres, 'UTF-8'));
-            $hojaCalculo->setCellValue("M$filaActual", mb_strtoupper($participante->apellidos . ' ' . $participante->nombres, 'UTF-8'));
-            $hojaCalculo->setCellValue("N$filaActual", mb_strtoupper($participante->departamento,'UTF-8'));
+            $hojaCalculo->setCellValue("L$filaActual", mb_strtoupper($proyecto->nombreProyecto, 'UTF-8'));
+            $hojaCalculo->setCellValue("N$filaActual", mb_strtoupper($director->apellidos . ' ' . $director->nombres, 'UTF-8'));
+            $hojaCalculo->setCellValue("O$filaActual", mb_strtoupper($participante->apellidos . ' ' . $participante->nombres, 'UTF-8'));
+            $hojaCalculo->setCellValue("P$filaActual", mb_strtoupper($participante->departamento,'UTF-8'));
 
-            $hojaCalculo->setCellValue("O$filaActual", $asignacion->inicioFecha);
-            $hojaCalculo->setCellValue("K$filaActual", mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
-            $hojaCalculo->setCellValue("P$filaActual", $asignacion->finalizacionFecha);
-            $hojaCalculo->setCellValue("Q$filaActual", mb_strtoupper($proyecto->departamentoTutor, 'UTF-8'));
-            $hojaCalculo->setCellValue("G$filaActual", $periodo->numeroPeriodo);
+            $hojaCalculo->setCellValue("Q$filaActual", $asignacion->inicioFecha);
+            $hojaCalculo->setCellValue("M$filaActual", mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
+            $hojaCalculo->setCellValue("R$filaActual", $asignacion->finalizacionFecha);
+            $hojaCalculo->setCellValue("S$filaActual", mb_strtoupper($proyecto->departamentoTutor, 'UTF-8'));
+            $hojaCalculo->setCellValue("I$filaActual", $periodo->numeroPeriodo);
 
             $nombreCompleto = mb_strtoupper(($asignacion->estudiante->apellidos ?? '') . ' ' . ($asignacion->estudiante->nombres ?? ''), 'UTF-8');
             $hojaCalculo->setCellValue("C$filaActual", $asignacion->estudiante->espeId ?? '');
             $hojaCalculo->setCellValue("D$filaActual", $asignacion->estudiante->cedula ?? '');
+            $hojaCalculo->setCellValue("H$filaActual", mb_strtoupper($asignacion->estudiante->carrera, 'UTF-8' ?? ''));
+            $hojaCalculo->setCellValue("G$filaActual", mb_strtoupper($asignacion->estudiante->departamento, 'UTF-8' ?? ''));
+
+
+
 
             $hojaCalculo->setCellValue("B$filaActual", $nombreCompleto);
             $hojaCalculo->setCellValue("E$filaActual", $asignacion->estudiante->correo ?? '');
@@ -744,11 +754,11 @@ class DocumentosVinculacion extends Controller
 
             // Corrección: Eliminar el uso de first() en una instancia de modelo
             $notaFinal = $asignacion->estudiante->notas->first()->notaFinal ?? '0';
-            $hojaCalculo->setCellValue("I$filaActual", $notaFinal);
+            $hojaCalculo->setCellValue("K$filaActual", $notaFinal);
 
             ///HORAS REALIZADAS
             $horasRealizadas = $asignacion->estudiante->horas_vinculacion->first()->horasVinculacion ?? '0';
-            $hojaCalculo->setCellValue("H$filaActual", $horasRealizadas);
+            $hojaCalculo->setCellValue("J$filaActual", $horasRealizadas);
         }
 
         ////justificar y centrar
