@@ -43,7 +43,7 @@
                         <div>
                             <!-- Campo de nombre -->
                             <label class="description" for="cedula">Cédula</label>
-                            <input type="text" class="input form_input" id="cedula" name="cedula" placeholder="Ingrese su cedula" required>
+                            <input type="text" class="input form_input" id="cedula" name="cedula" placeholder="Ingrese su cédula" required>
                             @error('cedula')
                             <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
@@ -51,8 +51,8 @@
 
                         <div>
                             <!-- Campo de correo electronico -->
-                            <label class="description" for="cedula">Repetir Cedula</label>
-                            <input type="text" class="input form_input" id="cedula" name="cedula" placeholder="Repita su cedula" required>
+                            <label class="description" for="cedula">Repetir Cédula</label>
+                            <input type="text" class="input form_input" id="cedula" name="cedula" placeholder="Repita su cédula" required>
 
                         </div>
 

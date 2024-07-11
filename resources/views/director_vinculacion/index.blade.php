@@ -36,7 +36,7 @@
                     <!-- Botones -->
                     <div class="contenedor_botones">
             <form method="POST" action="{{ route('reporte.director') }}"
-            class="form-inline mr-2 d-flex align-items-center">
+            class="form-inline d-flex align-items-center">
             @csrf
              <div class="tooltip-container">
                 <span class="tooltip-text">Historial Director</span>
@@ -50,7 +50,7 @@
         </form>
 
         <form method="POST" action="{{ route('reporte.historicoParticipante') }}"
-            class="form-inline mr-2 d-flex align-items-center">
+            class="form-inline d-flex align-items-center">
             @csrf
              <div class="tooltip-container">
                 <span class="tooltip-text">Historial participante</span>
