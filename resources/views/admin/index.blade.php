@@ -7,16 +7,13 @@
 @section('content')
 
     @if (session('success'))
-
-
-  <div class="contenedor_alerta success">
-    <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Éxito!</div>
-      <div class="body">{{ session('success') }}</div>
-    </div>
-  </div>
-
+        <div class="contenedor_alerta success">
+            <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Éxito!</div>
+                <div class="body">{{ session('success') }}</div>
+            </div>
+        </div>
     @endif
 
 
@@ -40,13 +37,13 @@
     @endif
 
     @if (session('error'))
-         <div class="contenedor_alerta error">
-    <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Error!</div>
-      <div class="body">{{ session('error') }}</div>
-    </div>
-  </div>
+        <div class="contenedor_alerta error">
+            <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Error!</div>
+                <div class="body">{{ session('error') }}</div>
+            </div>
+        </div>
     @endif
 
     <style>
@@ -122,7 +119,8 @@
                                                     <div class="card-header">
                                                         <span class="card-title">Editar Profesor</span>
                                                         <button type="button" class="close"
-                                                            onclick="document.getElementById('editCard{{ $profesor->id }}').style.display='none'"><i class="fa-thin fa-xmark"></i></button>
+                                                            onclick="document.getElementById('editCard{{ $profesor->id }}').style.display='none'"><i
+                                                                class="fa-thin fa-xmark"></i></button>
                                                     </div>
                                                     <div class="card-body">
                                                         <form method="POST"
@@ -225,16 +223,17 @@
             <div>
                 <span><b>Docentes participantes y directores.</b></span>
 
-            
+
 
             </div>
-<br>
+            <br>
             <!-- Tarjeta movible para Agregar Maestro -->
             <div class="draggable-card1_1" id="draggableCardAgregarMaestro">
                 <div class="card-header">
                     <span class="card-title">Agregar Docentes</span>
                     <button type="button" class="close"
-                        onclick="document.getElementById('draggableCardAgregarMaestro').style.display='none'"><i class="fa-thin fa-xmark"></i></button>
+                        onclick="document.getElementById('draggableCardAgregarMaestro').style.display='none'"><i
+                            class="fa-thin fa-xmark"></i></button>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('admin.guardarMaestro') }}" method="post">
@@ -288,7 +287,8 @@
                                 <select id="departamento" name="departamento" class="form-control input_select input"
                                     required>
                                     <option value="Ciencias de la Computación">Ciencias de la Computación</option>
-                                    <option value="Ciencias de la Vida y Agricultura">Ciencias de la Vida y Agricultura</option>
+                                    <option value="Ciencias de la Vida y Agricultura">Ciencias de la Vida y Agricultura
+                                    </option>
                                     <option value="Ciencias Exactas">Ciencias Exactas</option>
                                 </select>
                             </div>
@@ -316,15 +316,15 @@
 
                         </div>
                         <div class="tooltip-container">
-                                    <span class="tooltip-text">Excel</span>
-                                    <form action="{{ route('admin.reportesDocentes') }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="button3 efects_button btn_excel">
-                                            <i class="fas fa-file-excel"></i>
-                                        </button>
-                                    </form>
-                                </div>
+                            <span class="tooltip-text">Excel</span>
+                            <form action="{{ route('admin.reportesDocentes') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="button3 efects_button btn_excel">
+                                    <i class="fas fa-file-excel"></i>
+                                </button>
+                            </form>
                         </div>
+                    </div>
 
                     <!-- Buscador -->
                     <div class="contenedor_buscador">
@@ -347,6 +347,7 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                        <th>NO.</th>
                                         <th class="tamanio1">NOMBRE</th>
                                         <th>CORREO</th>
                                         <th>USUARIO</th>
@@ -363,8 +364,13 @@
                                                 No hay estudiantes en proceso de revisión.</td>
                                         </tr>
                                     @else
-                                        @foreach ($profesores as $profesor)
-                                            <tr>
+                                    @foreach ($profesores as $index => $profesor)
+                                    <tr>
+                                                <td
+                                                    style=" text-transform: uppercase; word-wrap: break-word; text-align: left; padding: 5px 8px;">
+                                                    {{ ($profesores->currentPage() - 1) * $profesores->perPage() + $index + 1 }}
+
+                                                </td>
                                                 <td
                                                     style=" text-transform: uppercase; word-wrap: break-word; text-align: left; padding: 5px 8px;">
                                                     {{ strtoupper($profesor->apellidos) }}
@@ -380,7 +386,8 @@
                                                 <td>
                                                     <div class="btn-group shadow-1">
 
-                                                        <button type="button" class="button3 efects_button btn_editar3" style="margin-right: 5px;"
+                                                        <button type="button" class="button3 efects_button btn_editar3"
+                                                            style="margin-right: 5px;"
                                                             onclick="openCard('draggableCardEditarMaestro{{ $profesor->id }}');">
                                                             <i class="bx bx-edit-alt"></i>
                                                         </button>
@@ -390,7 +397,8 @@
                                                             <div class="card-header">
                                                                 <span class="card-title1 ">Editar Docentes</span>
                                                                 <button type="button" class="close"
-                                                                    onclick="$('#draggableCardEditarMaestro{{ $profesor->id }}').hide()"><i class="fa-thin fa-xmark"></i></button>
+                                                                    onclick="$('#draggableCardEditarMaestro{{ $profesor->id }}').hide()"><i
+                                                                        class="fa-thin fa-xmark"></i></button>
                                                             </div>
                                                             <div class="card-body">
                                                                 <form
@@ -492,7 +500,8 @@
                                                                                     {{ $profesor->departamento === 'Ciencias de la Computación' ? 'selected' : '' }}>
                                                                                     Departamento de Ciencias de Computación
                                                                                 </option>
-                                                                                <option value="Ciencias de la Vida y Agricultura"
+                                                                                <option
+                                                                                    value="Ciencias de la Vida y Agricultura"
                                                                                     {{ $profesor->departamento === 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>
                                                                                     Departamento de Ciencias de la Vida
                                                                                 </option>
@@ -529,9 +538,9 @@
                                                                 class='bx bx-trash'></i></button>
                                                     </form>
 
-                    </div>
+                        </div>
 
-                         </td>
+                        </td>
                         </tr>
                         @endforeach
                         @endif
@@ -543,7 +552,8 @@
 
                 <div class="paginator-container">
 
-                    <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
+                    <nav aria-label="..."
+                        style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
                         <div id="totalRows">Docentes: {{ $profesores->total() }}</div>
 
                         <ul class="pagination">
@@ -571,7 +581,7 @@
                                 <li class="page-item">
                                     <a class="page-link"
                                         href="{{ $profesores->appends(['perPage' => $perPage])->previousPageUrl() }}#tablaDocentes"
-                                        aria-label="Anterior" >Anterior</a>
+                                        aria-label="Anterior">Anterior</a>
                                 </li>
                             @endif
 
@@ -620,7 +630,8 @@
                 <div class="draggable-card" id="draggableCardNRC">
                     <div class="card-header">
                         <span class="card-title">Agregar NRC</span>
-                        <button type="button" class="close" onclick="$('#draggableCardNRC').hide()"><i class="fa-thin fa-xmark"></i></button>
+                        <button type="button" class="close" onclick="$('#draggableCardNRC').hide()"><i
+                                class="fa-thin fa-xmark"></i></button>
                     </div>
                     <div class="card-body">
                         <form class="FormularioNRC" action="{{ route('admin.nrcVinculacion') }}" method="post">
@@ -672,8 +683,8 @@
                 <div class="draggable-card" id="draggableCardPeriodo">
                     <div class="card-header">
                         <span class="card-title">Agregar Periodo</span>
-                        <button type="button" class="close"
-                            onclick="$('#draggableCardPeriodo').hide()"><i class="fa-thin fa-xmark"></i></button>
+                        <button type="button" class="close" onclick="$('#draggableCardPeriodo').hide()"><i
+                                class="fa-thin fa-xmark"></i></button>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('admin.guardarPeriodo') }}" method="post">
@@ -716,57 +727,65 @@
                 </div>
                 <!-- ----------------------------------------------------------------------------------- -->
 
-              <!-- Tarjeta movible para Editar Periodo -->
-<div class="draggable-card" id="draggableCardEditarPeriodo">
-    <div class="card-header">
-        <span class="card-title">Editar Periodo</span>
-        <button type="button" class="close" onclick="$('#draggableCardEditarPeriodo').hide()"><i class="fa-thin fa-xmark"></i></button>
-    </div>
-    <div class="card-body">
-        <div class="form-group col-md-12">
-            <label for="periodo"><strong>Periodos Agregados (Seleccione el periodo a editar):</strong></label>
-            <select id="selectPeriodo" class="form-control input input_select">
-                <option value="" data-inicio="" data-fin="" data-numero="">Seleccionar Periodo</option>
-                @foreach ($periodos as $periodo)
-                    <option value="{{ $periodo->id }}" data-inicio="{{ $periodo->inicioPeriodo }}"
-                        data-fin="{{ $periodo->finPeriodo }}" data-numero="{{ $periodo->numeroPeriodo }}">
-                        {{ $periodo->numeroPeriodo }} {{ $periodo->periodo }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-12" hidden>
-            <div class="form-group col-md-6">
-                <form id="editarPeriodoForm" method="GET">
-                    @csrf
-                    <button type="submit" class="button">Editar</button>
-                </form>
+                <!-- Tarjeta movible para Editar Periodo -->
+                <div class="draggable-card" id="draggableCardEditarPeriodo">
+                    <div class="card-header">
+                        <span class="card-title">Editar Periodo</span>
+                        <button type="button" class="close" onclick="$('#draggableCardEditarPeriodo').hide()"><i
+                                class="fa-thin fa-xmark"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group col-md-12">
+                            <label for="periodo"><strong>Periodos Agregados (Seleccione el periodo a
+                                    editar):</strong></label>
+                            <select id="selectPeriodo" class="form-control input input_select">
+                                <option value="" data-inicio="" data-fin="" data-numero="">Seleccionar Periodo
+                                </option>
+                                @foreach ($periodos as $periodo)
+                                    <option value="{{ $periodo->id }}" data-inicio="{{ $periodo->inicioPeriodo }}"
+                                        data-fin="{{ $periodo->finPeriodo }}"
+                                        data-numero="{{ $periodo->numeroPeriodo }}">
+                                        {{ $periodo->numeroPeriodo }} {{ $periodo->periodo }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-12" hidden>
+                            <div class="form-group col-md-6">
+                                <form id="editarPeriodoForm" method="GET">
+                                    @csrf
+                                    <button type="submit" class="button">Editar</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md-12" id="desplegarEditarPeriodo">
+                            <form class="formulario" method="POST"
+                                action="{{ route('admin.actualizarPeriodo', ['id' => $periodo->id]) }}">
+                                @csrf
+                                @method('PUT')
+                                <div class="form-group">
+                                    <label for="periodoInicio">Fecha de Inicio:</label>
+                                    <input type="date" name="periodoInicio" id="periodoInicio"
+                                        class="form-control input" value="" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="periodoFin">Fecha de Fin:</label>
+                                    <input type="date" name="periodoFin" id="periodoFin" class="form-control input"
+                                        value="" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="numeroPeriodo">Ingrese el numero identificador del periodo:</label>
+                                    <input type="text" name="numeroPeriodo" id="numeroPeriodo"
+                                        class="form-control input" value="" required>
+                                </div>
+                                <div class="card-footer1 d-flex justify-content-center align-items-center">
+                                    <center><button type="submit" class="button01">Guardar Cambios</button></center>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="col-md-12" id="desplegarEditarPeriodo">
-            <form class="formulario" method="POST" action="{{ route('admin.actualizarPeriodo', ['id' => $periodo->id]) }}">
-                @csrf
-                @method('PUT')
-                <div class="form-group">
-                    <label for="periodoInicio">Fecha de Inicio:</label>
-                    <input type="date" name="periodoInicio" id="periodoInicio" class="form-control input" value="" required>
-                </div>
-                <div class="form-group">
-                    <label for="periodoFin">Fecha de Fin:</label>
-                    <input type="date" name="periodoFin" id="periodoFin" class="form-control input" value="" required>
-                </div>
-                <div class="form-group">
-                    <label for="numeroPeriodo">Ingrese el numero identificador del periodo:</label>
-                    <input type="text" name="numeroPeriodo" id="numeroPeriodo" class="form-control input" value="" required>
-                </div>
-                <div class="card-footer1 d-flex justify-content-center align-items-center">
-                    <center><button type="submit" class="button01">Guardar Cambios</button></center>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-                </div>
             </div>
         </section>
     </section>

@@ -8,24 +8,24 @@
 
 
         @if (session('success'))
-        <div class="contenedor_alerta success">
-    <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Éxito!</div>
-      <div class="body">{{ session('success') }}</div>
-    </div>
-  </div>
+            <div class="contenedor_alerta success">
+                <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
+                <div class="content_alert">
+                    <div class="title">Éxito!</div>
+                    <div class="body">{{ session('success') }}</div>
+                </div>
+            </div>
         @endif
 
 
         @if (session('error'))
-        <div class="contenedor_alerta error">
-    <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Error!</div>
-      <div class="body">{{ session('error') }}</div>
-    </div>
-  </div>
+            <div class="contenedor_alerta error">
+                <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
+                <div class="content_alert">
+                    <div class="title">Error!</div>
+                    <div class="body">{{ session('error') }}</div>
+                </div>
+            </div>
         @endif
         <section>
 
@@ -116,8 +116,9 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="nombreContacto">Nombre del contacto de la Empresa:</label>
-                                <input type="text" class="form-control input" id="nombreContacto" name="nombreContacto"
-                                    placeholder="Ingrese el Nombre del contacto de la Empresa" required>
+                                <input type="text" class="form-control input" id="nombreContacto"
+                                    name="nombreContacto" placeholder="Ingrese el Nombre del contacto de la Empresa"
+                                    required>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -193,9 +194,9 @@
         <hr>
         <div class="mat-elevation-z8 contenedor_general">
             <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
-            <div class="contenedor_botones">
-                <!-- Botones -->
-                 <div class="tooltip-container">
+                <div class="contenedor_botones">
+                    <!-- Botones -->
+                    <div class="tooltip-container">
                         <span class="tooltip-text">Excel</span>
                         <form action="{{ route('coordinador.reportesEmpresas') }}" method="post">
                             @csrf
@@ -205,60 +206,59 @@
                         </form>
                     </div>
 
-                  
-                      <!-- Botón de Importar archivo -->
-                      <div class="tooltip-container">
-                                    <span class="tooltip-text">Importar archivo</span>
-                                    <button type="button" class="button3 efects_button btn_copy"
-                                        onclick="openCard('cardImportarArchivo');">
-                                        <i class="fa fa-upload"></i>
-                                    </button>
-                                </div>
 
-                                <!-- Card de Importar archivo -->
-                                <div class="draggable-card1_4" id="cardImportarArchivo" style="display: none;">
-                                    <div class="card-header">
-                                        <span class="card-title">Importar archivo</span>
-                                        <button type="button" class="close"
-                                            onclick="closeCard('cardImportarArchivo')"><i class="fa-thin fa-xmark"></i></button>
-                                    </div>
-                                    <div class="card-body">
-                                        <form id="idModalImportar" action="{{ route('import-empresas') }}"  method="POST"
-                                            enctype="multipart/form-data">
-                                            @csrf
-                                            <div class="form-group">
-                                                <div class="input_file input">
-                                                    <span id="fileText2" class="fileText">
-                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
-                                                    </span>
-                                                    <input type="file" class="form-control-file input input_file"
-                                                        id="file2" name="file"
-                                                        onchange="displayFileName(this, 'fileText2')" required>
-                                                    <span title="Eliminar archivo" onclick="removeFile(this)"
-                                                        class="remove-icon">✖</span>
-                                                </div>
-                                            </div>
-                                            <div class="card-footer d-flex justify-content-center align-items-center">
-                                                <button type="submit" class="button">Importar Archivo</button>
-                                            </div>
-                                        </form>
+                    <!-- Botón de Importar archivo -->
+                    <div class="tooltip-container">
+                        <span class="tooltip-text">Importar archivo</span>
+                        <button type="button" class="button3 efects_button btn_copy"
+                            onclick="openCard('cardImportarArchivo');">
+                            <i class="fa fa-upload"></i>
+                        </button>
+                    </div>
+
+                    <!-- Card de Importar archivo -->
+                    <div class="draggable-card1_4" id="cardImportarArchivo" style="display: none;">
+                        <div class="card-header">
+                            <span class="card-title">Importar archivo</span>
+                            <button type="button" class="close" onclick="closeCard('cardImportarArchivo')"><i
+                                    class="fa-thin fa-xmark"></i></button>
+                        </div>
+                        <div class="card-body">
+                            <form id="idModalImportar" action="{{ route('import-empresas') }}" method="POST"
+                                enctype="multipart/form-data">
+                                @csrf
+                                <div class="form-group">
+                                    <div class="input_file input">
+                                        <span id="fileText2" class="fileText">
+                                            <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
+                                        </span>
+                                        <input type="file" class="form-control-file input input_file" id="file2"
+                                            name="file" onchange="displayFileName(this, 'fileText2')" required>
+                                        <span title="Eliminar archivo" onclick="removeFile(this)"
+                                            class="remove-icon">✖</span>
                                     </div>
                                 </div>
+                                <div class="card-footer d-flex justify-content-center align-items-center">
+                                    <button type="submit" class="button">Importar Archivo</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
 
 
                 </div>
                 <div class="contenedor_buscador">
-                        <div>
-                            <form id="formBusquedaEmpresa">
-                                <input type="text" class="input" name="search" value="{{ $search }}" matInput
-                                    placeholder="Buscar empresas...">
-                                <i class='bx bx-search-alt'></i>
-                            </form>
-                        </div>
+                    <div>
+                        <form id="formBusquedaEmpresa">
+                            <input type="text" class="input" name="search" value="{{ $search }}" matInput
+                                placeholder="Buscar empresas...">
+                            <i class='bx bx-search-alt'></i>
+                        </form>
                     </div>
+                </div>
             </div>
 
-           
+
 
             <section>
                 @if ($empresas->isEmpty())
@@ -272,6 +272,7 @@
                                     <thead class="ng-star-inserted">
                                         <tr
                                             class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                            <th>NO.</th>
                                             <th class="tamanio1">NOMBRE DE LA EMPRESA</th>
                                             <th>RUC DE LA EMPRESA</th>
                                             <th class="tamanio3">PROVINCIA</th>
@@ -289,25 +290,34 @@
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
 
-                                        @foreach ($empresas as $empresa)
+                                        @foreach ($empresas as $index => $empresa)
                                             <tr>
-                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->nombreEmpresa)) }}
+                                                <td>{{ $empresas ->firstItem() + $index }}</td>
+
+
+                                                 <td style="text-transform: uppercase; text-align: left;">
+                                                    {{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->nombreEmpresa)) }}
                                                 </td>
-                                                <td >{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->rucEmpresa)) }}
+                                                <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->rucEmpresa)) }}
                                                 </td>
-                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->provincia)) }}
+                                                <td style="text-transform: uppercase; text-align: left;">
+                                                    {{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->provincia)) }}
                                                 </td>
-                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->ciudad)) }}
+                                                <td style="text-transform: uppercase; text-align: left;">
+                                                    {{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->ciudad)) }}
                                                 </td>
-                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->direccion)) }}
+                                                <td style="text-transform: uppercase; text-align: left;">
+                                                    {{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->direccion)) }}
                                                 </td>
-                                                <td>{{$empresa->correo}}
+                                                <td>{{ $empresa->correo }}
                                                 </td>
-                                                <td style="text-transform: uppercase; text-align: left;">{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->nombreContacto)) }}
+                                                <td style="text-transform: uppercase; text-align: left;">
+                                                    {{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->nombreContacto)) }}
                                                 </td>
                                                 <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->telefonoContacto)) }}
                                                 </td>
-                                                <td style="text-transform: uppercase; text-align: justify;">{{ strtoupper($empresa->actividadesMacro) }}
+                                                <td style="text-transform: uppercase; text-align: justify;">
+                                                    {{ strtoupper($empresa->actividadesMacro) }}
                                                 </td>
                                                 <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->cuposDisponibles)) }}
                                                 </td>
@@ -335,17 +345,24 @@
 
                                                 <td>
                                                     <div class="btn-group shadow-1 " role="group">
-                                                        <form action="{{ route('admin.editarEmpresa', ['id' => $empresa->id]) }}" method="POST">
+                                                        <form
+                                                            action="{{ route('admin.editarEmpresa', ['id' => $empresa->id]) }}"
+                                                            method="POST">
                                                             @csrf
                                                             @method('GET')
-                                                            <button type="submit" class="button3 efects_button btn_editar3" style="margin-right: 10px;">
+                                                            <button type="submit"
+                                                                class="button3 efects_button btn_editar3"
+                                                                style="margin-right: 10px;">
                                                                 <i class="bx bx-edit-alt"></i>
                                                             </button>
                                                         </form>
-                                                        <form class="btn-group shadow-1" action="{{ route('admin.eliminarEmpresa', ['id' => $empresa->id]) }}" method="POST">
+                                                        <form class="btn-group shadow-1"
+                                                            action="{{ route('admin.eliminarEmpresa', ['id' => $empresa->id]) }}"
+                                                            method="POST">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="submit" class="button3 efects_button btn_eliminar3">
+                                                            <button type="submit"
+                                                                class="button3 efects_button btn_eliminar3">
                                                                 <i class='bx bx-trash'></i>
                                                             </button>
                                                         </form>
@@ -369,7 +386,8 @@
 
 
                         <div class="paginator-container">
-                            <nav aria-label="..." style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
+                            <nav aria-label="..."
+                                style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
                                 <div id="totalRows">Empresas: {{ $empresas->total() }}</div>
 
 
@@ -412,7 +430,8 @@
                                             </li>
                                         @else
                                             <li class="page-item">
-                                                <a class="page-link" href="{{ $url }}#tablaEmpresas">{{ $page }}</a>
+                                                <a class="page-link"
+                                                    href="{{ $url }}#tablaEmpresas">{{ $page }}</a>
                                             </li>
                                         @endif
                                     @endforeach

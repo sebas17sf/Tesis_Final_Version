@@ -168,6 +168,7 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                        <th>NO.</th>
                                         <th class="tamanio">NOMBRE DEL PROYECTO</th>
                                         <th class="tamanio4">DIRECTOR</th>
                                         <th class="tamanio">DESCRIPCIÓN</th>
@@ -186,8 +187,10 @@
                                                 No hay estudiantes en proceso de revisión.</td>
                                         </tr>
                                     @else
-                                        @foreach ($proyectos as $proyecto)
+                                        @foreach ($proyectos as $index => $proyecto)
                                             <tr>
+                                                <td>{{ $proyectos->currentPage() == 1 ? $index + 1 : $index + 1 + ($proyectos->perPage() * ($proyectos->currentPage() - 1)) }}</td>
+
                                                 <td
                                                     style="text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
                                                     {{ strtoupper($proyecto->nombreProyecto) }}
@@ -463,6 +466,7 @@
                                     <thead class="ng-star-inserted">
                                         <tr
                                             class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                            <th>NO.</th>
                                             <th class="tamanio"> NOMBRE DE PROYECTO</th>
                                             <th class="tamanio3">CÓDIGO DE PROYECTO</th>
                                             <th class="tamanio4">DIRECTOR</th>
@@ -487,6 +491,7 @@
                                         @else
                                             @foreach ($asignacionesAgrupadas as $grupo)
                                                 <tr>
+                                                    <td>{{ $asignacionesAgrupadas->currentPage() == 1 ? $loop->index + 1 : $loop->index + 1 + ($asignacionesAgrupadas->perPage() * ($asignacionesAgrupadas->currentPage() - 1)) }}</td>
                                                     <td
                                                         style="text-transform: uppercase; text-align: justify; padding: 5px 8px;">
                                                         {{ $grupo->first()->proyecto->nombreProyecto ?? '' }}</td>

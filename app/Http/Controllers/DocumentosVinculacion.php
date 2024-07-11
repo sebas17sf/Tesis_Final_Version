@@ -10,6 +10,7 @@ use App\Models\Proyecto;
 use App\Models\NotasEstudiante;
 use App\Models\Empresa;
 use App\Models\Periodo;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use App\Models\PracticaI;
 use App\Models\PracticaII;
 use App\Models\PracticaIII;
@@ -495,10 +496,14 @@ class DocumentosVinculacion extends Controller
             return redirect()->back()->with('error', 'No hay proyectos asignados');
         }
 
+        // Agrupamos las asignaciones por estudiante y las ordenamos por nombre completo
+        $asignacionesPorEstudiante = $asignacionProyecto->groupBy('estudianteId')->sortBy(function($asignaciones) {
+            $estudiante = $asignaciones->first()->estudiante;
+            return mb_strtoupper(($estudiante->apellidos ?? '') . ' ' . ($estudiante->nombres ?? ''));
+        });
+
         $filaInicio = 9;
         $contador = 1;
-        // Agrupamos las asignaciones por estudiante
-        $asignacionesPorEstudiante = $asignacionProyecto->groupBy('estudianteId');
 
         foreach ($asignacionesPorEstudiante as $estudianteId => $asignaciones) {
             $estudiante = $asignaciones->first()->estudiante;
@@ -583,7 +588,7 @@ class DocumentosVinculacion extends Controller
             }
         }
 
-        $hojaCalculo->getStyle('A9:Z' . ($filaInicio - 1))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+        $hojaCalculo->getStyle('A9:Z' . ($filaInicio - 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_JUSTIFY)->setVertical(Alignment::VERTICAL_CENTER);
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $nombreArchivo = "Reporte_asignación_proyectos_sociales.xlsx";

@@ -40,11 +40,20 @@ class CoordinadorController extends Controller
     {
         $estadoProyecto = $request->input('estado');
         $departamento = $request->input('departamento');
+        $profesorId = $request->input('profesor');
+        $periodoId = $request->input('periodos');
 
         $periodos = Periodo::all();
         $nrcs = NrcVinculacion::all();
-        $profesores = ProfesUniversidad::whereDoesntHave('proyectosDirigidos')->get();
+        $profesores = ProfesUniversidad::whereDoesntHave('proyectosDirigidos')
+            ->orWhereHas('proyectosDirigidos', function ($query) {
+                $query->where('estado', 'Terminado');
+            })->get();
 
+        ///obtener los periodos que tengan fecha de inicio y fin con la fecha actual
+        $periodoAsignacion = Periodo::where('inicioPeriodo', '<=', now())
+            ->where('finPeriodo', '>=', now())
+            ->get();
 
 
         $perPage = $request->input('perPage', 10);
@@ -112,24 +121,24 @@ class CoordinadorController extends Controller
                 return $query->where(function ($query) use ($search2) {
                     $query->whereHas('estudiante', function ($query) use ($search2) {
                         $query->where('nombres', 'like', "%{$search2}%")
-                              ->orWhere('apellidos', 'like', "%{$search2}%")
-                              ->orWhere('espeId', 'like', "%{$search2}%")
-                              ->orWhere('cedula', 'like', "%{$search2}%");
+                            ->orWhere('apellidos', 'like', "%{$search2}%")
+                            ->orWhere('espeId', 'like', "%{$search2}%")
+                            ->orWhere('cedula', 'like', "%{$search2}%");
                     })
-                    ->orWhereHas('proyecto', function ($query) use ($search2) {
-                        $query->where('nombreProyecto', 'like', "%{$search2}%");
-                    })
-                    ->orWhereHas('docenteParticipante', function ($query) use ($search2) {
-                        $query->where('nombres', 'like', "%{$search2}%")
-                              ->orWhere('apellidos', 'like', "%{$search2}%");
-                    })
-                    ->orWhereHas('periodo', function ($query) use ($search2) {
-                        $query->where('numeroPeriodo', 'like', "%{$search2}%");
-                    })
-                    ->orWhereHas('proyecto.director', function ($query) use ($search2) {
-                        $query->where('nombres', 'like', "%{$search2}%")
-                              ->orWhere('apellidos', 'like', "%{$search2}%");
-                    });
+                        ->orWhereHas('proyecto', function ($query) use ($search2) {
+                            $query->where('nombreProyecto', 'like', "%{$search2}%");
+                        })
+                        ->orWhereHas('docenteParticipante', function ($query) use ($search2) {
+                            $query->where('nombres', 'like', "%{$search2}%")
+                                ->orWhere('apellidos', 'like', "%{$search2}%");
+                        })
+                        ->orWhereHas('periodo', function ($query) use ($search2) {
+                            $query->where('numeroPeriodo', 'like', "%{$search2}%");
+                        })
+                        ->orWhereHas('proyecto.director', function ($query) use ($search2) {
+                            $query->where('nombres', 'like', "%{$search2}%")
+                                ->orWhere('apellidos', 'like', "%{$search2}%");
+                        });
                 });
             })
 
@@ -139,12 +148,12 @@ class CoordinadorController extends Controller
             });
 
         $total = $asignacionesAgrupadas->count();
-        $paginatedData = $asignacionesAgrupadas->forPage($page2, $perPage2);
+        $paginatedData = $asignacionesAgrupadas->forPage($request->input('page2', 1), $request->input('perPage2', 10));
         $paginator = new LengthAwarePaginator(
             $paginatedData,
             $total,
-            $perPage2,
-            $page2,
+            $request->input('perPage2', 10),
+            $request->input('page2', 1),
             ['path' => route('coordinador.index'), 'pageName' => 'page2']
         );
         return view('coordinador.index', [
@@ -160,6 +169,12 @@ class CoordinadorController extends Controller
             'periodos' => $periodos,
             'search' => $search,
             'search2' => $search2,
+            'estadoProyecto' => $estadoProyecto,
+            'profesorId' => $profesorId,
+            'periodoId' => $periodoId,
+            'paginatedData' => $paginatedData,
+            'total' => $total,
+            'periodoAsignacion' => $periodoAsignacion,
         ]);
         if ($estadoProyecto) {
             $query->where('estado', $estadoProyecto);
@@ -180,10 +195,37 @@ class CoordinadorController extends Controller
         $proyectos = $query->paginate($perPage, ['*'], 'page', $page);
 
         if ($request->ajax()) {
-            return view('tablaProyectos', compact('proyectos'))->render();
+            if ($request->has('search2')) {
+                return response()->json([
+                    'html' => view('partials.tablaAsignaciones', compact('asignacionesAgrupadas', 'paginator'))->render()
+                ]);
+            } else {
+                return response()->json([
+                    'html' => view('partials.tablaProyectos', compact('proyectos'))->render()
+                ]);
+            }
         }
 
-        return view('coordinador.index', compact('proyectos', 'periodos', 'nrcs', 'profesores', 'estadoProyecto', 'search'));
+        return view('coordinador.index', [
+            'proyectos' => $proyectos,
+            'proyectosDisponibles' => $proyectosDisponibles,
+            'estudiantesAprobados' => $estudiantesAprobados,
+            'perPage' => $perPage,
+            'perPage2' => $perPage2,
+            'paginator' => $paginator,
+            'profesores' => $profesores,
+            'nrcs' => $nrcs,
+            'asignacionesAgrupadas' => $paginator,
+            'periodos' => $periodos,
+            'search' => $search,
+            'search2' => $search2,
+            'estadoProyecto' => $estadoProyecto,
+            'profesorId' => $profesorId,
+            'periodoId' => $periodoId,
+            'paginatedData' => $paginatedData,
+            'total' => $total,
+            'periodoAsignacion' => $periodoAsignacion,
+        ]);
 
     }
 
