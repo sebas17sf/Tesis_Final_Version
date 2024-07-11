@@ -147,7 +147,7 @@ class LoginController extends Controller
 
         // Pasa los datos a la vista utilizando un arreglo asociativo
         return view('cambiarContrasena')->with([
-            'correoElectronico' => $usuario->CorreoElectronico,
+            'correoElectronico' => $usuario->correoElectronico,
             'token' => $token,
         ]);
     }
@@ -278,7 +278,7 @@ class LoginController extends Controller
     }
 
 
-    
+
 
     public function Modulo1()
     {
