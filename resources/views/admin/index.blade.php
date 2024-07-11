@@ -347,8 +347,8 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th>NO.</th>
-                                        <th class="tamanio1">NOMBRE</th>
+                                        <th>N°</th>
+                                        <th class="tamanio3">NOMBRE</th>
                                         <th>CORREO</th>
                                         <th>USUARIO</th>
                                         <th>CÉDULA</th>
@@ -367,12 +367,12 @@
                                     @foreach ($profesores as $index => $profesor)
                                     <tr>
                                                 <td
-                                                    style=" text-transform: uppercase; word-wrap: break-word; text-align: left; padding: 5px 8px;">
+                                                    style="text-align: center;">
                                                     {{ ($profesores->currentPage() - 1) * $profesores->perPage() + $index + 1 }}
 
                                                 </td>
                                                 <td
-                                                    style=" text-transform: uppercase; word-wrap: break-word; text-align: left; padding: 5px 8px;">
+                                                    style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">
                                                     {{ strtoupper($profesor->apellidos) }}
                                                     {{ strtoupper($profesor->nombres ?? '') }}
                                                 </td>

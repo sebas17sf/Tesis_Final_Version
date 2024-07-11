@@ -206,8 +206,8 @@
         box-shadow: none !important;
   
         td {
-          width: 100px;
-          min-width: 90px;
+          width: 0px;
+          min-width: 0px;
           font-size: 11px;
           padding: 0.4rem !important;
           border-bottom: 1px solid rgba(240, 240, 240, 1); // Add bottom border
@@ -266,10 +266,11 @@
           padding: .3rem !important;
         }
         .tamanio5 {
-          width: 30px;
-          min-width: 190px;
+          width: 5px;
+          min-width: 0px !important;
           padding: .3rem !important;
         }
+        
       }
     }
 
