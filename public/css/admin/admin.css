@@ -806,7 +806,7 @@ background-blend-mode: multiply;
 
 .custom-card .card-title {
     font-size: 1rem;
-    font-weight: bold;
+    
     margin-bottom: 10px;
 }
 
@@ -814,9 +814,6 @@ background-blend-mode: multiply;
     margin: 10px 0;
     border-top: 1px solid #eee;
 }
-
-
-
 
 
 .custom-card .efects_button i {

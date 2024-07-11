@@ -54,7 +54,7 @@
 
                                 <a class="p-element" href="{{ route('director.indexProyectos') }}">
                                     <div class="icon-sidebar-item">
-                                        <i class="material-icons">library_books</i>
+                                    <i class="fa-solid fa-layer-plus"></i>
                                     </div>
                                     <div class="name-sidebar-item">
                                         <li>Proyectos</li>
@@ -62,7 +62,7 @@
                                 </a>
                                 <a class="p-element" href="{{ route('director.estudiantesAprobados') }}">
                                     <div class="icon-sidebar-item">
-                                        <i class="material-icons">people</i>
+                                    <i class="fa-solid fa-users fontawesome"></i>
                                     </div>
                                     <div class="name-sidebar-item">
                                         <li>Estudiantes</li>
@@ -70,7 +70,7 @@
                                 </a>
                                 <a class="p-element" href="{{ route('director.practicas') }}">
                                     <div class="icon-sidebar-item">
-                                        <i class="material-icons">business</i>
+                                    <i class="fa-solid fa-building"></i>
                                     </div>
                                     <div class="name-sidebar-item">
                                         <li>Prácticas</li>
@@ -124,7 +124,7 @@
                     <div class="container">
                         <a href="{{ route('conectarModulos', ['token' => session('token')]) }}" class="change_module">
                             <i class="fa-regular fa-rectangle-vertical-history"></i>
-                            <span>Cambiar modulo</span>
+                            <span>Cambiar módulo</span>
                         </a>
 
                         <a href="{{ route('admin.cambio-credenciales') }}" class="change_password">

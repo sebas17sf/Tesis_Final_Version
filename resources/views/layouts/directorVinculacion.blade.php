@@ -56,7 +56,7 @@
                         <ul class="nav-list">
                             <a class="p-element" href="{{ route('director_vinculacion.index') }}">
                                 <div class="icon-sidebar-item">
-                                    <i class="material-icons">assignment</i>
+                                <i class="fa-solid fa-layer-plus"></i>
                                 </div>
                                 <div class="name-sidebar-item">
                                     <li>Proyectos</li>
@@ -64,7 +64,7 @@
                             </a>
                             <a href="{{ route('director_vinculacion.estudiantes') }}" class="p-element">
                                 <div class="icon-sidebar-item">
-                                    <i class="material-icons">spellcheck</i>
+                                <i class="fa-solid fa-memo-circle-check"></i>
                                 </div>
                                 <div class="name-sidebar-item">
                                     <li>Calificar Estudiantes</li>
@@ -73,7 +73,7 @@
 
                             <a href="{{ route('director.repartoEstudiantes') }}" class="p-element">
                                 <div class="icon-sidebar-item">
-                                    <i class="material-icons">supervisor_account</i>
+                                <i class="fa-solid fa-users fontawesome"></i>
                                 </div>
                                 <div class="name-sidebar-item">
                                     <li>Estudiantes</li>

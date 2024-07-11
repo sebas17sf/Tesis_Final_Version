@@ -268,11 +268,11 @@
                             </tbody>
                         </table>
         @endif
-    </div>
+   
 
 
-    </div>
-    </div>
+   
+    
     <hr>
 
     <h4><b>Control de actividades de los estudiantes</b></h4>
