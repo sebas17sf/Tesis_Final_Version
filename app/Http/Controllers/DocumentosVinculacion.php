@@ -6,6 +6,7 @@ use App\Models\ProfesUniversidad;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Models\AsignacionProyecto;
+use App\Models\NrcVinculacion;
 use App\Models\Proyecto;
 use App\Models\NotasEstudiante;
 use App\Models\Empresa;
@@ -497,7 +498,7 @@ class DocumentosVinculacion extends Controller
         }
 
         // Agrupamos las asignaciones por estudiante y las ordenamos por nombre completo
-        $asignacionesPorEstudiante = $asignacionProyecto->groupBy('estudianteId')->sortBy(function($asignaciones) {
+        $asignacionesPorEstudiante = $asignacionProyecto->groupBy('estudianteId')->sortBy(function ($asignaciones) {
             $estudiante = $asignaciones->first()->estudiante;
             return mb_strtoupper(($estudiante->apellidos ?? '') . ' ' . ($estudiante->nombres ?? ''));
         });
@@ -518,86 +519,73 @@ class DocumentosVinculacion extends Controller
                     $participante = ProfesUniversidad::where('id', $asignacion->participanteId)->first();
                     $director = ProfesUniversidad::where('id', $proyecto->directorId)->first();
                     $periodo = Periodo::where('id', $asignacion->idPeriodo)->first();
+                    $nrc = NrcVinculacion::where('id', $asignacion->nrc)->first();
 
-                    $hojaCalculo->setCellValue("A$filaActual", $contador++);
-                    $hojaCalculo->setCellValue("L$filaActual", mb_strtoupper($proyecto->nombreProyecto));
-                    $hojaCalculo->setCellValue("N$filaActual", mb_strtoupper($director->apellidos . ' ' . $director->nombres));
-                    $hojaCalculo->setCellValue("O$filaActual", mb_strtoupper($participante->apellidos . ' ' . $participante->nombres));
-                    $hojaCalculo->setCellValue("P$filaActual", mb_strtoupper($asignacion->inicioFecha));
-                    $hojaCalculo->setCellValue("M$filaActual", mb_strtoupper($proyecto->descripcionProyecto));
-                    $hojaCalculo->setCellValue("Q$filaActual", mb_strtoupper($asignacion->finalizacionFecha));
-                    $hojaCalculo->setCellValue("R$filaActual", mb_strtoupper($proyecto->departamentoTutor));
-                    $hojaCalculo->setCellValue("G$filaActual", mb_strtoupper($periodo->numeroPeriodo));
-
-                    $nombreCompleto = mb_strtoupper(($estudiante->apellidos ?? '') . ' ' . ($estudiante->nombres ?? ''));
-                    $hojaCalculo->setCellValue("C$filaActual", mb_strtoupper($estudiante->espeId ?? ''));
-                    $hojaCalculo->setCellValue("D$filaActual", mb_strtoupper($estudiante->cedula ?? ''));
-                    $hojaCalculo->setCellValue("H$filaActual", mb_strtoupper($estudiante->departamento ?? ''));
-                    $hojaCalculo->setCellValue("I$filaActual", mb_strtoupper($estudiante->carrera ?? ''));
+                    $hojaCalculo->setCellValue("A$filaActual", $contador++); // Contador de asignación
+                    $hojaCalculo->setCellValue("B$filaActual", mb_strtoupper(($estudiante->apellidos ?? '') . ' ' . ($estudiante->nombres ?? ''))); // Nombre completo
+                    $hojaCalculo->setCellValue("C$filaActual", mb_strtoupper($estudiante->espeId ?? '')); // ID de la ESPE
+                    $hojaCalculo->setCellValue("D$filaActual", mb_strtoupper($estudiante->cedula ?? '')); // Cédula
+                    $hojaCalculo->setCellValue("E$filaActual", $estudiante->correo ?? ''); // Correo
+                    $hojaCalculo->setCellValue("F$filaActual", mb_strtoupper($estudiante->Cohorte ?? '')); // Cohorte
+                    $hojaCalculo->setCellValue("G$filaActual", mb_strtoupper($periodo->numeroPeriodo)); // Número de período
+                    $hojaCalculo->setCellValue("H$filaActual", mb_strtoupper($nrc->nrc ?? 'NO REQUIERE NRC')); // NRC
 
 
-                    $hojaCalculo->setCellValue("B$filaActual", $nombreCompleto);
-                    $hojaCalculo->setCellValue("E$filaActual", $estudiante->correo ?? ''); // Dejar el correo en minúsculas
-                    $hojaCalculo->setCellValue("F$filaActual", mb_strtoupper($estudiante->Cohorte ?? ''));
+                    $hojaCalculo->setCellValue("I$filaActual", mb_strtoupper($estudiante->departamento ?? '')); // Departamento
+                    $hojaCalculo->setCellValue("J$filaActual", mb_strtoupper($estudiante->carrera ?? '')); // Carrera
+                    $hojaCalculo->setCellValue("K$filaActual", isset($horas[0]) ? mb_strtoupper($horas[0]->horasVinculacion) : ''); // Primera hora de vinculación
+                    $hojaCalculo->setCellValue("L$filaActual", isset($notas[0]) ? mb_strtoupper($notas[0]->notaFinal) : ''); // Primera nota final
+                    $hojaCalculo->setCellValue("M$filaActual", mb_strtoupper($proyecto->nombreProyecto)); // Nombre del proyecto
+                    $hojaCalculo->setCellValue("N$filaActual", mb_strtoupper($proyecto->departamentoTutor)); // Departamento tutor
+                    $hojaCalculo->setCellValue("O$filaActual", mb_strtoupper($proyecto->descripcionProyecto)); // Descripción del proyecto
 
-                    // Colocar la primera nota del estudiante
-                    if (isset($notas[0])) {
-                        $hojaCalculo->setCellValue("K$filaActual", mb_strtoupper($notas[0]->notaFinal));
-                    }
+                    $hojaCalculo->setCellValue("p$filaActual", mb_strtoupper($director->apellidos . ' ' . $director->nombres)); // Nombre del director
+                    $hojaCalculo->setCellValue("Q$filaActual", mb_strtoupper($director->departamento));
+                    $hojaCalculo->setCellValue("R$filaActual", mb_strtoupper($participante->apellidos . ' ' . $participante->nombres)); // Nombre del participante
+                    $hojaCalculo->setCellValue("S$filaActual", mb_strtoupper($participante->departamento));
 
-                    // Colocar la primera hora de vinculación del estudiante
-                    if (isset($horas[0])) {
-                        $hojaCalculo->setCellValue("J$filaActual", mb_strtoupper($horas[0]->horasVinculacion));
-                    }
+                    $hojaCalculo->setCellValue("T$filaActual", mb_strtoupper($asignacion->inicioFecha));
+                    $hojaCalculo->setCellValue("U$filaActual", mb_strtoupper($asignacion->finalizacionFecha));
 
                     // Copiar el estilo de la fila 9
-                    $hojaCalculo->duplicateStyle($hojaCalculo->getStyle('A9:AB9'), 'A' . $filaActual . ':AB' . $filaActual);
+                    $hojaCalculo->duplicateStyle($hojaCalculo->getStyle('A9:AG9'), 'A' . $filaActual . ':AG' . $filaActual);
 
                     $filaInicio++;
-                } else { // Las asignaciones adicionales se colocan en las columnas a partir de Q
-                    $columnaActual = 'T';
+                } else { // Las asignaciones adicionales se colocan en las columnas a partir de S
+                    $columnaActual = 'W';
                     $proyectoOtraAsignacion = Proyecto::where('proyectoId', $asignacion->proyectoId)->first();
-                    $hojaCalculo->setCellValue($columnaActual . ($filaActual - 1), mb_strtoupper($proyectoOtraAsignacion->nombreProyecto));
-                    ////obtener el periodo en celda
-                    $periodoOtraAsignacion = Periodo::where('id', $asignacion->idPeriodo)->first();
-                    $hojaCalculo->setCellValue('S' . ($filaActual - 1), mb_strtoupper($periodoOtraAsignacion->numeroPeriodo));
-                    ////nombre del director en celda R
+                    $hojaCalculo->setCellValue('V' . ($filaActual - 1), mb_strtoupper($periodo->numeroPeriodo)); // Número de período adicional
+                    $hojaCalculo->setCellValue($columnaActual . ($filaActual - 1), mb_strtoupper($proyectoOtraAsignacion->nombreProyecto)); // Nombre del proyecto adicional
                     $directorOtraAsignacion = ProfesUniversidad::where('id', $proyectoOtraAsignacion->directorId)->first();
-                    $hojaCalculo->setCellValue('U' . ($filaActual - 1), mb_strtoupper($directorOtraAsignacion->apellidos . ' ' . $directorOtraAsignacion->nombres));
-                    /////docente participante en celda S
+                    $hojaCalculo->setCellValue('X' . ($filaActual - 1), mb_strtoupper($proyectoOtraAsignacion->departamentoTutor)); // Departamento tutor adicional
+
+                    $hojaCalculo->setCellValue('Y' . ($filaActual - 1), mb_strtoupper($directorOtraAsignacion->apellidos . ' ' . $directorOtraAsignacion->nombres)); // Nombre del director adicional
+                    $hojaCalculo->setCellValue('Z' . ($filaActual - 1), mb_strtoupper($directorOtraAsignacion->departamento));
                     $participanteOtraAsignacion = ProfesUniversidad::where('id', $asignacion->participanteId)->first();
-                    $hojaCalculo->setCellValue('V' . ($filaActual - 1), mb_strtoupper($participanteOtraAsignacion->apellidos . ' ' . $participanteOtraAsignacion->nombres));
-                    ///fecha inicio en celda T
-                    $hojaCalculo->setCellValue('W' . ($filaActual - 1), mb_strtoupper($proyectoOtraAsignacion->inicioFecha));
-                    ///fecha fin en celda U
-                    $hojaCalculo->setCellValue('X' . ($filaActual - 1), mb_strtoupper($proyectoOtraAsignacion->finFecha));
-                    ////departamento tutor en celda V
-                    $hojaCalculo->setCellValue('V' . ($filaActual - 1), mb_strtoupper($proyectoOtraAsignacion->departamentoTutor));
+                    $hojaCalculo->setCellValue('AA' . ($filaActual - 1), mb_strtoupper($participanteOtraAsignacion->apellidos . ' ' . $participanteOtraAsignacion->nombres)); // Nombre del participante adicional
+                    $hojaCalculo->setCellValue('AB' . ($filaActual - 1), mb_strtoupper($participanteOtraAsignacion->departamento));
 
-                    // Colocar la segunda nota del estudiante
-                    if (isset($notas[1])) {
-                        $hojaCalculo->setCellValue('Z' . ($filaActual - 1), mb_strtoupper($notas[1]->notaFinal));
-                    }
-
-                    // Colocar la segunda hora de vinculación del estudiante
-                    if (isset($horas[1])) {
-                        $hojaCalculo->setCellValue('AA' . ($filaActual - 1), mb_strtoupper($horas[1]->horasVinculacion));
-                    }
+                    $hojaCalculo->setCellValue('AC' . ($filaActual - 1), mb_strtoupper($proyectoOtraAsignacion->inicioFecha)); // Fecha de inicio adicional
+                    $hojaCalculo->setCellValue('AD' . ($filaActual - 1), mb_strtoupper($proyectoOtraAsignacion->finFecha)); // Fecha de finalización adicional
+                    $hojaCalculo->setCellValue('AF' . ($filaActual - 1), isset($notas[1]) ? mb_strtoupper($notas[1]->notaFinal) : ''); // Segunda nota final
+                    $hojaCalculo->setCellValue('AE' . ($filaActual - 1), isset($horas[1]) ? mb_strtoupper($horas[1]->horasVinculacion) : ''); // Segunda hora de vinculación
 
                     $columnaActual++;
                 }
 
-                $hojaCalculo->setCellValue("AB" . ($filaActual), "=SUM(J" . ($filaActual) . ",Z" . ($filaActual) . ")");
+                // Suma de las horas de vinculación del estudiante
+                $hojaCalculo->setCellValue("AG" . ($filaActual), "=SUM(K" . ($filaActual) . ",AE" . ($filaActual) . ")");
             }
         }
 
-        $hojaCalculo->getStyle('A9:AB' . ($filaInicio - 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_JUSTIFY)->setVertical(Alignment::VERTICAL_CENTER);
+        $hojaCalculo->getStyle('A9:AG' . ($filaInicio - 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_JUSTIFY)->setVertical(Alignment::VERTICAL_CENTER);
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $nombreArchivo = "Reporte_asignación_proyectos_sociales.xlsx";
         $writer->save($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
     }
+
 
 
 
@@ -638,17 +626,19 @@ class DocumentosVinculacion extends Controller
             $participante = ProfesUniversidad::where('id', $asignacion->participanteId)->first();
             $director = ProfesUniversidad::where('id', $proyecto->directorId)->first();
             $periodo = Periodo::where('id', $asignacion->idPeriodo)->first();
+            $nrc = NrcVinculacion::where('id', $asignacion->nrc)->first();
 
             $hojaCalculo->setCellValue("A$filaActual", $index + 1);
-            $hojaCalculo->setCellValue("L$filaActual", mb_strtoupper($proyecto->nombreProyecto, 'UTF-8'));
-            $hojaCalculo->setCellValue("N$filaActual", mb_strtoupper($director->apellidos . ' ' . $director->nombres, 'UTF-8'));
-            $hojaCalculo->setCellValue("O$filaActual", mb_strtoupper($participante->apellidos . ' ' . $participante->nombres, 'UTF-8'));
-            $hojaCalculo->setCellValue("P$filaActual", mb_strtoupper($participante->departamento,'UTF-8'));
+            $hojaCalculo->setCellValue("M$filaActual", mb_strtoupper($proyecto->nombreProyecto, 'UTF-8'));
+            $hojaCalculo->setCellValue("P$filaActual", mb_strtoupper($director->apellidos . ' ' . $director->nombres, 'UTF-8'));
+            $hojaCalculo->setCellValue("Q$filaActual", mb_strtoupper($director->departamento, 'UTF-8'));
+            $hojaCalculo->setCellValue("R$filaActual", mb_strtoupper($participante->apellidos . ' ' . $participante->nombres, 'UTF-8'));
+            $hojaCalculo->setCellValue("S$filaActual", mb_strtoupper($participante->departamento, 'UTF-8'));
 
-            $hojaCalculo->setCellValue("Q$filaActual", $asignacion->inicioFecha);
-            $hojaCalculo->setCellValue("M$filaActual", mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
-            $hojaCalculo->setCellValue("R$filaActual", $asignacion->finalizacionFecha);
-            $hojaCalculo->setCellValue("S$filaActual", mb_strtoupper($proyecto->departamentoTutor, 'UTF-8'));
+            $hojaCalculo->setCellValue("T$filaActual", $asignacion->inicioFecha);
+            $hojaCalculo->setCellValue("O$filaActual", mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
+            $hojaCalculo->setCellValue("U$filaActual", $asignacion->finalizacionFecha);
+            $hojaCalculo->setCellValue("N$filaActual", mb_strtoupper($proyecto->departamentoTutor, 'UTF-8'));
             $hojaCalculo->setCellValue("I$filaActual", $periodo->numeroPeriodo);
 
             $nombreCompleto = mb_strtoupper(($asignacion->estudiante->apellidos ?? '') . ' ' . ($asignacion->estudiante->nombres ?? ''), 'UTF-8');
@@ -658,6 +648,7 @@ class DocumentosVinculacion extends Controller
             $hojaCalculo->setCellValue("G$filaActual", mb_strtoupper($asignacion->estudiante->departamento, 'UTF-8' ?? ''));
 
 
+            $hojaCalculo->setCellValue("J$filaActual", $nrc->nrc ?? 'NO REQUIRE NRC');
 
 
             $hojaCalculo->setCellValue("B$filaActual", $nombreCompleto);
@@ -669,15 +660,17 @@ class DocumentosVinculacion extends Controller
 
             // Corrección: Eliminar el uso de first() en una instancia de modelo
             $notaFinal = $asignacion->estudiante->notas->first()->notaFinal ?? '0';
-            $hojaCalculo->setCellValue("K$filaActual", $notaFinal);
+            $hojaCalculo->setCellValue("L$filaActual", $notaFinal);
 
             ///HORAS REALIZADAS
             $horasRealizadas = $asignacion->estudiante->horas_vinculacion->first()->horasVinculacion ?? '0';
-            $hojaCalculo->setCellValue("J$filaActual", $horasRealizadas);
+            $hojaCalculo->setCellValue("K$filaActual", $horasRealizadas);
+
+
         }
 
         ////justificar y centrar
-        $hojaCalculo->getStyle('A9:P' . ($filaInicio + $cantidadFilas))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+        $hojaCalculo->getStyle('A9:U' . ($filaInicio + $cantidadFilas - 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_JUSTIFY)->setVertical(Alignment::VERTICAL_CENTER);
 
         $nombreParticipante = $participanteVinculacion->apellidos . '_' . $participanteVinculacion->nombres;
         $nombreParticipante = str_replace([' ', '/', '\\'], '_', $nombreParticipante);
@@ -687,6 +680,7 @@ class DocumentosVinculacion extends Controller
         $writer->save($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
     }
+
 
 
     /////////////////////////////////////////HISTORIAL DE DIRECTORES DE PROYECTO///////////////////////////////////////////////
@@ -723,17 +717,19 @@ class DocumentosVinculacion extends Controller
             $participante = ProfesUniversidad::where('id', $asignacion->participanteId)->first();
             $director = ProfesUniversidad::where('id', $proyecto->directorId)->first();
             $periodo = Periodo::where('id', $asignacion->idPeriodo)->first();
+            $nrc = NrcVinculacion::where('id', $asignacion->nrc)->first();
 
             $hojaCalculo->setCellValue("A$filaActual", $index + 1);
-            $hojaCalculo->setCellValue("L$filaActual", mb_strtoupper($proyecto->nombreProyecto, 'UTF-8'));
-            $hojaCalculo->setCellValue("N$filaActual", mb_strtoupper($director->apellidos . ' ' . $director->nombres, 'UTF-8'));
-            $hojaCalculo->setCellValue("O$filaActual", mb_strtoupper($participante->apellidos . ' ' . $participante->nombres, 'UTF-8'));
-            $hojaCalculo->setCellValue("P$filaActual", mb_strtoupper($participante->departamento,'UTF-8'));
+            $hojaCalculo->setCellValue("M$filaActual", mb_strtoupper($proyecto->nombreProyecto, 'UTF-8'));
+            $hojaCalculo->setCellValue("P$filaActual", mb_strtoupper($director->apellidos . ' ' . $director->nombres, 'UTF-8'));
+            $hojaCalculo->setCellValue("Q$filaActual", mb_strtoupper($director->departamento, 'UTF-8'));
+            $hojaCalculo->setCellValue("R$filaActual", mb_strtoupper($participante->apellidos . ' ' . $participante->nombres, 'UTF-8'));
+            $hojaCalculo->setCellValue("S$filaActual", mb_strtoupper($participante->departamento, 'UTF-8'));
 
-            $hojaCalculo->setCellValue("Q$filaActual", $asignacion->inicioFecha);
-            $hojaCalculo->setCellValue("M$filaActual", mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
-            $hojaCalculo->setCellValue("R$filaActual", $asignacion->finalizacionFecha);
-            $hojaCalculo->setCellValue("S$filaActual", mb_strtoupper($proyecto->departamentoTutor, 'UTF-8'));
+            $hojaCalculo->setCellValue("T$filaActual", $asignacion->inicioFecha);
+            $hojaCalculo->setCellValue("O$filaActual", mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
+            $hojaCalculo->setCellValue("U$filaActual", $asignacion->finalizacionFecha);
+            $hojaCalculo->setCellValue("N$filaActual", mb_strtoupper($proyecto->departamentoTutor, 'UTF-8'));
             $hojaCalculo->setCellValue("I$filaActual", $periodo->numeroPeriodo);
 
             $nombreCompleto = mb_strtoupper(($asignacion->estudiante->apellidos ?? '') . ' ' . ($asignacion->estudiante->nombres ?? ''), 'UTF-8');
@@ -743,6 +739,7 @@ class DocumentosVinculacion extends Controller
             $hojaCalculo->setCellValue("G$filaActual", mb_strtoupper($asignacion->estudiante->departamento, 'UTF-8' ?? ''));
 
 
+            $hojaCalculo->setCellValue("J$filaActual", $nrc->nrc ?? 'NO REQUIRE NRC');
 
 
             $hojaCalculo->setCellValue("B$filaActual", $nombreCompleto);
@@ -754,15 +751,15 @@ class DocumentosVinculacion extends Controller
 
             // Corrección: Eliminar el uso de first() en una instancia de modelo
             $notaFinal = $asignacion->estudiante->notas->first()->notaFinal ?? '0';
-            $hojaCalculo->setCellValue("K$filaActual", $notaFinal);
+            $hojaCalculo->setCellValue("L$filaActual", $notaFinal);
 
             ///HORAS REALIZADAS
             $horasRealizadas = $asignacion->estudiante->horas_vinculacion->first()->horasVinculacion ?? '0';
-            $hojaCalculo->setCellValue("J$filaActual", $horasRealizadas);
+            $hojaCalculo->setCellValue("K$filaActual", $horasRealizadas);
         }
 
         ////justificar y centrar
-        $hojaCalculo->getStyle('A9:P' . ($filaInicio + $cantidadFilas))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+        $hojaCalculo->getStyle('A9:U' . ($filaInicio + $cantidadFilas))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
 
         $nombreDirector = $director->apellidos . '_' . $director->nombres;
         $nombreDirector = str_replace([' ', '/', '\\'], '_', $nombreDirector);
@@ -797,6 +794,13 @@ class DocumentosVinculacion extends Controller
 
 
     ///////////////////////////////////prueba de carga de matriz para generar datos
+
+    function getFecha($fecha)
+    {
+        $fecha = DateTime::createFromFormat('d/m/Y', $fecha);
+        return $fecha ? $fecha->format('Y-m-d') : null;
+    }
+
 
     public function import(Request $request)
     {
@@ -841,12 +845,12 @@ class DocumentosVinculacion extends Controller
                 $estudiante = Estudiante::where('espeId', $row[0])->first();
 
                 // Trim any leading or trailing whitespace from the project name
-                $projectName = trim($row[17]);
+                $projectName = trim($row[18]);
                 $proyecto = Proyecto::where('nombreProyecto', 'like', '%' . $projectName . '%')->first();
 
                 $periodo = Periodo::where('numeroPeriodo', $row[8])->first();
 
-                $nombreCompleto = $row[10];
+                $nombreCompleto = $row[11];
                 $partesNombre = explode(" ", $nombreCompleto);
                 if (count($partesNombre) >= 2) {
                     $apellido = trim($partesNombre[0]);
@@ -857,24 +861,29 @@ class DocumentosVinculacion extends Controller
                         ->first();
                 }
 
-                $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[11]);
-                $fechaInicioFormatted = $fechaInicio ? $fechaInicio->format('Y-m-d') : null;
 
-                $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $row[12]);
-                $fechaFinalizacionFormatted = $fechaFinalizacion ? $fechaFinalizacion->format('Y-m-d') : null;
 
                 $asignacion = AsignacionProyecto::where('estudianteId', $estudiante ? $estudiante->estudianteId : null)
                     ->where('proyectoId', $proyecto ? $proyecto->proyectoId : null)
                     ->where('idPeriodo', $periodo ? $periodo->id : null)
                     ->first();
 
+                $fechaInicio = $this->getFecha($row[12]);
+                $fechaFinalizacion = $this->getFecha($row[13]);
+
+
+                $nrc = NrcVinculacion::where('nrc', $row[9])->first();
+                if ($nrc == null) {
+                    $nrc = null;
+                }
                 $data = [
                     'estudianteId' => $estudiante ? $estudiante->estudianteId : null,
                     'proyectoId' => $proyecto ? $proyecto->proyectoId : null,
                     'participanteId' => $participante ? $participante->id : null,
                     'idPeriodo' => $periodo ? $periodo->id : null,
-                    'inicioFecha' => $fechaInicioFormatted,
-                    'finalizacionFecha' => $fechaFinalizacionFormatted,
+                    'nrc' => $nrc ? $nrc->id : null,
+                    'inicioFecha' => $fechaInicio,
+                    'finalizacionFecha' => $fechaFinalizacion,
                     'asignacionFecha' => now(),
                 ];
 
@@ -886,12 +895,12 @@ class DocumentosVinculacion extends Controller
             }
 
             // Procesar segundas asignaciones
-            if (!empty($row[18])) {
-                $projectName = trim($row[19]);
+            if (!empty($row[19])) {
+                $projectName = trim($row[21]);
                 $proyecto = Proyecto::where('nombreProyecto', 'like', '%' . $projectName . '%')->first();
-                $periodo = Periodo::where('numeroPeriodo', $row[18])->first();
+                $periodo = Periodo::where('numeroPeriodo', $row[19])->first();
 
-                $nombreCompleto = $row[20];
+                $nombreCompleto = $row[22];
                 $partesNombre = explode(" ", $nombreCompleto);
                 if (count($partesNombre) >= 2) {
                     $apellido = trim($partesNombre[0]);
@@ -902,10 +911,10 @@ class DocumentosVinculacion extends Controller
                         ->first();
                 }
 
-                $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[21]);
+                $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[23]);
                 $fechaInicioFormatted = $fechaInicio ? $fechaInicio->format('Y-m-d') : null;
 
-                $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $row[22]);
+                $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $row[24]);
                 $fechaFinalizacionFormatted = $fechaFinalizacion ? $fechaFinalizacion->format('Y-m-d') : null;
 
                 $asignacion = AsignacionProyecto::where('estudianteId', $estudiante ? $estudiante->estudianteId : null)
@@ -913,11 +922,14 @@ class DocumentosVinculacion extends Controller
                     ->where('idPeriodo', $periodo ? $periodo->id : null)
                     ->first();
 
+                $nrc = NrcVinculacion::where('nrc', $row[20])->first();
+
                 $data = [
                     'estudianteId' => $estudiante ? $estudiante->estudianteId : null,
                     'proyectoId' => $proyecto ? $proyecto->proyectoId : null,
                     'participanteId' => $participante ? $participante->id : null,
                     'idPeriodo' => $periodo ? $periodo->id : null,
+                    'nrc' => $nrc ? $nrc->id : null,
                     'inicioFecha' => $fechaInicioFormatted,
                     'finalizacionFecha' => $fechaFinalizacionFormatted,
                     'asignacionFecha' => now(),
@@ -937,13 +949,13 @@ class DocumentosVinculacion extends Controller
 
             // Crear o actualizar la primera nota
             NotasEstudiante::updateOrCreate(
-                ['estudianteId' => $estudiante ? $estudiante->estudianteId : null, 'notaFinal' => $row[14] ?? '0']
+                ['estudianteId' => $estudiante ? $estudiante->estudianteId : null, 'notaFinal' => $row[15] ?? '0']
             );
 
             // Crear o actualizar la segunda nota si existe
-            if (!empty($row[24])) {
+            if (!empty($row[26])) {
                 NotasEstudiante::updateOrCreate(
-                    ['estudianteId' => $estudiante ? $estudiante->estudianteId : null, 'notaFinal' => $row[24] ?? '0']
+                    ['estudianteId' => $estudiante ? $estudiante->estudianteId : null, 'notaFinal' => $row[26] ?? '0']
                 );
             }
         }
@@ -954,19 +966,20 @@ class DocumentosVinculacion extends Controller
 
             // Crear o actualizar la primera hora de vinculación
             HoraVinculacion::updateOrCreate(
-                ['estudianteId' => $estudiante ? $estudiante->estudianteId : null, 'horasVinculacion' => $row[13] ?? '0']
+                ['estudianteId' => $estudiante ? $estudiante->estudianteId : null, 'horasVinculacion' => $row[14] ?? '0']
             );
 
             // Crear o actualizar la segunda hora de vinculación si existe
-            if (!empty($row[21])) {
+            if (!empty($row[25])) {
                 HoraVinculacion::updateOrCreate(
-                    ['estudianteId' => $estudiante ? $estudiante->estudianteId : null, 'horasVinculacion' => $row[23] ?? '0']
+                    ['estudianteId' => $estudiante ? $estudiante->estudianteId : null, 'horasVinculacion' => $row[25] ?? '0']
                 );
             }
         }
 
         return back()->with('success', 'Datos importados con éxito!');
     }
+
 
 
 

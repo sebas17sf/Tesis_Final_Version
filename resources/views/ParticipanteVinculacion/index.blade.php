@@ -15,56 +15,56 @@
 
 
     @if (session('error'))
-    <div class="contenedor_alerta error">
-    <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Error!</div>
-      <div class="body">{{ session('error') }}</div>
-    </div>
-  </div>
+        <div class="contenedor_alerta error">
+            <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Error!</div>
+                <div class="body">{{ session('error') }}</div>
+            </div>
+        </div>
     @endif
 
     <div class="container" style="overflow-x: auto;">
         <br>
         <h4><b>Proyecto en Ejecución</b></h4>
         <div class="mat-elevation-z8 contenedor_general">
-                <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
-                    <!-- Botones -->
-                    <div class="contenedor_botones">
-        <form method="POST" action="{{ route('reporte.director') }}"
-            class="form-inline d-flex align-items-center">
-            @csrf
-             <div class="tooltip-container">
-                <span class="tooltip-text">Historial Director</span>
-                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
-                    <span id="loadingIcon" style="display: none !important; ">
-                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
-                    </span>
-                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
-                </button>
-            </div>
-        </form>
+            <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+                <!-- Botones -->
+                <div class="contenedor_botones">
+                    <form method="POST" action="{{ route('reporte.director') }}"
+                        class="form-inline d-flex align-items-center">
+                        @csrf
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Historial Director</span>
+                            <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+                                <span id="loadingIcon" style="display: none !important; ">
+                                    <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+                                </span>
+                                <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                            </button>
+                        </div>
+                    </form>
 
-        <form method="POST" action="{{ route('reporte.historicoParticipante') }}"
-            class="form-inline d-flex align-items-center">
-            @csrf
-             <div class="tooltip-container">
-                <span class="tooltip-text">Historial participante</span>
-                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
-                    <span id="loadingIcon" style="display: none !important; ">
-                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
-                    </span>
-                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
-                </button>
+                    <form method="POST" action="{{ route('reporte.historicoParticipante') }}"
+                        class="form-inline d-flex align-items-center">
+                        @csrf
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Historial participante</span>
+                            <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+                                <span id="loadingIcon" style="display: none !important; ">
+                                    <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+                                </span>
+                                <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </form>
-</div>
-</div>
-</div>
-<br>
+        </div>
+        <br>
 
-       
-@if ($proyectosEnEjecucion && $proyectosEnEjecucion->isNotEmpty())
+
+        @if ($proyectosEnEjecucion && $proyectosEnEjecucion->isNotEmpty())
             <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
 
@@ -76,13 +76,13 @@
                                 <th class="tamanio">ACTIVIDADES A REALIZAR</th>
                                 <th>CORREO TUTOR</th>
                                 <th class="tamanio2">DEPARTAMENTO</th>
-                                <th>FECHA INICIO</th>
-                                <th>FECHA FIN</th>
+                                <th>FECHA INICIO INTERVENCIÓN</th>
+                                <th>FECHA FIN INTERVENCIÓN</th>
                                 <th>ESTADO</th>
                             </tr>
                         </thead>
                         <tbody class="mdc-data-table__content ng-star-inserted">
-                      
+
                             @foreach ($proyectosEnEjecucion as $proyecto)
                                 <tr>
                                     <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify;">
@@ -92,7 +92,7 @@
                                         {{ strtoupper($proyecto->proyecto->director->nombres ?? 'No asignado') }}</td>
                                     <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify;">
                                         {{ $proyecto->proyecto->descripcionProyecto }}</td>
-                                    <td>{{ $proyecto->docenteParticipante->correo }}</td>
+                                    <td>{{ $proyecto->proyecto->director->correo }}</td>
                                     <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">
                                         {{ $proyecto->proyecto->departamentoTutor }}</td>
                                     <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
@@ -105,7 +105,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    @else
+                @else
                     <p>No hay proyectos en ejecución.</p>
         @endif
     </div>

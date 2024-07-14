@@ -341,18 +341,18 @@ class DocumentoController extends Controller
         $departamento = "Departamento de " . $primerEstudiante->departamento;
 
         $meses = [
-            'January' => 'enero',
-            'February' => 'febrero',
-            'March' => 'marzo',
-            'April' => 'abril',
-            'May' => 'mayo',
-            'June' => 'junio',
-            'July' => 'julio',
-            'August' => 'agosto',
-            'September' => 'septiembre',
-            'October' => 'octubre',
-            'November' => 'noviembre',
-            'December' => 'diciembre',
+            'January' => 'Enero',
+            'February' => 'Febrero',
+            'March' => 'Marzo',
+            'April' => 'Abril',
+            'May' => 'Mayo',
+            'June' => 'Junio',
+            'July' => 'Julio',
+            'August' => 'Agosto',
+            'September' => 'Septiembre',
+            'October' => 'Octubre',
+            'November' => 'Noviembre',
+            'December' => 'Diciembre',
         ];
 
         $fechaFormateada = date('d F Y', strtotime($fechaInicioProyecto));
@@ -363,7 +363,7 @@ class DocumentoController extends Controller
         $matriz = 'Sede Santo Domingo';
         $nombreProfesor = $primerEstudiante->NombreProfesor;
         $apellidoProfesor = $primerEstudiante->ApellidoProfesor;
-        $nombreCombinado = "Ing. {$nombreProfesor} {$apellidoProfesor}, Mgtr";
+        $nombreCombinado = "{$nombreProfesor} {$apellidoProfesor}";
 
         // Obtener la hoja activa del archivo XLSX
         $sheet = $spreadsheet->getActiveSheet();
@@ -399,11 +399,24 @@ class DocumentoController extends Controller
         $sheet->mergeCells('B18:D18');
         $sheet->mergeCells('B17:D17');
         $sheet->mergeCells('B19:D19');
-        $sheet->setCellValue('B17', $nombreCombinado);
-        $sheet->setCellValue('B18', $departamento);
-        $sheet->setCellValue('B19', 'Director del proyecto');
-        $sheet->setCellValue('B9', 'Fecha:');
-        $sheet->setCellValue('C9', $fechaFormateada);
+        $sheet->setCellValue('B26', $nombreCombinado);
+        $sheet->setCellValue('B27', $departamento);
+
+        $sheet->setCellValue('B28', 'Director del proyecto');
+        $sheet->getStyle('B28')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
+        $sheet->getStyle('B28')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('B28')->getAlignment()->setWrapText(true);
+
+
+        $filaFinal = $filaInicio + count($datosEstudiantes) + 2; // Dos filas más abajo
+        $sheet->setCellValue('B' . $filaFinal, 'Fecha:');
+        ///agrega estilos a la celda
+        $sheet->getStyle('B' . $filaFinal)->getFont()->setName('Calibri')->setSize(16)->setBold(true);
+        $sheet->getStyle('C' . $filaFinal)->getFont()->setName('Calibri')->setSize(16);
+        $sheet->getStyle('C' . $filaFinal)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+        $sheet->getStyle('C' . $filaFinal)->getAlignment()->setWrapText(true);
+        $sheet->setCellValue('C' . $filaFinal, $fechaFormateada);
+
         $sheet->setCellValue('C2', $departamentoProyecto);
 
         // Formatear celdas
@@ -415,6 +428,7 @@ class DocumentoController extends Controller
         $sheet->getStyle('B19')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
         $sheet->getStyle('B19')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         $sheet->getStyle('B9')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
+
 
         // Descargar el documento generado
         $nombreArchivo = '1.3-Número-Horas-Estudiantes.xlsx';
@@ -516,18 +530,18 @@ class DocumentoController extends Controller
         $fechaInicioProyecto = $primerEstudiante->inicioFecha;
         $fechaFinProyecto = $primerEstudiante->finalizacionFecha;
         $meses = [
-            'January' => 'enero',
-            'February' => 'febrero',
-            'March' => 'marzo',
-            'April' => 'abril',
-            'May' => 'mayo',
-            'June' => 'junio',
-            'July' => 'julio',
-            'August' => 'agosto',
-            'September' => 'septiembre',
-            'October' => 'octubre',
-            'November' => 'noviembre',
-            'December' => 'diciembre',
+            'January' => 'Enero',
+            'February' => 'Febrero',
+            'March' => 'Marzo',
+            'April' => 'Abril',
+            'May' => 'Mayo',
+            'June' => 'Junio',
+            'July' => 'Julio',
+            'August' => 'Agosto',
+            'September' => 'Septiembre',
+            'October' => 'Octubre',
+            'November' => 'Noviembre',
+            'December' => 'Diciembre',
         ];
 
         $fechaFormateada2 = date('d ', strtotime($fechaFinProyecto)) . $meses[date('F', strtotime($fechaFinProyecto))] . date(' Y', strtotime($fechaFinProyecto));
@@ -600,7 +614,7 @@ class DocumentoController extends Controller
             $contador++;
         }
         foreach ($datosEstudiantes2 as $index => $estudiante) {
-            $fechaActividades = date('d, F Y', strtotime($estudiante->fecha));
+             $fechaActividades = date('d ', strtotime($estudiante->fecha)) . $meses[date('F', strtotime($estudiante->fecha))] . date(' Y', strtotime($estudiante->fecha));
             $template->setValue('fecha#' . ($index + 1), $fechaActividades);
             $template->setValue('actividades#' . ($index + 1), $estudiante->actividades);
             $template->setValue('numero_horas#' . ($index + 1), $estudiante->numeroHoras);
@@ -1311,13 +1325,13 @@ class DocumentoController extends Controller
 
         // Apply formatting to the sheet
         $sheet->getStyle('A9:AJ' . ($filaInicio + $cantidadFilas))
-              ->getAlignment()
-              ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)
-              ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            ->getAlignment()
+            ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)
+            ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
 
         $sheet->getStyle('Q9:Q' . ($filaInicio + $cantidadFilas))
-              ->getNumberFormat()
-              ->setFormatCode('0000000000001');
+            ->getNumberFormat()
+            ->setFormatCode('0000000000001');
 
         // Save the generated document
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
@@ -1391,13 +1405,13 @@ class DocumentoController extends Controller
 
         // Apply formatting to the sheet
         $sheet->getStyle('A9:AJ' . ($filaInicio + $cantidadFilas))
-              ->getAlignment()
-              ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)
-              ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            ->getAlignment()
+            ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)
+            ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
 
         $sheet->getStyle('Q9:Q' . ($filaInicio + $cantidadFilas))
-              ->getNumberFormat()
-              ->setFormatCode('0000000000001');
+            ->getNumberFormat()
+            ->setFormatCode('0000000000001');
 
         // Save the generated document
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
@@ -1464,10 +1478,10 @@ class DocumentoController extends Controller
         // Guardar el documento generado
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $nombreArchivo = 'Reporte_proyectos_sociales.xlsx';
-         $writer->save($nombreArchivo);
+        $writer->save($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
         // Descargar el documento generado
-     }
+    }
 
 
     ////////////////////////reporte de docentes///////////////////////
