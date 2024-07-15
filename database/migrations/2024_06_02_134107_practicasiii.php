@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('practicasiii', function (Blueprint $table) {
             $table->id('practicasIII');
             $table->unsignedBigInteger('estudianteId')->nullable();
-             $table->unsignedBigInteger('nrc')->nullable();
+            $table->unsignedBigInteger('nrc')->nullable();
             $table->foreign('nrc')->references('id')->on('nrc')->nullable();
             $table->foreign('estudianteId')->references('estudianteId')->on('estudiantes')->nullable();
             $table->unsignedBigInteger('idEmpresa')->nullable();

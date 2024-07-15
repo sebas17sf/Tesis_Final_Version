@@ -88,16 +88,25 @@
                                     <li>Baremo</li>
                                 </div>
                             </a>
+
+                            <a href="{{ route('ParticipanteVinculacion.practicas') }}" class="p-element">
+                                <div class="icon-sidebar-item">
+                                    <i class="fa-solid fa-briefcase"></i>
+                                 </div>
+                                <div class="name-sidebar-item">
+                                    <li>Prácticas</li>
+                                </div>
+                            </a>
                         </ul>
                     </nav>
                 </div>
             </div>
             <div class="content-autors">
                 <span class="autors1">
-                <i>Designed by </i>
-      <b><a>Sebastian Flores</a></b>
-      <i> & </i>
-      <b><a>Karen Cueva</a></b>.
+                    <i>Designed by </i>
+                    <b><a>Sebastian Flores</a></b>
+                    <i> & </i>
+                    <b><a>Karen Cueva</a></b>.
                 </span>
             </div>
         </div>

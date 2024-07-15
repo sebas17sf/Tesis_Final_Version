@@ -182,6 +182,12 @@ Route::middleware(['auth'])->group(function () {
     ///ruta para actualizar las notas del estudiante
     Route::put('/participante-vinculacion/{id}/actualizar-notas', [ParticipanteVinculacionController::class, 'editarNotas'])->name('actualizar-notas');
 
+    ////////////practticas
+    Route::get('/participante-vinculacion/practicas', [ParticipanteVinculacionController::class, 'practicas'])->name('ParticipanteVinculacion.practicas');
+    //////guardarNotasPracticasi
+    Route::post('/participante-vinculacion/guardar-notas-practicasi', [ParticipanteVinculacionController::class, 'guardarNotasPracticasi'])->name('ParticipanteVinculacion.guardarNotasPracticasi');
+
+
     ///acta de reunion
     Route::post('/participante-vinculacion/generar-acta-reunion', [DocumentoController::class, 'actaReunion'])->name('ParticipanteVinculacion.generarActaReunion');
 

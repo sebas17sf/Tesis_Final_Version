@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Proyecto;
 use App\Models\Usuario;
+use App\Models\NotasPracticasi;
 use Carbon\Carbon;
 use App\Models\AsignacionSinEstudiante;
 use App\Models\ActividadEstudiante;
@@ -170,7 +171,7 @@ class ParticipanteVinculacionController extends Controller
 
         $inicioFecha = $proyecto->inicioFecha ?? null;
         $finalizacionFecha = $proyecto->finalizacionFecha ?? null;
- 
+
 
         return view('ParticipanteVinculacion.baremo', compact('inicioFecha', 'finalizacionFecha'));
     }
@@ -335,6 +336,58 @@ class ParticipanteVinculacionController extends Controller
     }
 
 
+
+    public function practicas()
+    {
+        $participante = Auth::user()->profesorUniversidad;
+
+        ////obtener los estudiantes con practicasi en ejecucion del participante
+        $estudiantes = Estudiante::whereHas('practicasi', function ($query) {
+            $query->where('Estado', 'En ejecucion');
+        })->get();
+
+
+        ///estudiantes a calificar que no tienen nota en NotasPracticasi
+
+        $estudiantesCalificar = Estudiante::whereHas('practicasi', function ($query) {
+            $query->where('Estado', 'En ejecucion');
+        })->whereDoesntHave('notas_practicasi')->get();
+
+
+        $estudiantesCalificados = Estudiante::whereHas('practicasi', function ($query) {
+            $query->where('Estado', 'En ejecucion');
+        })->whereHas('notas_practicasi', function ($query) {
+        })->get();
+
+
+
+        return view('ParticipanteVinculacion.practicas', compact('estudiantes', 'estudiantesCalificar', 'estudiantesCalificados'));
+
+    }
+
+
+    ///////////////guardar notas practicasi
+    public function guardarNotasPracticasi(Request $request)
+    {
+        $request->validate([
+            'notaTutorEmpresarial' => 'required',
+            'notaTutorAcademico' => 'required',
+        ]);
+
+
+        $notaTutor = $request->input('notaTutorEmpresarial');
+        $notaAcademico = $request->input('notaTutorAcademico');
+        $estudianteId = $request->input('estudianteId');
+
+
+        $nota = new NotasPracticasi();
+        $nota->notaTutor = $notaTutor;
+        $nota->notaAcademico = $notaAcademico;
+        $nota->estudianteId = $estudianteId;
+        $nota->save();
+
+        return redirect()->route('ParticipanteVinculacion.practicas')->with('success', 'Notas guardadas exitosamente.');
+    }
 
 
 

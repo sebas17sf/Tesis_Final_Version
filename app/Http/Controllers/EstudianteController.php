@@ -308,6 +308,7 @@ class EstudianteController extends Controller
             'AreaConocimiento' => 'required',
         ]);
 
+ 
 
         $userId = Auth::id();
 

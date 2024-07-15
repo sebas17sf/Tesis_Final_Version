@@ -76,12 +76,66 @@ class Estudiante extends Model
         return $this->hasMany(HoraVinculacion::class, 'estudianteId', 'estudianteId');
     }
 
-
-
     public function actividades_practicas()
     {
         return $this->hasMany(ActividadesPracticas::class, 'estudianteId');
     }
+
+    public function practicasi()
+    {
+        return $this->belongsTo(PracticaI::class, 'estudianteId', 'estudianteId');
+    }
+
+    public function practicasii()
+    {
+        return $this->belongsTo(PracticaII::class, 'estudianteId', 'estudianteId');
+    }
+
+    public function practicasiii()
+    {
+        return $this->belongsTo(PracticaIII::class, 'estudianteId', 'estudianteId');
+    }
+
+    public function practicasiv()
+    {
+        return $this->belongsTo(PracticaIV::class, 'estudianteId', 'estudianteId');
+    }
+
+    public function practicasv()
+    {
+        return $this->belongsTo(PracticaV::class, 'estudianteId', 'estudianteId');
+    }
+
+    public function notas_practicasi()
+    {
+        return $this->hasMany(NotasPracticasi::class, 'estudianteId', 'estudianteId');
+    }
+
+    public function notas_practicasii()
+    {
+        return $this->hasMany(NotasPracticasii::class, 'estudianteId', 'estudianteId');
+    }
+
+    public function notas_practicasiii()
+    {
+        return $this->hasMany(NotasPracticasiii::class, 'estudianteId', 'estudianteId');
+    }
+
+    public function notas_practicasiv()
+    {
+        return $this->hasMany(NotasPracticasiv::class, 'estudianteId', 'estudianteId');
+    }
+
+    public function notas_practicasv()
+    {
+        return $this->hasMany(NotasPracticasv::class, 'estudianteId', 'estudianteId');
+    }
+
+
+
+
+
+
 
 
 
