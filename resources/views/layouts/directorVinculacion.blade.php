@@ -196,10 +196,8 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="{{ asset('js/menu.js') }}"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <script src="{{ asset('js/sesiones.js') }}"></script>
-
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <script src="{{ asset('js/sesiones.js') }}"></script>
 
     <script>
         function toggleSidebar() {
@@ -237,9 +235,9 @@
         }
     </script>
 
-    <script src="{{ asset('js/menu.js') }}"></script>
 
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+
 </body>
 
 </html>
