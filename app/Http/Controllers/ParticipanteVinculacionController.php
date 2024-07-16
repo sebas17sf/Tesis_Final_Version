@@ -24,7 +24,7 @@ use App\Models\UsuariosSession;
 class ParticipanteVinculacionController extends Controller
 {
 
-     public function index(Request $request)
+    public function index(Request $request)
     {
         $elementosPorPagina = $request->input('elementosPorPagina', 10);
 

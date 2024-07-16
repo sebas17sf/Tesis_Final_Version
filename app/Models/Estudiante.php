@@ -57,7 +57,7 @@ class Estudiante extends Model
 
     public function actividades()
     {
-        return $this->hasMany(ActividadEstudiante::class, 'estudianteId');
+        return $this->hasMany(ActividadEstudiante::class, 'estudianteId', 'estudianteId');
     }
     public function proyectos()
     {

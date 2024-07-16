@@ -699,6 +699,13 @@ class DocumentosVinculacion extends Controller
         $correoUsuario = $usuario->correoElectronico;
         $director = ProfesUniversidad::where('correo', $correoUsuario)->first();
         $proyecto = Proyecto::where('directorId', $director->id)->first();
+
+        /////valida si el director tiene proyectos asignados
+        if ($proyecto == null) {
+            return redirect()->back()->with('error', 'No tiene proyectos asignados como director');
+        }
+
+
         $asignacionProyecto = AsignacionProyecto::where('proyectoId', $proyecto->proyectoId)
             ->get();
 

@@ -88,8 +88,8 @@ class DirectorVinculacionController extends Controller
                 ->flatMap(function ($proyecto) {
                     return $proyecto->asignaciones;
                 });
-        }
 
+        }
 
         $actividadesEstudiantes = ActividadEstudiante::join('asignacionproyectos', 'asignacionproyectos.estudianteId', '=', 'actividades_estudiante.estudianteId')
             ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
@@ -470,8 +470,8 @@ class DirectorVinculacionController extends Controller
 
 
 
-            $inicioFecha = $proyectos ->inicioFecha;
-             $finalizacionFecha = $proyectos ->finFecha;
+        $inicioFecha = $proyectos->inicioFecha;
+        $finalizacionFecha = $proyectos->finFecha;
 
         return view('director_vinculacion.baremo', compact('proyectos', 'inicioFecha', 'finalizacionFecha'));
     }
