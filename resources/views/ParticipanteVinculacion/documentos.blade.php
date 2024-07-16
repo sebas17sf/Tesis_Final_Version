@@ -1,7 +1,7 @@
 @extends('layouts.participante')
 @section('title', 'Documentos')
 
-@section('title_component', 'Desarrollo de documentación')
+@section('title_component', 'Panel de documentación')
 @section('content')
 @if (session('success'))
     <div class="contenedor_alerta success">

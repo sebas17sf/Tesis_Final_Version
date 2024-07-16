@@ -102,7 +102,7 @@
                                 <a class="p-element mb-1 subitem"
                                     href="{{ route('ParticipanteVinculacion.practicas') }}">
                                     <div class="icon-sidebar-item">
-                                        <i class="fa-solid fa-user-graduate"></i>
+                                    <i class="fa-solid fa-user-check"></i>
                                     </div>
                                     <div class="name-sidebar-item">
                                         <li>Practicas I</li>
@@ -110,7 +110,7 @@
                                 </a>
                                 <a class="p-element subitem" href="{{ route('ParticipanteVinculacion.practicasii') }}">
                                     <div class="icon-sidebar-item">
-                                        <i class="fa-solid fa-user-graduate"></i>
+                                    <i class="fa-sharp fa-solid fa-list-check"></i>
                                     </div>
                                     <div class="name-sidebar-item">
                                         <li>Practicas II</li>
