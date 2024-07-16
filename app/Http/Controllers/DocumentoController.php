@@ -714,6 +714,173 @@ class DocumentoController extends Controller
 
     }
 
+    ///////////////////////////////reporte de asistencia del estudiante//////////////////////////////////
+    public function generarAsistenciaEstudiante(Request $request)
+    {
+        $plantillaPath = public_path('Plantillas/1.1-Registro-de-Estudiantes.xlsx');
+        $spreadsheet = IOFactory::load($plantillaPath);
+        $usuario = auth()->user();
+        $correoUsuario = $usuario->correoElectronico;
+        $participanteVinculacion = ProfesUniversidad::where('correo', $correoUsuario)->first();
+        // Obtener la relación AsignacionProyecto para este ParticipanteVinculacion
+        $asignacionProyecto = AsignacionProyecto::where('participanteId', $participanteVinculacion->id)
+            ->whereHas('estudiante', function ($query) {
+                $query->where('estado', 'Aprobado');
+            })
+            ->first();
+
+        //////verificar si esta asignado a un proyecto
+        if ($asignacionProyecto == null) {
+            return redirect()->back()->with('error', 'No tiene proyectos asignados');
+        }
+
+        ///obtener la id del director de AsiignacionProyecto
+        $proyecto = Proyecto::where('proyectoId', $asignacionProyecto->proyectoId)->first();
+
+
+        if ($proyecto->estado != 'Ejecucion') {
+            return redirect()->back()->with('error', 'No tiene Proyectos en ejecucion.');
+        }
+        // Obtener los estudiantes asignados a este proyecto
+        $estudiantes = AsignacionProyecto::where('proyectoId', $proyecto->proyectoId)
+            ->whereHas('estudiante', function ($query) {
+                $query->where('estado', 'Aprobado');
+            })
+            ->get();
+        if ($estudiantes->isEmpty()) {
+            return redirect()->back()->with('error', 'No hay estudiantes asignados a este proyecto.');
+        }
+        $Director = ProfesUniversidad::where('id', $proyecto->directorId)->first();
+
+
+        $hojaCalculo = $spreadsheet->getActiveSheet();
+        $filaInicio = 9;
+        $cantidadFilas = count($estudiantes);
+        $hojaCalculo->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
+        $estudiantes = $estudiantes->sortBy('Estudiante.Apellidos');
+        ///Obtener el nombre del participante
+        $nombreParticipante = "Ing. " . $participanteVinculacion->apellidos . ' ' . $participanteVinculacion->nombres . ", Mgtr.";
+        $nombreDirector = "Ing. " . $Director->apellidos . ' ' . $Director->nombres . ", Mgtr.";
+        ///Obtener el departamento del participante
+        $departamento = "Departamento de " . $participanteVinculacion->departamento;
+        $departamentoDirector = "Departamento de " . $proyecto->departamentoTutor;
+        $nombreProyecto = "Nombre del Proyecto: " . $proyecto->nombreProyecto;
+        $firma1 = 'DOCENTE PARTICIPANTE';
+        $firma2 = 'DIRECTOR DE PROYECTO';
+        ///Obtener del input
+        $fechaInput = $request->input('fecha');
+        $fechaFormateada = date('d F Y', strtotime($fechaInput));
+        $meses = [
+            'January' => 'enero',
+            'February' => 'febrero',
+            'March' => 'marzo',
+            'April' => 'abril',
+            'May' => 'mayo',
+            'June' => 'junio',
+            'July' => 'julio',
+            'August' => 'agosto',
+            'September' => 'septiembre',
+            'October' => 'octubre',
+            'November' => 'noviembre',
+            'December' => 'diciembre',
+        ];
+        $fechaFormateada = strtr($fechaFormateada, $meses);
+
+
+        $lugarInput = $request->input('lugar');
+        $lugar = "Lugar: " . $lugarInput;
+
+        $actividadesInput = $request->input('actividades');
+        $hojaCalculo->getCell("A5")->setValue("Actividad(es):\n$actividadesInput");
+
+
+        ///combinar celdas
+        $hojaCalculo->mergeCells('B18:C18');
+        $hojaCalculo->mergeCells('E18:F18');
+        $hojaCalculo->mergeCells('B19:C19');
+        $hojaCalculo->mergeCells('E19:F19');
+        $hojaCalculo->mergeCells('B20:C20');
+        $hojaCalculo->mergeCells('E20:F20');
+
+
+
+
+        ///llenar las celdas
+        $hojaCalculo->setCellValue("B18", $nombreParticipante);
+        $hojaCalculo->getStyle("B18")->getFont()->setSize(11);
+        $hojaCalculo->getStyle("B18")->getFont()->setName("Arial Narrow");
+        $hojaCalculo->getStyle("B18")->getFont()->setBold(true);
+        $hojaCalculo->getStyle("B18")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $hojaCalculo->setCellValue("E18", $nombreDirector);
+        $hojaCalculo->getStyle("E18")->getFont()->setSize(11);
+        $hojaCalculo->getStyle("E18")->getFont()->setName("Arial Narrow");
+        $hojaCalculo->getStyle("E18")->getFont()->setBold(true);
+        $hojaCalculo->getStyle("E18")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $hojaCalculo->setCellValue("B19", $departamento);
+        $hojaCalculo->getStyle("B19")->getFont()->setSize(11);
+        $hojaCalculo->getStyle("B19")->getFont()->setName("Arial Narrow");
+        $hojaCalculo->getStyle("B19")->getFont()->setBold(true);
+        $hojaCalculo->getStyle("B19")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $hojaCalculo->setCellValue("E19", $departamentoDirector);
+        $hojaCalculo->getStyle("E19")->getFont()->setSize(11);
+        $hojaCalculo->getStyle("E19")->getFont()->setName("Arial Narrow");
+        $hojaCalculo->getStyle("E19")->getFont()->setBold(true);
+        $hojaCalculo->getStyle("E19")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $hojaCalculo->setCellValue("A4", $nombreProyecto);
+
+        $nombreResponsable = "Nombre del Responsable:\n$nombreDirector\n$nombreParticipante";
+        $hojaCalculo->setCellValue("G5", $nombreResponsable);
+        $hojaCalculo->getStyle("G5")->getAlignment()->setWrapText(true);
+
+
+
+        $hojaCalculo->setCellValue("B20", $firma1);
+        $hojaCalculo->getStyle("B20")->getFont()->setName("Arial Narrow");
+        $hojaCalculo->getStyle("B20")->getFont()->setBold(true);
+        $hojaCalculo->getStyle("B20")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+
+        $hojaCalculo->setCellValue("E20", $firma2);
+        $hojaCalculo->getStyle("E20")->getFont()->setName("Arial Narrow");
+        $hojaCalculo->getStyle("E20")->getFont()->setBold(true);
+        $hojaCalculo->getStyle("E20")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+
+        //mostra datos del input
+        $hojaCalculo->setCellValue("E6", "Fecha: $fechaFormateada");
+        $hojaCalculo->setCellValue("A6", $lugar);
+        $contador = 1;
+        ///crea el foreach para recorrer los estudiantes y obtener Nombres,Apellidos y cedula
+        foreach ($estudiantes as $index => $estudiante) {
+            $filaActual = $filaInicio + $index;
+            $hojaCalculo->setCellValue("A$filaActual", $contador);
+            $nombreCompleto = $estudiante->Estudiante->apellidos . ' ' . $estudiante->Estudiante->nombres;
+            $hojaCalculo->setCellValue("B$filaActual", $nombreCompleto);
+            $hojaCalculo->setCellValue("C$filaActual", $estudiante->Estudiante->cedula);
+            $hojaCalculo->setCellValue("D$filaActual", $estudiante->Estudiante->carrera);
+            $hojaCalculo->setCellValue("E$filaActual", $estudiante->Estudiante->celular);
+            $hojaCalculo->setCellValue("F$filaActual", $estudiante->Estudiante->correo);
+
+
+
+
+        }
+
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $nombreArchivo = "1.1-Registro-de-Estudiantes.xlsx";
+        $writer->save($nombreArchivo);
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+
+
+
+
+    }
+
 
     ////////////////////////Creacion de reportes estudiantes vinculacion
     public function reportesVinculacion(Request $request)
