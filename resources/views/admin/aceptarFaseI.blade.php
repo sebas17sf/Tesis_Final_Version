@@ -269,8 +269,7 @@
                                                 <td style="text-transform: uppercase; text-align: left;">
                                                     {{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrc->nrc ?? 'No cuenta con NRC') }}
-                                                </td>
+                                                <td>{{ strtoupper($practicaI->nrc->nrc ?? 'No cuenta con NRC') }}</td>
                                                 <td>{{ strtoupper($practicaI->nrc->periodo->numeroPeriodo ?? 'No cuenta con NRC') }}
                                                 </td>
                                                 <td>{{ strtoupper($practicaI->FechaInicio) }}</td>

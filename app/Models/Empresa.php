@@ -26,5 +26,6 @@ class Empresa extends Model
 
 
     ];
+    
 
 }

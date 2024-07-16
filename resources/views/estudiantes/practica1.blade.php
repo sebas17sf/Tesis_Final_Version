@@ -417,7 +417,7 @@
                                 <th>Nivel:</th>
                                 <td>
                                     <select id="Nivel" name="Nivel" class="form-control input input_select3">
-                                        <option value="1">Seleccione un nivel</option>
+                                        <option value="">Seleccione un nivel</option>
                                         <option value="Pregrado">PREGRADO</option>
                                         <option value="Posgrado">POSTGRADO</option>
                                     </select>
@@ -435,7 +435,7 @@
                                 <th>Escoja Práctica:</th>
                                 <td>
                                     <select id="Practicas" name="Practicas" class="form-control input input_select3">
-                                        <option value="1">Seleccione una práctica</option>
+                                        <option value="">Seleccione una práctica</option>
                                         <option value="SERVICIO A LA COMUNIDAD">SERVICIO A LA COMUNIDAD</option>
                                         <option value="PASANTIAS">PASANTÍAS</option>
                                         <option value="PRACTICAS PRE PROFESIONALES">PRÁCTICAS PRE PROFESIONALES

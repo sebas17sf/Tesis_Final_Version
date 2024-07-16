@@ -15,4 +15,9 @@ class NrcVinculacion extends Model
     {
         return $this->belongsTo(Periodo::class, 'idPeriodo');
     }
+
+    public function practicas()
+    {
+        return $this->hasMany(PracticaI::class, 'id', 'nrc');
+    }
 }
