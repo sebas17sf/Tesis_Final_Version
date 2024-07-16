@@ -91,13 +91,13 @@
 
         <p>A continuación, te proporcionamos algunos detalles sobre tu solicitud:</p>
         <ul>
-            <li><strong>Nombre:</strong> {{ $estudiante->Nombres }}</li>
-            <li><strong>Apellido:</strong> {{ $estudiante->Apellidos }}</li>
-            <li><strong>ID ESPE:</strong> {{ $estudiante->espe_id }}</li>
+            <li><strong>Nombre:</strong> {{ $estudiante->nombres }}</li>
+            <li><strong>Apellido:</strong> {{ $estudiante->apellidos }}</li>
+            <li><strong>ID ESPE:</strong> {{ $estudiante->espeId }}</li>
             <li><strong>Celular:</strong> {{ $estudiante->celular }}</li>
             <li><strong>Cedula:</strong> {{ $estudiante->cedula }}</li>
-            <li><strong>Cohorte:</strong> {{ $estudiante->cohortes->Cohorte }}</li>
-            <li><strong>Departamento:</strong> {{ $estudiante->Departamento }}</li>
+            <li><strong>Cohorte:</strong> {{ $estudiante->Cohorte}}</li>
+            <li><strong>Departamento:</strong> {{ $estudiante->departamento }}</li>
         </ul>
 
         @if ($motivoNegacion)

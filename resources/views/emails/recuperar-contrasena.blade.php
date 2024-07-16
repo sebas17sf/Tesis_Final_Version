@@ -98,9 +98,8 @@
                 <li><strong>Celular:</strong> {{ $estudiante->celular }}</li>
                 <li><strong>Cedula:</strong> {{ $estudiante->cedula }}</li>
                 <li><strong>Carrera:</strong> {{ $estudiante->carrera }}</li>
-                <li><strong>Cohorte:</strong> {{ $estudiante->periodos->numeroPeriodo }}</li>
-                <li><strong>Cohorte:</strong> {{ $estudiante->periodos->periodo }}</li>
-                <li><strong>Correo Electrónico:</strong> {{ $estudiante->correo }}</li>
+                <li><strong>Cohorte:</strong> {{ $estudiante->Cohorte}}</li>
+                 <li><strong>Correo Electrónico:</strong> {{ $estudiante->correo }}</li>
                 <li><strong>Departamento:</strong> {{ $estudiante->departamento }}</li>
             @else
                 <p>Aún no has proporcionado tu información académica.</p>
