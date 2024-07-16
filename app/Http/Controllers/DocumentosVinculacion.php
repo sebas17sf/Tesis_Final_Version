@@ -228,7 +228,7 @@ class DocumentosVinculacion extends Controller
 
         ///Obtener el nombre del participante
         $nombreParticipante = "Ing. " . $participanteVinculacion->apellidos . ' ' . $participanteVinculacion->nombres . ", Mgtr.";
-        $nombreDirector = "Ing. " . $Director->apellidos . ' ' . $Director->nombres . ", Mgtr.";
+        $nombreDirector = $Director->apellidos . ' ' . $Director->nombres;
         ///Obtener el departamento del participante
         $departamento = $participanteVinculacion->departamento;
         $departamentoDirector = $proyecto->departamentoTutor;
@@ -242,8 +242,8 @@ class DocumentosVinculacion extends Controller
         $sede = 'Santo Domingo';
         $departamentosParticipante = $participanteVinculacion->departamento;
         $departamentosDirector = $proyecto->departamentoTutor;
-        $fechaInicio = $proyecto->first()->asignaciones->first()->inicioFecha;
-        $fechaFin = $proyecto->first()->asignaciones->first()->finalizacionFecha;
+        $fechaInicio = $asignacionProyecto->inicioFecha;
+        $fechaFin = $asignacionProyecto->finalizacionFecha;
         $NumeroHoras = '96';
         $nombreProyecto = $proyecto->nombreProyecto;
         $fechaFormateada = date('d F Y', strtotime($fechaFin));
@@ -270,6 +270,11 @@ class DocumentosVinculacion extends Controller
 
         $hojaCalculo->mergeCells('I13:K13');
         ///llenar las celdas
+
+        /////nomnre del director
+        $hojaCalculo->setCellValue("B16", $nombreDirector);
+        $hojaCalculo->getStyle("B16")->getFont()->setSize(14);
+        $hojaCalculo->getStyle("B16")->getFont()->setBold(true);
 
 
         $hojaCalculo->setCellValue("C7", $nombreParticipanteCompleto);
