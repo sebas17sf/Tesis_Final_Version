@@ -39,13 +39,10 @@
             class="form-inline d-flex align-items-center">
             @csrf
              <div class="tooltip-container">
-                <span class="tooltip-text">Historial Director</span>
-                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
-                    <span id="loadingIcon" style="display: none !important; ">
-                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
-                    </span>
-                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
-                </button>
+                
+                <button type="submit" class="button1 btn_excel efects_button">
+                                <i class="fas fa-file-excel"></i> Historial Director
+                            </button>
             </div>
         </form>
 
@@ -53,13 +50,9 @@
             class="form-inline d-flex align-items-center">
             @csrf
              <div class="tooltip-container">
-                <span class="tooltip-text">Historial participante</span>
-                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
-                    <span id="loadingIcon" style="display: none !important; ">
-                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
-                    </span>
-                    <i class="fa-solid fa-file-excel" id="excelIcon"></i>
-                </button>
+             <button type="submit" class="button1 btn_excel efects_button">
+                                <i class="fas fa-file-excel"></i> Historial participante
+                            </button>
             </div>
         </form>
         </div>
@@ -78,9 +71,9 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th class="tamanio">NOMBRE DEL PROYECTO</th>
-                                        <th class="tamanio">CODIGO DE PROYECTO</th>
-                                        <th class="tamanio1">DIRECTOR</th>
+                                        <th class="tamanio"> NOMBRE DE PROYECTO</th>
+                                            <th class="tamanio3">CÓDIGO DE PROYECTO</th>
+                                            <th class="tamanio4">DIRECTOR</th>
                                         <th class="tamanio">ACTIVIDADES A REALIZAR</th>
                                         <th>CORREO</th>
                                         <th>DEPARTAMENTO</th>
@@ -121,8 +114,11 @@
 
                         </div>
                     </div>
+                    
                     {{--   <div class="paginator-container">
-                    <nav aria-label="...">
+                        <nav aria-label="..."
+                        style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
+                       
 
                         <ul class="pagination">
                             <li class="page-item mx-3">
@@ -200,12 +196,14 @@
                     </div>
 
                     <div class="paginator-container">
-                        <nav aria-label="...">
+                    <nav aria-label="..."
+                        style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
+                       
 
                             <ul class="pagination">
                                 <li class="page-item mx-3">
                                     <form method="GET" action="{{ route('director_vinculacion.index') }}">
-                                        <select class="form-control page-item" class="input"
+                                        <select class="form-control page-item"
                                             name="elementosPorPaginaTerminados" id="elementosPorPaginaTerminados"
                                             onchange="this.form.submit()">
                                             <option value="10"
@@ -241,42 +239,14 @@
 
 
     </section>
+
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    <script src="js\admin\acciones.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
 @endsection
-{{-- <style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        padding: 4px 8px;
-
-    }
-
-    table,
-    th,
-    td {
-        font-size: 14px;
-        padding: 4px 8px;
-        border: 1px solid #ddd;
-
-    }
-
-    th {
-        border: 1px solid #70a1ff;
-        background-color: #eaf5ff;
-    }
-
-    .wide-cell {
-        max-width: 200px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .body,
-    table,
-    tr,
-    td,
-    th {
-        font-size: 12px;
-
-    }
-</style> --}}

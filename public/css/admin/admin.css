@@ -623,9 +623,9 @@ tr:hover {
 
 .contenedor_alerta {
     position: fixed; /* Posición fija para mantener las alertas en la parte superior */
-    top: 60px !important; /* Ajustado para la posición superior */
+    top: 67px !important; /* Ajustado para la posición superior */
     right: 0px !important; /* Ajustado para la posición derecha */
-    z-index: 1000 !important; /* Asegura que las alertas estén por encima de otros elementos */
+    z-index: 10 !important; /* Asegura que las alertas estén por encima de otros elementos */
     display: flex;
     align-items: center !important;
     justify-content: space-between !important;

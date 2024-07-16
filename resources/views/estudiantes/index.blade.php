@@ -5,25 +5,25 @@
 @section('title_component', 'Información del Estudiante')
 @section('content')
 @if (session('success'))
-<div class="contenedor_alerta success">
+    <div class="contenedor_alerta success">
     <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
     <div class="content_alert">
       <div class="title">Éxito!</div>
       <div class="body">{{ session('success') }}</div>
     </div>
   </div>
-@endif
+    @endif
 
 
-@if (session('error'))
-<div class="contenedor_alerta error">
+    @if (session('error'))
+    <div class="contenedor_alerta error">
     <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
     <div class="content_alert">
       <div class="title">Error!</div>
       <div class="body">{{ session('error') }}</div>
     </div>
   </div>
-@endif
+    @endif
 
     <section class="contenedor_agregar_periodo">
 

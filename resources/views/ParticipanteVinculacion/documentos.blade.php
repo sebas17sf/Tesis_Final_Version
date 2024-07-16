@@ -3,7 +3,7 @@
 
 @section('title_component', 'Desarrollo de documentación')
 @section('content')
-    @if (session('success'))
+@if (session('success'))
     <div class="contenedor_alerta success">
     <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
     <div class="content_alert">
@@ -23,9 +23,6 @@
     </div>
   </div>
     @endif
-
-
-
 
 
     <div class="container mt-5">
@@ -329,15 +326,13 @@
         </div>
     </center>
 
-
-
-
+    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    <script src="js\admin\acciones.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
-
-
-
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
 
 
     <script>

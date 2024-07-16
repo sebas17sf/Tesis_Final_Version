@@ -14,7 +14,11 @@
     @endif
 
 
+<<<<<<< HEAD
     @if (session('error'))
+=======
+@if (session('error'))
+>>>>>>> ee964228e5349bb888be607c71cbeb8c8f7ba58d
         <div class="contenedor_alerta error">
             <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
             <div class="content_alert">
@@ -142,42 +146,42 @@
                                             {{ $estudiante->carrera }}</td>
                                         <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             {{ $estudiante->departamento }}</td>
-                                        <td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             @foreach ($estudiante->notas as $nota)
                                                 {{ $nota->tareas }}<br>
                                             @endforeach
                                         </td>
-                                        <td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             @foreach ($estudiante->notas as $nota)
                                                 {{ $nota->resultadosAlcanzados }}<br>
                                             @endforeach
                                         </td>
-                                        <td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             @foreach ($estudiante->notas as $nota)
                                                 {{ $nota->conocimientos }}<br>
                                             @endforeach
                                         </td>
-                                        <td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             @foreach ($estudiante->notas as $nota)
                                                 {{ $nota->adaptabilidad }}<br>
                                             @endforeach
                                         </td>
-                                        <td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             @foreach ($estudiante->notas as $nota)
                                                 {{ $nota->aplicacion }}<br>
                                             @endforeach
                                         </td>
-                                        <td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             @foreach ($estudiante->notas as $nota)
                                                 {{ $nota->CapacidadLiderazgo }}<br>
                                             @endforeach
                                         </td>
-                                        <td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             @foreach ($estudiante->notas as $nota)
                                                 {{ $nota->asistencia }}<br>
                                             @endforeach
                                         </td>
-                                        <td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             @foreach ($estudiante->notas as $nota)
                                                 {{ $nota->informe }}<br>
                                             @endforeach

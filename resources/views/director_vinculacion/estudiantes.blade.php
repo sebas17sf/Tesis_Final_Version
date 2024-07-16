@@ -25,14 +25,16 @@
     @endif
 
 
-    <div class="container" style="overflow-x: auto;">
+<div class="contenedor_registro_genero ">
 
-
-        <h4><b>Estudiantes por calificar</b></h4>
-
-        <hr>
-        @if (count($estudiantesConNotasPendientes) === 0)
-            <p>El docente participante aun no a calificado a los estudiantes.</p>
+<h4><b>Estudiantes por calificar</b></h4>
+<br>
+@if (count($estudiantesConNotasPendientes) === 0)
+                    <tr style="text-align:center">
+                                            <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">
+                                            El docente participante aun no a calificado a los estudiantes.</td>
+                                        </tr>
+         
         @else
             <h4>Actualizar Informe de Servicio Comunitario</h4>
             <form method="post" action="{{ route('director_vinculacion.actualizarInforme') }}">
@@ -87,12 +89,17 @@
                 <br>
                 <hr>
             </form>
-        @endif
+            @endif
+<br>
 
         <h4><b>Estudiantes Calificados</b></h4>
         <hr>
         @if (count($estudiantesCalificados) === 0)
-            <p>No hay estudiantes calificados en este momento.</p>
+                <tr style="text-align:center">
+                                            <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">
+                                            No hay estudiantes calificados en este momento</td>
+                                        </tr>
+            
         @else
             <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
@@ -254,20 +261,9 @@
     </div>
 
     <script src="{{ asset('js/ParticipanteDirectorVinculacion/notas.js') }}"></script>
-    <style>
-        .contenedor_tabla .table-container table td {
-            width: 200px;
-            min-width: 150px;
-            font-size: 11px !important;
-            padding: .5rem !important;
-        }
-
-        .contenedor_tabla .table-container table th {
-            position: sticky;
-            font-size: .8em !important;
-        }
-    </style>
-
-
-
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('js/admin/acciones.js') }}"></script>
 @endsection
+

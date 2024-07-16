@@ -84,7 +84,8 @@
 
 <body>
     <div class="container">
-        <img src="https://ugvc.espe.edu.ec/wp-content/uploads/2023/08/ugvc.png" alt="Redes Sociales">
+        
+    <img src="{{ asset('img/logos/itin-presencial.png') }}" alt="Redes Sociales">
         <h1>Aprobado para proceso de Vinculación con la Sociedad</h1>
         <p>Estimado/a {{ $estudiante->Apellidos }} {{ $estudiante->Nombres }},</p>
         <p>Nos complace informarte que tu solicitud de vinculación con la sociedad ha sido aprobada. Valoramos tu
@@ -112,13 +113,6 @@
         <p>Equipo de Vinculación con la Sociedad</p>
 
 
-        <div id="reducir-img">
-            <img src="https://ci3.googleusercontent.com/mail-sig/AIorK4z7EUv_PXmbRrZEFi4sUWPhKIGo595K0D9DrrY6_XH22qpDcSqp_aPpadwhPUgAwfuaskljR3M"
-                alt="Unidad de Comunicación Social">
-            <img src="https://ci3.googleusercontent.com/mail-sig/AIorK4x5EBSmRrh-hB6hbSTg0NscUtGd6kunbMt2OzYMIsP8uUr9ZMIFovoHmLXV8O_ZJe7O991hAXw"
-                alt="Redes Sociales">
-        </div>
-
 
         <hr>
         <div class="small-text">
@@ -131,9 +125,7 @@
                 podrá ser usada por éste. Si el lector de este mensaje no es el destinatario del
                 mismo, se le notifica que cualquier copia o distribución de éste se encuentra
                 totalmente prohibida. Si usted ha recibido este mensaje por error, por favor
-                notifique inmediatamente al remitente por este mismo medio y borre el mensaje. Las
-                opiniones que contenga este mensaje son exclusivas de su autor y no necesariamente
-                representan la opinión oficial de la UNIVERSIDAD DE LAS FUERZAS ARMADAS ESPE.”
+                notifique inmediatamente al remitente por este mismo medio y borre el mensaje.”
             </i>
         </div>
 

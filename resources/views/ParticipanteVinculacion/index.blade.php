@@ -31,16 +31,13 @@
             <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                 <!-- Botones -->
                 <div class="contenedor_botones">
-                    <form method="POST" action="{{ route('reporte.director') }}"
+                   <form method="POST" action="{{ route('reporte.director') }}"
                         class="form-inline d-flex align-items-center">
                         @csrf
                         <div class="tooltip-container">
                             <span class="tooltip-text">Historial Director</span>
-                            <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
-                                <span id="loadingIcon" style="display: none !important; ">
-                                    <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
-                                </span>
-                                <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                            <button type="submit" class="button1 btn_excel efects_button">
+                                <i class="fas fa-file-excel"></i>Historial Director
                             </button>
                         </div>
                     </form>
@@ -49,12 +46,9 @@
                         class="form-inline d-flex align-items-center">
                         @csrf
                         <div class="tooltip-container">
-                            <span class="tooltip-text">Historial participante</span>
-                            <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
-                                <span id="loadingIcon" style="display: none !important; ">
-                                    <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
-                                </span>
-                                <i class="fa-solid fa-file-excel" id="excelIcon"></i>
+                            
+                            <button type="submit" class="button1 btn_excel efects_button">
+                                <i class="fas fa-file-excel"></i> Historial participante
                             </button>
                         </div>
                     </form>
@@ -115,6 +109,13 @@
 
     </div>
 
+    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    <script src="js\admin\acciones.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
     <style>
         .contenedor_tabla .table-container table td {
             width: 200px;
