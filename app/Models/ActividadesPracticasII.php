@@ -4,16 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Estudiante;
-use App\Models\PracticaI;
-use App\Models\PracticaII;
 
-class ActividadesPracticas extends Model
+class ActividadesPracticasII extends Model
 {
     use HasFactory;
 
-    protected $table = 'actividades_practicas';
-
+    protected $table = 'actividades_practicasii';
 
     protected $fillable = [
         'actividad',
@@ -27,16 +23,17 @@ class ActividadesPracticas extends Model
         'evidencia'
     ];
 
+    public $timestamps = true;
+
     public function estudiante()
     {
         return $this->belongsTo(Estudiante::class, 'estudianteId');
     }
 
-    public function practicas()
+    public function practicasii()
     {
-        return $this->belongsTo(PracticaI::class, 'practicasi');
+        return $this->belongsTo(PracticaII::class, 'practicasII');
     }
-
 
 
 

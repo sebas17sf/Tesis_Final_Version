@@ -44,30 +44,12 @@ class LoginController extends Controller
                 Auth::login($user);
 
                 $userAgent = $request->userAgent();
-                $response = Http::get('https://api.ipify.org?format=json');
-
-                if ($response->successful()) {
-                    $ipAddress = $response->json('ip');
-                } else {
-                    $ipAddress = $request->ip();
-                }
-
-                $geoIpResponse = Http::get("https://ipinfo.io/{$ipAddress}/json");
-
-                if ($geoIpResponse->successful()) {
-                    $geoData = $geoIpResponse->json();
-                    $locality = $geoData['city'] . ', ' . $geoData['region'] . ', ' . $geoData['country'];
-                    $locality .= ', ' . $geoData['loc'];
-                } else {
-                    $locality = 'Desconocida';
-                }
 
                 // Generar un identificador único
                 $uuid = (string) Str::uuid();
 
                 $existingSession = UsuariosSession::where('userId', $user->userId)
                     ->where('user_agent', $userAgent)
-                    ->where('ip_address', $ipAddress)
                     ->first();
 
                 if ($existingSession) {
@@ -77,8 +59,7 @@ class LoginController extends Controller
                     $session->userId = $user->userId;
                     $session->start_time = now();
                     $session->user_agent = $request->userAgent();
-                    $session->locality = $locality;
-                    $session->ip_address = $ipAddress;
+                    $session->locality = 'Desconocida'; // Localidad desconocida
                     $session->session_id = $uuid; // Guardar el identificador único como session_id
                     $session->save();
                 }
@@ -102,7 +83,6 @@ class LoginController extends Controller
             return redirect()->route('login')->with('error', $e->getMessage());
         }
     }
-
 
 
     public function recuperarContrasena()
@@ -297,7 +277,7 @@ class LoginController extends Controller
 
                 // Update token and token_expires_at
                 $user->token = Str::random(60);
-                 $user->save();
+                $user->save();
 
                 $encryptedToken = $user->token;
 

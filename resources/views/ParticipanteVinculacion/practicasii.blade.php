@@ -35,11 +35,11 @@
                                         <td>{{ $practica->carrera }}</td>
                                         <td>{{ $practica->correo }}</td>
                                         <td>{{ $practica->celular }}</td>
-                                        <td>{{ $practica->practicasi->empresa->nombreEmpresa }}</td>
-                                        <td>{{ $practica->practicasi->NombreTutorEmpresarial }}</td>
-                                        <td>{{ $practica->practicasi->HorasPlanificadas }}</td>
-                                        <td>{{ $practica->practicasi->FechaInicio }}</td>
-                                        <td>{{ $practica->practicasi->FechaFinalizacion }}</td>
+                                        <td>{{ $practica->practicasii->empresa->nombreEmpresa }}</td>
+                                        <td>{{ $practica->practicasii->NombreTutorEmpresarial }}</td>
+                                        <td>{{ $practica->practicasii->HorasPlanificadas }}</td>
+                                        <td>{{ $practica->practicasii->FechaInicio }}</td>
+                                        <td>{{ $practica->practicasii->FechaFinalizacion }}</td>
                                         <td>
                                             <button type="button" class="btn btn-primary" data-toggle="modal"
                                                 data-target="#actividadesModal">
@@ -92,11 +92,11 @@
             </div>
         </div>
 
-        <form id="cerrarPracticaForm" action="{{ route('ParticipanteVinculacion.cerrarProcesoPracticasI') }}"
+        <form id="cerrarPracticaForm" action="{{ route('ParticipanteVinculacion.cerrarProcesoPracticasii') }}"
             method="POST">
             @csrf
             @method('PUT')
-            <button type="button" id="cerrarPracticaBtn" class="btn btn-danger">Cerrar Práctica I estudiantes</button>
+            <button type="button" id="cerrarPracticaBtn" class="btn btn-danger">Cerrar Práctica II estudiantes</button>
         </form>
 
     </div>
@@ -125,7 +125,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($estudiantesCalificar as $index => $practica)
-                                    <form action="{{ route('ParticipanteVinculacion.guardarNotasPracticasi') }}"
+                                    <form action="{{ route('ParticipanteVinculacion.guardarNotasPracticasii') }}"
                                         method="POST">
                                         @csrf
                                         <tr>
@@ -184,9 +184,9 @@
                                         <td>{{ $practica->apellidos }} {{ $practica->nombres }}</td>
                                         <td>{{ $practica->carrera }}</td>
                                         <td>{{ $practica->correo }}</td>
-                                        <td>{{ $practica->notas_practicasi->first()->notaTutor }}</td>
-                                        <td>{{ $practica->notas_practicasi->first()->notaAcademico }}</td>
-                                        <td>{{ $practica->notas_practicasi->first()->notaTutor + $practica->notas_practicasi->first()->notaAcademico }}
+                                        <td>{{ $practica->notas_practicasii->first()->notaTutor }}</td>
+                                        <td>{{ $practica->notas_practicasii->first()->notaAcademico }}</td>
+                                        <td>{{ $practica->notas_practicasii->first()->notaTutor + $practica->notas_practicasii->first()->notaAcademico }}
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-primary" data-toggle="modal"
@@ -208,7 +208,7 @@
                                                             </button>
                                                         </div>
                                                         <form
-                                                            action="{{ route('ParticipanteVinculacion.editarNotasPracticasi', ['id' => $practica->estudianteId]) }}"
+                                                            action="{{ route('ParticipanteVinculacion.editarNotasPracticasii', ['id' => $practica->estudianteId]) }}"
                                                             method="POST">
                                                             @csrf
                                                             @method('PUT')
@@ -224,7 +224,7 @@
                                                                         <input id="notaTutorEmpresarial" type="number"
                                                                             class="form-control"
                                                                             name="notaTutorEmpresarial"
-                                                                            value="{{ $practica->notas_practicasi->first()->notaTutor }}"
+                                                                            value="{{ $practica->notas_practicasii->first()->notaTutor }}"
                                                                             step="any" required>
                                                                         <span id="errorMensaje"
                                                                             style="color: red; display: none;"></span>
@@ -237,7 +237,7 @@
                                                                     <div class="col-md-6">
                                                                         <input id="notaTutorAcademico" type="number"
                                                                             class="form-control" name="notaTutorAcademico"
-                                                                            value="{{ $practica->notas_practicasi->first()->notaAcademico }}"
+                                                                            value="{{ $practica->notas_practicasii->first()->notaAcademico }}"
                                                                             step="any" required>
                                                                         <span id="errorMensajeAcademico"
                                                                             style="color: red; display: none;"></span>

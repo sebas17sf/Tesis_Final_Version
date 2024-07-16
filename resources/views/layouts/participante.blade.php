@@ -89,26 +89,48 @@
                                 </div>
                             </a>
 
-                            <a href="{{ route('ParticipanteVinculacion.practicas') }}" class="p-element">
+                            <a class="p-element submenu">
                                 <div class="icon-sidebar-item">
-                                    <i class="fa-solid fa-briefcase"></i>
-                                 </div>
+                                    <i class="fa-solid fa-building"></i>
+                                </div>
                                 <div class="name-sidebar-item">
                                     <li>Prácticas</li>
                                 </div>
                             </a>
-                        </ul>
-                    </nav>
+
+                            <div class="item-list sublista">
+                                <a class="p-element mb-1 subitem"
+                                    href="{{ route('ParticipanteVinculacion.practicas') }}">
+                                    <div class="icon-sidebar-item">
+                                        <i class="fa-solid fa-user-graduate"></i>
+                                     </div>
+                                    <div class="name-sidebar-item">
+                                        <li>Practicas I</li>
+                                    </div>
+                                </a>
+                                <a class="p-element subitem" href="{{ route('ParticipanteVinculacion.practicasii') }}">
+                                    <div class="icon-sidebar-item">
+                                        <i class="fa-solid fa-user-graduate"></i>
+                                     </div>
+                                    <div class="name-sidebar-item">
+                                        <li>Practicas II</li>
+                                    </div>
+                                </a>
+                            </div>
+
                 </div>
+                </ul>
+                </nav>
             </div>
-            <div class="content-autors">
-                <span class="autors1">
-                    <i>Designed by </i>
-                    <b><a>Sebastian Flores</a></b>
-                    <i> & </i>
-                    <b><a>Karen Cueva</a></b>.
-                </span>
-            </div>
+        </div>
+        <div class="content-autors">
+            <span class="autors1">
+                <i>Designed by </i>
+                <b><a>Sebastian Flores</a></b>
+                <i> & </i>
+                <b><a>Karen Cueva</a></b>.
+            </span>
+        </div>
         </div>
         </div>
     </section>
@@ -166,7 +188,8 @@
         </main>
 
     </section>
-    <button id="btn_top" *ngIf="showScrollButton" (click)="scrollToTop()"><i class='bx bxs-chevrons-up'></i></button>
+    <button id="btn_top" *ngIf="showScrollButton" (click)="scrollToTop()"><i
+            class='bx bxs-chevrons-up'></i></button>
     <!-- CONTENEDOR -->
     <section
         class="content-views dimension-content {{ session('menuState') == 'collapsed' ? 'dimension-content-hidden' : '' }}">

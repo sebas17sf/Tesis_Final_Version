@@ -2,338 +2,355 @@
 
 
 @section('content')
-@if (session('success'))
-<div class="contenedor_alerta success">
-    <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Éxito!</div>
-      <div class="body">{{ session('success') }}</div>
-    </div>
-  </div>
-@endif
-
-@if (session('error'))
-<div class="contenedor_alerta error">
-    <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Error!</div>
-      <div class="body">{{ session('error') }}</div>
-    </div>
-  </div>
-@endif
-
-
-
-
-
-<div class="container">
-    @if (isset($practicaPendiente))
-    <br>
-    <div class="row">
-    <div class="col-md-7">
-        <div class="table-responsive-sm">
-            <table class="table2 table table-bordered">
-                <thead>
-                    <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                        <th class="tamanio1 table2th" colspan="2">DETALLES DE LA PRÁCTICA</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th>Estudiante:</th>
-                        <td>{{ $practicaPendiente->estudiante->apellidos }} {{ $practicaPendiente->estudiante->nombres }}</td>
-                    </tr>
-                    <tr>
-                        <th>Práctica:</th>
-                        <td>{{ $practicaPendiente->tipoPractica }}</td>
-                    </tr>
-                    <tr>
-                        <th>Docente Tutor:</th>
-                        <td>{{ $practicaPendiente->tutorAcademico->apellidos }} {{ $practicaPendiente->tutorAcademico->nombres }}</td>
-                    </tr>
-                    <tr>
-                        <th>Empresa:</th>
-                        <td>{{ $practicaPendiente->Empresa->nombreEmpresa }}</td>
-                    </tr>
-                    <tr>
-                        <th>Tutor Empresarial:</th>
-                        <td>{{ $practicaPendiente->NombreTutorEmpresarial }}</td>
-                    </tr>
-                    <tr>
-                        <th>Cédula Tutor Empresarial:</th>
-                        <td>{{ $practicaPendiente->CedulaTutorEmpresarial }}</td>
-                    </tr>
-                    <tr>
-                        <th>Función:</th>
-                        <td>{{ $practicaPendiente->Funcion }}</td>
-                    </tr>
-                    <tr>
-                        <th>Teléfono Tutor Empresarial:</th>
-                        <td>{{ $practicaPendiente->TelefonoTutorEmpresarial }}</td>
-                    </tr>
-                    <tr>
-                        <th>Estado de Fase I:</th>
-                        <td>{{ $practicaPendiente->Estado }}</td>
-                    </tr>
-                </tbody>
-            </table>
+    @if (session('success'))
+        <div class="contenedor_alerta success">
+            <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Éxito!</div>
+                <div class="body">{{ session('success') }}</div>
+            </div>
         </div>
-    </div>
-    <br>
-    <br>
-    <div class="col-md-4">
-    <br>
-        <center><h3><b>Acciones</b></h3></center>
-        <hr>
-        <div class="card-body">
-            <form action="{{ route('generar.EncuestaEstudiante2') }}" method="POST" >
-                @csrf
-                <button type="submit" class="button1_1 btn-block">
-                    <i class="fas fa-file-excel"></i> Generar Encuesta Estudiantes
-                </button>
-            </form>
+    @endif
+
+    @if (session('error'))
+        <div class="contenedor_alerta error">
+            <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Error!</div>
+                <div class="body">{{ session('error') }}</div>
+            </div>
         </div>
-        <div class="card-body">
-            <form action="{{ route('generar.EncuestaDocentes2') }}" method="POST">
-                @csrf
-                <button type="submit" class="button1_1 btn-block">
-                    <i class="fas fa-file-excel"></i> Generar Encuesta Docente
-                </button>
-            </form>
-        </div>
-        <div class="card-body">
-            <form action="{{ route('generar.EvTutorEmpresarial2') }}" method="POST">
-                @csrf
-                <button type="submit" class="button1_1 btn-block">
-                    <i class="fas fa-file-excel"></i> Generar Evaluacion Tutor Empresarial
-                </button>
-            </form>
-        </div>
-        <div class="card-body">
-            <form action="{{ route('generar.PlanificacionPPEstudiante2') }}" method="POST">
-                @csrf
-                <button type="submit" class="button1_1 btn-block">
-                    <i class="fas fa-file-excel"></i> Generar Planificacion Estudiante
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
+    @endif
 
 
 
 
-<br>
-<button type="button" class="button1" onclick="openCard('draggableCardActividad');">
-    Agregar actividad
-</button>
-<br>
 
-<div class="draggable-card" id="draggableCardActividad" style="display: none;">
-    <div class="card-header">
-        <span class="card-title">Agregar Actividad</span>
-        <button type="button" class="close" onclick="closeCard('draggableCardActividad')">&times;</button>
-    </div>
-    <div class="card-body">
-        <form id="actividadForm" action="{{ route('estudiantes.guardarActividadesPracticas1') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <input type="hidden" id="EstudianteID" name="EstudianteID" value="{{ $practicaPendiente->estudiante->estudianteId }}">
-            <input type="hidden" id="PracticasI" name="PracticasI" value="{{ $practicaPendiente->practicasi }}">
-            <div class="form-group">
-                <label for="Actividad">Actividad Realizada:</label>
-                <textarea id="Actividad" name="Actividad" class="form-control input"></textarea>
+    <div class="container">
+        @if (isset($practicaPendiente))
+            <br>
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="table-responsive-sm">
+                        <table class="table2 table table-bordered">
+                            <thead>
+                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                    <th class="tamanio1 table2th" colspan="2">DETALLES DE LA PRÁCTICA</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>Estudiante:</th>
+                                    <td>{{ $practicaPendiente->estudiante->apellidos }}
+                                        {{ $practicaPendiente->estudiante->nombres }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Práctica:</th>
+                                    <td>{{ $practicaPendiente->tipoPractica }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Docente Tutor:</th>
+                                    <td>{{ $practicaPendiente->tutorAcademico->apellidos }}
+                                        {{ $practicaPendiente->tutorAcademico->nombres }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Empresa:</th>
+                                    <td>{{ $practicaPendiente->Empresa->nombreEmpresa }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Tutor Empresarial:</th>
+                                    <td>{{ $practicaPendiente->NombreTutorEmpresarial }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Cédula Tutor Empresarial:</th>
+                                    <td>{{ $practicaPendiente->CedulaTutorEmpresarial }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Función:</th>
+                                    <td>{{ $practicaPendiente->Funcion }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Teléfono Tutor Empresarial:</th>
+                                    <td>{{ $practicaPendiente->TelefonoTutorEmpresarial }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Estado de Fase I:</th>
+                                    <td>{{ $practicaPendiente->Estado }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="col-md-4">
+                    <br>
+                    <center>
+                        <h3><b>Acciones</b></h3>
+                    </center>
+                    <hr>
+                    <div class="card-body">
+                        <form action="{{ route('generar.EncuestaEstudiante2') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="button1_1 btn-block">
+                                <i class="fas fa-file-excel"></i> Generar Encuesta Estudiantes
+                            </button>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('generar.EncuestaDocentes2') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="button1_1 btn-block">
+                                <i class="fas fa-file-excel"></i> Generar Encuesta Docente
+                            </button>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('generar.EvTutorEmpresarial2') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="button1_1 btn-block">
+                                <i class="fas fa-file-excel"></i> Generar Evaluacion Tutor Empresarial
+                            </button>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('generar.PlanificacionPPEstudiante2') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="button1_1 btn-block">
+                                <i class="fas fa-file-excel"></i> Generar Planificacion Estudiante
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="horas">Número de Horas:</label>
-                <input type="text" id="horas" name="horas" class="form-control input">
-            </div>
-            <div class="form-group">
-                <label for="observaciones">Observación:</label>
-                <input type="text" id="observaciones" name="observaciones" class="form-control input">
-            </div>
-            <div class="form-group">
-                <label for="fechaActividad">Fecha de la Actividad:</label>
-                <input type="date" id="fechaActividad" name="fechaActividad" class="form-control input">
-            </div>
-            <div class="form-group">
-                <label for="departamento">Departamento:</label>
-                <input type="text" id="departamento" name="departamento" class="form-control input">
-            </div>
-            <div class="form-group">
-                <label for="funcion">Función Asignada:</label>
-                <input type="text" id="funcion" name="funcion" class="form-control input">
-            </div>
-            <div class="form-group">
-                <label class="label" for="evidencia"><strong>Evidencia:</strong></label>
-                                                <div class="input_file input">
-                                                    <span id="fileText2" class="fileText">
-                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
-                                                    </span>
-                                                    <input type="file" class="form-control-file input input_file"
-                                                    id="evidencia" name="file"
-                                                        onchange="displayFileName(this, 'fileText2')" required>
-                                                    <span title="Eliminar archivo" onclick="removeFile(this)"
-                                                        class="remove-icon">✖</span>
-                                                </div>
-                                            </div>
-            </div>
-            <div class="card-footer">
-                <button type="submit" class="button">Guardar Actividad</button>
-            </div>
-        </form>
-    </div>
-</div>
 
-        <br>
 
-        <div class="contenedor_tabla">
-                        <div class="table-container mat-elevation-z8">
 
-                            <div id="tablaActividades">
-                                <table id="tablaAsignaciones" class="mat-mdc-table">
 
-                                    <thead class="ng-star-inserted">
-                                        <tr
-                                            class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                             <th>Actividad Realizada</th>
-                        <th>Horas</th>
-                        <th>Observaciones</th>
-                        <th>Fecha de la Actividad</th>
-                        <th>Departamento</th>
-                        <th>Función Asignada</th>
-                        <th>Evidencia</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="mdc-data-table__content ng-star-inserted">
-                @if ($actividades->isEmpty())
-                                            <tr style="text-align:center">
-                                                <td class="noExisteRegistro1"
-                                                    style="font-size: 16px !important;"colspan="10">No hay actividades agregadas.</td>
-                                            </tr>
-                                        @else
-                    @foreach ($actividades as $actividad)
-                    <tr>
-                        <td>{{ $actividad->actividad }}</td>
-                        <td>{{ $actividad->horas }}</td>
-                        <td>{{ $actividad->observaciones }}</td>
-                        <td>{{ $actividad->fechaActividad }}</td>
-                        <td>{{ $actividad->departamento }}</td>
-                        <td>{{ $actividad->funcion }}</td>
-                        <td><img src="data:image/png;base64,{{ $actividad->evidencia }}" alt="Evidencia de la actividad"
-                                width="100px"></td>
-                        <td>
-                            <form action="{{ route('estudiantes.eliminarActividadPracticas1', $actividad->id) }}"
-                                method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <div class="tooltip-container">
-                                    <span class="tooltip-text">Eliminar</span>
-                                    <button type="submit" class="button3 efects_button btn_eliminar3"> <i
-                                            class="material-icons">delete</i></button>
-                                </div>
-                            </form>
-                            <div class="tooltip-container">
-                                <span class="tooltip-text">Editar</span>
-                                <button type="button" class="button3 efects_button btn_editar3" data-toggle="modal"
-                                    data-target="#modalEditarActividad{{ $actividad->id }}">
-                                    <i class="material-icons">edit</i>
-                                </button>
+            <br>
+            <button type="button" class="button1" onclick="openCard('draggableCardActividad');">
+                Agregar actividad
+            </button>
+            <br>
+
+            <div class="draggable-card" id="draggableCardActividad" style="display: none;">
+                <div class="card-header">
+                    <span class="card-title">Agregar Actividad</span>
+                    <button type="button" class="close" onclick="closeCard('draggableCardActividad')">&times;</button>
+                </div>
+                <div class="card-body">
+                    <form id="actividadForm" action="{{ route('estudiantes.guardarActividadesPracticas2') }}"
+                        method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" id="EstudianteID" name="EstudianteID"
+                            value="{{ $practicaPendiente->estudiante->estudianteId }}">
+                        <input type="hidden" id="PracticasII" name="PracticasII"
+                            value="{{ $practicaPendiente->practicasII }}">
+                        <div class="form-group">
+                            <label for="Actividad">Actividad Realizada:</label>
+                            <textarea id="Actividad" name="Actividad" class="form-control input"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="horas">Número de Horas:</label>
+                            <input type="text" id="horas" name="horas" class="form-control input">
+                        </div>
+                        <div class="form-group">
+                            <label for="observaciones">Observación:</label>
+                            <input type="text" id="observaciones" name="observaciones" class="form-control input">
+                        </div>
+                        <div class="form-group">
+                            <label for="fechaActividad">Fecha de la Actividad:</label>
+                            <input type="date" id="fechaActividad" name="fechaActividad" class="form-control input">
+                        </div>
+                        <div class="form-group">
+                            <label for="departamento">Departamento:</label>
+                            <input type="text" id="departamento" name="departamento" class="form-control input">
+                        </div>
+                        <div class="form-group">
+                            <label for="funcion">Función Asignada:</label>
+                            <input type="text" id="funcion" name="funcion" class="form-control input">
+                        </div>
+                        <div class="form-group">
+                            <label class="label" for="evidencia"><strong>Evidencia:</strong></label>
+                            <div class="input_file input">
+                                <span id="fileText2" class="fileText">
+                                    <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
+                                </span>
+                                <input type="file" class="form-control-file input input_file" id="evidencia"
+                                    name="evidencia" onchange="displayFileName(this, 'fileText2')" required>
+                                <span title="Eliminar archivo" onclick="removeFile(this)" class="remove-icon">✖</span>
                             </div>
+                        </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="button">Guardar Actividad</button>
+                </div>
+                </form>
+            </div>
+    </div>
 
-                            <!-- Modal para editar actividad -->
-                            <div class="modal fade" id="modalEditarActividad{{ $actividad->id }}" tabindex="-1"
-                                role="dialog" aria-labelledby="modalEditarActividadLabel{{ $actividad->id }}"
-                                aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="modalEditarActividadLabel{{ $actividad->id }}">
-                                                Editar
-                                                Actividad</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
+    <br>
+
+    <div class="contenedor_tabla">
+        <div class="table-container mat-elevation-z8">
+
+            <div id="tablaActividades">
+                <table id="tablaAsignaciones" class="mat-mdc-table">
+
+                    <thead class="ng-star-inserted">
+                        <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                            <th>Actividad Realizada</th>
+                            <th>Horas</th>
+                            <th>Observaciones</th>
+                            <th>Fecha de la Actividad</th>
+                            <th>Departamento</th>
+                            <th>Función Asignada</th>
+                            <th>Evidencia</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="mdc-data-table__content ng-star-inserted">
+                        @if ($actividades->isEmpty())
+                            <tr style="text-align:center">
+                                <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">No hay
+                                    actividades agregadas.</td>
+                            </tr>
+                        @else
+                            @foreach ($actividades as $actividad)
+                                <tr>
+                                    <td>{{ $actividad->actividad }}</td>
+                                    <td>{{ $actividad->horas }}</td>
+                                    <td>{{ $actividad->observaciones }}</td>
+                                    <td>{{ $actividad->fechaActividad }}</td>
+                                    <td>{{ $actividad->departamento }}</td>
+                                    <td>{{ $actividad->funcion }}</td>
+                                    <td><img src="data:image/png;base64,{{ $actividad->evidencia }}"
+                                            alt="Evidencia de la actividad" width="100px"></td>
+                                    <td>
+                                        <form
+                                            action="{{ route('estudiantes.eliminarActividadPracticas2', $actividad->id) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <div class="tooltip-container">
+                                                <span class="tooltip-text">Eliminar</span>
+                                                <button type="submit" class="button3 efects_button btn_eliminar3"> <i
+                                                        class="material-icons">delete</i></button>
+                                            </div>
+                                        </form>
+                                        <div class="tooltip-container">
+                                            <span class="tooltip-text">Editar</span>
+                                            <button type="button" class="button3 efects_button btn_editar3"
+                                                data-toggle="modal"
+                                                data-target="#modalEditarActividad{{ $actividad->id }}">
+                                                <i class="material-icons">edit</i>
                                             </button>
                                         </div>
-                                        <div class="modal-body">
-                                            <form
-                                                action="{{ route('estudiantes.actualizarActividadPracticas1', $actividad->id) }}"
-                                                method="POST" enctype="multipart/form-data">
-                                                @csrf
-                                                @method('PUT')
-                                                <div class="form-group">
-                                                    <label for="Actividad">Actividad Realizada:</label>
-                                                    <input type="text" id="Actividad" name="Actividad"
-                                                        value="{{ $actividad->actividad }}" class="form-control">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="horas">Horas:</label>
-                                                    <input type="text" id="horas" name="horas"
-                                                        value="{{ $actividad->horas }}" class="form-control">
-                                                </div>
 
-                                                <div class="form-group">
-                                                    <label for="observaciones">Observaciones:</label>
-                                                    <input type="text" id="observaciones" name="observaciones"
-                                                        value="{{ $actividad->observaciones }}" class="form-control">
-                                                </div>
+                                        <!-- Modal para editar actividad -->
+                                        <div class="modal fade" id="modalEditarActividad{{ $actividad->id }}"
+                                            tabindex="-1" role="dialog"
+                                            aria-labelledby="modalEditarActividadLabel{{ $actividad->id }}"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title"
+                                                            id="modalEditarActividadLabel{{ $actividad->id }}">
+                                                            Editar
+                                                            Actividad</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form
+                                                            action="{{ route('estudiantes.actualizarActividadPracticas2', $actividad->id) }}"
+                                                            method="POST" enctype="multipart/form-data">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <div class="form-group">
+                                                                <label for="Actividad">Actividad Realizada:</label>
+                                                                <input type="text" id="Actividad" name="Actividad"
+                                                                    value="{{ $actividad->actividad }}"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="horas">Horas:</label>
+                                                                <input type="text" id="horas" name="horas"
+                                                                    value="{{ $actividad->horas }}" class="form-control">
+                                                            </div>
 
-                                                <div class="form-group">
-                                                    <label for="fechaActividad">Fecha de la
-                                                        Actividad:</label>
-                                                    <input type="date" id="fechaActividad" name="fechaActividad"
-                                                        value="{{ $actividad->fechaActividad }}" class="form-control">
-                                                </div>
+                                                            <div class="form-group">
+                                                                <label for="observaciones">Observaciones:</label>
+                                                                <input type="text" id="observaciones"
+                                                                    name="observaciones"
+                                                                    value="{{ $actividad->observaciones }}"
+                                                                    class="form-control">
+                                                            </div>
 
-                                                <div class="form-group">
-                                                    <label for="departamento">Departamento:</label>
-                                                    <input type="text" id="departamento" name="departamento"
-                                                        value="{{ $actividad->departamento }}" class="form-control">
-                                                </div>
+                                                            <div class="form-group">
+                                                                <label for="fechaActividad">Fecha de la
+                                                                    Actividad:</label>
+                                                                <input type="date" id="fechaActividad"
+                                                                    name="fechaActividad"
+                                                                    value="{{ $actividad->fechaActividad }}"
+                                                                    class="form-control">
+                                                            </div>
 
-                                                <div class="form-group">
-                                                    <label for="funcion">Función Asignada:</label>
-                                                    <input type="text" id="funcion" name="funcion"
-                                                        value="{{ $actividad->funcion }}" class="form-control">
-                                                </div>
+                                                            <div class="form-group">
+                                                                <label for="departamento">Departamento:</label>
+                                                                <input type="text" id="departamento"
+                                                                    name="departamento"
+                                                                    value="{{ $actividad->departamento }}"
+                                                                    class="form-control">
+                                                            </div>
 
-                                                <div class="form-group">
-                                                    <label for="evidencia">Evidencia:</label>
-                                                    <input type="file" id="evidencia" name="evidencia"
-                                                        class="form-control-file">
-                                                </div>
+                                                            <div class="form-group">
+                                                                <label for="funcion">Función Asignada:</label>
+                                                                <input type="text" id="funcion" name="funcion"
+                                                                    value="{{ $actividad->funcion }}"
+                                                                    class="form-control">
+                                                            </div>
 
-                                                <div class="modal-footer">
-                                                    <button type="button" class="button"
-                                                        data-dismiss="modal">Cerrar</button>
-                                                    <button type="submit" class="button">Guardar
-                                                        Cambios</button>
+                                                            <div class="form-group">
+                                                                <label for="evidencia">Evidencia:</label>
+                                                                <input type="file" id="evidencia" name="evidencia"
+                                                                    class="form-control-file">
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="button"
+                                                                    data-dismiss="modal">Cerrar</button>
+                                                                <button type="submit" class="button">Guardar
+                                                                    Cambios</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                 </div>
-                                            </form>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
 
 
-                        </td>
+                                    </td>
 
 
 
-                    </tr>
-                    @endforeach
-                    @endif
-                </tbody>
+                                </tr>
+                            @endforeach
+                        @endif
+                    </tbody>
 
-                <tfoot>
-                    <tr>
-                        <td colspan="7" align="left"><strong>Total horas realizadas:</strong>
-                            {{ $totalHoras }} / {{ $practicaPendiente->HorasPlanificadas }}
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-</div>
+                    <tfoot>
+                        <tr>
+                            <td colspan="7" align="left"><strong>Total horas realizadas:</strong>
+                                {{ $totalHoras }} / {{ $practicaPendiente->HorasPlanificadas }}
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
 
 
         </div>
@@ -352,7 +369,7 @@
 
 
     <!--------------------------------- De aqui para abajo es otra zona de trabajoooooooooooooooooooooo------------------>
-    @else
+@else
     <br>
     <h3><b>Practicas II - Inicio del proceso de prácticas pre profesionales del estudiante</b></h3>
     <hr>
@@ -440,8 +457,7 @@
                     <tr>
                         <th>Estado Académico Actual:</th>
                         <td>
-                            <select id="EstadoAcademico" name="EstadoAcademico"
-                                class="form-control input input_select4">
+                            <select id="EstadoAcademico" name="EstadoAcademico" class="form-control input input_select4">
                                 <option value="1">Seleccione un estado académico</option>
                                 <option value="FINALIZANDO ESTUDIOS">FINALIZANDO ESTUDIOS</option>
                                 <option value="CURSANDO ESTUDIOS">CURSANDO ESTUDIOS</option>
@@ -473,7 +489,7 @@
                         <td>
                             <input type="number" id="HorasPlanificadas" name="HorasPlanificadas"
                                 class="form-control input input_select4" min="80" max="144">
-                                <div id="errorHorasPlanificadas" style="color: red;"></div>
+                            <div id="errorHorasPlanificadas" style="color: red;"></div>
 
                         </td>
                     </tr>
@@ -533,13 +549,12 @@
                             <div class="form-group">
                                 <label for="ID_tutorAcademico">
                                 </label>
-                                <select name="ID_tutorAcademico" class="form-control input input input_select3"
-                                    required>
+                                <select name="ID_tutorAcademico" class="form-control input input input_select3" required>
                                     <option value="">Seleccionar el Docente</option>
                                     @foreach ($profesores as $profesor)
-                                    <option value="{{ $profesor->id }}"> {{ $profesor->apellidos }}
-                                        {{ $profesor->nombres }}
-                                        {{ $profesor->Departamento }} {{ $profesor->Correo }} </option>
+                                        <option value="{{ $profesor->id }}"> {{ $profesor->apellidos }}
+                                            {{ $profesor->nombres }}
+                                            {{ $profesor->Departamento }} {{ $profesor->Correo }} </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -554,7 +569,7 @@
                                 <select name="nrc" class="form-control input input_select3" required>
                                     <option value="">Seleccionar NRC</option>
                                     @foreach ($nrcpracticas1 as $nrc)
-                                    <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
+                                        <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -566,8 +581,8 @@
                         <td>
                             <select id="Empresa" name="Empresa" class="form-control input input_select4">
                                 @foreach ($empresas as $empresa)
-                                <option value="{{ $empresa->id }}">{{ $empresa->nombreEmpresa }} -
-                                    Requiere: {{ $empresa->actividadesMacro }} </option>
+                                    <option value="{{ $empresa->id }}">{{ $empresa->nombreEmpresa }} -
+                                        Requiere: {{ $empresa->actividadesMacro }} </option>
                                 @endforeach
                             </select>
                         </td>
@@ -578,7 +593,7 @@
                         <td>
                             <input type="text" id="CedulaTutorEmpresarial" name="CedulaTutorEmpresarial"
                                 class="form-control input input_select3">
-                                <div id="errorCedula" style="color: red;"></div>
+                            <div id="errorCedula" style="color: red;"></div>
 
                         </td>
 
@@ -589,7 +604,7 @@
                         <td>
                             <input type="text" id="NombreTutorEmpresarial" name="NombreTutorEmpresarial"
                                 class="form-control input input_select3">
-                                <div id="errorNombre" style="color: red;"></div>
+                            <div id="errorNombre" style="color: red;"></div>
 
                         </td>
 
@@ -598,7 +613,8 @@
                     <tr>
                         <th>Funcion:</th>
                         <td>
-                            <input type="text" id="Funcion" name="Funcion" class="form-control input input_select3">
+                            <input type="text" id="Funcion" name="Funcion"
+                                class="form-control input input_select3">
                         </td>
 
                     </tr>
@@ -608,7 +624,7 @@
                         <td>
                             <input type="text" id="TelefonoTutorEmpresarial" name="TelefonoTutorEmpresarial"
                                 class="form-control input input_select3">
-                                <div id="errorTelefono" style="color: red;"></div>
+                            <div id="errorTelefono" style="color: red;"></div>
 
                         </td>
 
@@ -619,7 +635,7 @@
                         <td>
                             <input type="text" id="EmailTutorEmpresarial" name="EmailTutorEmpresarial"
                                 class="form-control input input_select3">
-                                <div id="errorEmail" style="color: red;"></div>
+                            <div id="errorEmail" style="color: red;"></div>
 
                         </td>
                     </tr>
@@ -641,12 +657,13 @@
         </div>
 
         <br>
-        <center> <button type="submit" id="iniciarPracticasBtn" class="button1 btn_excel" style="display: none;">Iniciar
+        <center> <button type="submit" id="iniciarPracticasBtn" class="button1 btn_excel"
+                style="display: none;">Iniciar
                 prácticas</button> </center>
     </form>
     @endif
-</div>
-<link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
+    </div>
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
     <script src="js\admin\acciones.js"></script>
@@ -657,72 +674,69 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
     <script src="{{ asset('js/estudiante/practicas2.js') }}"></script>
 
- @endsection
+@endsection
 
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    var verOpcionesBtn = document.getElementById('verOpcionesBtn');
-    var opcionesPracticas = document.getElementById('opcionesPracticas');
-    var iniciarPracticasBtn = document.getElementById('iniciarPracticasBtn');
-
-    var opcionesAbiertas = false; // Variable para rastrear el estado de las opciones
-
-    verOpcionesBtn.addEventListener('click', function() {
-        if (opcionesAbiertas) {
-            opcionesPracticas.style.display = 'none'; // Cierra las opciones
-            iniciarPracticasBtn.style.display = 'none'; // Oculta el botón de inicio
-        } else {
-            opcionesPracticas.style.display = 'table'; // Abre las opciones
-            iniciarPracticasBtn.style.display = 'block'; // Muestra el botón de inicio
-        }
-
-        // Cambia el estado de las opciones
-        opcionesAbiertas = !opcionesAbiertas;
-    });
-
-    iniciarPracticasBtn.addEventListener('click', function() {});
-});
-
-function calcularHorasTotales() {
-    const horasPlanificadasI = parseFloat(document.getElementById('horasPracticaI').textContent);
-    const horasPlanificadasInput = document.getElementById('HorasPlanificadas');
-    const horasPlanificadas = parseFloat(horasPlanificadasInput.value);
-
-    if (!isNaN(horasPlanificadas)) {
-        const horasTotales = horasPlanificadasI + horasPlanificadas;
-        document.getElementById('horasTotales').textContent = horasTotales;
-    } else {
-        document.getElementById('horasTotales').textContent = '0';
-    }
-}
-
-document.getElementById('HorasPlanificadas').addEventListener('input', calcularHorasTotales);
-
-calcularHorasTotales();
-// Make the card draggable
-$(document).ready(function() {
-            // Hacer que el card sea draggable
-            $('.draggable-card').draggable({
-                handle: ".card-header",
-                containment: "window"
-            });
-             // Hacer el card draggable
     document.addEventListener('DOMContentLoaded', function() {
-        $("#draggableCardActividad").draggable({
-            handle: ".card-header"
-        });
-    });
+        var verOpcionesBtn = document.getElementById('verOpcionesBtn');
+        var opcionesPracticas = document.getElementById('opcionesPracticas');
+        var iniciarPracticasBtn = document.getElementById('iniciarPracticasBtn');
+
+        var opcionesAbiertas = false; // Variable para rastrear el estado de las opciones
+
+        verOpcionesBtn.addEventListener('click', function() {
+            if (opcionesAbiertas) {
+                opcionesPracticas.style.display = 'none'; // Cierra las opciones
+                iniciarPracticasBtn.style.display = 'none'; // Oculta el botón de inicio
+            } else {
+                opcionesPracticas.style.display = 'table'; // Abre las opciones
+                iniciarPracticasBtn.style.display = 'block'; // Muestra el botón de inicio
+            }
+
+            // Cambia el estado de las opciones
+            opcionesAbiertas = !opcionesAbiertas;
         });
 
-        function openCard(cardId) {
+        iniciarPracticasBtn.addEventListener('click', function() {});
+    });
+
+    function calcularHorasTotales() {
+        const horasPlanificadasI = parseFloat(document.getElementById('horasPracticaI').textContent);
+        const horasPlanificadasInput = document.getElementById('HorasPlanificadas');
+        const horasPlanificadas = parseFloat(horasPlanificadasInput.value);
+
+        if (!isNaN(horasPlanificadas)) {
+            const horasTotales = horasPlanificadasI + horasPlanificadas;
+            document.getElementById('horasTotales').textContent = horasTotales;
+        } else {
+            document.getElementById('horasTotales').textContent = '0';
+        }
+    }
+
+    document.getElementById('HorasPlanificadas').addEventListener('input', calcularHorasTotales);
+
+    calcularHorasTotales();
+    // Make the card draggable
+    $(document).ready(function() {
+        // Hacer que el card sea draggable
+        $('.draggable-card').draggable({
+            handle: ".card-header",
+            containment: "window"
+        });
+        // Hacer el card draggable
+        document.addEventListener('DOMContentLoaded', function() {
+            $("#draggableCardActividad").draggable({
+                handle: ".card-header"
+            });
+        });
+    });
+
+    function openCard(cardId) {
         document.getElementById(cardId).style.display = 'block';
     }
 
     function closeCard(cardId) {
         document.getElementById(cardId).style.display = 'none';
     }
-
 </script>
-
-
