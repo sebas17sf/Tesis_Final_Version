@@ -1,31 +1,31 @@
 @extends('layouts.participante')
 @section('title', 'Practicas')
 
-@section('title_component', 'Estudiantes en Prácticas')
+@section('title_component', 'Panel Prácticas II')
 @section('content')
 
 
-    <h4>Estudiantes en Prácticas 1</h4>
+<h4><b>Estudiantes en prácticas</b></h4>
+            <hr>
+            <div class="mat-elevation-z8 ">
+    <div class="contenedor_tabla">
+                    <div class="table-container mat-elevation-z8">
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="table">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Carrera</th>
-                                    <th>Correo</th>
-                                    <th>Telefono</th>
-                                    <th>Empresa</th>
-                                    <th>Tutor Empresarial</th>
-                                    <th>Horas de practicas</th>
-                                    <th>Fecha Inicio</th>
-                                    <th>Fecha Fin</th>
-                                    <th>Acciones</th>
+                        <div id="tablaDocentes">
+                            <table class="mat-mdc-table">
+                                <thead class="ng-star-inserted">
+                                    <tr
+                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                       <th>ESTUDIANTE</th>
+                                    <th>CARRERA</th>
+                                    <th>CORREO</th>
+                                    <th>TELÉFONO</th>
+                                    <th>EMPRESA</th>
+                                    <th>TUTOR EMPRESARIAL</th>
+                                    <th>HORAS DE PRÁCTICAS</th>
+                                    <th>FECHA INICIO</th>
+                                    <th>FECHA FIN</th>
+                                    <th>ACCIONES</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -90,36 +90,34 @@
 
                 </div>
             </div>
-        </div>
+        <br>
 
         <form id="cerrarPracticaForm" action="{{ route('ParticipanteVinculacion.cerrarProcesoPracticasii') }}"
             method="POST">
             @csrf
             @method('PUT')
-            <button type="button" id="cerrarPracticaBtn" class="btn btn-danger">Cerrar Práctica II estudiantes</button>
+            <button type="button" id="cerrarPracticaBtn" class="button1_1">Cerrar Práctica II estudiantes</button>
         </form>
 
     </div>
+<br>
+    <h4><b>Estudiantes a calificar</b></h4>
+            <hr>
+            <div class="mat-elevation-z8 ">
+    <div class="contenedor_tabla">
+                    <div class="table-container mat-elevation-z8">
 
-    <h4>Estudiantes a calificar</h4>
-
-    <br>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="table">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Correo</th>
-                                    <th>Telefono</th>
-                                    <th>Nota tutor empresarial 12%</th>
-                                    <th>Nota tutor academico 8%</th>
-                                    <th>Acciones</th>
+                        <div id="tablaDocentes">
+                            <table class="mat-mdc-table">
+                                <thead class="ng-star-inserted">
+                                    <tr
+                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                        <th>ESTUDIANTE</th>
+                                    <th>CORREO</th>
+                                    <th>TELÉFONO</th>
+                                    <th>NOTA TUTOR EMPRESARIAL 12%</th>
+                                    <th>NOTA TUTOR ACADÉMICO 8%</th>
+                                    <th>ACCIONES</th>
 
                                 </tr>
                             </thead>
@@ -153,28 +151,26 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <h4>Estudiants Calificados</h4>
+<br>
+        <h4><b>Estudiantes calificados</b></h4>
+            <hr>
+            <div class="mat-elevation-z8 ">
+    <div class="contenedor_tabla">
+                    <div class="table-container mat-elevation-z8">
 
-    <br>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="table">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Correo</th>7
-                                    <th>Carrera</th>
-                                    <th>Nota tutor empresarial 12%</th>
-                                    <th>Nota tutor academico 8%</th>
-                                    <th>Nota final</th>
-                                    <th>Acciones</th>
+                        <div id="tablaDocentes">
+                            <table class="mat-mdc-table">
+                                <thead class="ng-star-inserted">
+                                    <tr
+                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                       <th>ESTUDIANTE</th>
+                                    <th>CORREO</th>
+                                    <th>CARRERA</th>
+                                    <th>NOTA TUTOR EMPRESARIAL 12%</th>
+                                    <th>NOTA TUTOR ACADÉMICO 8%</th>
+                                    <th>NOTA FINAL</th>
+                                    <th>ACCIONES</th>
 
                                 </tr>
                             </thead>

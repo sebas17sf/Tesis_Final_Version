@@ -1,7 +1,7 @@
 @extends('layouts.participante')
 @section('title', 'Practicas')
 
-@section('title_component', 'Panel Prácticas')
+@section('title_component', 'Panel Prácticas I')
 @section('content')
 
 @if (session('success'))
@@ -24,12 +24,19 @@
             </div>
         </div>
     @endif
+    
+    <h4><b>Finalizar prácticas</b></h4>
+    <hr>
+    <div class="mat-elevation-z8 ">
+    <div class="contenedor_tabla">
+                    <div class="table-container mat-elevation-z8">
 
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="table">
-                            <thead>
-                                <tr>
-                                <th class="tamanio1">ESTUDIANTE</th>
+                        <div id="tablaDocentes">
+                            <table class="mat-mdc-table">
+                                <thead class="ng-star-inserted">
+                                    <tr
+                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                        <th class="tamanio1">ESTUDIANTE</th>
                                     <th class="tamanio1">CARRERA</th>
                                     <th>CORREO</th>
                                     <th>TELÉFONO</th>
@@ -102,19 +109,20 @@
 
                 </div>
             </div>
-
+</div>
+<br>
         <form id="cerrarPracticaForm" action="{{ route('ParticipanteVinculacion.cerrarProcesoPracticasI') }}"
             method="POST">
             @csrf
             @method('PUT')
-            <button type="button" id="cerrarPracticaBtn" class="btn btn-danger">Cerrar Práctica I estudiantes</button>
+            <button type="button" id="cerrarPracticaBtn" class="button1_1">Cerrar Práctica I estudiantes</button>
         </form>
 
-    </div>
+    <br>
 
     <h4><b>Estudiantes a calificar</b></h4>
             <hr>
-            <div class="mat-elevation-z8 contenedor_general">
+            <div class="mat-elevation-z8 ">
     <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
 
@@ -162,33 +170,28 @@
                 </div>
             </div>
         </div>
-    </div>
+   
 <br>
     <h4><b>Estudiantes Calificados</b></h4>
 
     <hr>
-            <div class="mat-elevation-z8 contenedor_general">
+    <div class="mat-elevation-z8 ">
     <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
 
-    <br>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="table">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Correo</th>7
-                                    <th>Carrera</th>
-                                    <th>Nota tutor empresarial 12%</th>
-                                    <th>Nota tutor academico 8%</th>
-                                    <th>Nota final</th>
-                                    <th>Acciones</th>
+                        <div id="tablaDocentes">
+                            <table class="mat-mdc-table">
+                                <thead class="ng-star-inserted">
+                                    <tr
+                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                        <th>ESTUDIANTE</th>
+                                    <th>CORREO</th>
+                                    <th>CARRERA</th>
+                                    <th>NOTA TUTOR EMPRESARIAL 12%</th>
+                                    <th>NOTA TUTOR ACADÉMICO 8%</th>
+                                    <th>NOTA FINAL</th>
+                                    <th>ACCIONES</th>
+                                      
 
                                 </tr>
                             </thead>

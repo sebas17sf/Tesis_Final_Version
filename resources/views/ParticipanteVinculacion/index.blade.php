@@ -35,9 +35,9 @@
                         class="form-inline d-flex align-items-center">
                         @csrf
                         <div class="tooltip-container">
-                            <span class="tooltip-text">Historial Director</span>
+                          
                             <button type="submit" class="button1 btn_excel efects_button">
-                                <i class="fas fa-file-excel"></i>Historial Director
+                                <i class="fas fa-file-excel"></i>  Historial Director
                             </button>
                         </div>
                     </form>

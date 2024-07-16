@@ -1,6 +1,6 @@
 @extends('layouts.participante')
 
-@section('title_component', 'Calificaciones de Estudiante')
+@section('title_component', 'Panel calificaciones vinculación')
 
 @section('content')
     @if (session('success'))
@@ -115,10 +115,10 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th>Nombres</th>
-                                    <th>Espe ID</th>
-                                    <th>Carrera</th>
-                                    <th>Departamento</th>
+                                    <th class="tamanio4">Nombres</th>
+                                    <th class="tamanio4">Espe ID</th>
+                                    <th class="tamanio4">Carrera</th>
+                                    <th class="tamanio4">Departamento</th>
                                     <th>Cumple con las tareas planificadas. Sobre 10%</th>
                                     <th>Resultados Alcanzados. Sobre 10%</th>
                                     <th>Demuestra conocimientos en el área</th>
@@ -135,7 +135,7 @@
                                     <tr>
                                         <td class="wide-cell"
                                             style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            {{ $estudiante->qpellidos }} {{ $estudiante->nombres }}</td>
+                                             {{ $estudiante->apellidos }} {{ $estudiante->nombres }}</td>
                                         <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             {{ $estudiante->espeId }}</td>
                                         <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">
@@ -185,50 +185,50 @@
 
                                         <td style="text-align: center;">
                                             <div class="btn-group shadow-0">
-                                                <button class="button3 efects_button btn_editar3"
+                                                <button class="button3 efects_button btn_editar3 " style="margin-right: 5px;"
                                                     onclick="openCard('cardEditNota{{ $estudiante->estudianteId }}');">
                                                     <i class="bx bx-edit-alt"></i>
                                                 </button>
-                                            </div>
+                                            
 
                                             <!-- Botón para abrir el modal -->
                                             <button type="button" class="button3 efects_button btn_eliminar3"
-                                                data-toggle="modal"
-                                                data-target="#tablaActividad{{ $estudiante->estudianteId }}">
-                                                <i class='bx bx-list-ul'></i>
+                                               
+                                                onclick="openCard('tablaActividad{{ $estudiante->estudianteId }}');">
+                                                <i class="fa-solid fa-eye"></i>
                                             </button>
-
+                                            
                                             <!-- Card para mostrar las asctividades del estudiante -->
-                                            <div class="modal fade" id="tablaActividad{{ $estudiante->estudianteId }}"
-                                                tabindex="-1" role="dialog"
-                                                aria-labelledby="modalLabel{{ $estudiante->estudianteId }}" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title"
-                                                                id="modalLabel{{ $estudiante->estudianteId }}">Actividades del
-                                                                Estudiante</h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
+                                            <div class="draggable-card1_1" id="tablaActividad{{ $estudiante->estudianteId }}">
+                                            
+                                                        <div class="card-header">
+                                                            <span class=" card-title"
+                                                                >Actividades del
+                                                                Estudiante {{ $estudiante->apellidos }} {{ $estudiante->nombres }}</span>
+                                                                <button type="button" class="close" onclick="$('#tablaActividad').hide()"><i
+                                class="fa-thin fa-xmark"></i></button>
+                                                            
                                                         </div>
-                                                        <div class="modal-body">
-                                                            <table class="table">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>Fecha</th>
-                                                                        <th>Actividades</th>
-                                                                        <th>Hora</th>
-                                                                        <th>Nombre de la actividad</th>
-                                                                        <th>Evidencia</th>
+                                                        <div class="contenedor_tabla">
+                    <div class="table-container mat-elevation-z8">
+
+                        <div id="tablaActivida">
+                            <table class="mat-mdc-table">
+                                <thead class="ng-star-inserted">
+                                    <tr
+                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                        <th>FECHA</th>
+                                                                        <th>ACTIVIDADES</th>
+                                                                        <th>HORA</th>
+                                                                        <th>NOMBRE DE LA ACTIVIDAD</th>
+                                                                        <th>EVIDENCIA</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
                                                                     @foreach ($estudiante->actividades as $actividad)
                                                                         <tr>
                                                                             <td
-                                                                                style="text-transform: uppercase; word-wrap: break-word; text-align: justify;">
+                                                                                style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                                                 {{ $actividad->fecha }}
                                                                             </td>
                                                                             <td
@@ -236,15 +236,15 @@
                                                                                 {{ $actividad->actividades }}
                                                                             </td>
                                                                             <td
-                                                                                style="text-transform: uppercase; word-wrap: break-word; text-align: justify;">
+                                                                                style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                                                 {{ $actividad->numeroHoras }}
                                                                             </td>
                                                                             <td
-                                                                                style="text-transform: uppercase; word-wrap: break-word; text-align: justify;">
+                                                                                style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                                                 {{ $actividad->nombreActividad }}
                                                                             </td>
 
-                                                                            <td>
+                                                                            <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
 
                                                                                 <img width="100px" src="data:image/jpeg;base64,{{ $actividad->evidencias }}"
                                                                                     alt="Evidencia" />
@@ -254,16 +254,14 @@
                                                                 </tbody>
                                                             </table>
                                                         </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">Cerrar</button>
-                                                        </div>
+                                                        
                                                     </div>
-                                                </div>
-                                            </div>
+                                            
+                                            
 
 
-
+</div>
+</div>
 
                                             <!-- Card para editar la nota -->
                                             <div class="draggable-card" id="cardEditNota{{ $estudiante->estudianteId }}"
@@ -272,7 +270,8 @@
                                                     <span class="card-title input_select1">Editar Nota de
                                                         {{ $estudiante->apellidos }} {{ $estudiante->nombres }}</span>
                                                     <button type="button" class="close"
-                                                        onclick="closeCard('cardEditNota{{ $estudiante->estudianteId }}')">&times;</button>
+                                                        onclick="closeCard('cardEditNota{{ $estudiante->estudianteId }}')"><i
+                                                        class="fa-thin fa-xmark"></i></button>
                                                 </div>
                                                 <div class="card-body">
                                                     <form method="post"
@@ -298,6 +297,7 @@
                                                                         y 10.</small>
                                                                 </div>
                                                             </div>
+
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label class="label"
@@ -314,7 +314,8 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
+<div class="row">
+                                                            <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="label" for="conocimientos_area">Demuestra
                                                                 conocimientos en el área de práctica pre profesional. Sobre
@@ -326,7 +327,9 @@
                                                             <small class="form-text text-danger" style="display: none;">El
                                                                 valor debe estar entre 0 y 10.</small>
                                                         </div>
+</div>
 
+                                                            <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="label" for="adaptabilidad">Adaptabilidad e
                                                                 Integración al sistema de trabajo del proyecto. Sobre
@@ -338,7 +341,10 @@
                                                             <small class="form-text text-danger" style="display: none;">El
                                                                 valor debe estar entre 0 y 10.</small>
                                                         </div>
-
+</div>
+</div>
+<div class="row">
+                                                            <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="label" for="Aplicacion">Aplicación y manejo de
                                                                 destrezas y habilidades acordes al perfil
@@ -350,8 +356,9 @@
                                                             <small class="form-text text-danger" style="display: none;">El
                                                                 valor debe estar entre 0 y 10.</small>
                                                         </div>
-
-                                                        <div class="row">
+</div>
+                                                            
+                                                        
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label class="label"
@@ -367,11 +374,12 @@
                                                                         y 10.</small>
                                                                 </div>
                                                             </div>
-                                                            <br>
-                                                            <div class="col-md-6">
+                                                        </div>
+                                                            
+                                                           
                                                                 <div class="form-group">
-                                                                    <label class="label" for="asistencia_puntual">Asiste
-                                                                        puntualmente. Sobre 10%</label>
+                                                                   <center> <label class="label" for="asistencia_puntual">Asiste
+                                                                        puntualmente. Sobre 10%</label><center>
                                                                     <input type="number" name="asistencia_puntual"
                                                                         class="form-control input input_select1"
                                                                         value="{{ optional($estudiante->notas->first())->asistencia }}"
@@ -381,8 +389,8 @@
                                                                         style="display: none;">El valor debe estar entre 0
                                                                         y 10.</small>
                                                                 </div>
-                                                            </div>
-                                                        </div>
+                                                            
+                                                        
                                                         <div
                                                             class="card-footer d-flex justify-content-center align-items-center">
                                                             <button type="submit" class="button input_select1">Guardar
@@ -406,15 +414,15 @@
 
         <head>
 
-            <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
-            <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
-            <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
-            <script src="js\admin\acciones.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    <script src="js\admin\acciones.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    <script src="js\admin\index.js"></script>
 
 
             <script>
@@ -448,6 +456,28 @@
                         containment: "window"
                     });
                 });
+               
+                $(document).ready(function() {
+                    // Hacer que los cards sean draggable
+                    $('.draggable-card1_1').draggable({
+                        handle: ".card-header",
+                        containment: "window"
+                    });
+                });
+                function closeAlert(alertId) {
+            const alert = document.getElementById(alertId);
+            alert.style.display = 'none';
+        }
+                document.addEventListener('DOMContentLoaded', (event) => {
+  // Selecciona el elemento de la alerta
+  const alertElement = document.querySelector('.contenedor_alerta');
+  // Establece un temporizador para ocultar la alerta después de 2 segundos
+  setTimeout(() => {
+    if (alertElement) {
+      alertElement.style.display = 'none';
+    }
+  }, 1000); // 2000 milisegundos = 2 segundos
+});
             </script>
 
 
@@ -455,7 +485,7 @@
                 .contenedor_tabla .table-container table td {
                     width: 200px;
                     min-width: 150px;
-                    font-size: 11px !important;
+                    font-size: 10px !important;
                     padding: .5rem !important;
                 }
 
