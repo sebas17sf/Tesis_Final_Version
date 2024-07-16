@@ -15,14 +15,14 @@
 
 
 @if (session('error'))
-<div class="contenedor_alerta error">
-    <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Error!</div>
-      <div class="body">{{ session('error') }}</div>
-    </div>
-  </div>
-@endif
+        <div class="contenedor_alerta error">
+            <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Error!</div>
+                <div class="body">{{ session('error') }}</div>
+            </div>
+        </div>
+    @endif
 
     <div class="container" style="overflow-x: auto;">
         <br>
@@ -142,42 +142,42 @@
                                             {{ $estudiante->carrera }}</td>
                                         <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             {{ $estudiante->departamento }}</td>
-                                        <td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             @foreach ($estudiante->notas as $nota)
                                                 {{ $nota->tareas }}<br>
                                             @endforeach
                                         </td>
-                                        <td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             @foreach ($estudiante->notas as $nota)
                                                 {{ $nota->resultadosAlcanzados }}<br>
                                             @endforeach
                                         </td>
-                                        <td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             @foreach ($estudiante->notas as $nota)
                                                 {{ $nota->conocimientos }}<br>
                                             @endforeach
                                         </td>
-                                        <td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             @foreach ($estudiante->notas as $nota)
                                                 {{ $nota->adaptabilidad }}<br>
                                             @endforeach
                                         </td>
-                                        <td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             @foreach ($estudiante->notas as $nota)
                                                 {{ $nota->aplicacion }}<br>
                                             @endforeach
                                         </td>
-                                        <td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             @foreach ($estudiante->notas as $nota)
                                                 {{ $nota->CapacidadLiderazgo }}<br>
                                             @endforeach
                                         </td>
-                                        <td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             @foreach ($estudiante->notas as $nota)
                                                 {{ $nota->asistencia }}<br>
                                             @endforeach
                                         </td>
-                                        <td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             @foreach ($estudiante->notas as $nota)
                                                 {{ $nota->informe }}<br>
                                             @endforeach
@@ -195,7 +195,7 @@
 <div class="draggable-card" id="cardEditNota{{ $estudiante->estudianteId }}" style="display: none;">
     <div class="card-header">
         <span class="card-title input_select1">Editar Nota de {{ $estudiante->apellidos }} {{ $estudiante->nombres }}</span>
-        <button type="button" class="close" onclick="closeCard('cardEditNota{{ $estudiante->estudianteId }}')">&times;</button>
+        <button type="button" class="close" onclick="closeCard('cardEditNota{{ $estudiante->estudianteId }}')"><i class="fa-thin fa-xmark"></i></button>
     </div>
     <div class="card-body">
         <form method="post" action="{{ route('actualizar-notas', ['id' => $estudiante->estudianteId]) }}">
@@ -267,9 +267,11 @@
                                 @endforeach
                             </tbody>
                         </table>
-        @endif
+                        @endif
    
-
+</div>
+</div>
+</div>
 
    
     
@@ -284,6 +286,7 @@
                     $estudiante = $actividades->first()->estudiante;
                 @endphp
                 <div class="card mr-3 mb-3">
+                    
                     <button class="button1" type="button" data-toggle="modal" data-target="#modalActividad{{ $estudianteId }}">
                         {{ $estudiante->apellidos }} {{ $estudiante->nombres }}
                     </button>
@@ -292,16 +295,14 @@
                         aria-labelledby="modalActividad{{ $estudianteId }}Label" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="modalActividad{{ $estudianteId }}Label">
-                                        {{ $estudiante->apellidos }} {{ $estudiante->nombres }}</h5>
+                                <div class="card-header">
+                                    <span class="card-title" id="modalActividad{{ $estudianteId }}Label">
+                                      Actividades de {{ $estudiante->apellidos }} {{ $estudiante->nombres }}</span>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
+                                    <i class="fa-thin fa-xmark"></i>
                                     </button>
                                 </div>
-                                <div class="modal-body">
-                                    <h4><b>Actividades registradas del estudiante</b></h4>
-                                    
+                                <div class="modal-body">                                    
                                     <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
 
@@ -310,28 +311,28 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                         <th>Fecha</th>
-                                                <th>Actividades</th>
-                                                <th>Numero de Horas</th>
-                                                <th>Nombre de la Actividad</th>
-                                                <th>Evidencias</th>
-                                                <th>Hora de subida</th>
-                                                <th>Ultima edicion</th>
-                                            </tr>
+                                        <th>FECHA</th>
+                                                    <th>ACTIVIDADES</th>
+                                                    <th>NÚMERO DE HORAS</th>
+                                                    <th>NOMBRE DE LA ACTIVIDAD</th>
+                                                    <th>EVIDENCIAS</th>
+                                                    <th>HORA SUBIDA</th>
+                                                    <th>ÚLTIMA EDICIÓN</th>
+                                                 </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($actividades as $actividad)
                                                 <tr>
-                                                    <td>{{ $actividad->fecha }}</td>
-                                                    <td>{{ $actividad->actividades }}</td>
-                                                    <td>{{ $actividad->numeroHoras }}</td>
-                                                    <td>{{ $actividad->nombreActividad }}</td>
-                                                    <td>
+                                                    <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $actividad->fecha }}</td>
+                                                    <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify;">{{ $actividad->actividades }}</td>
+                                                    <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $actividad->numeroHoras }}</td>
+                                                    <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $actividad->nombreActividad }}</td>
+                                                    <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                         <img src="data:image/png;base64,{{ $actividad->evidencias }}"
                                                             alt="Evidencia" width="100" height="100">
                                                     </td>
-                                                    <td>{{ $actividad->created_at }}</td>
-                                                    <td>{{ $actividad->updated_at }}</td>
+                                                    <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $actividad->created_at }}</td>
+                                                    <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $actividad->updated_at }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -340,14 +341,13 @@
                             </div>
                         </div>
                     </div>
+                    @endforeach
                 </div>
-            @endforeach
+           
         </div>
     </div>
     <head>
 
-    <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
-    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
     <script src="js\admin\acciones.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
@@ -355,7 +355,6 @@
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
-
 
     <script>
     function openCard(cardId) {

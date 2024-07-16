@@ -1,30 +1,53 @@
 @extends('layouts.participante')
 @section('title', 'Practicas')
 
-@section('title_component', 'Estudiantes en Prácticas')
+@section('title_component', 'Panel Prácticas')
 @section('content')
 
+@if (session('success'))
+<div class="contenedor_alerta success">
+    <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
+    <div class="content_alert">
+      <div class="title">Éxito!</div>
+      <div class="body">{{ session('success') }}</div>
+    </div>
+  </div>
+@endif
 
-    <h4>Estudiantes en Prácticas 1</h4>
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
+@if (session('error'))
+        <div class="contenedor_alerta error">
+            <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Error!</div>
+                <div class="body">{{ session('error') }}</div>
+            </div>
+        </div>
+    @endif
 
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="table">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Carrera</th>
-                                    <th>Correo</th>
-                                    <th>Telefono</th>
-                                    <th>Empresa</th>
-                                    <th>Tutor Empresarial</th>
-                                    <th>Horas de practicas</th>
-                                    <th>Fecha Inicio</th>
-                                    <th>Fecha Fin</th>
+
+    <section>
+        <div class="contenedor_registro_genero ">
+            <h4><b>Estudiantes en Prácticas 1</b></h4>
+            <hr>
+            <div class="mat-elevation-z8 contenedor_general">
+    <div class="contenedor_tabla">
+                    <div class="table-container mat-elevation-z8">
+
+                        <div id="tablaDocentes">
+                            <table class="mat-mdc-table">
+                                <thead class="ng-star-inserted">
+                                    <tr
+                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                        <th class="tamanio1">ESTUDIANTE</th>
+                                    <th class="tamanio1">CARRERA</th>
+                                    <th>CORREO</th>
+                                    <th>TELÉFONO</th>
+                                    <th>EMPRESA</th>
+                                    <th>TUTOR EMPRESARIAL</th>
+                                    <th>HORAS DE PRÁCTICAS</th>
+                                    <th>FECHA INICIO </th>
+                                    <th>FFECHA FIN </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -47,29 +70,27 @@
 
                 </div>
             </div>
-        </div>
 
-    </div>
+</div>
+<br>
 
-    <h4>Estudiantes a calificar</h4>
+    <h4><b>Estudiantes a calificar</b></h4>
+            <hr>
+            <div class="mat-elevation-z8 contenedor_general">
+    <div class="contenedor_tabla">
+                    <div class="table-container mat-elevation-z8">
 
-    <br>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="table">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Correo</th>
-                                    <th>Telefono</th>
-                                    <th>Nota tutor empresarial 12%</th>
-                                    <th>Nota tutor academico 8%</th>
-                                    <th>Acciones</th>
+                        <div id="tablaDocentes">
+                            <table class="mat-mdc-table">
+                                <thead class="ng-star-inserted">
+                                    <tr
+                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                       <th class="tamanio1">ESTUDIANTE</th>
+                                    <th>CORREO</th>
+                                    <th>TELÉFONO</th>
+                                    <th>NOTA TUTOR EMPRESARIAL 12%</th>
+                                    <th>NOTA TUTOR ACADÉMICO 8%</th>
+                                    <th>ACCIONES</th>
 
                                 </tr>
                             </thead>
@@ -104,25 +125,24 @@
             </div>
         </div>
     </div>
+<br>
+    <h4><b>Estudiantes Calificados</b></h4>
 
-    <h4>Estudiants Calificados</h4>
+    <hr>
+            <div class="mat-elevation-z8 contenedor_general">
+    <div class="contenedor_tabla">
+                    <div class="table-container mat-elevation-z8">
 
-    <br>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="table">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Correo</th>
-                                    <th>Nota tutor empresarial 12%</th>
-                                    <th>Nota tutor academico 8%</th>
-                                    <th>Nota final</th>
+                        <div id="tablaDocentes">
+                            <table class="mat-mdc-table">
+                                <thead class="ng-star-inserted">
+                                    <tr
+                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                       <th class="tamanio1">ESTUDIANTE</th>
+                                    <th>CORREO</th>
+                                    <th>NOTA TUTOR EMPRESARIAL 12%</th>
+                                    <th>NOTA TUTOR ACADÉMICO 8%</th>
+                                    <th>NOTA FINAL</th>
 
                                 </tr>
                             </thead>
@@ -144,6 +164,13 @@
             </div>
         </div>
 
-    <script src="{{ asset('js/participante/practicas.js') }}"></script>
+    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    <script src="js\admin\acciones.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
 
+
+    <script src="{{ asset('js/participante/practicas.js') }}"></script>
+    <script src="js\admin\index.js"></script>
 @endsection

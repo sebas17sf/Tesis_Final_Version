@@ -35,18 +35,18 @@
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
 
-                                        <th class="tamanio1">Estudiante</th>
-                <th class="tamanio1">Docente asignado</th>
-                <th class="tamanio">Proyecto</th>
-                <th>Acciones</th>
+                                        <th class="tamanio1">ESTUDIANTE</th>
+                <th class="tamanio1">DOCENTE ASIGNADO</th>
+                <th class="tamanio">PROOYECTO</th>
+                <th class="tamanio4">ACCIONES</th>
             </tr>
         </thead>
         <tbody class="mdc-data-table__content ng-star-inserted">
 
             @foreach ($asignacionesEstudiantesDirector as $asignacion)
                 <tr>
-                    <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify; ">{{ $asignacion->estudiante->apellidos }} {{ $asignacion->estudiante->nombres }}</td>
-                    <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify; ">{{ $asignacion->docenteParticipante->nombres }} {{ $asignacion->docenteParticipante->apellidos }}
+                    <td style=" text-transform: uppercase; word-wrap: break-word;">{{ $asignacion->estudiante->apellidos }} {{ $asignacion->estudiante->nombres }}</td>
+                    <td style=" text-transform: uppercase; word-wrap: break-word;  ">{{ $asignacion->docenteParticipante->nombres }} {{ $asignacion->docenteParticipante->apellidos }}
                     </td>
                     <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">{{ $asignacion->proyecto->nombreProyecto }}</td>
                     <td>
@@ -72,7 +72,8 @@
         </table>
         </div>
 
-
+</div>
+</div>
         <br>
 
         <form id="finalizarForm" action="{{ route('director_vinculacion.cerrarProcesoEstudiantes') }}" method="POST">
@@ -82,6 +83,7 @@
 
 
         <hr>
+       
 
         <h4><b>Control de actividades de los estudiantes</b></h4>
         <hr>
@@ -93,10 +95,8 @@
                         $estudiante = $actividades->first()->estudiante;
                     @endphp
                     <div class="card mr-3 mb-3">
-                        <div class="card-header actividad-card" data-toggle="modal"
-                            data-target="#modalActividad{{ $estudianteId }}">
-                            <h5 class="mb-0">
-                                <button class="btn btn-link" type="button">
+                        
+                                <button class="button1" type="button" data-toggle="modal" data-target="#modalActividad{{ $estudianteId }}">
                                     {{ $estudiante->apellidos }} {{ $estudiante->nombres }}
                                 </button>
                             </h5>
@@ -106,40 +106,44 @@
                             aria-labelledby="modalActividad{{ $estudianteId }}Label" aria-hidden="true">
                             <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title" id="modalActividad{{ $estudianteId }}Label">
-                                            {{ $estudiante->apellidos }} {{ $estudiante->nombres }}</h4>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
+                                    <div class="card-header">
+                                        <span class="card-title" id="modalActividad{{ $estudianteId }}Label">
+                                        Actividades de {{ $estudiante->apellidos }} {{ $estudiante->nombres }}</span>
+                                        <button type="button" class="close" data-dismiss="modal">
+                                        <i class="fa-thin fa-xmark"></i>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <h5>Actividades registradas del estudiante</h5>
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Fecha</th>
-                                                    <th>Actividades</th>
-                                                    <th>Numero de Horas</th>
-                                                    <th>Nombre de la Actividad</th>
-                                                    <th>Evidencias</th>
-                                                    <th>Hora de subida</th>
-                                                    <th>Ultima edicion</th>
+                                    <div class="contenedor_tabla">
+                    <div class="table-container mat-elevation-z8">
+
+                        <div id="tablaDocentes">
+                            <table class="mat-mdc-table">
+                                <thead class="ng-star-inserted">
+                                    <tr
+                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                         <th>FECHA</th>
+                                                    <th>ACTIVIDADES</th>
+                                                    <th>NÚMERO DE HORAS</th>
+                                                    <th>NOMBRE DE LA ACTIVIDAD</th>
+                                                    <th>EVIDENCIAS</th>
+                                                    <th>HORA SUBIDA</th>
+                                                    <th>ÚLTIMA EDICIÓN</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="mdc-data-table__content ng-star-inserted">
                                                 @foreach ($actividades as $actividad)
                                                     <tr>
-                                                        <td>{{ $actividad->fecha }}</td>
-                                                        <td>{{ $actividad->actividades }}</td>
-                                                        <td>{{ $actividad->numeroHoras }}</td>
-                                                        <td>{{ $actividad->nombreActividad }}</td>
-                                                        <td>
+                                                        <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $actividad->fecha }}</td>
+                                                        <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify;">{{ $actividad->actividades }}</td>
+                                                        <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $actividad->numeroHoras }}</td>
+                                                        <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $actividad->nombreActividad }}</td>
+                                                        <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                             <img src="data:image/png;base64,{{ $actividad->evidencias }}"
                                                                 alt="Evidencia" width="100" height="100">
                                                         </td>
-                                                        <td>{{ $actividad->created_at }}</td>
-                                                        <td>{{ $actividad->updated_at }}</td>
+                                                        <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $actividad->created_at }}</td>
+                                                        <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $actividad->updated_at }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>

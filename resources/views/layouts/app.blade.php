@@ -113,7 +113,7 @@
 
                             <a href="{{ route('estudiantes.documentos') }}" class="p-element">
                                 <div class="icon-sidebar-item">
-                                    <i class="material-icons">people_alt</i>
+                                <i class="fa-solid fa-diagram-project"></i>
                                 </div>
                                 <div class="name-sidebar-item">
                                     <li>Servicio Comunitario</li>
@@ -121,7 +121,7 @@
                             </a>
                             <a href="{{ route('estudiantes.practica1') }}" class="p-element">
                                 <div class="icon-sidebar-item">
-                                    <i class="material-icons">work</i>
+                                <i class="fa-solid fa-building"></i>
                                 </div>
                                 <div class="name-sidebar-item">
                                     <li>Prácticas pre profesionales</li>

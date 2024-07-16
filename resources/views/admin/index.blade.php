@@ -17,10 +17,6 @@
     @endif
 
 
-
-
-
-
     @if (session('maestro_con_proyectos'))
         <script>
             Swal.fire({
@@ -348,7 +344,7 @@
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                         <th>N°</th>
-                                        <th class="tamanio3">NOMBRE</th>
+                                        <th class="tamanio3">DOCENTE</th>
                                         <th>CORREO</th>
                                         <th>USUARIO</th>
                                         <th>CÉDULA</th>
@@ -832,7 +828,6 @@
 
     </script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
-    <script src="js\admin\acciones.js"></script>
     <script src="js\admin\index.js"></script>
 
 @endsection

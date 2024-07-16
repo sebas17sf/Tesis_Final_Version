@@ -3,25 +3,25 @@
 @section('title_component', 'Generar Documentos')
 @section('content')
 @if (session('success'))
-<div class="contenedor_alerta success">
-    <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Éxito!</div>
-      <div class="body">{{ session('success') }}</div>
-    </div>
-  </div>
-@endif
+        <div class="contenedor_alerta success">
+            <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Éxito!</div>
+                <div class="body">{{ session('success') }}</div>
+            </div>
+        </div>
+    @endif
 
-@if (session('error'))
-<div class="contenedor_alerta error">
+
+    @if (session('error'))
+    <div class="contenedor_alerta error">
     <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
     <div class="content_alert">
       <div class="title">Error!</div>
       <div class="body">{{ session('error') }}</div>
     </div>
   </div>
-
-@endif
+    @endif
 
 <div class="container mt-4">
     <div class="container">
@@ -154,8 +154,8 @@
                                         <td style="text-transform: uppercase; word-wrap: break-word; text-align: justify;">{{ $actividad->actividades }}</td>
                                         <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $actividad->numeroHoras }}</td>
                                         <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $actividad->nombreActividad }}</td>
-                                        <td><img src="data:image/png;base64,{{ $actividad->evidencias }}" alt="Evidencia" width="100" height="100"></td>
-                                        <td >
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;"><img src="data:image/png;base64,{{ $actividad->evidencias }}" alt="Evidencia" width="100" height="100"></td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             <div class="btn-group shadow-1">
                                                 <form action="{{ route('eliminarActividad', $actividad->idActividades) }}" method="POST">
                                                     @csrf
@@ -317,9 +317,13 @@
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
-<script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+
+
+    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
 <script src="{{ asset('js/documentosEstudiantes.js') }}"></script>
 <script scr="{{asset('js/admin/acciones.js')}}"></script>
 
@@ -362,15 +366,5 @@
         element.style.display = 'none'; // Ocultar la "X"
     }
 </script>
-<style>
-.contenedor_tabla .table-container table td {
-    width: 200px;
-    min-width: 150px;
-    font-size: 11px !important;
-    padding: .5rem !important;
-}
-.contenedor_tabla .table-container table th {
-    position: sticky;
-    font-size: .8em !important;
-        </style>
+
 @endsection
