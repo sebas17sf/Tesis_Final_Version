@@ -9,6 +9,7 @@ use App\Models\Periodo;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\NrcPracticas1;
+use App\Models\ActividadesPracticasII;
 use App\Models\Estudiante;
 use App\Models\AsignacionProyecto;
 use Illuminate\Support\Facades\File;
@@ -91,8 +92,8 @@ class EstudianteController extends Controller
 
         $estudiante->update(['userId' => $user->userId]);
 
-         $asignacionProyecto = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->first();
-         if ($asignacionProyecto) {
+        $asignacionProyecto = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->first();
+        if ($asignacionProyecto) {
             $estudiante->update(['estado' => 'Aprobado-practicas']);
         }
 
@@ -256,7 +257,7 @@ class EstudianteController extends Controller
 
         $estudiante = $user->estudiante;
 
-        $actividades = ActividadesPracticas::where('estudianteId', $estudiante->estudianteId)->get();
+        $actividades = ActividadesPracticasII::where('estudianteId', $estudiante->estudianteId)->get();
 
 
 
@@ -308,7 +309,7 @@ class EstudianteController extends Controller
             'AreaConocimiento' => 'required',
         ]);
 
- 
+
 
         $userId = Auth::id();
 
@@ -594,10 +595,63 @@ class EstudianteController extends Controller
     }
 
 
+        ////////////////////guardar actividad practica 2
+    public function guardarActividadPractica2(Request $request)
+    {
+        $request->validate([
+            'EstudianteID' => 'required',
+            'PracticasII' => 'required',
+            'Actividad' => 'required',
+            'horas' => 'required',
+            'observaciones' => 'required',
+            'fechaActividad' => 'required',
+            'departamento' => 'required',
+            'funcion' => 'required',
+        ]);
+
+
+
+        $datosActividad = $request->only([
+            'horas',
+            'observaciones',
+            'fechaActividad',
+            'departamento',
+            'funcion',
+        ]);
+
+        try {
+            $evidencia = $request->file('evidencia');
+            if ($evidencia) {
+                $img = Image::make($evidencia)->encode('jpg', 75);
+                $datosActividad['evidencia'] = base64_encode($img->encoded);
+            }
+
+            $datosActividad['estudianteId'] = $request->EstudianteID;
+            $datosActividad['idPracticasi'] = $request->PracticasII;
+            $datosActividad['actividad'] = $request->Actividad;
+
+            ActividadesPracticasII::create($datosActividad);
+
+            return redirect()->back()->with('success', 'Actividad guardada exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Ha ocurrido un error al guardar la actividad: ' . $e->getMessage());
+        }
+    }
+
+
     /////////eliminar actividad practica 1
     public function eliminarActividadPracticas1($id)
     {
         $actividad = ActividadesPracticas::findOrFail($id);
+        $actividad->delete();
+
+        return redirect()->back()->with('success', 'Actividad eliminada exitosamente.');
+    }
+
+    /////////eliminar actividad practica 2
+    public function eliminarActividadPracticas2($id)
+    {
+        $actividad = ActividadesPracticasII::findOrFail($id);
         $actividad->delete();
 
         return redirect()->back()->with('success', 'Actividad eliminada exitosamente.');
@@ -642,6 +696,51 @@ class EstudianteController extends Controller
 
 
 
+
+            $actividad->update($datosActividad);
+
+            return redirect()->back()->with('success', 'Actividad actualizada exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Ha ocurrido un error al actualizar la actividad: ' . $e->getMessage());
+        }
+    }
+
+    //////editar actividad practica 2
+    public function updateActividadPracticas2(Request $request, $id)
+    {
+        $actividad = ActividadesPracticasII::findOrFail($id);
+
+        $request->validate([
+            'Actividad' => 'required',
+            'horas' => 'required',
+            'observaciones' => 'required',
+            'fechaActividad' => 'required',
+            'departamento' => 'required',
+            'funcion' => 'required',
+            'evidencia' => 'required',
+        ]);
+
+        $datosActividad = $request->only([
+            'Actividad',
+            'horas',
+            'observaciones',
+            'fechaActividad',
+            'departamento',
+            'funcion',
+        ]);
+
+        $evidencia = $request->file('evidencia');
+
+        try {
+            if ($evidencia) {
+                $maxFileSize = 500000;
+                if ($evidencia->getSize() > $maxFileSize) {
+                    return redirect()->back()->with('error', 'La imagen es muy pesada. El tamaño máximo permitido es de 500 KB.');
+                }
+
+                $img = Image::make($evidencia)->encode('jpg', 75);
+                $datosActividad['evidencia'] = base64_encode($img->encoded);
+            }
 
             $actividad->update($datosActividad);
 

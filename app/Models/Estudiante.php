@@ -81,6 +81,11 @@ class Estudiante extends Model
         return $this->hasMany(ActividadesPracticas::class, 'estudianteId');
     }
 
+    public function actividades_practicasii()
+    {
+        return $this->hasMany(ActividadesPracticasii::class, 'estudianteId');
+    }
+
     public function practicasi()
     {
         return $this->belongsTo(PracticaI::class, 'estudianteId', 'estudianteId');

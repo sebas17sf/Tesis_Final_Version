@@ -52,6 +52,11 @@ class ProfesUniversidad extends Model
         return $this->belongsTo(Usuario::class, 'userId');
     }
 
+    public function tutorAcademico()
+    {
+        return $this->hasMany(PracticaI::class, 'idTutorAcademico');
+    }
+
 
 
 

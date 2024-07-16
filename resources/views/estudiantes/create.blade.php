@@ -113,13 +113,13 @@
                             <label for="Carrera">Carrera:</label>
                             <select class="form-control input input_select" id="Carrera" name="Carrera" required>
                                 <option value="">Seleccione su Carrera</option>
-                                <option value="Ingeniería en Tecnologías de la información"
+                                <option value="Tecnologías de la información"
                                     {{ old('Carrera', $estudiante->carrera ?? '') == 'Ingeniería en Tecnologías de la información' ? 'selected' : '' }}>
                                     Tecnologías de la información</option>
-                                <option value="Ingeniería en Agropecuaria"
+                                <option value="Agropecuaria"
                                     {{ old('Carrera', $estudiante->carrera ?? '') == 'Ingeniería en Agropecuaria' ? 'selected' : '' }}>
                                     Agropecuaria</option>
-                                <option value="Ingeniería en Biotecnologia"
+                                <option value="Biotecnologia"
                                     {{ old('Carrera', $estudiante->carrera ?? '') == 'Ingeniería en Biotecnologia' ? 'selected' : '' }}>
                                     Biotecnologia</option>
                             </select>

@@ -1,43 +1,31 @@
 @extends('layouts.participante')
 @section('title', 'Practicas')
 
-@section('title_component', 'Panel Prácticas')
+@section('title_component', 'Estudiantes en Prácticas')
 @section('content')
 
-@if (session('success'))
-<div class="contenedor_alerta success">
-    <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Éxito!</div>
-      <div class="body">{{ session('success') }}</div>
-    </div>
-  </div>
-@endif
 
+    <h4>Estudiantes en Prácticas 1</h4>
 
-@if (session('error'))
-        <div class="contenedor_alerta error">
-            <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
-            <div class="content_alert">
-                <div class="title">Error!</div>
-                <div class="body">{{ session('error') }}</div>
-            </div>
-        </div>
-    @endif
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
 
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped" id="table">
                             <thead>
                                 <tr>
-                                <th class="tamanio1">ESTUDIANTE</th>
-                                    <th class="tamanio1">CARRERA</th>
-                                    <th>CORREO</th>
-                                    <th>TELÉFONO</th>
-                                    <th>EMPRESA</th>
-                                    <th>TUTOR EMPRESARIAL</th>
-                                    <th>HORAS DE PRÁCTICAS</th>
-                                    <th>FECHA INICIO </th>
-                                    <th>FFECHA FIN </th>
+                                    <th>Nombre</th>
+                                    <th>Carrera</th>
+                                    <th>Correo</th>
+                                    <th>Telefono</th>
+                                    <th>Empresa</th>
+                                    <th>Tutor Empresarial</th>
+                                    <th>Horas de practicas</th>
+                                    <th>Fecha Inicio</th>
+                                    <th>Fecha Fin</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -47,11 +35,11 @@
                                         <td>{{ $practica->carrera }}</td>
                                         <td>{{ $practica->correo }}</td>
                                         <td>{{ $practica->celular }}</td>
-                                        <td>{{ $practica->practicasi->empresa->nombreEmpresa }}</td>
-                                        <td>{{ $practica->practicasi->NombreTutorEmpresarial }}</td>
-                                        <td>{{ $practica->practicasi->HorasPlanificadas }}</td>
-                                        <td>{{ $practica->practicasi->FechaInicio }}</td>
-                                        <td>{{ $practica->practicasi->FechaFinalizacion }}</td>
+                                        <td>{{ $practica->practicasii->empresa->nombreEmpresa }}</td>
+                                        <td>{{ $practica->practicasii->NombreTutorEmpresarial }}</td>
+                                        <td>{{ $practica->practicasii->HorasPlanificadas }}</td>
+                                        <td>{{ $practica->practicasii->FechaInicio }}</td>
+                                        <td>{{ $practica->practicasii->FechaFinalizacion }}</td>
                                         <td>
                                             <button type="button" class="btn btn-primary" data-toggle="modal"
                                                 data-target="#actividadesModal">
@@ -102,39 +90,42 @@
 
                 </div>
             </div>
+        </div>
 
-        <form id="cerrarPracticaForm" action="{{ route('ParticipanteVinculacion.cerrarProcesoPracticasI') }}"
+        <form id="cerrarPracticaForm" action="{{ route('ParticipanteVinculacion.cerrarProcesoPracticasii') }}"
             method="POST">
             @csrf
             @method('PUT')
-            <button type="button" id="cerrarPracticaBtn" class="btn btn-danger">Cerrar Práctica I estudiantes</button>
+            <button type="button" id="cerrarPracticaBtn" class="btn btn-danger">Cerrar Práctica II estudiantes</button>
         </form>
 
     </div>
 
-    <h4><b>Estudiantes a calificar</b></h4>
-            <hr>
-            <div class="mat-elevation-z8 contenedor_general">
-    <div class="contenedor_tabla">
-                    <div class="table-container mat-elevation-z8">
+    <h4>Estudiantes a calificar</h4>
 
-                        <div id="tablaDocentes">
-                            <table class="mat-mdc-table">
-                                <thead class="ng-star-inserted">
-                                    <tr
-                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                       <th class="tamanio1">ESTUDIANTE</th>
-                                    <th>CORREO</th>
-                                    <th>TELÉFONO</th>
-                                    <th>NOTA TUTOR EMPRESARIAL 12%</th>
-                                    <th>NOTA TUTOR ACADÉMICO 8%</th>
-                                    <th>ACCIONES</th>
+    <br>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Correo</th>
+                                    <th>Telefono</th>
+                                    <th>Nota tutor empresarial 12%</th>
+                                    <th>Nota tutor academico 8%</th>
+                                    <th>Acciones</th>
 
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($estudiantesCalificar as $index => $practica)
-                                    <form action="{{ route('ParticipanteVinculacion.guardarNotasPracticasi') }}"
+                                    <form action="{{ route('ParticipanteVinculacion.guardarNotasPracticasii') }}"
                                         method="POST">
                                         @csrf
                                         <tr>
@@ -163,13 +154,8 @@
             </div>
         </div>
     </div>
-<br>
-    <h4><b>Estudiantes Calificados</b></h4>
 
-    <hr>
-            <div class="mat-elevation-z8 contenedor_general">
-    <div class="contenedor_tabla">
-                    <div class="table-container mat-elevation-z8">
+    <h4>Estudiants Calificados</h4>
 
     <br>
 
@@ -198,9 +184,9 @@
                                         <td>{{ $practica->apellidos }} {{ $practica->nombres }}</td>
                                         <td>{{ $practica->carrera }}</td>
                                         <td>{{ $practica->correo }}</td>
-                                        <td>{{ $practica->notas_practicasi->first()->notaTutor }}</td>
-                                        <td>{{ $practica->notas_practicasi->first()->notaAcademico }}</td>
-                                        <td>{{ $practica->notas_practicasi->first()->notaTutor + $practica->notas_practicasi->first()->notaAcademico }}
+                                        <td>{{ $practica->notas_practicasii->first()->notaTutor }}</td>
+                                        <td>{{ $practica->notas_practicasii->first()->notaAcademico }}</td>
+                                        <td>{{ $practica->notas_practicasii->first()->notaTutor + $practica->notas_practicasii->first()->notaAcademico }}
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-primary" data-toggle="modal"
@@ -222,7 +208,7 @@
                                                             </button>
                                                         </div>
                                                         <form
-                                                            action="{{ route('ParticipanteVinculacion.editarNotasPracticasi', ['id' => $practica->estudianteId]) }}"
+                                                            action="{{ route('ParticipanteVinculacion.editarNotasPracticasii', ['id' => $practica->estudianteId]) }}"
                                                             method="POST">
                                                             @csrf
                                                             @method('PUT')
@@ -238,7 +224,7 @@
                                                                         <input id="notaTutorEmpresarial" type="number"
                                                                             class="form-control"
                                                                             name="notaTutorEmpresarial"
-                                                                            value="{{ $practica->notas_practicasi->first()->notaTutor }}"
+                                                                            value="{{ $practica->notas_practicasii->first()->notaTutor }}"
                                                                             step="any" required>
                                                                         <span id="errorMensaje"
                                                                             style="color: red; display: none;"></span>
@@ -251,7 +237,7 @@
                                                                     <div class="col-md-6">
                                                                         <input id="notaTutorAcademico" type="number"
                                                                             class="form-control" name="notaTutorAcademico"
-                                                                            value="{{ $practica->notas_practicasi->first()->notaAcademico }}"
+                                                                            value="{{ $practica->notas_practicasii->first()->notaAcademico }}"
                                                                             step="any" required>
                                                                         <span id="errorMensajeAcademico"
                                                                             style="color: red; display: none;"></span>
@@ -279,13 +265,6 @@
             </div>
         </div>
 
-    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
-    <script src="js\admin\acciones.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+        <script src="{{ asset('js/participante/practicas.js') }}"></script>
 
-
-    <script src="{{ asset('js/participante/practicas.js') }}"></script>
-    <script src="js\admin\index.js"></script>
-@endsection
+    @endsection

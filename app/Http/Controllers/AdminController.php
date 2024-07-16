@@ -683,7 +683,7 @@ class AdminController extends Controller
             'FechaFinalizacion.after' => 'La fecha de finalización debe ser posterior a la fecha de inicio',
         ]);
 
- 
+
         AsignacionSinEstudiante::create([
             'proyectoId' => $request->proyecto_id,
             'participanteId' => $request->ProfesorParticipante,
@@ -1146,9 +1146,11 @@ class AdminController extends Controller
         $perPage3 = $request->input('paginacion3', 10);
         $perPage4 = $request->input('paginacion4', 10);
 
-        $estudiantesConPracticaI = PracticaI::with('estudiante')
-            ->where('estado', 'PracticaI')
-            ->get();
+        $estudiantesConPracticaI = PracticaI::with(['estudiante', 'tutorAcademico', 'empresa', 'nrc'])
+        ->where('estado', 'PracticaI')
+        ->get();
+
+
 
 
 
@@ -1160,13 +1162,13 @@ class AdminController extends Controller
 
 
 
-        $estudiantesPracticas = PracticaI::with('estudiante')
+        $estudiantesPracticas = PracticaI::with(['estudiante', 'tutorAcademico', 'empresa', 'nrc'])
             ->where(function ($query) use ($search) {
                 $query->where('Estado', 'En ejecucion')
                     ->orWhere('Estado', 'Finalizado');
+
             })
             ->where(function ($query) use ($search) {
-
                 $query->where('estudianteId', 'LIKE', '%' . $search . '%')
                     ->orWhereHas('estudiante', function ($query) use ($search) {
                         $query->where('nombres', 'LIKE', '%' . $search . '%')
@@ -1184,13 +1186,15 @@ class AdminController extends Controller
                             ->orWhere('rucEmpresa', 'LIKE', '%' . $search . '%')
                             ->orWhere('provincia', 'LIKE', '%' . $search . '%')
                             ->orWhere('ciudad', 'LIKE', '%' . $search . '%')
-
                             ->orWhere('NombreTutorEmpresarial', 'LIKE', '%' . $search . '%')
                             ->orWhere('tipoPractica', 'LIKE', '%' . $search . '%');
                     });
 
             })
-            ->paginate($perPage1, ['*'], 'page1');
+             ->paginate($perPage1, ['*'], 'page1');
+
+
+
 
         $estudiantesPracticasII = PracticaII::with('estudiante')
             ->where(function ($query) {

@@ -186,6 +186,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/participante-vinculacion/practicas', [ParticipanteVinculacionController::class, 'practicas'])->name('ParticipanteVinculacion.practicas');
     //////guardarNotasPracticasi
     Route::post('/participante-vinculacion/guardar-notas-practicasi', [ParticipanteVinculacionController::class, 'guardarNotasPracticasi'])->name('ParticipanteVinculacion.guardarNotasPracticasi');
+    ////editarNotasPracticasi
+    Route::put('/participante-vinculacion/{id}/editar-notas-practicasi', [ParticipanteVinculacionController::class, 'editarNotasPracticasi'])->name('ParticipanteVinculacion.editarNotasPracticasi');
+    ////cerar proceso de practicasI
+    Route::put('/participante-vinculacion/cerrar-proceso-practicasI', [ParticipanteVinculacionController::class, 'cerrarPracticasi'])->name('ParticipanteVinculacion.cerrarProcesoPracticasI');
+
+
+    ///////////////////practica ii
+    Route::get('/participante-vinculacion/practicas2', [ParticipanteVinculacionController::class, 'practicasii'])->name('ParticipanteVinculacion.practicasii');
+    ///guardarNotasPracticasii
+    Route::post('/participante-vinculacion/guardar-notas-practicasii', [ParticipanteVinculacionController::class, 'guardarNotasPracticasii'])->name('ParticipanteVinculacion.guardarNotasPracticasii');
+    ///editarNotasPracticasii
+    Route::put('/participante-vinculacion/{id}/editar-notas-practicasii', [ParticipanteVinculacionController::class, 'editarNotasPracticasii'])->name('ParticipanteVinculacion.editarNotasPracticasii');
+    ///cerrarProcesoPracticasii
+    Route::put('/participante-vinculacion/cerrar-proceso-practicasii', [ParticipanteVinculacionController::class, 'cerrarPracticasii'])->name('ParticipanteVinculacion.cerrarProcesoPracticasii');
 
 
     ///acta de reunion
@@ -404,8 +418,12 @@ Route::middleware(['auth'])->group(function () {
     //////////////////editar actividades del estudiantes de practicas 1
     Route::put('/estudiantes/{id}/editar-actividad-practicas1', [EstudianteController::class, 'updateActividadPracticas1'])->name('estudiantes.actualizarActividadPracticas1');
 
-
-
+    ///////////////////guardar actividades del estudiantes de practicas 2
+    Route::post('/estudiantes/guardar-actividades-practicas2', [EstudianteController::class, 'guardarActividadPractica2'])->name('estudiantes.guardarActividadesPracticas2');
+    //////////////////eliminar actividades del estudiantes de practicas 2
+    Route::delete('/estudiantes/{id}/eliminar-actividad-practicas2', [EstudianteController::class, 'eliminarActividadPracticas2'])->name('estudiantes.eliminarActividadPracticas2');
+    //////////////////editar actividades del estudiantes de practicas 2
+    Route::put('/estudiantes/{id}/editar-actividad-practicas2', [EstudianteController::class, 'updateActividadPracticas2'])->name('estudiantes.actualizarActividadPracticas2');
 
     //////////////////////////////cambio de credenciales
     Route::get('/admin/credenciales', [AdminController::class, 'cambiarCredencialesUsuario'])->name('admin.cambio-credenciales');
