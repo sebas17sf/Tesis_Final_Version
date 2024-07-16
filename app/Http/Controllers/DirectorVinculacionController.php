@@ -287,8 +287,8 @@ class DirectorVinculacionController extends Controller
         $plantilla->setValue('ParticipanteNombre', $proyecto->asignaciones->first()->docenteParticipante->nombres);
         $plantilla->setValue('DepartamentoTutor', $proyecto->departamentoTutor);
         $plantilla->setValue('intervencion', $request->input('intervencion'));
-        $plantilla->setValue('FechaInicio', $proyecto->first()->asignaciones->first()->inicioFecha);
-        $plantilla->setValue('FechaFinalizacion', $proyecto->first()->asignaciones->first()->finalizacionFecha);
+        $plantilla->setValue('FechaInicio', $asignacion->inicioFecha);
+        $plantilla->setValue('FechaFinalizacion', $asignacion->finalizacionFecha);
 
         $plantilla->setValue('NombreDirector', $proyecto->director->apellidos . "" . $proyecto->director->nombres);
         $plantilla->setValue('NombreParticipante', $proyecto->asignaciones->first()->docenteParticipante->apellidos . "" . $proyecto->asignaciones->first()->docenteParticipante->nombres);
@@ -315,16 +315,17 @@ class DirectorVinculacionController extends Controller
             ->join('estudiantes', 'asignacionproyectos.estudianteId', '=', 'estudiantes.estudianteId')
             ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
             ->select('estudiantes.*')
-            ->where('proyectos.directorId', $Director->id)
+            ->where('estudiantes.estado', 'Aprobado')
             ->get();
+
 
         $plantilla->cloneRow('estudiante', count($estudiantes));
 
         foreach ($estudiantes as $index => $estudiante) {
-            $plantilla->setValue('estudiante#' . ($index + 1), $estudiante->Apellidos . ' ' . $estudiante->Nombres);
-            $plantilla->setValue('Carrera#' . ($index + 1), $estudiante->Carrera);
-            $plantilla->setValue('FechaInicio#' . ($index + 1), $proyecto->asignaciones->inicioFecha);
-            $plantilla->setValue('FechaFinalizacion#' . ($index + 1), $proyecto->asignaciones->finalizacionFecha);
+            $plantilla->setValue('estudiante#' . ($index + 1), $estudiante->apellidos . ' ' . $estudiante->nombres);
+            $plantilla->setValue('Carrera#' . ($index + 1), $estudiante->carrera);
+            $plantilla->setValue('FechaInicio#' . ($index + 1), $asignacion->inicioFecha);
+            $plantilla->setValue('FechaFinalizacion#' . ($index + 1), $asignacion->finalizacionFecha);
             $plantilla->setValue('Observaciones#' . ($index + 1), 'Sin ninguna observacion');
 
         }
@@ -351,8 +352,9 @@ class DirectorVinculacionController extends Controller
             ->join('estudiantes', 'asignacionproyectos.estudianteId', '=', 'estudiantes.estudianteId')
             ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
             ->join('actividades_estudiante', 'asignacionproyectos.estudianteId', '=', 'actividades_estudiante.estudianteId')
-            ->where('proyectos.directorId', $Director->id)
             ->select('actividades_estudiante.*')
+            ->where('estudiantes.estado', 'Aprobado')
+            ->orderBy('actividades_estudiante.fecha', 'asc')
             ->get();
 
         $plantilla->cloneRow('nombre_actividad', count($actividades));
