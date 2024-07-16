@@ -508,11 +508,12 @@ class DocumentoController extends Controller
                 'actividades_estudiante.actividades',
                 'actividades_estudiante.numeroHoras',
                 'actividades_estudiante.evidencias',
-                'actividades_estudiante.nombreActividad',
+                'actividades_estudiante.nombreActividad'
             )
             ->where('proyectos.Estado', '=', 'Ejecucion')
             ->where('asignacionproyectos.proyectoId', '=', $proyectoID)
             ->orderBy('estudiantes.apellidos', 'asc')
+            ->orderBy('actividades_estudiante.fecha', 'asc') // Ordena por fecha de manera ascendente
             ->get();
 
 
@@ -1558,11 +1559,11 @@ class DocumentoController extends Controller
             abort(403, 'No estás autenticado.');
         }
 
-         $director = $usuario->profesorUniversidad;
+        $director = $usuario->profesorUniversidad;
 
 
         if (!$director) {
-             abort(404, 'No se encontró el director asociado a tu usuario.');
+            abort(404, 'No se encontró el director asociado a tu usuario.');
         }
 
         ///obtener el proyecto del director de Proyecto
@@ -1584,7 +1585,7 @@ class DocumentoController extends Controller
 
         if ($asignacionProyecto) {
             $proyectoID = $asignacionProyecto->proyectoId;
-         } else {
+        } else {
             return redirect()->route('director.repartoEstudiantes')->with('error', 'No esta asignado a un proyecto.');
         }
 

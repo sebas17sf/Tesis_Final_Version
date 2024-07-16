@@ -354,6 +354,7 @@ class DirectorVinculacionController extends Controller
             ->join('actividades_estudiante', 'asignacionproyectos.estudianteId', '=', 'actividades_estudiante.estudianteId')
             ->select('actividades_estudiante.*')
             ->where('estudiantes.estado', 'Aprobado')
+            ->orderBy('actividades_estudiante.fecha', 'asc')
             ->get();
 
         $plantilla->cloneRow('nombre_actividad', count($actividades));
