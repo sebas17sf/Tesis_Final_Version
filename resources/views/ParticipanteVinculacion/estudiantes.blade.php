@@ -14,11 +14,7 @@
     @endif
 
 
-<<<<<<< HEAD
     @if (session('error'))
-=======
-@if (session('error'))
->>>>>>> ee964228e5349bb888be607c71cbeb8c8f7ba58d
         <div class="contenedor_alerta error">
             <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
             <div class="content_alert">
