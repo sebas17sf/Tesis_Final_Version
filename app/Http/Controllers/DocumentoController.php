@@ -1562,7 +1562,7 @@ class DocumentoController extends Controller
 
 
         if (!$director) {
-             abort(404, 'No se encontró el estudiante asociado a tu usuario.');
+             abort(404, 'No se encontró el director asociado a tu usuario.');
         }
 
         ///obtener el proyecto del director de Proyecto
@@ -1575,6 +1575,9 @@ class DocumentoController extends Controller
         // Obtener los estudiantes asignados al proyecto
         $asignacionProyecto = AsignacionProyecto::where('proyectoId', $proyecto->proyectoId)->first();
 
+        if (!$asignacionProyecto) {
+            return redirect()->route('director.repartoEstudiantes')->with('error', 'No esta asignado a un proyecto.');
+        }
 
 
 
