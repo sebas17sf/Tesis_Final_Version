@@ -265,6 +265,11 @@ Route::middleware(['auth'])->group(function () {
 
     ///reporte reportesVinculacion del coordinador en DocumentoController
     Route::post('/coordinador/reportes-vinculacion', [DocumentoController::class, 'reportesVinculacion'])->name('coordinador.reportesVinculacion');
+    //////acta de designacin estudiants
+    Route::post('/director/generar-documento', [DocumentoController::class, 'generarActaDirector'])->name('generar-actaEstudiante');
+
+
+
 
     ///DirectorVinculacion
     Route::get('/director-vinculacion', [DirectorVinculacionController::class, 'index'])->name('director_vinculacion.index');

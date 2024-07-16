@@ -27,6 +27,11 @@
     <div class="container">
         <br>
 
+         <form action="{{ route('generar-actaEstudiante') }}" method="POST">
+            @csrf
+            <button type="submit" class="button1_1">Generar acta de designación Estudiante</button>
+        </form>
+
         <div class="contenedor_tabla">
             <div class="table-container mat-elevation-z8">
 
