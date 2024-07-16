@@ -191,13 +191,78 @@
                                                 </button>
                                             </div>
 
-                                             <div class="btn-group shadow-0">
-                                                <button class="button3 efects_button btn_editar3"
-                                                    onclick="openCard('cardActividades{{ $estudiante->estudianteId }}');">
-                                                    <i class="bx bx-edit
-                                                    "></i>
-                                                </button>
+                                            <!-- Botón para abrir el modal -->
+                                            <button type="button" class="button3 efects_button btn_eliminar3"
+                                                data-toggle="modal"
+                                                data-target="#tablaActividad{{ $estudiante->estudianteId }}">
+                                                <i class='bx bx-list-ul'></i>
+                                            </button>
+
+                                            <!-- Card para mostrar las asctividades del estudiante -->
+                                            <div class="modal fade" id="tablaActividad{{ $estudiante->estudianteId }}"
+                                                tabindex="-1" role="dialog"
+                                                aria-labelledby="modalLabel{{ $estudiante->estudianteId }}" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title"
+                                                                id="modalLabel{{ $estudiante->estudianteId }}">Actividades del
+                                                                Estudiante</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Fecha</th>
+                                                                        <th>Actividades</th>
+                                                                        <th>Hora</th>
+                                                                        <th>Nombre de la actividad</th>
+                                                                        <th>Evidencia</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($estudiante->actividades as $actividad)
+                                                                        <tr>
+                                                                            <td
+                                                                                style="text-transform: uppercase; word-wrap: break-word; text-align: justify;">
+                                                                                {{ $actividad->fecha }}
+                                                                            </td>
+                                                                            <td
+                                                                                style="text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
+                                                                                {{ $actividad->actividades }}
+                                                                            </td>
+                                                                            <td
+                                                                                style="text-transform: uppercase; word-wrap: break-word; text-align: justify;">
+                                                                                {{ $actividad->numeroHoras }}
+                                                                            </td>
+                                                                            <td
+                                                                                style="text-transform: uppercase; word-wrap: break-word; text-align: justify;">
+                                                                                {{ $actividad->nombreActividad }}
+                                                                            </td>
+
+                                                                            <td>
+
+                                                                                <img width="100px" src="data:image/jpeg;base64,{{ $actividad->evidencias }}"
+                                                                                    alt="Evidencia" />
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Cerrar</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
+
+
 
 
                                             <!-- Card para editar la nota -->
@@ -337,79 +402,7 @@
 
 
 
-        <hr>
 
-        <h4><b>Control de actividades de los estudiantes</b></h4>
-
-        <div class="container mt-5">
-            <div class="d-flex flex-wrap">
-                @foreach ($actividadesEstudiantes->groupBy('EstudianteID') as $estudianteId => $actividades)
-                    @php
-                        $estudiante = $actividades->first()->estudiante;
-                    @endphp
-                    <div class="card mr-3 mb-3">
-                        <button class="button1" type="button" data-toggle="modal"
-                            data-target="#modalActividad{{ $estudianteId }}">
-                            {{ $estudiante->apellidos }} {{ $estudiante->nombres }}
-                        </button>
-                        <!-- Modal -->
-                        <div class="modal fade" id="modalActividad{{ $estudianteId }}" tabindex="-1" role="dialog"
-                            aria-labelledby="modalActividad{{ $estudianteId }}Label" aria-hidden="true">
-                            <div class="modal-dialog modal-lg" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="modalActividad{{ $estudianteId }}Label">
-                                            {{ $estudiante->apellidos }} {{ $estudiante->nombres }}</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <h4><b>Actividades registradas del estudiante</b></h4>
-
-                                        <div class="contenedor_tabla">
-                                            <div class="table-container mat-elevation-z8">
-
-                                                <div id="tablaDocentes">
-                                                    <table class="mat-mdc-table">
-                                                        <thead class="ng-star-inserted">
-                                                            <tr
-                                                                class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                                                <th>Fecha</th>
-                                                                <th>Actividades</th>
-                                                                <th>Numero de Horas</th>
-                                                                <th>Nombre de la Actividad</th>
-                                                                <th>Evidencias</th>
-                                                                <th>Hora de subida</th>
-                                                                <th>Ultima edicion</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach ($actividades as $actividad)
-                                                                <tr>
-                                                                    <td>{{ $actividad->fecha }}</td>
-                                                                    <td>{{ $actividad->actividades }}</td>
-                                                                    <td>{{ $actividad->numeroHoras }}</td>
-                                                                    <td>{{ $actividad->nombreActividad }}</td>
-                                                                    <td>
-                                                                        <img src="data:image/png;base64,{{ $actividad->evidencias }}"
-                                                                            alt="Evidencia" width="100"
-                                                                            height="100">
-                                                                    </td>
-                                                                    <td>{{ $actividad->created_at }}</td>
-                                                                    <td>{{ $actividad->updated_at }}</td>
-                                                                </tr>
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                @endforeach
-            </div>
-        </div>
 
         <head>
 
