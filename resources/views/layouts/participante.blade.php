@@ -103,7 +103,7 @@
                                     href="{{ route('ParticipanteVinculacion.practicas') }}">
                                     <div class="icon-sidebar-item">
                                         <i class="fa-solid fa-user-graduate"></i>
-                                     </div>
+                                    </div>
                                     <div class="name-sidebar-item">
                                         <li>Practicas I</li>
                                     </div>
@@ -111,7 +111,7 @@
                                 <a class="p-element subitem" href="{{ route('ParticipanteVinculacion.practicasii') }}">
                                     <div class="icon-sidebar-item">
                                         <i class="fa-solid fa-user-graduate"></i>
-                                     </div>
+                                    </div>
                                     <div class="name-sidebar-item">
                                         <li>Practicas II</li>
                                     </div>

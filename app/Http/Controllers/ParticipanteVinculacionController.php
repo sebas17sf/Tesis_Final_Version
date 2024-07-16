@@ -24,7 +24,7 @@ use App\Models\UsuariosSession;
 class ParticipanteVinculacionController extends Controller
 {
 
-    public function index(Request $request)
+     public function index(Request $request)
     {
         $elementosPorPagina = $request->input('elementosPorPagina', 10);
 
@@ -36,8 +36,6 @@ class ParticipanteVinculacionController extends Controller
         if ($participante) {
             $participanteID = $participante->id;
 
-            // Buscar si el docente ha sido un participante adicional
-
             // Obtener el proyecto asociado al participante en AsignacionProyecto
             $proyectosEnEjecucion = AsignacionProyecto::where('participanteId', $participanteID)
                 ->whereHas('proyecto', function ($query) {
@@ -47,8 +45,8 @@ class ParticipanteVinculacionController extends Controller
                     $query->where('estado', 'Aprobado');
                 })
                 ->with(['proyecto', 'estudiante'])
-                ->distinct('proyectoId')
-                ->get();
+                ->get()
+                ->unique('proyectoId'); // Utiliza unique() para filtrar proyectos duplicados basados en proyectoId
 
             if ($proyectosEnEjecucion->isEmpty()) {
                 $fechaActual = Carbon::now()->format('Y-m-d');
@@ -60,22 +58,16 @@ class ParticipanteVinculacionController extends Controller
                     ->get();
             }
 
-
-
             $proyectosTerminados = AsignacionProyecto::where('participanteId', $participanteID)
                 ->whereHas('proyecto', function ($query) {
                     $query->where('estado', 'Terminado');
                 })
                 ->with('proyecto')
                 ->get();
-
-
-
         }
 
         return view('ParticipanteVinculacion.index', compact('proyectosEnEjecucion', 'proyectosTerminados'));
     }
-
 
 
 

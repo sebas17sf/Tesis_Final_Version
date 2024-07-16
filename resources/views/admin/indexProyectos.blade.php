@@ -524,7 +524,7 @@
                                                     <td>
                                                         @foreach ($grupo as $asignacion)
                                                             @foreach ($asignacion->estudiante->horas_vinculacion as $hora)
-                                                                {{ $hora->horasVinculacion ?? '' }}<br>
+                                                                {{ $hora->horasVinculacion ?? 'NO ASIGNADA' }}<br>
                                                             @endforeach
                                                         @endforeach
                                                     </td>
@@ -532,7 +532,7 @@
                                                     <td>
                                                         @foreach ($grupo as $asignacion)
                                                             @foreach ($asignacion->estudiante->notas as $nota)
-                                                                {{ $nota->notaFinal ?? 'Sin calificar' }}<br>
+                                                                {{ $nota->notaFinal ?? 'SIN CALIFICAR' }}<br>
                                                             @endforeach
                                                         @endforeach
                                                     </td>

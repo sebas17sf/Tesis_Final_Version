@@ -159,19 +159,15 @@ class DirectorVinculacionController extends Controller
                 ->where('estado', 'Aprobado')
                 ->get();
 
-            // Obtener estudiantes calificados en proyectos en ejecución
-            $estudiantesCalificadosIds = NotasEstudiante::whereIn('estudianteId', $estudiantesAsignados)
-                ->where('informe', '!=', 'Pendiente')
-                ->pluck('estudianteId')
-                ->toArray();
-
-            // Filtrar solo los estudiantes calificados que estén asignados a proyectos en ejecución
-            $estudiantesCalificados = Estudiante::whereIn('estudianteId', $estudiantesCalificadosIds)
-                ->whereHas('proyectos', function ($query) use ($director) {
-                    $query->where('directorId', $director->id)
-                        ->where('estado', 'Aprobado');
-                })
+            // Obtener estudiantes calificados en estado Aprobado
+            $estudiantesCalificados = Estudiante::whereIn('estudianteId', $estudiantesAsignados)
+                ->where('estado', 'Aprobado')
                 ->get();
+
+
+
+
+
         }
 
         return view('director_vinculacion.estudiantes', compact('estudiantesConNotasPendientes', 'estudiantesCalificados'));
