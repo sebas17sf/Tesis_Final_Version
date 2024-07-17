@@ -26,16 +26,10 @@
 
 
 <div class="contenedor_registro_genero ">
-
+<div class="mat-elevation-z8 contenedor_general">
 <h4><b>Estudiantes por calificar</b></h4>
-<br>
-@if (count($estudiantesConNotasPendientes) === 0)
-                    <tr style="text-align:center">
-                                            <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">
-                                            El docente participante aun no a calificado a los estudiantes.</td>
-                                        </tr>
-         
-        @else
+
+
             <h4>Actualizar Informe de Servicio Comunitario</h4>
             <form method="post" action="{{ route('director_vinculacion.actualizarInforme') }}">
                 @csrf
@@ -48,16 +42,23 @@
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
 
-                                        <th>Nombres</th>
-                                        <th>Espe ID</th>
-                                        <th>Carrera</th>
-                                        <th>Departamento</th>
-                                        <th>Informe de Servicio Comunitario 30%</th>
+                                        <th class="tamanio1">ESTUDIANTE</th>
+                                        <th>ESPE ID</th>
+                                        <th>CARRERA</th>
+                                        <th>DEPARTAMENTO</th>
+                                        <th>INFORME DE SERVICIO COMUNITARIO 30%</th>
 
                                         <th></th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="mdc-data-table__content ng-star-inserted">
+                                @if (count($estudiantesConNotasPendientes) === 0)
+                    <tr style="text-align:center">
+                                            <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">
+                                            El docente participante aun no a calificado a los estudiantes.</td>
+                                        </tr>
+         
+        @else
                                     @foreach ($estudiantesConNotasPendientes as $estudiante)
                                         <tr>
                                             <td class="wide-cell">{{ $estudiante->apellidos }} {{ $estudiante->nombres }}
@@ -79,6 +80,7 @@
                                             </td>
                                         </tr>
                                     @endforeach
+                                    @endif
                                 </tbody>
                             </table>
                         </div>
@@ -87,20 +89,15 @@
                 <br>
                 <button type="submit" class="button1">Guardar calificacion</button>
                 <br>
-                <hr>
+                
             </form>
-            @endif
+            
+            </div>
 <br>
-
+<div class="mat-elevation-z8 contenedor_general">
         <h4><b>Estudiantes Calificados</b></h4>
         <hr>
-        @if (count($estudiantesCalificados) === 0)
-                <tr style="text-align:center">
-                                            <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">
-                                            No hay estudiantes calificados en este momento</td>
-                                        </tr>
-            
-        @else
+        
             <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
 
@@ -109,10 +106,10 @@
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
 
-                                    <th class="tamanio1">NOMBRES</th>
+                                    <th class="tamanio1">ESTUDIANTE</th>
                                     <th>ESPE ID</th>
-                                    <th class= "tamanio1">CARRERA</th>
-                                    <th class= "tamanio1">DEPARTAMENTO</th>
+                                    <th class= "tamanio4">CARRERA</th>
+                                    <th class="tamanio3">DEPARTAMENTO</th>
                                     <th>TAREAS</th>
                                     <th>RESULTADOS ALCANZADOS</th>
                                     <th>CONOCIMIENTOS EN EL ÁREA</th>
@@ -126,6 +123,13 @@
                                 </tr>
                             </thead>
                             <tbody class="mdc-data-table__content ng-star-inserted">
+                            @if (count($estudiantesCalificados) === 0)
+                <tr style="text-align:center">
+                                            <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">
+                                            No hay estudiantes calificados en este momento</td>
+                                        </tr>
+            
+        @else
                                 @foreach ($estudiantesCalificados as $estudiante)
                                     <tr>
                                         <td class="wide-cell"
@@ -133,9 +137,9 @@
                                             {{ $estudiante->apellidos }} {{ $estudiante->nombres }}</td>
                                         <td>{{ $estudiante->espeId }}</td>
                                         <td class="wide-cell"
-                                            style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">
+                                            style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             {{ $estudiante->carrera }}</td>
-                                        <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">
+                                        <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             {{ $estudiante->departamento }}</td>
                                         <td style="text-align: center;">
                                             @foreach ($estudiante->notas as $nota)
@@ -196,51 +200,53 @@
 
                                         <td style="text-align: center;">
                                             <center><button class="button3 efects_button btn_editar3" data-toggle="modal"
-                                                    data-target="#modalEditarInforme{{ $estudiante->estudianteId }}"><i
+                                            onclick="openCard('modalEditarInforme{{ $estudiante->estudianteId }}');"
+                                                    ><i
                                                         class="bx bx-edit-alt"></i></button></center>
 
-                                            <div class="modal fade" id="modalEditarInforme{{ $estudiante->estudianteId }}"
-                                                tabindex="-1" role="dialog"
-                                                aria-labelledby="modalEditarInforme{{ $estudiante->estudianteId }}Label"
-                                                aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
+                                            <div  class="draggable-card" id="modalEditarInforme{{ $estudiante->estudianteId }}"
+                                                
+                                                aria-labelledby="modalEditarInforme{{ $estudiante->estudianteId }}">
+                                            
+                                                   
                                                         <form method="post"
                                                             action="{{ route('director_vinculacion.actualizarNota', ['id' => $estudiante->estudianteId]) }}">
                                                             @csrf
                                                             @method('PUT')
 
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title"
-                                                                    id="modalEditarNota{{ $estudiante->estudianteId }}Label">
+                                                            <div class="card-header">
+                                                                <span class="card-title1 "
+                                                                    id="modalEditarInforme{{ $estudiante->estudianteId }}">
                                                                     Nota de Informe {{ $estudiante->apellidos }}
-                                                                    {{ $estudiante->nombres }}</h5>
+                                                                    {{ $estudiante->nombres }}</span>
 
-                                                                <span aria-hidden="true">&times;</span>
-                                                                </button>
+                                                                    <button type="button" class="close"
+                                                             onclick="closeCard('modalEditarInforme{{ $estudiante->estudianteId }}')"><i
+                                                                class="fa-thin fa-xmark"></i></button>
                                                             </div>
 
-                                                            <div class="modal-body">
+                                                            <div class="card-body">
                                                                 <input type="hidden" name="estudiante_id"
                                                                     value="{{ $estudiante->estudianteId }}">
-                                                                <div class="form-group">
-                                                                    <label for="nota_servicio">Informe de Servicio
-                                                                        Comunitario</label>
-                                                                    <input type="text" class="input"
+                                                                <div style="display: flex; align-items: center;">
+                                                                    <label for="nota_servicio" class="label" style="margin-right: 10px;">Informe de Servicio Comunitario</label>
+                                                                    <input type="text" class="input input_select2"
                                                                         name="nota_servicio"
                                                                         value="{{ $estudiante->notas->first()->informe ?? '' }}"
                                                                         required>
-                                                                    <small class="form-text text-danger"
-                                                                        style="display: none;"></small>
                                                                 </div>
+                                                                <small class="form-text text-danger"
+                                                                    style="display: none;"></small>
                                                             </div>
 
-                                                            <div class="modal-footer">
+                                                            <center><div class=" align-items-center">
                                                                 <button type="submit" class="button">Guardar</button>
-                                                            </div>
+                                           
+                                                            </div> </center>
+                                                            <br>
                                                         </form>
                                                     </div>
-                                                </div>
+                                                
                                             </div>
                                         </td>
 
@@ -249,13 +255,14 @@
 
                                     </tr>
                                 @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-        @endif
+        </div>
     </div>
     </div>
     </div>
@@ -265,5 +272,24 @@
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/admin/acciones.js') }}"></script>
+
+    <style>
+        .contenedor_tabla .table-container table td {
+            width: 200px;
+            min-width: 1px!important;
+            font-size: 11px !important;
+            padding: .5rem !important;
+            
+        }
+        .contenedor_general 
+        
+        .contenedor_tabla {
+            min-height: 1px !important;
+        }
+        .table-container {
+    height: 275px !important;
+        }
+
+    </style>
 @endsection
 
