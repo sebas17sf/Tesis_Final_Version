@@ -4,7 +4,7 @@
 
 @section('title_component', 'Información del Estudiante')
 @section('content')
-    @if (session('success'))
+@if (session('success'))
         <div class="contenedor_alerta success">
             <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
             <div class="content_alert">
@@ -24,7 +24,6 @@
             </div>
         </div>
     @endif
-
     <section class="contenedor_agregar_periodo">
 
 
@@ -132,7 +131,10 @@
                         <p>Aun no está asignado un Proyecto. Estar pendiente de su asignación.</p>
         @endif
         <br>
-
+</div>
+</div>
+</div>
+<br>
 
         <h4><b>Información de Practicas 1</b></h4>
         <hr>
@@ -427,6 +429,19 @@
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+                    // Selecciona el elemento de la alerta
+                    const alertElement = document.querySelector('.contenedor_alerta');
+                    // Establece un temporizador para ocultar la alerta después de 2 segundos
+                    setTimeout(() => {
+                        if (alertElement) {
+                            alertElement.style.display = 'none';
+                        }
+                    }, 1000); // 2000 milisegundos = 2 segundos
+                });
+               
     <style>
         .contenedor_tabla .table-container table td {
             width: 200px;

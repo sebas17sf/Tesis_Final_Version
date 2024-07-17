@@ -50,7 +50,7 @@
                                     <th>Aplicación y manejo de destrezas y habilidades acordes al perfil profesional</th>
                                     <th>Demuestra capacidad de liderazgo y de trabajo en equipo. Sobre 10%</th>
                                     <th>Asiste puntualmente. Sobre 10%</th>
-                                    <th></th>
+                                  <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -68,7 +68,7 @@
                                         <td><input type="number" name="cumple_tareas[]" value="" min="1"
                                                 max="10" step="0.01" required><small class="form-text text-danger"
                                                 style="display: none;"></small></td>
-                                        <td><input type="number" name="resultados_alcanzados[]" value=""
+                                        <td ><input type="number" name="resultados_alcanzados[]" value=""
                                                 min="1" max="10" step="0.01" required><small
                                                 class="form-text text-danger" style="display: none;"></small></td>
                                         <td><input type="number" name="conocimientos_area[]" value="" min="1"
@@ -84,9 +84,9 @@
                                                 max="10" step="0.01" required><small class="form-text text-danger"
                                                 style="display: none;"></small></td>
                                         <td><input type="number" name="asistencia_puntual[]" value="" min="1"
-                                                max="10" step="0.01" required><small class="form-text text-danger"
+                                                max="10" step="0.01" required><small class="form-text  text-danger"
                                                 style="display: none;"></small></td>
-                                        <td><input type="hidden" name="estudiante_id[]"
+                                                <td><input type="hidden" name="estudiante_id[]"
                                                 value="{{ $estudiante->estudianteId }}"></td>
                                     </tr>
                                 @endforeach
