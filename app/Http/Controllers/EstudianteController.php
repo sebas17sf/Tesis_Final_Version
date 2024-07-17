@@ -77,8 +77,9 @@ class EstudianteController extends Controller
                 'departamento' => $validatedData['Departamento'],
                 'comentario' => 'Sin comentarios',
                 'estado' => 'En proceso de revisión',
-                'activacion' => 1
+                'activacion' => true
             ]
+
         );
 
         $user = Usuario::updateOrCreate(

@@ -199,7 +199,7 @@
                                                 </button>
 
                                                 <!-- Card para mostrar las asctividades del estudiante -->
-                                                <div class="draggable-card1_1 "  style="display: none;"
+                                                <div class="draggable-card1_1 " style="display: none;"
                                                     id="tablaActividad{{ $estudiante->estudianteId }}">
 
                                                     <div class="card-header">
@@ -207,7 +207,7 @@
                                                             Estudiante {{ $estudiante->apellidos }}
                                                             {{ $estudiante->nombres }}</span>
                                                         <button type="button" class="close"
-                                                             onclick="closeCard('tablaActividad{{ $estudiante->estudianteId }}')"><i
+                                                            onclick="closeCard('tablaActividad{{ $estudiante->estudianteId }}')"><i
                                                                 class="fa-thin fa-xmark"></i></button>
 
                                                     </div>
@@ -450,6 +450,8 @@
             <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
             <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
             <script src="js\admin\index.js"></script>
+            <script src="{{ asset('js/ParticipanteDirectorVinculacion/notas.js') }}" type="module"></script>
+
 
 
             <script>

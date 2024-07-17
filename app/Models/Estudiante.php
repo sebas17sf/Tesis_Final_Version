@@ -29,6 +29,8 @@ class Estudiante extends Model
         'provincia',
         'comentario',
         'estado',
+        'activacion',
+        'actualizacion',
 
 
     ];
