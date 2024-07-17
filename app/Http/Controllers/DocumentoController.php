@@ -2319,10 +2319,10 @@ class DocumentoController extends Controller
         $proyecto = AsignacionProyecto::where('ParticipanteID', $profesor->id)
             ->whereHas('estudiante', function ($query) {
                 $query->where('Estado', 'Aprobado');
-            })->first();
+            })->first();    
 
         ////nombre del proyecto
-        $template->setValue('nombreProyecto', $proyecto->proyecto->NombreProyecto);
+        $template->setValue('nombreProyecto', $proyecto->proyecto->nombreProyecto);
 
         $template->setValue('lugar', $request->lugar);
         $template->setValue('fecha', $request->fecha);
@@ -2348,14 +2348,14 @@ class DocumentoController extends Controller
             $template->setValue('contador#' . $numFila, $numFila); // Asignar valor de contador
         }
 
-        $template->setValue('participante', $profesor->Apellidos . ' ' . $profesor->Nombres);
-        $template->setValue('Correo', $profesor->Correo);
+        $template->setValue('participante', $profesor->apellidos . ' ' . $profesor->nombres);
+        $template->setValue('Correo', $profesor->correo);
         $template->setValue('Celular', '0912345678');
 
-        $proyectoID = Proyecto::find($proyecto->ProyectoID);
-        $director = ProfesUniversidad::find($proyectoID->DirectorID);
-        $template->setValue('director', $director->Apellidos . ' ' . $director->Nombres);
-        $template->setValue('correoDirector', $director->Correo);
+        $proyectoID = Proyecto::find($proyecto->proyectoId);
+        $director = ProfesUniversidad::find($proyectoID->directorId);
+        $template->setValue('director', $director->apellidos . ' ' . $director->nombres);
+        $template->setValue('correoDirector', $director->correo);
         $template->setValue('celularDirector', '0912345238');
 
 
@@ -2369,9 +2369,9 @@ class DocumentoController extends Controller
         $template->cloneRow('estudiantes', $contadorEstudiantes);
         foreach ($estudiantes as $index => $estudiante) {
             $numFila = $index + 1;
-            $template->setValue('estudiantes#' . $numFila, $estudiante->Apellidos . ' ' . $estudiante->Nombres);
+            $template->setValue('estudiantes#' . $numFila, $estudiante->apellidos . ' ' . $estudiante->nombres);
             $template->setValue('entidad#' . $numFila, 'Universidad de las Fuerzas Armadas ESPE Sede Santo Domingo');
-            $template->setValue('correoEstudiante#' . $numFila, $estudiante->Correo);
+            $template->setValue('correoEstudiante#' . $numFila, $estudiante->correo);
             $template->setValue('celularEstudiante#' . $numFila, $estudiante->celular);
         }
 

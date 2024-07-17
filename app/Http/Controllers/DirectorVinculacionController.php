@@ -121,7 +121,7 @@ class DirectorVinculacionController extends Controller
         $request->validate([
             'estudiante_id' => 'required',
         ]);
-
+ 
         $estudianteId = $request->input('estudiante_id');
         $motivoNegacion = $request->input('motivo_negacion');
 
