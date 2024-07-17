@@ -234,14 +234,14 @@
             <center><button type="submit" class="button1">
                     <i class="fas fa-cogs"></i> Generar
                 </button>
-                <center>
+</center>
         </form>
 
 
 
 
 
-    </div>
+    
 
     <hr>
     <h4><b>Acta de reuniones</b></h4>

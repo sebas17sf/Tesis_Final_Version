@@ -133,17 +133,7 @@
                     <input type="text" id="lastname_student" class="input" placeholder="Ingrese sus apellidos">
                 </div>
 
-                <div>
-                    <label for="cohorte_student">Cohorte <span class="requerido">*</span></label>
-                    <input type="text" id="cohorte_student" class="input" placeholder="Ingrese su cohorte">
-                </div>
-
-                <div>
-                    <label for="period_student">Período <span class="requerido">*</span></label>
-                    <select name="period_student" id="period_student" class="input input_select">
-                        <option value="0">Seleccione su período</option>
-                    </select>
-                </div>
+               
 
                 <div>
                     <label for="race_student">Carrera <span class="requerido">*</span></label>
@@ -160,9 +150,9 @@
                 </div>
 
                 <div>
-                    <label for="locality_student">Localidad <span class="requerido">*</span></label>
-                    <select name="locality_student" id="locality_student" class="input input_select">
-                        <option value="0">Seleccione su localidad</option>
+                    <label for="departament_student">Teléfono <span class="requerido">*</span></label>
+                    <select name="departament_student" id="departament_student" class="input input_select">
+                        <option value="0">Ingrese su teléfono</option>
                     </select>
                 </div>
 
