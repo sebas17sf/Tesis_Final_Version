@@ -31,6 +31,7 @@
 
 
             <h4><b>Proyecto en Ejecución</b></h4>
+            <hr>
             <div class="mat-elevation-z8 contenedor_general">
                 <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                     <!-- Botones -->
@@ -62,8 +63,7 @@
 
             <div class="mat-elevation-z8 contenedor_general">
 
-                <div class="contenedor_tabla" style="
-                min-height: 70px !important;">
+                <div class="contenedor_tabla" >
                     <div class="table-container mat-elevation-z8">
 
                         <div id="tablaDocentes">
@@ -74,9 +74,9 @@
                                         <th class="tamanio"> NOMBRE DE PROYECTO</th>
                                             <th class="tamanio3">CÓDIGO DE PROYECTO</th>
                                             <th class="tamanio4">DIRECTOR</th>
-                                        <th class="tamanio">ACTIVIDADES A REALIZAR</th>
+                                        <th class="tamanio" >ACTIVIDADES A REALIZAR</th>
                                         <th>CORREO</th>
-                                        <th>DEPARTAMENTO</th>
+                                        <th class="tamanio2">DEPARTAMENTO</th>
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
                                         <th>ESTADO</th>
@@ -93,7 +93,7 @@
                                             <tr>
                                                 <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify;">
                                                     {{ strtoupper($proyecto->nombreProyecto) }}</td>
-                                                <td>{{ $proyecto->codigoProyecto }}</td>
+                                                <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $proyecto->codigoProyecto }}</td>
                                                 <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">{{ strtoupper($proyecto->director->apellidos) }}
                                                     {{ strtoupper($proyecto->director->nombres) }}</td>
                                                 <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify;">
@@ -148,7 +148,7 @@
 <br>
 
         <div class="mat-elevation-z8 contenedor_general">
-            @if ($proyectosTerminados->isNotEmpty())
+            
                 <h4><b>Proyectos Terminados</b></h4>
                 <hr>
                 <div class="contenedor_tabla">
@@ -166,7 +166,7 @@
                                         <th>DIRECTOR</th>
                                         <th class="tamanio">ACTIVIDADES A REALIZAR</th>
                                         <th>CORREO</th>
-                                        <th>DEPARTAMENTO</th>
+                                        <th class="tamanio2">DEPARTAMENTO</th>
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
                                         <th>CUPOS</th>
@@ -174,6 +174,12 @@
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
+                                @if ($proyectosTerminados->isNotEmpty())
+                                <tr style="text-align:center">
+                                            <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">
+                                                No hay proyectos terminados.</td>
+                                        </tr>
+                                        @else
                                     @foreach ($proyectosTerminados as $proyecto)
                                         <tr >
                                             <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">{{ $proyecto->NombreProyecto }}</td>
@@ -188,6 +194,7 @@
                                             <td>{{ $proyecto->Estado }}</td>
                                         </tr>
                                     @endforeach
+                                @endif
                                 </tbody>
                             </table>
 
@@ -195,7 +202,7 @@
                         </div>
                     </div>
 
-                    <div class="paginator-container">
+                   <!-- <div class="paginator-container">
                     <nav aria-label="..."
                         style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
 
@@ -218,23 +225,15 @@
                                             <option value="100"
                                                 {{ $elementosPorPaginaTerminados == 100 ? 'selected' : '' }}>100</option>
                                         </select>
-
-
                                     </form>
-
-
-
                                 </li>
                                 {{ $proyectosTerminados->links('vendor.pagination.proyectosDirectorVinculacion') }}
-
                             </ul>
                         </nav>
-                    </div>
+                    </div>-->
 
                 </div>
-            @else
-                <p>No hay proyectos terminados.</p>
-            @endif
+            
         </div>
 
 
@@ -249,4 +248,22 @@
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+
+    <style>
+        .contenedor_tabla .table-container table td {
+            width: 200px;
+            min-width: 150px;
+            font-size: 11px !important;
+            padding: .5rem !important;
+        }
+        .contenedor_general 
+        
+        .contenedor_tabla {
+            min-height: 1px !important;
+        }
+        .table-container {
+    height: 275px !important;
+        }
+
+    </style>
 @endsection

@@ -522,5 +522,6 @@
                 .contenedor_tabla .table-container table th {
                     position: sticky;
                     font-size: .8em !important;
+                }
             </style>
         @endsection
