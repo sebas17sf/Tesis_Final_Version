@@ -199,7 +199,7 @@
                                                 </button>
 
                                                 <!-- Card para mostrar las asctividades del estudiante -->
-                                                <div class="draggable-card1_1"
+                                                <div class="draggable-card1_1 "  style="display: none;"
                                                     id="tablaActividad{{ $estudiante->estudianteId }}">
 
                                                     <div class="card-header">
@@ -207,7 +207,7 @@
                                                             Estudiante {{ $estudiante->apellidos }}
                                                             {{ $estudiante->nombres }}</span>
                                                         <button type="button" class="close"
-                                                            onclick="$('#tablaActividad').hide()"><i
+                                                             onclick="closeCard('tablaActividad{{ $estudiante->estudianteId }}')"><i
                                                                 class="fa-thin fa-xmark"></i></button>
 
                                                     </div>
@@ -513,7 +513,7 @@
                 .contenedor_tabla .table-container table td {
                     width: 200px;
                     min-width: 150px;
-                    font-size: 10px !important;
+                    font-size: 11px !important;
                     padding: .5rem !important;
                 }
 

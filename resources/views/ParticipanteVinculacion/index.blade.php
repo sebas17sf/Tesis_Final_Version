@@ -69,7 +69,7 @@
                                 <th>DIRECTOR</th>
                                 <th class="tamanio">ACTIVIDADES A REALIZAR</th>
                                 <th>CORREO TUTOR</th>
-                                <th class="tamanio2">DEPARTAMENTO</th>
+                                <th class="tamanio3">DEPARTAMENTO</th>
                                 <th>FECHA INICIO INTERVENCIÓN</th>
                                 <th>FECHA FIN INTERVENCIÓN</th>
                                 <th>ESTADO</th>
@@ -124,9 +124,6 @@
             padding: .5rem !important;
         }
 
-        .contenedor_tabla .table-container table th {
-            position: sticky;
-            font-size: .8em !important;
     </style>
 
 @endsection
