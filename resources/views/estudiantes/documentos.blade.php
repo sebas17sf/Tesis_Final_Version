@@ -365,6 +365,20 @@
         document.getElementById(fileTextId).innerHTML = '<i class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir el documento'; // Reset the text
         element.style.display = 'none'; // Ocultar la "X"
     }
+    
+     
+                
 </script>
-
+<script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+                    // Selecciona el elemento de la alerta
+                    const alertElement = document.querySelector('.contenedor_alerta');
+                    // Establece un temporizador para ocultar la alerta después de 2 segundos
+                    setTimeout(() => {
+                        if (alertElement) {
+                            alertElement.style.display = 'none';
+                        }
+                    }, 1000); // 2000 milisegundos = 2 segundos
+                });
+                </script>
 @endsection

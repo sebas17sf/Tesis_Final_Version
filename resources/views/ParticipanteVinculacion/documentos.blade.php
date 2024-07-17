@@ -237,12 +237,6 @@
             </center>
         </form>
 
-
-
-
-
-
-
         <hr>
         <h4><b>Acta de reuniones</b></h4>
         <hr>

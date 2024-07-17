@@ -257,20 +257,20 @@
                                                 </div>
 
                                                 <!-- Modal para editar actividad -->
-                                                <div class="modal fade" id="modalEditarActividad{{ $actividad->id }}"
+                                                <div class="draggable-card" id="modalEditarActividad{{ $actividad->id }}"
                                                     tabindex="-1" role="dialog"
                                                     aria-labelledby="modalEditarActividadLabel{{ $actividad->id }}"
                                                     aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title"
+                                                    
+                                                            <div class="card-header">
+                                                                <span class="card-title1"
                                                                     id="modalEditarActividadLabel{{ $actividad->id }}">
                                                                     Editar
-                                                                    Actividad</h5>
+                                                                    Actividad</span>
                                                                 <button type="button" class="close"
                                                                     data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
+                                                                    <span aria-hidden="true"><i
+                                                                    class="fa-thin fa-xmark"></i></span>
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
@@ -710,4 +710,14 @@
             });
         });
     });
+    document.addEventListener('DOMContentLoaded', (event) => {
+                    // Selecciona el elemento de la alerta
+                    const alertElement = document.querySelector('.contenedor_alerta');
+                    // Establece un temporizador para ocultar la alerta después de 2 segundos
+                    setTimeout(() => {
+                        if (alertElement) {
+                            alertElement.style.display = 'none';
+                        }
+                    }, 1000); // 2000 milisegundos = 2 segundos
+                });
 </script>

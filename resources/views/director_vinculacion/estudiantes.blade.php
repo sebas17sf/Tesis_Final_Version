@@ -33,7 +33,7 @@
             <h4>Actualizar Informe de Servicio Comunitario</h4>
             <form method="post" action="{{ route('director_vinculacion.actualizarInforme') }}">
                 @csrf
-                <div class="contenedor_tabla">
+                <div class="contenedor_tabla ">
                     <div class="table-container mat-elevation-z8">
 
                         <div id="tablaProyectos">
@@ -48,7 +48,7 @@
                                         <th>DEPARTAMENTO</th>
                                         <th>INFORME DE SERVICIO COMUNITARIO 30%</th>
 
-                                        <th></th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
@@ -61,13 +61,15 @@
         @else
                                     @foreach ($estudiantesConNotasPendientes as $estudiante)
                                         <tr>
-                                            <td class="wide-cell">{{ $estudiante->apellidos }} {{ $estudiante->nombres }}
+                                            <td class="wide-cell"
+                                            style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">{{ $estudiante->apellidos }} {{ $estudiante->nombres }}
                                             </td>
-                                            <td>{{ $estudiante->espeId }}</td>
-                                            <td class="wide-cell">{{ $estudiante->carrera }}</td>
-                                            <td>{{ $estudiante->departamento }}</td>
-                                            <td>
-                                                <input type="hidden" class="input input_select1" name="estudiante_id[]"
+                                            <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $estudiante->espeId }}</td>
+                                            <td class="wide-cell"
+                                            style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $estudiante->carrera }}</td>
+                                            <td  style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $estudiante->departamento }}</td>
+                                            <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                <input type="hidden" class="input input_select2" name="estudiante_id[]"
                                                     value="{{ $estudiante->estudianteId }}">
                                                 <input type="text" class="input" name="informe_servicio[]"
                                                     value="{{ $estudiante->notas->first()->Informe !== 'Pendiente' ? $estudiante->notas->first()->Informe : '' }}"
@@ -273,6 +275,18 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/admin/acciones.js') }}"></script>
 
+   <script>
+   document.addEventListener('DOMContentLoaded', (event) => {
+                    // Selecciona el elemento de la alerta
+                    const alertElement = document.querySelector('.contenedor_alerta');
+                    // Establece un temporizador para ocultar la alerta después de 2 segundos
+                    setTimeout(() => {
+                        if (alertElement) {
+                            alertElement.style.display = 'none';
+                        }
+                    }, 1000); // 2000 milisegundos = 2 segundos
+                });
+    </script> 
     <style>
         .contenedor_tabla .table-container table td {
             width: 200px;

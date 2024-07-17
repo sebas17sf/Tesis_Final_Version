@@ -23,15 +23,16 @@
             </div>
         </div>
     @endif
-
-    <div class="container">
+    <section class="contenedor_agregar_periodo">
+    
         <br>
 
         <form action="{{ route('generar-actaEstudiante') }}" method="POST">
             @csrf
             <button type="submit" class="button1_1">Generar acta de designación Estudiante</button>
         </form>
-
+        <br>
+        <div class="mat-elevation-z8 contenedor_general">
         <div class="contenedor_tabla">
             <div class="table-container mat-elevation-z8">
 
@@ -40,28 +41,27 @@
                         <thead class="ng-star-inserted">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
 
-                                <th class="tamanio1">Estudiante</th>
-                                <th class="tamanio1">Docente asignado</th>
-                                <th class="tamanio">Proyecto</th>
-                                <th>Acciones</th>
+                                <th class="tamanio1">ESTUDIANTE</th>
+                                <th class="tamanio3">DOCENTE ASIGNADO</th>
+                                <th class="tamanio">PROYECTO</th>
+                                <th>ACCIONES</th>
                             </tr>
                         </thead>
                         <tbody class="mdc-data-table__content ng-star-inserted">
 
                             @foreach ($asignacionesEstudiantesDirector as $asignacion)
                                 <tr>
-                                    <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify; ">
+                                    <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left; ">
                                         {{ $asignacion->estudiante->apellidos }} {{ $asignacion->estudiante->nombres }}</td>
-                                    <td style=" text-transform: uppercase; word-wrap: break-word; text-align: justify; ">
+                                    <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left; ">
                                         {{ $asignacion->docenteParticipante->nombres }}
                                         {{ $asignacion->docenteParticipante->apellidos }}
                                     </td>
                                     <td
                                         style=" text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
                                         {{ $asignacion->proyecto->nombreProyecto }}</td>
-                                    <td>
-
-
+                                    <td style="text-align: center;">
+                                    <div class="btn-group shadow-0">
                                         <form id="eliminarEstudianteForm_{{ $asignacion->estudianteId }}"
                                             action="{{ route('director_vinculacion.eliminarEstudiante', ['EstudianteID' => $asignacion->estudianteId]) }}"
                                             method="POST">
@@ -69,55 +69,52 @@
                                             @method('DELETE')
                                             <input type="hidden" name="estudiante_id"
                                                 value="{{ $asignacion->estudianteId }}">
-                                            <center>
-                                                <button class="button3 efects_button btn_eliminar3" type="button"
-                                                    onclick="eliminarEstudiante('{{ $asignacion->estudianteId }}')">
-                                                    <i class='bx bx-trash'></i>
-                                                </button>
-                                            </center>
+                                            <center><button class="button3 efects_button btn_eliminar3" type="button"
+                                                    onclick="mostrarSweetAlert('{{ $asignacion->estudianteId }}')" style="margin-right: 5px;"><i
+                                                        class='bx bx-trash'></i> </button></center>
                                             <input type="hidden" name="motivo_negacion"
                                                 id="motivoNegacion_{{ $asignacion->estudianteId }}">
                                         </form>
 
-
                                         <!-- Botón para abrir el modal -->
-                                        <button type="button" class="button3 efects_button btn_eliminar3"
-                                            data-toggle="modal"
-                                            data-target="#tablaActividad{{ $asignacion->estudianteId }}">
-                                            <i class='bx bx-list-ul'></i>
+                                        <button type="button" class="button3 efects_button btn_editar3"
+                                        data-toggle="modal"
+                                            onclick="openCard('tablaActividad{{ $asignacion->estudianteId }}');">
+                                            
+                                            <i class="fa-solid fa-eye"></i>
                                         </button>
 
                                         <!-- Modal -->
-                                        <div class="modal fade" id="tablaActividad{{ $asignacion->estudianteId }}"
-                                            tabindex="-1" role="dialog"
-                                            aria-labelledby="modalLabel{{ $asignacion->estudianteId }}" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title"
+                                        <div class="draggable-card1_3" id="tablaActividad{{ $asignacion->estudianteId }}" >
+                                           
+                                                    <div class="card-header">
+                                                        <span class="card-title1"
                                                             id="modalLabel{{ $asignacion->estudianteId }}">Actividades del
-                                                            Estudiante</h5>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
+                                                            Estudiante </span>
+                                                            <button type="button" class="close"
+                                                             onclick="closeCard('tablaActividad{{ $asignacion->estudianteId }}')"><i
+                                                                class="fa-thin fa-xmark"></i></button>
                                                     </div>
-                                                    <div class="modal-body">
-                                                        <table class="table">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Fecha</th>
-                                                                    <th>Actividades</th>
-                                                                    <th>Hora</th>
-                                                                    <th>Nombre de la actividad</th>
-                                                                    <th>Evidencia</th>
+                                                    <div class="contenedor_tabla">
+                                                        <div class="table-container mat-elevation-z8">
+
+                                                            <div id="tablaActivida">
+                                                                <table class="mat-mdc-table">
+                                                                    <thead class="ng-star-inserted">
+                                                                        <tr
+                                                                            class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                                                             <th>FECHA</th>
+                                                                    <th>ACTIVIDADES</th>
+                                                                    <th>HORA</th>
+                                                                    <th>NOMBRE DE LA ACTIVIDAD</th>
+                                                                    <th>EVIDENCIA</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 @foreach ($asignacion->estudiante->actividades as $actividad)
                                                                     <tr>
                                                                         <td
-                                                                            style="text-transform: uppercase; word-wrap: break-word; text-align: justify;">
+                                                                            style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                                             {{ $actividad->fecha }}
                                                                         </td>
                                                                         <td
@@ -125,11 +122,11 @@
                                                                             {{ $actividad->actividades }}
                                                                         </td>
                                                                         <td
-                                                                            style="text-transform: uppercase; word-wrap: break-word; text-align: justify;">
+                                                                            style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                                             {{ $actividad->numeroHoras }}
                                                                         </td>
                                                                         <td
-                                                                            style="text-transform: uppercase; word-wrap: break-word; text-align: justify;">
+                                                                            style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                                             {{ $actividad->nombreActividad }}
                                                                         </td>
 
@@ -144,10 +141,7 @@
                                                             </tbody>
                                                         </table>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Cerrar</button>
-                                                    </div>
+                                                  
                                                 </div>
                                             </div>
                                         </div>
@@ -161,32 +155,34 @@
                         @endforeach
                     </table>
                 </div>
+</div>
+</div>
 
 
                 <br>
 
-                <form id="finalizarForm" action="{{ route('director_vinculacion.cerrarProcesoEstudiantes') }}"
+               <center> <form id="finalizarForm" action="{{ route('director_vinculacion.cerrarProcesoEstudiantes') }}"
                     method="POST">
                     @csrf
                     <button id="finalizarBtn" type="button" class="button1_1">Finalizar actividades de los
                         estudiantes</button>
                 </form>
-
-
-
-
-
+            </center> 
 
             </div>
-        @endsection
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script src="{{ asset('js/ParticipanteDirectorVinculacion/notas.js') }}"></script>
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('js/admin/acciones.js') }}"></script>
+
         <script>
             function eliminarEstudiante(estudianteID) {
                 Swal.fire({
                     title: 'Ingrese el motivo de la negación',
                     input: 'textarea',
-                    inputLabel: 'Motivo',
+                    inputLabel: 'Escriba el motivo',
                     inputPlaceholder: 'Ingrese el motivo aquí...',
                     inputAttributes: {
                         'aria-label': 'Ingrese el motivo aquí',
@@ -243,17 +239,56 @@
                     });
                 }
             };
+            $(document).ready(function() {
+                    // Hacer que los cards sean draggable
+                    $('.draggable-card1_3').draggable({
+                        handle: ".card-header",
+                        containment: "window"
+                    });
+                });
+                document.addEventListener('DOMContentLoaded', (event) => {
+                    // Selecciona el elemento de la alerta
+                    const alertElement = document.querySelector('.contenedor_alerta');
+                    // Establece un temporizador para ocultar la alerta después de 2 segundos
+                    setTimeout(() => {
+                        if (alertElement) {
+                            alertElement.style.display = 'none';
+                        }
+                    }, 1000); // 2000 milisegundos = 2 segundos
+                });
         </script>
         <style>
-            .contenedor_tabla .table-container table td {
-                width: 200px;
-                min-width: 150px;
-                font-size: 11px !important;
-                padding: .5rem !important;
-            }
+        .contenedor_tabla .table-container table td {
+            width: 200px;
+            min-width: 150px;
+            font-size: 11px !important;
+            padding: .5rem !important;
+        }
+        .contenedor_general 
+        
+        .contenedor_tabla {
+            min-height: 1px !important;
+        }
+        .table-container {
+    height: 275px !important;
+        }
+        div:where(.swal2-container) .swal2-textarea {
+    height: 3.75em;
+    width: 25em !important;
+    /* padding: .75em; */
+}
+.swal2-input-label {
+    font-size:14px;
+}
+    .swal2-styled.swal2-confirm {
 
-            .contenedor_tabla .table-container table th {
-                position: sticky;
-                font-size: .8em !important;
-            }
-        </style>
+    background-color: #5d508a;
+
+}
+.modal {
+    background-color: none !important;
+    z-index: none !important;
+}
+    </style>
+        @endsection
+

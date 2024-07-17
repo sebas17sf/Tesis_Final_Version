@@ -4,7 +4,7 @@
 
 @section('title_component', 'Información del Estudiante')
 @section('content')
-    @if (session('success'))
+@if (session('success'))
         <div class="contenedor_alerta success">
             <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
             <div class="content_alert">
@@ -24,7 +24,6 @@
             </div>
         </div>
     @endif
-
     <section class="contenedor_agregar_periodo">
 
 
@@ -132,19 +131,23 @@
                         <p>Aun no está asignado un Proyecto. Estar pendiente de su asignación.</p>
         @endif
         <br>
-
+</div>
+</div>
+</div>
+<br>
 
         <h4><b>Información de Practicas 1</b></h4>
         <hr>
 
         @if ($practica1)
-            <div class="contenedor tablas">
+        <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
+
                     <div id="tablaDocentes">
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio">EMPRESA</th>
+                                   <th class="tamanio">EMPRESA</th>
                                     <th>TUTOR EMPRESARIAL</th>
                                     <th class="tamanio">TUTOR ACADEMICO</th>
                                     <th>TIPO DE PRACTICA</th>
@@ -188,17 +191,18 @@
         @else
             <p>No tiene asignada una Practica 1.</p>
         @endif
-
+<br>
         <h4><b>Información de Practicas 2</b></h4>
         <hr>
         @if ($practica2)
-            <div class="contenedor tablas">
+        <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
+
                     <div id="tablaDocentes">
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio">EMPRESA</th>
+                                   <th class="tamanio">EMPRESA</th>
                                     <th>TUTOR EMPRESARIAL</th>
                                     <th class="tamanio">TUTOR ACADEMICO</th>
                                     <th>TIPO DE PRACTICA</th>
@@ -243,17 +247,18 @@
         @else
             <p>No tiene asignada una Practica 2.</p>
         @endif
-
+<br>
         <h4><b>Información de Practicas 1.2</b></h4>
         <hr>
         @if ($practica3)
-            <div class="contenedor tablas">
+        <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
+
                     <div id="tablaDocentes">
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio">EMPRESA</th>
+                                   <th class="tamanio">EMPRESA</th>
                                     <th>TUTOR EMPRESARIAL</th>
                                     <th class="tamanio">TUTOR ACADEMICO</th>
                                     <th>TIPO DE PRACTICA</th>
@@ -298,17 +303,18 @@
             <p>No tiene asignada una Practica 1.2.</p>
         @endif
 
-
+<br>
         <h4><b>Información de Practicas 1.3</b></h4>
         <hr>
         @if ($practica4)
-            <div class="contenedor tablas">
+        <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
+
                     <div id="tablaDocentes">
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio">EMPRESA</th>
+                                   <th class="tamanio">EMPRESA</th>
                                     <th>TUTOR EMPRESARIAL</th>
                                     <th class="tamanio">TUTOR ACADEMICO</th>
                                     <th>TIPO DE PRACTICA</th>
@@ -353,17 +359,18 @@
         @else
             <p>No tiene asignada una Practica 1.3.</p>
         @endif
-
+<br>
         <h4><b>Información de Practicas 2.2</b></h4>
         <hr>
         @if ($practica5)
-            <div class="contenedor tablas">
+        <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
+
                     <div id="tablaDocentes">
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio">EMPRESA</th>
+                                   <th class="tamanio">EMPRESA</th>
                                     <th>TUTOR EMPRESARIAL</th>
                                     <th class="tamanio">TUTOR ACADEMICO</th>
                                     <th>TIPO DE PRACTICA</th>
@@ -427,6 +434,19 @@
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+                    // Selecciona el elemento de la alerta
+                    const alertElement = document.querySelector('.contenedor_alerta');
+                    // Establece un temporizador para ocultar la alerta después de 2 segundos
+                    setTimeout(() => {
+                        if (alertElement) {
+                            alertElement.style.display = 'none';
+                        }
+                    }, 1000); // 2000 milisegundos = 2 segundos
+                });
+               
     <style>
         .contenedor_tabla .table-container table td {
             width: 200px;
