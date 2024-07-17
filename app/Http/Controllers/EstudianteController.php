@@ -131,7 +131,7 @@ class EstudianteController extends Controller
             $practica4 = PracticaIV::where('estudianteId', $estudiante->estudianteId)->first();
             $practica5 = PracticaV::where('estudianteId', $estudiante->estudianteId)->first();
 
-            return view('estudiantes.index', compact('estudiante', 'asignacionProyecto', 'periodo'));
+            return view('estudiantes.index', compact('estudiante', 'asignacionProyecto', 'periodo', 'practica1', 'practica2', 'practica3', 'practica4', 'practica5'));
         }
 
         return redirect()->route('login')->with('error', 'Solo puede tener abierta una sesión, no dos o más.');
