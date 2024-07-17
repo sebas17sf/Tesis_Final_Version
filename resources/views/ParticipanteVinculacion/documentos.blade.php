@@ -3,25 +3,25 @@
 
 @section('title_component', 'Panel de documentación')
 @section('content')
-@if (session('success'))
-    <div class="contenedor_alerta success">
-    <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Éxito!</div>
-      <div class="body">{{ session('success') }}</div>
-    </div>
-  </div>
+    @if (session('success'))
+        <div class="contenedor_alerta success">
+            <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Éxito!</div>
+                <div class="body">{{ session('success') }}</div>
+            </div>
+        </div>
     @endif
 
 
     @if (session('error'))
-    <div class="contenedor_alerta error">
-    <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Error!</div>
-      <div class="body">{{ session('error') }}</div>
-    </div>
-  </div>
+        <div class="contenedor_alerta error">
+            <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Error!</div>
+                <div class="body">{{ session('error') }}</div>
+            </div>
+        </div>
     @endif
 
 
@@ -136,8 +136,8 @@
 
                     <div class="form-group col-md-4">
                         <label for="porcentaje"><strong>Porcentaje alcanzado:</strong></label>
-                        <textarea placeholder="Ingrese los resultados alcanzados" name="porcentaje[]" class="form-control input"
-                            rows="2" required></textarea>
+                        <textarea placeholder="Ingrese los resultados alcanzados" name="porcentaje[]" class="form-control input" rows="2"
+                            required></textarea>
                     </div>
                 </div>
             </div>
@@ -234,113 +234,115 @@
             <center><button type="submit" class="button1">
                     <i class="fas fa-cogs"></i> Generar
                 </button>
-</center>
+            </center>
         </form>
 
 
 
 
 
-    
 
-    <hr>
-    <h4><b>Acta de reuniones</b></h4>
-    <hr>
 
-    <form action="{{ route('ParticipanteVinculacion.generarActaReunion') }}" method="post">
-        @csrf
+        <hr>
+        <h4><b>Acta de reuniones</b></h4>
+        <hr>
 
-        <div class="row">
-            <div class="col-md-6 form-group">
-                <label for="lugar"><strong>Lugar de la reunión:</strong></label>
-                <input type="text" id="lugar" name="lugar" class="form-control input">
-            </div>
+        <form action="{{ route('ParticipanteVinculacion.generarActaReunion') }}" method="post">
+            @csrf
 
-            <div class="col-md-6 form-group">
-                <label for="tema"><strong>Tema de la reunión:</strong></label>
-                <input type="text" id="tema" name="tema" class="form-control input">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4 form-group">
-                <label for="fecha"><strong>Fecha de la reunión:</strong></label>
-                <input type="date" id="fecha" name="fecha" class="form-control input">
-            </div>
-
-            <div class="col-md-4 form-group">
-                <label for="hora"><strong>Hora de la reunión:</strong></label>
-                <input type="time" id="horaInicial" name="horaInicial" class="form-control input">
-            </div>
-
-            <div class="col-md-4 form-group">
-                <label for="hora"><strong>Hora de finalización de la reunión:</strong></label>
-                <input type="time" id="horaFinal" name="horaFinal" class="form-control input">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 form-group">
-                <label for="objetivo"><strong>objetivo:</strong></label>
-                <textarea id="objetivo" name="objetivo" class="form-control input"></textarea>
-            </div>
-
-            <div class="col-md-6 form-group">
-                <label for="antecedentes"><strong>antecedentes:</strong></label>
-                <textarea id="antecedentes" name="antecedentes" class="form-control input"></textarea>
-            </div>
-        </div>
-        <div id="campos2">
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="acciones"><strong>Acciones a realizar:</strong></label>
-                    <textarea name="acciones[]" class="form-control input" rows="2" required></textarea>
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="lugar"><strong>Lugar de la reunión:</strong></label>
+                    <input type="text" id="lugar" name="lugar" class="form-control input">
                 </div>
 
-                <div class="form-group col-md-4">
-                    <label for="responsable"><strong>Responsable:</strong></label>
-                    <textarea name="responsable[]" class="form-control input" rows="2" required></textarea>
-                </div>
-
-                <div class="form-group col-md-4">
-                    <label for="fechaAcciones"><strong>Fecha termino:</strong></label>
-                    <input type="date" name="fechaAcciones[]" class="form-control input" rows="2"
-                        required></input>
+                <div class="col-md-6 form-group">
+                    <label for="tema"><strong>Tema de la reunión:</strong></label>
+                    <input type="text" id="tema" name="tema" class="form-control input">
                 </div>
             </div>
-        </div>
+            <div class="row">
+                <div class="col-md-4 form-group">
+                    <label for="fecha"><strong>Fecha de la reunión:</strong></label>
+                    <input type="date" id="fecha" name="fecha" class="form-control input">
+                </div>
 
-        <div class="d-flex">
-            <button type="button" class="button3 efects_button btn_primary mr-2" onclick="agregarCampo2()"><i
-                    class="fa-solid fa-plus"></i></button></button>
-            <button type="button" class="button3 efects_button btn_eliminar1 1mr-2" onclick="eliminarCampo2()"><i
-                    class='bx bx-trash'></i></button>
-        </div <hr>
+                <div class="col-md-4 form-group">
+                    <label for="hora"><strong>Hora de la reunión:</strong></label>
+                    <input type="time" id="horaInicial" name="horaInicial" class="form-control input">
+                </div>
 
-    </form>
+                <div class="col-md-4 form-group">
+                    <label for="hora"><strong>Hora de finalización de la reunión:</strong></label>
+                    <input type="time" id="horaFinal" name="horaFinal" class="form-control input">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="objetivo"><strong>objetivo:</strong></label>
+                    <textarea id="objetivo" name="objetivo" class="form-control input"></textarea>
+                </div>
 
-    <center>
-        <div class="d-flex justify-content-center">
-            <button type="submit" class="button1 mr-2">
-                <i class="fas fa-cogs"></i> Generar
-            </button>
+                <div class="col-md-6 form-group">
+                    <label for="antecedentes"><strong>antecedentes:</strong></label>
+                    <textarea id="antecedentes" name="antecedentes" class="form-control input"></textarea>
+                </div>
+            </div>
+            <div id="campos2">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="acciones"><strong>Acciones a realizar:</strong></label>
+                        <textarea name="acciones[]" class="form-control input" rows="2" required></textarea>
+                    </div>
 
-        </div>
-    </center>
+                    <div class="form-group col-md-4">
+                        <label for="responsable"><strong>Responsable:</strong></label>
+                        <textarea name="responsable[]" class="form-control input" rows="2" required></textarea>
+                    </div>
 
-    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
-    <script src="js\admin\acciones.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+                    <div class="form-group col-md-4">
+                        <label for="fechaAcciones"><strong>Fecha termino:</strong></label>
+                        <input type="date" name="fechaAcciones[]" class="form-control input" rows="2"
+                            required></input>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex">
+                <button type="button" class="button3 efects_button btn_primary mr-2" onclick="agregarCampo2()"><i
+                        class="fa-solid fa-plus"></i></button></button>
+                <button type="button" class="button3 efects_button btn_eliminar1 1mr-2" onclick="eliminarCampo2()"><i
+                        class='bx bx-trash'></i></button>
+            </div>
+
+            <center>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="button1 mr-2">
+                        <i class="fas fa-cogs"></i> Generar
+                    </button>
+
+                </div>
+            </center>
+
+        </form>
 
 
-    <script>
-        function agregarCampo() {
-            var campos = document.getElementById('campos');
-            var nuevoCampo = document.createElement('div');
-            nuevoCampo.className = 'form-row';
-            nuevoCampo.innerHTML = `
+
+        <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+        <script src="js\admin\acciones.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+
+
+        <script>
+            function agregarCampo() {
+                var campos = document.getElementById('campos');
+                var nuevoCampo = document.createElement('div');
+                nuevoCampo.className = 'form-row';
+                nuevoCampo.innerHTML = `
             <div class="form-group col-md-4">
                 <label><strong>Nueva Actividad Planificada:</strong></label>
                 <textarea name="planificadas[]" class="form-control input" rows="2" required></textarea>
@@ -354,24 +356,24 @@
                 <textarea name="porcentaje[]" class="form-control input" rows="2" required></textarea>
             </div>
         `;
-            campos.appendChild(nuevoCampo);
-        }
-
-        function eliminarCampo() {
-            var campos = document.getElementById('campos');
-            var camposAdicionales = campos.querySelectorAll('.form-row:not(:first-child)');
-            if (camposAdicionales.length > 0) {
-                campos.removeChild(camposAdicionales[camposAdicionales.length - 1]);
+                campos.appendChild(nuevoCampo);
             }
-        }
-    </script>
 
-    <script>
-        function agregarCampo2() {
-            var campos = document.getElementById('campos2');
-            var nuevoCampo = document.createElement('div');
-            nuevoCampo.className = 'form-row';
-            nuevoCampo.innerHTML = `
+            function eliminarCampo() {
+                var campos = document.getElementById('campos');
+                var camposAdicionales = campos.querySelectorAll('.form-row:not(:first-child)');
+                if (camposAdicionales.length > 0) {
+                    campos.removeChild(camposAdicionales[camposAdicionales.length - 1]);
+                }
+            }
+        </script>
+
+        <script>
+            function agregarCampo2() {
+                var campos = document.getElementById('campos2');
+                var nuevoCampo = document.createElement('div');
+                nuevoCampo.className = 'form-row';
+                nuevoCampo.innerHTML = `
             <div class="form-group col-md-4">
                 <label><strong>Nueva Actividad Planificada:</strong></label>
                 <textarea name="acciones[]" class="form-control input" rows="2" required></textarea>
@@ -384,18 +386,18 @@
                 <label><strong>Nuevo Porcentaje Alcanzado:</strong></label>
                 <input type="date" name="fechaAcciones[]" class="form-control input" required></input>
             </div>     `;
-            campos.appendChild(nuevoCampo);
-        }
-
-        function eliminarCampo2() {
-            var campos = document.getElementById('campos2');
-            var camposAdicionales = campos.querySelectorAll('.form-row:not(:first-child)');
-            if (camposAdicionales.length > 0) {
-                campos.removeChild(camposAdicionales[camposAdicionales.length - 1]);
+                campos.appendChild(nuevoCampo);
             }
-        }
-    </script>
+
+            function eliminarCampo2() {
+                var campos = document.getElementById('campos2');
+                var camposAdicionales = campos.querySelectorAll('.form-row:not(:first-child)');
+                if (camposAdicionales.length > 0) {
+                    campos.removeChild(camposAdicionales[camposAdicionales.length - 1]);
+                }
+            }
+        </script>
 
 
 
-@endsection
+    @endsection

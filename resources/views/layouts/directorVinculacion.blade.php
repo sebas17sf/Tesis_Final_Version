@@ -89,6 +89,35 @@
                                 </div>
                             </a>
 
+                            <a class="p-element submenu">
+                                <div class="icon-sidebar-item">
+                                    <i class="fa-solid fa-building"></i>
+                                </div>
+                                <div class="name-sidebar-item">
+                                    <li>Prácticas</li>
+                                </div>
+                            </a>
+
+                            <div class="item-list sublista">
+                                <a class="p-element mb-1 subitem"
+                                    href="{{ route('director_vinculacion.practicas1') }}">
+                                    <div class="icon-sidebar-item">
+                                    <i class="fa-solid fa-user-check"></i>
+                                    </div>
+                                    <div class="name-sidebar-item">
+                                        <li>Practicas I</li>
+                                    </div>
+                                </a>
+                                <a class="p-element subitem" href="{{ route('director_vinculacion.practicas2') }}">
+                                    <div class="icon-sidebar-item">
+                                    <i class="fa-sharp fa-solid fa-list-check"></i>
+                                    </div>
+                                    <div class="name-sidebar-item">
+                                        <li>Practicas II</li>
+                                    </div>
+                                </a>
+                            </div>
+
 
                         </ul>
                     </nav>

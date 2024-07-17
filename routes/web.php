@@ -303,8 +303,24 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/director-vinculacion/eliminar-estudiantes/{EstudianteID}', [DirectorVinculacionController::class, 'eliminarEstudiante'])->name('director_vinculacion.eliminarEstudiante');
 
 
+    ////////director vinculacion practicas 1
+    Route::get('/director-vinculacion/practicas1', [DirectorVinculacionController::class, 'practicas1'])->name('director_vinculacion.practicas1');
+    ///guardarNotasPracticas1
+    Route::post('/director-vinculacion/guardar-notas-practicas1', [DirectorVinculacionController::class, 'guardarNotasPracticasi'])->name('director_vinculacion.guardarNotasPracticas1');
+    ///editarNotasPracticas1
+    Route::put('/director-vinculacion/{id}/editar-notas-practicas1', [DirectorVinculacionController::class, 'editarNotasPracticasi'])->name('director_vinculacion.editarNotasPracticas1');
+    ///cerrarProcesoPracticas1
+    Route::put('/director-vinculacion/cerrar-proceso-practicas1', [DirectorVinculacionController::class, 'cerrarPracticasi'])->name('director_vinculacion.cerrarProcesoPracticas1');
 
 
+    ////////director vinculacion practicas 2
+    Route::get('/director-vinculacion/practicas2', [DirectorVinculacionController::class, 'practicasii'])->name('director_vinculacion.practicas2');
+    ///guardarNotasPracticas2
+    Route::post('/director-vinculacion/guardar-notas-practicas2', [DirectorVinculacionController::class, 'guardarNotasPracticasii'])->name('director_vinculacion.guardarNotasPracticas2');
+    ///editarNotasPracticas2
+    Route::put('/director-vinculacion/{id}/editar-notas-practicas2', [DirectorVinculacionController::class, 'editarNotasPracticasii'])->name('director_vinculacion.editarNotasPracticas2');
+    ///cerrarProcesoPracticas2
+    Route::put('/director-vinculacion/cerrar-proceso-practicas2', [DirectorVinculacionController::class, 'cerrarPracticasii'])->name('director_vinculacion.cerrarProcesoPracticas2');
 
 
     ////agregarEmpresa del admin

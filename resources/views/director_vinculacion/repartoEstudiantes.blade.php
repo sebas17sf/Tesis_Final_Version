@@ -27,7 +27,7 @@
     
         <br>
 
-         <form action="{{ route('generar-actaEstudiante') }}" method="POST">
+        <form action="{{ route('generar-actaEstudiante') }}" method="POST">
             @csrf
             <button type="submit" class="button1_1">Generar acta de designación Estudiante</button>
         </form>
@@ -74,7 +74,6 @@
                                                         class='bx bx-trash'></i> </button></center>
                                             <input type="hidden" name="motivo_negacion"
                                                 id="motivoNegacion_{{ $asignacion->estudianteId }}">
-
                                         </form>
 
                                         <!-- Botón para abrir el modal -->
@@ -133,7 +132,8 @@
 
                                                                         <td>
 
-                                                                            <img width="100px" src="data:image/jpeg;base64,{{ $actividad->evidencias }}"
+                                                                            <img width="100px"
+                                                                                src="data:image/jpeg;base64,{{ $actividad->evidencias }}"
                                                                                 alt="Evidencia" />
                                                                         </td>
                                                                     </tr>
@@ -178,13 +178,14 @@
     <script src="{{ asset('js/admin/acciones.js') }}"></script>
 
         <script>
-            function mostrarSweetAlert(estudianteID) {
+            function eliminarEstudiante(estudianteID) {
                 Swal.fire({
                     title: 'Ingrese el motivo de la negación',
                     input: 'textarea',
                     inputLabel: 'Escriba el motivo',
                     inputPlaceholder: 'Ingrese el motivo aquí...',
                     inputAttributes: {
+                        'aria-label': 'Ingrese el motivo aquí',
                         rows: 7,
                         style: 'resize: vertical;'
                     },
@@ -194,16 +195,21 @@
                     preConfirm: (motivo) => {
                         if (!motivo) {
                             Swal.showValidationMessage('Debe ingresar un motivo');
+                            return false;
                         }
+                        return motivo;
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        console.log('Motivo ingresado:', result.value); // Log for debugging
                         document.getElementById('motivoNegacion_' + estudianteID).value = result.value;
+                        console.log('Submitting form:', 'eliminarEstudianteForm_' + estudianteID); // Log for debugging
                         document.getElementById('eliminarEstudianteForm_' + estudianteID).submit();
                     }
                 });
             }
-
+        </script>
+        <script>
             $(document).ready(function() {
                 $('.actividad-card').click(function() {
                     var actividadId = $(this).attr('id').replace('actividad', '');
@@ -272,7 +278,6 @@
     /* padding: .75em; */
 }
 .swal2-input-label {
-
     font-size:14px;
 }
     .swal2-styled.swal2-confirm {
@@ -286,3 +291,4 @@
 }
     </style>
         @endsection
+
