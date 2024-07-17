@@ -2034,7 +2034,7 @@ class DocumentoController extends Controller
         $template->setValue('cedula', $estudiante->cedula);
         $template->setValue('espe_id', $estudiante->espeId);
         $template->setValue('celular', $estudiante->celular);
-        $template->setValue('correo', $estudiante->Correo);
+        $template->setValue('correo', $estudiante->correo);
         $estudianteNrc = $datosEstudiantes->first()->nrc;
         $periodo = Periodo::find($estudianteNrc);
         $numeroPeriodo = $periodo ? $periodo->numeroPeriodo : null;
@@ -2219,7 +2219,7 @@ class DocumentoController extends Controller
         $template->setValue('cedula', $estudiante->cedula);
         $template->setValue('espe_id', $estudiante->espeId);
         $template->setValue('celular', $estudiante->celular);
-        $template->setValue('correo', $estudiante->Correo);
+        $template->setValue('correo', $estudiante->correo);
         $estudianteNrc = $datosEstudiantes->first()->nrc;
         $periodo = Periodo::find($estudianteNrc);
         $numeroPeriodo = $periodo ? $periodo->numeroPeriodo : null;
