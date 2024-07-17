@@ -140,13 +140,14 @@
         <hr>
 
         @if ($practica1)
-            <div class="contenedor tablas">
+        <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
+
                     <div id="tablaDocentes">
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio">EMPRESA</th>
+                                   <th class="tamanio">EMPRESA</th>
                                     <th>TUTOR EMPRESARIAL</th>
                                     <th class="tamanio">TUTOR ACADEMICO</th>
                                     <th>TIPO DE PRACTICA</th>
@@ -190,17 +191,18 @@
         @else
             <p>No tiene asignada una Practica 1.</p>
         @endif
-
+<br>
         <h4><b>Información de Practicas 2</b></h4>
         <hr>
         @if ($practica2)
-            <div class="contenedor tablas">
+        <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
+
                     <div id="tablaDocentes">
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio">EMPRESA</th>
+                                   <th class="tamanio">EMPRESA</th>
                                     <th>TUTOR EMPRESARIAL</th>
                                     <th class="tamanio">TUTOR ACADEMICO</th>
                                     <th>TIPO DE PRACTICA</th>
@@ -245,17 +247,18 @@
         @else
             <p>No tiene asignada una Practica 2.</p>
         @endif
-
+<br>
         <h4><b>Información de Practicas 1.2</b></h4>
         <hr>
         @if ($practica3)
-            <div class="contenedor tablas">
+        <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
+
                     <div id="tablaDocentes">
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio">EMPRESA</th>
+                                   <th class="tamanio">EMPRESA</th>
                                     <th>TUTOR EMPRESARIAL</th>
                                     <th class="tamanio">TUTOR ACADEMICO</th>
                                     <th>TIPO DE PRACTICA</th>
@@ -300,17 +303,18 @@
             <p>No tiene asignada una Practica 1.2.</p>
         @endif
 
-
+<br>
         <h4><b>Información de Practicas 1.3</b></h4>
         <hr>
         @if ($practica4)
-            <div class="contenedor tablas">
+        <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
+
                     <div id="tablaDocentes">
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio">EMPRESA</th>
+                                   <th class="tamanio">EMPRESA</th>
                                     <th>TUTOR EMPRESARIAL</th>
                                     <th class="tamanio">TUTOR ACADEMICO</th>
                                     <th>TIPO DE PRACTICA</th>
@@ -355,17 +359,18 @@
         @else
             <p>No tiene asignada una Practica 1.3.</p>
         @endif
-
+<br>
         <h4><b>Información de Practicas 2.2</b></h4>
         <hr>
         @if ($practica5)
-            <div class="contenedor tablas">
+        <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
+
                     <div id="tablaDocentes">
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio">EMPRESA</th>
+                                   <th class="tamanio">EMPRESA</th>
                                     <th>TUTOR EMPRESARIAL</th>
                                     <th class="tamanio">TUTOR ACADEMICO</th>
                                     <th>TIPO DE PRACTICA</th>

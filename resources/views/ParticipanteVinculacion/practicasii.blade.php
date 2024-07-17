@@ -262,5 +262,16 @@
         </div>
 
         <script src="{{ asset('js/participante/practicas.js') }}"></script>
-
+        <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+                    // Selecciona el elemento de la alerta
+                    const alertElement = document.querySelector('.contenedor_alerta');
+                    // Establece un temporizador para ocultar la alerta después de 2 segundos
+                    setTimeout(() => {
+                        if (alertElement) {
+                            alertElement.style.display = 'none';
+                        }
+                    }, 1000); // 2000 milisegundos = 2 segundos
+                });
+                </script>
     @endsection

@@ -45,27 +45,29 @@
                                     <th>HORAS DE PRÁCTICAS</th>
                                     <th>FECHA INICIO </th>
                                     <th>FFECHA FIN </th>
+                                   <!--<th>ACCIONES</th> -->
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($estudiantes as $practica)
                                     <tr>
-                                        <td>{{ $practica->apellidos }} {{ $practica->nombres }}</td>
-                                        <td>{{ $practica->carrera }}</td>
-                                        <td>{{ $practica->correo }}</td>
-                                        <td>{{ $practica->celular }}</td>
-                                        <td>{{ $practica->practicasi->empresa->nombreEmpresa }}</td>
-                                        <td>{{ $practica->practicasi->NombreTutorEmpresarial }}</td>
-                                        <td>{{ $practica->practicasi->HorasPlanificadas }}</td>
-                                        <td>{{ $practica->practicasi->FechaInicio }}</td>
-                                        <td>{{ $practica->practicasi->FechaFinalizacion }}</td>
-                                        <td>
-                                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                data-target="#actividadesModal">
-                                                Ver Actividades
-                                            </button>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $practica->apellidos }} {{ $practica->nombres }}</td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $practica->carrera }}</td>
+                                        <td style=" word-wrap: break-word; text-align: center;">{{ $practica->correo }}</td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $practica->celular }}</td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $practica->practicasi->empresa->nombreEmpresa }}</td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $practica->practicasi->NombreTutorEmpresarial }}</td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $practica->practicasi->HorasPlanificadas }}</td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $practica->practicasi->FechaInicio }}</td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $practica->practicasi->FechaFinalizacion }}</td>
+                                       <!-- <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                            <center><button type="button" class="button3 efects_button btn_eliminar3" data-toggle="modal"
+                                            
+                                                data-target="#actividadesModal"> <i class="fa-solid fa-eye"></i>
+                                                
+                                            </button></center>
 
-                                            <!-- Modal para mostrar actividades -->
+                                           
                                             <div class="modal fade" id="actividadesModal" tabindex="-1" role="dialog"
                                                 aria-labelledby="actividadesModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
@@ -97,7 +99,7 @@
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-dismiss="modal">Cerrar</button>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </td>
@@ -146,20 +148,20 @@
                                         method="POST">
                                         @csrf
                                         <tr>
-                                            <td>{{ $practica->apellidos }} {{ $practica->nombres }}</td>
-                                            <td>{{ $practica->correo }}</td>
-                                            <td>{{ $practica->celular }}</td>
+                                            <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $practica->apellidos }} {{ $practica->nombres }}</td>
+                                            <td style=" word-wrap: break-word; text-align: center;">{{ $practica->correo }}</td>
+                                            <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $practica->celular }}</td>
                                             <input type="hidden" name="estudianteId"
                                                 value="{{ $practica->estudianteId }}">
-                                            <td>
+                                            <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                 <input type="number" name="notaTutorEmpresarial" id="notaTutorEmpresarial">
                                                 <span id="errorMensaje" style="color: red; display: none;"></span>
                                             </td>
-                                            <td>
+                                            <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                 <input type="number" name="notaTutorAcademico" id="notaTutorAcademico">
                                                 <span id="errorMensajeAcademico" style="color: red; display: none;"></span>
                                             </td>
-                                            <td><button type="submit">Guardar</button></td>
+                                            <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;"><button class="button1" type="submit">Guardar</button></td>
                                         </tr>
                                     </form>
                                 @endforeach
@@ -198,17 +200,17 @@
                             <tbody>
                                 @foreach ($estudiantesCalificados as $index => $practica)
                                     <tr>
-                                        <td>{{ $practica->apellidos }} {{ $practica->nombres }}</td>
-                                        <td>{{ $practica->carrera }}</td>
-                                        <td>{{ $practica->correo }}</td>
-                                        <td>{{ $practica->notas_practicasi->first()->notaTutor }}</td>
-                                        <td>{{ $practica->notas_practicasi->first()->notaAcademico }}</td>
-                                        <td>{{ $practica->notas_practicasi->first()->notaTutor + $practica->notas_practicasi->first()->notaAcademico }}
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $practica->apellidos }} {{ $practica->nombres }}</td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $practica->carrera }}</td>
+                                        <td style="word-wrap: break-word; text-align: center;">{{ $practica->correo }}</td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $practica->notas_practicasi->first()->notaTutor }}</td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $practica->notas_practicasi->first()->notaAcademico }}</td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $practica->notas_practicasi->first()->notaTutor + $practica->notas_practicasi->first()->notaAcademico }}
                                         </td>
-                                        <td>
-                                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                            <button type="button" class="button1" data-toggle="modal"
                                                 data-target="#calificacionModal">
-                                                editar calificacion
+                                                Editar calificación
                                             </button>
 
                                             <!-- Modal para mostrar actividades -->
@@ -291,4 +293,17 @@
 
     <script src="{{ asset('js/participante/practicas.js') }}"></script>
     <script src="js\admin\index.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+                    // Selecciona el elemento de la alerta
+                    const alertElement = document.querySelector('.contenedor_alerta');
+                    // Establece un temporizador para ocultar la alerta después de 2 segundos
+                    setTimeout(() => {
+                        if (alertElement) {
+                            alertElement.style.display = 'none';
+                        }
+                    }, 1000); // 2000 milisegundos = 2 segundos
+                });
+                </script>
 @endsection
