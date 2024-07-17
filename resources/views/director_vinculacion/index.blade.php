@@ -40,7 +40,7 @@
             class="form-inline d-flex align-items-center">
             @csrf
              <div class="tooltip-container">
-                
+
                 <button type="submit" class="button1 btn_excel efects_button">
                                 <i class="fas fa-file-excel"></i> Historial Director
                             </button>
@@ -114,11 +114,11 @@
 
                         </div>
                     </div>
-                    
+
                     {{--   <div class="paginator-container">
                         <nav aria-label="..."
                         style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
-                       
+
 
                         <ul class="pagination">
                             <li class="page-item mx-3">
@@ -205,7 +205,7 @@
                    <!-- <div class="paginator-container">
                     <nav aria-label="..."
                         style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
-                       
+
 
                             <ul class="pagination">
                                 <li class="page-item mx-3">

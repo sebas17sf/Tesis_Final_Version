@@ -9,11 +9,13 @@ use App\Models\Estudiante;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Periodo;
+use App\Mail\AsignacionProyectoMailable;
+
 
 use App\Models\Usuario;
 use App\Models\ProfesUniversidad;
 use App\Models\AsignacionEstudiantesDirector;
-use App\Models\Role;
+ use App\Models\Role;
 use App\Models\NrcVinculacion;
 use Illuminate\Support\Facades\DB;
 use App\Models\ParticipanteAdicional;
@@ -238,7 +240,7 @@ class CoordinadorController extends Controller
 
         $profesores = ProfesUniversidad::all();
 
-        return view('coordinador.agregarProyecto', compact('profesores' ));
+        return view('coordinador.agregarProyecto', compact('profesores'));
     }
 
     public function crearProyecto(Request $request)
@@ -453,7 +455,7 @@ class CoordinadorController extends Controller
         // Validación de datos
         $request->validate([
             'proyecto_id' => 'required',
-            'estudiante_id' => 'required|array',
+            'estudiante_id' => '',
             'estudiante_id.*' => 'numeric',
             'ProfesorParticipante' => 'required',
             'nrc' => 'required',
@@ -461,26 +463,49 @@ class CoordinadorController extends Controller
             'FechaFinalizacion' => 'required',
         ]);
 
-
         $nrc = NrcVinculacion::where('id', $request->nrc)->first();
 
-        foreach ($request->estudiante_id as $estudianteID) {
+        if (!empty($request->estudiante_id)) {
+            foreach ($request->estudiante_id as $estudianteID) {
+                AsignacionProyecto::create([
+                    'proyectoId' => $request->proyecto_id,
+                    'estudianteId' => $estudianteID,
+                    'participanteId' => $request->ProfesorParticipante,
+                    'asignacionFecha' => now(),
+                    'idPeriodo' => $nrc->idPeriodo,
+                    'nrc' => $request->nrc,
+                    'inicioFecha' => $request->FechaInicio,
+                    'finalizacionFecha' => $request->FechaFinalizacion,
+                ]);
+            }
+        } else {
             AsignacionProyecto::create([
-                'ProyectoID' => $request->proyecto_id,
-                'EstudianteID' => $estudianteID,
-                'ParticipanteID' => $request->ProfesorParticipante,
-                'FechaAsignacion' => now(),
-                'IdPeriodo' => $nrc->id_periodo,
-                'id_nrc_vinculacion' => $request->nrc,
-                'FechaInicio' => $request->FechaInicio,
-                'FechaFinalizacion' => $request->FechaFinalizacion,
+                'proyectoId' => $request->proyecto_id,
+                'estudianteId' => null,
+                'participanteId' => $request->ProfesorParticipante,
+                'asignacionFecha' => now(),
+                'idPeriodo' => $nrc->idPeriodo,
+                'nrc' => $request->nrc,
+                'inicioFecha' => $request->FechaInicio,
+                'finalizacionFecha' => $request->FechaFinalizacion,
             ]);
         }
         $this->actualizarUsuarioYRol($request->ProfesorParticipante, 'ParticipanteVinculacion');
 
-        return redirect()->route('coordinador.index')->with('success', 'Estudiante asignado.');
+        $proyecto = Proyecto::with('director')->find($request->proyecto_id);
+        $directorEmail = $proyecto->director->correo;
+
+        /////obtener los estudiantes asignados al proyecto con estado aprobado
+        $estudiantesAsignados = Estudiante::whereIn('estudianteId', $request->estudiante_id)->get();
+        if (filter_var($directorEmail, FILTER_VALIDATE_EMAIL)) {
+            Mail::to($directorEmail)->send(new AsignacionProyectoMailable($proyecto, $estudiantesAsignados));
+        }
+
+
+        return redirect()->route('coordinador.index')->with('success', 'Asignación realizada.');
 
     }
+
 
 
     public function proyectosEstudiantes()

@@ -19,6 +19,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Empresa;
 use App\Models\ProfesUniversidad;
 use App\Models\PracticaI;
+use App\Models\PracticaIV;
+use App\Models\PracticaV;
+use App\Models\PracticaIII;
+
 use App\Models\Usuarios;
 use App\Models\PracticaII;
 use App\Models\Role;
@@ -76,8 +80,10 @@ class EstudianteController extends Controller
                 'carrera' => $validatedData['Carrera'],
                 'departamento' => $validatedData['Departamento'],
                 'comentario' => 'Sin comentarios',
-                'estado' => 'En proceso de revisión'
+                'estado' => 'En proceso de revisión',
+                'activacion' => true
             ]
+
         );
 
         $user = Usuario::updateOrCreate(
@@ -119,7 +125,13 @@ class EstudianteController extends Controller
             // Obtén la asignación de proyecto del estudiante (si existe)
             $asignacionProyecto = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->first();
 
-            return view('estudiantes.index', compact('estudiante', 'asignacionProyecto', 'periodo'));
+            $practica1 = PracticaI::where('estudianteId', $estudiante->estudianteId)->first();
+            $practica2 = PracticaII::where('estudianteId', $estudiante->estudianteId)->first();
+            $practica3 = PracticaIII::where('estudianteId', $estudiante->estudianteId)->first();
+            $practica4 = PracticaIV::where('estudianteId', $estudiante->estudianteId)->first();
+            $practica5 = PracticaV::where('estudianteId', $estudiante->estudianteId)->first();
+
+            return view('estudiantes.index', compact('estudiante', 'asignacionProyecto', 'periodo', 'practica1', 'practica2', 'practica3', 'practica4', 'practica5'));
         }
 
         return redirect()->route('login')->with('error', 'Solo puede tener abierta una sesión, no dos o más.');
@@ -595,7 +607,7 @@ class EstudianteController extends Controller
     }
 
 
-        ////////////////////guardar actividad practica 2
+    ////////////////////guardar actividad practica 2
     public function guardarActividadPractica2(Request $request)
     {
         $request->validate([

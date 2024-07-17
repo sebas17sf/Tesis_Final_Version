@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
- use App\Models\Estudiante;
-    use App\Models\Periodo;
+use App\Models\Estudiante;
+use App\Models\Periodo;
 
 
 
@@ -32,7 +32,7 @@ class AuthController extends Controller
             'cedula' => [
                 'required',
                 'string',
-                function($attribute, $value, $fail) {
+                function ($attribute, $value, $fail) {
                     if (!Estudiante::where('cedula', $value)->exists()) {
                         return $fail('La cédula no está registrada en la tabla de estudiantes.');
                     }

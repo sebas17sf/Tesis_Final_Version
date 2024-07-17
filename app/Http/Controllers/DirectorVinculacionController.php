@@ -35,7 +35,7 @@ class DirectorVinculacionController extends Controller
 
             // Obtener proyectos de asignación del director en ejecución
 
-            $proyectosEjecucion = Proyecto::where('DirectorID', $DirectorID)
+            $proyectosEjecucion = Proyecto::where('directorId', $DirectorID)
                 ->where('estado', 'Ejecucion')
                 ->get();
 
