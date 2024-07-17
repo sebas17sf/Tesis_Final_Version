@@ -1847,6 +1847,10 @@ class DocumentoController extends Controller
             ->orderBy('estudiantes.apellidos', 'asc')
             ->get();
 
+        if ($datosEstudiantes->isEmpty()) {
+            return redirect()->route('director.repartoEstudiantes')->with('error', 'No hay estudiantes asignados al proyecto.');
+        }
+
         // Obtener Carrera, Provincia y FechaInicio del primer estudiante asignado al proyecto
         $primerEstudiante = $datosEstudiantes->first();
         $carreraEstudiante = mb_strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú'], ['A', 'E', 'I', 'O', 'U'], $primerEstudiante->carrera));
