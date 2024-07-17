@@ -87,7 +87,7 @@
         <p>Estudiantes asignados al proyecto:</p>
         <ul>
             @foreach ($estudiantes as $estudiante)
-            <li><strong>Nombres:</strong> {{ $estudiante->apellidos }} {{ $estudiante->nombres }} <strong>Cohorte:</strong> {{ $estudiante->Cohorte }} <strong>Carrera:</strong> {{ $estudiante->carrera }} </li>
+            <li><strong>Nombres:</strong> {{ $estudiante->apellidos }} {{ $estudiante->nombres }} <strong>Cohorte:</strong> {{ $estudiante->Cohorte }} <strong>Carrera:</strong> {{ $estudiante->carrera }}  <strong>ESPE ID:</strong> {{ $estudiante->espeId }} </li>
             @endforeach
         </ul>
 
