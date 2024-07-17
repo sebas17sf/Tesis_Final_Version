@@ -17,6 +17,7 @@ use App\Models\Empresa;
 use App\Models\Role;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Mail\AsignacionProyectoMailable;
 
 
 
@@ -664,6 +665,16 @@ class AdminController extends Controller
         }
         $this->actualizarUsuarioYRol($request->ProfesorParticipante, 'ParticipanteVinculacion');
 
+        $proyecto = Proyecto::with('director')->find($request->proyecto_id);
+        $directorEmail = $proyecto->director->correo;
+
+        /////obtener los estudiantes asignados al proyecto con estado aprobado
+        $estudiantesAsignados = Estudiante::whereIn('estudianteId', $request->estudiante_id)->get();
+        if (filter_var($directorEmail, FILTER_VALIDATE_EMAIL)) {
+            Mail::to($directorEmail)->send(new AsignacionProyectoMailable($proyecto, $estudiantesAsignados));
+        }
+
+
         return redirect()->route('admin.indexProyectos')->with('success', 'Asignación realizada.');
 
     }
@@ -1147,8 +1158,8 @@ class AdminController extends Controller
         $perPage4 = $request->input('paginacion4', 10);
 
         $estudiantesConPracticaI = PracticaI::with(['estudiante', 'tutorAcademico', 'empresa', 'nrc'])
-        ->where('estado', 'PracticaI')
-        ->get();
+            ->where('estado', 'PracticaI')
+            ->get();
 
 
 
@@ -1191,7 +1202,7 @@ class AdminController extends Controller
                     });
 
             })
-             ->paginate($perPage1, ['*'], 'page1');
+            ->paginate($perPage1, ['*'], 'page1');
 
 
 

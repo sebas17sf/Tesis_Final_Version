@@ -76,7 +76,8 @@ class EstudianteController extends Controller
                 'carrera' => $validatedData['Carrera'],
                 'departamento' => $validatedData['Departamento'],
                 'comentario' => 'Sin comentarios',
-                'estado' => 'En proceso de revisión'
+                'estado' => 'En proceso de revisión',
+                'activacion' => 1
             ]
         );
 
@@ -595,7 +596,7 @@ class EstudianteController extends Controller
     }
 
 
-        ////////////////////guardar actividad practica 2
+    ////////////////////guardar actividad practica 2
     public function guardarActividadPractica2(Request $request)
     {
         $request->validate([
