@@ -302,7 +302,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('/director-vinculacion/eliminar-estudiantes/{EstudianteID}', [DirectorVinculacionController::class, 'eliminarEstudiante'])->name('director_vinculacion.eliminarEstudiante');
 
-
     ////////director vinculacion practicas 1
     Route::get('/director-vinculacion/practicas1', [DirectorVinculacionController::class, 'practicas1'])->name('director_vinculacion.practicas1');
     ///guardarNotasPracticas1
@@ -321,6 +320,8 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/director-vinculacion/{id}/editar-notas-practicas2', [DirectorVinculacionController::class, 'editarNotasPracticasii'])->name('director_vinculacion.editarNotasPracticas2');
     ///cerrarProcesoPracticas2
     Route::put('/director-vinculacion/cerrar-proceso-practicas2', [DirectorVinculacionController::class, 'cerrarPracticasii'])->name('director_vinculacion.cerrarProcesoPracticas2');
+
+
 
 
     ////agregarEmpresa del admin

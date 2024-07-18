@@ -1815,7 +1815,11 @@ class DocumentoController extends Controller
         }
 
         // Obtener los estudiantes asignados al proyecto
-        $asignacionProyecto = AsignacionProyecto::where('proyectoId', $proyecto->proyectoId)->first();
+        $asignacionProyecto = AsignacionProyecto::where('proyectoId', $proyecto->proyectoId)
+             ->whereHas('estudiante', function ($query) {
+                $query->where('estado', 'Aprobado');
+            })
+            ->first();
 
         if (!$asignacionProyecto) {
             return redirect()->route('director.repartoEstudiantes')->with('error', 'No esta asignado a un proyecto.');
@@ -1826,7 +1830,8 @@ class DocumentoController extends Controller
 
         if ($asignacionProyecto) {
             $proyectoID = $asignacionProyecto->proyectoId;
-        } else {
+            $periodo = $asignacionProyecto->idPeriodo;
+         } else {
             return redirect()->route('director.repartoEstudiantes')->with('error', 'No esta asignado a un proyecto.');
         }
 
@@ -1842,7 +1847,7 @@ class DocumentoController extends Controller
                 'proyectos.nombreProyecto',
             )
             ->where('asignacionproyectos.proyectoId', $proyectoID)
-            ->where('asignacionproyectos.idPeriodo', $asignacionProyecto->idPeriodo)
+            ->where('asignacionproyectos.idPeriodo', $periodo)
             ->where('estudiantes.estado', 'Aprobado')
             ->orderBy('estudiantes.apellidos', 'asc')
             ->get();
@@ -2319,7 +2324,7 @@ class DocumentoController extends Controller
         $proyecto = AsignacionProyecto::where('ParticipanteID', $profesor->id)
             ->whereHas('estudiante', function ($query) {
                 $query->where('Estado', 'Aprobado');
-            })->first();    
+            })->first();
 
         ////nombre del proyecto
         $template->setValue('nombreProyecto', $proyecto->proyecto->nombreProyecto);

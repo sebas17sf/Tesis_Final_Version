@@ -39,18 +39,17 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th>Estudiante</th>
-                                    <th>Espe ID</th>
-                                    <th>Carrera</th>
-                                    <th>Departamento</th>
-                                    <th>Cumple con las tareas planificadas. Sobre 10%</th>
-                                    <th>Resultados Alcanzados. Sobre 10%</th>
-                                    <th>Demuestra conocimientos en el área de práctica pre profesional. Sobre 10%</th>
-                                    <th>Adaptabilidad e Integración al sistema de trabajo del proyecto. Sobre 10%</th>
-                                    <th>Aplicación y manejo de destrezas y habilidades acordes al perfil profesional</th>
-                                    <th>Demuestra capacidad de liderazgo y de trabajo en equipo. Sobre 10%</th>
-                                    <th>Asiste puntualmente. Sobre 10%</th>
-                                  <th></th>
+                                    <th>ESTUDIANTE</th>
+                                    <th>ESPE ID</th>
+                                    <th>CARRERA</th>
+                                    <th>DEPARTAMENTO</th>
+                                    <th>CUMPLE CON LAS TAREAS PLANIFICADAS. SOBRE 10%</th>
+                                    <th>RESULTADOS ALCANZADOS. SOBRE 10%</th>
+                                    <th>DEMUESTRA CONOCIMIENTOS EN EL ÁREA DE PRÁCTICA PRE PROFESIONAL. SOBRE 10%</th>
+                                    <th>ADAPTABILIDAD E INTEGRACIÓN AL SISTEMA DE TRABAJO DEL PROYECTO. SOBRE 10%</th>
+                                    <th>APLICACIÓN Y MANEJO DE DESTREZAS Y HABILIDADES ACORDES AL PERFIL PROFESIONAL</th>
+                                    <th>DEMUESTRA CAPACIDAD DE LIDERAZGO Y DE TRABAJO EN EQUIPO. SOBRE 10%</th>
+                                    <th>ASISTE PUNTUALMENTE. SOBRE 10%</th>
                                 </tr>
                             </thead>
                             <tbody class="mdc-data-table__content ng-star-inserted">
@@ -73,7 +72,7 @@
                                         <td><input type="number" name="cumple_tareas[]" value="" min="1"
                                                 max="10" step="0.01" required><small class="form-text text-danger"
                                                 style="display: none;"></small></td>
-                                        <td ><input type="number" name="resultados_alcanzados[]" value=""
+                                        <td><input type="number" name="resultados_alcanzados[]" value=""
                                                 min="1" max="10" step="0.01" required><small
                                                 class="form-text text-danger" style="display: none;"></small></td>
                                         <td><input type="number" name="conocimientos_area[]" value="" min="1"
@@ -91,7 +90,7 @@
                                         <td><input type="number" name="asistencia_puntual[]" value="" min="1"
                                                 max="10" step="0.01" required><small class="form-text  text-danger"
                                                 style="display: none;"></small></td>
-                                                <td><input type="hidden" name="estudiante_id[]"
+                                        <td><input type="hidden" name="estudiante_id[]"
                                                 value="{{ $estudiante->estudianteId }}"></td>
                                     </tr>
                                 @endforeach
@@ -120,19 +119,20 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio4">Estudiante</th>
+                                    <th class="tamanio4">ESTUDIANTE</th>
                                     <th class="tamanio4">Espe ID</th>
-                                    <th class="tamanio4">Carrera</th>
-                                    <th class="tamanio4">Departamento</th>
-                                    <th>Cumple con las tareas planificadas. Sobre 10%</th>
-                                    <th>Resultados Alcanzados. Sobre 10%</th>
-                                    <th>Demuestra conocimientos en el área</th>
-                                    <th>Adaptabilidad</th>
-                                    <th>Aplicación de destrezas y habilidades</th>
-                                    <th>Capacidad de liderazgo</th>
-                                    <th>Asistencia puntual</th>
-                                    <th>Informe de Servicio Comunitario</th>
-                                    <th>Acciones</th>
+                                    <th class="tamanio4">CARRERA</th>
+                                    <th class="tamanio4">DEPARTAMENTO</th>
+                                    <th>CUMPLE CON LAS TAREAS PLANIFICADAS. SOBRE 10%</th>
+                                    <th>RESULTADOS ALCANZADOS. SOBRE 10%</th>
+                                    <th>DEMUESTRA CONOCIMIENTOS EN EL ÁREA</th>
+                                    <th>ADAPTABILIDAD</th>
+                                    <th>APLICACIÓN DE DESTREZAS Y HABILIDADES</th>
+                                    <th>CAPACIDAD DE LIDERAZGO</th>
+                                    <th>ASISTENCIA PUNTUAL</th>
+                                    <th>INFORME DE SERVICIO COMUNITARIO</th>
+
+                                    <th>ACCIONES</th>
                                 </tr>
                             </thead>
                             <tbody class="mdc-data-table__content ng-star-inserted">

@@ -160,7 +160,7 @@
                                                 <form action="{{ route('eliminarActividad', $actividad->idActividades) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="button3 efects_button btn_eliminar3" onclick="confirmDelete(event)"><i class='bx bx-trash'></i></button>
+                                                    <button type="submit" class="button3 efects_button btn_eliminar3" onclick="confirmDeleteEstudiante(event)"><i class='bx bx-trash'></i></button>
                                                 </form>
                                             </div>
                                             <div class="btn-group shadow-1">
@@ -365,9 +365,9 @@
         document.getElementById(fileTextId).innerHTML = '<i class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir el documento'; // Reset the text
         element.style.display = 'none'; // Ocultar la "X"
     }
-    
-     
-                
+
+
+
 </script>
 <script>
         document.addEventListener('DOMContentLoaded', (event) => {

@@ -25,9 +25,9 @@
     @endif
 
 
-<div class="contenedor_registro_genero ">
-<div class="mat-elevation-z8 contenedor_general">
-<h4><b>Estudiantes por calificar</b></h4>
+    <div class="contenedor_registro_genero ">
+        <div class="mat-elevation-z8 contenedor_general">
+            <h4><b>Estudiantes por calificar</b></h4>
 
 
             <h4>Actualizar Informe de Servicio Comunitario</h4>
@@ -48,40 +48,46 @@
                                         <th>DEPARTAMENTO</th>
                                         <th>INFORME DE SERVICIO COMUNITARIO 30%</th>
 
-                                        
+
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
-                                @if (count($estudiantesConNotasPendientes) === 0)
-                    <tr style="text-align:center">
+                                    @if (count($estudiantesConNotasPendientes) === 0)
+                                        <tr style="text-align:center">
                                             <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">
-                                            El docente participante aun no a calificado a los estudiantes.</td>
+                                                El docente participante aun no a calificado a los estudiantes.</td>
                                         </tr>
-         
-        @else
-                                    @foreach ($estudiantesConNotasPendientes as $estudiante)
-                                        <tr>
-                                            <td class="wide-cell"
-                                            style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">{{ $estudiante->apellidos }} {{ $estudiante->nombres }}
-                                            </td>
-                                            <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $estudiante->espeId }}</td>
-                                            <td class="wide-cell"
-                                            style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $estudiante->carrera }}</td>
-                                            <td  style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $estudiante->departamento }}</td>
-                                            <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                                <input type="hidden" class="input input_select2" name="estudiante_id[]"
-                                                    value="{{ $estudiante->estudianteId }}">
-                                                <input type="text" class="input" name="informe_servicio[]"
-                                                    value="{{ $estudiante->notas->first()->Informe !== 'Pendiente' ? $estudiante->notas->first()->Informe : '' }}"
-                                                    @if ($estudiante->notas->first()->Informe === 'Pendiente') style="display: none;" @endif
-                                                    required>
+                                    @else
+                                        @foreach ($estudiantesConNotasPendientes as $estudiante)
+                                            <tr>
+                                                <td class="wide-cell"
+                                                    style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">
+                                                    {{ $estudiante->apellidos }} {{ $estudiante->nombres }}
+                                                </td>
+                                                <td
+                                                    style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                    {{ $estudiante->espeId }}</td>
+                                                <td class="wide-cell"
+                                                    style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                    {{ $estudiante->carrera }}</td>
+                                                <td
+                                                    style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                    {{ $estudiante->departamento }}</td>
+                                                <td
+                                                    style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                    <input type="hidden" class="input input_select2" name="estudiante_id[]"
+                                                        value="{{ $estudiante->estudianteId }}">
+                                                    <input type="text" class="input" name="informe_servicio[]"
+                                                        value="{{ $estudiante->notas->first()->Informe !== 'Pendiente' ? $estudiante->notas->first()->Informe : '' }}"
+                                                        @if ($estudiante->notas->first()->Informe === 'Pendiente') style="display: none;" @endif
+                                                        required>
 
-                                                <small class="form-text text-danger" style="display: none;"></small>
+                                                    <small class="form-text text-danger" style="display: none;"></small>
 
 
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     @endif
                                 </tbody>
                             </table>
@@ -91,15 +97,15 @@
                 <br>
                 <button type="submit" class="button1">Guardar calificacion</button>
                 <br>
-                
+
             </form>
-            
-            </div>
-<br>
-<div class="mat-elevation-z8 contenedor_general">
-        <h4><b>Estudiantes Calificados</b></h4>
-        <hr>
-        
+
+        </div>
+        <br>
+        <div class="mat-elevation-z8 contenedor_general">
+            <h4><b>Estudiantes Calificados</b></h4>
+            <hr>
+
             <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
 
@@ -121,150 +127,163 @@
                                     <th>ASISTENCIA</th>
                                     <th>INFORME DE SERVICIO COMINITARIO</th>
                                     <th>NOTA FINAL</th>
+                                    <th>ESTADO</th>
                                     <th>EDITAR NOTAS</th>
                                 </tr>
                             </thead>
                             <tbody class="mdc-data-table__content ng-star-inserted">
-                            @if (count($estudiantesCalificados) === 0)
-                <tr style="text-align:center">
-                                            <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">
+                                @if (count($estudiantesCalificados) === 0)
+                                    <tr style="text-align:center">
+                                        <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">
                                             No hay estudiantes calificados en este momento</td>
-                                        </tr>
-            
-        @else
-                                @foreach ($estudiantesCalificados as $estudiante)
-                                    <tr>
-                                        <td class="wide-cell"
-                                            style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">
-                                            {{ $estudiante->apellidos }} {{ $estudiante->nombres }}</td>
-                                        <td>{{ $estudiante->espeId }}</td>
-                                        <td class="wide-cell"
-                                            style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            {{ $estudiante->carrera }}</td>
-                                        <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            {{ $estudiante->departamento }}</td>
-                                        <td style="text-align: center;">
-                                            @foreach ($estudiante->notas as $nota)
-                                                {{ $nota->tareas }}<br>
-                                            @endforeach
-                                        </td>
-                                        <td style="text-align: center;">
-                                            @foreach ($estudiante->notas as $nota)
-                                                {{ $nota->resultadosAlcanzados }}<br>
-                                            @endforeach
-                                        </td>
-                                        <td style="text-align: center;">
-                                            @foreach ($estudiante->notas as $nota)
-                                                {{ $nota->conocimientos }}<br>
-                                            @endforeach
-                                        </td>
-                                        <td style="text-align: center;">
-                                            @foreach ($estudiante->notas as $nota)
-                                                {{ $nota->adaptabilidad }}<br>
-                                            @endforeach
-                                        </td>
-                                        <td style="text-align: center;">
-                                            @foreach ($estudiante->notas as $nota)
-                                                {{ $nota->aplicacion }}<br>
-                                            @endforeach
-                                        </td>
-                                        <td style="text-align: center;">
-                                            @foreach ($estudiante->notas as $nota)
-                                                {{ $nota->CapacidadLiderazgo }}<br>
-                                            @endforeach
-                                        </td>
-                                        <td style="text-align: center;">
-                                            @foreach ($estudiante->notas as $nota)
-                                                {{ $nota->asistencia }}<br>
-                                            @endforeach
-                                        </td>
-                                        <td style="text-align: center;">
-                                            @foreach ($estudiante->notas as $nota)
-                                                {{ $nota->informe }}<br>
-                                            @endforeach
-                                        </td>
-                                        <td style="text-align: center;">
-                                            @php
-                                                $notaTotal = $estudiante->notas->sum(function ($nota) {
-                                                    return floatval($nota->tareas) +
-                                                        floatval($nota->resultadosAlcanzados) +
-                                                        floatval($nota->conocimientos) +
-                                                        floatval($nota->adaptabilidad) +
-                                                        floatval($nota->aplicacion) +
-                                                        floatval($nota->CapacidadLiderazgo) +
-                                                        floatval($nota->asistencia) +
-                                                        floatval($nota->informe ?? 0);
-                                                });
-                                                $notaFinal = ($notaTotal * 20) / 100;
-                                            @endphp
-                                            {{ $notaFinal }}
-                                        </td>
-
-                                        <td style="text-align: center;">
-                                            <center><button class="button3 efects_button btn_editar3" data-toggle="modal"
-                                            onclick="openCard('modalEditarInforme{{ $estudiante->estudianteId }}');"
-                                                    ><i
-                                                        class="bx bx-edit-alt"></i></button></center>
-
-                                            <div  class="draggable-card" id="modalEditarInforme{{ $estudiante->estudianteId }}"
-                                                
-                                                aria-labelledby="modalEditarInforme{{ $estudiante->estudianteId }}">
-                                            
-                                                   
-                                                        <form method="post"
-                                                            action="{{ route('director_vinculacion.actualizarNota', ['id' => $estudiante->estudianteId]) }}">
-                                                            @csrf
-                                                            @method('PUT')
-
-                                                            <div class="card-header">
-                                                                <span class="card-title1 "
-                                                                    id="modalEditarInforme{{ $estudiante->estudianteId }}">
-                                                                    Nota de Informe {{ $estudiante->apellidos }}
-                                                                    {{ $estudiante->nombres }}</span>
-
-                                                                    <button type="button" class="close"
-                                                             onclick="closeCard('modalEditarInforme{{ $estudiante->estudianteId }}')"><i
-                                                                class="fa-thin fa-xmark"></i></button>
-                                                            </div>
-
-                                                            <div class="card-body">
-                                                                <input type="hidden" name="estudiante_id"
-                                                                    value="{{ $estudiante->estudianteId }}">
-                                                                <div style="display: flex; align-items: center;">
-                                                                    <label for="nota_servicio" class="label" style="margin-right: 10px;">Informe de Servicio Comunitario</label>
-                                                                    <input type="text" class="input input_select2"
-                                                                        name="nota_servicio"
-                                                                        value="{{ $estudiante->notas->first()->informe ?? '' }}"
-                                                                        required>
-                                                                </div>
-                                                                <small class="form-text text-danger"
-                                                                    style="display: none;"></small>
-                                                            </div>
-
-                                                            <center><div class=" align-items-center">
-                                                                <button type="submit" class="button">Guardar</button>
-                                           
-                                                            </div> </center>
-                                                            <br>
-                                                        </form>
-                                                    </div>
-                                                
-                                            </div>
-                                        </td>
-
-
-
-
                                     </tr>
-                                @endforeach
-                                @endif
-                            </tbody>
-                        </table>
+                                @else
+                                    @foreach ($estudiantesCalificados as $estudiante)
+                                        <tr>
+                                            <td class="wide-cell"
+                                                style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">
+                                                {{ $estudiante->apellidos }} {{ $estudiante->nombres }}</td>
+                                            <td>{{ $estudiante->espeId }}</td>
+                                            <td class="wide-cell"
+                                                style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                {{ $estudiante->carrera }}</td>
+                                            <td
+                                                style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                {{ $estudiante->departamento }}</td>
+                                            <td style="text-align: center;">
+                                                @foreach ($estudiante->notas as $nota)
+                                                    {{ $nota->tareas }}<br>
+                                                @endforeach
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @foreach ($estudiante->notas as $nota)
+                                                    {{ $nota->resultadosAlcanzados }}<br>
+                                                @endforeach
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @foreach ($estudiante->notas as $nota)
+                                                    {{ $nota->conocimientos }}<br>
+                                                @endforeach
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @foreach ($estudiante->notas as $nota)
+                                                    {{ $nota->adaptabilidad }}<br>
+                                                @endforeach
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @foreach ($estudiante->notas as $nota)
+                                                    {{ $nota->aplicacion }}<br>
+                                                @endforeach
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @foreach ($estudiante->notas as $nota)
+                                                    {{ $nota->CapacidadLiderazgo }}<br>
+                                                @endforeach
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @foreach ($estudiante->notas as $nota)
+                                                    {{ $nota->asistencia }}<br>
+                                                @endforeach
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @foreach ($estudiante->notas as $nota)
+                                                    {{ $nota->informe }}<br>
+                                                @endforeach
+                                            </td>
+                                            <td style="text-align: center;">
+                                                @php
+                                                    $notaTotal = $estudiante->notas->sum(function ($nota) {
+                                                        return floatval($nota->tareas) +
+                                                            floatval($nota->resultadosAlcanzados) +
+                                                            floatval($nota->conocimientos) +
+                                                            floatval($nota->adaptabilidad) +
+                                                            floatval($nota->aplicacion) +
+                                                            floatval($nota->CapacidadLiderazgo) +
+                                                            floatval($nota->asistencia) +
+                                                            floatval($nota->informe ?? 0);
+                                                    });
+                                                    $notaFinal = ($notaTotal * 20) / 100;
+                                                @endphp
+                                                {{ $notaFinal }}
+                                            </td>
+
+                                            <td style="text-align: center;">
+                                                @if ($notaFinal <= 16)
+                                                    <span class="badge badge-danger">REPROBADO</span>
+                                                @else
+                                                    <span class="badge badge-success">APROBADO</span>
+                                                @endif
+                                            </td>
+
+                                            <td style="text-align: center;">
+                                                <center><button class="button3 efects_button btn_editar3"
+                                                        data-toggle="modal"
+                                                        onclick="openCard('modalEditarInforme{{ $estudiante->estudianteId }}');"><i
+                                                            class="bx bx-edit-alt"></i></button></center>
+
+                                                <div class="draggable-card"
+                                                    id="modalEditarInforme{{ $estudiante->estudianteId }}"
+                                                    aria-labelledby="modalEditarInforme{{ $estudiante->estudianteId }}">
+
+
+                                                    <form method="post"
+                                                        action="{{ route('director_vinculacion.actualizarNota', ['id' => $estudiante->estudianteId]) }}">
+                                                        @csrf
+                                                        @method('PUT')
+
+                                                        <div class="card-header">
+                                                            <span class="card-title1 "
+                                                                id="modalEditarInforme{{ $estudiante->estudianteId }}">
+                                                                Nota de Informe {{ $estudiante->apellidos }}
+                                                                {{ $estudiante->nombres }}</span>
+
+                                                            <button type="button" class="close"
+                                                                onclick="closeCard('modalEditarInforme{{ $estudiante->estudianteId }}')"><i
+                                                                    class="fa-thin fa-xmark"></i></button>
+                                                        </div>
+
+                                                        <div class="card-body">
+                                                            <input type="hidden" name="estudiante_id"
+                                                                value="{{ $estudiante->estudianteId }}">
+                                                            <div style="display: flex; align-items: center;">
+                                                                <label for="nota_servicio" class="label"
+                                                                    style="margin-right: 10px;">Informe de Servicio
+                                                                    Comunitario</label>
+                                                                <input type="text" class="input input_select2"
+                                                                    name="nota_servicio"
+                                                                    value="{{ $estudiante->notas->first()->informe ?? '' }}"
+                                                                    required>
+                                                            </div>
+                                                            <small class="form-text text-danger"
+                                                                style="display: none;"></small>
+                                                        </div>
+
+                                                        <center>
+                                                            <div class=" align-items-center">
+                                                                <button type="submit" class="button">Guardar</button>
+
+                                                            </div>
+                                                        </center>
+                                                        <br>
+                                                    </form>
+                                                </div>
+
                     </div>
+                    </td>
+
+
+
+
+                    </tr>
+                    @endforeach
+                    @endif
+                    </tbody>
+                    </table>
                 </div>
             </div>
-
         </div>
+
+    </div>
     </div>
     </div>
     </div>
@@ -275,35 +294,33 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/admin/acciones.js') }}"></script>
 
-   <script>
-   document.addEventListener('DOMContentLoaded', (event) => {
-                    // Selecciona el elemento de la alerta
-                    const alertElement = document.querySelector('.contenedor_alerta');
-                    // Establece un temporizador para ocultar la alerta después de 2 segundos
-                    setTimeout(() => {
-                        if (alertElement) {
-                            alertElement.style.display = 'none';
-                        }
-                    }, 1000); // 2000 milisegundos = 2 segundos
-                });
-    </script> 
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Selecciona el elemento de la alerta
+            const alertElement = document.querySelector('.contenedor_alerta');
+            // Establece un temporizador para ocultar la alerta después de 2 segundos
+            setTimeout(() => {
+                if (alertElement) {
+                    alertElement.style.display = 'none';
+                }
+            }, 1000); // 2000 milisegundos = 2 segundos
+        });
+    </script>
     <style>
         .contenedor_tabla .table-container table td {
             width: 200px;
-            min-width: 1px!important;
+            min-width: 1px !important;
             font-size: 11px !important;
             padding: .5rem !important;
-            
+
         }
-        .contenedor_general 
-        
-        .contenedor_tabla {
+
+        .contenedor_general .contenedor_tabla {
             min-height: 1px !important;
         }
-        .table-container {
-    height: 275px !important;
-        }
 
+        .table-container {
+            height: 275px !important;
+        }
     </style>
 @endsection
-
