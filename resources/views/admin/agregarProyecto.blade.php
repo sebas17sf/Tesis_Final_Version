@@ -25,83 +25,98 @@
 @endif
 
 @section('content')
-<div class="mat-elevation-z8 contenedor_general">
-    <form method="POST" action="{{ route('admin.crearProyecto') }}">
-        @csrf
-
-        <div class="form-group">
-            <label for="codigoProyecto">Ingrese código del proyecto:</label>
-            <input type="text" name="codigoProyecto" class="form-control input" placeholder="Ingrese el código del proyecto. Si no, déjelo vacío">
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label for="DirectorProyecto">Director del Proyecto:</label>
-                    <select name="DirectorProyecto" class="form-control input input-select" required>
-                        <option value="">Seleccionar Director</option>
-                        @foreach ($profesores as $profesor)
-                            <option value="{{ $profesor->id }}">
-                                {{ $profesor->apellidos }} {{ $profesor->nombres }} -
-                                 {{ $profesor->departamento }} -
-                                 {{ $profesor->correo }}
-                            </option>
-                        @endforeach
-                    </select>
+<div class="mat-elevation-z8 ">
+    <div class="card" style="margin: auto; max-width: 800px; box-shadow: 0 6px 10px 0 rgba(64, 69, 108, 0.6); transition: 0.5s;">
+        <div class="card-body" style="padding: 1rem; text-align: center;">
+        <h4><b>Agrega datos del proyecto</b></h4> <!-- Título agregado aquí -->
+<hr>
+            <form method="POST" action="{{ route('admin.crearProyecto') }}"  style="display: inline-block; width: 100%; max-width: 600px;">
+                @csrf
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="codigoProyecto">Ingrese código del proyecto:</label>
+                            <input type="text" name="codigoProyecto" class="form-control input" placeholder="Ingrese el código del proyecto. Si no, déjelo vacío">
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="NombreProyecto">Nombre del Proyecto:</label>
+                            <input type="text" name="NombreProyecto" class="form-control input" placeholder="Ingrese el Nombre del Proyecto" required>
+                        </div>
+                    </div>
+               
+              
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="DirectorProyecto">Director del Proyecto:</label>
+                            <select name="DirectorProyecto" class="form-control input input-select" required>
+                                <option value="">Seleccionar Director</option>
+                                @foreach ($profesores as $profesor)
+                                    <option value="{{ $profesor->id }}">
+                                        {{ $profesor->apellidos }} {{ $profesor->nombres }} -
+                                         {{ $profesor->departamento }} -
+                                         {{ $profesor->correo }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="NombreProyecto">Nombre del Proyecto:</label>
-            <input type="text" name="NombreProyecto" class="form-control input" placeholder="Ingrese el Nombre del Proyecto" required>
-        </div>
-
-        <div class="form-group">
-            <label for="DescripcionProyecto">Descripción del Proyecto:</label>
-            <textarea name="DescripcionProyecto" class="form-control input" placeholder="Describa el Proyecto" required></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="DepartamentoTutor">Departamento:</label>
-            <select name="DepartamentoTutor" class="form-control input input_select" required>
-                <option value="Ciencias de la Computación">DCCO - Departamento de Computación</option>
-                <option value="Ciencias Exactas">DCEX - Ciencias Exactas</option>
-                <option value="Ciencias de la Vida y Agricultura">DCVA - Departamento de Ciencias de la Vida y Agricultura</option>
-            </select>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="FechaInicio">Fecha de Inicio:</label>
-                    <input type="date" name="FechaInicio" class="form-control input" required>
+                    <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="DescripcionProyecto">Descripción del Proyecto:</label>
+                            <textarea name="DescripcionProyecto" class="form-control input" placeholder="Describa el Proyecto" required></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="DepartamentoTutor">Departamento:</label>
+                            <select name="DepartamentoTutor" class="form-control input input_select" required>
+                                <option value="#">Seleccione el departamento</option>
+                                <option value="Ciencias de la Computación">Ciencias de Computación</option>
+                                <option value="Ciencias Exactas">Ciencias Exactas</option>
+                                <option value="Ciencias de la Vida y Agricultura">Ciencias de la Vida y Agricultura</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="FechaFinalizacion">Fecha de Fin:</label>
-                    <input type="date" name="FechaFinalizacion" class="form-control input" required>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="FechaInicio">Fecha de Inicio:</label>
+                            <input type="date" name="FechaInicio" class="form-control input" required>
+                        </div>
+                    </div>
+    
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="FechaFinalizacion">Fecha de Fin:</label>
+                            <input type="date" name="FechaFinalizacion" class="form-control input" required>
+                        </div>
+                    </div>
+    
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="Estado">Estado:</label>
+                            <select name="Estado" class="form-control input input_select" required>
+                                <option value="#">Seleccione el estado</option>
+                                <option value="Ejecucion">En Ejecución</option>
+                                <option value="Terminado">Terminado</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="Estado">Estado:</label>
-                    <select name="Estado" class="form-control input input_select" required>
-                        <option value="Ejecucion">En Ejecución</option>
-                        <option value="Terminado">Terminado</option>
-                    </select>
+    
+                <div class="text-center">
+                    <button type="submit" class="button1" >Agregar Proyecto</button>
                 </div>
-            </div>
+            </form>
         </div>
-
-        <div class="text-center">
-            <button type="submit" class="button1 efects_button">Agregar Proyecto</button>
-        </div>
-
-</form>
+    </div>
 </div>
 
 

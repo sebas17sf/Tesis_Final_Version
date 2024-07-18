@@ -301,3 +301,58 @@ $(document).ready(function() {
         makeElementDraggable(this);
     });
 });
+
+function editRow(estudianteId) {
+    let row = document.getElementById('row' + estudianteId);
+    let inputs = row.getElementsByTagName('input');
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].disabled = false;
+    }
+    row.querySelector('.btn_editar3').style.display = 'none';
+    row.querySelector('.btn_save').style.display = 'inline';
+}
+
+function saveRow(estudianteId) {
+    let row = document.getElementById('row' + estudianteId);
+    let inputs = row.getElementsByTagName('input');
+    let data = {};
+    for (let i = 0; i < inputs.length; i++) {
+        data[inputs[i].name] = inputs[i].value;
+        inputs[i].disabled = true;
+    }
+
+    // Aquí puedes hacer una solicitud AJAX para enviar los datos actualizados al servidor
+    fetch('/ruta/para/actualizar', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            estudiante_id: estudianteId,
+            ...data
+        })
+    }).then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Error al actualizar las notas');
+        }
+    }).then(data => {
+        // Manejar la respuesta exitosa aquí
+        console.log('Notas actualizadas:', data);
+    }).catch(error => {
+        console.error('Error:', error);
+    });
+
+    row.querySelector('.btn_editar3').style.display = 'inline';
+    row.querySelector('.btn_save').style.display = 'none';
+}
+
+function openCard(cardId) {
+    document.getElementById(cardId).style.display = 'block';
+}
+
+function closeCard(cardId) {
+    document.getElementById(cardId).style.display = 'none';
+}

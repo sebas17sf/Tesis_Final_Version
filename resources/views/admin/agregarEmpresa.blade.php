@@ -279,7 +279,7 @@
                                             <th class="tamanio3">CIUDAD</th>
                                             <th class="tamanio5">DIRECCIÓN</th>
                                             <th>CORREO DEL CONTACTO</th>
-                                            <th class="tamanio5">NOMBRE DEL CONTACTO</th>
+                                            <th class="tamanio3">NOMBRE DEL CONTACTO</th>
                                             <th>TELÉFONO DEL CONTACTO</th>
                                             <th class="tamanio">ACTIVIDADES MACRO</th>
                                             <th>CUPOS DISPONIBLES</th>
@@ -296,30 +296,30 @@
 
 
                                                  <td style="text-transform: uppercase; text-align: left;">
-                                                    {{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->nombreEmpresa)) }}
+                                                    {{ strtoupper( $empresa->nombreEmpresa) }}
                                                 </td>
-                                                <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->rucEmpresa)) }}
-                                                </td>
-                                                <td style="text-transform: uppercase; text-align: left;">
-                                                    {{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->provincia)) }}
+                                                <td>{{ strtoupper($empresa->rucEmpresa) }}
                                                 </td>
                                                 <td style="text-transform: uppercase; text-align: left;">
-                                                    {{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->ciudad)) }}
+                                                    {{ strtoupper( $empresa->provincia) }}
                                                 </td>
                                                 <td style="text-transform: uppercase; text-align: left;">
-                                                    {{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->direccion)) }}
-                                                </td>
-                                                <td>{{ $empresa->correo }}
+                                                    {{ strtoupper($empresa->ciudad) }}
                                                 </td>
                                                 <td style="text-transform: uppercase; text-align: left;">
-                                                    {{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->nombreContacto)) }}
+                                                    {{ strtoupper($empresa->direccion) }}
                                                 </td>
-                                                <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->telefonoContacto)) }}
+                                                <td style="text-align: left;"">{{ $empresa->correo }}
+                                                </td>
+                                                <td style="text-transform: uppercase; text-align: left;">
+                                                    {{ strtoupper($empresa->nombreContacto)}}
+                                                </td>
+                                                <td>{{ strtoupper($empresa->telefonoContacto)}}
                                                 </td>
                                                 <td style="text-transform: uppercase; text-align: justify;">
                                                     {{ strtoupper($empresa->actividadesMacro) }}
                                                 </td>
-                                                <td>{{ strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú', 'ü', 'ñ'], ['A', 'E', 'I', 'O', 'U', 'U', 'Ñ'], $empresa->cuposDisponibles)) }}
+                                                <td>{{ strtoupper( $empresa->cuposDisponibles) }}
                                                 </td>
                                                 <td>
                                                     @if ($empresa->cartaCompromiso)

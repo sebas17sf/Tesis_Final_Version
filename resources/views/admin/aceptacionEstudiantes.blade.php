@@ -61,7 +61,7 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio1">NOMBRE</th>
+                                    <th class="tamanio1">ESTUDIANTE</th>
                                     <th class="tamanio2">ID ESPE</th>
                                     <th class="tamanio2">CÉDULA</th>
                                     <th>COHORTE</th>
@@ -162,12 +162,12 @@
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                     <th>N°</th>
-                                    <th class="tamanio1">NOMBRES</th>
+                                    <th class="tamanio1">ESTUDIANTE</th>
                                     <th>ID ESPE</th>
-                                    <th class="tamanio1">CARRERA</th>
+                                    <th class="tamanio3">CARRERA</th>
                                     <th>CÉDULA</th>
                                     <th>COHORTE</th>
-                                    <th class="tamanio3">PERIODO</th>
+                                    <th>PERIODO</th>
                                     <th class="tamanio2">DEPARTAMENTO</th>
                                     <th>ESTADO</th>
 
@@ -386,4 +386,28 @@
             document.querySelector('.remove-icon').style.display = 'none'; // Ocultar la "X"
         }
     </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+                    // Selecciona el elemento de la alerta
+                    const alertElement = document.querySelector('.contenedor_alerta');
+                    // Establece un temporizador para ocultar la alerta después de 2 segundos
+                    setTimeout(() => {
+                        if (alertElement) {
+                            alertElement.style.display = 'none';
+                        }
+                    }, 1000); // 2000 milisegundos = 2 segundos
+                });
+            </script>
+    <style>
+        .contenedor_tabla .table-container table td {
+            width: 200px;
+            min-width: 150px;
+            font-size: 11px !important;
+            padding: .5rem !important;
+        }
+
+        .contenedor_tabla .table-container table th {
+            position: sticky;
+            font-size: .8em !important;
+    </style>
 @endsection

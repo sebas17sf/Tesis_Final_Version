@@ -1252,5 +1252,21 @@
         }
     </script>
 
+<style>
+        .contenedor_tabla .table-container table td {
+            width: 200px;
+            min-width: 150px;
+            font-size: 11px !important;
+            padding: .5rem !important;
+        }
+        .contenedor_general 
+        
+        .contenedor_tabla {
+            min-height: 1px !important;
+        }
+        .table-container {
+    height: 275px !important;
+        }
 
+    </style>
 @endsection

@@ -691,38 +691,39 @@ tr:hover {
   .button4 {
     width: none !important
   }
+  .tamanio {
+    width: 90px;
+    min-width: 370px;
+    padding: .3rem !important;
+  } 
+  .tamanio1 {
+    width: 90px;
+    min-width: 220px;
+    
 
-        .tamanio {
-          width: 90px;
-          min-width: 370px;
-          padding: .3rem !important;
-        }
-        .tamanio12 {
-          width: 90px;
-          min-width: 220px;
-          padding: .3rem !important;
-        }
+    padding: .3rem !important;
+  } 
 
-        .tamanio2 {
-          width: 30px;
-          min-width: 100px;
-          padding: .3rem !important;
-        }
-        .tamanio3 {
-            width: 30px;
-            min-width: 130px;
-            padding: .3rem !important;
-          }
-          .tamanio4 {
-            width: 45px;
-            min-width: 150px;
-            padding: .3rem !important;
-          }
-          .tamanio5 {
-            width: 30px;
-            min-width: 190px;
-            padding: .3rem !important;
-          }
+  .tamanio2 {
+    width: 25px;
+    min-width: 90px;
+    padding: .3rem !important;
+  } 
+  .tamanio3 {
+    width: 30px;
+    min-width: 130px;
+    padding: .3rem !important;
+  }
+  .tamanio4 {
+    width: 45px;
+    min-width: 150px;
+    padding: .3rem !important;
+  }
+  .tamanio5 {
+    width: 5px;
+    min-width: 0px !important;
+    padding: .3rem !important;
+  }
           .tamanio6 {
             width: 30px !important;
             min-width: 50px !important;

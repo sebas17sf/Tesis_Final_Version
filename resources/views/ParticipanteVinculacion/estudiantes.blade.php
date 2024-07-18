@@ -24,7 +24,7 @@
         </div>
     @endif
 
-    <div class="container" style="overflow-x: auto;">
+    <div class="mat-elevation-z8 container_general"> 
         <br>
         <h4><b>Estudiantes por calificar</b></h4>
         <hr>
@@ -39,7 +39,7 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th>Nombres</th>
+                                    <th>Estudiante</th>
                                     <th>Espe ID</th>
                                     <th>Carrera</th>
                                     <th>Departamento</th>
@@ -53,12 +53,17 @@
                                   <th></th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="mdc-data-table__content ng-star-inserted">
+                                @if ($estudiantes->isEmpty())
+                                    <tr>
+                                    <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">No hay estudiantes por calificar.</td>
+                                    </tr>
+                                    @else
                                 @foreach ($estudiantes as $estudiante)
                                     <tr>
                                         <td class="wide-cell"
                                             style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            {{ $estudiante->qpellidos }} {{ $estudiante->nombres }}</td>
+                                            {{ $estudiante->apellidos }} {{ $estudiante->nombres }}</td>
                                         <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             {{ $estudiante->espeId }}</td>
                                         <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">
@@ -90,7 +95,7 @@
                                                 value="{{ $estudiante->estudianteId }}"></td>
                                     </tr>
                                 @endforeach
-
+@endif
 
 
 
@@ -115,7 +120,7 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio4">Nombres</th>
+                                    <th class="tamanio4">Estudiante</th>
                                     <th class="tamanio4">Espe ID</th>
                                     <th class="tamanio4">Carrera</th>
                                     <th class="tamanio4">Departamento</th>
@@ -130,7 +135,13 @@
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="mdc-data-table__content ng-star-inserted">
+                                @if ($estudiantesConNotas->isEmpty())
+                                    <tr>
+                                        <td class="noExisteRegistro1" style="font-size: 16px !important;" colspan="10">No hay
+                                            estudiantes calificados.</td>
+                                    </tr>
+                                    @else
                                 @foreach ($estudiantesConNotas as $estudiante)
                                     <tr>
                                         <td class="wide-cell"
@@ -255,6 +266,7 @@
                                                                                 </td>
                                                                             </tr>
                                                                         @endforeach
+                                                                        
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -429,6 +441,7 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                                @endif
                             </tbody>
                         </table>
         @endif
@@ -522,6 +535,9 @@
                 .contenedor_tabla .table-container table th {
                     position: sticky;
                     font-size: .8em !important;
-                }
+                    
+    padding: 0 10px 0 10px !important;
+}
+                
             </style>
         @endsection

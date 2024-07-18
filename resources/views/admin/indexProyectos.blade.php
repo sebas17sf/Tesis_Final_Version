@@ -184,7 +184,7 @@
                                     @if ($proyectos->isEmpty())
                                         <tr style="text-align:center">
                                             <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">
-                                                No hay estudiantes en proceso de revisión.</td>
+                                                Proyectos no disponibles.</td>
                                         </tr>
                                     @else
                                         @foreach ($proyectos as $index => $proyecto)
