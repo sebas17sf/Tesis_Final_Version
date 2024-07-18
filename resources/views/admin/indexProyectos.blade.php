@@ -7,24 +7,24 @@
 @section('content')
 
     @if (session('success'))
-    <div class="contenedor_alerta success">
-    <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Éxito!</div>
-      <div class="body">{{ session('success') }}</div>
-    </div>
-  </div>
+        <div class="contenedor_alerta success">
+            <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Éxito!</div>
+                <div class="body">{{ session('success') }}</div>
+            </div>
+        </div>
     @endif
 
 
     @if (session('error'))
-    <div class="contenedor_alerta error">
-    <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Error!</div>
-      <div class="body">{{ session('error') }}</div>
-    </div>
-  </div>
+        <div class="contenedor_alerta error">
+            <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Error!</div>
+                <div class="body">{{ session('error') }}</div>
+            </div>
+        </div>
     @endif
 
 
@@ -107,8 +107,7 @@
                                     <form id="filtersForm" method="GET" action="{{ route('admin.indexProyectos') }}">
                                         <div class="form-group">
                                             <label for="estado" class="mr-2">Estado del Proyecto:</label>
-                                            <select name="estado" id="estado"
-                                                class="form-control input input_select">
+                                            <select name="estado" id="estado" class="form-control input input_select">
                                                 <option value="">Todos</option>
                                                 <option value="Ejecucion"
                                                     {{ request('estado') == 'Ejecucion' ? 'selected' : '' }}>En Ejecución
@@ -189,7 +188,9 @@
                                     @else
                                         @foreach ($proyectos as $index => $proyecto)
                                             <tr>
-                                                <td style="text-align: center;">{{ $proyectos->currentPage() == 1 ? $index + 1 : $index + 1 + ($proyectos->perPage() * ($proyectos->currentPage() - 1)) }}</td>
+                                                <td style="text-align: center;">
+                                                    {{ $proyectos->currentPage() == 1 ? $index + 1 : $index + 1 + $proyectos->perPage() * ($proyectos->currentPage() - 1) }}
+                                                </td>
 
                                                 <td
                                                     style="text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
@@ -322,8 +323,11 @@
                                 <!-- Botones -->
                                 <div class="tooltip-container mx-1">
                                     <span class="tooltip-text">Excel</span>
-                                    <form action="{{ route('reporte.matrizVinculacion') }}" method="POST">
+                                    <form action="{{ route('reporte.matrizVinculacion') }}" method="POST"
+                                        id="reportForm">
                                         @csrf
+                                        <input type="hidden" name="fechaInicio" id="hiddenFechaInicio">
+                                        <input type="hidden" name="fechaFin" id="hiddenFechaFin">
                                         <button type="submit" class="button3 efects_button btn_excel">
                                             <i class="fas fa-file-excel"></i>
                                         </button>
@@ -416,7 +420,26 @@
                                                     @endforeach
                                                 </select>
                                             </div>
+
+                                            <div class="form-group">
+                                                <label for="fechaInicio">Fecha inicio</label>
+                                                <input type="date" class="input" name="fechaInicio"
+                                                    id="fechaInicio">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="fechaFin">Fecha Fin</label>
+                                                <input type="date" class="input" name="fechaFin" id="fechaFin">
+                                            </div>
+
+
+
+
+
+
                                         </form>
+
+
                                     </div>
                                 </div>
 
@@ -491,7 +514,8 @@
                                         @else
                                             @foreach ($asignacionesAgrupadas as $grupo)
                                                 <tr>
-                                                    <td>{{ $asignacionesAgrupadas->currentPage() == 1 ? $loop->index + 1 : $loop->index + 1 + ($asignacionesAgrupadas->perPage() * ($asignacionesAgrupadas->currentPage() - 1)) }}</td>
+                                                    <td>{{ $asignacionesAgrupadas->currentPage() == 1 ? $loop->index + 1 : $loop->index + 1 + $asignacionesAgrupadas->perPage() * ($asignacionesAgrupadas->currentPage() - 1) }}
+                                                    </td>
                                                     <td
                                                         style="text-transform: uppercase; text-align: justify; padding: 5px 8px;">
                                                         {{ $grupo->first()->proyecto->nombreProyecto ?? '' }}</td>
@@ -1114,5 +1138,12 @@
             const alert = document.getElementById(alertId);
             alert.style.display = 'none';
         }
+    </script>
+
+    <script>
+        document.getElementById('reportForm').addEventListener('submit', function() {
+            document.getElementById('hiddenFechaInicio').value = document.getElementById('fechaInicio').value;
+            document.getElementById('hiddenFechaFin').value = document.getElementById('fechaFin').value;
+        });
     </script>
 @endsection

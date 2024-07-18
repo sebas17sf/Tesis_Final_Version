@@ -209,6 +209,39 @@ function confirmDelete(e) {
     })
 }
 
+
+function confirmDeleteEstudiante(e) {
+    e.preventDefault();
+    Swal.fire({
+        title: '¿Estás seguro de eliminar la actividad?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+         showCancelButton: true,
+        confirmButtonColor: '#7066e0',
+        cancelButtonColor: '#808080',
+        confirmButtonText: 'Aceptar',
+        customClass: {
+            container: 'my-swal',
+            popup: 'my-swal-popup',
+            header: 'my-swal-header',
+            title: 'my-swal-title',
+            closeButton: 'my-swal-close-button',
+            icon: 'my-swal-icon',
+            image: 'my-swal-image',
+            content: 'my-swal-content',
+            input: 'my-swal-input',
+            actions: 'my-swal-actions',
+            confirmButton: 'my-swal-confirm-button',
+            cancelButton: 'my-swal-cancel-button',
+            footer: 'my-swal-footer'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('deleteForm').submit();
+        }
+    })
+}
+
 function confirmDeleteProject(e) {
     e.preventDefault();
     Swal.fire({
