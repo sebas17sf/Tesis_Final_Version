@@ -1,7 +1,7 @@
 // Función para validar un campo de entrada de tipo número
 function validateNumberInput(input) {
     const value = parseFloat(input.value);
-    if (value < 1 || value > 10 || isNaN(value)) {
+    if (value < 0 || value > 10 || isNaN(value)) {
         input.style.borderColor = 'red';
         input.nextElementSibling.innerText = 'El valor debe estar entre 1 y 10.';
         input.nextElementSibling.style.display = 'block';
@@ -17,7 +17,7 @@ function validateNumberInput(input) {
 // Función para validar un campo de entrada de tipo texto
 function validateTextInput(input) {
     const value = parseFloat(input.value);
-    if (value < 1 || value > 30 || isNaN(value)) {
+    if (value < 0 || value > 30 || isNaN(value)) {
         input.style.borderColor = 'red';
         input.nextElementSibling.innerText = 'El valor debe estar entre 1 y 30.';
         input.nextElementSibling.style.display = 'block';
