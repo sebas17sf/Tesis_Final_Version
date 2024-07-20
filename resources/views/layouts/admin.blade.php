@@ -192,7 +192,7 @@
                     <span><?php echo Auth::user()->nombreUsuario; ?></span>
                 </div>
                 <div class="icon-profile">
-                    <img src="../img/default/user.svg">
+                    <img src="/img/default/user.svg">
                 </div>
             </button>
             <!-- Aquí agregamos el contenedor del menú desplegable -->

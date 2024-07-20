@@ -31,9 +31,9 @@
 
 
             <div class="container">
+                
                 <form action="{{ route('admin.guardarEmpresa') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-
                     <div class="row">
                         <div class="col-md-6">
 
@@ -168,7 +168,7 @@
                                     <span id="fileText" class="fileText"><i
                                             class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí
                                         para
-                                        subirel documento</span>
+                                        subir el documento</span>
                                     <input type="file" class="form-control-file input input_file" id="convenio"
                                         name="convenio" onchange="displayFileName(this)">
                                     <span title="Eliminar archivo" onclick="removeFile(this)"
@@ -178,12 +178,11 @@
 
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
+                       <center> 
+                        
                                 <button type="submit" class="button1 efects_button">Guardar Empresa</button>
-                            </div>
-
-                        </div>
+                           
+                         </center>
 
                 </form>
             </div>
@@ -274,13 +273,13 @@
                                             class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                             <th>N°</th>
                                             <th class="tamanio1">NOMBRE DE LA EMPRESA</th>
-                                            <th>RUC DE LA EMPRESA</th>
+                                            <th class="tamanio3">RUC DE LA EMPRESA</th>
                                             <th class="tamanio3">PROVINCIA</th>
                                             <th class="tamanio3">CIUDAD</th>
                                             <th class="tamanio5">DIRECCIÓN</th>
                                             <th>CORREO DEL CONTACTO</th>
                                             <th class="tamanio3">NOMBRE DEL CONTACTO</th>
-                                            <th>TELÉFONO DEL CONTACTO</th>
+                                            <th class="tamanio3">TELÉFONO DEL CONTACTO</th>
                                             <th class="tamanio">ACTIVIDADES MACRO</th>
                                             <th>CUPOS DISPONIBLES</th>
                                             <th>DESCARGAR CARTA</th>

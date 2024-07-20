@@ -43,7 +43,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="NombreProyecto">Nombre del Proyecto:</label>
-                            <input type="text" name="NombreProyecto" class="form-control input" placeholder="Ingrese el Nombre del Proyecto" required>
+                            <textarea name="NombreProyecto" class="form-control input" placeholder="Ingrese el Nombre del Proyecto" required></textarea>
                         </div>
                     </div>
                
@@ -117,6 +117,7 @@
             </form>
         </div>
     </div>
+    <br>
 </div>
 
 
