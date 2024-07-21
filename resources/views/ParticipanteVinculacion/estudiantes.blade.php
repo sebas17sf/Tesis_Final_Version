@@ -39,17 +39,17 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th>Estudiante</th>
-                                    <th>ESPE ID</th>
+                                <th style=" min-width: 90px !important;">Estudiante</th>
+                                    <th style=" min-width: 90px !important;">ESPE ID</th>
                                     <th>Carrera</th>
                                     <th>Departamento</th>
-                                    <th>Cumple con las tareas planificadas. Sobre 10% </th>
-                                    <th>Resualtados alcanzados. Sobre 10%</th>
-                                    <th>Demuestra conocimientos en el área de práctica preprofesional. SOBRE 10%</th>
-                                    <th>ADAPTABILIDAD E INTEGRACIÓN AL SISTEMA DE TRABAJO DEL PROYECTO. SOBRE 10%</th>
-                                    <th>APLICACIÓN Y MANEJO DE DESTREZAS Y HABILIDADES ACORDES AL PERFIL PROFESIONAL</th>
-                                    <th>DEMUESTRA CAPACIDAD DE LIDERAZGO Y DE TRABAJO EN EQUIPO. SOBRE 10%</th>
-                                    <th>Asiste puntualmente. Sobre 10%</th>
+                                    <th style=" min-width: 150px !important;">Cumple con las tareas planificadas. Sobre 10% </th>
+                                    <th style=" min-width: 150px !important;">Resualtados alcanzados. Sobre 10%</th>
+                                    <th style=" min-width: 150px !important;">Demuestra conocimientos en el área de práctica preprofesional. Sobre 10</th>
+                                    <th style=" min-width: 150px !important;">Adaptabilidad e integración al sistema de trabajo del proyecto. Sobre 10</th>
+                                    <th style=" min-width: 150px !important;">Aplicación y manejo de destrezas y habilidades acordes al perfil profesional.</th>
+                                    <th style=" min-width: 150px !important;">Demuestra capacidad de liderazgo  y de trabajo en equipo. Sobre 10</th>
+                                    <th style=" min-width: 150px !important;">Asiste puntualmente. Sobre 10</th>
                                 </tr>
                             </thead>
                             <tbody class="mdc-data-table__content ng-star-inserted">
@@ -116,10 +116,10 @@
                 <table class="mat-mdc-table">
                     <thead class="ng-star-inserted">
                         <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                            <th class="tamanio4">Estudiante</th>
-                            <th class="tamanio4">Espe ID</th>
-                            <th class="tamanio4">Carrera</th>
-                            <th class="tamanio4">Departamento</th>
+                            <th >Estudiante</th>
+                            <th>Espe ID</th>
+                            <th >Carrera</th>
+                            <th >Departamento</th>
                             <th>Cumple con las tareas planificadas. Sobre 10%</th>
                             <th>Resultados Alcanzados. Sobre 10%</th>
                             <th>Demuestra conocimientos en el área</th>
@@ -381,7 +381,7 @@ function closeCard(cardId) {
                 .contenedor_tabla .table-container table th {
                     position: sticky;
                     font-size: .8em !important;
-                    
+                    min-width: 50px;
     padding: 0 10px 0 10px !important;
 }
                 

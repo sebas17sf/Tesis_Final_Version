@@ -172,10 +172,10 @@
                                         <th class="tamanio4">DIRECTOR</th>
                                         <th class="tamanio">DESCRIPCIÓN</th>
                                         <th>DEPARTAMENTO</th>
-                                        <th class="tamanio3">CÓDIGO DEL PROYECTO SOCIAL</th>
+                                        <th class="tamanio3">CÓDIGO DEL PROYECTO</th>
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
-                                        <th>ESTADO DEL PROYECTO</th>
+                                        <th>ESTADO</th>
                                         <th>ACCIONES</th>
                                     </tr>
                                 </thead>
@@ -491,7 +491,7 @@
                                             class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                             <th>N°</th>
                                             <th class="tamanio"> NOMBRE DE PROYECTO</th>
-                                            <th class="tamanio3">CÓDIGO DE PROYECTO</th>
+                                            <th class="tamanio3">CÓDIGO DEL PROYECTO</th>
                                             <th class="tamanio4">DIRECTOR</th>
                                             <th class="tamanio4">DOCENTES PARTICIPANTES</th>
                                             <th>FECHA ASIGNACIÓN</th>
