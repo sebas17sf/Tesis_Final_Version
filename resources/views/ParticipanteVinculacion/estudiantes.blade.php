@@ -39,17 +39,17 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th>ESTUDIANTE</th>
+                                    <th>Estudiante</th>
                                     <th>ESPE ID</th>
-                                    <th>CARRERA</th>
-                                    <th>DEPARTAMENTO</th>
-                                    <th>CUMPLE CON LAS TAREAS PLANIFICADAS. SOBRE 10%</th>
-                                    <th>RESULTADOS ALCANZADOS. SOBRE 10%</th>
-                                    <th>DEMUESTRA CONOCIMIENTOS EN EL ÁREA DE PRÁCTICA PRE PROFESIONAL. SOBRE 10%</th>
+                                    <th>Carrera</th>
+                                    <th>Departamento</th>
+                                    <th>Cumple con las tareas planificadas. Sobre 10% </th>
+                                    <th>Resualtados alcanzados. Sobre 10%</th>
+                                    <th>Demuestra conocimientos en el área de práctica preprofesional. SOBRE 10%</th>
                                     <th>ADAPTABILIDAD E INTEGRACIÓN AL SISTEMA DE TRABAJO DEL PROYECTO. SOBRE 10%</th>
                                     <th>APLICACIÓN Y MANEJO DE DESTREZAS Y HABILIDADES ACORDES AL PERFIL PROFESIONAL</th>
                                     <th>DEMUESTRA CAPACIDAD DE LIDERAZGO Y DE TRABAJO EN EQUIPO. SOBRE 10%</th>
-                                    <th>ASISTE PUNTUALMENTE. SOBRE 10%</th>
+                                    <th>Asiste puntualmente. Sobre 10%</th>
                                 </tr>
                             </thead>
                             <tbody class="mdc-data-table__content ng-star-inserted">
