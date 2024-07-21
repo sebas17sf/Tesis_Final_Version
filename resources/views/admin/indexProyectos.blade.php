@@ -328,6 +328,9 @@
                                         @csrf
                                         <input type="hidden" name="fechaInicio" id="hiddenFechaInicio">
                                         <input type="hidden" name="fechaFin" id="hiddenFechaFin">
+                                        <input type="hidden" name="profesor" id="hiddenProfesor">
+                                        <input type="hidden" name="periodos" id="hiddenPeriodos">
+
                                         <button type="submit" class="button3 efects_button btn_excel">
                                             <i class="fas fa-file-excel"></i>
                                         </button>
@@ -1144,6 +1147,8 @@
         document.getElementById('reportForm').addEventListener('submit', function() {
             document.getElementById('hiddenFechaInicio').value = document.getElementById('fechaInicio').value;
             document.getElementById('hiddenFechaFin').value = document.getElementById('fechaFin').value;
+            document.getElementById('hiddenProfesor').value = document.getElementById('profesor').value;
+            document.getElementById('hiddenPeriodos').value = document.getElementById('periodos').value;
         });
     </script>
 @endsection

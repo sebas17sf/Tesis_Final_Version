@@ -490,6 +490,9 @@ class DocumentosVinculacion extends Controller
 
         $fechaInicio = $request->input('fechaInicio');
         $fechaFin = $request->input('fechaFin');
+        $profesor = $request->input('profesor');
+        $periodo = $request->input('periodos');
+
 
         $plantillaPath = public_path('Plantillas/Reporte-MatrizVinculacion.xlsx');
 
@@ -507,9 +510,21 @@ class DocumentosVinculacion extends Controller
         if ($fechaInicio && $fechaFin) {
             $query->whereHas('periodo', function ($query) use ($fechaInicio, $fechaFin) {
                 $query->where('inicioPeriodo', '<=', $fechaFin)
-                      ->where('finPeriodo', '>=', $fechaInicio);
+                    ->where('finPeriodo', '>=', $fechaInicio);
             });
         }
+
+        if ($profesor) {
+            $query->where('participanteId', $profesor);
+        }
+
+        if ($periodo) {
+            $query->where('idPeriodo', $periodo);
+        }
+
+        
+
+
 
         $asignacionProyecto = $query->with(['estudiante.notas', 'estudiante.horas_vinculacion', 'proyecto.director', 'docenteParticipante', 'periodo', 'nrcVinculacion'])->get();
 
@@ -1087,7 +1102,7 @@ class DocumentosVinculacion extends Controller
                         'apellidos' => $row[1],
                         'espeId' => $row[4],
                         'Cohorte' => $row[6],
-                        'carrera' => 'Ingeniería en Tecnologías de la información',
+                        'carrera' => 'Tecnologías de la información',
                         'departamento' => 'Ciencias de la Computación',
                         'correo' => $row[5],
                         'cedula' => $row[3],
@@ -1142,6 +1157,8 @@ class DocumentosVinculacion extends Controller
                     'TelefonoTutorEmpresarial' => $row[31],
                     'Funcion' => $row[32],
                     'idTutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
+                    'nota_final' => $row[17],
+                    'periodoPractica' => $row[9],
                     'Estado' => 'Finalizado',
                     'EstadoAcademico' => 'Cursando estudios',
                     'DepartamentoTutorEmpresarial' => null
@@ -1191,7 +1208,7 @@ class DocumentosVinculacion extends Controller
                         'apellidos' => $row[1],
                         'espeId' => $row[4],
                         'Cohorte' => $row[6],
-                        'carrera' => 'Ingeniería en Tecnologías de la información',
+                        'carrera' => 'Tecnologías de la información',
                         'departamento' => 'Ciencias de la Computación',
                         'correo' => $row[5],
                         'cedula' => $row[3],
@@ -1250,6 +1267,8 @@ class DocumentosVinculacion extends Controller
                     'TelefonoTutorEmpresarial' => $row[31],
                     'Funcion' => $row[32],
                     'idTutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
+                    'nota_final' => $row[17],
+                    'periodoPractica' => $row[9],
                     'Estado' => 'Finalizado',
                     'EstadoAcademico' => 'Cursando estudios',
                     'DepartamentoTutorEmpresarial' => null
@@ -1356,6 +1375,8 @@ class DocumentosVinculacion extends Controller
                     'TelefonoTutorEmpresarial' => $row[31],
                     'Funcion' => $row[32],
                     'idTutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
+                    'nota_final' => $row[17],
+                    'periodoPractica' => $row[9],
                     'Estado' => 'Finalizado',
                     'EstadoAcademico' => 'Cursando estudios',
                     'DepartamentoTutorEmpresarial' => null
@@ -1403,7 +1424,7 @@ class DocumentosVinculacion extends Controller
                         'apellidos' => $row[1],
                         'espeId' => $row[4],
                         'Cohorte' => $row[6],
-                        'carrera' => 'Ingeniería en Tecnologías de la información',
+                        'carrera' => 'Tecnologías de la información',
                         'departamento' => 'Ciencias de la Computación',
                         'correo' => $row[5],
                         'cedula' => $row[3],
@@ -1462,6 +1483,8 @@ class DocumentosVinculacion extends Controller
                     'TelefonoTutorEmpresarial' => $row[31],
                     'Funcion' => $row[32],
                     'idTutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
+                    'nota_final' => $row[17],
+                    'periodoPractica' => $row[9],
                     'Estado' => 'Finalizado',
                     'EstadoAcademico' => 'Cursando estudios',
                     'DepartamentoTutorEmpresarial' => null
@@ -1564,6 +1587,8 @@ class DocumentosVinculacion extends Controller
                     'TelefonoTutorEmpresarial' => $row[31],
                     'Funcion' => $row[32],
                     'idTutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
+                    'nota_final' => $row[17],
+                    'periodoPractica' => $row[9],
                     'Estado' => 'Finalizado',
                     'EstadoAcademico' => 'Cursando estudios',
                     'DepartamentoTutorEmpresarial' => null

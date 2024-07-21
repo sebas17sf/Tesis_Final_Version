@@ -3,24 +3,24 @@
 @section('title_component', 'Panel Practicas')
 @section('content')
     @if (session('success'))
-    <div class="contenedor_alerta success">
-    <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Éxito!</div>
-      <div class="body">{{ session('success') }}</div>
-    </div>
-  </div>
+        <div class="contenedor_alerta success">
+            <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Éxito!</div>
+                <div class="body">{{ session('success') }}</div>
+            </div>
+        </div>
     @endif
 
 
     @if (session('error'))
-    <div class="contenedor_alerta error">
-    <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Error!</div>
-      <div class="body">{{ session('error') }}</div>
-    </div>
-  </div>
+        <div class="contenedor_alerta error">
+            <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Error!</div>
+                <div class="body">{{ session('error') }}</div>
+            </div>
+        </div>
     @endif
 
     <section class="contenedor_agregar_periodo">
@@ -67,8 +67,9 @@
                                                     {{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
                                                 <td style="text-transform: uppercase; text-align: left;">
                                                     {{ strtoupper($practicaI->Empresa->nombreEmpresa) }}</td>
-                                                <td>{{ strtoupper($practicaI->nrc) }}</td>
-                                                <td>{{ strtoupper($practicaI->nrc) }}</td>
+                                                <td> {{ strtoupper(optional($nrcs->firstWhere('id', $practicaI->nrc))->nrc ?? 'NO CUENTA CON NRC') }}
+                                                </td>
+                                                <td>{{ strtoupper($practicaI->periodoPractica ?? 'NO REQUIERE PERIODO') }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                                                 <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
@@ -244,6 +245,7 @@
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
                                         <th>HORAS PLANIFICADAS</th>
+                                        <th>NOTA</th>
                                         <th>ESTADO</th>
 
                                     </tr>
@@ -251,9 +253,8 @@
                                 <tbody class="mdc-data-table__content ng-star-inserted">
                                     @foreach ($estudiantesPracticas as $index => $practicaI)
                                         @if ($practicaI->estudiante)
-
                                             <tr>
-                                                <td>{{ $estudiantesPracticas ->firstItem() + $index }}</td>
+                                                <td>{{ $estudiantesPracticas->firstItem() + $index }}</td>
 
                                                 <td style="text-transform: uppercase; text-align: left;">
                                                     {{ strtoupper($practicaI->estudiante->apellidos) }}
@@ -269,12 +270,16 @@
                                                 <td style="text-transform: uppercase; text-align: left;">
                                                     {{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrc->nrc ?? 'No cuenta con NRC') }}</td>
-                                                <td>{{ strtoupper($practicaI->nrc->periodo->numeroPeriodo ?? 'No cuenta con NRC') }}
+                                                <td> {{ strtoupper(optional($nrcs->firstWhere('id', $practicaI->nrc))->nrc ?? 'NO CUENTA CON NRC') }}
                                                 </td>
+
+                                                <td>{{ strtoupper($practicaI->periodoPractica ?? 'NO CUENTA CON PERIODO') }}</td>
+
+
                                                 <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                                                 <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
+                                                <td>{{ strtoupper($practicaI->nota_final ?? 'AUN NO TIENE CALIFICACION') }}</td>
                                                 <td>{{ strtoupper($practicaI->Estado) }}</td>
                                             </tr>
                                         @endif
@@ -381,15 +386,15 @@
                     <!-- Botones -->
                     <div class="contenedor_botones">
 
-                    <div class="tooltip-container">
-                                    <span class="tooltip-text">Excel</span>
-                                    <form action="{{ route('coordinador.reportesPracticaIII') }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="button3 efects_button btn_excel">
-                                            <i class="fas fa-file-excel"></i>
-                                        </button>
-                                    </form>
-                                </div>
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Excel</span>
+                            <form action="{{ route('coordinador.reportesPracticaIII') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="button3 efects_button btn_excel">
+                                    <i class="fas fa-file-excel"></i>
+                                </button>
+                            </form>
+                        </div>
 
                         <!-- Botón de Importar archivo -->
                         <div class="tooltip-container">
@@ -462,6 +467,7 @@
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
                                         <th>HORAS PLANIFICADAS</th>
+                                        <th>NOTA FINAL</th>
                                         <th>ESTADO</th>
 
                                     </tr>
@@ -470,7 +476,7 @@
                                     @foreach ($estudiantesPracticasIII as $index => $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td>{{ $estudiantesPracticasIII ->firstItem() + $index }}</td>
+                                                <td>{{ $estudiantesPracticasIII->firstItem() + $index }}</td>
 
                                                 <td style="text-transform: uppercase; text-align: left;">
                                                     {{ strtoupper($practicaI->estudiante->apellidos) }}
@@ -486,13 +492,15 @@
                                                 <td style="text-transform: uppercase; text-align: left;">
                                                     {{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->nrc ?? 'No cuenta con NRC') }}
+                                                <td> {{ strtoupper(optional($nrcs->firstWhere('id', $practicaI->nrc))->nrc ?? 'NO CUENTA CON NRC') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->periodo->numeroPeriodo ?? 'No cuenta con NRC') }}
-                                                </td>
+
+                                                <td>{{ strtoupper($practicaI->periodoPractica ?? 'NO CUENTA CON PERIODO') }}</td>
+
                                                 <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                                                 <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
+                                                <td>{{ strtoupper($practicaI->nota_final ?? 'AUN NO TIENE CALIFICACION') }}</td>
                                                 <td>{{ $practicaI->Estado }}</td>
                                             </tr>
                                         @endif
@@ -655,7 +663,7 @@
                         </div>
                     </div>
 
-</div>
+                </div>
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
 
@@ -675,6 +683,7 @@
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
                                         <th>HORAS PLANIFICADAS</th>
+                                        <th>NOTA FINAL</th>
                                         <th>ESTADO</th>
 
                                     </tr>
@@ -683,7 +692,7 @@
                                     @foreach ($estudiantesPracticasIV as $index => $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td>{{ $estudiantesPracticasIV ->firstItem() + $index }}</td>
+                                                <td>{{ $estudiantesPracticasIV->firstItem() + $index }}</td>
                                                 <td style="text-transform: uppercase; text-align: left;">
                                                     {{ strtoupper($practicaI->estudiante->apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->nombres) }}</td>
@@ -698,13 +707,14 @@
                                                 <td style="text-transform: uppercase; text-align: left;">
                                                     {{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->nrc ?? 'No cuenta con NRC') }}
+                                                <td> {{ strtoupper(optional($nrcs->firstWhere('id', $practicaI->nrc))->nrc ?? 'NO CUENTA CON NRC') }}
+
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->periodo->numeroPeriodo ?? 'No cuenta con NRC') }}
-                                                </td>
+                                                <td>{{ strtoupper($practicaI->periodoPractica ?? 'NO CUENTA CON PERIODO') }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                                                 <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
+                                                <td>{{ strtoupper($practicaI->nota_final ?? 'AUN NO TIENE CALIFICACION') }}</td>
                                                 <td>{{ $practicaI->Estado }}</td>
 
 
@@ -875,6 +885,7 @@
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
                                         <th>HORAS PLANIFICADAS</th>
+                                        <th>NOTA FINAL</th>
                                         <th>ESTADO</th>
 
                                     </tr>
@@ -883,7 +894,7 @@
                                     @foreach ($estudiantesPracticasII as $index => $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td>{{ $estudiantesPracticasII ->firstItem() + $index }}</td>
+                                                <td>{{ $estudiantesPracticasII->firstItem() + $index }}</td>
                                                 <td style="text-transform: uppercase; text-align: left;">
                                                     {{ strtoupper($practicaI->estudiante->apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->nombres) }}</td>
@@ -898,13 +909,13 @@
                                                 <td style="text-transform: uppercase; text-align: left;">
                                                     {{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->nrc ?? 'No cuenta con NRC') }}
+                                                <td> {{ strtoupper(optional($nrcs->firstWhere('id', $practicaI->nrc))->nrc ?? 'NO CUENTA CON NRC') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->periodo->numeroPeriodo ?? 'No cuenta con NRC') }}
-                                                </td>
+                                                <td>{{ strtoupper($practicaI->periodoPractica ?? 'NO CUENTA CON PERIODO') }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                                                 <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
+                                                <td>{{ strtoupper($practicaI->nota_final ?? 'AUN NO TIENE CALIFICACION') }}</td>
                                                 <td>{{ $practicaI->Estado }}</td>
 
 
@@ -1081,6 +1092,7 @@
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
                                         <th>HORAS PLANIFICADAS</th>
+                                        <th>NOTA FINAL</th>
                                         <th>ESTADO</th>
 
                                     </tr>
@@ -1104,13 +1116,13 @@
                                                 <td style="text-transform: uppercase; text-align: left;">
                                                     {{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->nrc ?? 'No cuenta con NRC') }}
+                                                <td> {{ strtoupper(optional($nrcs->firstWhere('id', $practicaI->nrc))->nrc ?? 'NO CUENTA CON NRC') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->periodo->numeroPeriodo ?? 'No cuenta con NRC') }}
-                                                </td>
+                                                <td>{{ strtoupper($practicaI->periodoPractica ?? 'NO CUENTA CON PERIODO') }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                                                 <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
+                                                <td>{{ strtoupper($practicaI->nota_final ?? 'AUN NO TIENE CALIFICACION') }}</td>
                                                 <td>{{ $practicaI->Estado }}</td>
 
 
@@ -1135,7 +1147,6 @@
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/admin/acciones.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
     <script>
@@ -1252,21 +1263,20 @@
         }
     </script>
 
-<style>
+    <style>
         .contenedor_tabla .table-container table td {
             width: 200px;
             min-width: 150px;
             font-size: 11px !important;
             padding: .5rem !important;
         }
-        .contenedor_general 
-        
-        .contenedor_tabla {
+
+        .contenedor_general .contenedor_tabla {
             min-height: 1px !important;
         }
-        .table-container {
-    height: 275px !important;
-        }
 
+        .table-container {
+            height: 275px !important;
+        }
     </style>
 @endsection

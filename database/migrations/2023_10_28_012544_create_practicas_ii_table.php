@@ -21,6 +21,7 @@ return new class extends Migration
            $table->foreign('idEmpresa')->references('id')->on('empresas')->nullable();
            $table->unsignedBigInteger('idTutorAcademico')->nullable();
            $table->foreign('idTutorAcademico')->references('id')->on('profesuniversidad')->nullable();
+           $table->integer('periodoPractica')->nullable();
            $table->string('tipoPractica')->nullable();
            $table->string('CedulaTutorEmpresarial')->nullable();
            $table->string('NombreTutorEmpresarial')->nullable();
@@ -35,6 +36,7 @@ return new class extends Migration
            $table->string('HoraEntrada')->nullable();
            $table->string('HoraSalida')->nullable();
            $table->string('AreaConocimiento')->nullable();
+           $table->decimal('nota_final', 5, 2)->nullable();
            $table->string('Estado')->nullable();
            $table->timestamps();
         });

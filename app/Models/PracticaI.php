@@ -31,6 +31,8 @@ class PracticaI extends Model
         'HoraEntrada',
         'HoraSalida',
         'AreaConocimiento',
+        'nota_final',
+        'periodoPractica',
         'Estado'
     ];
 

@@ -661,7 +661,7 @@
                                 <label for="tipo"><strong>Tipo de proceso:</strong></label>
                                 <select id="tipo" name="tipo" class="form-control input_select input" required>
                                     <option value="">Seleccione el proceso</option>
-                                    <option value="Vinculación">Vinculación con la Sociedad</option>
+                                    <option value="Vinculacion">Vinculación con la Sociedad</option>
                                     <option value="Practicas">Practicas preprofesionales</option>
                                 </select>
                                 @error('tipo')
