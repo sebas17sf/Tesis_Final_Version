@@ -283,11 +283,16 @@ class AdminController extends Controller
         $periodoId = $request->input('periodos');
 
         $periodos = Periodo::all();
-        $nrcs = NrcVinculacion::all();
+
+        $nrcs = NrcVinculacion::where('tipo', 'Vinculacion')->get();
+
+
         $profesores = ProfesUniversidad::whereDoesntHave('proyectosDirigidos')
             ->orWhereHas('proyectosDirigidos', function ($query) {
                 $query->where('estado', 'Terminado');
-            })->get();
+            })
+            ->orderBy('apellidos', 'asc')
+            ->get();
 
         ///obtener los periodos que tengan fecha de inicio y fin con la fecha actual
         $periodoAsignacion = Periodo::where('inicioPeriodo', '<=', now())
@@ -1164,9 +1169,6 @@ class AdminController extends Controller
 
 
 
-
-
-
         $estudiantesConPracticaII = PracticaII::with('estudiante')
             ->where('estado', 'PracticaII')
             ->get();
@@ -1177,7 +1179,6 @@ class AdminController extends Controller
             ->where(function ($query) use ($search) {
                 $query->where('Estado', 'En ejecucion')
                     ->orWhere('Estado', 'Finalizado');
-
             })
             ->where(function ($query) use ($search) {
                 $query->where('estudianteId', 'LIKE', '%' . $search . '%')
@@ -1200,7 +1201,6 @@ class AdminController extends Controller
                             ->orWhere('NombreTutorEmpresarial', 'LIKE', '%' . $search . '%')
                             ->orWhere('tipoPractica', 'LIKE', '%' . $search . '%');
                     });
-
             })
             ->paginate($perPage1, ['*'], 'page1');
 
@@ -1209,8 +1209,8 @@ class AdminController extends Controller
 
         $estudiantesPracticasII = PracticaII::with('estudiante')
             ->where(function ($query) {
-                $query->where('estado', 'En ejecucion')
-                    ->orWhere('estado', 'Finalizado');
+                $query->where('Estado', 'En ejecucion')
+                    ->orWhere('Estado', 'Finalizado');
             })
 
             ->where(function ($query) use ($search2) {
@@ -1274,8 +1274,8 @@ class AdminController extends Controller
 
         $estudiantesPracticasIV = PracticaIV::with('estudiante')
             ->where(function ($query) {
-                $query->where('estado', 'En ejecucion')
-                    ->orWhere('estado', 'Finalizado');
+                $query->where('Estado', 'En ejecucion')
+                    ->orWhere('Estado', 'Finalizado');
             })
             ->where(function ($query) use ($search4) {
 
@@ -1306,10 +1306,14 @@ class AdminController extends Controller
 
         $estudiantesPracticasV = PracticaV::with('estudiante')
             ->where(function ($query) {
-                $query->where('estado', 'En ejecucion')
-                    ->orWhere('estado', 'Finalizado');
+                $query->where('Estado', 'En ejecucion')
+                    ->orWhere('Estado', 'Finalizado');
             })
             ->get();
+
+        $nrcs = NrcVinculacion::all();
+        $periodos = Periodo::all();
+
 
         return view(
             'admin.aceptarFaseI',
@@ -1328,7 +1332,9 @@ class AdminController extends Controller
                 'search',
                 'search2',
                 'search3',
-                'search4'
+                'search4',
+                'nrcs',
+                'periodos'
 
             )
         );

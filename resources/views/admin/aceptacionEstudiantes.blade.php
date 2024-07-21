@@ -140,9 +140,25 @@
             <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                 <!-- Botones -->
                 <div class="contenedor_botones">
-                </div>
+
+                    <div class="tooltip-container mx-1">
+                        <span class="tooltip-text">Reporte Estudiante</span>
+                        <form action="{{ route('admin.reportesEstudiantes') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="button3 efects_button btn_excel">
+                                <i class="fas fa-file-excel"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                 </div>
                 <div class="contenedor_buscador">
                     <div>
+
+
+
+
+
                         <form id="formBusquedaEstudiantes">
                             <input type="text" class="input" name="search2" value="{{ $search2 }}" matInput
                                 placeholder="Buscar estudiantes...">

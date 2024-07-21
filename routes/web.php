@@ -85,6 +85,9 @@ Route::middleware(['auth'])->group(function () {
     ///borrar los permisos concedidos
     Route::delete('/admin/{id}/deletePermission', [AdminController::class, 'deletePermission'])->name('admin.deletePermission');
 
+    ////ReporteEstudiantes
+    Route::post('/admin/reportes-estudiantes', [DocumentoController::class, 'ReporteEstudiantes'])->name('admin.reportesEstudiantes');
+
     /////rutas para verificar el estudiante-admin
     Route::get('/admin/estudiantes', [AdminController::class, 'estudiantes'])->name('admin.estudiantes');
     Route::put('/admin/actualizar-estudiante/{id}', [AdminController::class, 'updateEstudiante'])->name('admin.updateEstudiante');

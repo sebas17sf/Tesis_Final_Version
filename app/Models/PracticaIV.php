@@ -29,6 +29,8 @@ class PracticaIV extends Model
         'HoraEntrada',
         'HoraSalida',
         'AreaConocimiento',
+        'nota_final',
+        'periodoPractica',
         'Estado'
     ];
     public $timestamps = true;

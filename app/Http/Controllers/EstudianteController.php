@@ -224,9 +224,10 @@ class EstudianteController extends Controller
     public function practica1()
     {
         $user = Auth::user();
-        $profesores = ProfesUniversidad::all();
 
-        $nrcpracticas1 = NrcVinculacion::all();
+        $profesores = ProfesUniversidad::orderBy('apellidos', 'asc')->get();
+
+        $nrcpracticas1 = NrcVinculacion::where('tipo', 'Practicas')->get();
 
         $estudiante = $user->estudiante;
 
@@ -258,9 +259,9 @@ class EstudianteController extends Controller
     {
         $user = Auth::user();
 
-        $profesores = ProfesUniversidad::all();
+        $profesores = ProfesUniversidad::orderBy('apellidos', 'asc')->get();
 
-        $nrcpracticas1 = NrcVinculacion::all();
+        $nrcpracticas1 = NrcVinculacion::where('tipo', 'Practicas')->get();
 
 
 
@@ -333,6 +334,12 @@ class EstudianteController extends Controller
 
         $estudiante = Estudiante::where('userId', $userId)->first();
 
+        $nrc = NrcVinculacion::where('id', $validatedData['nrc'])->first();
+        $periodo = Periodo::where('id', $nrc->idPeriodo)->first();
+        $numeroPeriodo = $periodo->numeroPeriodo;
+
+
+
         if ($estudiante) {
             PracticaI::create([
                 'estudianteId' => $estudiante->estudianteId,
@@ -353,6 +360,7 @@ class EstudianteController extends Controller
                 'HoraEntrada' => $validatedData['HoraEntrada'],
                 'HoraSalida' => $validatedData['HoraSalida'],
                 'AreaConocimiento' => $validatedData['AreaConocimiento'],
+                'periodoPractica' => $numeroPeriodo,
                 'Estado' => 'PracticaI'
             ]);
 
@@ -393,6 +401,11 @@ class EstudianteController extends Controller
         // Obtén el modelo Estudiante del usuario autenticado
         $estudiante = Estudiante::where('userId', $userId)->first();
 
+        $nrc = NrcVinculacion::where('nrc', $validatedData['nrc'])->first();
+        $periodo = Periodo::where('idPeriodo', $nrc->idPeriodo)->first();
+        $numeroPeriodo = $periodo->numeroPeriodo;
+
+
         // Verifica si se encontró el estudiante
         if ($estudiante) {
             // Crea un nuevo registro de PracticaI y asocia los datos del estudiante
@@ -415,6 +428,7 @@ class EstudianteController extends Controller
                 'HoraEntrada' => $validatedData['HoraEntrada'],
                 'HoraSalida' => $validatedData['HoraSalida'],
                 'AreaConocimiento' => $validatedData['AreaConocimiento'],
+                'periodoPractica' => $numeroPeriodo,
                 'Estado' => 'PracticaII'
             ]);
 
