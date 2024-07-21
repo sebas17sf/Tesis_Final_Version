@@ -420,6 +420,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/estudiantes/documentos-EncuestaEstudiante', [DocumentoController::class, 'EncuestaDocentes'])->name('generar.EncuestaDocentes');
     Route::post('/estudiantes/documentos-EvTutorEmpresarial', [DocumentoController::class, 'EvTutorEmpresarial'])->name('generar.EvTutorEmpresarial');
     Route::post('/estudiantes/documentos-PlanificacionPPEstudiante', [DocumentoController::class, 'PlanificacionPPEstudiante'])->name('generar.PlanificacionPPEstudiante');
+    Route::post('/estudiantes/documentos-ControlAvanceActividades', [DocumentoController::class, 'ControlAvanceActividades'])->name('generar.ControlAvanceActividades');
+    Route::post('/estudiantes/documentos-EvTutorAcademico', [DocumentoController::class, 'EvTutorAcademico'])->name('generar.EvTutorAcademico');
+    Route::post('/estudiantes/documentos-Informe', [DocumentoController::class, 'InformPractica'])->name('generar.InformPractica');
+
 
 
     Route::post('/estudiantes/documentos-practicas2', [DocumentoController::class, 'EncuestaEstudiante2'])->name('generar.EncuestaEstudiante2');
