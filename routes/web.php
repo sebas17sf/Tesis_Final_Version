@@ -420,13 +420,19 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/estudiantes/documentos-EncuestaEstudiante', [DocumentoController::class, 'EncuestaDocentes'])->name('generar.EncuestaDocentes');
     Route::post('/estudiantes/documentos-EvTutorEmpresarial', [DocumentoController::class, 'EvTutorEmpresarial'])->name('generar.EvTutorEmpresarial');
     Route::post('/estudiantes/documentos-PlanificacionPPEstudiante', [DocumentoController::class, 'PlanificacionPPEstudiante'])->name('generar.PlanificacionPPEstudiante');
+    Route::post('/estudiantes/documentos-ControlAvanceActividades', [DocumentoController::class, 'ControlAvanceActividades'])->name('generar.ControlAvanceActividades');
+    Route::post('/estudiantes/documentos-EvTutorAcademico', [DocumentoController::class, 'EvTutorAcademico'])->name('generar.EvTutorAcademico');
+    Route::post('/estudiantes/documentos-Informe', [DocumentoController::class, 'InformPractica'])->name('generar.InformPractica');
+
 
 
     Route::post('/estudiantes/documentos-practicas2', [DocumentoController::class, 'EncuestaEstudiante2'])->name('generar.EncuestaEstudiante2');
     Route::post('/estudiantes/documentos-EncuestaEstudiante2', [DocumentoController::class, 'EncuestaDocentes2'])->name('generar.EncuestaDocentes2');
     Route::post('/estudiantes/documentos-EvTutorEmpresarial2', [DocumentoController::class, 'EvTutorEmpresarial2'])->name('generar.EvTutorEmpresarial2');
     Route::post('/estudiantes/documentos-PlanificacionPPEstudiante2', [DocumentoController::class, 'PlanificacionPPEstudiante2'])->name('generar.PlanificacionPPEstudiante2');
-
+    Route::post('/estudiantes/documentos-ControlAvanceActividades2', [DocumentoController::class, 'ControlAvanceActividades2'])->name('generar.ControlAvanceActividades2');
+    Route::post('/estudiantes/documentos-EvTutorAcademico2', [DocumentoController::class, 'EvTutorAcademico2'])->name('generar.EvTutorAcademico2');
+    Route::post('/estudiantes/documentos-Informe2', [DocumentoController::class, 'InformPractica2'])->name('generar.InformPractica2');
 
 
 
