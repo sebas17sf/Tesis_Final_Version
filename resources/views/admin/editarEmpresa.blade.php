@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('title', 'Editar Empresa')
-@section('title_component', 'Panel Editar Estudiantes')
+@section('title_component', 'Panel Editar Empresa')
 @section('content')
 
 
@@ -28,6 +28,9 @@
 
 <br>
 <div class="container">
+        <section class="contenedor_agregar_periodo">
+            <h4><b>Actualizar datos de la empresa</b></h4>
+            <hr>
         <form action="{{ route('admin.actualizarEmpresa', ['id' => $empresa->id]) }}" method="POST"
             enctype="multipart/form-data">
             @csrf
@@ -68,6 +71,8 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="provincia">Provincia:</label>
                                 <select class="form-control input" id="provincia" name="provincia" required>
@@ -98,7 +103,9 @@
                                     <option value="Zamora Chinchipe" {{ $empresa->provincia == 'Zamora Chinchipe' ? 'selected' : '' }}>Zamora Chinchipe</option>
                                 </select>
                             </div>
+</div>
 
+        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="ciudad">Ciudad:</label>
                                 <input type="text" class="form-control input" id="ciudad" name="ciudad" required
@@ -106,7 +113,8 @@
                                 <span id="error-message-ciudad" style="color: red;"></span>
 
                             </div>
-
+</div>
+</div>
                             <div class="form-group">
                                 <label for="direccion">Dirección:</label>
                                 <input type="text" class="form-control input" id="direccion" name="direccion" required
@@ -114,15 +122,8 @@
                                 <span id="error-message-direccion" style="color: red;"></span>
 
                             </div>
-
-                            <div class="form-group">
-                                <label for="correo">Correo de contacto de la Empresa:</label>
-                                <input type="email" class="form-control input" id="correo" name="correo" required
-                                    value="{{ $empresa->correo }}">
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6">
                             <div class="form-group">
                                 <label for="nombreContacto">Nombre del contacto de la Empresa:</label>
                                 <input type="text" class="form-control input" id="nombreContacto" name="nombreContacto"
@@ -130,18 +131,31 @@
                                 <span id="error-message-nombreContacto" style="color: red;"></span>
 
                             </div>
+                            </div>
+                            <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="correo">Correo de contacto de la Empresa:</label>
+                                <input type="email" class="form-control input" id="correo" name="correo" required
+                                    value="{{ $empresa->correo }}">
+                            </div>
+                      
+</div>
+</div>
 
+                        
                             
-
+                            </div>
+                            
+                            <div class="col-md-6">
                             <div class="form-group">
                                 <label for="actividadesMacro">Actividades Macro requeridas:</label>
-                                <textarea class="form-control input" id="actividadesMacro" name="actividadesMacro" rows="4" required>
+                                <textarea class="form-control input textarea" id="actividadesMacro" name="actividadesMacro" rows="4" required>
                                     {{ $empresa->actividadesMacro }}
                                 </textarea>
                                 <span id="error-message-actividadesMacro" style="color: red;"></span>
 
                             </div>
-
+<br>
                             <div class="form-group">
                                 <label for="cuposDisponibles">Cupos Disponibles:</label>
                                 <input type="text" class="form-control input" id="cuposDisponibles"

@@ -108,343 +108,134 @@
         </form>
         <hr>
         <h4><b>Estudiantes Calificados</b></h4>
-        <hr>
-        <!-- Estudiantes Calificados -->
-        @if (!$estudiantesConNotas->isEmpty())
+<hr>
+@if (!$estudiantesConNotas->isEmpty())
+    <div class="contenedor_tabla">
+        <div class="table-container mat-elevation-z8">
+            <div id="tablaDocentes">
+                <table class="mat-mdc-table">
+                    <thead class="ng-star-inserted">
+                        <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                            <th class="tamanio4">Estudiante</th>
+                            <th class="tamanio4">Espe ID</th>
+                            <th class="tamanio4">Carrera</th>
+                            <th class="tamanio4">Departamento</th>
+                            <th>Cumple con las tareas planificadas. Sobre 10%</th>
+                            <th>Resultados Alcanzados. Sobre 10%</th>
+                            <th>Demuestra conocimientos en el área</th>
+                            <th>Adaptabilidad</th>
+                            <th>Aplicación de destrezas y habilidades</th>
+                            <th>Capacidad de liderazgo</th>
+                            <th>Asistencia puntual</th>
+                            <th>Informe de Servicio Comunitario</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="mdc-data-table__content ng-star-inserted">
+                        @foreach ($estudiantesConNotas as $estudiante)
+                            <tr id="row{{ $estudiante->estudianteId }}">
+                                <td class="wide-cell" style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                    {{ $estudiante->apellidos }} {{ $estudiante->nombres }}
+                                </td>
+                                <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                    {{ $estudiante->espeId }}
+                                </td>
+                                <td style="text-transform: uppercase; word-wrap: break-word; text-align: left;">
+                                    {{ $estudiante->carrera }}
+                                </td>
+                                <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                    {{ $estudiante->departamento }}
+                                </td>
+                                <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                    <input type="number" name="tareas" value="{{ $estudiante->notas->first()->tareas }}" min="1" max="10" step="0.01" disabled>
+                                </td>
+                                <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                    <input type="number" name="resultados_alcanzados" value="{{ $estudiante->notas->first()->resultadosAlcanzados }}" min="1" max="10" step="0.01" disabled>
+                                </td>
+                                <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                    <input type="number" name="conocimientos_area" value="{{ $estudiante->notas->first()->conocimientos }}" min="1" max="10" step="0.01" disabled>
+                                </td>
+                                <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                    <input type="number" name="adaptabilidad" value="{{ $estudiante->notas->first()->adaptabilidad }}" min="1" max="10" step="0.01" disabled>
+                                </td>
+                                <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                    <input type="number" name="aplicacion" value="{{ $estudiante->notas->first()->aplicacion }}" min="1" max="10" step="0.01" disabled>
+                                </td>
+                                <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                    <input type="number" name="capacidad_liderazgo" value="{{ $estudiante->notas->first()->CapacidadLiderazgo }}" min="1" max="10" step="0.01" disabled>
+                                </td>
+                                <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                    <input type="number" name="asistencia_puntual" value="{{ $estudiante->notas->first()->asistencia }}" min="1" max="10" step="0.01" disabled>
+                                </td>
+                                <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                    {{ $estudiante->notas->first()->informe }}
+                                </td>
+                                <td style="text-align: center;">
+                                    <div class="btn-group shadow-0">
+                                        <button class="button3 efects_button btn_editar3" onclick="editRow({{ $estudiante->estudianteId }})" style="margin-right: 5px;">
+                                            <i class="bx bx-edit-alt"></i>
+                                        </button>
+                                        <button class="button3 efects_button btn_save" onclick="saveRow({{ $estudiante->estudianteId }})" style="display: none; margin-right: 5px;">
+                                            <i class="fa-solid fa-save"></i>
+                                        </button>
+                                        <button class="button3 efects_button btn_eliminar3" onclick="openCard('tablaActividad{{ $estudiante->estudianteId }}');">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </div>
+                                
 
-            <div class="contenedor_tabla">
-                <div class="table-container mat-elevation-z8">
-
-                    <div id="tablaDocentes">
-                        <table class="mat-mdc-table">
-                            <thead class="ng-star-inserted">
-                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio4">ESTUDIANTE</th>
-                                    <th class="tamanio4">Espe ID</th>
-                                    <th class="tamanio4">CARRERA</th>
-                                    <th class="tamanio4">DEPARTAMENTO</th>
-                                    <th>CUMPLE CON LAS TAREAS PLANIFICADAS. SOBRE 10%</th>
-                                    <th>RESULTADOS ALCANZADOS. SOBRE 10%</th>
-                                    <th>DEMUESTRA CONOCIMIENTOS EN EL ÁREA</th>
-                                    <th>ADAPTABILIDAD</th>
-                                    <th>APLICACIÓN DE DESTREZAS Y HABILIDADES</th>
-                                    <th>CAPACIDAD DE LIDERAZGO</th>
-                                    <th>ASISTENCIA PUNTUAL</th>
-                                    <th>INFORME DE SERVICIO COMUNITARIO</th>
-
-                                    <th>ACCIONES</th>
-                                </tr>
-                            </thead>
-                            <tbody class="mdc-data-table__content ng-star-inserted">
-                                @if ($estudiantesConNotas->isEmpty())
-                                    <tr>
-                                        <td class="noExisteRegistro1" style="font-size: 16px !important;" colspan="10">No hay
-                                            estudiantes calificados.</td>
-                                    </tr>
-                                    @else
-                                @foreach ($estudiantesConNotas as $estudiante)
-                                    <tr>
-                                        <td class="wide-cell"
-                                            style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            {{ $estudiante->apellidos }} {{ $estudiante->nombres }}</td>
-                                        <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            {{ $estudiante->espeId }}</td>
-                                        <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">
-                                            {{ $estudiante->carrera }}</td>
-                                        <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            {{ $estudiante->departamento }}</td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            @foreach ($estudiante->notas as $nota)
-                                                {{ $nota->tareas }}<br>
-                                            @endforeach
-                                        </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            @foreach ($estudiante->notas as $nota)
-                                                {{ $nota->resultadosAlcanzados }}<br>
-                                            @endforeach
-                                        </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            @foreach ($estudiante->notas as $nota)
-                                                {{ $nota->conocimientos }}<br>
-                                            @endforeach
-                                        </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            @foreach ($estudiante->notas as $nota)
-                                                {{ $nota->adaptabilidad }}<br>
-                                            @endforeach
-                                        </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            @foreach ($estudiante->notas as $nota)
-                                                {{ $nota->aplicacion }}<br>
-                                            @endforeach
-                                        </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            @foreach ($estudiante->notas as $nota)
-                                                {{ $nota->CapacidadLiderazgo }}<br>
-                                            @endforeach
-                                        </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            @foreach ($estudiante->notas as $nota)
-                                                {{ $nota->asistencia }}<br>
-                                            @endforeach
-                                        </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            @foreach ($estudiante->notas as $nota)
-                                                {{ $nota->informe }}<br>
-                                            @endforeach
-                                        </td>
-
-                                        <td style="text-align: center;">
-                                            <div class="btn-group shadow-0">
-                                                <button class="button3 efects_button btn_editar3 "
-                                                    style="margin-right: 5px;"
-                                                    onclick="openCard('cardEditNota{{ $estudiante->estudianteId }}');">
-                                                    <i class="bx bx-edit-alt"></i>
-                                                </button>
-
-
-                                                <!-- Botón para abrir el modal -->
-                                                <button type="button" class="button3 efects_button btn_eliminar3"
-                                                    onclick="openCard('tablaActividad{{ $estudiante->estudianteId }}');">
-                                                    <i class="fa-solid fa-eye"></i>
-                                                </button>
-
-                                                <!-- Card para mostrar las asctividades del estudiante -->
-                                                <div class="draggable-card1_1 " style="display: none;"
-                                                    id="tablaActividad{{ $estudiante->estudianteId }}">
-
-                                                    <div class="card-header">
-                                                        <span class=" card-title">Actividades del
-                                                            Estudiante {{ $estudiante->apellidos }}
-                                                            {{ $estudiante->nombres }}</span>
-                                                        <button type="button" class="close"
-                                                            onclick="closeCard('tablaActividad{{ $estudiante->estudianteId }}')"><i
-                                                                class="fa-thin fa-xmark"></i></button>
-
-                                                    </div>
-                                                    <div class="contenedor_tabla">
-                                                        <div class="table-container mat-elevation-z8">
-
-                                                            <div id="tablaActivida">
-                                                                <table class="mat-mdc-table">
-                                                                    <thead class="ng-star-inserted">
-                                                                        <tr
-                                                                            class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                                                            <th>FECHA</th>
-                                                                            <th>ACTIVIDADES</th>
-                                                                            <th>HORA</th>
-                                                                            <th>NOMBRE DE LA ACTIVIDAD</th>
-                                                                            <th>EVIDENCIA</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        @foreach ($estudiante->actividades as $actividad)
-                                                                            <tr>
-                                                                                <td
-                                                                                    style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                                                                    {{ $actividad->fecha }}
-                                                                                </td>
-                                                                                <td
-                                                                                    style="text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
-                                                                                    {{ $actividad->actividades }}
-                                                                                </td>
-                                                                                <td
-                                                                                    style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                                                                    {{ $actividad->numeroHoras }}
-                                                                                </td>
-                                                                                <td
-                                                                                    style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                                                                    {{ $actividad->nombreActividad }}
-                                                                                </td>
-
-                                                                                <td
-                                                                                    style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-
-                                                                                    <img width="100px"
-                                                                                        src="data:image/jpeg;base64,{{ $actividad->evidencias }}"
-                                                                                        alt="Evidencia" />
-                                                                                </td>
-                                                                            </tr>
-                                                                        @endforeach
-                                                                        
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-
-                                                        </div>
-
-
-
-
-                                                    </div>
-                                                </div>
-
-                                                <!-- Card para editar la nota -->
-                                                <div class="draggable-card"
-                                                    id="cardEditNota{{ $estudiante->estudianteId }}"
-                                                    style="display: none;">
-                                                    <div class="card-header">
-                                                        <span class="card-title input_select1">Editar Nota de
-                                                            {{ $estudiante->apellidos }} {{ $estudiante->nombres }}</span>
-                                                        <button type="button" class="close"
-                                                            onclick="closeCard('cardEditNota{{ $estudiante->estudianteId }}')"><i
-                                                                class="fa-thin fa-xmark"></i></button>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <form method="post"
-                                                            action="{{ route('actualizar-notas', ['id' => $estudiante->estudianteId]) }}">
-                                                            @csrf
-                                                            @method('PUT')
-
-                                                            <input type="hidden" name="estudiante_id"
-                                                                value="{{ $estudiante->estudianteId }}">
-
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label class="label" for="tareas">Cumple con
-                                                                            las
-                                                                            tareas planificadas. Sobre 10%</label>
-                                                                        <input type="number" name="tareas"
-                                                                            class="form-control input input_select1"
-                                                                            value="{{ optional($estudiante->notas->first())->tareas }}"
-                                                                            min="1" max="10" step="0.01"
-                                                                            required>
-                                                                        <small class="form-text text-danger"
-                                                                            style="display: none;">El valor debe estar
-                                                                            entre 0
-                                                                            y 10.</small>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label class="label"
-                                                                            for="resultados_alcanzados">Resultados
-                                                                            Alcanzados.
-                                                                            Sobre 10%</label>
-                                                                        <input type="number" name="resultados_alcanzados"
-                                                                            class="form-control input input_select1"
-                                                                            value="{{ optional($estudiante->notas->first())->resultadosAlcanzados }}"
-                                                                            min="1" max="10" step="0.01"
-                                                                            required>
-                                                                        <small class="form-text text-danger"
-                                                                            style="display: none;">El valor debe estar
-                                                                            entre 0
-                                                                            y 10.</small>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label class="label"
-                                                                            for="conocimientos_area">Demuestra
-                                                                            conocimientos en el área de práctica pre
-                                                                            profesional. Sobre
-                                                                            10%</label>
-                                                                        <input type="number" name="conocimientos_area"
-                                                                            class="form-control input input_select1"
-                                                                            value="{{ optional($estudiante->notas->first())->conocimientos }}"
-                                                                            min="1" max="10" step="0.01"
-                                                                            required>
-                                                                        <small class="form-text text-danger"
-                                                                            style="display: none;">El
-                                                                            valor debe estar entre 0 y 10.</small>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label class="label"
-                                                                            for="adaptabilidad">Adaptabilidad e
-                                                                            Integración al sistema de trabajo del proyecto.
-                                                                            Sobre
-                                                                            10%</label>
-                                                                        <input type="number" name="adaptabilidad"
-                                                                            class="form-control input input_select1"
-                                                                            value="{{ optional($estudiante->notas->first())->adaptabilidad }}"
-                                                                            min="1" max="10" step="0.01"
-                                                                            required>
-                                                                        <small class="form-text text-danger"
-                                                                            style="display: none;">El
-                                                                            valor debe estar entre 0 y 10.</small>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label class="label" for="Aplicacion">Aplicación
-                                                                            y manejo de
-                                                                            destrezas y habilidades acordes al perfil
-                                                                            profesional</label>
-                                                                        <input type="number" name="Aplicacion"
-                                                                            class="form-control input input_select1"
-                                                                            value="{{ optional($estudiante->notas->first())->aplicacion }}"
-                                                                            min="1" max="10" step="0.01"
-                                                                            required>
-                                                                        <small class="form-text text-danger"
-                                                                            style="display: none;">El
-                                                                            valor debe estar entre 0 y 10.</small>
-                                                                    </div>
-                                                                </div>
-
-
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label class="label"
-                                                                            for="capacidad_liderazgo">Demuestra capacidad
-                                                                            de
-                                                                            liderazgo y de trabajo en equipo. Sobre
-                                                                            10%</label>
-                                                                        <input type="number" name="capacidad_liderazgo"
-                                                                            class="form-control input input_select1"
-                                                                            value="{{ optional($estudiante->notas->first())->CapacidadLiderazgo }}"
-                                                                            min="1" max="10" step="0.01"
-                                                                            required>
-                                                                        <small class="form-text text-danger"
-                                                                            style="display: none;">El valor debe estar
-                                                                            entre 0
-                                                                            y 10.</small>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-
-                                                            <div class="form-group">
-                                                                <center> <label class="label"
-                                                                        for="asistencia_puntual">Asiste
-                                                                        puntualmente. Sobre 10%</label>
-                                                                    <center>
-                                                                        <input type="number" name="asistencia_puntual"
-                                                                            class="form-control input input_select1"
-                                                                            value="{{ optional($estudiante->notas->first())->asistencia }}"
-                                                                            min="1" max="10" step="0.01"
-                                                                            required>
-                                                                        <small class="form-text text-danger"
-                                                                            style="display: none;">El valor debe estar
-                                                                            entre 0
-                                                                            y 10.</small>
-                                                            </div>
-
-
-                                                            <div
-                                                                class="card-footer d-flex justify-content-center align-items-center">
-                                                                <button type="submit"
-                                                                    class="button input_select1">Guardar
-                                                                    cambios</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                @endif
-                            </tbody>
-                        </table>
-        @endif
+                            <!-- Card para mostrar las actividades del estudiante -->
+                            <div class="draggable-card1_1" style="display: none;" id="tablaActividad{{ $estudiante->estudianteId }}">
+                                <div class="card-header">
+                                    <span class="card-title">Actividades del Estudiante {{ $estudiante->apellidos }} {{ $estudiante->nombres }}</span>
+                                    <button type="button" class="close" onclick="closeCard('tablaActividad{{ $estudiante->estudianteId }}')"><i class="fa-thin fa-xmark"></i></button>
+                                </div>
+                                <div class="contenedor_tabla">
+                                    <div class="table-container mat-elevation-z8">
+                                        <div id="tablaActivida">
+                                            <table class="mat-mdc-table">
+                                                <thead class="ng-star-inserted">
+                                                    <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                                        <th>FECHA</th>
+                                                        <th>ACTIVIDADES</th>
+                                                        <th>HORA</th>
+                                                        <th>NOMBRE DE LA ACTIVIDAD</th>
+                                                        <th>EVIDENCIA</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($estudiante->actividades as $actividad)
+                                                        <tr>
+                                                            <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                                {{ $actividad->fecha }}
+                                                            </td>
+                                                            <td style="text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
+                                                                {{ $actividad->actividades }}
+                                                            </td>
+                                                            <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                                {{ $actividad->numeroHoras }}
+                                                            </td>
+                                                            <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                                {{ $actividad->nombreActividad }}
+                                                            </td>
+                                                            <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                                <img width="100px" src="data:image/jpeg;base64,{{ $actividad->evidencias }}" alt="Evidencia" />
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+@endif
 
 
 
@@ -521,6 +312,61 @@
                         }
                     }, 1000); // 2000 milisegundos = 2 segundos
                 });
+                function editRow(estudianteId) {
+    let row = document.getElementById('row' + estudianteId);
+    let inputs = row.getElementsByTagName('input');
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].disabled = false;
+    }
+    row.querySelector('.btn_editar3').style.display = 'none';
+    row.querySelector('.btn_save').style.display = 'inline';
+}
+
+function saveRow(estudianteId) {
+    let row = document.getElementById('row' + estudianteId);
+    let inputs = row.getElementsByTagName('input');
+    let data = {};
+    for (let i = 0; i < inputs.length; i++) {
+        data[inputs[i].name] = inputs[i].value;
+        inputs[i].disabled = true;
+    }
+
+    // Aquí puedes hacer una solicitud AJAX para enviar los datos actualizados al servidor
+    fetch('/ruta/para/actualizar', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({
+            estudiante_id: estudianteId,
+            ...data
+        })
+    }).then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Error al actualizar las notas');
+        }
+    }).then(data => {
+        // Manejar la respuesta exitosa aquí
+        console.log('Notas actualizadas:', data);
+    }).catch(error => {
+        console.error('Error:', error);
+    });
+
+    row.querySelector('.btn_editar3').style.display = 'inline';
+    row.querySelector('.btn_save').style.display = 'none';
+}
+
+function openCard(cardId) {
+    document.getElementById(cardId).style.display = 'block';
+}
+
+function closeCard(cardId) {
+    document.getElementById(cardId).style.display = 'none';
+}
+
             </script>
 
 
