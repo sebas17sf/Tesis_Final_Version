@@ -426,7 +426,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/estudiantes/documentos-EncuestaEstudiante2', [DocumentoController::class, 'EncuestaDocentes2'])->name('generar.EncuestaDocentes2');
     Route::post('/estudiantes/documentos-EvTutorEmpresarial2', [DocumentoController::class, 'EvTutorEmpresarial2'])->name('generar.EvTutorEmpresarial2');
     Route::post('/estudiantes/documentos-PlanificacionPPEstudiante2', [DocumentoController::class, 'PlanificacionPPEstudiante2'])->name('generar.PlanificacionPPEstudiante2');
-
+    Route::post('/estudiantes/documentos-ControlAvanceActividades2', [DocumentoController::class, 'ControlAvanceActividades2'])->name('generar.ControlAvanceActividades2');
+    Route::post('/estudiantes/documentos-EvTutorAcademico2', [DocumentoController::class, 'EvTutorAcademico2'])->name('generar.EvTutorAcademico2');
+    Route::post('/estudiantes/documentos-Informe2', [DocumentoController::class, 'InformPractica2'])->name('generar.InformPractica2');
 
 
 

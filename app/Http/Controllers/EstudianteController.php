@@ -239,16 +239,13 @@ class EstudianteController extends Controller
             $correoEstudiante = $estudiante->Usuario->correoElectronico;
             $empresas = Empresa::all();
 
-            $practicaPendiente = PracticaI::where('estudianteId', $estudiante->estudianteId)->where('estado', 'En ejecucion')->first();
+            $practicaPendiente = PracticaI::where('estudianteId', $estudiante->estudianteId)
+                ->whereIn('estado', ['En ejecucion', 'Finalizado'])
+                ->first();
             $totalHoras = $actividades->sum('horas');
 
-            $estadoPractica = PracticaI::where('estudianteId', $estudiante->estudianteId)->where('estado', 'Finalizado')->first();
 
-            if ($estadoPractica) {
-                return redirect()->route('estudiantes.practica2');
-            }
-
-            return view('estudiantes.practica1', compact('estudiante', 'correoEstudiante', 'empresas', 'practicaPendiente', 'estadoPractica', 'profesores', 'nrcpracticas1', 'actividades', 'totalHoras'));
+            return view('estudiantes.practica1', compact('estudiante', 'correoEstudiante', 'empresas', 'practicaPendiente', 'profesores', 'nrcpracticas1', 'actividades', 'totalHoras'));
         }
 
         // Si no cumple con los requisitos, muestra un mensaje de alerta y redirige a otra página
@@ -282,11 +279,20 @@ class EstudianteController extends Controller
             $estadoPracticaI = PracticaI::where('estudianteId', $estudiante->estudianteId)->where('estado', 'Finalizado')->first();
             $horasPlanificadasI = $practicaPendienteI ? $practicaPendienteI->HorasPlanificadas : 0;
 
+            ////si el estudiante no tiene practica 1 debe mandar un mensaje de error
+            if (!$practicaPendienteI) {
+                return redirect()->route('estudiantes.index')->with('error', 'No tiene acceso a esta página.');
+            }
+
+
+
             $practicaPendiente = PracticaII::where('estudianteId', $estudiante->estudianteId)->where('estado', 'En ejecucion')->first();
             $totalHoras = $actividades->sum('horas');
 
             // Consulta para PracticaII
-            $practicaPendiente = PracticaII::where('estudianteId', $estudiante->estudianteId)->where('estado', 'En ejecucion')->first();
+            $practicaPendiente = PracticaII::where('estudianteId', $estudiante->estudianteId)
+                ->whereIn('estado', ['En ejecucion', 'Finalizado'])
+                ->first();
             $estadoPractica = PracticaII::where('estudianteId', $estudiante->estudianteId)->where('estado', 'Finalizado')->first();
 
             return view('estudiantes.practica2', compact('estudiante', 'correoEstudiante', 'empresas', 'horasPlanificadasI', 'practicaPendiente', 'estadoPractica', 'profesores', 'nrcpracticas1', 'actividades', 'totalHoras'));

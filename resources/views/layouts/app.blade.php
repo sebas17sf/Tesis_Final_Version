@@ -119,14 +119,46 @@
                                     <li>Servicio Comunitario</li>
                                 </div>
                             </a>
-                            <a href="{{ route('estudiantes.practica1') }}" class="p-element">
+
+
+                            <a class="p-element submenu">
                                 <div class="icon-sidebar-item">
-                                <i class="fa-solid fa-building"></i>
+                                    <i class="fa-solid fa-building"></i>
                                 </div>
                                 <div class="name-sidebar-item">
-                                    <li>Prácticas pre profesionales</li>
+                                    <li>Prácticas</li>
                                 </div>
                             </a>
+
+                            <div class="item-list sublista">
+                                <a class="p-element mb-1 subitem" href="{{ route('estudiantes.practica1') }}">
+                                    <div class="icon-sidebar-item">
+                                        <i class="fa-solid fa-play"></i>  
+                                    </div>
+                                    <div class="name-sidebar-item">
+                                        <li>Practicas I</li>
+                                    </div>
+                                </a>
+                                <a class="p-element subitem" href="{{ route('estudiantes.practica2') }}">
+                                    <div class="icon-sidebar-item">
+                                        <i class="fa-solid fa-check"></i>
+                                    </div>
+                                    <div class="name-sidebar-item">
+                                        <li>Practicas II</li>
+                                    </div>
+                                </a>
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
                         </ul>
                     </nav>
                 </div>

@@ -86,7 +86,7 @@
                 <div class="col-md-4">
                     <br>
                     <center>
-                        <h3><b>Acciones</b></h3>
+                        <h3><b>FORMATOS PRACTICA II</b></h3>
                     </center>
                     <hr>
                     <div class="card-body">
@@ -118,6 +118,24 @@
                             @csrf
                             <button type="submit" class="button1_1 btn-block">
                                 <i class="fas fa-file-excel"></i> Generar Planificacion Estudiante
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="card-body">
+                        <form action="{{ route('generar.ControlAvanceActividades2') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="button1_1 btn-block">
+                                <i class="fas fa-file-excel"></i> Generar Avance de Actividades
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="card-body">
+                        <form action="{{ route('generar.EvTutorAcademico2') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="button1_1 btn-block">
+                                <i class="fas fa-file-excel"></i> Generar Evaluacion Tutor Academico
                             </button>
                         </form>
                     </div>
@@ -354,6 +372,31 @@
 
 
         </div>
+
+        <hr>
+
+        <button class="button" onclick="toggleForm()">Generar Informe</button>
+
+
+        <form id="formulario" action="{{ route('generar.InformPractica2') }}" method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="introduccion">Introducción:</label>
+                <textarea id="introduccion" name="introduccion" class="form-control input"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="conclusion">Conclusiones:</label>
+                <textarea id="conclusion" name="conclusion" class="form-control input"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="recomendaciones">Recomendaciones:</label>
+                <textarea id="recomendaciones" name="recomendaciones" class="form-control input"></textarea>
+            </div>
+
+             <button type="submit" class="button">Generar Informe</button>
+        </form>
 
 
 
@@ -677,81 +720,97 @@
 
 
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var verOpcionesBtn = document.getElementById('verOpcionesBtn');
-        var opcionesPracticas = document.getElementById('opcionesPracticas');
-        var iniciarPracticasBtn = document.getElementById('iniciarPracticasBtn');
-
-        var opcionesAbiertas = false; // Variable para rastrear el estado de las opciones
-
-        verOpcionesBtn.addEventListener('click', function() {
-            if (opcionesAbiertas) {
-                opcionesPracticas.style.display = 'none'; // Cierra las opciones
-                iniciarPracticasBtn.style.display = 'none'; // Oculta el botón de inicio
-            } else {
-                opcionesPracticas.style.display = 'table'; // Abre las opciones
-                iniciarPracticasBtn.style.display = 'block'; // Muestra el botón de inicio
-            }
-
-            // Cambia el estado de las opciones
-            opcionesAbiertas = !opcionesAbiertas;
-        });
-
-        iniciarPracticasBtn.addEventListener('click', function() {});
-    });
-
-    function calcularHorasTotales() {
-        const horasPlanificadasI = parseFloat(document.getElementById('horasPracticaI').textContent);
-        const horasPlanificadasInput = document.getElementById('HorasPlanificadas');
-        const horasPlanificadas = parseFloat(horasPlanificadasInput.value);
-
-        if (!isNaN(horasPlanificadas)) {
-            const horasTotales = horasPlanificadasI + horasPlanificadas;
-            document.getElementById('horasTotales').textContent = horasTotales;
-        } else {
-            document.getElementById('horasTotales').textContent = '0';
-        }
-    }
-
-    document.getElementById('HorasPlanificadas').addEventListener('input', calcularHorasTotales);
-
-    calcularHorasTotales();
-    // Make the card draggable
-    $(document).ready(function() {
-        // Hacer que el card sea draggable
-        $('.draggable-card').draggable({
-            handle: ".card-header",
-            containment: "window"
-        });
-        // Hacer el card draggable
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
-            $("#draggableCardActividad").draggable({
-                handle: ".card-header"
+            var verOpcionesBtn = document.getElementById('verOpcionesBtn');
+            var opcionesPracticas = document.getElementById('opcionesPracticas');
+            var iniciarPracticasBtn = document.getElementById('iniciarPracticasBtn');
+
+            var opcionesAbiertas = false; // Variable para rastrear el estado de las opciones
+
+            verOpcionesBtn.addEventListener('click', function() {
+                if (opcionesAbiertas) {
+                    opcionesPracticas.style.display = 'none'; // Cierra las opciones
+                    iniciarPracticasBtn.style.display = 'none'; // Oculta el botón de inicio
+                } else {
+                    opcionesPracticas.style.display = 'table'; // Abre las opciones
+                    iniciarPracticasBtn.style.display = 'block'; // Muestra el botón de inicio
+                }
+
+                // Cambia el estado de las opciones
+                opcionesAbiertas = !opcionesAbiertas;
+            });
+
+            iniciarPracticasBtn.addEventListener('click', function() {});
+        });
+
+        function calcularHorasTotales() {
+            const horasPlanificadasI = parseFloat(document.getElementById('horasPracticaI').textContent);
+            const horasPlanificadasInput = document.getElementById('HorasPlanificadas');
+            const horasPlanificadas = parseFloat(horasPlanificadasInput.value);
+
+            if (!isNaN(horasPlanificadas)) {
+                const horasTotales = horasPlanificadasI + horasPlanificadas;
+                document.getElementById('horasTotales').textContent = horasTotales;
+            } else {
+                document.getElementById('horasTotales').textContent = '0';
+            }
+        }
+
+        document.getElementById('HorasPlanificadas').addEventListener('input', calcularHorasTotales);
+
+        calcularHorasTotales();
+        // Make the card draggable
+        $(document).ready(function() {
+            // Hacer que el card sea draggable
+            $('.draggable-card').draggable({
+                handle: ".card-header",
+                containment: "window"
+            });
+            // Hacer el card draggable
+            document.addEventListener('DOMContentLoaded', function() {
+                $("#draggableCardActividad").draggable({
+                    handle: ".card-header"
+                });
             });
         });
-    });
 
-    function openCard(cardId) {
-        document.getElementById(cardId).style.display = 'block';
-    }
+        function openCard(cardId) {
+            document.getElementById(cardId).style.display = 'block';
+        }
 
-    function closeCard(cardId) {
-        document.getElementById(cardId).style.display = 'none';
-    }
-</script>
-<script>
+        function closeCard(cardId) {
+            document.getElementById(cardId).style.display = 'none';
+        }
+    </script>
+    <script>
         document.addEventListener('DOMContentLoaded', (event) => {
-                    // Selecciona el elemento de la alerta
-                    const alertElement = document.querySelector('.contenedor_alerta');
-                    // Establece un temporizador para ocultar la alerta después de 2 segundos
-                    setTimeout(() => {
-                        if (alertElement) {
-                            alertElement.style.display = 'none';
-                        }
-                    }, 1000); // 2000 milisegundos = 2 segundos
-                });
-              </script> 
+            // Selecciona el elemento de la alerta
+            const alertElement = document.querySelector('.contenedor_alerta');
+            // Establece un temporizador para ocultar la alerta después de 2 segundos
+            setTimeout(() => {
+                if (alertElement) {
+                    alertElement.style.display = 'none';
+                }
+            }, 1000); // 2000 milisegundos = 2 segundos
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Asegura que el formulario esté oculto al cargar la página
+            var form = document.getElementById("formulario");
+            form.style.display = "none";
+        });
+
+        function toggleForm() {
+            var form = document.getElementById("formulario");
+            if (form.style.display === "none" || form.style.display === "") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+    </script>
     <style>
         .contenedor_tabla .table-container table td {
             width: 200px;
@@ -764,4 +823,4 @@
             position: sticky;
             font-size: .8em !important;
     </style>
-    @endsection
+@endsection
