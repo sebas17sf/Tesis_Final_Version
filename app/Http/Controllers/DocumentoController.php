@@ -1007,6 +1007,7 @@ class DocumentoController extends Controller
 
     }
 
+ 
 
 
     ////////////////////////Creacion de reportes estudiantes vinculacion
@@ -1499,6 +1500,8 @@ class DocumentoController extends Controller
     }
 
 
+
+
     public function reportesPracticaIII(Request $request)
     {
         $plantillaPath = public_path('Plantillas/Reporte-Practicas1.2.xlsx');
@@ -1870,6 +1873,9 @@ class DocumentoController extends Controller
         $writer->save($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
     }
+
+
+
 
     //////////////////////acta desginacion estudaintes para el director
     public function generarActaDirector()

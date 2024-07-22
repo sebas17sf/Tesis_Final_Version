@@ -575,8 +575,14 @@ class EstudianteController extends Controller
         $estudiante = Auth::user()->estudiante;
 
         if ($estudiante) {
-            $pdf = PDF::loadView('estudiantes.certificadoMatricula', compact('estudiante'));
+            $asignaciones = $estudiante->asignaciones;
+            $practicasi = $estudiante->practicasi()->with('empresa', 'tutorAcademico')->get();
+            $practicasii = $estudiante->practicasii()->with('empresa', 'tutorAcademico')->get();
+            $practicasiii = $estudiante->practicasiii()->with('empresa', 'tutorAcademico')->get();
+            $practicasiv = $estudiante->practicasiv()->with('empresa', 'tutorAcademico')->get();
+            $practicasv = $estudiante->practicasv()->with('empresa', 'tutorAcademico')->get();
 
+            $pdf = PDF::loadView('estudiantes.certificadoMatricula', compact('estudiante', 'asignaciones', 'practicasi', 'practicasii', 'practicasiii', 'practicasiv', 'practicasv'));
             return $pdf->download('certificadoMatricula.pdf');
         } else {
             return redirect()->back()->with('error', 'No se pudo encontrar al estudiante.');
