@@ -24,7 +24,7 @@
         </div>
     @endif
 
-    <div class="mat-elevation-z8 container_general"> 
+    <div class="mat-elevation-z8 container_general">
         <br>
         <h4><b>Estudiantes por calificar</b></h4>
         <hr>
@@ -147,28 +147,28 @@
                                     {{ $estudiante->departamento }}
                                 </td>
                                 <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                    <input type="number" name="tareas" value="{{ $estudiante->notas->first()->tareas }}" min="1" max="10" step="0.01" disabled>
+                                    <input type="number" name="tareas" value="{{ $estudiante->notas->first()->tareas ?? '' }} " min="1" max="10" step="0.01" disabled>
                                 </td>
                                 <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                    <input type="number" name="resultados_alcanzados" value="{{ $estudiante->notas->first()->resultadosAlcanzados }}" min="1" max="10" step="0.01" disabled>
+                                    <input type="number" name="resultados_alcanzados" value="{{ $estudiante->notas->first()->resultadosAlcanzados ?? '' }}" min="1" max="10" step="0.01" disabled>
                                 </td>
                                 <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                    <input type="number" name="conocimientos_area" value="{{ $estudiante->notas->first()->conocimientos }}" min="1" max="10" step="0.01" disabled>
+                                    <input type="number" name="conocimientos_area" value="{{ $estudiante->notas->first()->conocimientos ?? '' }}" min="1" max="10" step="0.01" disabled>
                                 </td>
                                 <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                    <input type="number" name="adaptabilidad" value="{{ $estudiante->notas->first()->adaptabilidad }}" min="1" max="10" step="0.01" disabled>
+                                    <input type="number" name="adaptabilidad" value="{{ $estudiante->notas->first()->adaptabilidad ?? '' }}" min="1" max="10" step="0.01" disabled>
                                 </td>
                                 <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                    <input type="number" name="aplicacion" value="{{ $estudiante->notas->first()->aplicacion }}" min="1" max="10" step="0.01" disabled>
+                                    <input type="number" name="aplicacion" value="{{ $estudiante->notas->first()->aplicacion ?? '' }}" min="1" max="10" step="0.01" disabled>
                                 </td>
                                 <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                    <input type="number" name="capacidad_liderazgo" value="{{ $estudiante->notas->first()->CapacidadLiderazgo }}" min="1" max="10" step="0.01" disabled>
+                                    <input type="number" name="capacidad_liderazgo" value="{{ $estudiante->notas->first()->CapacidadLiderazgo ?? '' }}" min="1" max="10" step="0.01" disabled>
                                 </td>
                                 <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                    <input type="number" name="asistencia_puntual" value="{{ $estudiante->notas->first()->asistencia }}" min="1" max="10" step="0.01" disabled>
+                                    <input type="number" name="asistencia_puntual" value="{{ $estudiante->notas->first()->asistencia ?? '' }}" min="1" max="10" step="0.01" disabled>
                                 </td>
                                 <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                    {{ $estudiante->notas->first()->informe }}
+                                    {{ $estudiante->notas->first()->informe ?? 'Pendiente' }}
                                 </td>
                                 <td style="text-align: center;">
                                     <div class="btn-group shadow-0">
@@ -182,7 +182,7 @@
                                             <i class="fa-solid fa-eye"></i>
                                         </button>
                                     </div>
-                                
+
 
                             <!-- Card para mostrar las actividades del estudiante -->
                             <div class="draggable-card1_1" style="display: none;" id="tablaActividad{{ $estudiante->estudianteId }}">
@@ -384,6 +384,6 @@ function closeCard(cardId) {
                     min-width: 50px;
     padding: 0 10px 0 10px !important;
 }
-                
+
             </style>
         @endsection
