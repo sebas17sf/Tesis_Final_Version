@@ -132,7 +132,7 @@
 </div>
 </div>
 </div>
-</div>
+
 <br>
 
         <h4><b>Información de Practicas 1</b></h4>
