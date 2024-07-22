@@ -131,8 +131,8 @@
                                 <th class="tamanio1">ESTUDIANTE</th>
                                 <th>CORREO</th>
                                 <th>TELÉFONO</th>
-                                <th>NOTA TUTOR EMPRESARIAL 12%</th>
-                                <th>NOTA TUTOR ACADÉMICO 8%</th>
+                                <th>NOTA PRACTICA</th>
+
                                 <th>ACCIONES</th>
 
                             </tr>
@@ -150,10 +150,7 @@
                                             <input type="number" name="notaTutorEmpresarial" id="notaTutorEmpresarial">
                                             <span id="errorMensaje" style="color: red; display: none;"></span>
                                         </td>
-                                        <td>
-                                            <input type="number" name="notaTutorAcademico" id="notaTutorAcademico">
-                                            <span id="errorMensajeAcademico" style="color: red; display: none;"></span>
-                                        </td>
+
                                         <td><button type="submit">Guardar</button></td>
                                     </tr>
                                 </form>
@@ -181,9 +178,8 @@
                                 <th>ESTUDIANTE</th>
                                 <th>CORREO</th>
                                 <th>CARRERA</th>
-                                <th>NOTA TUTOR EMPRESARIAL 12%</th>
-                                <th>NOTA TUTOR ACADÉMICO 8%</th>
                                 <th>NOTA FINAL</th>
+                                <th>ESTADO</th>
                                 <th>ACCIONES</th>
 
 
@@ -195,11 +191,17 @@
                                     <td>{{ $practica->apellidos }} {{ $practica->nombres }}</td>
                                     <td>{{ $practica->carrera }}</td>
                                     <td>{{ $practica->correo }}</td>
-                                    <td>{{ $practica->notas_practicasi->first()->notaTutor }}</td>
-                                    <td>{{ $practica->notas_practicasi->first()->notaAcademico }}</td>
-                                    <td>{{ $practica->notas_practicasi->first()->notaTutor + $practica->notas_practicasi->first()->notaAcademico }}
+                                    <td>{{ $practica->practicasi->nota_final ?? 'NO CALIFICADO' }}
+                                     </td>
+                                     <td style="text-align: center;">
+                                        @if ($practica->practicasi->nota_final <= 16)
+                                            <span class="badge badge-danger">REPROBADO</span>
+                                        @else
+                                            <span class="badge badge-success">APROBADO</span>
+                                        @endif
                                     </td>
-                                    <td>
+
+                                        <td>
                                         <button type="button" class="btn btn-primary" data-toggle="modal"
                                             data-target="#calificacionModal">
                                             editar calificacion
@@ -234,25 +236,13 @@
                                                                 <div class="col-md-6">
                                                                     <input id="notaTutorEmpresarial" type="number"
                                                                         class="form-control" name="notaTutorEmpresarial"
-                                                                        value="{{ $practica->notas_practicasi->first()->notaTutor }}"
+                                                                        value="{{ $practica->practicasi->nota_final }}"
                                                                         step="any" required>
                                                                     <span id="errorMensaje"
                                                                         style="color: red; display: none;"></span>
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group row">
-                                                                <label for="notaTutorAcademico"
-                                                                    class="col-md-4 col-form-label text-md-right">Nota
-                                                                    Tutor Academico</label>
-                                                                <div class="col-md-6">
-                                                                    <input id="notaTutorAcademico" type="number"
-                                                                        class="form-control" name="notaTutorAcademico"
-                                                                        value="{{ $practica->notas_practicasi->first()->notaAcademico }}"
-                                                                        step="any" required>
-                                                                    <span id="errorMensajeAcademico"
-                                                                        style="color: red; display: none;"></span>
-                                                                </div>
-                                                            </div>
+
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"
@@ -282,6 +272,7 @@
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
 
 
-    <script src="{{ asset('js/participante/practicas.js') }}"></script>
-    <script src="js\admin\index.js"></script>
+     <script src="js\admin\index.js"></script>
+     <script src="{{ asset('js/participante/practicas.js') }}"></script>
+
 @endsection
