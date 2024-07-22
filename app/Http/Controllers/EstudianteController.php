@@ -236,7 +236,7 @@ class EstudianteController extends Controller
 
 
         // Verifica si el usuario autenticado es un estudiante y su estado es "Aprobado-practicas"
-        if ($estudiante && $estudiante->estado === 'Aprobado-practicas') {
+        if ($estudiante && ($estudiante->estado === 'Aprobado-practicas' || $estudiante->estado === 'Reprobado PracticaI')) {
             $correoEstudiante = $estudiante->Usuario->correoElectronico;
             $empresas = Empresa::all();
 

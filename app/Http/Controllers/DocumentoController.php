@@ -2013,7 +2013,9 @@ class DocumentoController extends Controller
 
         $estudiante = Auth::user()->estudiante;
 
-        $datosEstudiantes = PracticaI::where('estudianteId', $estudiante->estudianteId)->get();
+        $datosEstudiantes = PracticaI::where('estudianteId', $estudiante->estudianteId)
+            ->where('Estado', '!=', 'Reprobado')
+            ->get();
 
         $template->setValue('estudiante', $estudiante->nombres . ' ' . $estudiante->apellidos);
         $template->setValue('cedula', $estudiante->cedula);
@@ -2048,10 +2050,12 @@ class DocumentoController extends Controller
 
         $estudiante = Auth::user()->estudiante;
 
-        $datosEstudiantes = PracticaI::where('estudianteId', $estudiante->estudianteId)->get();
+        $datosEstudiantes = PracticaI::where('estudianteId', $estudiante->estudianteId)
+            ->where('Estado', '!=', 'Reprobado')
+            ->get();
 
         $template->setValue('Nombre', $datosEstudiantes->first()->tutorAcademico->nombres . ' ' . $datosEstudiantes->first()->tutorAcademico->apellidos);
-        $template->setValue('Cedula', $datosEstudiantes->first()->tutorAcademico->c);
+        $template->setValue('Cedula', $datosEstudiantes->first()->tutorAcademico->cedula);
         $template->setValue('Departamento', $datosEstudiantes->first()->tutorAcademico->departamento);
         $template->setValue('Correo', $datosEstudiantes->first()->tutorAcademico->correo);
         $estudianteNrc = $datosEstudiantes->first()->nrc;
@@ -2077,7 +2081,9 @@ class DocumentoController extends Controller
 
         $estudiante = Auth::user()->estudiante;
 
-        $datosEstudiantes = PracticaI::where('estudianteId', $estudiante->estudianteId)->get();
+        $datosEstudiantes = PracticaI::where('estudianteId', $estudiante->estudianteId)
+            ->where('Estado', '!=', 'Reprobado')
+            ->get();
 
         $template->setValue('estudiante', $estudiante->nombres . ' ' . $estudiante->apellidos);
         $template->setValue('cedula', $estudiante->cedula);
@@ -2126,8 +2132,14 @@ class DocumentoController extends Controller
         $template = new TemplateProcessor($plantillaPath);
 
         $estudiante = Auth::user()->estudiante;
+        $datosEstudiantes = PracticaI::where('estudianteId', $estudiante->estudianteId)
+            ->where('Estado', '!=', 'Reprobado')
+            ->get();
 
-        $datosEstudiantes = PracticaI::where('estudianteId', $estudiante->estudianteId)->get();
+        $actividadesPracticas = ActividadesPracticas::where('estudianteId', $estudiante->estudianteId)
+            ->orderBy('fechaActividad', 'asc')
+            ->get();
+
         $template->setValue('estudiante', $estudiante->nombres . ' ' . $estudiante->apellidos);
         $template->setValue('cedula', $estudiante->cedula);
         $template->setValue('espe_id', $estudiante->espeId);
@@ -2139,6 +2151,20 @@ class DocumentoController extends Controller
 
         $estudiante = $numeroPeriodo;
         $template->setValue('periodo', $estudiante);
+
+
+
+
+        ///foreach para clonar las filas de actividades
+        $template->cloneRow('departamento', count($actividadesPracticas));
+
+        $contador = 1;
+        foreach ($actividadesPracticas as $index => $actividad) {
+            $template->setValue('departamento#' . $contador, $actividad->departamento);
+            $template->setValue('actividad#' . $contador, $actividad->actividad);
+            $template->setValue('contador#' . $contador, $contador);
+            $contador++;
+        }
 
 
         $template->setValue('Empresa', $datosEstudiantes->first()->empresa->nombreEmpresa);
@@ -2174,7 +2200,7 @@ class DocumentoController extends Controller
         $template->setValue('HoraEntrada', $datosEstudiantes->first()->HoraEntrada);
         $template->setValue('HoraSalida', $datosEstudiantes->first()->HoraSalida);
 
-
+        $template->setValue('AreaConocimiento', $datosEstudiantes->first()->AreaConocimiento);
 
         $nombreArchivo = 'PlanificacionPPEstudiante.docx';
         $template->saveAs($nombreArchivo);
@@ -2192,7 +2218,9 @@ class DocumentoController extends Controller
         $template = new TemplateProcessor($plantillaPath);
 
         $estudiante = Auth::user()->estudiante;
-        $datosEstudiantes = PracticaI::where('estudianteId', $estudiante->estudianteId)->get();
+        $datosEstudiantes = PracticaI::where('estudianteId', $estudiante->estudianteId)
+            ->where('Estado', '!=', 'Reprobado')
+            ->get();
 
         $actividadesPracticas = ActividadesPracticas::where('estudianteId', $estudiante->estudianteId)
             ->orderBy('fechaActividad', 'asc')
@@ -2281,7 +2309,9 @@ class DocumentoController extends Controller
         $template = new TemplateProcessor($plantillaPath);
 
         $estudiante = Auth::user()->estudiante;
-        $datosEstudiantes = PracticaI::where('estudianteId', $estudiante->estudianteId)->get();
+        $datosEstudiantes = PracticaI::where('estudianteId', $estudiante->estudianteId)
+            ->where('Estado', '!=', 'Reprobado')
+            ->get();
 
         $actividadesPracticas = ActividadesPracticas::where('estudianteId', $estudiante->estudianteId)
             ->orderBy('fechaActividad', 'asc')
@@ -2355,7 +2385,9 @@ class DocumentoController extends Controller
         $template = new TemplateProcessor($plantillaPath);
 
         $estudiante = Auth::user()->estudiante;
-        $datosEstudiantes = PracticaI::where('estudianteId', $estudiante->estudianteId)->get();
+        $datosEstudiantes = PracticaI::where('estudianteId', $estudiante->estudianteId)
+            ->where('Estado', '!=', 'Reprobado')
+            ->get();
 
 
         $actividadesPracticas = ActividadesPracticas::where('estudianteId', $estudiante->estudianteId)
@@ -2498,7 +2530,9 @@ class DocumentoController extends Controller
 
         $estudiante = Auth::user()->estudiante;
 
-        $datosEstudiantes = PracticaII::where('estudianteId', $estudiante->estudianteId)->get();
+        $datosEstudiantes = PracticaII::where('estudianteId', $estudiante->estudianteId)
+            ->where('Estado', '!=', 'Reprobado')
+            ->get();
 
         $template->setValue('estudiante', $estudiante->nombres . ' ' . $estudiante->apellidos);
         $template->setValue('cedula', $estudiante->cedula);
@@ -2535,7 +2569,9 @@ class DocumentoController extends Controller
 
         $estudiante = Auth::user()->estudiante;
 
-        $datosEstudiantes = PracticaII::where('estudianteId', $estudiante->estudianteId)->get();
+        $datosEstudiantes = PracticaII::where('estudianteId', $estudiante->estudianteId)
+            ->where('Estado', '!=', 'Reprobado')
+            ->get();
 
         $template->setValue('Nombre', $datosEstudiantes->first()->tutorAcademico->nombres . ' ' . $datosEstudiantes->first()->tutorAcademico->apellidos);
         $template->setValue('Cedula', $datosEstudiantes->first()->tutorAcademico->cedula);
@@ -2563,7 +2599,9 @@ class DocumentoController extends Controller
 
         $estudiante = Auth::user()->estudiante;
 
-        $datosEstudiantes = PracticaII::where('estudianteId', $estudiante->estudianteId)->get();
+        $datosEstudiantes = PracticaII::where('estudianteId', $estudiante->estudianteId)
+            ->where('Estado', '!=', 'Reprobado')
+            ->get();
 
         $template->setValue('estudiante', $estudiante->nombres . ' ' . $estudiante->apellidos);
         $template->setValue('cedula', $estudiante->cedula);
@@ -2612,7 +2650,9 @@ class DocumentoController extends Controller
         $template = new TemplateProcessor($plantillaPath);
 
         $estudiante = Auth::user()->estudiante;
-        $datosEstudiantes = PracticaII::where('estudianteId', $estudiante->estudianteId)->get();
+        $datosEstudiantes = PracticaII::where('estudianteId', $estudiante->estudianteId)
+            ->where('Estado', '!=', 'Reprobado')
+            ->get();
 
         $actividadesPracticas = ActividadesPracticasII::where('estudianteId', $estudiante->estudianteId)
             ->orderBy('fechaActividad', 'asc')
@@ -2696,7 +2736,9 @@ class DocumentoController extends Controller
         $template = new TemplateProcessor($plantillaPath);
 
         $estudiante = Auth::user()->estudiante;
-        $datosEstudiantes = PracticaII::where('estudianteId', $estudiante->estudianteId)->get();
+        $datosEstudiantes = PracticaII::where('estudianteId', $estudiante->estudianteId)
+            ->where('Estado', '!=', 'Reprobado')
+            ->get();
 
         $actividadesPracticas = ActividadesPracticasII::where('estudianteId', $estudiante->estudianteId)
             ->orderBy('fechaActividad', 'asc')
@@ -2785,7 +2827,9 @@ class DocumentoController extends Controller
         $template = new TemplateProcessor($plantillaPath);
 
         $estudiante = Auth::user()->estudiante;
-        $datosEstudiantes = PracticaII::where('estudianteId', $estudiante->estudianteId)->get();
+        $datosEstudiantes = PracticaII::where('estudianteId', $estudiante->estudianteId)
+            ->where('Estado', '!=', 'Reprobado')
+            ->get();
 
         $actividadesPracticas = ActividadesPracticasII::where('estudianteId', $estudiante->estudianteId)
             ->orderBy('fechaActividad', 'asc')
@@ -2859,7 +2903,9 @@ class DocumentoController extends Controller
         $template = new TemplateProcessor($plantillaPath);
 
         $estudiante = Auth::user()->estudiante;
-        $datosEstudiantes = PracticaII::where('estudianteId', $estudiante->estudianteId)->get();
+        $datosEstudiantes = PracticaII::where('estudianteId', $estudiante->estudianteId)
+            ->where('Estado', '!=', 'Reprobado')
+            ->get();
 
 
         $actividadesPracticas = ActividadesPracticasII::where('estudianteId', $estudiante->estudianteId)

@@ -1163,7 +1163,8 @@ class AdminController extends Controller
         $perPage4 = $request->input('paginacion4', 10);
 
         $estudiantesConPracticaI = PracticaI::with(['estudiante', 'tutorAcademico', 'empresa', 'nrc'])
-            ->where('estado', 'PracticaI')
+            ->where('Estado', 'PracticaI')
+            ->whereNotIn('Estado', ['Reprobado'])
             ->get();
 
 
@@ -1178,7 +1179,8 @@ class AdminController extends Controller
         $estudiantesPracticas = PracticaI::with(['estudiante', 'tutorAcademico', 'empresa', 'nrc'])
             ->where(function ($query) use ($search) {
                 $query->where('Estado', 'En ejecucion')
-                    ->orWhere('Estado', 'Finalizado');
+                    ->orWhere('Estado', 'Finalizado')
+                    ->orWhere('Estado', 'Reprobado');
             })
             ->where(function ($query) use ($search) {
                 $query->where('estudianteId', 'LIKE', '%' . $search . '%')
@@ -1352,7 +1354,9 @@ class AdminController extends Controller
         ]);
 
         // Encuentra la práctica del estudiante
-        $practica = PracticaI::where('estudianteId', $id)->first();
+        $practica = PracticaI::where('estudianteId', $id)
+            ->where('Estado', '!=', 'Reprobado')
+            ->first();
 
         if (!$practica) {
             return redirect()->route('admin.aceptarFaseI')->with('error', 'Práctica no encontrada.');

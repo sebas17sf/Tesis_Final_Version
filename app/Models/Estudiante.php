@@ -113,31 +113,7 @@ class Estudiante extends Model
         return $this->belongsTo(PracticaV::class, 'estudianteId', 'estudianteId');
     }
 
-    public function notas_practicasi()
-    {
-        return $this->hasMany(NotasPracticasi::class, 'estudianteId', 'estudianteId');
-    }
-
-    public function notas_practicasii()
-    {
-        return $this->hasMany(NotasPracticasii::class, 'estudianteId', 'estudianteId');
-    }
-
-    public function notas_practicasiii()
-    {
-        return $this->hasMany(NotasPracticasiii::class, 'estudianteId', 'estudianteId');
-    }
-
-    public function notas_practicasiv()
-    {
-        return $this->hasMany(NotasPracticasiv::class, 'estudianteId', 'estudianteId');
-    }
-
-    public function notas_practicasv()
-    {
-        return $this->hasMany(NotasPracticasv::class, 'estudianteId', 'estudianteId');
-    }
-
+    
 
 
 
