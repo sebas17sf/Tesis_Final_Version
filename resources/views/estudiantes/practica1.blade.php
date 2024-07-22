@@ -243,14 +243,14 @@
                                 @else
                                     @foreach ($actividades as $actividad)
                                         <tr>
-                                            <td>{{ $actividad->actividad }}</td>
-                                            <td>{{ $actividad->horas }}</td>
-                                            <td>{{ $actividad->observaciones }}</td>
-                                            <td>{{ $actividad->fechaActividad }}</td>
-                                            <td>{{ $actividad->departamento }}</td>
-                                            <td>{{ $actividad->funcion }}</td>
-                                            <td><img src="data:image/png;base64,{{ $actividad->evidencia }}"
-                                                    alt="Evidencia de la actividad" width="100px"></td>
+                                            <td style=" text-transform: uppercase;">{{ $actividad->actividad }}</td>
+                                            <td style=" text-transform: uppercase; ">{{ $actividad->horas }}</td>
+                                            <td style=" text-transform: uppercase;">{{ $actividad->observaciones }}</td>
+                                            <td style=" text-transform: uppercase;">{{ $actividad->fechaActividad }}</td>
+                                            <td style=" text-transform: uppercase;">{{ $actividad->departamento }}</td>
+                                            <td style=" text-transform: uppercase;">{{ $actividad->funcion }}</td>
+                                            <td  style="text-transform: uppercase; word-wrap: break-word; text-align: center;"><img src="data:image/png;base64,{{ $actividad->evidencia }}" width="100" height="100"
+                                                    alt="Evidencia de la actividad" ></td>
                                             <td>
                                                 <form
                                                     action="{{ route('estudiantes.eliminarActividadPracticas1', $actividad->id) }}"
@@ -433,31 +433,31 @@
             <table class="table2 table table-bordered">
                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                     <th class="tamanio1 table2th" colspan="2">
-                        <center>DATOS DEL ESTUDIANTE</center>
+                        <center>DATOS DEL ESTUDIANTE:</center>
                     </th>
                 </tr>
                 <tbody>
                     <tr>
-                        <th>ID de Estudiante:</th>
-                        <td>{{ strtoupper($estudiante->espeId) }}</td>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>ID de Estudiante:</b></th>
+                        <td style=" text-transform: uppercase; font-size: 13px;">{{ strtoupper($estudiante->espeId) }}</td>
                     </tr>
                     <tr>
-                        <th>Cédula:</th>
-                        <td>{{ strtoupper($estudiante->cedula) }}</td>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);" ><b>Cédula:</b></th>
+                        <td style=" text-transform: uppercase; font-size: 13px;">{{ strtoupper($estudiante->cedula) }}</td>
                     </tr>
                     <tr>
-                        <th>Nombres Completos:</th>
-                        <td>{{ strtoupper($estudiante->apellidos) }}
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>ESTUDIANTE:</b></th>
+                        <td style=" text-transform: uppercase; font-size: 13px;">{{ strtoupper($estudiante->apellidos) }}
                             {{ strtoupper($estudiante->nombres) }}
                         </td>
                     </tr>
                     <tr>
-                        <th>Correo:</th>
-                        <td>{{ $correoEstudiante }}</td>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>Correo:</b></th>
+                        <td style=" font-size: 13px;">{{ $correoEstudiante }}</td>
                     </tr>
                     <tr>
-                        <th>Nivel:</th>
-                        <td>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>Nivel:</b></th>
+                        <td style=" text-transform: uppercase; font-size: 13px;">
                             <select id="Nivel" name="Nivel" class="form-control input input_select3">
                                 <option value="">Seleccione un nivel</option>
                                 <option value="Pregrado">PREGRADO</option>
@@ -466,16 +466,16 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Campus:</th>
-                        <td>EXTENSIÓN SANTO DOMINGO</td>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>Campus:</b></th>
+                        <td style=" text-transform: uppercase; font-size: 13px;">EXTENSIÓN SANTO DOMINGO</td>
                     </tr>
                     <tr>
-                        <th>Departamento:</th>
-                        <td style=" text-transform: uppercase;">{{ strtoupper($estudiante->departamento) }}</td>
+                        <th style=" text-transform: uppercase; font-size: 13px ;   color: rgba(26, 26, 26, 0.753);"><b>Departamento:</b></th>
+                        <td style=" text-transform: uppercase; font-size: 13px;">{{ strtoupper($estudiante->departamento) }}</td>
                     </tr>
                     <tr>
-                        <th>Escoja Práctica:</th>
-                        <td>
+                        <th style=" text-transform: uppercase; font-size: 13px;   color: rgba(26, 26, 26, 0.753);"><b>Escoja Práctica:</b></th>
+                        <td style=" text-transform: uppercase; font-size: 13px;">
                             <select id="Practicas" name="Practicas" class="form-control input input_select3">
                                 <option value="">Seleccione una práctica</option>
                                 <option value="SERVICIO A LA COMUNIDAD">SERVICIO A LA COMUNIDAD</option>
@@ -492,8 +492,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Teléfono:</th>
-                        <td>{{ strtoupper($estudiante->celular) }}</td>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>Teléfono:</b></th>
+                        <td style=" text-transform: uppercase; font-size: 13px; ">{{ strtoupper($estudiante->celular) }}</td>
                     </tr>
                 </tbody>
             </table>
