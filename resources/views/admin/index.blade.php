@@ -344,7 +344,7 @@
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                         <th>N°</th>
-                                        <th class="tamanio3">DOCENTE</th>
+                                        <th class="tamanio4">DOCENTE</th>
                                         <th>CORREO</th>
                                         <th>USUARIO</th>
                                         <th>CÉDULA</th>

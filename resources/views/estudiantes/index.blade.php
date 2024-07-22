@@ -87,15 +87,13 @@
                 </div>
 
 
-
-            </div>
-        </div>
-    </section>
+   
     <div class="mt-4">
         <h4><b>Informacion Vinculacion asignada</b></h4>
         <hr>
         @if ($asignacionProyecto)
             <div class="contenedor_tabla">
+            <div class="mat-elevation-z8 contenedor_general">
                 <div class="table-container mat-elevation-z8">
 
                     <div id="tablaDocentes">
@@ -131,6 +129,7 @@
                         <p>Aun no está asignado un Proyecto. Estar pendiente de su asignación.</p>
         @endif
         <br>
+</div>
 </div>
 </div>
 </div>
@@ -416,15 +415,12 @@
             <p>No tiene asignada una Practica 2.2.</p>
         @endif
 
-        
-
-
-
-
 
     </div>
 
+
     </div>
+</section>
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
@@ -446,8 +442,9 @@
                         }
                     }, 1000); // 2000 milisegundos = 2 segundos
                 });
+                </script>
                
-    <style>
+               <style>
         .contenedor_tabla .table-container table td {
             width: 200px;
             min-width: 150px;
@@ -455,8 +452,5 @@
             padding: .5rem !important;
         }
 
-        .contenedor_tabla .table-container table th {
-            position: sticky;
-            font-size: .8em !important;
     </style>
 @endsection
