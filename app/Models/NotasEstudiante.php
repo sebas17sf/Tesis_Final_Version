@@ -12,7 +12,7 @@ class NotasEstudiante extends Model
     protected $primaryKey = 'idNotas';
 
     protected $fillable = [
-         'estudianteId',
+        'estudianteId',
         'tareas',
         'resultadosAlcanzados',
         'conocimientos',
