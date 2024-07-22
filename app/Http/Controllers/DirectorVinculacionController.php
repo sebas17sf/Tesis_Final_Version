@@ -690,6 +690,10 @@ class DirectorVinculacionController extends Controller
         }
     }
 
+
+
+    
+
     ///////////////editar notas practicasii
     public function editarNotasPracticasii(Request $request, $id)
     {

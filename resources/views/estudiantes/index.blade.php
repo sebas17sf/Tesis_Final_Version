@@ -29,7 +29,7 @@
 
         <div class="mt-4">
             <h4><b>
-                    <div class="icon-sidebar-item">Estado-Aprobación</div>
+                    <div class="icon-sidebar-item">Historial Estudiante</div>
                 </b></h4>
             <div class="mat-elevation-z8 contenedor_general1">
                 <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
@@ -87,7 +87,7 @@
                 </div>
 
 
-   
+
     <div class="mt-4">
         <h4><b>Informacion Vinculacion asignada</b></h4>
         <hr>
@@ -443,7 +443,7 @@
                     }, 1000); // 2000 milisegundos = 2 segundos
                 });
                 </script>
-               
+
                <style>
         .contenedor_tabla .table-container table td {
             width: 200px;
