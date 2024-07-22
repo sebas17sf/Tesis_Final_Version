@@ -39,7 +39,7 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                <th style=" min-width: 90px !important;">Estudiante</th>
+                                <th class="tamanio1" style=" min-width: 90px !important;">Estudiante</th>
                                     <th style=" min-width: 90px !important;">ESPE ID</th>
                                     <th>Carrera</th>
                                     <th>Departamento</th>

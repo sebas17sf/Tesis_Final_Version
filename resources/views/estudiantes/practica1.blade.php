@@ -25,130 +25,128 @@
     @endif
 
     @if (isset($practicaPendiente))
-        <div class="container">
-
-            <div class="row">
-                <div class="col-md-7">
-                    <div class="table-responsive-sm">
-                        <table class="table2 table table-bordered">
-                            <thead>
-                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio1 table2th" colspan="2">DETALLES DE LA PRÁCTICA</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>Estudiante:</th>
-                                    <td>{{ $practicaPendiente->estudiante->apellidos }}
-                                        {{ $practicaPendiente->estudiante->nombres }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Práctica:</th>
-                                    <td>{{ $practicaPendiente->tipoPractica }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Docente Tutor:</th>
-                                    <td>{{ $practicaPendiente->tutorAcademico->apellidos }}
-                                        {{ $practicaPendiente->tutorAcademico->nombres }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Empresa:</th>
-                                    <td>{{ $practicaPendiente->Empresa->nombreEmpresa }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Tutor Empresarial:</th>
-                                    <td>{{ strtoupper($practicaPendiente->NombreTutorEmpresarial) }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Cédula Tutor Empresarial:</th>
-                                    <td>{{ $practicaPendiente->CedulaTutorEmpresarial }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Función:</th>
-                                    <td>{{ strtoupper($practicaPendiente->Funcion) }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Teléfono Tutor Empresarial:</th>
-                                    <td>{{ $practicaPendiente->TelefonoTutorEmpresarial }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Estado de Fase I:</th>
-                                    <td>{{ strtoupper($practicaPendiente->Estado) }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <center>
-                        <h3><b>Acciones</b></h3>
-                    </center>
+    <section class="content_recent_courses">
+    <div class="row">
+        <div class="col-md-6">
+            
+            <div class="table-responsive-sm">
+                <table class="table2 table table-bordered mat-mdc-table">
+                    <thead class="ng-star-inserted">
+                        <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                            <th class="table2th" colspan="2" style="min-width: 450px; font-size: 14px;">DETALLES DE LA PRÁCTICA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th style=" text-transform: uppercase; font-size: 12px;">Estudiante:</th>
+                            <td style=" text-transform: uppercase; font-size: 12px;">{{ strtoupper($practicaPendiente->estudiante->apellidos) }} {{ strtoupper($practicaPendiente->estudiante->nombres) }}</td>
+                        </tr>
+                        <tr>
+                            <th style=" text-transform: uppercase; font-size: 12px;">Práctica:</th>
+                            <td style=" text-transform: uppercase; font-size: 12px;">{{ $practicaPendiente->tipoPractica }}</td>
+                        </tr>
+                        <tr>
+                            <th style=" text-transform: uppercase; font-size: 12px;">Docente Tutor:</th>
+                            <td style=" text-transform: uppercase; font-size: 12px;">{{ strtoupper($practicaPendiente->tutorAcademico->apellidos) }} {{ strtoupper($practicaPendiente->tutorAcademico->nombres) }}</td>
+                        </tr>
+                        <tr>
+                            <th style=" text-transform: uppercase; font-size: 12px;">Empresa:</th>
+                            <td style=" text-transform: uppercase; font-size: 12px;">{{ strtoupper($practicaPendiente->Empresa->nombreEmpresa) }}</td>
+                        </tr>
+                        <tr>
+                            <th style=" text-transform: uppercase; font-size: 12px;">Tutor Empresarial:</th>
+                            <td style=" text-transform: uppercase; font-size: 12px;">{{ strtoupper($practicaPendiente->NombreTutorEmpresarial) }}</td>
+                        </tr>
+                        <tr>
+                            <th style=" text-transform: uppercase; font-size: 12px;">Cédula Tutor Empresarial:</th>
+                            <td style=" text-transform: uppercase; font-size: 12px;">{{ $practicaPendiente->CedulaTutorEmpresarial }}</td>
+                        </tr>
+                        <tr>
+                            <th style=" text-transform: uppercase; font-size: 12px;">Función:</th>
+                            <td style=" text-transform: uppercase; font-size: 12px;">{{ strtoupper($practicaPendiente->Funcion) }}</td>
+                        </tr>
+                        <tr>
+                            <th style=" text-transform: uppercase; font-size: 12px;">Teléfono Tutor Empresarial:</th>
+                            <td style=" text-transform: uppercase; font-size: 12px;">{{ $practicaPendiente->TelefonoTutorEmpresarial }}</td>
+                        </tr>
+                        <tr>
+                            <th style=" text-transform: uppercase; font-size: 12px;">Estado de Fase I:</th>
+                            <td style=" text-transform: uppercase; font-size: 12px;">{{ strtoupper($practicaPendiente->Estado) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="container mt-4">
+            <div>
+                    <span class="title_icon_info">
+                        <b>Generar documentación</b>
+                        
+                    </span>
                     <hr>
-                    <div class="card-body">
-                        <form action="{{ route('generar.EncuestaEstudiante') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="button1_1">
-                                <i class="fa-solid fa-square-poll-vertical"></i> Generar Encuesta Estudiantes
-                            </button>
-                        </form>
-                    </div>
-                    <div class="card-body">
-                        <form action="{{ route('generar.EncuestaDocentes') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="button1_1">
-                                <i class="fa-solid fa-square-poll-vertical"></i> Generar Encuesta Docente
-                            </button>
-                        </form>
-                    </div>
-                    <div class="card-body">
-                        <form action="{{ route('generar.EvTutorEmpresarial') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="button1_1">
-                                <i class="fas fa-file-excel"></i> Generar Evaluacion Tutor Empresarial
-                            </button>
-                        </form>
-                    </div>
-                    <div class="card-body">
-                        <form action="{{ route('generar.PlanificacionPPEstudiante') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="button1_1">
-                                <i class="fas fa-file-excel"></i> Generar Planificacion Estudiante
-                            </button>
-                        </form>
-                    </div>
-
-
-                    <div class="card-body">
-                        <form action="{{ route('generar.ControlAvanceActividades') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="button1_1 btn-block">
-                                <i class="fas fa-file-excel"></i> Generar Avance de Actividades
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="card-body">
-                        <form action="{{ route('generar.EvTutorAcademico') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="button1_1 btn-block">
-                                <i class="fas fa-file-excel"></i> Generar Evaluacion Tutor Academico
-                            </button>
-                        </form>
-                    </div>
                 </div>
             </div>
-
-
-
-
-
-            <br>
-
-
+            <div class="card-buttons-container">
+                <div class="card-body">
+                    <form action="{{ route('generar.EncuestaEstudiante') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="card-button">
+                            <span><b>GENERAR ENCUESTA ESTUDIANTE</b></span>
+                            <i class="fa-solid fa-square-poll-vertical"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('generar.EncuestaDocentes') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="card-button">
+                            <span><b>GENERAR ENCUESTA DOCENTE</b></span>
+                            <i class="fa-solid fa-square-poll-vertical"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('generar.EvTutorEmpresarial') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="card-button">
+                            <span><b>GENERAR EVALUACIÓN TUTOR EMPRESARIAL</b></span>
+                            <i class="fas fa-file-excel"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('generar.PlanificacionPPEstudiante') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="card-button">
+                            <span><b>GENERAR PLANIFICACIÓN DE ESTUDIANTE</b></span>
+                            <i class="fas fa-file-excel"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('generar.ControlAvanceActividades') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="card-button btn-block">
+                            <span><b>GENERAR AVANCE DE ACTIVIDADES</b></span>
+                            <i class="fas fa-file-excel"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('generar.EvTutorAcademico') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="card-button btn-block">
+                            <span><b>GENERAR EVALUACIÓN TUTOR ACADÉMICO</b></span>
+                            <i class="fas fa-file-excel"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+</section>
 
             <!-- Botón para abrir el card -->
             <button type="button" class="button1" onclick="openCard('draggableCardActividad')">
@@ -226,14 +224,14 @@
 
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th>Actividad Realizada</th>
-                                    <th>Horas</th>
-                                    <th>Observaciones</th>
-                                    <th>Fecha de la Actividad</th>
-                                    <th>Departamento</th>
-                                    <th>Función Asignada</th>
-                                    <th>Evidencia</th>
-                                    <th>Acciones</th>
+                                    <th>ACTIVIDAD REALIZADA</th>
+                                    <th>HORAS</th>
+                                    <th>OBSERVACIONES</th>
+                                    <th>FECHA DE LA ACTIVIDAD</th>
+                                    <th>DEPARTAMENTO</th>
+                                    <th>FUNCIÓN ASIGNADA</th>
+                                    <th>EVIDENCIA</th>
+                                    <th>ACCIONES</th>
                                 </tr>
                             </thead>
                             <tbody class="mdc-data-table__content ng-star-inserted">
@@ -385,28 +383,33 @@
     </div>
 
     </div>
+<br>
+    <button class="button1" onclick="toggleForm()">Generar Informe</button>
 
-    <button class="button" onclick="toggleForm()">Generar Informe</button>
-
-
+<hr>
     <form id="formulario" action="{{ route('generar.InformPractica') }}" method="POST">
         @csrf
+        <div class="row">
+            <div class="col-md-4">
         <div class="form-group">
             <label for="introduccion">Introducción:</label>
-            <textarea id="introduccion" name="introduccion" class="form-control input"></textarea>
+            <textarea id="introduccion" name="introduccion" class="form-control input textarea" placeholder="Ingrese la introducción" required></textarea>
         </div>
-
+</div>
+<div class="col-md-4">
         <div class="form-group">
             <label for="conclusion">Conclusiones:</label>
-            <textarea id="conclusion" name="conclusion" class="form-control input"></textarea>
+            <textarea id="conclusion" name="conclusion" class="form-control input textarea " placeholder="Ingrese las conclusiones" required></textarea>
         </div>
-
+</div>
+<div class="col-md-4">
         <div class="form-group">
             <label for="recomendaciones">Recomendaciones:</label>
-            <textarea id="recomendaciones" name="recomendaciones" class="form-control input"></textarea>
+            <textarea id="recomendaciones" name="recomendaciones" class="form-control input textarea" placeholder="Ingrese las recomendaciones" required></textarea>
         </div>
-
-        <button type="submit" class="button">Generar Informe</button>
+</div>
+</div>
+       <center> <button type="submit" class="button1">Descargar Informe</button> </center>
     </form>
 
 
@@ -696,7 +699,7 @@
     @endif
     </div>
 
-@endsection
+
 <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
 <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
 <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
@@ -707,7 +710,22 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
 <script src="{{ asset('js/estudiante/practicas.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip({
+            template: '<div class="tooltip custom-tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
+        });
 
+        $('.card-button').on('click', function(){
+            $('.card-button').removeClass('active');
+            $(this).addClass('active');
+        });
+    });
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var verOpcionesBtn = document.getElementById('verOpcionesBtn');
@@ -775,6 +793,7 @@
         }
     }
 </script>
+
 <style>
     .contenedor_tabla .table-container table td {
         width: 200px;
@@ -787,5 +806,6 @@
         position: sticky;
         font-size: .8em !important;
     }
-</style>
-</script>
+    </style>
+
+@endsection

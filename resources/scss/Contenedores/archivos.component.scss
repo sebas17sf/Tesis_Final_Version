@@ -1,0 +1,180 @@
+@use "../vars/colors" as colors;
+@use "../vars/fonts" as fonts;
+
+
+.content_recent_cources {
+  display: grid;
+  grid-template-columns: 1fr 1fr; // Ajustado para tener columnas iguales
+  padding-top: 10px;
+  gap: 10px; // Ajustar el espacio entre columnas
+
+  @media (max-width: 1150px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.table-responsive-sm {
+  overflow-x: auto;
+}
+
+.card-buttons-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px; // Ajustar el espacio entre cards
+}
+
+.card-button {
+  width: 220px;
+  height: 100px; /* Ajusta la altura según sea necesario */
+  padding: 15px;
+  border-radius: 10px;
+  background-color: #e9ecef94;
+  border: 1px solid rgba(133, 133, 133, 0.473);
+  text-align: left;
+  transition: all 0.3s;
+  display: flex;
+  font-size: 13px;
+  //color de letra
+  color: rgba(26, 26, 26, 0.753);
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px rgba(colors.$primary, 0.2), 2px 2px 5px rgba(colors.$black, 0.2) !important;
+
+  i {
+    color: rgba(26, 26, 26, 0.568);
+    font-size: 25px;
+  }
+
+  &:hover, &.active {
+    background-color: #414770;
+    color: #fff;
+    box-shadow: 0px 0px 15px rgba(colors.$primary, 0.6);
+
+    i {
+      color: #fff;
+    }
+  }
+}
+
+.custom-tooltip .tooltip-inner {
+  background-color: #495057; /* Color de fondo */
+  color: #fff; /* Color del texto */
+  text-align: left;
+  font-size: 0.875rem;
+  max-width: 200px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  white-space: normal; /* Permitir saltos de línea */
+}
+
+.custom-tooltip .arrow::before {
+  border-top-color: #495057; /* Color de la flecha */
+}
+
+.card-body {
+  padding: 10px;
+}
+
+.contenedor_tabla {
+  display: grid;
+  overflow-x: auto;
+
+  .table-container {
+    overflow-x: auto;
+    box-shadow: none !important;
+
+    table {
+      width: 100%;
+      box-shadow: none !important;
+
+      td,
+      th {
+        width: 200px;
+        min-width: 150px;
+        font-size: fonts.$form-input;
+        padding: 0 5px;
+      }
+
+      th {
+        position: sticky;
+        font-size: fonts.$text-p;
+        font-weight: bold;
+        top: 0;
+        background: linear-gradient(to bottom, colors.$white, colors.$white),
+          linear-gradient(to bottom, rgba(colors.$primary, 0.3), rgba(colors.$primary, 0.2));
+        background-blend-mode: multiply;
+      }
+
+      .mat-mdc-header-row {
+        height: 40px;
+
+        ::ng-deep .mat-sort-header-container {
+          position: relative;
+
+          .mat-sort-header-arrow {
+            position: absolute;
+            right: -4px;
+          }
+        }
+      }
+
+      .mat-mdc-row {
+        transition: all 0.1s;
+        &:hover {
+          background-color: rgba(colors.$primary, 0.05);
+        }
+      }
+    }
+  }
+
+  .paginator-container {
+    display: grid;
+    align-items: end;
+    height: 56px;
+
+    ::ng-deep .mat-mdc-paginator-container {
+      border-top: 1px solid rgba(colors.$gray, 0.2);
+
+      @media (max-width: 620px) {
+        align-items: center;
+        justify-content: center;
+        justify-items: center;
+      }
+
+      @media (max-width: 455px) {
+        margin-top: -25px;
+      }
+
+      .mat-mdc-paginator-range-actions {
+        @media (max-width: 620px) {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          justify-items: center;
+
+          div {
+            grid-column: 1 / -1;
+          }
+        }
+      }
+    }
+
+    ::ng-deep .mat-mdc-paginator-page-size-label {
+      display: none;
+    }
+  }
+}
+.title_icon_info {
+  display: inline-flex;
+  align-items: center;
+
+  .info-icon {
+    margin-left: 3px;
+    display: flex;
+    align-items: center;
+  }
+
+  i {
+    font-size: 0.8rem;
+  }
+}

@@ -7,7 +7,7 @@
 
 @use "Contenedores/home.component";
 @use "components/scroll";
-@use "Contenedores/history-note.component";
+@use "Contenedores/acciones.component";
 
 @use "components/table" as table;
 
@@ -18,7 +18,8 @@
 @use "navbar/app.component";
 @use "deshboard/dashboard.component.scss";
 @use "tabla/tabla_filtros";
-@use "Contenedores/load-periods.component.scss";
+@use "Contenedores/contenedor.component.scss";
+@use "Contenedores/archivos.component.scss";
 
 
 // ===============================================
