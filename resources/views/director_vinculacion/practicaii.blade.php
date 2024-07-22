@@ -132,8 +132,7 @@
                                 <th>ESTUDIANTE</th>
                                 <th>CORREO</th>
                                 <th>TELÉFONO</th>
-                                <th>NOTA TUTOR EMPRESARIAL 12%</th>
-                                <th>NOTA TUTOR ACADÉMICO 8%</th>
+                                <th>NOTA PRACTICA</th>
                                 <th>ACCIONES</th>
 
                             </tr>
@@ -151,10 +150,7 @@
                                             <input type="number" name="notaTutorEmpresarial" id="notaTutorEmpresarial">
                                             <span id="errorMensaje" style="color: red; display: none;"></span>
                                         </td>
-                                        <td>
-                                            <input type="number" name="notaTutorAcademico" id="notaTutorAcademico">
-                                            <span id="errorMensajeAcademico" style="color: red; display: none;"></span>
-                                        </td>
+
                                         <td><button type="submit">Guardar</button></td>
                                     </tr>
                                 </form>
@@ -181,8 +177,6 @@
                                 <th>ESTUDIANTE</th>
                                 <th>CORREO</th>
                                 <th>CARRERA</th>
-                                <th>NOTA TUTOR EMPRESARIAL 12%</th>
-                                <th>NOTA TUTOR ACADÉMICO 8%</th>
                                 <th>NOTA FINAL</th>
                                 <th>ACCIONES</th>
 
@@ -194,75 +188,67 @@
                                     <td>{{ $practica->apellidos }} {{ $practica->nombres }}</td>
                                     <td>{{ $practica->carrera }}</td>
                                     <td>{{ $practica->correo }}</td>
-                                    <td>{{ $practica->notas_practicasii->first()->notaTutor }}</td>
-                                    <td>{{ $practica->notas_practicasii->first()->notaAcademico }}</td>
-                                    <td>{{ $practica->notas_practicasii->first()->notaTutor + $practica->notas_practicasii->first()->notaAcademico }}
+                                    <td>{{ $practica->practicasii->nota_final ?? 'NO CALIFICADO' }}
                                     </td>
-                                    <td>
-                                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#calificacionModal">
-                                            editar calificacion
-                                        </button>
+                                    <td style="text-align: center;">
+                                        @if ($practica->practicasii->nota_final <= 16)
+                                            <span class="badge badge-danger">REPROBADO</span>
+                                        @else
+                                            <span class="badge badge-success">APROBADO</span>
+                                        @endif
+                                    </td>
 
-                                        <!-- Modal para mostrar actividades -->
-                                        <div class="modal fade " id="calificacionModal" tabindex="-1" role="dialog"
-                                            aria-labelledby="calificacionModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="calificacionModalLabel">Editar
-                                                            Calificacion del Estudiante</h5>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <form
-                                                        action="{{ route('director_vinculacion.editarNotasPracticas2', ['id' => $practica->estudianteId]) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('PUT')
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#calificacionModal">
+                                        editar calificacion
+                                    </button>
 
-                                                        <div class="modal-body ">
-                                                            <input type="hidden" name="estudianteId"
-                                                                value="{{ $practica->estudianteId }}">
-                                                            <div class="form-group row">
-                                                                <label for="notaTutorEmpresarial"
-                                                                    class="col-md-4 col-form-label text-md-right">Nota
-                                                                    Tutor Empresarial</label>
-                                                                <div class="col-md-6">
-                                                                    <input id="notaTutorEmpresarial" type="number"
-                                                                        class="form-control" name="notaTutorEmpresarial"
-                                                                        value="{{ $practica->notas_practicasii->first()->notaTutor }}"
-                                                                        step="any" required>
-                                                                    <span id="errorMensaje"
-                                                                        style="color: red; display: none;"></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group row">
-                                                                <label for="notaTutorAcademico"
-                                                                    class="col-md-4 col-form-label text-md-right">Nota
-                                                                    Tutor Academico</label>
-                                                                <div class="col-md-6">
-                                                                    <input id="notaTutorAcademico" type="number"
-                                                                        class="form-control" name="notaTutorAcademico"
-                                                                        value="{{ $practica->notas_practicasii->first()->notaAcademico }}"
-                                                                        step="any" required>
-                                                                    <span id="errorMensajeAcademico"
-                                                                        style="color: red; display: none;"></span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">Cerrar</button>
-                                                            <button type="submit"
-                                                                class="btn btn-primary">Guardar</button>
-                                                        </div>
-                                                    </form>
+                                    <!-- Modal para mostrar actividades -->
+                                    <div class="modal fade " id="calificacionModal" tabindex="-1" role="dialog"
+                                        aria-labelledby="calificacionModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="calificacionModalLabel">Editar
+                                                        Calificacion del Estudiante</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
                                                 </div>
+                                                <form
+                                                    action="{{ route('director_vinculacion.editarNotasPracticas2', ['id' => $practica->estudianteId]) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('PUT')
+
+                                                    <div class="modal-body ">
+                                                        <input type="hidden" name="estudianteId"
+                                                            value="{{ $practica->estudianteId }}">
+                                                        <div class="form-group row">
+                                                            <label for="notaTutorEmpresarial"
+                                                                class="col-md-4 col-form-label text-md-right">Nota
+                                                                Tutor Empresarial</label>
+                                                            <div class="col-md-6">
+                                                                <input id="notaTutorEmpresarial" type="number"
+                                                                    class="form-control" name="notaTutorEmpresarial"
+                                                                    value="{{ $practica->practicasii->nota_final }}"
+                                                                    step="any" required>
+                                                                <span id="errorMensaje"
+                                                                    style="color: red; display: none;"></span>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Cerrar</button>
+                                                        <button type="submit" class="btn btn-primary">Guardar</button>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
+                                    </div>
                                     </td>
                                 </tr>
                             @endforeach

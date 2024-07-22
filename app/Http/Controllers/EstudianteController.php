@@ -401,8 +401,8 @@ class EstudianteController extends Controller
         // Obtén el modelo Estudiante del usuario autenticado
         $estudiante = Estudiante::where('userId', $userId)->first();
 
-        $nrc = NrcVinculacion::where('nrc', $validatedData['nrc'])->first();
-        $periodo = Periodo::where('idPeriodo', $nrc->idPeriodo)->first();
+        $nrc = NrcVinculacion::where('id', $validatedData['nrc'])->first();
+        $periodo = Periodo::where('id', $nrc->idPeriodo)->first();
         $numeroPeriodo = $periodo->numeroPeriodo;
 
 

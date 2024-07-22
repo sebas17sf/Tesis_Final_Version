@@ -608,12 +608,12 @@ class DirectorVinculacionController extends Controller
             if ($practicasi) {
                 if ($practicasi->nota_final < 16) {
                     $practicasi->Estado = 'Reprobado';
-                     $estudiante->save();
+                    $estudiante->save();
 
                     ActividadesPracticas::where('estudianteId', $estudiante->estudianteId)->delete();
                 } else {
                     $practicasi->Estado = 'Finalizado';
-                 }
+                }
                 $practicasi->save();
             }
         }
@@ -634,20 +634,31 @@ class DirectorVinculacionController extends Controller
         $estudiantes = Estudiante::whereHas('practicasii', function ($query) use ($idTutorAcademico) {
             $query->where('Estado', 'En ejecucion')
                 ->where('idTutorAcademico', $idTutorAcademico);
-        })->get();
+        })->with([
+                    'practicasii' => function ($query) {
+                        $query->where('Estado', 'En ejecucion');
+                    }
+                ])->get();
 
         // Estudiantes a calificar que no tienen nota en NotasPracticasii y con el idTutorAcademico
         $estudiantesCalificar = Estudiante::whereHas('practicasii', function ($query) use ($idTutorAcademico) {
             $query->where('Estado', 'En ejecucion')
-                ->where('idTutorAcademico', $idTutorAcademico);
-        })->whereDoesntHave('notas_practicasii')->get();
+                ->where('idTutorAcademico', $idTutorAcademico)
+                ->whereNull('nota_final');
+        })->get();
 
         // Estudiantes calificados con el idTutorAcademico
         $estudiantesCalificados = Estudiante::whereHas('practicasii', function ($query) use ($idTutorAcademico) {
             $query->where('Estado', 'En ejecucion')
-                ->where('idTutorAcademico', $idTutorAcademico);
-        })->whereHas('notas_practicasii')->get();
-
+                ->where('idTutorAcademico', $idTutorAcademico)
+                ->whereNotNull('nota_final');
+        })->with([
+                    'practicasii' => function ($query) use ($idTutorAcademico) {
+                        $query->where('Estado', 'En ejecucion')
+                            ->where('idTutorAcademico', $idTutorAcademico)
+                            ->whereNotNull('nota_final');
+                    }
+                ])->get();
         // Obtener las actividades de los estudiantes de ActividadesPracticas con el idTutorAcademico
         $actividades = ActividadesPracticasII::whereHas('estudiante.practicasii', function ($query) use ($idTutorAcademico) {
             $query->where('idTutorAcademico', $idTutorAcademico);
@@ -661,21 +672,22 @@ class DirectorVinculacionController extends Controller
     {
         $request->validate([
             'notaTutorEmpresarial' => 'required',
-            'notaTutorAcademico' => 'required',
         ]);
 
         $notaTutor = $request->input('notaTutorEmpresarial');
-        $notaAcademico = $request->input('notaTutorAcademico');
         $estudianteId = $request->input('estudianteId');
 
-        $nota = new NotasPracticasii();
-        $nota->notaTutor = $notaTutor;
-        $nota->notaAcademico = $notaAcademico;
-        $nota->estudianteId = $estudianteId;
-        $nota->save();
+        $practicasi = PracticaII::where('estudianteId', $estudianteId)
+            ->where('Estado', 'En ejecucion')
+            ->first();
 
-        return redirect()->route('director_vinculacion.practicas2')->with('success', 'Notas guardadas exitosamente.');
-
+        if ($practicasi) {
+            $practicasi->nota_final = $notaTutor;
+            $practicasi->save();
+            return redirect()->route('director_vinculacion.practicas2')->with('success', 'Notas guardadas exitosamente.');
+        } else {
+            return redirect()->route('director_vinculacion.practicas2')->with('error', 'Práctica no encontrada.');
+        }
     }
 
     ///////////////editar notas practicasii
@@ -683,42 +695,53 @@ class DirectorVinculacionController extends Controller
     {
         $request->validate([
             'notaTutorEmpresarial' => 'required',
-            'notaTutorAcademico' => 'required',
         ]);
 
         $notaTutor = $request->input('notaTutorEmpresarial');
-        $notaAcademico = $request->input('notaTutorAcademico');
 
-        $nota = NotasPracticasii::where('estudianteId', $id)->first();
-        $nota->notaTutor = $notaTutor;
-        $nota->notaAcademico = $notaAcademico;
-        $nota->save();
+        $practicasi = PracticaII::where('estudianteId', $id)
+            ->where('Estado', 'En ejecucion')
+            ->first();
 
-        return redirect()->route('director_vinculacion.practicas2')->with('success', 'Notas actualizadas exitosamente.');
+        if ($practicasi) {
+            $practicasi->nota_final = $notaTutor;
+            $practicasi->save();
+            return redirect()->route('director_vinculacion.practicas2')->with('success', 'Notas actualizadas exitosamente.');
+        } else {
+            return redirect()->route('director_vinculacion.practicas2')->with('error', 'Práctica no encontrada.');
+        }
     }
+
 
     ///////////////cerrar practicasii
     public function cerrarPracticasii()
     {
         $participante = Auth::user()->profesorUniversidad;
 
-        // Obtener el ID del tutor académico (ajusta esta línea según cómo obtienes este ID)
         $idTutorAcademico = $participante->id;
 
-        // Obtener los estudiantes con 'practicasi' en ejecución del participante y con el idTutorAcademico
         $estudiantes = Estudiante::whereHas('practicasii', function ($query) use ($idTutorAcademico) {
             $query->where('Estado', 'En ejecucion')
                 ->where('idTutorAcademico', $idTutorAcademico);
         })->get();
 
-        // Cerrar la práctica para cada estudiante
         foreach ($estudiantes as $estudiante) {
-            $practicasii = PracticaII::where('estudianteId', $estudiante->estudianteId)
+            $practicasi = PracticaII::where('estudianteId', $estudiante->estudianteId)
                 ->where('idTutorAcademico', $idTutorAcademico)
+                ->where('Estado', '!=', 'Reprobado')
                 ->first();
 
-            $practicasii->Estado = 'Finalizado';
-            $practicasii->save();
+            if ($practicasi) {
+                if ($practicasi->nota_final < 16) {
+                    $practicasi->Estado = 'Reprobado';
+                    $estudiante->save();
+
+                    ActividadesPracticasII::where('estudianteId', $estudiante->estudianteId)->delete();
+                } else {
+                    $practicasi->Estado = 'Finalizado';
+                }
+                $practicasi->save();
+            }
         }
 
         return redirect()->route('director_vinculacion.practicas2')->with('success', 'Práctica cerrada exitosamente.');
