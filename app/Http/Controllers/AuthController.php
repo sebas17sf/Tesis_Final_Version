@@ -50,5 +50,13 @@ class AuthController extends Controller
         return view('estudiantes.create', compact('estudiante', 'periodos'));
     }
 
+    public function registerDocente(Request $request)
+    {
+        $validatedData = $request->validate([
+            'cedula_docente' => 'required|string|exists:profesores,cedula|confirmed',
+        ]);
 
+        $docente = Profesor::where('cedula', $request->cedula_docente)->firstOrFail();
+        return redirect()->route('docentes.create', ['docente' => $docente]);
+    }
 }

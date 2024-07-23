@@ -34,7 +34,6 @@ Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::put('/register', [EstudianteController::class, 'store'])->name('estudiantes.store');
 
-
 //////ruta para la vista de recuperar contraseña
 Route::get('/forgot-password', [LoginController::class, 'recuperarContrasena'])->name('recuperar-contrasena');
 
@@ -53,6 +52,8 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/toggle-menu', [MenuController::class, 'toggleMenuState'])->name('toggle-menu');
 
 Route::get('/estudiantes/create', [EstudianteController::class, 'create'])->name('estudiantes.create');
+
+Route::post('/ParticipanteVinculacion/create', [AuthController::class, 'registerDocente'])->name('ParticipanteVinculacion.create');
 
 
 //////Protecion para los accesos importantes

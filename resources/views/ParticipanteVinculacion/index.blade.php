@@ -75,10 +75,7 @@
                 </thead>
                 <tbody class="mdc-data-table__content ng-star-inserted">
                     @if ($proyectosEnEjecucion && $proyectosEnEjecucion==null)
-                    <tr>
-                        <td>No hay proyectos
-                            en ejecución.</td>
-                    </tr>
+                    yhjgjgjghj
                     @else
                     @foreach ($proyectosEnEjecucion as $proyecto)
                     <tr>

@@ -1031,7 +1031,6 @@ body {
 
 .title {
   margin: 0;
-  margin-bottom: 20px;
   font-size: 25px;
   font-weight: 700;
   line-height: 1.5;
@@ -1178,7 +1177,6 @@ body {
 }
 
 .switch {
-  display: grid;
   justify-content: center;
   align-items: center;
   position: absolute;
@@ -1197,7 +1195,6 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  position: absolute;
   width: 100%;
 }
 .switch_container .contenedor_inputs {
