@@ -45,6 +45,10 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
+
+        $profesoresVerificar = Usuario::where('estado', 'En verificación')
+            ->get();
+
         $perPage = $request->input('perPage', 10);
 
         $validPerPages = [10, 20, 50, 100];
@@ -94,6 +98,9 @@ class AdminController extends Controller
                     'periodos' => $periodos,
                     'search' => $searchTerm,
                     'perPage' => $perPage,
+                    'profesoresVerificar' => $profesoresVerificar,
+
+
 
                 ]);
             }
