@@ -13,6 +13,8 @@ use App\Models\PracticaIV;
 use App\Models\PracticaV;
 use App\Models\ProfesUniversidad;
 use App\Models\Proyecto;
+use App\Models\UsuariosSession;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\estudiantesvinculacion;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -421,7 +423,27 @@ class DirectorController extends Controller
     }
 
 
+    public function cambiarCredencialesUsuario()
+    {
+        $periodos = Periodo::all();
 
+        $usuario = Auth::user();
+        $estudiante = $usuario->estudiante;
+
+        $penultimateSession = UsuariosSession::where('userId', $usuario->userId)
+            ->latest()
+            ->skip(1)
+            ->first();
+
+        if ($penultimateSession) {
+            $penultimateSession->user_agent = $this->getBrowserFromUserAgent($penultimateSession->user_agent);
+            $userSessions = collect([$penultimateSession]);
+        } else {
+            $userSessions = collect();
+        }
+
+        return view('director.cambiarCredencialesUsuario', compact('usuario', 'userSessions', 'estudiante', 'periodos'));
+    }
 
 
 

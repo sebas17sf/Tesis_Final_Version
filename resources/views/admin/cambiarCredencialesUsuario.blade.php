@@ -175,42 +175,28 @@
   </div>
 
   <!-- Historial de sesiones -->
-<!-- Historial de sesiones -->
-<div class="sesion_history scroll_element" >
-    @foreach ($userSessions as $session)
-    <div class="card">
-        <div class="icon_card">
-            <i class="fa-regular fa-laptop-mobile"></i>
-        </div>
-
-        <div class="dispositive">
-            <span class="agente_usuario">{{ $session->browser }}</span>
-            <div>
-                <label>IP:</label>
-                <span class="text_sesion">{{ $session->ip_address }}</span>
-            </div>
-        </div>
-
-        <div class="time_sesion">
-            <div class="data_time">
-                <label>Hora ingreso</label>
-                <span class="text_sesion">{{ $session->start_time }}</span>
-            </div>
-
-            <div class="data_time">
-                <label>Hora salida</label>
-                <span class="text_sesion">{{ $session->end_time }}</span>
-            </div>
-        </div>
-
-        <div class="location">
-            <label>Ubicación</label>
-            <span class="text_sesion">{{ $session->locality }}</span>
-        </div>
-        
-    </div>
-    @endforeach
-</div>
+  <table>
+    <thead>
+        <tr>
+            <th>Dispositivo</th>
+            <th>IP</th>
+            <th>Hora ingreso</th>
+            <th>Hora salida</th>
+            <th>Ubicación</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($userSessions as $session)
+        <tr>
+            <td>{{ $session->user_agent }}</td>
+            <td>{{ $session->ip_address }}</td>
+            <td>{{ $session->start_time }}</td>
+            <td>{{ $session->end_time }}</td>
+            <td>{{ $session->locality }}</td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 
 </section>
 <!--

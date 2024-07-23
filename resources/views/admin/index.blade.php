@@ -201,6 +201,12 @@
 
         <br>
         <div class="d-flex  justify-content-center">
+
+            <form action="{{ route('admin.reportesSesiones') }}" method="POST" class="mr-2">
+                @csrf
+                <button type="submit" class="button1">Historial sesiones usuarios</button>
+            </form>
+
             <form action="{{ route('admin.respaldo') }}" method="POST" class="mr-2">
                 @csrf
                 <button type="submit" class="button1">Respaldar Base de Datos</button>

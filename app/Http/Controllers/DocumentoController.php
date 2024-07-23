@@ -16,6 +16,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Models\AsignacionSinEstudiante;
 use Carbon\Carbon;
 use App\Models\ActividadesPracticasII;
+use App\Models\UsuariosSession;
 use App\Models\ActividadesPracticas;
 use App\Models\NrcVinculacion;
 
@@ -1007,7 +1008,51 @@ class DocumentoController extends Controller
 
     }
 
- 
+    ////////////////////////Reporte de sesiones////////////////////////
+    public function reporteSessiones(){
+        $plantillaPath = public_path('Plantillas/Reporte-Sesiones.xlsx');
+
+        $spreadsheet = IOFactory::load($plantillaPath);
+
+        if (!file_exists($plantillaPath)) {
+            abort(404, 'El archivo de plantilla no existe.');
+        }
+
+        $template = new TemplateProcessor($plantillaPath);
+
+         $sesiones = UsuariosSession::orderBy('start_time', 'asc')->get();
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $filaInicio = 9;
+        $cantidadFilas = count($sesiones);
+
+        $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
+
+        $contador = 1;
+
+        foreach ($sesiones as $index => $sesion) {
+            $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
+            $sheet->setCellValue('B' . ($filaInicio + $index), $sesion->usuario->nombreUsuario);
+            $sheet->setCellValue('C' . ($filaInicio + $index), $sesion->usuario->correoElectronico);
+            $sheet->setCellValue('D' . ($filaInicio + $index), $sesion->start_time);
+            $sheet->setCellValue('E' . ($filaInicio + $index), $sesion->end_time ?? 'Sesión activa');
+            $sheet->setCellValue('F' . ($filaInicio + $index), $sesion->locality);
+
+
+            $contador++;
+        }
+
+        $sheet->getStyle('A9:H' . ($filaInicio + $cantidadFilas))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $nombreArchivo = 'Reporte_Sesiones.xlsx';
+        $writer->save($nombreArchivo);
+
+        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+
+    }
+
 
 
     ////////////////////////Creacion de reportes estudiantes vinculacion

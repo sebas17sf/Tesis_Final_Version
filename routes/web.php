@@ -355,6 +355,9 @@ Route::middleware(['auth'])->group(function () {
     //actualizarPeriodo del admin
     Route::put('/admin/actualizar-periodo/{id}', [AdminController::class, 'actualizarPeriodo'])->name('admin.actualizarPeriodo');
 
+    ///reporteSessiones del admin
+    Route::post('/admin/reportes-sesiones', [DocumentoController::class, 'reporteSessiones'])->name('admin.reportesSesiones');
+
     ////editarNombreEmpresa del coordinador
     Route::get('/coordinador/estudiante/{id}/edit', [CoordinadorController::class, 'editarNombreEmpresa'])->name('coordinador.editarNombreEmpresa');
     ///actualizarNombreEmpresa del coordinador
