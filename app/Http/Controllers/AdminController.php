@@ -620,7 +620,7 @@ class AdminController extends Controller
             return redirect()->route('admin.indexProyectos')->with('error', 'No puedes eliminar un proyecto en estado de ejecución');
         }
 
-       
+
 
         // Eliminar el proyecto
         $proyecto->delete();
