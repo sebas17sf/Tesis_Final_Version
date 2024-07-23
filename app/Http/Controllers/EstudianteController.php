@@ -790,21 +790,29 @@ class EstudianteController extends Controller
 
     public function cambiarCredencialesUsuario()
     {
-
         $periodos = Periodo::all();
 
         $usuario = Auth::user();
-
         $estudiante = $usuario->estudiante;
 
-        $userSessions = UsuariosSession::where('userId', $usuario->userId)->get();
+        $penultimateSession = UsuariosSession::where('userId', $usuario->userId)
+            ->latest()
+            ->skip(1)
+            ->first();
 
-        foreach ($userSessions as $session) {
-            $session->browser = $this->getBrowserFromUserAgent($session->user_agent);
+        if ($penultimateSession) {
+            $penultimateSession->user_agent = $this->getBrowserFromUserAgent($penultimateSession->user_agent);
+            $userSessions = collect([$penultimateSession]);
+        } else {
+            $userSessions = collect();
         }
 
         return view('estudiantes.cambiarCredencialesUsuario', compact('usuario', 'userSessions', 'estudiante', 'periodos'));
     }
+
+
+
+
     private function getBrowserFromUserAgent($userAgent)
     {
         if (strpos($userAgent, 'OPR') !== false) {

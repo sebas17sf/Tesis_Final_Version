@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PracticaI;
 use App\Models\PracticaII;
+use App\Models\Periodo;
 use App\Models\ActividadesPracticas;
 use App\Models\NotasPracticasi;
 use Carbon\Carbon;
@@ -272,15 +273,26 @@ class ParticipanteVinculacionController extends Controller
     ////////////////////////////cambiar credenciales
     public function cambiarCredencialesUsuario()
     {
-        $usuario = Auth::user();
-        $userSessions = UsuariosSession::where('userId', $usuario->userId)->get();
+        $periodos = Periodo::all();
 
-        foreach ($userSessions as $session) {
-            $session->browser = $this->getBrowserFromUserAgent($session->user_agent);
+        $usuario = Auth::user();
+        $estudiante = $usuario->estudiante;
+
+        $penultimateSession = UsuariosSession::where('userId', $usuario->userId)
+            ->latest()
+            ->skip(1)
+            ->first();
+
+        if ($penultimateSession) {
+            $penultimateSession->user_agent = $this->getBrowserFromUserAgent($penultimateSession->user_agent);
+            $userSessions = collect([$penultimateSession]);
+        } else {
+            $userSessions = collect();
         }
 
-        return view('ParticipanteVinculacion.cambiarCredencialesUsuario', compact('usuario', 'userSessions'));
+        return view('ParticipanteVinculacion.cambiarCredencialesUsuario', compact('usuario', 'userSessions', 'estudiante', 'periodos'));
     }
+
     private function getBrowserFromUserAgent($userAgent)
     {
         if (strpos($userAgent, 'OPR') !== false) {

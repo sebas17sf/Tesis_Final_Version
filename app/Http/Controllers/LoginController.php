@@ -45,24 +45,16 @@ class LoginController extends Controller
 
                 $userAgent = $request->userAgent();
 
-                // Generar un identificador único
                 $uuid = (string) Str::uuid();
 
-                $existingSession = UsuariosSession::where('userId', $user->userId)
-                    ->where('user_agent', $userAgent)
-                    ->first();
-
-                if ($existingSession) {
-                    $existingSession->update(['start_time' => now(), 'session_id' => $uuid]);
-                } else {
-                    $session = new UsuariosSession();
-                    $session->userId = $user->userId;
-                    $session->start_time = now();
-                    $session->user_agent = $request->userAgent();
-                    $session->locality = 'Desconocida'; // Localidad desconocida
-                    $session->session_id = $uuid; // Guardar el identificador único como session_id
-                    $session->save();
-                }
+                $session = new UsuariosSession();
+                $session->userId = $user->userId;
+                $session->ip_address = $request->ip();
+                $session->start_time = now();
+                $session->user_agent = $userAgent;
+                $session->locality = 'UNIVERSIDAD DE LAS FUERZAS ARMADAS ESPE SEDE SANTO DOMINGO';
+                $session->session_id = $uuid;
+                $session->save();
 
                 session()->regenerate();
 
@@ -83,6 +75,7 @@ class LoginController extends Controller
             return redirect()->route('login')->with('error', $e->getMessage());
         }
     }
+
 
 
     public function recuperarContrasena()

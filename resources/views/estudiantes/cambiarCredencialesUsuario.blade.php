@@ -7,24 +7,24 @@
 @section('content')
 
     @if (session('success'))
-    <div class="contenedor_alerta success">
-    <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Éxito!</div>
-      <div class="body">{{ session('success') }}</div>
-    </div>
-  </div>
+        <div class="contenedor_alerta success">
+            <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Éxito!</div>
+                <div class="body">{{ session('success') }}</div>
+            </div>
+        </div>
     @endif
 
 
     @if (session('error'))
-    <div class="contenedor_alerta error">
-    <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Error!</div>
-      <div class="body">{{ session('error') }}</div>
-    </div>
-  </div>
+        <div class="contenedor_alerta error">
+            <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Error!</div>
+                <div class="body">{{ session('error') }}</div>
+            </div>
+        </div>
     @endif
     <section class="content_profile">
 
@@ -86,17 +86,21 @@
                     <hr>
                 </div>
 
-                <form class="form_change_passwd" action="{{ route('estudiantes.actualizarCredenciales', ['userId' => auth()->user()->userId]) }}" method="POST">
+                <form class="form_change_passwd"
+                    action="{{ route('estudiantes.actualizarCredenciales', ['userId' => auth()->user()->userId]) }}"
+                    method="POST">
                     @csrf
                     @method('PUT')
                     <div>
                         <label for="password">Nueva contraseña <span class="requerido">*</span></label>
-                        <input type="password" id="password" name="password" class="input" placeholder="Ingrese la clave" required>
+                        <input type="password" id="password" name="password" class="input" placeholder="Ingrese la clave"
+                            required>
                     </div>
 
                     <div>
                         <label for="password_confirmation">Confirmar contraseña <span class="requerido">*</span></label>
-                        <input type="password" id="password_confirmation" name="password_confirmation" class="input" placeholder="Ingrese de nuevo la clave" required>
+                        <input type="password" id="password_confirmation" name="password_confirmation" class="input"
+                            placeholder="Ingrese de nuevo la clave" required>
                     </div>
 
                     <div class="content_button">
@@ -124,32 +128,36 @@
                     <hr>
                 </div>
 
-                <form class="form_profile" action="{{ route('estudiantes.updateDatos', ['estudianteId' => $estudiante->estudianteId]) }}" method="POST">
+                <form class="form_profile"
+                    action="{{ route('estudiantes.updateDatos', ['estudianteId' => $estudiante->estudianteId]) }}"
+                    method="POST">
                     @csrf
                     @method('PUT')
 
                     <div>
                         <label for="firstname_student">Nombres <span class="requerido">*</span></label>
-                        <input type="text" id="firstname_student" name="firstname_student" class="input" placeholder="Ingrese sus nombres" value="{{ $estudiante->nombres ?? '' }}" required>
+                        <input type="text" id="firstname_student" name="firstname_student" class="input"
+                            placeholder="Ingrese sus nombres" value="{{ $estudiante->nombres ?? '' }}" required>
                     </div>
 
                     <div>
                         <label for="lastname_student">Apellidos <span class="requerido">*</span></label>
-                        <input type="text" id="lastname_student" name="lastname_student" class="input" placeholder="Ingrese sus apellidos" value="{{ $estudiante->apellidos ?? '' }}" required>
+                        <input type="text" id="lastname_student" name="lastname_student" class="input"
+                            placeholder="Ingrese sus apellidos" value="{{ $estudiante->apellidos ?? '' }}" required>
                     </div>
 
                     <div>
                         <label for="cohorte_student">Cohorte <span class="requerido">*</span></label>
-                        <input type="text" class="form-control input" id="Cohorte" name="Cohorte"
-                        readonly value="{{ old('Cohorte', $estudiante->Cohorte ?? '') }}">                    </div>
+                        <input type="text" class="form-control input" id="Cohorte" name="Cohorte" readonly
+                            value="{{ old('Cohorte', $estudiante->Cohorte ?? '') }}">
+                    </div>
 
                     <div>
                         <label for="period_student">Período <span class="requerido">*</span></label>
                         <select class="form-control input input_select" id="Periodo" name="Periodo" required>
                             <option value="">Seleccione su Periodo</option>
                             @foreach ($periodos as $periodo)
-                                <option value="{{ $periodo->id }}"
-                                    data-numeroPeriodo="{{ $periodo->numeroPeriodo }}"
+                                <option value="{{ $periodo->id }}" data-numeroPeriodo="{{ $periodo->numeroPeriodo }}"
                                     {{ old('Periodo') == $periodo->id ? 'selected' : '' }}>
                                     {{ $periodo->numeroPeriodo }} {{ $periodo->periodo }}
                                 </option>
@@ -175,19 +183,18 @@
 
                     <div>
                         <label for="departament_student">Departamento <span class="requerido">*</span></label>
-                        <select class="form-control input input_select" id="Departamento" name="Departamento"
-                        required>
-                        <option value="">Seleccione su Departamento</option>
-                        <option value="Ciencias de la Computación"
-                            {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias de la Computación' ? 'selected' : '' }}>
-                            DCCO - Ciencias de la Computación</option>
-                        <option value="Ciencias Exactas"
-                            {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias Exactas' ? 'selected' : '' }}>
-                            DCEX - Ciencias Exactas</option>
-                        <option value="Ciencias de la Vida y Agricultura"
-                            {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>
-                            DCVA - Ciencias de la Vida y Agricultura</option>
-                    </select>
+                        <select class="form-control input input_select" id="Departamento" name="Departamento" required>
+                            <option value="">Seleccione su Departamento</option>
+                            <option value="Ciencias de la Computación"
+                                {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias de la Computación' ? 'selected' : '' }}>
+                                DCCO - Ciencias de la Computación</option>
+                            <option value="Ciencias Exactas"
+                                {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias Exactas' ? 'selected' : '' }}>
+                                DCEX - Ciencias Exactas</option>
+                            <option value="Ciencias de la Vida y Agricultura"
+                                {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>
+                                DCVA - Ciencias de la Vida y Agricultura</option>
+                        </select>
                     </div>
 
 
@@ -201,85 +208,34 @@
         </div>
 
         <!-- Historial de sesiones -->
-        <!-- Historial de sesiones -->
-        <div class="sesion_history scroll_element">
-            @foreach ($userSessions as $session)
-                <div class="card">
-                    <div class="icon_card">
-                        <i class="fa-regular fa-laptop-mobile"></i>
-                    </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Dispositivo</th>
+                    <th>IP</th>
+                    <th>Hora ingreso</th>
+                    <th>Hora salida</th>
+                    <th>Ubicación</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($userSessions as $session)
+                <tr>
+                    <td>{{ $session->user_agent }}</td>
+                    <td>{{ $session->ip_address }}</td>
+                    <td>{{ $session->start_time }}</td>
+                    <td>{{ $session->end_time }}</td>
+                    <td>{{ $session->locality }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
 
-                    <div class="dispositive">
-                        <span class="agente_usuario">{{ $session->browser }}</span>
-                        <div>
-                            <label>IP:</label>
-                            <span class="text_sesion">{{ $session->ip_address }}</span>
-                        </div>
-                    </div>
 
-                    <div class="time_sesion">
-                        <div class="data_time">
-                            <label>Hora ingreso</label>
-                            <span class="text_sesion">{{ $session->start_time }}</span>
-                        </div>
-
-                        <div class="data_time">
-                            <label>Hora salida</label>
-                            <span class="text_sesion">{{ $session->end_time }}</span>
-                        </div>
-                    </div>
-
-                    <div class="location">
-                        <label>Ubicación</label>
-                        <span class="text_sesion">{{ $session->locality }}</span>
-                    </div>
-
-                </div>
-            @endforeach
         </div>
 
     </section>
-    <!--
-            <form action="{{ route('admin.updateCredenciales') }}" method="POST">
-                @csrf
-                @method('PUT')
-                <div class="form-group">
-                    <label for="nombre">Usuario</label>
-                    <input type="text" class="form-control input" id="nombre" name="nombre" value="{{ $usuario->nombreUsuario }}"
-                        required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Correo Electrónico</label>
-                    <input type="email" class="form-control input" id="email" name="email"
-                        value="{{ $usuario->correoElectronico }}" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Nueva Contraseña</label>
-                    <div class="input-group">
-                        <input type="password" class="form-control input" id="password" name="password" required>
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                <i class="fa fa-eye" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="password_confirmation">Confirmar Nueva Contraseña</label>
-                    <div class="input-group">
-                        <input type="password" class="form-control input" id="password_confirmation" name="password_confirmation"
-                            required>
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
-                                <i class="fa fa-eye" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <button type="submit" class="button">Guardar Cambios</button>
-            </form>
 
-        -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
