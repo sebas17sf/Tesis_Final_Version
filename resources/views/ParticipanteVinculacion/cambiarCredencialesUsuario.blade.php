@@ -109,6 +109,8 @@
 
 
     <div>
+        <br>
+        <br>
         <!-- Informacion de perfil -->
         <div class="content_info">
             <div>
@@ -132,8 +134,6 @@
                     <label for="lastname_student">Apellidos <span class="requerido">*</span></label>
                     <input type="text" id="lastname_student" class="input" placeholder="Ingrese sus apellidos">
                 </div>
-
-
 
                 <div>
                     <label for="race_student">Carrera <span class="requerido">*</span></label>
@@ -162,13 +162,25 @@
 
             </form>
         </div>
-    </div>
+</div>
 
-    <!-- Historial de sesiones -->
-    < <table>
-        <thead>
-            <tr>
-                <th>Dispositivo</th>
+    
+</section>
+<br>
+<span class="title_edit_profile"><b>Control de sesiones</b>
+        </span>
+                <hr>
+            </div>
+<!-- Historial de sesiones -->
+<div class="co<div class="content_info">
+            <div>
+        ntenedor_tabla">
+            <div class="table-container mat-elevation-z8">
+                <div id="tablaProyectos">
+                    <table class="mat-mdc-table">
+                        <thead class="ng-star-inserted">
+                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                <th>Dispositivo</th>
                 <th>IP</th>
                 <th>Hora ingreso</th>
                 <th>Hora salida</th>
@@ -187,8 +199,11 @@
             @endforeach
         </tbody>
     </table>
+</div>
+</div>
+</div>
+</div>
 
-</section>
 <!--
     <form action="{{ route('admin.updateCredenciales') }}" method="POST">
         @csrf

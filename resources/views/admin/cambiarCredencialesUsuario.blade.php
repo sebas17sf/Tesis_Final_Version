@@ -28,53 +28,85 @@
 @endif
 <section class="content_profile">
 
+  <style>
+
+
+    .icon_block {
+      color: #40456c; /* Color del icono */
+      font-size: 15px; /* Tamaño del icono */
+      display: flex; /* Alineación del icono */
+      align-items: center; /* Centrado vertical del icono */
+      left: 45% !important;
+    }
+
+
+
+    center {
+      display: flex; /* Alineación de elementos en fila */
+      justify-content: center; /* Centrado horizontal */
+      width: 100%; /* Ancho completo */
+    }
+  </style>
+
   <div class="section1">
-    <!-- Informacion estatica -->
-    <div class="content_static">
+      <!-- Informacion estatica -->
+      <div class="content_static">
 
-      <div>
-        <span class="title_edit_profile"><b>Información personal</b>
-        </span>
-        <hr>
+        <div>
+          <span class="title_edit_profile"><b>Información personal</b>
+          </span>
+          <hr>
+        </div>
+
+        <div class="elements_static">
+          <br>
+          <div class="icon_block">
+            <i class="fa-brands fa-expeditedssl"></i>
+          </div>
+          <div>
+            <label></label>
+            <span></span>
+          </div>
+          <div style="text-align: center;">
+            <label for="nombre">Usuario</label>
+            <span id="nombre" name="nombre" required>{{ $usuario->nombreUsuario }}</span>
+          </div>
+
+          <div style="text-align: center;">
+            <label for="correo">Correo</label>
+            <span id="nombre" name="correo" required>{{ $usuario->correoElectronico }}</span>
+          </div>
+          <div>
+            <label></label>
+            <span></span>
+          </div>
+          <div>
+            <label></label>
+            <span></span>
+          </div>
+         
+          <div style="text-align: center;">
+            <label for="nombre"></label>
+            <span></span>
+          </div>
+        
+          <div>
+            <label></label>
+            <span></span>
+        </div>
+        <div>
+          <label></label>
+          <span></span>
+          </div>
       </div>
+  </div>
 
-      <div class="elements_static">
+   
 
-        <div class="icon_block">
-          <i class="fa-brands fa-expeditedssl"></i>
-        </div>
 
-        <div>
-          <label>ID Espe</label>
-          <span></span>
-        </div>
-
-        <div >
-          <label for= "nombre">Usuario</label>
-          <span type="text" id="nombre" name="nombre"
-          required value="{{ $usuario->nombreUsuario }}"></span>
-        </div>
-
-        <div>
-          <label>Cédula</label>
-          <span></span>
-        </div>
-
-        <div>
-          <label>Teléfono</label>
-          <span></span>
-        </div>
-
-        <div class="last-element">
-          <label>Correo institucional</label>
-          <span></span>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Cambiar contraseña -->
-    <div class="content_change_pass">
+  </div>
+   <!-- Cambiar contraseña -->
+   <div class="content_change_pass">
       <div>
         <span class="title_edit_profile"><b>Cambiar contraseña</b>
 
@@ -103,82 +135,23 @@
         </div>
       </form>
     </div>
-
-
-  </div>
-
-
+  </section>
+<br>
   <div>
-    <!-- Informacion de perfil -->
-    <div class="content_info">
-      <div>
-        <span class="title_edit_profile"><b>Actualizar datos personales</b>
-
-          <!-- Informacion sobre los datos -->
-          <div class="info-icon">
-            <i class="fa-regular fa-circle-info"></i>
-          </div>
+  <div class="content_info">
+            <div>
+        <span class="title_edit_profile"><b>Control de sesiones</b>
         </span>
-        <hr>
-      </div>
-
-      <form class="form_profile">
-        <div>
-          <label for="firstname_student">Nombres <span class="requerido">*</span></label>
-          <input type="text" id="firstname_student" class="input" placeholder="Ingrese sus nombres">
-        </div>
-
-        <div>
-          <label for="lastname_student">Apellidos <span class="requerido">*</span></label>
-          <input type="text" id="lastname_student" class="input" placeholder="Ingrese sus apellidos">
-        </div>
-
-        <div>
-          <label for="cohorte_student">Cohorte <span class="requerido">*</span></label>
-          <input type="text" id="cohorte_student" class="input" placeholder="Ingrese su cohorte">
-        </div>
-
-        <div>
-          <label for="period_student">Período <span class="requerido">*</span></label>
-          <select name="period_student" id="period_student" class="input input_select">
-            <option value="0">Seleccione su período</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="race_student">Carrera <span class="requerido">*</span></label>
-          <select name="race_student" id="race_student" class="input input_select">
-            <option value="0">Seleccione su carrera</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="departament_student">Departamento <span class="requerido">*</span></label>
-          <select name="departament_student" id="departament_student" class="input input_select">
-            <option value="0">Seleccione su departamento</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="locality_student">Localidad <span class="requerido">*</span></label>
-          <select name="locality_student" id="locality_student" class="input input_select">
-            <option value="0">Seleccione su localidad</option>
-          </select>
-        </div>
-
-        <div class="content_button">
-          <button class="button1 efects_button">Actualizar</button>
-        </div>
-
-      </form>
-    </div>
-  </div>
-
-  <!-- Historial de sesiones -->
-  <table>
-    <thead>
-        <tr>
-            <th>Dispositivo</th>
+                <hr>
+            </div>
+<!-- Historial de sesiones -->
+<div class="contenedor_tabla">
+            <div class="table-container mat-elevation-z8">
+                <div id="tablaProyectos">
+                    <table class="mat-mdc-table">
+                        <thead class="ng-star-inserted">
+                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                <th>Dispositivo</th>
             <th>IP</th>
             <th>Hora ingreso</th>
             <th>Hora salida</th>
@@ -197,8 +170,12 @@
         @endforeach
     </tbody>
 </table>
+</div>
+</div>
+</div>
+</div>
 
-</section>
+
 <!--
     <form action="{{ route('admin.updateCredenciales') }}" method="POST">
         @csrf

@@ -80,14 +80,14 @@
 
 <body>
     <div class="container">
-        <img src="{{ asset('./img/logos/itin-presencial.png') }}" alt="Redes Sociales">
+        <img src="img/logos/itin.pJPG" alt="Redes Sociales">
         <h1>Asignación de estudiantes al Proyecto</h1>
         <p>Director del Proyecto: {{ $proyecto->director->apellidos }} {{ $proyecto->director->nombres }}</p>
         <p>Proyecto: {{ $proyecto->nombreProyecto }}</p>
         <p>Estudiantes asignados al proyecto:</p>
         <ul>
             @foreach ($estudiantes as $estudiante)
-            <li><strong>Nombres:</strong> {{ $estudiante->apellidos }} {{ $estudiante->nombres }} <strong>Cohorte:</strong> {{ $estudiante->Cohorte }} <strong>Carrera:</strong> {{ $estudiante->carrera }}  <strong>ESPE ID:</strong> {{ $estudiante->espeId }} </li>
+            <li><strong>Estudiante:</strong> {{ $estudiante->apellidos }} {{ $estudiante->nombres }}<strong> - </strong> {{ $estudiante->espeId }}  <strong> - </strong> {{ $estudiante->carrera }}  </li>
             @endforeach
         </ul>
 
