@@ -1,6 +1,6 @@
 
 .sidebar {
-    background-image: url('/plantillas/imagenespe.jpg');
+    background-image: url('/img/logos/itin-presencial.png');
     background-size: cover;
     width: 230px;
     font-size: 14px;
@@ -9,7 +9,7 @@
     left: 0;
     height: 100%;
     padding-top: 20px;
-    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 0px 10px rgba(17, 31, 95, 0.1);
 }
 
 .sidebar a {

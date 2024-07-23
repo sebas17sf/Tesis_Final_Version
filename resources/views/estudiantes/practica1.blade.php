@@ -471,7 +471,7 @@
                     </tr>
                     <tr>
                         <th style=" text-transform: uppercase; font-size: 13px ;   color: rgba(26, 26, 26, 0.753);"><b>Departamento:</b></th>
-                        <td style=" text-transform: uppercase; font-size: 13px;">{{ strtoupper($estudiante->departamento) }}</td>
+                        <td style=" text-transform: uppercase; font-size: 13px;" >{{ strtoupper($estudiante->departamento) }}</td>
                     </tr>
                     <tr>
                         <th style=" text-transform: uppercase; font-size: 13px;   color: rgba(26, 26, 26, 0.753);"><b>Escoja Práctica:</b></th>
@@ -511,9 +511,9 @@
                 </tr>
                 <tbody>
                     <tr>
-                        <th>Estado Académico Actual:</th>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>Estado Académico Actual</b></th>
                         <td>
-                            <select id="EstadoAcademico" name="EstadoAcademico" class="form-control input input_select3">
+                            <select id="EstadoAcademico" name="EstadoAcademico" class="form-control input input_select4">
                                 <option value="1">Seleccione un estado académico</option>
                                 <option value="FINALIZANDO ESTUDIOS">FINALIZANDO ESTUDIOS</option>
                                 <option value="CURSANDO ESTUDIOS">CURSANDO ESTUDIOS</option>
@@ -521,46 +521,46 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Fecha de inicio de la práctica:</th>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>Fecha de inicio de la práctica:</b></th>
                         <td>
                             <input type="date" id="FechaInicio" name="FechaInicio"
-                                class="form-control input input_select3">
+                                class="form-control input input_select4" >
                         </td>
                     </tr>
                     <tr>
-                        <th>Fecha de finalización de la práctica:</th>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>Fecha de finalización de la práctica:</b></th>
                         <td>
                             <input type="date" id="FechaFinalizacion" name="FechaFinalizacion"
-                                class="form-control input input_select3">
+                                class="form-control input input_select4">
                         </td>
                     </tr>
                     <tr>
-                        <th>Horas planificadas:</th>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>Horas planificadas:</b></th>
                         <td>
                             <input type="number" id="HorasPlanificadas" name="HorasPlanificadas"
-                                class="form-control input input_select3" min="80" max="144">
+                                class="form-control input input_select4" min="80" max="144" placeholder="Ingrese el número de horas">
                             <small id="errorHorasPlanificadas" style="color: red;"></small>
-                        </td>
+                        </td style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);">
                     </tr>
                     <tr>
-                        <th>Horario de entrada:</th>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>Horario de entrada:</b></th>
                         <td>
                             <input type="time" id="HoraEntrada" name="HoraEntrada"
-                                class="form-control input input_select3">
+                                class="form-control input input_select4" >
                         </td>
                     </tr>
                     <tr>
-                        <th>Horario de salida:</th>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>Horario de salida:</b></th>
                         <td>
                             <input type="time" id="HoraSalida" name="HoraSalida"
-                                class="form-control input input_select3">
+                                class="form-control input input_select4">
                         </td>
                     </tr>
                     <tr>
-                        <th>Área de conocimiento:</th>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>Área de conocimiento:</b></th>
                         <td>
                             <input type="text" id="AreaConocimiento" name="AreaConocimiento"
-                                class="form-control input input_select3">
+                                class="form-control input input_select4" placeholder="Ingrese el área de conocimiento">
                         </td>
                     </tr>
                 </tbody>
@@ -584,7 +584,7 @@
                 </tr>
                 <tbody>
                     <tr>
-                        <th>Sugiera un docente como tutor académico:</th>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>Sugiera un docente como tutor académico:</b></th>
                         <td>
                             <div class="form-group">
                                 <label for="ID_tutorAcademico">
@@ -603,7 +603,7 @@
                     </tr>
 
                     <tr>
-                        <th>NRC Practica</th>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>NRC Práctica</b></th>
                         <td>
                             <div class="form-group">
                                 <select name="nrc" class="form-control input input_select3" required>
@@ -617,9 +617,9 @@
                     </tr>
 
                     <tr>
-                        <th>Empresa:</th>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>Empresa:</b></th>
                         <td>
-                            <select id="Empresa" name="Empresa" class="form-control input input_select4 ">
+                            <select id="Empresa" name="Empresa" class="form-control input input_select3 " >
                                 <option value="1">Seleccione una empresa</option>
                                 @foreach ($empresas as $empresa)
                                     <option value="{{ $empresa->id }}">{{ $empresa->nombreEmpresa }} -
@@ -630,58 +630,58 @@
                     </tr>
 
                     <tr>
-                        <th>Cédula del tutor empresarial:</th>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>Cédula del tutor empresarial:</b></th>
                         <td>
                             <input type="text" id="CedulaTutorEmpresarial" name="CedulaTutorEmpresarial"
-                                class="form-control input input_select3">
+                                class="form-control input input_select3" placeholder="Ingrese 10 dígitos">
                             <div id="errorCedula" style="color: red;"></div>
                         </td>
 
                     </tr>
 
                     <tr>
-                        <th>Nombre del tutor empresarial:</th>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>Nombre del tutor empresarial:</b></th>
                         <td>
                             <input type="text" id="NombreTutorEmpresarial" name="NombreTutorEmpresarial"
-                                class="form-control input input_select3">
+                                class="form-control input input_select3" placeholder="Ingrese el nombre completo">
                             <div id="errorNombre" style="color: red;"></div>
                         </td>
 
                     </tr>
 
                     <tr>
-                        <th>Funcion:</th>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>Funcion:</b></th>
                         <td>
                             <input type="text" id="Funcion" name="Funcion"
-                                class="form-control input input_select3">
+                                class="form-control input input_select3" placeholder="Ingrese la función del tutor empresarial">
                         </td>
 
                     </tr>
 
                     <tr>
-                        <th>Telefono:</th>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>Teléfono:</b></th>
                         <td>
                             <input type="text" id="TelefonoTutorEmpresarial" name="TelefonoTutorEmpresarial"
-                                class="form-control input input_select3">
+                                class="form-control input input_select3" placeholder="Ingrese 10 dígitos">
                             <div id="errorTelefono" style="color: red;"></div>
                         </td>
 
                     </tr>
 
                     <tr>
-                        <th>Email:</th>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>Email:</b></th>
                         <td>
                             <input type="text" id="EmailTutorEmpresarial" name="EmailTutorEmpresarial"
-                                class="form-control input input_select3">
+                                class="form-control input input_select3" placeholder="Ingrese el correo del tutor empresarial">
                             <div id="errorEmail" style="color: red;"></div>
                         </td>
                     </tr>
 
                     <tr>
-                        <th>Departamento dentro de la empresa:</th>
+                        <th style=" text-transform: uppercase; font-size: 13px; color: rgba(26, 26, 26, 0.753);"><b>Departamento dentro de la empresa:</b></th>
                         <td>
                             <input type="text" id="DepartamentoTutorEmpresarial" name="DepartamentoTutorEmpresarial"
-                                class="form-control input input_select3">
+                                class="form-control input input_select3" placeholder="Ingrese el departamento">
                         </td>
 
                     </tr>

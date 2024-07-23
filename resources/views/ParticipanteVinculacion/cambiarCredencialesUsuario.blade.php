@@ -109,6 +109,8 @@
 
 
     <div>
+        <br>
+        <br>
         <!-- Informacion de perfil -->
         <div class="content_info">
             <div>
@@ -125,33 +127,31 @@
             <form class="form_profile">
                 <div>
                     <label for="firstname_student">Nombres <span class="requerido">*</span></label>
-                    <input type="text" id="firstname_student" class="input" placeholder="Ingrese sus nombres">
+                    <input type="text" id="firstname_student" class=" form-controlinput" placeholder="Ingrese sus nombres">
                 </div>
 
                 <div>
                     <label for="lastname_student">Apellidos <span class="requerido">*</span></label>
-                    <input type="text" id="lastname_student" class="input" placeholder="Ingrese sus apellidos">
+                    <input type="text" id="lastname_student" class=" form-controlinput" placeholder="Ingrese sus apellidos">
                 </div>
-
-
 
                 <div>
                     <label for="race_student">Carrera <span class="requerido">*</span></label>
-                    <select name="race_student" id="race_student" class="input input_select">
+                    <select name="race_student" id="race_student" class=" form-controlinput input_select">
                         <option value="0">Seleccione su carrera</option>
                     </select>
                 </div>
 
                 <div>
                     <label for="departament_student">Departamento <span class="requerido">*</span></label>
-                    <select name="departament_student" id="departament_student" class="input input_select">
+                    <select name="departament_student" id="departament_student" class=" form-controlinput input_select">
                         <option value="0">Seleccione su departamento</option>
                     </select>
                 </div>
 
                 <div>
                     <label for="departament_student">Teléfono <span class="requerido">*</span></label>
-                    <select name="departament_student" id="departament_student" class="input input_select">
+                    <select name="departament_student" id="departament_student" class=" form-controlinput input_select">
                         <option value="0">Ingrese su teléfono</option>
                     </select>
                 </div>
@@ -162,33 +162,48 @@
 
             </form>
         </div>
-    </div>
+</div>
 
-    <!-- Historial de sesiones -->
-    < <table>
-        <thead>
-            <tr>
-                <th>Dispositivo</th>
+    
+</section>
+<br>
+<span class="title_edit_profile"><b>Control de sesiones</b>
+        </span>
+                <hr>
+        
+<!-- Historial de sesiones -->
+<div class="contenedor_tabla"><div class="content_info">
+            <div>
+        
+            <div class="table-container mat-elevation-z8">
+                <div id="tablaProyectos">
+                    <table class="mat-mdc-table">
+                        <thead class="ng-star-inserted">
+                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                <th>DISPOSITIVO</th>
                 <th>IP</th>
-                <th>Hora ingreso</th>
-                <th>Hora salida</th>
-                <th>Ubicación</th>
+                <th>HORA INGRESO</th>
+                <th>HORA SALIDA</th>
+                <th>UBICACIÓN</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($userSessions as $session)
             <tr>
-                <td>{{ $session->user_agent }}</td>
-                <td>{{ $session->ip_address }}</td>
-                <td>{{ $session->start_time }}</td>
-                <td>{{ $session->end_time }}</td>
+                <td style="text-transform: uppercase ; text-align:center" >{{ $session->user_agent }}</td>
+                <td style="text-transform: uppercase ; text-align:center" >{{ $session->ip_address }}</td>
+                <td style="text-transform: uppercase ; text-align:center" >{{ $session->start_time }}</td>
+                <td style="text-transform: uppercase ; text-align:center" >{{ $session->end_time }}</td>
                 <td>{{ $session->locality }}</td>
             </tr>
             @endforeach
         </tbody>
     </table>
+</div>
+</div>
+</div>
+</div>
 
-</section>
 <!--
     <form action="{{ route('admin.updateCredenciales') }}" method="POST">
         @csrf

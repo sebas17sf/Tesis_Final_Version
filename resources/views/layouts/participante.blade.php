@@ -173,7 +173,7 @@
                         <span>Cambiar modulo</span>
                     </a>
                     <a href="{{ route('participante-vinculacion.cambio-credenciales') }}"
-                        class="change_password p-element">
+                        class="change_password ">
                         <i class="fa-regular fa-user"></i>
                         <span>Credenciales</span>
                     </a>

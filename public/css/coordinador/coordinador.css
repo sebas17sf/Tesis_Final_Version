@@ -7,7 +7,7 @@ body, p, td, table {
 
 
 .sidebar {
-    background-image: url('/plantillas/imagenespe.jpg');
+    background-image: url('/img/logos/itin-presencial.png');
     background-size: cover;
     width: 230px;
     position: fixed;

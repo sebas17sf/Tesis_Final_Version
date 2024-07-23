@@ -136,8 +136,8 @@
                                        <th class="tamanio1">ESTUDIANTE</th>
                                     <th>CORREO</th>
                                     <th>TELÉFONO</th>
-                                    <th>NOTA TUTOR EMPRESARIAL 12%</th>
-                                    <th>NOTA TUTOR ACADÉMICO 8%</th>
+                                    <th>NOTA TUTOR EMPRESARIAL 12</th>
+                                    <th>NOTA TUTOR ACADÉMICO 8</th>
                                     <th>ACCIONES</th>
 
                                 </tr>
@@ -189,8 +189,8 @@
                                         <th>ESTUDIANTE</th>
                                     <th>CORREO</th>
                                     <th>CARRERA</th>
-                                    <th>NOTA TUTOR EMPRESARIAL 12%</th>
-                                    <th>NOTA TUTOR ACADÉMICO 8%</th>
+                                    <th>NOTA TUTOR EMPRESARIAL 12</th>
+                                    <th>NOTA TUTOR ACADÉMICO 8</th>
                                     <th>NOTA FINAL</th>
                                     <th>ACCIONES</th>
                                       
