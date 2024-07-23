@@ -242,22 +242,7 @@ function confirmDeleteEstudiante(e) {
     })
 }
 
-function confirmDeleteProject(e) {
-    e.preventDefault();
-    Swal.fire({
-        title: '¿Estás seguro de eliminar el Proyecto?',
-        text: "¡No podrás revertir esto!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#7066e0',
-        cancelButtonColor: '#808080',
-        confirmButtonText: 'Aceptar',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            document.getElementById('deleteProjectForm').submit();
-        }
-    })
-}
+ 
 
 
 

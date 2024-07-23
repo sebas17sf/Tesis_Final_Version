@@ -620,13 +620,7 @@ class AdminController extends Controller
             return redirect()->route('admin.indexProyectos')->with('error', 'No puedes eliminar un proyecto en estado de ejecución');
         }
 
-        // Obtener todas las asignaciones relacionadas con el proyecto
-        $asignaciones = AsignacionProyecto::where('proyectoId', $ProyectoID)->get();
-
-        // Eliminar cada asignación relacionada con el proyecto
-        foreach ($asignaciones as $asignacion) {
-            $asignacion->delete();
-        }
+       
 
         // Eliminar el proyecto
         $proyecto->delete();
