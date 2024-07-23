@@ -45,6 +45,10 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
+
+        $profesoresVerificar = Usuario::where('estado', 'En verificación')
+            ->get();
+
         $perPage = $request->input('perPage', 10);
 
         $validPerPages = [10, 20, 50, 100];
@@ -94,6 +98,9 @@ class AdminController extends Controller
                     'periodos' => $periodos,
                     'search' => $searchTerm,
                     'perPage' => $perPage,
+                    'profesoresVerificar' => $profesoresVerificar,
+
+
 
                 ]);
             }
@@ -613,13 +620,7 @@ class AdminController extends Controller
             return redirect()->route('admin.indexProyectos')->with('error', 'No puedes eliminar un proyecto en estado de ejecución');
         }
 
-        // Obtener todas las asignaciones relacionadas con el proyecto
-        $asignaciones = AsignacionProyecto::where('proyectoId', $ProyectoID)->get();
 
-        // Eliminar cada asignación relacionada con el proyecto
-        foreach ($asignaciones as $asignacion) {
-            $asignacion->delete();
-        }
 
         // Eliminar el proyecto
         $proyecto->delete();

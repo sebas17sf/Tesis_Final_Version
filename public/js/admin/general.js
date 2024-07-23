@@ -242,7 +242,7 @@ function confirmDeleteEstudiante(e) {
     })
 }
 
-function confirmDeleteProject(e) {
+function confirmDeleteProject(e, proyectoId) {
     e.preventDefault();
     Swal.fire({
         title: '¿Estás seguro de eliminar el Proyecto?',
@@ -254,7 +254,7 @@ function confirmDeleteProject(e) {
         confirmButtonText: 'Aceptar',
     }).then((result) => {
         if (result.isConfirmed) {
-            document.getElementById('deleteProjectForm').submit();
+            document.getElementById('deleteProjectForm' + proyectoId).submit();
         }
     })
 }

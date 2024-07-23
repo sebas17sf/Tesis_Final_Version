@@ -33,20 +33,32 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         try {
+            // Validar las credenciales del usuario
             $credentials = $request->validate([
                 'CorreoElectronico' => 'required',
                 'Contrasena' => 'required',
             ]);
 
+            // Buscar el usuario por nombre de usuario
             $user = Usuario::where('nombreUsuario', $credentials['CorreoElectronico'])->first();
 
+            // Verificar las credenciales y el estado del usuario
             if ($user && (password_verify($credentials['Contrasena'], $user->contrasena) || $user->contrasena === $credentials['Contrasena'])) {
+                // Verificar si el usuario está en proceso de verificación
+                if ($user->estado === 'En verificacion') {
+                    return redirect()->route('login')->with('error', 'Su usuario está en proceso de verificación.');
+                }
+
+                // Autenticar al usuario
                 Auth::login($user);
 
+                // Obtener el user agent del usuario
                 $userAgent = $request->userAgent();
 
+                // Generar un identificador único para la sesión
                 $uuid = (string) Str::uuid();
 
+                // Crear una nueva sesión de usuario
                 $session = new UsuariosSession();
                 $session->userId = $user->userId;
                 $session->ip_address = $request->ip();
@@ -56,17 +68,21 @@ class LoginController extends Controller
                 $session->session_id = $uuid;
                 $session->save();
 
+                // Regenerar la sesión para evitar fijación de sesión
                 session()->regenerate();
 
+                // Generar y almacenar el token de la sesión
                 $token = Str::random(60);
                 $encryptedToken = hash('sha256', $token);
                 $user->token = $encryptedToken;
                 $user->save();
 
+                // Establecer cookies para la sesión y el token
                 setcookie('tokensesion', $token, time() + 3600, "/");
                 setcookie('session_uuid', $uuid, time() + 3600, "/"); // Guardar el identificador único en la cookie
                 session(['token' => $encryptedToken]);
 
+                // Redirigir al usuario a la página de módulos
                 return redirect()->route('conectarModulos')->with('token', $encryptedToken);
             } else {
                 throw new \Exception('Las credenciales proporcionadas no coinciden con nuestros registros.');
@@ -75,6 +91,7 @@ class LoginController extends Controller
             return redirect()->route('login')->with('error', $e->getMessage());
         }
     }
+
 
 
 

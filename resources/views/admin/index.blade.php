@@ -45,10 +45,8 @@
     <style>
         .modal-backdrop {
             display: none !important;
-            /* Oculta el fondo oscuro */
         }
 
-        /* Para permitir el movimiento del modal */
         .modal-static {
             position: fixed;
             top: 50%;
@@ -195,6 +193,45 @@
 
             </div>
 
+            <br>
+
+            <div>
+                <span><b>Aceptar Docentes.</b></span>
+            </div>
+
+            <br>
+
+
+            <div class="contenedor_tabla">
+                <div class="table-container mat-elevation-z8">
+                    <table class="mat-mdc-table">
+                        <thead class="ng-star-inserted">
+                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                <th>Nombres</th>
+                                <th>ESPE ID</th>
+                                <th>Correo</th>
+                                <th>Departamento</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($profesoresVerificar as $docente)
+                                <tr>
+                                    <td>{{ $docente->profesorUniversidad->apellidos }} {{ $docente->profesorUniversidad->nombres }}</td>
+                                    <td>{{ $docente->profesorUniversidad->espeId }}</td>
+                                    <td>{{ $docente->correoElectronico }}</td>
+                                    <td>{{ $docente->profesorUniversidad->departamento }}</td>
+                                    <td>{{ $docente->estado }}</td>
+                            @endforeach
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+
         </section>
 
 
@@ -213,7 +250,8 @@
             </form>
 
             <button type="button" class="button1 mr-2" onclick="openCard('draggableCardNRC');">Agregar NRC</button>
-            <button type="button" class="button1 mr-2" onclick="openCard('draggableCardPeriodo');">Agregar Periodo</button>
+            <button type="button" class="button1 mr-2" onclick="openCard('draggableCardPeriodo');">Agregar
+                Periodo</button>
             <button type="button" class="button1 mr-2" onclick="openCard('draggableCardEditarPeriodo');">Editar
                 Periodo</button>
 
@@ -366,10 +404,9 @@
                                                 No hay estudiantes en proceso de revisión.</td>
                                         </tr>
                                     @else
-                                    @foreach ($profesores as $index => $profesor)
-                                    <tr>
-                                                <td
-                                                    style="text-align: center;">
+                                        @foreach ($profesores as $index => $profesor)
+                                            <tr>
+                                                <td style="text-align: center;">
                                                     {{ ($profesores->currentPage() - 1) * $profesores->perPage() + $index + 1 }}
 
                                                 </td>

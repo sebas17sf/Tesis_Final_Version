@@ -231,15 +231,20 @@
                                                             <i class="bx bx-edit-alt"></i>
                                                         </a>
                                                     </div>
-                                                    <form class="btn-group shadow-1" id="deleteProjectForm"
+                                                    <form class="btn-group shadow-1"
+                                                        id="deleteProjectForm{{ $proyecto->proyectoId }}"
                                                         action="{{ route('admin.deleteProyecto', ['ProyectoID' => $proyecto->proyectoId]) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')
+                                                        <input type="hidden" name="proyectoId"
+                                                            value="{{ $proyecto->proyectoId }}">
                                                         <button type="submit" class="button3 efects_button btn_eliminar3"
-                                                            onclick="confirmDeleteProject(event)"><i
-                                                                class='bx bx-trash'></i></button>
+                                                            onclick="confirmDeleteProject(event, '{{ $proyecto->proyectoId }}')">
+                                                            <i class='bx bx-trash'></i>
+                                                        </button>
                                                     </form>
+
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -1141,6 +1146,8 @@
             const alert = document.getElementById(alertId);
             alert.style.display = 'none';
         }
+
+
     </script>
 
     <script>
