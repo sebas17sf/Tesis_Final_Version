@@ -114,7 +114,7 @@
 
     <div class="mt-4">
         <h4><b>Actividades Registradas</b></h4>
-        <div class="mat-elevation-z8 ">
+        <div class="mat-elevation-z8 contenedor_general">
             <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                 <div class="contenedor_botones">
                     <!-- Botones -->
@@ -135,7 +135,7 @@
                         <thead class="ng-star-inserted">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                 <th>FECHA</th>
-                                <th class="tamanio" style="width: 161px !important; min-width:200px !important;">ACTIVIDADES</th>
+                                <th style="width: 161px !important; min-width:200px !important;">ACTIVIDADES</th>
                                 <th>NÚMERO DE HORAS</th>
                                 <th>NOMBRE DE ACTIVIDAD</th>
                                 <th>EVIDENCIAS</th>
@@ -387,7 +387,7 @@
             min-width: 150px;
             font-size: 11px !important;
             padding: .5rem !important;
-
+            
         }
 
     </style>

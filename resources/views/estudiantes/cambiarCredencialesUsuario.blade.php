@@ -114,7 +114,10 @@
         </div>
 
 
+
         <div>
+        <br>
+        <br>
             <!-- Informacion de perfil -->
             <div class="content_info">
                 <div>
@@ -136,19 +139,19 @@
 
                     <div>
                         <label for="firstname_student">Nombres <span class="requerido">*</span></label>
-                        <input type="text" id="firstname_student" name="firstname_student" class="input"
+                        <input type="text" id="firstname_student" name="firstname_student" class="form-control form-control input"
                             placeholder="Ingrese sus nombres" value="{{ $estudiante->nombres ?? '' }}" required>
                     </div>
 
                     <div>
                         <label for="lastname_student">Apellidos <span class="requerido">*</span></label>
-                        <input type="text" id="lastname_student" name="lastname_student" class="input"
+                        <input type="text" id="lastname_student" name="lastname_student" class=" form-control input"
                             placeholder="Ingrese sus apellidos" value="{{ $estudiante->apellidos ?? '' }}" required>
                     </div>
 
                     <div>
                         <label for="cohorte_student">Cohorte <span class="requerido">*</span></label>
-                        <input type="text" class="form-control input" id="Cohorte" name="Cohorte" readonly
+                        <input type="text" class="form-control input " id="Cohorte" name="Cohorte" readonly
                             value="{{ old('Cohorte', $estudiante->Cohorte ?? '') }}">
                     </div>
 
@@ -204,37 +207,48 @@
                     </div>
 
                 </form>
-            </div>
-        </div>
+                </div>
+</div>
 
-        <!-- Historial de sesiones -->
-        <table>
-            <thead>
-                <tr>
-                    <th>Dispositivo</th>
-                    <th>IP</th>
-                    <th>Hora ingreso</th>
-                    <th>Hora salida</th>
-                    <th>Ubicación</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($userSessions as $session)
-                <tr>
-                    <td>{{ $session->user_agent }}</td>
-                    <td>{{ $session->ip_address }}</td>
-                    <td>{{ $session->start_time }}</td>
-                    <td>{{ $session->end_time }}</td>
-                    <td>{{ $session->locality }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-
-        </div>
-
-    </section>
+    
+</section>
+<br>
+<span class="title_edit_profile"><b>Control de sesiones</b>
+        </span>
+                <hr>
+        
+<!-- Historial de sesiones -->
+<div class="contenedor_tabla"><div class="content_info">
+            <div>
+        
+            <div class="table-container mat-elevation-z8">
+                <div id="tablaProyectos">
+                    <table class="mat-mdc-table">
+                        <thead class="ng-star-inserted">
+                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                <th>DISPOSITIVO</th>
+                <th>IP</th>
+                <th>HORA INGRESO</th>
+                <th>HORA SALIDA</th>
+                <th>UBICACIÓN</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($userSessions as $session)
+            <tr>
+                <td style="text-transform: uppercase ; text-align:center" >{{ $session->user_agent }}</td>
+                <td style="text-transform: uppercase ; text-align:center" >{{ $session->ip_address }}</td>
+                <td style="text-transform: uppercase ; text-align:center" >{{ $session->start_time }}</td>
+                <td style="text-transform: uppercase ; text-align:center" >{{ $session->end_time }}</td>
+                <td>{{ $session->locality }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
+</div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
