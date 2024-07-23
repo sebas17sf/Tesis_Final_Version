@@ -22,7 +22,8 @@
                 <div class="switch_circle switch_circle_t3"></div>
 
                 <div class="button_container_login">
-                    <a href="{{ route('login') }}" class="boton_login button1" type="button" id="toggleButton2"><i class="fa-regular fa-angles-left"></i> Inicia sesión</a>
+                    <a href="{{ route('login') }}" class="boton_login button1" type="button" id="toggleButton2"><i
+                            class="fa-regular fa-angles-left"></i> Inicia sesión</a>
                 </div>
 
                 <div class="text-center">
@@ -40,19 +41,22 @@
                 </div>
 
                 <!-- Formulario para Estudiantes -->
-                <form class="switch_container mt-4" id="form-estudiante" method="POST" action="{{ route('register') }}" style="display: none;">
+                <form class="switch_container mt-4" id="form-estudiante" method="POST" action="{{ route('register') }}"
+                    style="display: none;">
                     @csrf
                     <div class="contenedor_inputs">
                         <div>
                             <label class="description" for="cedula">Cédula estudiante:</label>
-                            <input type="text" class="input form_input" id="cedula" name="cedula" placeholder="Ingrese su cédula" required>
+                            <input type="text" class="input form_input" id="cedula" name="cedula"
+                                placeholder="Ingrese su cédula" required>
                             @error('cedula')
-                            <small class="form-text text-danger">{{ $message }}</small>
+                                <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div>
                             <label class="description" for="cedula">Repetir Cédula:</label>
-                            <input type="text" class="input form_input" id="cedula_confirmation" name="cedula_confirmation" placeholder="Repita su cédula" required>
+                            <input type="text" class="input form_input" id="cedula_confirmation"
+                                name="cedula_confirmation" placeholder="Repita su cédula" required>
                         </div>
                     </div>
                     <div class="btn_contenedor_register">
@@ -61,19 +65,22 @@
                 </form>
 
                 <!-- Formulario para Docentes -->
-                <form class="switch_container mt-4" id="form-docente" method="POST" action="{{ route('ParticipanteVinculacion.create') }}" style="display: none;">
+                <form class="switch_container mt-4" id="form-docente" method="POST"
+                    action="{{ route('ParticipanteVinculacion.comprobar') }}" style="display: none;">
                     @csrf
                     <div class="contenedor_inputs">
                         <div>
                             <label class="description" for="cedula_docente">Cédula docente:</label>
-                            <input type="text" class="input form_input" id="cedula_docente" name="cedula_docente" placeholder="Ingrese su cédula" required>
+                            <input type="text" class="input form_input" id="cedula_docente" name="cedula_docente"
+                                placeholder="Ingrese su cédula" required>
                             @error('cedula_docente')
-                            <small class="form-text text-danger">{{ $message }}</small>
+                                <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div>
                             <label class="description" for="cedula_docente">Repetir Cédula:</label>
-                            <input type="text" class="input form_input" id="cedula_docente_confirmation" name="cedula_docente_confirmation" placeholder="Repita su cédula" required>
+                            <input type="text" class="input form_input" id="cedula_docente_confirmation"
+                                name="cedula_docente_confirmation" placeholder="Repita su cédula" required>
                         </div>
                     </div>
                     <div class="btn_contenedor_register">
@@ -88,23 +95,40 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('#btn-estudiante').on('click', function () {
+        $(document).ready(function() {
+            // Función para mostrar el formulario de estudiante
+            function showEstudianteForm() {
                 $('#form-estudiante').show();
                 $('#form-docente').hide();
-                $(this).addClass('active');
+                $('#btn-estudiante').addClass('active');
                 $('#btn-docente').removeClass('active');
-            });
+            }
 
-            $('#btn-docente').on('click', function () {
+            // Función para mostrar el formulario de docente
+            function showDocenteForm() {
                 $('#form-estudiante').hide();
                 $('#form-docente').show();
-                $(this).addClass('active');
+                $('#btn-docente').addClass('active');
                 $('#btn-estudiante').removeClass('active');
+            }
+
+            $('#btn-estudiante').on('click', function() {
+                showEstudianteForm();
+                localStorage.setItem('selectedForm', 'estudiante');
             });
 
-            // Muestra el formulario de estudiante al cargar la página
-            $('#form-estudiante').show();
+            $('#btn-docente').on('click', function() {
+                showDocenteForm();
+                localStorage.setItem('selectedForm', 'docente');
+            });
+
+            // Verifica la selección guardada al cargar la página
+            if (localStorage.getItem('selectedForm') === 'docente') {
+                showDocenteForm();
+            } else {
+                // Por defecto, muestra el formulario de estudiante
+                showEstudianteForm();
+            }
         });
     </script>
 </body>

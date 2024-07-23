@@ -53,7 +53,12 @@ Route::post('/toggle-menu', [MenuController::class, 'toggleMenuState'])->name('t
 
 Route::get('/estudiantes/create', [EstudianteController::class, 'create'])->name('estudiantes.create');
 
-Route::post('/ParticipanteVinculacion/create', [AuthController::class, 'registerDocente'])->name('ParticipanteVinculacion.create');
+Route::get('/docente/registro', [AuthController::class, 'mostrarRegistroDocente'])->name('ParticipanteVinculacion.create');
+
+Route::post('/docente/create', [AuthController::class, 'registerDocente'])->name('ParticipanteVinculacion.comprobar');
+
+Route::post('/docente/envio-registro', [AuthController::class, 'guadarRegistroDocente'])->name('ParticipanteVinculacion.register');
+
 
 
 //////Protecion para los accesos importantes
