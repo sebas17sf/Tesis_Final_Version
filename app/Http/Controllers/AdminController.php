@@ -1593,6 +1593,43 @@ class AdminController extends Controller
     }
 
 
+    public function aceptarDocente(Request $request, $id)
+    {
+        $docente = Usuario::find($id);
+
+        if (!$docente) {
+            return redirect()->back()->with('error', 'Docente no encontrado.');
+        }
+
+
+        $docente->estado = 'activo';
+        $docente->save();
+
+        return redirect()->route('admin.index')->with('success', 'Permisos del docente aceptados correctamente.');
+    }
+
+    public function rechazarDocente(Request $request, $id)
+    {
+        $profesor = ProfesUniversidad::where('userId', $id)->first();
+        if ($profesor) {
+            $profesor->delete();
+        }
+
+        $docente = Usuario::find($id);
+
+        if (!$docente) {
+            return redirect()->back()->with('error', 'Docente no encontrado.');
+        }
+
+        $docente->delete();
+
+
+
+
+        return redirect()->route('admin.index')->with('success', 'Docente rechazado correctamente.');
+    }
+
+
 
 
 

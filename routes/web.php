@@ -103,6 +103,8 @@ Route::middleware(['auth'])->group(function () {
     ///ruta para crear un proyecto
     Route::get('/admin/agregar-proyecto', [AdminController::class, 'crearProyectoForm'])->name('admin.agregarProyecto');
     Route::post('/admin/agregar-proyecto', [AdminController::class, 'crearProyecto'])->name('admin.crearProyecto');
+    Route::put('/admin/docente/aceptar/{id}', [AdminController::class, 'aceptarDocente'])->name('admin.aceptarDocente');
+    Route::put('/admin/docente/rechazar/{id}', [AdminController::class, 'rechazarDocente'])->name('admin.rechazarDocente');
     ///editar proyecto
 // Rutas para editar proyectos y eliminar
     Route::get('/admin/proyectos/{ProyectoID}/edit', [AdminController::class, 'editProyectoForm'])->name('admin.editarProyecto');

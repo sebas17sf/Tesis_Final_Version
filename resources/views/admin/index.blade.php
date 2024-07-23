@@ -216,15 +216,39 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($profesoresVerificar as $docente)
+                            @forelse ($profesoresVerificar as $docente)
                                 <tr>
-                                    <td>{{ $docente->profesorUniversidad->apellidos }} {{ $docente->profesorUniversidad->nombres }}</td>
+                                    <td>{{ $docente->profesorUniversidad->apellidos }}
+                                        {{ $docente->profesorUniversidad->nombres }}</td>
                                     <td>{{ $docente->profesorUniversidad->espeId }}</td>
                                     <td>{{ $docente->correoElectronico }}</td>
                                     <td>{{ $docente->profesorUniversidad->departamento }}</td>
                                     <td>{{ $docente->estado }}</td>
-                            @endforeach
+                                    <td>
+                                        <form action="{{ route('admin.aceptarDocente', ['id' => $docente->userId]) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="button3 efects_button btn_editar3">
+                                                <i class="bx bx-check"></i>
+                                            </button>
+                                        </form>
 
+                                        <form action="{{ route('admin.rechazarDocente', ['id' => $docente->userId]) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="button3 efects_button btn_eliminar3">
+                                                <i class="bx bx-x"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6">No existen Docentes a verificar.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
 
