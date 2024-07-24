@@ -29,29 +29,15 @@ class DirectorVinculacionController extends Controller
 {
     public function index(Request $request)
     {
-        $correoDirector = Auth::user()->correoElectronico;
-        $Director = ProfesUniversidad::where('correo', $correoDirector)->first();
-        $proyectosEjecucion = null;
-        $proyectosTerminados = null;
+        $profesor = Auth::user()->profesorUniversidad;
+        $proyectos = Proyecto::where('directorId', $profesor->id)->get();
+         $asignacionesProyectos = AsignacionProyecto::whereHas('proyecto', function ($query) use ($profesor) {
+            $query->where('directorId', $profesor->id);
+        })->get();
 
-        $elementosPorPaginaTerminados = $request->input('elementosPorPaginaTerminados', 10);
+        return view('director_vinculacion.index', compact('proyectos', 'asignacionesProyectos'));
 
-        if ($Director) {
-            $DirectorID = $Director->id;
-
-            // Obtener proyectos de asignación del director en ejecución
-
-            $proyectosEjecucion = Proyecto::where('directorId', $DirectorID)
-                ->where('estado', 'Ejecucion')
-                ->get();
-
-            // Obtener proyectos terminados con paginación
-            $proyectosTerminados = Proyecto::where('directorId', $DirectorID)
-                ->paginate($elementosPorPaginaTerminados);
-        }
-
-        return view('director_vinculacion.index', compact('proyectosEjecucion', 'proyectosTerminados', 'elementosPorPaginaTerminados'));
-    }
+     }
 
 
     ////////////funcion para repartir los estudiantes
