@@ -56,6 +56,8 @@ class AdminController extends Controller
             $perPage = 10;
         }
 
+
+
         if (Auth::check()) {
             $user = Auth::user();
             $role = Role::find($user->role_id);
@@ -77,7 +79,10 @@ class AdminController extends Controller
                     });
                 }
 
+                $estadoProfesores = ProfesUniversidad::with('usuarios')->get();
+
                 $profesores = $query->paginate($perPage);
+
 
                 $periodos = Periodo::all();
                 $profesorRoleId = Role::where('tipo', 'Vinculacion')->value('id');
@@ -99,6 +104,7 @@ class AdminController extends Controller
                     'search' => $searchTerm,
                     'perPage' => $perPage,
                     'profesoresVerificar' => $profesoresVerificar,
+                    'estadoProfesores' => $estadoProfesores,
 
 
 

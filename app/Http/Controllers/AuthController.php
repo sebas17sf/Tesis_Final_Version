@@ -57,64 +57,125 @@ class AuthController extends Controller
     {
         return view('ParticipanteVinculacion.create');
     }
-
     public function registerDocente(Request $request)
     {
         $validatedData = $request->validate([
-            'cedula_docente' => 'required',
+            'cedula_docente' => 'required|string|max:20',
         ]);
 
         $estudiante = Estudiante::where('cedula', $request->cedula_docente)->first();
         if ($estudiante) {
-            return back()->withErrors(['cedula_docente' => 'Cédula registrada como estudiante.']);
+            return back()
+                ->withErrors(['cedula_docente' => 'Cédula registrada como estudiante.'])
+                ->withInput();
         }
 
         $docente = ProfesUniversidad::where('cedula', $request->cedula_docente)->first();
+
         if ($docente) {
-            return back()->withErrors(['cedula_docente' => 'Docente ya registrado.']);
+            return redirect()->route('ParticipanteVinculacion.create', ['id' => $docente->id])
+                ->with('docente', $docente);
         } else {
             return redirect()->route('ParticipanteVinculacion.create', ['cedula' => $request->cedula_docente]);
         }
     }
 
 
-    /////guardar registro de docente
+
+
     public function guadarRegistroDocente(Request $request)
     {
+        // Validar los datos del formulario
         $validatedData = $request->validate([
             'nombres' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
-            'correo' => 'required|string|email|max:255|unique:usuarios,correoElectronico',
-            'cedula' => 'required|string|max:20|unique:profesuniversidad,cedula',
-            'espe_id' => 'required|string|max:50|unique:profesuniversidad,espeId',
+            'correo' => 'required|string|email',
+            'cedula' => 'required|string|max:20',
+            'espe_id' => 'required|string|max:50',
             'departamento' => 'required|string|max:255',
         ]);
 
         $correoUsuario = explode("@", $validatedData['correo'])[0];
 
-        $rol = Role::where('tipo', 'ParticipanteVinculacion')->first();
+        $docente = ProfesUniversidad::where('cedula', $validatedData['cedula'])->first();
 
+        if ($docente) {
+            // Buscar o crear el usuario asociado al docente
+            $usuario = Usuario::where('correoElectronico', $validatedData['correo'])->first();
 
-        $usuario = new Usuario();
-        $usuario->nombreUsuario = $correoUsuario;
-        $usuario->correoElectronico = $validatedData['correo'];
-        $usuario->contrasena = bcrypt($validatedData['cedula']);
-        $usuario->role_id = $rol->id;
-        $usuario->estado = 'En verificacion';
-        $usuario->save();
+            if (!$usuario) {
+                $rol = Role::where('tipo', 'ParticipanteVinculacion')->first();
+                $usuario = new Usuario();
+                $usuario->nombreUsuario = $correoUsuario;
+                $usuario->correoElectronico = $validatedData['correo'];
+                $usuario->contrasena = bcrypt($validatedData['cedula']);
+                $usuario->role_id = $rol->id;
+                $usuario->estado = 'activo';
+                $usuario->save();
 
-        $docente = new ProfesUniversidad();
-        $docente->nombres = $validatedData['nombres'];
-        $docente->apellidos = $validatedData['apellidos'];
-        $docente->correo = $validatedData['correo'];
-        $docente->cedula = $validatedData['cedula'];
-        $docente->espeId = $validatedData['espe_id'];
-        $docente->usuario = $correoUsuario;
-        $docente->departamento = $validatedData['departamento'];
-        $docente->userId = $usuario->id;
-        $docente->save();
+                // Asignar el nuevo usuario al docente
+                $docente->userId = $usuario->id;
+            } else {
+                $rol = Role::where('tipo', 'ParticipanteVinculacion')->first();
+                $usuario->nombreUsuario = $correoUsuario;
+                $usuario->correoElectronico = $validatedData['correo'];
+                $usuario->estado = 'activo';
+                $usuario->role_id = $rol->id;
+                $usuario->save();
+            }
 
-        return redirect()->route('login')->with('success', 'Docente registrado exitosamente. Por favor, inicie sesión.');
+            // Actualizar el docente
+            $docente->nombres = $validatedData['nombres'];
+            $docente->apellidos = $validatedData['apellidos'];
+            $docente->correo = $validatedData['correo'];
+            $docente->espeId = $validatedData['espe_id'];
+            $docente->departamento = $validatedData['departamento'];
+            $docente->userId = $usuario->userId;
+            $docente->save();
+
+            $message = 'Docente actualizado exitosamente.';
+        } else {
+            // Crear nuevo usuario y docente
+            $rol = Role::where('tipo', 'ParticipanteVinculacion')->first();
+
+            $usuario = Usuario::where('correoElectronico', $validatedData['correo'])->first();
+            if (!$usuario) {
+                $usuario = new Usuario();
+                $usuario->nombreUsuario = $correoUsuario;
+                $usuario->correoElectronico = $validatedData['correo'];
+                $usuario->contrasena = bcrypt($validatedData['cedula']);
+                $usuario->role_id = $rol->id;
+                $usuario->estado = 'En verificacion';
+                $usuario->save();
+            } else {
+                $usuario->nombreUsuario = $correoUsuario;
+                $usuario->correoElectronico = $validatedData['correo'];
+                $usuario->contrasena = bcrypt($validatedData['cedula']);
+                $usuario->role_id = $rol->id;
+                $usuario->estado = 'En verificacion';
+                $usuario->save();
+            }
+
+            $docente = new ProfesUniversidad();
+            $docente->nombres = $validatedData['nombres'];
+            $docente->apellidos = $validatedData['apellidos'];
+            $docente->correo = $validatedData['correo'];
+            $docente->cedula = $validatedData['cedula'];
+            $docente->espeId = $validatedData['espe_id'];
+            $docente->usuario = $correoUsuario;
+            $docente->departamento = $validatedData['departamento'];
+            $docente->userId = $usuario->id;
+            $docente->save();
+
+            $message = 'Docente registrado exitosamente. Pronto será verificado.';
+        }
+
+        return redirect()->route('login')->with('success', $message);
     }
+
+
+
+
+
 
 }
