@@ -297,6 +297,7 @@ class AdminController extends Controller
 
         $periodos = Periodo::all();
 
+        
         $nrcs = NrcVinculacion::where('tipo', 'Vinculacion')->get();
 
 
@@ -840,7 +841,7 @@ class AdminController extends Controller
         }
     }
 
-
+//////////////////////////////guardar periodo
     public function guardarPeriodo(Request $request)
     {
         $request->validate([
@@ -854,12 +855,10 @@ class AdminController extends Controller
             'numeroPeriodo.unique' => 'El codigo de período ya existe.',
         ]);
 
-
-
         $periodoExistente = Periodo::where('numeroPeriodo', $request->numeroPeriodo)->first();
 
         if ($periodoExistente) {
-            return redirect()->route('admin.index')->with('error', 'El período ingresado ya existe.');
+            return back()->with('error', 'El período ingresado ya existe.');
         }
 
         $fechaInicio = \Carbon\Carbon::parse($request->periodoInicio);
@@ -877,8 +876,10 @@ class AdminController extends Controller
             'numeroPeriodo' => $request->numeroPeriodo,
         ]);
 
-        return redirect()->route('admin.index')->with('success', 'Periodo académico creado.');
+        return back()->with('success', 'Periodo académico creado.');
     }
+
+
 
     public function editarPeriodo($id)
     {
@@ -892,13 +893,14 @@ class AdminController extends Controller
         return view('admin.editarPeriodo', compact('periodo'));
     }
 
+    /////////////////////////editar periodo////////////////////////
+
     public function actualizarPeriodo(Request $request, $id)
     {
-        // Validación de datos
-        $request->validate([
+         $request->validate([
             'periodoInicio' => 'required|date',
             'periodoFin' => 'required|date|after:periodoInicio',
-            'numeroPeriodo' => 'unique:periodo|required',
+            'numeroPeriodo' => ' required',
         ], [
             'periodoInicio.required' => 'La fecha de inicio del período es requerida.',
             'periodoFin.required' => 'La fecha de fin del período es requerida.',
@@ -916,14 +918,14 @@ class AdminController extends Controller
 
         $periodo = Periodo::find($id);
 
-        $periodoExistente = Periodo::where('numeroPeriodo', $request->numeroPeriodo)->first();
-
-        if ($periodoExistente) {
-            return redirect()->route('admin.index')->with('error', 'El codigo de período ingresado ya existe.');
+        if (!$periodo) {
+            return back()->with('error', 'El período académico no existe.');
         }
 
-        if (!$periodo) {
-            return redirect()->route('admin.index')->with('error', 'El período académico no existe.');
+        $periodoExistente = Periodo::where('numeroPeriodo', $request->numeroPeriodo)->first();
+
+        if ($periodoExistente && $periodoExistente->id != $id) {
+            return back()->with('error', 'El codigo de período ingresado ya existe.');
         }
 
         $periodo->periodo = $periodoAcademico;
@@ -932,8 +934,9 @@ class AdminController extends Controller
         $periodo->numeroPeriodo = $request->numeroPeriodo;
         $periodo->save();
 
-        return redirect()->route('admin.index')->with('success', 'Período académico actualizado.');
+        return back()->with('success', 'Período académico actualizado.');
     }
+
 
 
     public function eliminarPeriodo(Request $request, $id)
@@ -1463,7 +1466,7 @@ class AdminController extends Controller
 
 
 
-    ///////agregar nrc
+    ///////////////////////////////guardar NRC/////////////////////////////
     public function GuardarNRC(Request $request)
     {
         $request->validate([
@@ -1485,7 +1488,7 @@ class AdminController extends Controller
             'tipo' => $request->tipo,
         ]);
 
-        return redirect()->route('admin.index')->with('success', 'NRC guardado.');
+        return back()->with('success', 'NRC guardado.');
     }
 
 
