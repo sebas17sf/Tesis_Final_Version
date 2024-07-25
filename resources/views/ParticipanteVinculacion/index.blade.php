@@ -52,9 +52,78 @@
                         </button>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
+            <!-- Botón para abrir el card de filtros -->
+            <div class="tooltip-container">
+                                <span class="tooltip-text">Filtros</span>
+                                <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCard');">
+                                    <i class="fa-solid fa-filter-list"></i>
+                                </button>
+                            </div>
+
+                            <!-- Card de Filtros -->
+                            <div class="draggable-card1_2" id="filtersCard" style="display: none;">
+                                <div class="card-header">
+                                    <span class="card-title">Filtros</span>
+                                    <button type="button" class="close" onclick="closeCard('filtersCard')"><i
+                                            class="fa-thin fa-xmark"></i></button>
+                                </div>
+                                <div class="card-body">
+                                    <form id="filtersForm" method="GET" action="{{ route('admin.indexProyectos') }}">
+                                        <div class="form-group">
+                                            <label for="estado" class="mr-2">Estado del Proyecto:</label>
+                                            <select name="estado" id="estado"
+                                                class="form-control input input_select">
+                                                <option value="">Todos</option>
+                                                <option value="Ejecucion"
+                                                    {{ request('estado') == 'Ejecucion' ? 'selected' : '' }}>En Ejecución
+                                                </option>
+                                                <option value="Terminado"
+                                                    {{ request('estado') == 'Terminado' ? 'selected' : '' }}>Terminado
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="departamento" class="mr-2">Departamento:</label>
+                                            <select name="departamento" id="departamento"
+                                                class="form-control input input_select">
+                                                <option value="">Todos</option>
+                                                <option value="Ciencias de la Computación"
+                                                    {{ request('departamento') == 'Ciencias de la Computación' ? 'selected' : '' }}>
+                                                    Ciencias de la Computación</option>
+                                                <option value="Ciencias Exactas"
+                                                    {{ request('departamento') == 'Ciencias Exactas' ? 'selected' : '' }}>
+                                                    Ciencias Exactas</option>
+                                                <option value="Ciencias de la Vida y Agricultura"
+                                                    {{ request('departamento') == 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>
+                                                    Ciencias de la Vida y Agricultura</option>
+                                            </select>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- Botón de Eliminar Filtros -->
+                            <div class="tooltip-container">
+                                <span class="tooltip-text">Eliminar Filtros</span>
+                                <button class="button3 efects_button btn_delete_filter" onclick="resetFilters()">
+                                    <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+                                </button>
+                            </div>
+                        </div>
+                    
+        
+        <div class="contenedor_buscador">
+                        <div>
+                            <form id="">
+                                <input type="text" class="input" name="search" value=""
+                                    matInput placeholder="Buscar ...">
+                                <i class='bx bx-search-alt'></i>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
     <br>
     
     <div class="contenedor_tabla">
