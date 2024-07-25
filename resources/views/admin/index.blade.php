@@ -101,7 +101,7 @@
                     <table class="mat-mdc-table">
                         <thead class="ng-star-inserted">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                            <th>N°</th>  
+                            <th>N°</th>    
                             <th>DOCENTE</th>
                                 <th>ESPE ID</th>
                                 <th>CORREO</th>
@@ -113,10 +113,6 @@
                         <tbody>
                             @forelse ($profesoresVerificar as $docente)
                                 <tr>
-                                <td style="text-align: center;">
-                                                    {{ ($profesores->currentPage() - 1) * $profesores->perPage() + $index + 1 }}
-
-                                                </td>
                                     <td>{{ $docente->profesorUniversidad->apellidos }}
                                         {{ $docente->profesorUniversidad->nombres }}</td>
                                     <td>{{ $docente->profesorUniversidad->espeId }}</td>
