@@ -101,8 +101,13 @@
                     <table class="mat-mdc-table">
                         <thead class="ng-star-inserted">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+<<<<<<< HEAD
                                 <th>N°</th>
                                 <th>DOCENTE</th>
+=======
+                            <th>N°</th>
+                            <th>DOCENTE</th>
+>>>>>>> c8332c4d54e8bc6ff87d8902358b767ef225fda7
                                 <th>ESPE ID</th>
                                 <th>CORREO</th>
                                 <th>DEPARTAMENTO</th>
