@@ -66,29 +66,47 @@
         </script>
     @endif
 
-    <br>
+    
     <section class="contenedor_agregar_periodo">
+        <br>
         <section>
+        <div class="d-flex  justify-content-center">
 
+<form action="{{ route('admin.reportesSesiones') }}" method="POST" class="mr-2">
+    @csrf
+    <button type="submit" class="button1">Historial sesiones usuarios</button>
+</form>
 
+<form action="{{ route('admin.respaldo') }}" method="POST" class="mr-2">
+    @csrf
+    <button type="submit" class="button1">Respaldar Base de Datos</button>
+</form>
+
+<button type="button" class="button1 mr-2" onclick="openCard('draggableCardNRC');">Agregar NRC</button>
+<button type="button" class="button1 mr-2" onclick="openCard('draggableCardPeriodo');">Agregar
+    Periodo</button>
+<button type="button" class="button1 mr-2" onclick="openCard('draggableCardEditarPeriodo');">Editar
+    Periodo</button>
+
+</div>
+<br>
             <div>
-                <span><b>Aceptar Docentes.</b></span>
+                <span><b>Docentes por aceptar</b></span>
             </div>
-
-            <br>
-
+            
+<hr style="padding:2px; 0px 2px">
 
             <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
                     <table class="mat-mdc-table">
                         <thead class="ng-star-inserted">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                <th>Nombres</th>
+                                <th>DOCENTE</th>
                                 <th>ESPE ID</th>
-                                <th>Correo</th>
-                                <th>Departamento</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
+                                <th>CORREO</th>
+                                <th>DEPARTAMENTO</th>
+                                <th>ESTADO</th>
+                                <th>ACCIONES</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -121,9 +139,10 @@
                                     </td>
                                 </tr>
                             @empty
-                                <tr>
-                                    <td colspan="6">No existen Docentes a verificar.</td>
-                                </tr>
+                            <tr style="text-align:center">
+                                            <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">
+                                                No hay docentes pendientes por aceptar.</td>
+                                        </tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -133,40 +152,16 @@
 
 
         </section>
-
-
-
-        <br>
-        <div class="d-flex  justify-content-center">
-
-            <form action="{{ route('admin.reportesSesiones') }}" method="POST" class="mr-2">
-                @csrf
-                <button type="submit" class="button1">Historial sesiones usuarios</button>
-            </form>
-
-            <form action="{{ route('admin.respaldo') }}" method="POST" class="mr-2">
-                @csrf
-                <button type="submit" class="button1">Respaldar Base de Datos</button>
-            </form>
-
-            <button type="button" class="button1 mr-2" onclick="openCard('draggableCardNRC');">Agregar NRC</button>
-            <button type="button" class="button1 mr-2" onclick="openCard('draggableCardPeriodo');">Agregar
-                Periodo</button>
-            <button type="button" class="button1 mr-2" onclick="openCard('draggableCardEditarPeriodo');">Editar
-                Periodo</button>
-
-        </div>
-        <br>
+<br>
         <section>
             <!-- Archivos de notas -->
 
             <div>
-                <span><b>Docentes participantes y directores.</b></span>
-
-
-
+                <span><b>Docentes registrados</b></span>
             </div>
-            <br>
+
+            <hr>
+            
             <!-- Tarjeta movible para Agregar Maestro -->
             <div class="draggable-card1_1" id="draggableCardAgregarMaestro">
                 <div class="card-header">
