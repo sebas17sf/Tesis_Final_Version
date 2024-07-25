@@ -212,7 +212,78 @@
                                 </form>
                             </div>
                         </div>
-                    </div>
+                        <!-- Botón de Filtros para Profesores y Periodos -->
+                        <div class="tooltip-container">
+                                    <span class="tooltip-text">Filtros</span>
+                                    <button class="button3 efects_button btn_filtro"
+                                        onclick="openCard('filtersCardProfesores');">
+                                        <i class="fa-solid fa-filter-list"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Card de Filtros para Profesores y Periodos -->
+                                <div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
+                                    <div class="card-header">
+                                        <span class="card-title">Filtros Profesores y Periodos</span>
+                                        <button type="button" class="close"
+                                            onclick="closeCard('filtersCardProfesores')"><i
+                                                class="fa-thin fa-xmark"></i></button>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="filterFormProfesores" method="GET"
+                                            action="{{ route('admin.indexProyectos') }}">
+                                            <div class="form-group">
+                                                <label for="profesor">Profesor</label>
+                                                <select name="profesor" id="profesor"
+                                                    class="form-control input input_select">
+                                                    <option value="">Todos los docentes</option>
+                                                   
+                                                        <option value="#">
+                                                         
+                                                        </option>
+                                                 
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="periodos">Períodos</label>
+                                                <select name="periodos" id="periodos"
+                                                    class="form-control input input_select">
+                                                    <option value="">Todos los periodos</option>
+                                                    @foreach ($periodos as $periodo)
+                                                        <option value="{{ $periodo->id }}"
+                                                            {{ request('periodos') == $periodo->id ? 'selected' : '' }}>
+                                                            {{ $periodo->numeroPeriodo }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="fechaInicio">Fecha inicio</label>
+                                                <input type="date" class="input" name="fechaInicio"
+                                                    id="fechaInicio">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="fechaFin">Fecha Fin</label>
+                                                <input type="date" class="input" name="fechaFin" id="fechaFin">
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- Botón de Eliminar Filtros Profesores y Periodos -->
+                                <div class="tooltip-container ">
+                                    <span class="tooltip-text">Eliminar Filtros</span>
+                                    <button class="button3 efects_button btn_delete_filter"
+                                        onclick="resetFiltersProfesores()">
+                                        <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        
+                    
 
 
 
@@ -437,7 +508,76 @@
                             </div>
                         </div>
 
-                    </div>
+                    <!-- Botón de Filtros para Profesores y Periodos -->
+                    <div class="tooltip-container">
+                                    <span class="tooltip-text">Filtros</span>
+                                    <button class="button3 efects_button btn_filtro"
+                                        onclick="openCard('filtersCardProfesores');">
+                                        <i class="fa-solid fa-filter-list"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Card de Filtros para Profesores y Periodos -->
+                                <div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
+                                    <div class="card-header">
+                                        <span class="card-title">Filtros Profesores y Periodos</span>
+                                        <button type="button" class="close"
+                                            onclick="closeCard('filtersCardProfesores')"><i
+                                                class="fa-thin fa-xmark"></i></button>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="filterFormProfesores" method="GET"
+                                            action="{{ route('admin.indexProyectos') }}">
+                                            <div class="form-group">
+                                                <label for="profesor">Profesor</label>
+                                                <select name="profesor" id="profesor"
+                                                    class="form-control input input_select">
+                                                    <option value="">Todos los docentes</option>
+                                                   
+                                                        <option value="#">
+                                                         
+                                                        </option>
+                                                 
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="periodos">Períodos</label>
+                                                <select name="periodos" id="periodos"
+                                                    class="form-control input input_select">
+                                                    <option value="">Todos los periodos</option>
+                                                    @foreach ($periodos as $periodo)
+                                                        <option value="{{ $periodo->id }}"
+                                                            {{ request('periodos') == $periodo->id ? 'selected' : '' }}>
+                                                            {{ $periodo->numeroPeriodo }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="fechaInicio">Fecha inicio</label>
+                                                <input type="date" class="input" name="fechaInicio"
+                                                    id="fechaInicio">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="fechaFin">Fecha Fin</label>
+                                                <input type="date" class="input" name="fechaFin" id="fechaFin">
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- Botón de Eliminar Filtros Profesores y Periodos -->
+                                <div class="tooltip-container ">
+                                    <span class="tooltip-text">Eliminar Filtros</span>
+                                    <button class="button3 efects_button btn_delete_filter"
+                                        onclick="resetFiltersProfesores()">
+                                        <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+                                    </button>
+                                </div>
+                            </div>
 
                     <div class="contenedor_buscador">
                         <div>
@@ -657,7 +797,76 @@
                             </div>
                         </div>
 
-                    </div>
+                  <!-- Botón de Filtros para Profesores y Periodos -->
+                  <div class="tooltip-container">
+                                    <span class="tooltip-text">Filtros</span>
+                                    <button class="button3 efects_button btn_filtro"
+                                        onclick="openCard('filtersCardProfesores');">
+                                        <i class="fa-solid fa-filter-list"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Card de Filtros para Profesores y Periodos -->
+                                <div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
+                                    <div class="card-header">
+                                        <span class="card-title">Filtros Profesores y Periodos</span>
+                                        <button type="button" class="close"
+                                            onclick="closeCard('filtersCardProfesores')"><i
+                                                class="fa-thin fa-xmark"></i></button>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="filterFormProfesores" method="GET"
+                                            action="{{ route('admin.indexProyectos') }}">
+                                            <div class="form-group">
+                                                <label for="profesor">Profesor</label>
+                                                <select name="profesor" id="profesor"
+                                                    class="form-control input input_select">
+                                                    <option value="">Todos los docentes</option>
+                                                   
+                                                        <option value="#">
+                                                         
+                                                        </option>
+                                                 
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="periodos">Períodos</label>
+                                                <select name="periodos" id="periodos"
+                                                    class="form-control input input_select">
+                                                    <option value="">Todos los periodos</option>
+                                                    @foreach ($periodos as $periodo)
+                                                        <option value="{{ $periodo->id }}"
+                                                            {{ request('periodos') == $periodo->id ? 'selected' : '' }}>
+                                                            {{ $periodo->numeroPeriodo }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="fechaInicio">Fecha inicio</label>
+                                                <input type="date" class="input" name="fechaInicio"
+                                                    id="fechaInicio">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="fechaFin">Fecha Fin</label>
+                                                <input type="date" class="input" name="fechaFin" id="fechaFin">
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- Botón de Eliminar Filtros Profesores y Periodos -->
+                                <div class="tooltip-container ">
+                                    <span class="tooltip-text">Eliminar Filtros</span>
+                                    <button class="button3 efects_button btn_delete_filter"
+                                        onclick="resetFiltersProfesores()">
+                                        <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+                                    </button>
+                                </div>
+                            </div>
                     <div class="contenedor_buscador">
                         <div>
                             <form id="formbusquedaPractica3">
@@ -859,9 +1068,76 @@
                             </div>
                         </div>
 
+<!-- Botón de Filtros para Profesores y Periodos -->
+<div class="tooltip-container">
+                                    <span class="tooltip-text">Filtros</span>
+                                    <button class="button3 efects_button btn_filtro"
+                                        onclick="openCard('filtersCardProfesores');">
+                                        <i class="fa-solid fa-filter-list"></i>
+                                    </button>
+                                </div>
 
+                                <!-- Card de Filtros para Profesores y Periodos -->
+                                <div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
+                                    <div class="card-header">
+                                        <span class="card-title">Filtros Profesores y Periodos</span>
+                                        <button type="button" class="close"
+                                            onclick="closeCard('filtersCardProfesores')"><i
+                                                class="fa-thin fa-xmark"></i></button>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="filterFormProfesores" method="GET"
+                                            action="{{ route('admin.indexProyectos') }}">
+                                            <div class="form-group">
+                                                <label for="profesor">Profesor</label>
+                                                <select name="profesor" id="profesor"
+                                                    class="form-control input input_select">
+                                                    <option value="">Todos los docentes</option>
+                                                   
+                                                        <option value="#">
+                                                         
+                                                        </option>
+                                                 
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="periodos">Períodos</label>
+                                                <select name="periodos" id="periodos"
+                                                    class="form-control input input_select">
+                                                    <option value="">Todos los periodos</option>
+                                                    @foreach ($periodos as $periodo)
+                                                        <option value="{{ $periodo->id }}"
+                                                            {{ request('periodos') == $periodo->id ? 'selected' : '' }}>
+                                                            {{ $periodo->numeroPeriodo }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
 
-                    </div>
+                                            <div class="form-group">
+                                                <label for="fechaInicio">Fecha inicio</label>
+                                                <input type="date" class="input" name="fechaInicio"
+                                                    id="fechaInicio">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="fechaFin">Fecha Fin</label>
+                                                <input type="date" class="input" name="fechaFin" id="fechaFin">
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- Botón de Eliminar Filtros Profesores y Periodos -->
+                                <div class="tooltip-container ">
+                                    <span class="tooltip-text">Eliminar Filtros</span>
+                                    <button class="button3 efects_button btn_delete_filter"
+                                        onclick="resetFiltersProfesores()">
+                                        <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+                                    </button>
+                                </div>
+                            </div>
                     <div class="contenedor_buscador">
                         <div>
                             <form id="formbusquedaPractica1">
@@ -1077,11 +1353,77 @@
                             </div>
                         </div>
 
+<!-- Botón de Filtros para Profesores y Periodos -->
+<div class="tooltip-container">
+                                    <span class="tooltip-text">Filtros</span>
+                                    <button class="button3 efects_button btn_filtro"
+                                        onclick="openCard('filtersCardProfesores');">
+                                        <i class="fa-solid fa-filter-list"></i>
+                                    </button>
+                                </div>
 
+                                <!-- Card de Filtros para Profesores y Periodos -->
+                                <div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
+                                    <div class="card-header">
+                                        <span class="card-title">Filtros Profesores y Periodos</span>
+                                        <button type="button" class="close"
+                                            onclick="closeCard('filtersCardProfesores')"><i
+                                                class="fa-thin fa-xmark"></i></button>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="filterFormProfesores" method="GET"
+                                            action="{{ route('admin.indexProyectos') }}">
+                                            <div class="form-group">
+                                                <label for="profesor">Profesor</label>
+                                                <select name="profesor" id="profesor"
+                                                    class="form-control input input_select">
+                                                    <option value="">Todos los docentes</option>
+                                                   
+                                                        <option value="#">
+                                                         
+                                                        </option>
+                                                 
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="periodos">Períodos</label>
+                                                <select name="periodos" id="periodos"
+                                                    class="form-control input input_select">
+                                                    <option value="">Todos los periodos</option>
+                                                    @foreach ($periodos as $periodo)
+                                                        <option value="{{ $periodo->id }}"
+                                                            {{ request('periodos') == $periodo->id ? 'selected' : '' }}>
+                                                            {{ $periodo->numeroPeriodo }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
 
-                    </div>
-                </div>
+                                            <div class="form-group">
+                                                <label for="fechaInicio">Fecha inicio</label>
+                                                <input type="date" class="input" name="fechaInicio"
+                                                    id="fechaInicio">
+                                            </div>
 
+                                            <div class="form-group">
+                                                <label for="fechaFin">Fecha Fin</label>
+                                                <input type="date" class="input" name="fechaFin" id="fechaFin">
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- Botón de Eliminar Filtros Profesores y Periodos -->
+                                <div class="tooltip-container ">
+                                    <span class="tooltip-text">Eliminar Filtros</span>
+                                    <button class="button3 efects_button btn_delete_filter"
+                                        onclick="resetFiltersProfesores()">
+                                        <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+                                    </button>
+                                </div>
+                            </div>
+</div>
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
 
@@ -1145,6 +1487,18 @@
 
                         </div>
                     </div>
+                    <div class="paginator-container">
+                        <nav aria-label="..."
+                            style="display: flex; justify-content: space-between; align-items: baseline; color: gray; ">
+                            
+                            
+                            <ul class="pagination" style=" padding: 10px 30px; !important">
+                            <div id="totalRows">Estudiantes: {{ $estudiantesPracticasIII->total() }}</div>
+                            </ul>
+                            </nav>
+                    </div>
+</nav>
+</div>
                 </div>
 
             </div>
@@ -1274,20 +1628,5 @@
         }
     </script>
 
-    <style>
-        .contenedor_tabla .table-container table td {
-            width: 200px;
-            min-width: 150px;
-            font-size: 11px !important;
-            padding: .5rem !important;
-        }
-
-        .contenedor_general .contenedor_tabla {
-            min-height: 1px !important;
-        }
-
-        .table-container {
-            height: 275px !important;
-        }
-    </style>
+   
 @endsection

@@ -141,7 +141,7 @@
                 <!-- Botones -->
                 <div class="contenedor_botones">
 
-                    <div class="tooltip-container mx-1">
+                    <div class="tooltip-container ">
                         <span class="tooltip-text">Reporte Estudiante</span>
                         <form action="{{ route('admin.reportesEstudiantes') }}" method="POST">
                             @csrf
@@ -151,7 +151,75 @@
                         </form>
                     </div>
 
-                 </div>
+                 <!-- Botón de Filtros para Profesores y Periodos -->
+<div class="tooltip-container">
+                                    <span class="tooltip-text">Filtros</span>
+                                    <button class="button3 efects_button btn_filtro"
+                                        onclick="openCard('filtersCardProfesores');">
+                                        <i class="fa-solid fa-filter-list"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Card de Filtros para Profesores y Periodos -->
+                                <div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
+                                    <div class="card-header">
+                                        <span class="card-title">Filtros Profesores y Periodos</span>
+                                        <button type="button" class="close"
+                                            onclick="closeCard('filtersCardProfesores')"><i
+                                                class="fa-thin fa-xmark"></i></button>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="filterFormProfesores" method="GET"
+                                            action="{{ route('admin.indexProyectos') }}">
+                                            <div class="form-group">
+                                                <label for="profesor">Profesor</label>
+                                                <select name="profesor" id="profesor"
+                                                    class="form-control input input_select">
+                                                    <option value="">Todos los docentes</option>
+                                                   
+                                                        <option value="#">
+                                                         
+                                                        </option>
+                                                 
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="periodos">Períodos</label>
+                                                <select name="periodos" id="periodos"
+                                                    class="form-control input input_select">
+                                                    <option value="">Todos los periodos</option>
+                                                   
+                                                        <option value="#">
+                                                           
+                                                        </option>
+                                                
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="fechaInicio">Fecha inicio</label>
+                                                <input type="date" class="input" name="fechaInicio"
+                                                    id="fechaInicio">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="fechaFin">Fecha Fin</label>
+                                                <input type="date" class="input" name="fechaFin" id="fechaFin">
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- Botón de Eliminar Filtros Profesores y Periodos -->
+                                <div class="tooltip-container ">
+                                    <span class="tooltip-text">Eliminar Filtros</span>
+                                    <button class="button3 efects_button btn_delete_filter"
+                                        onclick="resetFiltersProfesores()">
+                                        <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+                                    </button>
+                                </div>
+                            </div>
                 <div class="contenedor_buscador">
                     <div>
 
