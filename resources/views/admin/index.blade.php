@@ -66,43 +66,43 @@
         </script>
     @endif
 
-    
+
     <section class="contenedor_agregar_periodo">
         <br>
         <section>
-        <div class="d-flex  justify-content-center">
+            <div class="d-flex  justify-content-center">
 
-<form action="{{ route('admin.reportesSesiones') }}" method="POST" class="mr-2">
-    @csrf
-    <button type="submit" class="button1">Historial sesiones usuarios</button>
-</form>
+                <form action="{{ route('admin.reportesSesiones') }}" method="POST" class="mr-2">
+                    @csrf
+                    <button type="submit" class="button1">Historial sesiones usuarios</button>
+                </form>
 
-<form action="{{ route('admin.respaldo') }}" method="POST" class="mr-2">
-    @csrf
-    <button type="submit" class="button1">Respaldar Base de Datos</button>
-</form>
+                <form action="{{ route('admin.respaldo') }}" method="POST" class="mr-2">
+                    @csrf
+                    <button type="submit" class="button1">Respaldar Base de Datos</button>
+                </form>
 
-<button type="button" class="button1 mr-2" onclick="openCard('draggableCardNRC');">Agregar NRC</button>
-<button type="button" class="button1 mr-2" onclick="openCard('draggableCardPeriodo');">Agregar
-    Periodo</button>
-<button type="button" class="button1 mr-2" onclick="openCard('draggableCardEditarPeriodo');">Editar
-    Periodo</button>
+                <button type="button" class="button1 mr-2" onclick="openCard('draggableCardNRC');">Agregar NRC</button>
+                <button type="button" class="button1 mr-2" onclick="openCard('draggableCardPeriodo');">Agregar
+                    Periodo</button>
+                <button type="button" class="button1 mr-2" onclick="openCard('draggableCardEditarPeriodo');">Editar
+                    Periodo</button>
 
-</div>
-<br>
+            </div>
+            <br>
             <div>
                 <span><b>Docentes por aceptar</b></span>
             </div>
-            
-<hr style="padding:2px; 0px 2px">
+
+            <hr style="padding:2px; 0px 2px">
 
             <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
                     <table class="mat-mdc-table">
                         <thead class="ng-star-inserted">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                            <th>N°</th>  
-                            <th>DOCENTE</th>
+                                <th>N°</th>
+                                <th>DOCENTE</th>
                                 <th>ESPE ID</th>
                                 <th>CORREO</th>
                                 <th>DEPARTAMENTO</th>
@@ -113,16 +113,13 @@
                         <tbody>
                             @forelse ($profesoresVerificar as $docente)
                                 <tr>
-                                <td style="text-align: center;">
-                                                    {{ ($profesores->currentPage() - 1) * $profesores->perPage() + $index + 1 }}
 
-                                                </td>
-                                    <td>{{ $docente->profesorUniversidad->apellidos }}
-                                        {{ $docente->profesorUniversidad->nombres }}</td>
-                                    <td>{{ $docente->profesorUniversidad->espeId }}</td>
-                                    <td>{{ $docente->correoElectronico }}</td>
-                                    <td>{{ $docente->profesorUniversidad->departamento }}</td>
-                                    <td>{{ $docente->estado }}</td>
+                                    <td>{{ $docente->profesorUniversidad->apellidos ?? '' }}
+                                        {{ $docente->profesorUniversidad->nombres ?? '' }}</td>
+                                    <td>{{ $docente->profesorUniversidad->espeId ?? '' }}</td>
+                                    <td>{{ $docente->correoElectronico ?? '' }}</td>
+                                    <td>{{ $docente->profesorUniversidad }}</td>
+                                    <td>{{ $docente->estado ?? '' }}</td>
                                     <td>
                                         <form action="{{ route('admin.aceptarDocente', ['id' => $docente->userId]) }}"
                                             method="POST">
@@ -144,10 +141,10 @@
                                     </td>
                                 </tr>
                             @empty
-                            <tr style="text-align:center">
-                                            <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">
-                                                No hay docentes pendientes por aceptar.</td>
-                                        </tr>
+                                <tr style="text-align:center">
+                                    <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">
+                                        No hay docentes pendientes por aceptar.</td>
+                                </tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -157,7 +154,7 @@
 
 
         </section>
-<br>
+        <br>
         <section>
             <!-- Archivos de notas -->
 
@@ -166,7 +163,7 @@
             </div>
 
             <hr>
-            
+
             <!-- Tarjeta movible para Agregar Maestro -->
             <div class="draggable-card1_1" id="draggableCardAgregarMaestro">
                 <div class="card-header">
@@ -264,76 +261,70 @@
                                 </button>
                             </form>
                         </div>
-                    <!-- Botón de Filtros para Profesores y Periodos -->
-<div class="tooltip-container">
-                                    <span class="tooltip-text">Filtros</span>
-                                    <button class="button3 efects_button btn_filtro"
-                                        onclick="openCard('filtersCardProfesores');">
-                                        <i class="fa-solid fa-filter-list"></i>
-                                    </button>
-                                </div>
+                        <!-- Botón de Filtros para Profesores y Periodos -->
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Filtros</span>
+                            <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCardProfesores');">
+                                <i class="fa-solid fa-filter-list"></i>
+                            </button>
+                        </div>
 
-                                <!-- Card de Filtros para Profesores y Periodos -->
-                                <div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
-                                    <div class="card-header">
-                                        <span class="card-title">Filtros Profesores y Periodos</span>
-                                        <button type="button" class="close"
-                                            onclick="closeCard('filtersCardProfesores')"><i
-                                                class="fa-thin fa-xmark"></i></button>
-                                    </div>
-                                    <div class="card-body">
-                                        <form id="filterFormProfesores" method="GET"
-                                            action="{{ route('admin.indexProyectos') }}">
-                                            <div class="form-group">
-                                                <label for="profesor">Profesor</label>
-                                                <select name="profesor" id="profesor"
-                                                    class="form-control input input_select">
-                                                    <option value="">Todos los docentes</option>
-                                                   
-                                                        <option value="#">
-                                                         
-                                                        </option>
-                                                 
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="periodos">Períodos</label>
-                                                <select name="periodos" id="periodos"
-                                                    class="form-control input input_select">
-                                                    <option value="">Todos los periodos</option>
-                                                    @foreach ($periodos as $periodo)
-                                                        <option value="{{ $periodo->id }}"
-                                                            {{ request('periodos') == $periodo->id ? 'selected' : '' }}>
-                                                            {{ $periodo->numeroPeriodo }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="fechaInicio">Fecha inicio</label>
-                                                <input type="date" class="input" name="fechaInicio"
-                                                    id="fechaInicio">
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="fechaFin">Fecha Fin</label>
-                                                <input type="date" class="input" name="fechaFin" id="fechaFin">
-                                            </div>
-
-                                        </form>
-                                    </div>
-                                </div>
-
-                                <!-- Botón de Eliminar Filtros Profesores y Periodos -->
-                                <div class="tooltip-container ">
-                                    <span class="tooltip-text">Eliminar Filtros</span>
-                                    <button class="button3 efects_button btn_delete_filter"
-                                        onclick="resetFiltersProfesores()">
-                                        <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
-                                    </button>
-                                </div>
+                        <!-- Card de Filtros para Profesores y Periodos -->
+                        <div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
+                            <div class="card-header">
+                                <span class="card-title">Filtros Profesores y Periodos</span>
+                                <button type="button" class="close" onclick="closeCard('filtersCardProfesores')"><i
+                                        class="fa-thin fa-xmark"></i></button>
                             </div>
+                            <div class="card-body">
+                                <form id="filterFormProfesores" method="GET"
+                                    action="{{ route('admin.indexProyectos') }}">
+                                    <div class="form-group">
+                                        <label for="profesor">Profesor</label>
+                                        <select name="profesor" id="profesor" class="form-control input input_select">
+                                            <option value="">Todos los docentes</option>
+
+                                            <option value="#">
+
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="periodos">Períodos</label>
+                                        <select name="periodos" id="periodos" class="form-control input input_select">
+                                            <option value="">Todos los periodos</option>
+                                            @foreach ($periodos as $periodo)
+                                                <option value="{{ $periodo->id }}"
+                                                    {{ request('periodos') == $periodo->id ? 'selected' : '' }}>
+                                                    {{ $periodo->numeroPeriodo }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="fechaInicio">Fecha inicio</label>
+                                        <input type="date" class="input" name="fechaInicio" id="fechaInicio">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="fechaFin">Fecha Fin</label>
+                                        <input type="date" class="input" name="fechaFin" id="fechaFin">
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Botón de Eliminar Filtros Profesores y Periodos -->
+                        <div class="tooltip-container ">
+                            <span class="tooltip-text">Eliminar Filtros</span>
+                            <button class="button3 efects_button btn_delete_filter" onclick="resetFiltersProfesores()">
+                                <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+                            </button>
+                        </div>
+                    </div>
 
                     <!-- Buscador -->
                     <div class="contenedor_buscador">
@@ -393,10 +384,12 @@
                                                 </td>
                                                 <td class="center_size">{{ $profesor->espeId }}</td>
 
-                                                <td class="center_size">{{strtoupper ($profesor->usuarios->estado ?? 'USUARIO NO CREADO')}}</td>
+                                                <td class="center_size">
+                                                    {{ strtoupper($profesor->usuarios->estado ?? 'USUARIO NO CREADO') }}
+                                                </td>
 
                                                 <td class="center_size">
-                                                     <div class="btn-group shadow-1">
+                                                    <div class="btn-group shadow-1">
 
                                                         <button type="button" class="button3 efects_button btn_editar3"
                                                             style="margin-right: 5px;"
