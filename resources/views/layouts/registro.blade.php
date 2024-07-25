@@ -133,7 +133,7 @@
                                     <i class="material-icons">check_circle</i>
                                 </div>
                                 <div class="name-sidebar-item">
-                                    <li>Registro Estudiantes</li>
+                                    <li>Registro</li>
                                 </div>
                             </a>
                     </nav>

@@ -45,7 +45,7 @@
                                     <th>HORAS DE PRÁCTICAS</th>
                                     <th>FECHA INICIO </th>
                                     <th>FFECHA FIN </th>
-                                   <!--<th>ACCIONES</th> -->
+                                   <th>ACCIONES</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -60,7 +60,7 @@
                                         <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $practica->practicasi->HorasPlanificadas }}</td>
                                         <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $practica->practicasi->FechaInicio }}</td>
                                         <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $practica->practicasi->FechaFinalizacion }}</td>
-                                       <!-- <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                       <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             <center><button type="button" class="button3 efects_button btn_eliminar3" data-toggle="modal"
                                             
                                                 data-target="#actividadesModal"> <i class="fa-solid fa-eye"></i>
@@ -99,7 +99,7 @@
                                                             <button type="button" class="btn btn-secondary"
                                                                 data-dismiss="modal">Cerrar</button>
                                                         </div>
-                                                    </div> -->
+                                                    </div> 
                                                 </div>
                                             </div>
                                         </td>

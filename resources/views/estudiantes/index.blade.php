@@ -163,7 +163,7 @@
                                     <td style=" text-transform: uppercase; text-align:left">
                                         {{ strtoupper($practica1->NombreTutorEmpresarial) }}
 
-                                    <td style=" text-transform: uppercase; text-align:justify">
+                                    <td style=" text-transform: uppercase; text-align:left">
                                         {{ strtoupper($practica1->tutorAcademico->apellidos) }}
                                         {{ strtoupper($practica1->tutorAcademico->nombres) }}</td>
                                     </td>
@@ -203,7 +203,7 @@
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                    <th class="tamanio">EMPRESA</th>
                                     <th>TUTOR EMPRESARIAL</th>
-                                    <th class="tamanio">TUTOR ACADEMICO</th>
+                                    <th>TUTOR ACADEMICO</th>
                                     <th>TIPO DE PRACTICA</th>
                                     <th>HORA ENTRADA</th>
                                     <th>HORA SALIDA</th>
@@ -218,7 +218,7 @@
                                     <td style=" text-transform: uppercase; text-align:left">
                                         {{ strtoupper($practica2->NombreTutorEmpresarial) }}
 
-                                    <td style=" text-transform: uppercase; text-align:justify">
+                                    <td style=" text-transform: uppercase; text-align:left">
                                         {{ strtoupper($practica2->tutorAcademico->apellidos) }}
                                         {{ strtoupper($practica2->tutorAcademico->nombres) }}</td>
                                     </td>

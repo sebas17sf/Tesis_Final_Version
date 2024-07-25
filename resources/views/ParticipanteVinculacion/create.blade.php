@@ -71,7 +71,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label for="espe_id"><strong>Ingrese el la ID de la ESPE:</strong></label>
-                        <input type="text" id="espe_id" name="espe_id" class="form-control input"
+                        <input type="text" id="espe_id" name="espe_id" class="form-control input input_select1"
                             placeholder="Ingrese la ID de la ESPE" required>
                         <small id="espeIdError" class="form-text text-danger" style="display: none;"></small>
                         @error('espe_id')
@@ -82,6 +82,7 @@
                         <label for="departamento"><strong>Seleccione el departamento al que
                                 pertenece:</strong></label>
                         <select id="departamento" name="departamento" class="form-control input_select input" required>
+                            <option value="">Seleccione un Departamento</option>
                             <option value="Ciencias de la Computación">Ciencias de la Computación</option>
                             <option value="Ciencias de la Vida y Agricultura">Ciencias de la Vida y Agricultura
                             </option>
