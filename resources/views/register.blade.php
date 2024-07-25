@@ -49,6 +49,7 @@
                             <label class="description" for="cedula">Cédula estudiante:</label>
                             <input type="text" class="input form_input" id="cedula" name="cedula"
                                 placeholder="Ingrese su cédula" required>
+                            <small id="cedulaError" class="form-text text-danger"></small>
                             @error('cedula')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
@@ -57,6 +58,7 @@
                             <label class="description" for="cedula">Repetir Cédula:</label>
                             <input type="text" class="input form_input" id="cedula_confirmation"
                                 name="cedula_confirmation" placeholder="Repita su cédula" required>
+                            <small id="cedulaConfirmationError" class="form-text text-danger"></small>
                         </div>
                     </div>
                     <div class="btn_contenedor_register">
@@ -73,6 +75,7 @@
                             <label class="description" for="cedula_docente">Cédula docente:</label>
                             <input type="text" class="input form_input" id="cedula_docente" name="cedula_docente"
                                 placeholder="Ingrese su cédula" required>
+                            <small id="cedulaDocenteError" class="form-text text-danger"></small>
                             @error('cedula_docente')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
@@ -81,6 +84,8 @@
                             <label class="description" for="cedula_docente">Repetir Cédula:</label>
                             <input type="text" class="input form_input" id="cedula_docente_confirmation"
                                 name="cedula_docente_confirmation" placeholder="Repita su cédula" required>
+                            <small id="cedulaDocenteConfirmationError" class="form-text text-danger"></small>
+
                         </div>
                     </div>
                     <div class="btn_contenedor_register">
@@ -131,6 +136,9 @@
             }
         });
     </script>
+
+
+    <script src="{{ asset('js/validaciones/registerLogin.js') }}"></script>
 </body>
 
 </html>

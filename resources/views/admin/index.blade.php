@@ -69,131 +69,7 @@
     <br>
     <section class="contenedor_agregar_periodo">
         <section>
-            <div class="mat-elevation-z8">
-                @if ($profesoresPendientes->isEmpty())
-                    <p>No existen usuarios administrativos.</p>
-                @else
-                    <div class="contenedor_tabla">
-                        <div class="table-container mat-elevation-z8">
 
-                            <div id="tablaProyectos">
-                                <table class="mat-mdc-table">
-                                    <thead class="ng-star-inserted">
-                                        <tr
-                                            class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-
-                                            <th mat-header-cell *matHeaderCellDef>TIPO</th>
-                                            <th mat-header-cell *matHeaderCellDef>USUARIO</th>
-                                            <th mat-header-cell *matHeaderCellDef>CORREO</th>
-                                            <th mat-header-cell *matHeaderCellDef>ESTADO ACTUAL</th>
-                                            <th mat-header-cell *matHeaderCellDef>MODIFICAR</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="mdc-data-table__content ng-star-inserted">
-
-                                        @foreach ($profesoresPendientes as $profesor)
-                                            <tr>
-                                                <td class="table1">{{ strtoupper($profesor->nombreUsuario) }}</td>
-                                                <td class="table1">{{ strtoupper($profesor->nombreUsuario) }}</td>
-                                                <td class="table1">{{ $profesor->correoElectronico }}</td>
-                                                <td class="table1">{{ strtoupper($profesor->estado) }}</td>
-                                                <td>
-                                                    <!-- Botón de Editar -->
-                                                    <center>
-                                                        <button type="button" class="button3 efects_button btn_editar3"
-                                                            onclick="openCard('editCard{{ $profesor->id }}');">
-                                                            <i class="bx bx-edit-alt"></i>
-                                                        </button>
-                                                    </center>
-                                                </td>
-
-                                                <!-- Card para Editar Profesor -->
-                                                <div class="draggable-card" id="editCard{{ $profesor->id }}"
-                                                    style="display: none;">
-                                                    <div class="card-header">
-                                                        <span class="card-title">Editar Profesor</span>
-                                                        <button type="button" class="close"
-                                                            onclick="document.getElementById('editCard{{ $profesor->id }}').style.display='none'"><i
-                                                                class="fa-thin fa-xmark"></i></button>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <form method="POST"
-                                                            action="{{ route('admin.updateEstado', ['id' => $profesor->userId]) }}">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            <div class="form-group">
-                                                                <label for="NombreUsuario{{ $profesor->id }}"><b>Nombre de
-                                                                        Usuario</b></label>
-                                                                <input type="text" class="form-control input"
-                                                                    id="NombreUsuario{{ $profesor->id }}"
-                                                                    name="NombreUsuario"
-                                                                    value="{{ $profesor->nombreUsuario }}" required
-                                                                    disabled>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="CorreoElectronico{{ $profesor->id }}"><b>Correo
-                                                                        Electrónico</b></label>
-                                                                <input type="email" class="form-control input"
-                                                                    id="CorreoElectronico{{ $profesor->id }}"
-                                                                    name="CorreoElectronico"
-                                                                    value="{{ $profesor->correoElectronico }}" required
-                                                                    disabled>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label
-                                                                            for="Estado{{ $profesor->id }}"><b>Estado</b></label>
-                                                                        <select class="form-control input input_select"
-                                                                            id="Estado{{ $profesor->id }}" name="Estado"
-                                                                            required>
-                                                                            <option value="activo"
-                                                                                {{ $profesor->Estado == 'Activo' ? 'selected' : '' }}>
-                                                                                Activo</option>
-                                                                            <option value="inactivo"
-                                                                                {{ $profesor->Estado == 'Inactivo' ? 'selected' : '' }}>
-                                                                                Inactivo</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="form-group">
-                                                                        <label for="password{{ $profesor->id }}"><b>Cambiar
-                                                                                Contraseña</b></label>
-                                                                        <input type="password" class="form-control input"
-                                                                            id="password{{ $profesor->id }}"
-                                                                            name="password" required>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="card-footer">
-                                                                <button type="button" class="button0"
-                                                                    onclick="document.getElementById('editCard{{ $profesor->id }}').style.display='none'">Cerrar</button>
-                                                                <button type="submit" class="button0">Guardar
-                                                                    Cambios</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-
-                            </div>
-                        </div>
-
-                    </div>
-
-                @endif
-                @if (session('permisosConcedidos'))
-                    <div class="alert alert-success">
-                        {{ session('permisosConcedidos') }}
-                    </div>
-                @endif
-
-            </div>
-
-            <br>
 
             <div>
                 <span><b>Aceptar Docentes.</b></span>
@@ -418,6 +294,7 @@
                                         <th>CÉDULA</th>
                                         <th class="tamanio2">DEPARTAMENTO</th>
                                         <th>ID ESPE</th>
+                                        <th>ESTADO</th>
                                         <th>ACCIONES</th>
                                     </tr>
                                 </thead>
@@ -446,8 +323,11 @@
                                                     {{ strtoupper($profesor->departamento) }}
                                                 </td>
                                                 <td class="center_size">{{ $profesor->espeId }}</td>
-                                                <td>
-                                                    <div class="btn-group shadow-1">
+
+                                                <td class="center_size">{{strtoupper ($profesor->usuarios->estado ?? 'USUARIO NO CREADO')}}</td>
+
+                                                <td class="center_size">
+                                                     <div class="btn-group shadow-1">
 
                                                         <button type="button" class="button3 efects_button btn_editar3"
                                                             style="margin-right: 5px;"

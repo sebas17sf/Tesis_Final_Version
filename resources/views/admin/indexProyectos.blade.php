@@ -33,6 +33,15 @@
             <h4><b>Listado de Proyectos Sociales</b></h4>
             <hr>
 
+            <button type="button" class="button1 mr-2" onclick="openCard('draggableCardNRC');">Agregar NRC</button>
+            <button type="button" class="button1 mr-2" onclick="openCard('draggableCardPeriodo');">Agregar
+                Periodo</button>
+            <button type="button" class="button1 mr-2" onclick="openCard('draggableCardEditarPeriodo');">Editar
+                Periodo</button>
+
+            <hr>
+
+
             <div class="mat-elevation-z8 contenedor_general">
                 <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                     <!-- Botones -->
@@ -107,7 +116,8 @@
                                     <form id="filtersForm" method="GET" action="{{ route('admin.indexProyectos') }}">
                                         <div class="form-group">
                                             <label for="estado" class="mr-2">Estado del Proyecto:</label>
-                                            <select name="estado" id="estado" class="form-control input input_select">
+                                            <select name="estado" id="estado"
+                                                class="form-control input input_select">
                                                 <option value="">Todos</option>
                                                 <option value="Ejecucion"
                                                     {{ request('estado') == 'Ejecucion' ? 'selected' : '' }}>En Ejecución
@@ -880,6 +890,166 @@
 
 
 
+    <!------------------------- BOTONES DEL ADMIN PARA PERIODO O NRC-------------------------->
+    <!-- Tarjeta movible para Agregar NRC -->
+    <div class="draggable-card" id="draggableCardNRC">
+        <div class="card-header">
+            <span class="card-title">Agregar NRC</span>
+            <button type="button" class="close" onclick="$('#draggableCardNRC').hide()"><i
+                    class="fa-thin fa-xmark"></i></button>
+        </div>
+        <div class="card-body">
+            <form class="FormularioNRC" action="{{ route('admin.nrcVinculacion') }}" method="post">
+                @csrf
+                <div class="form-group">
+                    <label class="label" for="nrc"><strong>Ingrese el NRC:</strong></label>
+                    <input type="text" id="nrc" name="nrc" class="form-control input"
+                        placeholder="Ingrese 5 números" pattern="\d{5}" title="Ingrese exactamente 5 dígitos"
+                        value="{{ old('nrc') }}" required>
+                    <small id="nrcError" class="form-text text-danger" style="display: none;"></small>
+                    @error('nrc')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="periodo"><strong>Seleccione el período:</strong></label>
+                    <select id="periodo" name="periodo" class="form-control input_select input" required>
+                        <option value="">Seleccione un período</option>
+                        @foreach ($periodos as $periodo)
+                            <option value="{{ $periodo->id }}" {{ old('periodo') == $periodo->id ? 'selected' : '' }}>
+                                {{ $periodo->numeroPeriodo }} - {{ $periodo->periodo }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('periodo')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="tipo"><strong>Tipo de proceso:</strong></label>
+                    <select id="tipo" name="tipo" class="form-control input_select input" required>
+                        <option value="">Seleccione el proceso</option>
+                        <option value="Vinculacion">Vinculación con la Sociedad</option>
+                        <option value="Practicas">Practicas preprofesionales</option>
+                    </select>
+                    @error('tipo')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="card-footer1 d-flex justify-content-center align-items-center">
+                    <button type="submit" class="button01">Guardar NRC</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tarjeta movible para Agregar Periodo -->
+    <div class="draggable-card" id="draggableCardPeriodo">
+        <div class="card-header">
+            <span class="card-title">Agregar Periodo</span>
+            <button type="button" class="close" onclick="$('#draggableCardPeriodo').hide()"><i
+                    class="fa-thin fa-xmark"></i></button>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('admin.guardarPeriodo') }}" method="post">
+                @csrf
+                <div class="form-group">
+                    <label for="periodoInicio"><strong>Ingrese el inicio del Periodo
+                            Académico:</strong></label>
+                    <input type="date" id="periodoInicio" name="periodoInicio" class="form-control input"
+                        value="{{ old('periodoInicio') }}" required>
+                    @error('periodoInicio')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="periodoFin"><strong>Ingrese el fin del Periodo Académico:</strong></label>
+                    <input type="date" id="periodoFin" name="periodoFin" class="form-control input"
+                        value="{{ old('periodoFin') }}" required>
+                    @error('periodoFin')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="numeroPeriodo"><strong>Ingrese el número identificador del
+                            periodo:</strong></label>
+                    <input type="text" id="numeroPeriodo" name="numeroPeriodo" placeholder="Ingrese 6 números"
+                        class="form-control input" pattern="[0-9]{1,6}"
+                        title="Ingrese un número no negativo de hasta 6 dígitos" value="{{ old('numeroPeriodo') }}"
+                        required>
+                    <small id="numeroPeriodoError" class="form-text text-danger" style="display: none;"></small>
+                    @error('numeroPeriodo')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="card-footer1 d-flex justify-content-center align-items-center">
+                    <button type="submit" class="button01">Guardar Periodo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tarjeta movible para Editar Periodo -->
+    <div class="draggable-card" id="draggableCardEditarPeriodo">
+        <div class="card-header">
+            <span class="card-title">Editar Periodo</span>
+            <button type="button" class="close" onclick="$('#draggableCardEditarPeriodo').hide()"><i
+                    class="fa-thin fa-xmark"></i></button>
+        </div>
+        <div class="card-body">
+            <div class="form-group col-md-12">
+                <label for="periodo"><strong>Periodos Agregados (Seleccione el periodo a
+                        editar):</strong></label>
+                <select id="selectPeriodo" class="form-control input input_select">
+                    <option value="" data-inicio="" data-fin="" data-numero="">Seleccionar Periodo
+                    </option>
+                    @foreach ($periodos as $periodo)
+                        <option value="{{ $periodo->id }}" data-inicio="{{ $periodo->inicioPeriodo }}"
+                            data-fin="{{ $periodo->finPeriodo }}" data-numero="{{ $periodo->numeroPeriodo }}">
+                            {{ $periodo->numeroPeriodo }} {{ $periodo->periodo }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-12" hidden>
+                <div class="form-group col-md-6">
+                    <form id="editarPeriodoForm" method="GET">
+                        @csrf
+                        <button type="submit" class="button">Editar</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-12" id="desplegarEditarPeriodo">
+                <form class="formulario" method="POST"
+                    action="{{ route('admin.actualizarPeriodo', ['id' => $periodo->id]) }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group">
+                        <label for="periodoInicio">Fecha de Inicio:</label>
+                        <input type="date" name="periodoInicio" id="periodoInicio" class="form-control input"
+                            value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="periodoFin">Fecha de Fin:</label>
+                        <input type="date" name="periodoFin" id="periodoFin" class="form-control input"
+                            value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="numeroPeriodo">Ingrese el numero identificador del periodo:</label>
+                        <input type="text" name="numeroPeriodo" id="numeroPeriodo" class="form-control input"
+                            value="" required>
+                    </div>
+                    <div class="card-footer1 d-flex justify-content-center align-items-center">
+                        <center><button type="submit" class="button01">Guardar Cambios</button></center>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
     </section>
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
@@ -1146,8 +1316,6 @@
             const alert = document.getElementById(alertId);
             alert.style.display = 'none';
         }
-
-
     </script>
 
     <script>
@@ -1158,4 +1326,7 @@
             document.getElementById('hiddenPeriodos').value = document.getElementById('periodos').value;
         });
     </script>
+        <script src="{{ asset('js\admin\index.js') }}"></script>
+
+
 @endsection

@@ -49,7 +49,7 @@ class Estudiante extends Model
     }
     public function notas()
     {
-        return $this->hasMany(NotasEstudiante::class, 'estudianteId', 'estudianteId');
+        return $this->belongsTo(NotasEstudiante::class, 'estudianteId', 'estudianteId');
     }
 
     public function evidencias()
@@ -113,7 +113,7 @@ class Estudiante extends Model
         return $this->belongsTo(PracticaV::class, 'estudianteId', 'estudianteId');
     }
 
-    
+
 
 
 
