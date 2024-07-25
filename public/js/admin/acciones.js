@@ -254,6 +254,13 @@ $(document).ready(function() {
     });
 });
 
+$(document).ready(function() {
+    // Hacer que los cards sean draggable
+    $('.draggable-card1_2').draggable({
+        handle: ".card-header",
+        containment: "window"
+    });
+});
 
 $(document).ready(function(){
     $(".draggable-card1").draggable({

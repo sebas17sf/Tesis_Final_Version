@@ -802,10 +802,18 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
-
+    <script src="js\admin\index.js"></script>
 
 
     <script>
+        $(document).ready(function() {
+    // Hacer que los cards sean draggable
+    $('.draggable-card1_2').draggable({
+        handle: ".card-header",
+        containment: "window"
+    });
+});
+
         var delayTimer;
         $('#formBusquedaDocentes input[name="search"]').on('keyup', function() {
             clearTimeout(delayTimer);
@@ -836,7 +844,6 @@
 
 
     </script>
-    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
-    <script src="js\admin\index.js"></script>
+ 
 
 @endsection

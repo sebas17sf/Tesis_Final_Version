@@ -150,7 +150,6 @@
                             </button>
                         </form>
                     </div>
-
                  <!-- Botón de Filtros para Profesores y Periodos -->
 <div class="tooltip-container">
                                     <span class="tooltip-text">Filtros</span>
@@ -177,7 +176,7 @@
                                                     class="form-control input input_select">
                                                     <option value="">Todos los docentes</option>
                                                    
-                                                        <option value="#">
+                                                        <option value="">
                                                          
                                                         </option>
                                                  
@@ -376,14 +375,12 @@
 
         </div>
     </section>
-
-
-
-    <br>
-
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script src="{{ asset('js/admin/acciones.js') }}"></script>
     <script>
+
         function enviarFormulario(e) {
             e.preventDefault();
 
@@ -445,30 +442,7 @@
                 periodoInput.value = periodo ? periodo : '';
             });
         });
-
-
-
-        $('#modalImportar').on('hidden.bs.modal', function() {
-            console.log('Modal hidden');
-            $('#idModalImportar')[0].reset();
-            $('#idModalImportar').find('.form-group').removeClass('has-error');
-            $('#idModalImportar').find('.help-block').text('');
-            removeFile();
-        });
-
-
-        function displayFileName(input, fileTextId) {
-            const fileName = input.files[0].name;
-            document.getElementById(fileTextId).textContent = fileName;
-            document.querySelector('.remove-icon').style.display = 'inline'; // Mostrar la "X"
-        }
-
-        function removeFile(inputId, fileTextId) {
-            document.getElementById(inputId).value = ""; // Clear the input
-            document.getElementById(fileTextId).innerHTML =
-                '<i class="fa fa-upload"></i> Haz clic aquí para subir el documento'; // Reset the text
-            document.querySelector('.remove-icon').style.display = 'none'; // Ocultar la "X"
-        }
+        
     </script>
     <script>
     document.addEventListener('DOMContentLoaded', (event) => {
