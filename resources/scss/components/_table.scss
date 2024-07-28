@@ -71,14 +71,25 @@
         text-align: center;       
       }
 
-      .mat-mdc-header-row {
+       // Head
+       .mat-mdc-header-row {
         height: 40px;
+
+        ng-deep .mat-sort-header-container {
+          position: relative;
+
+          .mat-sort-header-arrow {
+            position: absolute;
+            right: -4px;
+          }
+        }
       }
 
+      // Body
       .mat-mdc-row {
         transition: all 0.1s;
         &:hover {
-          background-color: rgba(colors.$primary, .05);
+          background-color: rgba(colors.$primary, 0.05);
         }
       }
     }
@@ -93,7 +104,7 @@
       align-content: space-between;
       justify-items: start;
   
-    ::ng-deep .mat-mdc-paginator-container {
+    .mat-mdc-paginator-container {
       @media (max-width: 620px) {
         align-items: center;
         justify-content: center;
@@ -118,7 +129,7 @@
     }
 
     // Eliminar texto de numero de filtro en tabla
-    ::ng-deep .mat-mdc-paginator-page-size-label {
+    .mat-mdc-paginator-page-size-label {
       display: none;
     }
   }

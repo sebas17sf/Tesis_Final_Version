@@ -1,6 +1,12 @@
 @import url('https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css');
 @import url('https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css');
 
+body {
+    background-color: #F5F5F5;
+    font-family: " Arial", sans-serif;
+
+}
+
 .sidebar a .material-icons {
     margin-right: 10px;
     /* Espaciado a la derecha del icono */

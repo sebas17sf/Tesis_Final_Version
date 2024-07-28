@@ -20,20 +20,6 @@
             box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .sidebar a {
-            padding: 10px 20px;
-            /* Espaciado de los enlaces */
-            text-decoration: none;
-            /* Quitar subrayado de los enlaces */
-            font-size: 14px;
-            /* Tamaño de fuente de los enlaces */
-            color: #000000;
-            /* Texto blanco */
-            display: flex;
-            /* Mostrar como flex para alinear icono y texto */
-            align-items: center;
-            /* Centrar verticalmente el contenido */
-        }
 
         .sidebar a .material-icons {
             margin-right: 10px;

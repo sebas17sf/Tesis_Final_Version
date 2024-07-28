@@ -6,7 +6,7 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 .contenedor_general {
-
+  justify-content: center;
 
   // Estilos para el contenedor de filtros
   .contenedor_list_filtros {
@@ -228,9 +228,18 @@
         }
   
         // Head
-        .mat-mdc-header-row {
-          height: 40px;
+      .mat-mdc-header-row {
+        height: 40px;
+
+        ng-deep .mat-sort-header-container {
+          position: relative;
+
+          .mat-sort-header-arrow {
+            position: absolute;
+            right: -4px;
+          }
         }
+      }
 
         .size_ {
           width: 200px;
@@ -279,7 +288,7 @@
       align-items: end;
       height: 56px;
 
-      ::ng-deep .mat-mdc-paginator-container {
+      .mat-mdc-paginator-container {
         @media (max-width: 620px) {
           align-items: center;
           justify-content: center;
@@ -303,7 +312,7 @@
         }
       }
 
-      ::ng-deep .mat-mdc-paginator-page-size-label {
+      .mat-mdc-paginator-page-size-label {
         display: none;
       }
     }
@@ -312,11 +321,11 @@
 
 
   // Eliminar margin del dialog
-  ::ng-deep .p-dialog {
+  .p-dialog {
     margin: 0 !important;
   }
 
-  ::ng-deep .p-dialog-draggable {
+  .p-dialog-draggable {
     .p-dialog-header {
       margin: 0 !important;
       height: 25px;

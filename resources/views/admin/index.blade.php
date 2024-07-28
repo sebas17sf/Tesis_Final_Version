@@ -69,7 +69,7 @@
 
     <section class="contenedor_agregar_periodo">
         <br>
-        <section>
+       
             <div class="d-flex  justify-content-center">
 
                 <form action="{{ route('admin.reportesSesiones') }}" method="POST" class="mr-2">
@@ -103,7 +103,7 @@
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                 <th>N°</th>
                                 <th>DOCENTE</th>
-                                <th>ESPE ID</th>
+                                <th>ID ESPE</th>
                                 <th>CORREO</th>
                                 <th>DEPARTAMENTO</th>
                                 <th>ESTADO</th>
@@ -153,9 +153,9 @@
             </div>
 
 
-        </section>
+      
         <br>
-        <section>
+        
             <!-- Archivos de notas -->
 
             <div>
@@ -353,7 +353,7 @@
                                         <th>USUARIO</th>
                                         <th>CÉDULA</th>
                                         <th class="tamanio2">DEPARTAMENTO</th>
-                                        <th>ID ESPE</th>
+                                        <th class="tamanio2">ID ESPE</th>
                                         <th>ESTADO</th>
                                         <th>ACCIONES</th>
                                     </tr>
@@ -379,13 +379,13 @@
                                                 <td>{{ $profesor->correo }}</td>
                                                 <td class="center_size">{{ $profesor->usuario }}</td>
                                                 <td class="center_size">{{ $profesor->cedula }}</td>
-                                                <td class="medium_size" style=" text-transform: uppercase;">
+                                                <td class="medium_size" style=" text-transform: uppercase; text-align:left;">
                                                     {{ strtoupper($profesor->departamento) }}
                                                 </td>
-                                                <td class="center_size">{{ $profesor->espeId }}</td>
+                                                <td class="medium_size" style=" text-transform: uppercase; text-align:left;">{{ $profesor->espeId }}</td>
 
                                                 <td class="center_size">
-                                                    {{ strtoupper($profesor->usuarios->estado ?? 'USUARIO NO CREADO') }}
+                                                    {{ strtoupper($profesor->usuarios->estado ?? 'INACTIVO') }}
                                                 </td>
 
                                                 <td class="center_size">
@@ -625,9 +625,7 @@
             </div>
             </div>
 
-        </section>
-
-        <section>
+     
 
             <div class="container">
 
@@ -792,7 +790,7 @@
                 </div>
             </div>
             </div>
-        </section>
+        
     </section>
 
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">

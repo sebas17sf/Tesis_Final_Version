@@ -97,7 +97,7 @@
                         <img src="\img\logos\logo_tesis.png" alt="logo">
                     </div>
                     <div class="title-text">
-                        <p>VINCULACIÓN Y PRÁCTICAS</p>
+                        <p>VINCULACIÓN   Y PRÁCTICAS</p>
                     </div>
                 </a>
                 <div class="links_site">
@@ -105,8 +105,7 @@
                         <ul class="nav-list">
                             <a class="p-element" href="{{ route('admin.index') }}">
                                 <div class="icon-sidebar-item">
-                                    <i class="fa-solid fa-grid-horizontal"></i>
-                                </div>
+                                <i class="fa-solid fa-grid"></i>                                </div>
                                 <div class="name-sidebar-item">
                                     <li>Panel Administrativo</li>
                                 </div>

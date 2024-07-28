@@ -2,8 +2,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "clean": "if exist public\\build rmdir /S /Q public\\build",
     "dev": "vite",
-    "build": "vite build"
+    "build": "npm run clean && vite build"
   },
   "devDependencies": {
     "axios": "^1.1.2",

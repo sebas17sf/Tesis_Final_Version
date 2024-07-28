@@ -5,49 +5,15 @@
 
 body {
     background-color: #F5F5F5;
-    font-size: 14px;
     font-family: " Arial", sans-serif;
 
 }
 
 
-.sidebar {
-    background-image: url('/img/logos/itin-presencial.png');
-    background-size: cover;
-    width: 230px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    padding-top: 20px;
-    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-.sidebar a {
-    padding: 10px 20px;
-    /* Espaciado de los enlaces */
-    text-decoration: none;
-    /* Quitar subrayado de los enlaces */
-    font-size: 14px;
-    /* Tamaño de fuente de los enlaces */
-    color: #000000;
-    /* Texto blanco */
-    display: flex;
-    /* Mostrar como flex para alinear icono y texto */
-    align-items: center;
-    /* Centrar verticalmente el contenido */
-}
-
 .sidebar a .material-icons {
     margin-right: 10px;
     /* Espaciado a la derecha del icono */
 }
-
-/* .sidebar a:hover {
-    background-color: #55595e;
-    color: #ffffff;
-  
-} */
 
 /* Estilo para el botón "Cerrar Sesión" */
 .logout-btn {
