@@ -143,22 +143,22 @@
                                     <tr>
                                         <td class="wide-cell"
 
-    
-          
-            
-    
 
-          
+
+
+
+
+
           Expand Down
-          
-            
-    
 
-          
+
+
+
+
           Expand Up
-    
+
     @@ -255,6 +266,7 @@ class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inse
-  
+
                                             style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             {{ $estudiante->apellidos }} {{ $estudiante->nombres }}</td>
                                         <td style=" text-transform: uppercase; word-wrap: break-word; text-align: center;">
@@ -276,22 +276,22 @@
                                                                 </table>
                                                             </div>
 
-    
-          
-            
-    
 
-          
+
+
+
+
+
           Expand Down
-          
-            
-    
 
-          
+
+
+
+
           Expand Up
-    
+
     @@ -429,6 +441,7 @@ class="button input_select1">Guardar
-  
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -523,7 +523,7 @@
                         }
                     }, 1000); // 2000 milisegundos = 2 segundos
                 });
-              
+
 
 function openCard(cardId) {
     document.getElementById(cardId).style.display = 'block';
