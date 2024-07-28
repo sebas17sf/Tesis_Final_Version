@@ -31,76 +31,108 @@ class DirectorVinculacionController extends Controller
     {
 
         $search = $request->input('search');
+        $perPage = $request->input('perPage', 10);
+        $perPage2 = $request->input('perPage2', 10);
+
         $search2 = $request->input('search2');
 
+        $profesorFiltro = $request->input('profesor');
+        $periodoFiltro = $request->input('periodo');
+
+        $profesorFiltro2 = $request->input('profesorParticipante');
+        $periodoFiltro2 = $request->input('periodoParticipante');
+
+        $profesTodos = ProfesUniversidad::all();
+        $obtenerPeriodo = Periodo::orderBy('inicioPeriodo', 'asc')->get();
 
         $profesor = Auth::user()->profesorUniversidad;
         $proyectos = Proyecto::where('directorId', $profesor->id)->pluck('proyectoId');
         $asignacionesProyectos = AsignacionProyecto::whereIn('proyectoId', $proyectos)
-        ->where(function ($query) use ($search) {
-            $query->whereHas('proyecto.director', function ($query) use ($search) {
-                $query->where('nombres', 'like', "%{$search}%")
-                    ->orWhere('apellidos', 'like', "%{$search}%")
-                    ->orWhere('departamento', 'like', "%{$search}%");
-            })
-            ->orWhereHas('proyecto', function ($query) use ($search) {
-                $query->where('nombreProyecto', 'like', "%{$search}%");
-            })
-            ->orWhereHas('estudiante', function ($query) use ($search) {
-                $query->where('nombres', 'like', "%{$search}%")
-                    ->orWhere('apellidos', 'like', "%{$search}%")
-                    ->orWhere('carrera', 'like', "%{$search}%")
-                    ->orWhere('departamento', 'like', "%{$search}%");
+            ->where(function ($query) use ($search) {
+                $query->whereHas('proyecto.director', function ($query) use ($search) {
+                    $query->where('nombres', 'like', "%{$search}%")
+                        ->orWhere('apellidos', 'like', "%{$search}%")
+                        ->orWhere('departamento', 'like', "%{$search}%");
+                })
+                    ->orWhereHas('proyecto', function ($query) use ($search) {
+                        $query->where('nombreProyecto', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('estudiante', function ($query) use ($search) {
+                        $query->where('nombres', 'like', "%{$search}%")
+                            ->orWhere('apellidos', 'like', "%{$search}%")
+                            ->orWhere('carrera', 'like', "%{$search}%")
+                            ->orWhere('departamento', 'like', "%{$search}%");
+
+                    })
+                    ->orWhereHas('periodo', function ($query) use ($search) {
+                        $query->where('numeroPeriodo', 'like', "%{$search}%");
+                    })
+
+                    ->orWhereHas('docenteParticipante', function ($query) use ($search) {
+                        $query->where('nombres', 'like', "%{$search}%")
+                            ->orWhere('apellidos', 'like', "%{$search}%")
+                            ->orWhere('departamento', 'like', "%{$search}%");
+                    });
 
             })
-            ->orWhereHas('periodo', function ($query) use ($search) {
-                $query->where('numeroPeriodo', 'like', "%{$search}%");
+            ->when($profesorFiltro, function ($query) use ($profesorFiltro) {
+                $query->whereHas('docenteParticipante', function ($query) use ($profesorFiltro) {
+                    $query->where('apellidos', 'like', "%{$profesorFiltro}%");
+
+                });
             })
-
-            ->orWhereHas('docenteParticipante', function ($query) use ($search) {
-                $query->where('nombres', 'like', "%{$search}%")
-                    ->orWhere('apellidos', 'like', "%{$search}%")
-                    ->orWhere('departamento', 'like', "%{$search}%");
-            });
-
-
+            ->when($periodoFiltro, function ($query) use ($periodoFiltro) {
+                $query->whereHas('periodo', function ($query) use ($periodoFiltro) {
+                    $query->where('numeroPeriodo', 'like', "%{$periodoFiltro}%");
+                });
+            })
+            ->paginate($perPage, ['*'], 'proyectosPage');
 
 
 
 
-        })
-        ->get();
 
         $asignacionParticipante = AsignacionProyecto::where('participanteId', $profesor->id)
-        ->where(function ($query) use ($search2) {
-            $query->whereHas('proyecto.director', function ($query) use ($search2) {
-                $query->where('nombres', 'like', "%{$search2}%")
-                    ->orWhere('apellidos', 'like', "%{$search2}%")
-                    ->orWhere('departamento', 'like', "%{$search2}%");
+            ->where(function ($query) use ($search2) {
+                $query->whereHas('proyecto.director', function ($query) use ($search2) {
+                    $query->where('nombres', 'like', "%{$search2}%")
+                        ->orWhere('apellidos', 'like', "%{$search2}%")
+                        ->orWhere('departamento', 'like', "%{$search2}%");
+                })
+                    ->orWhereHas('proyecto', function ($query) use ($search2) {
+                        $query->where('nombreProyecto', 'like', "%{$search2}%");
+                    })
+                    ->orWhereHas('estudiante', function ($query) use ($search2) {
+                        $query->where('nombres', 'like', "%{$search2}%")
+                            ->orWhere('apellidos', 'like', "%{$search2}%")
+                            ->orWhere('carrera', 'like', "%{$search2}%")
+                            ->orWhere('departamento', 'like', "%{$search2}%");
+                    })
+                    ->orWhereHas('periodo', function ($query) use ($search2) {
+                        $query->where('numeroPeriodo', 'like', "%{$search2}%");
+                    })
+                    ->orWhereHas('docenteParticipante', function ($query) use ($search2) {
+                        $query->where('nombres', 'like', "%{$search2}%")
+                            ->orWhere('apellidos', 'like', "%{$search2}%")
+                            ->orWhere('departamento', 'like', "%{$search2}%");
+                    });
             })
-            ->orWhereHas('proyecto', function ($query) use ($search2) {
-                $query->where('nombreProyecto', 'like', "%{$search2}%");
+            ->when($profesorFiltro2, function ($query) use ($profesorFiltro2) {
+                $query->whereHas('proyecto.director', function ($query) use ($profesorFiltro2) {
+                    $query->where('apellidos', 'like', "%{$profesorFiltro2}%");
+                });
             })
-            ->orWhereHas('estudiante', function ($query) use ($search2) {
-                $query->where('nombres', 'like', "%{$search2}%")
-                    ->orWhere('apellidos', 'like', "%{$search2}%")
-                    ->orWhere('carrera', 'like', "%{$search2}%")
-                    ->orWhere('departamento', 'like', "%{$search2}%");
+            ->when($periodoFiltro2, function ($query) use ($periodoFiltro2) {
+                $query->whereHas('periodo', function ($query) use ($periodoFiltro2) {
+                    $query->where('numeroPeriodo', 'like', "%{$periodoFiltro2}%");
+                });
             })
-            ->orWhereHas('periodo', function ($query) use ($search2) {
-                $query->where('numeroPeriodo', 'like', "%{$search2}%");
-            })
-            ->orWhereHas('docenteParticipante', function ($query) use ($search2) {
-                $query->where('nombres', 'like', "%{$search2}%")
-                    ->orWhere('apellidos', 'like', "%{$search2}%")
-                    ->orWhere('departamento', 'like', "%{$search2}%");
-            });
-        })
-        ->get();
+
+            ->paginate($perPage2, ['*'], 'participantesPage');
 
 
 
-        return view('director_vinculacion.index', compact('proyectos', 'asignacionesProyectos', 'asignacionParticipante', 'search', 'search2'));
+        return view('director_vinculacion.index', compact('proyectos', 'asignacionesProyectos', 'asignacionParticipante', 'search', 'search2', 'profesTodos', 'obtenerPeriodo', 'profesorFiltro', 'periodoFiltro', 'profesorFiltro2', 'periodoFiltro2', 'perPage', 'perPage2'));
 
     }
 
@@ -127,8 +159,7 @@ class DirectorVinculacionController extends Controller
                 ->get();
             $estudiantesAsignados->load('estudiante');
 
-            // Filtrar estudiantes asignados que no estén en AsignacionProyecto
-            $estudiantesAsignados = $estudiantesAsignados->filter(function ($asignacion) {
+             $estudiantesAsignados = $estudiantesAsignados->filter(function ($asignacion) {
                 return !AsignacionProyecto::where('estudianteId', $asignacion->EstudianteID)->exists();
             });
         }

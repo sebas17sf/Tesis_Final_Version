@@ -32,11 +32,12 @@
         <div class="mat-elevation-z8 contenedor_general">
             <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                 <div class="contenedor_botones">
-                    <form method="POST" action="{{ route('reporte.director') }}"
+                    <form id="reportForm" method="POST" action="{{ route('reporte.director') }}"
                         class="form-inline d-flex align-items-center">
                         @csrf
+                        <input type="hidden" name="profesor" id="hiddenProfesor">
+                        <input type="hidden" name="periodo" id="hiddenPeriodo">
                         <div class="tooltip-container">
-
                             <button type="submit" class="button3 btn_excel efects_button">
                                 <i class="fas fa-file-excel"></i>
                             </button>
@@ -60,33 +61,26 @@
                                     class="fa-thin fa-xmark"></i></button>
                         </div>
                         <div class="card-body">
-                            <form id="filtersForm" method="GET" action="{{ route('admin.indexProyectos') }}">
+                            <form id="filtersForm" method="GET" action="{{ route('director_vinculacion.index') }}">
                                 <div class="form-group">
-                                    <label for="estado" class="mr-2">Estado del Proyecto:</label>
-                                    <select name="estado" id="estado" class="form-control input input_select">
-                                        <option value="">Todos</option>
-                                        <option value="Ejecucion" {{ request('estado') == 'Ejecucion' ? 'selected' : '' }}>
-                                            En Ejecución
-                                        </option>
-                                        <option value="Terminado" {{ request('estado') == 'Terminado' ? 'selected' : '' }}>
-                                            Terminado
-                                        </option>
+                                    <label for="profesor" class="mr-2">Docente Participante:</label>
+                                    <select name="profesor" id="profesor" class="form-control input input_select">
+                                        <option value="">Todos los docentes</option>
+                                        @foreach ($profesTodos as $profesor)
+                                            <option value="{{ $profesor->apellidos }}">{{ $profesor->apellidos }}
+                                                {{ $profesor->nombres }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="departamento" class="mr-2">Departamento:</label>
-                                    <select name="departamento" id="departamento" class="form-control input input_select">
-                                        <option value="">Todos</option>
-                                        <option value="Ciencias de la Computación"
-                                            {{ request('departamento') == 'Ciencias de la Computación' ? 'selected' : '' }}>
-                                            Ciencias de la Computación</option>
-                                        <option value="Ciencias Exactas"
-                                            {{ request('departamento') == 'Ciencias Exactas' ? 'selected' : '' }}>
-                                            Ciencias Exactas</option>
-                                        <option value="Ciencias de la Vida y Agricultura"
-                                            {{ request('departamento') == 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>
-                                            Ciencias de la Vida y Agricultura</option>
+                                    <label for="periodo" class="mr-2">Periodo:</label>
+                                    <select name="periodo" id="periodo" class="form-control input input_select">
+                                        <option value="">Todos los periodos</option>
+                                        @foreach ($obtenerPeriodo as $periodo)
+                                            <option value="{{ $periodo->numeroPeriodo }}">{{ $periodo->numeroPeriodo }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </form>
@@ -142,9 +136,11 @@
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
-                                    @foreach ($asignacionesProyectos as $asignaciones)
+                                    @foreach ($asignacionesProyectos as $index => $asignaciones)
                                         <tr class="mat-mdc-row mdc-data-table__row ng-star-inserted">
-                                            <td>{{ $loop->iteration }}</td>
+                                            <td style="text-align: center;">
+                                                {{ $asignacionesProyectos->currentPage() == 1 ? $index + 1 : $index + 1 + $asignacionesProyectos->perPage() * ($asignacionesProyectos->currentPage() - 1) }}
+                                            </td>
                                             <td
                                                 style="text-align:justify; text-transform: uppercase; word-wrap: break-word;">
                                                 {{ $asignaciones->proyecto->nombreProyecto }}</td>
@@ -190,7 +186,59 @@
                             </table>
                         </div>
                     </div>
+                    <div class="paginator-container">
+                        <nav aria-label="..."
+                            style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
+                            <div id="totalRows">Proyectos: {{ $asignacionesProyectos->total() }}</div>
+                            <ul class="pagination">
+                                <li class="page-item mx-3">
+                                    <form method="GET"
+                                        action="{{ route('director_vinculacion.index') }}#tablaDirector">
+                                        <select class="form-control page-item" name="perPage" id="perPage"
+                                            onchange="this.form.submit()">
+                                            <option value="10" @if ($perPage == 10) selected @endif>10
+                                            </option>
+                                            <option value="20" @if ($perPage == 20) selected @endif>20
+                                            </option>
+                                            <option value="50" @if ($perPage == 50) selected @endif>50
+                                            </option>
+                                            <option value="100" @if ($perPage == 100) selected @endif>100
+                                            </option>
+                                        </select>
+                                    </form>
+                                </li>
+                                @if ($asignacionesProyectos->onFirstPage())
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Anterior</span>
+                                    </li>
+                                @else
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $asignacionesProyectos->previousPageUrl() }}"
+                                            aria-label="Anterior">Anterior</a>
+                                    </li>
+                                @endif
 
+                                @for ($i = 1; $i <= $asignacionesProyectos->lastPage(); $i++)
+                                    <li
+                                        class="page-item {{ $asignacionesProyectos->currentPage() == $i ? 'active' : '' }}">
+                                        <a class="page-link"
+                                            href="{{ $asignacionesProyectos->url($i) }}">{{ $i }}</a>
+                                    </li>
+                                @endfor
+
+                                @if ($asignacionesProyectos->hasMorePages())
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ $asignacionesProyectos->nextPageUrl() }}"
+                                            aria-label="Siguiente">Siguiente</a>
+                                    </li>
+                                @else
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Siguiente</span>
+                                    </li>
+                                @endif
+                            </ul>
+                        </nav>
+                    </div>
 
                 </div>
             </div>
@@ -206,8 +254,10 @@
                     <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                         <div class="contenedor_botones">
                             <form method="POST" action="{{ route('reporte.historicoParticipante') }}"
-                                class="form-inline d-flex align-items-center">
+                                class="form-inline d-flex align-items-center" id="reportForm2">
                                 @csrf
+                                <input type="hidden" name="profesorParticipante" id="hiddenProfesorParticipante">
+                                <input type="hidden" name="periodoParticipante" id="hiddenPeriodoParticipante">
                                 <div class="tooltip-container">
                                     <button type="submit" class="button3 btn_excel efects_button">
                                         <i class="fas fa-file-excel"></i>
@@ -216,58 +266,54 @@
                             </form>
                             <div class="tooltip-container">
                                 <span class="tooltip-text">Filtros</span>
-                                <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCard');">
+                                <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCard2');">
                                     <i class="fa-solid fa-filter-list"></i>
                                 </button>
                             </div>
 
                             <!-- Card de Filtros -->
-                            <div class="draggable-card1_2" id="filtersCard" style="display: none;">
+                            <div class="draggable-card1_2" id="filtersCard2" style="display: none;">
                                 <div class="card-header">
                                     <span class="card-title">Filtros</span>
-                                    <button type="button" class="close" onclick="closeCard('filtersCard')"><i
+                                    <button type="button" class="close" onclick="closeCard('filtersCard2')"><i
                                             class="fa-thin fa-xmark"></i></button>
                                 </div>
                                 <div class="card-body">
-                                    <form id="filtersForm" method="GET" action="{{ route('admin.indexProyectos') }}">
+                                    <form id="filtersForm" method="GET"
+                                        action="{{ route('director_vinculacion.index') }}">
                                         <div class="form-group">
-                                            <label for="estado" class="mr-2">Estado del Proyecto:</label>
-                                            <select name="estado" id="estado"
+                                            <label for="profesorParticipante" class="mr-2">Director de proyecto:</label>
+                                            <select name="profesorParticipante" id="profesorParticipante"
                                                 class="form-control input input_select">
-                                                <option value="">Todos</option>
-                                                <option value="Ejecucion"
-                                                    {{ request('estado') == 'Ejecucion' ? 'selected' : '' }}>En Ejecución
-                                                </option>
-                                                <option value="Terminado"
-                                                    {{ request('estado') == 'Terminado' ? 'selected' : '' }}>Terminado
-                                                </option>
+                                                <option value="">Todos los docentes</option>
+                                                @foreach ($profesTodos as $profesor)
+                                                    <option value="{{ $profesor->apellidos }}">{{ $profesor->apellidos }}
+                                                        {{ $profesor->nombres }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="departamento" class="mr-2">Departamento:</label>
-                                            <select name="departamento" id="departamento"
+                                            <label for="periodoParticipante" class="mr-2">Periodo:</label>
+                                            <select name="periodoParticipante" id="periodoParticipante"
                                                 class="form-control input input_select">
-                                                <option value="">Todos</option>
-                                                <option value="Ciencias de la Computación"
-                                                    {{ request('departamento') == 'Ciencias de la Computación' ? 'selected' : '' }}>
-                                                    Ciencias de la Computación</option>
-                                                <option value="Ciencias Exactas"
-                                                    {{ request('departamento') == 'Ciencias Exactas' ? 'selected' : '' }}>
-                                                    Ciencias Exactas</option>
-                                                <option value="Ciencias de la Vida y Agricultura"
-                                                    {{ request('departamento') == 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>
-                                                    Ciencias de la Vida y Agricultura</option>
+                                                <option value="">Todos los periodos</option>
+                                                @foreach ($obtenerPeriodo as $periodo)
+                                                    <option value="{{ $periodo->numeroPeriodo }}">
+                                                        {{ $periodo->numeroPeriodo }}
+                                                    </option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </form>
                                 </div>
                             </div>
 
+
                             <!-- Botón de Eliminar Filtros -->
                             <div class="tooltip-container">
                                 <span class="tooltip-text">Eliminar Filtros</span>
-                                <button class="button3 efects_button btn_delete_filter" onclick="resetFilters()">
+                                <button class="button3 efects_button btn_delete_filter" onclick="resetFilters2()">
                                     <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
                                 </button>
                             </div>
@@ -311,9 +357,12 @@
                                         </tr>
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
-                                        @foreach ($asignacionParticipante as $asignaciones)
+                                        @foreach ($asignacionParticipante as $index => $asignaciones)
                                             <tr class="mat-mdc-row mdc-data-table__row ng-star-inserted">
-                                                <td>{{ $loop->iteration }}</td>
+                                                <td style="text-align: center;">
+                                                    {{ $asignacionParticipante->currentPage() == 1 ? $index + 1 : $index + 1 + $asignacionParticipante->perPage() * ($asignacionParticipante->currentPage() - 1) }}
+                                                </td>
+
                                                 <td
                                                     style="text-align:justify; text-transform: uppercase; word-wrap: break-word;">
                                                     {{ $asignaciones->proyecto->nombreProyecto }}</td>
@@ -367,7 +416,61 @@
                             </div>
                         </div>
 
+                        <div class="paginator-container">
+                            <nav aria-label="..."
+                                style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
+                                <div id="totalRows">Proyectos: {{ $asignacionParticipante->total() }}</div>
+                                <ul class="pagination">
+                                    <li class="page-item mx-3">
+                                        <form method="GET"
+                                            action="{{ route('director_vinculacion.index') }}#tablaParticipante">
+                                            <select class="form-control page-item" name="perPage2" id="perPage2"
+                                                onchange="this.form.submit()">
+                                                <option value="10" @if ($perPage2 == 10) selected @endif>10
+                                                </option>
+                                                <option value="20" @if ($perPage2 == 20) selected @endif>20
+                                                </option>
+                                                <option value="50" @if ($perPage2 == 50) selected @endif>
+                                                    50</option>
+                                                <option value="100" @if ($perPage2 == 100) selected @endif>
+                                                    100</option>
+                                            </select>
+                                        </form>
+                                    </li>
+                                    @if ($asignacionParticipante->onFirstPage())
+                                        <li class="page-item disabled">
+                                            <span class="page-link">Anterior</span>
+                                        </li>
+                                    @else
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                                href="{{ $asignacionParticipante->appends(['perPage2' => $perPage2])->previousPageUrl() }}#tablaParticipante"
+                                                aria-label="Anterior">Anterior</a>
+                                        </li>
+                                    @endif
 
+                                    @for ($i = 1; $i <= $asignacionParticipante->lastPage(); $i++)
+                                        <li
+                                            class="page-item {{ $asignacionParticipante->currentPage() == $i ? 'active' : '' }}">
+                                            <a class="page-link"
+                                                href="{{ $asignacionParticipante->appends(['perPage2' => $perPage2])->url($i) }}#tablaParticipante">{{ $i }}</a>
+                                        </li>
+                                    @endfor
+
+                                    @if ($asignacionParticipante->hasMorePages())
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                                href="{{ $asignacionParticipante->appends(['perPage2' => $perPage2])->nextPageUrl() }}#tablaParticipante"
+                                                aria-label="Siguiente">Siguiente</a>
+                                        </li>
+                                    @else
+                                        <li class="page-item disabled">
+                                            <span class="page-link">Siguiente</span>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </nav>
+                        </div>
 
                     </div>
 
@@ -444,6 +547,144 @@
         });
     </script>
 
+    <script>
+        $(document).ready(function() {
+            $('#profesor, #periodo').change(function() {
+                var profesor = $('#profesor').val();
+                var periodo = $('#periodo').val();
+
+                $.ajax({
+                    url: "{{ route('director_vinculacion.index') }}",
+                    method: 'GET',
+                    data: {
+                        profesor: profesor,
+                        periodo: periodo
+                    },
+                    success: function(response) {
+                        $('#tablaDirector').html($(response).find('#tablaDirector').html());
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#profesorParticipante, #periodoParticipante').change(function() {
+                var profesorParticipante = $('#profesorParticipante').val();
+                var periodoParticipante = $('#periodoParticipante').val();
+
+                $.ajax({
+                    url: "{{ route('director_vinculacion.index') }}",
+                    method: 'GET',
+                    data: {
+                        profesorParticipante: profesorParticipante,
+                        periodoParticipante: periodoParticipante
+                    },
+                    success: function(response) {
+                        $('#tablaParticipante').html($(response).find('#tablaParticipante')
+                            .html());
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
+
+
+    <script>
+        function resetFilters() {
+            $('#profesor').val('');
+            $('#periodo').val('');
+            $('#search').val('');
+            $('#search2').val('');
+
+            var profesor = $('#profesor').val();
+            var periodo = $('#periodo').val();
+
+            $.ajax({
+                url: "{{ route('director_vinculacion.index') }}",
+                method: 'GET',
+                data: {
+                    profesor: profesor,
+                    periodo: periodo
+                },
+                success: function(response) {
+                    $('#tablaDirector').html($(response).find('#tablaDirector').html());
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+        function resetFilters2() {
+            $('#profesorParticipante').val('');
+            $('#periodoParticipante').val('');
+            $('#search').val('');
+            $('#search2').val('');
+
+            var profesorParticipante = $('#profesorParticipante').val();
+            var periodoParticipante = $('#periodoParticipante').val();
+
+            $.ajax({
+                url: "{{ route('director_vinculacion.index') }}",
+                method: 'GET',
+                data: {
+                    profesorParticipante: profesorParticipante,
+                    periodoParticipante: periodoParticipante
+                },
+                success: function(response) {
+                    $('#tablaParticipante').html($(response).find('#tablaParticipante').html());
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function openCard(card) {
+            $('#' + card).show();
+        }
+
+        function closeCard(card) {
+            $('#' + card).hide();
+        }
+    </script>
+
+    <script>
+        document.getElementById('reportForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var profesor = document.getElementById('profesor').value;
+            var periodo = document.getElementById('periodo').value;
+
+            document.getElementById('hiddenProfesor').value = profesor;
+            document.getElementById('hiddenPeriodo').value = periodo;
+
+            this.submit();
+        });
+    </script>
+
+    <script>
+        document.getElementById('reportForm2').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var profesorParticipante = document.getElementById('profesorParticipante').value;
+            var periodoParticipante = document.getElementById('periodoParticipante').value;
+
+            document.getElementById('hiddenProfesorParticipante').value = profesorParticipante;
+            document.getElementById('hiddenPeriodoParticipante').value = periodoParticipante;
+
+            this.submit();
+        });
+    </script>
 
 
 

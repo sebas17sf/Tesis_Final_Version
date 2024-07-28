@@ -522,7 +522,7 @@ class DocumentosVinculacion extends Controller
             $query->where('idPeriodo', $periodo);
         }
 
-        
+
 
 
 
@@ -620,7 +620,7 @@ class DocumentosVinculacion extends Controller
 
 
     //////////////////////////////////////reporte de docentes participantes/////////////////////////////////////////////////////////////////
-    public function historicoParticipante()
+    public function historicoParticipante(Request $request)
     {
         $plantillaPath = public_path('Plantillas/HistoricoDocentes.xlsx');
         $spreadsheet = IOFactory::load($plantillaPath);
@@ -634,8 +634,23 @@ class DocumentosVinculacion extends Controller
         $usuario = auth()->user();
         $correoUsuario = $usuario->correoElectronico;
         $participanteVinculacion = ProfesUniversidad::where('correo', $correoUsuario)->first();
-        $asignacionProyecto = AsignacionProyecto::where('participanteId', $participanteVinculacion->id)
-            ->get();
+        $asignacionProyecto = AsignacionProyecto::where('participanteId', $participanteVinculacion->id);
+
+        if ($request->has('profesorParticipante') && !empty($request->get('profesorParticipante'))) {
+            $asignacionProyecto->whereHas('proyecto.director', function ($query) use ($request) {
+                $query->where('apellidos', $request->get('profesorParticipante'));
+            });
+        }
+
+        if ($request->has('periodoParticipante') && !empty($request->get('periodoParticipante'))) {
+            $asignacionProyecto->whereHas('periodo', function ($query) use ($request) {
+                $query->where('numeroPeriodo', $request->get('periodoParticipante'));
+            });
+        }
+
+        $asignacionProyecto = $asignacionProyecto->get();
+
+
 
         if ($asignacionProyecto->isEmpty()) {
             return redirect()->back()->with('error', 'No hay proyectos asignados');
@@ -710,7 +725,7 @@ class DocumentosVinculacion extends Controller
 
 
     /////////////////////////////////////////HISTORIAL DE DIRECTORES DE PROYECTO///////////////////////////////////////////////
-    public function historicoDirector()
+    public function historicoDirector(Request $request)
     {
         $plantillaPath = public_path('Plantillas/HistoricoDocentes.xlsx');
         $spreadsheet = IOFactory::load($plantillaPath);
@@ -732,8 +747,21 @@ class DocumentosVinculacion extends Controller
         }
 
 
-        $asignacionProyecto = AsignacionProyecto::where('proyectoId', $proyecto->proyectoId)
-            ->get();
+        $asignacionProyecto = AsignacionProyecto::where('proyectoId', $proyecto->proyectoId);
+
+        if ($request->has('profesor') && !empty($request->get('profesor'))) {
+            $asignacionProyecto->whereHas('docenteParticipante', function ($query) use ($request) {
+                $query->where('apellidos', $request->get('profesor'));
+            });
+        }
+
+        if ($request->has('periodo') && !empty($request->get('periodo'))) {
+            $asignacionProyecto->whereHas('periodo', function ($query) use ($request) {
+                $query->where('numeroPeriodo', $request->get('periodo'));
+            });
+        }
+
+        $asignacionProyecto = $asignacionProyecto->get();
 
         if ($asignacionProyecto->isEmpty()) {
             return redirect()->back()->with('error', 'No hay proyectos asignados como director');
