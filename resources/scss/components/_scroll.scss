@@ -6,8 +6,8 @@
 
 body {
   &::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 9px;
+    height: 9px;
   }
 
   &::-webkit-scrollbar-track {
@@ -63,4 +63,34 @@ body {
       height: 0px;
     }
   }
-} 
+}
+
+/*-----------------------------------*\
+  # Scroll elements
+\*-----------------------------------*/
+
+.scroll_element {
+  &::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(colors.$gray, 0.2);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(colors.$gray, 0.8);
+    transition: 0.5s;
+
+    &:hover {
+      transition: 0.5s;
+      background: rgba(colors.$primary, 0.8);
+    }
+  }
+
+  &::-webkit-scrollbar-button {
+    width: 0px;
+    height: 0px;
+  }
+}
