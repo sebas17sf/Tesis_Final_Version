@@ -188,6 +188,8 @@ class AdminController extends Controller
     ///////////////Aceptacion de estudiantes para el proceso de vinculacion/////////////////////////////////////
     public function estudiantes(Request $request)
     {
+        $periodos = Periodo::orderBy('inicioPeriodo', 'asc')->get();
+
         $elementosPorPagina = $request->input('elementosPorPagina');
         $elementosPorPaginaAprobados = $request->input('elementosPorPaginaAprobados'); // Cambio de nombre
 
@@ -222,8 +224,22 @@ class AdminController extends Controller
                     ->orWhere('Cohorte', 'like', '%' . $busquedaEstudiantesAprobados . '%')
                     ->orWhere('correo', 'like', '%' . $busquedaEstudiantesAprobados . '%')
                     ->orWhere('departamento', 'like', '%' . $busquedaEstudiantesAprobados . '%');
-            });
+            })
+            ->orderBy('apellidos', 'asc');
         }
+
+        if ($request->has('Departamento') && $request->input('Departamento')) {
+            $departamento = $request->input('Departamento');
+            $queryEstudiantesAprobados->where('departamento', $departamento);
+        }
+
+        if ($request->has('periodos') && $request->input('periodos')) {
+            $periodo = $request->input('periodos');
+            $queryEstudiantesAprobados->where('Cohorte', $periodo);
+        }
+
+
+
 
         $estudiantesAprobados = $queryEstudiantesAprobados->paginate($elementosPorPaginaAprobados); // Cambio de nombre
 
@@ -235,6 +251,7 @@ class AdminController extends Controller
             'elementosPorPagina' => $elementosPorPagina,
             'elementosPorPaginaAprobados' => $elementosPorPaginaAprobados,
             'search2' => $search2,
+            'periodos' => $periodos,
         ]);
     }
 
@@ -297,7 +314,7 @@ class AdminController extends Controller
 
         $periodos = Periodo::all();
 
-        
+
         $nrcs = NrcVinculacion::where('tipo', 'Vinculacion')->get();
 
 

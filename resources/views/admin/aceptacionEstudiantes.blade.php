@@ -138,87 +138,72 @@
         <div class="mat-elevation-z8 contenedor_general">
 
             <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
-                <!-- Botones -->
                 <div class="contenedor_botones">
 
-                    <div class="tooltip-container ">
+                    <div class="tooltip-container">
                         <span class="tooltip-text">Reporte Estudiante</span>
-                        <form action="{{ route('admin.reportesEstudiantes') }}" method="POST">
+                        <form id="formdatos" action="{{ route('admin.reportesEstudiantes') }}" method="POST">
                             @csrf
+                            <input type="hidden" name="Departamento" id="hiddenDepartamento">
+                            <input type="hidden" name="periodos" id="hiddenPeriodo">
                             <button type="submit" class="button3 efects_button btn_excel">
                                 <i class="fas fa-file-excel"></i>
                             </button>
                         </form>
                     </div>
-                 <!-- Botón de Filtros para Profesores y Periodos -->
-<div class="tooltip-container">
-                                    <span class="tooltip-text">Filtros</span>
-                                    <button class="button3 efects_button btn_filtro"
-                                        onclick="openCard('filtersCardProfesores');">
-                                        <i class="fa-solid fa-filter-list"></i>
-                                    </button>
+                    <div class="tooltip-container">
+                        <span class="tooltip-text">Filtros</span>
+                        <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCardProfesores');">
+                            <i class="fa-solid fa-filter-list"></i>
+                        </button>
+                    </div>
+
+                    <div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
+                        <div class="card-header">
+                            <span class="card-title">Filtros</span>
+                            <button type="button" class="close" onclick="closeCard('filtersCardProfesores')"><i
+                                    class="fa-thin fa-xmark"></i></button>
+                        </div>
+                        <div class="card-body">
+                            <form id="filterFormProfesores" method="GET" action="{{ route('admin.indexProyectos') }}">
+                                <div class="form-group">
+                                    <label for="Departamento">Departamento:</label>
+                                    <select class="form-control input input_select" id="Departamento" name="Departamento"
+                                        required>
+                                        <option value="">Todos los departamentos</option>
+                                        <option value="Ciencias de la Computación"
+                                            {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias de la Computación' ? 'selected' : '' }}>
+                                            DCCO - Ciencias de la Computación</option>
+                                        <option value="Ciencias Exactas"
+                                            {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias Exactas' ? 'selected' : '' }}>
+                                            DCEX - Ciencias Exactas</option>
+                                        <option value="Ciencias de la Vida y Agricultura"
+                                            {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>
+                                            DCVA - Ciencias de la Vida y Agricultura</option>
+                                    </select>
                                 </div>
-
-                                <!-- Card de Filtros para Profesores y Periodos -->
-                                <div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
-                                    <div class="card-header">
-                                        <span class="card-title">Filtros Profesores y Periodos</span>
-                                        <button type="button" class="close"
-                                            onclick="closeCard('filtersCardProfesores')"><i
-                                                class="fa-thin fa-xmark"></i></button>
-                                    </div>
-                                    <div class="card-body">
-                                        <form id="filterFormProfesores" method="GET"
-                                            action="{{ route('admin.indexProyectos') }}">
-                                            <div class="form-group">
-                                                <label for="profesor">Profesor</label>
-                                                <select name="profesor" id="profesor"
-                                                    class="form-control input input_select">
-                                                    <option value="">Todos los docentes</option>
-                                                   
-                                                        <option value="">
-                                                         
-                                                        </option>
-                                                 
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="periodos">Períodos</label>
-                                                <select name="periodos" id="periodos"
-                                                    class="form-control input input_select">
-                                                    <option value="">Todos los periodos</option>
-                                                   
-                                                        <option value="#">
-                                                           
-                                                        </option>
-                                                
-                                                </select>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="fechaInicio">Fecha inicio</label>
-                                                <input type="date" class="input" name="fechaInicio"
-                                                    id="fechaInicio">
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="fechaFin">Fecha Fin</label>
-                                                <input type="date" class="input" name="fechaFin" id="fechaFin">
-                                            </div>
-
-                                        </form>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="periodos">Períodos</label>
+                                    <select name="periodos" id="periodos" class="form-control input input_select">
+                                        <option value="">Todos los periodos</option>
+                                        @foreach ($periodos as $periodo)
+                                            <option value="{{ $periodo->numeroPeriodo }}">{{ $periodo->numeroPeriodo }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
+                            </form>
+                        </div>
+                    </div>
 
-                                <!-- Botón de Eliminar Filtros Profesores y Periodos -->
-                                <div class="tooltip-container ">
-                                    <span class="tooltip-text">Eliminar Filtros</span>
-                                    <button class="button3 efects_button btn_delete_filter"
-                                        onclick="resetFiltersProfesores()">
-                                        <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
-                                    </button>
-                                </div>
-                            </div>
+                    <!-- Botón de Eliminar Filtros Profesores y Periodos -->
+                    <div class="tooltip-container ">
+                        <span class="tooltip-text">Eliminar Filtros</span>
+                        <button class="button3 efects_button btn_delete_filter" onclick="resetFiltersProfesores()">
+                            <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+                        </button>
+                    </div>
+                </div>
                 <div class="contenedor_buscador">
                     <div>
 
@@ -264,7 +249,7 @@
                                 @else
                                     @foreach ($estudiantesAprobados as $index => $estudiante)
                                         <tr>
-                                            <td>{{ $estudiantesAprobados ->firstItem() + $index }}</td>
+                                            <td>{{ $estudiantesAprobados->firstItem() + $index }}</td>
 
 
                                             <td style="text-transform: uppercase; text-align: left;">
@@ -275,7 +260,7 @@
                                                 {{ strtoupper($estudiante->carrera) }}</td>
                                             <td>{{ $estudiante->cedula }}</td>
                                             <td>{{ $estudiante->periodos->numeroPeriodo ?? '' }}</td>
-                                            <td>{{ $estudiante->periodos->periodo ?? ''}}</td>
+                                            <td>{{ $estudiante->periodos->periodo ?? '' }}</td>
                                             <td style="text-transform: uppercase; ">
                                                 {{ strtoupper($estudiante->departamento) }}</td>
                                             <td style="text-transform: uppercase;">
@@ -380,7 +365,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/admin/acciones.js') }}"></script>
     <script>
-
         function enviarFormulario(e) {
             e.preventDefault();
 
@@ -425,7 +409,7 @@
                     },
                     success: function(response) {
                         $('#tablaEstudiantes').html($(response).find('#tablaEstudiantes')
-                        .html());
+                            .html());
                     }
                 });
             }, 500);
@@ -442,20 +426,106 @@
                 periodoInput.value = periodo ? periodo : '';
             });
         });
-        
     </script>
     <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-                    // Selecciona el elemento de la alerta
-                    const alertElement = document.querySelector('.contenedor_alerta');
-                    // Establece un temporizador para ocultar la alerta después de 2 segundos
-                    setTimeout(() => {
-                        if (alertElement) {
-                            alertElement.style.display = 'none';
-                        }
-                    }, 1000); // 2000 milisegundos = 2 segundos
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Selecciona el elemento de la alerta
+            const alertElement = document.querySelector('.contenedor_alerta');
+            // Establece un temporizador para ocultar la alerta después de 2 segundos
+            setTimeout(() => {
+                if (alertElement) {
+                    alertElement.style.display = 'none';
+                }
+            }, 1000); // 2000 milisegundos = 2 segundos
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#Departamento, #periodos').change(function() {
+                var departamento = $('#Departamento').val();
+                var periodo = $('#periodos').val();
+
+                $.ajax({
+                    url: "{{ route('admin.estudiantes') }}",
+                    method: 'GET',
+                    data: {
+                        Departamento: departamento,
+                        periodos: periodo
+                    },
+                    success: function(response) {
+                        $('#tablaEstudiantes').html($(response).find('#tablaEstudiantes')
+                            .html());
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
                 });
-            </script>
+            });
+        });
+    </script>
+
+    <script>
+        function resetFiltersProfesores() {
+            $('#Departamento').val('');
+            $('#periodos').val('');
+            $.ajax({
+                url: "{{ route('admin.estudiantes') }}",
+                method: 'GET',
+                data: {
+                    Departamento: '',
+                    periodos: ''
+                },
+                success: function(response) {
+                    $('#tablaEstudiantes').html($(response).find('#tablaEstudiantes').html());
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#Departamento, #periodos').change(function() {
+                var departamento = $('#Departamento').val();
+                var periodo = $('#periodos').val();
+
+                $.ajax({
+                    url: "{{ route('admin.estudiantes') }}",
+                    method: 'GET',
+                    data: {
+                        Departamento: departamento,
+                        periodos: periodo
+                    },
+                    success: function(response) {
+                        $('#tablaEstudiantes').html(response.html);
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
+
+<script>
+    document.getElementById('formdatos').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var profesor = document.getElementById('Departamento').value;
+        var periodo = document.getElementById('periodos').value;
+        document.getElementById('hiddenDepartamento').value = profesor;
+        document.getElementById('hiddenPeriodo').value = periodo;
+
+        this.submit();
+    });
+</script>
+
+
+
+
     <style>
         .contenedor_tabla .table-container table td {
             width: 200px;
@@ -467,5 +537,6 @@
         .contenedor_tabla .table-container table th {
             position: sticky;
             font-size: .8em !important;
+        }
     </style>
 @endsection

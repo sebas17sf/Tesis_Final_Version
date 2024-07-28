@@ -960,32 +960,41 @@ class DocumentoController extends Controller
 
     //////////////////////////////////////////Reporte estudiantes///////////////////////
 
-    public function ReporteEstudiantes()
+    public function ReporteEstudiantes(Request $request)
     {
         $plantillaPath = public_path('Plantillas/Reporte-Estudiantes.xlsx');
-
-        $spreadsheet = IOFactory::load($plantillaPath);
 
         if (!file_exists($plantillaPath)) {
             abort(404, 'El archivo de plantilla no existe.');
         }
 
-        $template = new TemplateProcessor($plantillaPath);
-
-        $estudiantes = Estudiante::orderBy('apellidos', 'asc')->get();
-
+        $spreadsheet = IOFactory::load($plantillaPath);
         $sheet = $spreadsheet->getActiveSheet();
+
+        $departamento = $request->input('Departamento');
+        $periodo = $request->input('periodos');
+
+        // Construir la consulta con los filtros
+        $queryEstudiantes = Estudiante::query();
+
+        if ($departamento) {
+            $queryEstudiantes->where('departamento', $departamento);
+        }
+
+        if ($periodo) {
+            $queryEstudiantes->where('Cohorte', $periodo);
+        }
+
+        $estudiantes = $queryEstudiantes->orderBy('apellidos', 'asc')->get();
 
         $filaInicio = 9;
         $cantidadFilas = count($estudiantes);
         $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
 
-
         $contador = 1;
 
         foreach ($estudiantes as $index => $estudiante) {
             $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-
             $sheet->setCellValue('B' . ($filaInicio + $index), mb_strtoupper($estudiante->apellidos . ' ' . $estudiante->nombres, 'UTF-8'));
             $sheet->setCellValue('C' . ($filaInicio + $index), mb_strtoupper($estudiante->espeId, 'UTF-8'));
             $sheet->setCellValue('D' . ($filaInicio + $index), mb_strtoupper($estudiante->celular, 'UTF-8'));
@@ -1005,11 +1014,11 @@ class DocumentoController extends Controller
         $writer->save($nombreArchivo);
 
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
-
     }
 
     ////////////////////////Reporte de sesiones////////////////////////
-    public function reporteSessiones(){
+    public function reporteSessiones()
+    {
         $plantillaPath = public_path('Plantillas/Reporte-Sesiones.xlsx');
 
         $spreadsheet = IOFactory::load($plantillaPath);
@@ -1020,7 +1029,7 @@ class DocumentoController extends Controller
 
         $template = new TemplateProcessor($plantillaPath);
 
-         $sesiones = UsuariosSession::orderBy('start_time', 'asc')->get();
+        $sesiones = UsuariosSession::orderBy('start_time', 'asc')->get();
 
         $sheet = $spreadsheet->getActiveSheet();
 
