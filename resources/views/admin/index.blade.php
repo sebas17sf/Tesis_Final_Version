@@ -111,14 +111,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($profesoresVerificar as $docente)
+                        @forelse ($profesoresVerificar as $index => $docente)
+
                             <tr>
-                                <td>agregar numeracion</td>
-                                <td>{{ $docente->profesorUniversidad->apellidos ?? '' }}
+                                <td>{{ $index + 1 }}</td>
+                                 <td>{{ $docente->profesorUniversidad->apellidos ?? '' }}
                                     {{ $docente->profesorUniversidad->nombres ?? '' }}</td>
                                 <td>{{ $docente->profesorUniversidad->espeId ?? '' }}</td>
                                 <td>{{ $docente->correoElectronico ?? '' }}</td>
-                                <td>{{ $docente->profesorUniversidad }}</td>
+                                <td>{{ $docente->profesorUniversidad->departamento }}</td>
                                 <td>{{ $docente->estado ?? '' }}</td>
                                 <td>
                                     <form action="{{ route('admin.aceptarDocente', ['id' => $docente->userId]) }}"

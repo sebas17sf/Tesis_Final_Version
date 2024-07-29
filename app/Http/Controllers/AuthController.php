@@ -164,7 +164,7 @@ class AuthController extends Controller
             $docente->espeId = $validatedData['espe_id'];
             $docente->usuario = $correoUsuario;
             $docente->departamento = $validatedData['departamento'];
-            $docente->userId = $usuario->id;
+            $docente->userId = $usuario->userId;
             $docente->save();
 
             $message = 'Docente registrado exitosamente. Pronto será verificado.';
