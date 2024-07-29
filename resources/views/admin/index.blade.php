@@ -114,13 +114,13 @@
                             @forelse ($profesoresVerificar as $docente)
                                 <tr>
 <td>agregar numeracion</td>
-                                    <td>{{ $docente->profesorUniversidad->apellidos ?? '' }}
+                                    <td style="text-transform: uppercase ; text-align:center">{{ $docente->profesorUniversidad->apellidos ?? '' }}
                                         {{ $docente->profesorUniversidad->nombres ?? '' }}</td>
-                                    <td>{{ $docente->profesorUniversidad->espeId ?? '' }}</td>
-                                    <td>{{ $docente->correoElectronico ?? '' }}</td>
-                                    <td>{{ $docente->profesorUniversidad }}</td>
-                                    <td>{{ $docente->estado ?? '' }}</td>
-                                    <td>
+                                    <td style="text-transform: uppercase ; text-align:center">{{ $docente->profesorUniversidad->espeId ?? '' }}</td>
+                                    <td style="text-align:center">{{ $docente->correoElectronico ?? '' }}</td>
+                                    <td style="text-transform: uppercase ; text-align:center">{{ $docente->profesorUniversidad }}</td>
+                                    <td style="text-transform: uppercase ; text-align:center">{{ $docente->estado ?? '' }}</td>
+                                    <td style="text-transform: uppercase ; text-align:center">
                                         <form action="{{ route('admin.aceptarDocente', ['id' => $docente->userId]) }}"
                                             method="POST">
                                             @csrf

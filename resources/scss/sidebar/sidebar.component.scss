@@ -11,12 +11,14 @@
 
 }
 
-
 #sublista {
   display: none;
   /* Por defecto oculto */
 }
 
+// ==============================
+// SIDEBAR
+// ==============================
 
 @mixin items-sidebar-styles {
   display: grid;
@@ -163,17 +165,17 @@
             padding-left: 5px;
             margin-left: 5px;
             border-left: 1px solid rgba(colors.$primary, 0.2);
+            
 
             a {
               @include items-sidebar-styles;
               height: 30px;
 
-           
               .icon-sidebar-item {
                 height: 23px;
                 width: 30px;
                 margin-right: 1px;
-
+                font-size: 0.9em !important;
               }
             }
           }
@@ -194,18 +196,18 @@
   }
 }
 
+// AUTHORS
 .content-autors {
   display: grid;
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 220px;
+  width: 200px;
   padding: 10px;
   border-radius: 0px 0px 20px 0px;
   background: colors.$bg;
   text-align: center;
   opacity: 1;
-  /* Cambiar opacity a 1 o eliminar esta línea */
   z-index: 1000;
   transition: all 5s ease;
 
@@ -225,14 +227,13 @@
   }
 }
 
+
+
 // RETRAIDO
 @mixin items-sidebar-styles-retraido {
   grid-template-columns: 1fr;
   padding-right: 0px;
 
-  /*  .name-sidebar-item {
-    display: none;
-  } */
 
   .icon-sidebar-item-list {
     display: grid;
@@ -241,10 +242,9 @@
     margin-top: -13px;
   }
 }
-
 .content-sidebar-hidden {
   .content {
-    max-width: 60px;
+    max-width: 55px;
 
     .sidebar {
       .logo_site {
@@ -281,7 +281,7 @@
               margin: 0 auto;
            
               transform-origin: top left;
-            
+           
               transition: transform 0.3s ease; 
             }
           }
@@ -390,10 +390,6 @@
 
 
   }
-
-
-
-
 }
 
 // Iluminaror de los items del sidebar
@@ -433,47 +429,49 @@
   background-color: rgba(colors.$primary, 0.8);
 }
 
-       /* Estilos para el contenedor del tooltip */
-       .tooltip-container {
-        position: relative;
-        display: inline-block;
-    }
 
-    .tooltip-text {
-        display: inline-block;
-        position: absolute;
-        background-color: #4b5563;
-        padding: 12px 15px;
-        border-radius: 5px;
-        bottom: 125%;
-        /* Posiciona el tooltip arriba del contenedor */
-        left: 50%;
-        /* Centra el tooltip horizontalmente */
-        transform: translateX(-50%);
-        /* Ajusta el centrado del tooltip */
-        opacity: 0;
-        visibility: hidden;
-        font-size: 17px;
-        letter-spacing: .5px;
-        color: white;
-        transition: all ease-out 120ms;
-    }
 
-    .tooltip-text::before {
-        content: '';
-        display: block;
-        position: absolute;
-        bottom: -5px;
-        /* Ajusta la posición de la flecha */
-        left: 50%;
-        transform: translateX(-50%) rotate(45deg);
-        width: 10px;
-        height: 10px;
-        background-color: inherit;
-    }
+  /* Estilos para el contenedor del tooltip */
+  .tooltip-container {
+    position: relative;
+    display: inline-block;
+}
 
-    /* Mostrar el tooltip cuando se pasa el ratón sobre el contenedor */
-    .tooltip-container:hover .tooltip-text {
-        visibility: visible;
-        opacity: 1;
-    }
+.tooltip-text {
+    display: inline-block;
+    position: absolute;
+    background-color: #4b5563;
+    padding: 10px 13px;
+    border-radius: 5px;
+    bottom: 120%;
+    /* Posiciona el tooltip arriba del contenedor */
+    left: 50%;
+    /* Centra el tooltip horizontalmente */
+    transform: translateX(-50%);
+    /* Ajusta el centrado del tooltip */
+    opacity: 0;
+    visibility: hidden;
+    font-size: 17px;
+    letter-spacing: .5px;
+    color: white;
+    transition: all ease-out 120ms;
+}
+
+.tooltip-text::before {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: -5px;
+    /* Ajusta la posición de la flecha */
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 9px;
+    height: 9px;
+    background-color: inherit;
+}
+
+/* Mostrar el tooltip cuando se pasa el ratón sobre el contenedor */
+.tooltip-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}

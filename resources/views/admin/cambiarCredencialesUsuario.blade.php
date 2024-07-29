@@ -151,21 +151,21 @@
                     <table class="mat-mdc-table">
                         <thead class="ng-star-inserted">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                <th>Dispositivo</th>
+                                <th>DISPOSITIVO</th>
             <th>IP</th>
-            <th>Hora ingreso</th>
-            <th>Hora salida</th>
-            <th>Ubicación</th>
+            <th>HORA DE INGRESO</th>
+            <th>HORA DE SALIDA</th>
+            <th>UBICACIÓN</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($userSessions as $session)
         <tr>
-            <td>{{ $session->user_agent }}</td>
-            <td>{{ $session->ip_address }}</td>
-            <td>{{ $session->start_time }}</td>
-            <td>{{ $session->end_time }}</td>
-            <td>{{ $session->locality }}</td>
+        <td style="text-transform: uppercase ; text-align:center" >{{ $session->user_agent }}</td>
+                <td style="text-transform: uppercase ; text-align:center" >{{ $session->ip_address }}</td>
+                <td style="text-transform: uppercase ; text-align:center" >{{ $session->start_time }}</td>
+                <td style="text-transform: uppercase ; text-align:center" >{{ $session->end_time }}</td>
+                <td>{{ $session->locality }}</td>
         </tr>
         @endforeach
     </tbody>
