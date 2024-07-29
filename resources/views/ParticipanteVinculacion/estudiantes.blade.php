@@ -309,7 +309,7 @@
                         }
                     }, 1000); // 2000 milisegundos = 2 segundos
                 });
-              
+
 
 function openCard(cardId) {
     document.getElementById(cardId).style.display = 'block';

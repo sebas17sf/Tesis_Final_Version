@@ -127,25 +127,7 @@
                             <small style="color: red;">{{ $message }}</small>
                             @enderror
                         </div>
-                        <div class="form-group">
-                            <label for="Departamento">Departamento:</label>
-                            <select class="form-control input input_select" id="Departamento" name="Departamento"
-                                required>
-                                <option value="">Seleccione su Departamento</option>
-                                <option value="Ciencias de la Computación"
-                                    {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias de la Computación' ? 'selected' : '' }}>
-                                    DCCO - Ciencias de la Computación</option>
-                                <option value="Ciencias Exactas"
-                                    {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias Exactas' ? 'selected' : '' }}>
-                                    DCEX - Ciencias Exactas</option>
-                                <option value="Ciencias de la Vida y Agricultura"
-                                    {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>
-                                    DCVA - Ciencias de la Vida y Agricultura</option>
-                            </select>
-                            @error('Departamento')
-                            <small style="color: red;">{{ $message }}</small>
-                            @enderror
-                        </div>
+
                     </div>
 
                     <div class="col-md-4">

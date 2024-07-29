@@ -960,32 +960,41 @@ class DocumentoController extends Controller
 
     //////////////////////////////////////////Reporte estudiantes///////////////////////
 
-    public function ReporteEstudiantes()
+    public function ReporteEstudiantes(Request $request)
     {
         $plantillaPath = public_path('Plantillas/Reporte-Estudiantes.xlsx');
-
-        $spreadsheet = IOFactory::load($plantillaPath);
 
         if (!file_exists($plantillaPath)) {
             abort(404, 'El archivo de plantilla no existe.');
         }
 
-        $template = new TemplateProcessor($plantillaPath);
-
-        $estudiantes = Estudiante::orderBy('apellidos', 'asc')->get();
-
+        $spreadsheet = IOFactory::load($plantillaPath);
         $sheet = $spreadsheet->getActiveSheet();
+
+        $departamento = $request->input('Departamento');
+        $periodo = $request->input('periodos');
+
+        // Construir la consulta con los filtros
+        $queryEstudiantes = Estudiante::query();
+
+        if ($departamento) {
+            $queryEstudiantes->where('departamento', $departamento);
+        }
+
+        if ($periodo) {
+            $queryEstudiantes->where('Cohorte', $periodo);
+        }
+
+        $estudiantes = $queryEstudiantes->orderBy('apellidos', 'asc')->get();
 
         $filaInicio = 9;
         $cantidadFilas = count($estudiantes);
         $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
 
-
         $contador = 1;
 
         foreach ($estudiantes as $index => $estudiante) {
             $sheet->setCellValue('A' . ($filaInicio + $index), $contador);
-
             $sheet->setCellValue('B' . ($filaInicio + $index), mb_strtoupper($estudiante->apellidos . ' ' . $estudiante->nombres, 'UTF-8'));
             $sheet->setCellValue('C' . ($filaInicio + $index), mb_strtoupper($estudiante->espeId, 'UTF-8'));
             $sheet->setCellValue('D' . ($filaInicio + $index), mb_strtoupper($estudiante->celular, 'UTF-8'));
@@ -1005,11 +1014,11 @@ class DocumentoController extends Controller
         $writer->save($nombreArchivo);
 
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
-
     }
 
     ////////////////////////Reporte de sesiones////////////////////////
-    public function reporteSessiones(){
+    public function reporteSessiones()
+    {
         $plantillaPath = public_path('Plantillas/Reporte-Sesiones.xlsx');
 
         $spreadsheet = IOFactory::load($plantillaPath);
@@ -1020,7 +1029,7 @@ class DocumentoController extends Controller
 
         $template = new TemplateProcessor($plantillaPath);
 
-         $sesiones = UsuariosSession::orderBy('start_time', 'asc')->get();
+        $sesiones = UsuariosSession::orderBy('start_time', 'asc')->get();
 
         $sheet = $spreadsheet->getActiveSheet();
 
@@ -1378,13 +1387,32 @@ class DocumentoController extends Controller
     /////////reporteria Practias I////////////////////////////////////////
     public function reportesPracticaI(Request $request)
     {
+        $profesor = $request->input('profesor');
+        $empresa = $request->input('empresa');
+        $periodos = $request->input('periodos');
+
         $plantillaPath = public_path('Plantillas/Reporte-Practicas1.xlsx');
 
         $spreadsheet = IOFactory::load($plantillaPath);
 
         $practica1 = PracticaI::join('estudiantes', 'practicasi.estudianteId', '=', 'estudiantes.estudianteId')
+            ->when($profesor, function ($query, $profesor) {
+                return $query->whereHas('tutorAcademico', function ($query) use ($profesor) {
+                    $query->where('nombres', 'LIKE', '%' . $profesor . '%');
+                });
+            })
+            ->when($empresa, function ($query, $empresa) {
+                return $query->whereHas('empresa', function ($query) use ($empresa) {
+                    $query->where('nombreEmpresa', 'LIKE', '%' . $empresa . '%');
+                });
+            })
+            ->when($periodos, function ($query, $periodos) {
+                return $query->where('periodoPractica', 'LIKE', '%' . $periodos . '%');
+            })
             ->orderBy('estudiantes.apellidos', 'asc')
             ->get(['practicasi.*']);
+
+
 
         $sheet = $spreadsheet->getActiveSheet();
 
@@ -1464,11 +1492,29 @@ class DocumentoController extends Controller
     /////////reporteria Practias II////////////////////////////////////////
     public function reportesPracticaII(Request $request)
     {
+        $profesor = $request->input('profesor2');
+        $empresa = $request->input('empresa2');
+        $periodos = $request->input('periodos2');
+
+
         $plantillaPath = public_path('Plantillas/Reporte-Practicas1.2.xlsx');
 
         $spreadsheet = IOFactory::load($plantillaPath);
 
         $practica1 = PracticaII::join('estudiantes', 'practicasii.estudianteId', '=', 'estudiantes.estudianteId')
+            ->when($profesor, function ($query, $profesor) {
+                return $query->whereHas('tutorAcademico', function ($query) use ($profesor) {
+                    $query->where('nombres', 'LIKE', '%' . $profesor . '%');
+                });
+            })
+            ->when($empresa, function ($query, $empresa) {
+                return $query->whereHas('empresa', function ($query) use ($empresa) {
+                    $query->where('nombreEmpresa', 'LIKE', '%' . $empresa . '%');
+                });
+            })
+            ->when($periodos, function ($query, $periodos) {
+                return $query->where('periodoPractica', 'LIKE', '%' . $periodos . '%');
+            })
             ->orderBy('estudiantes.apellidos', 'asc')
             ->get(['practicasii.*']);
 
@@ -1549,11 +1595,31 @@ class DocumentoController extends Controller
 
     public function reportesPracticaIII(Request $request)
     {
+        $profesor = $request->input('profesor3');
+        $empresa = $request->input('empresa3');
+        $periodos = $request->input('periodos3');
+
         $plantillaPath = public_path('Plantillas/Reporte-Practicas1.2.xlsx');
         $spreadsheet = IOFactory::load($plantillaPath);
+
         $practica3 = PracticaIII::join('estudiantes', 'practicasiii.estudianteId', '=', 'estudiantes.estudianteId')
+            ->when($profesor, function ($query, $profesor) {
+                return $query->whereHas('tutorAcademico', function ($query) use ($profesor) {
+                    $query->where('nombres', 'LIKE', '%' . $profesor . '%');
+                });
+            })
+            ->when($empresa, function ($query, $empresa) {
+                return $query->whereHas('empresa', function ($query) use ($empresa) {
+                    $query->where('nombreEmpresa', 'LIKE', '%' . $empresa . '%');
+                });
+            })
+            ->when($periodos, function ($query, $periodos) {
+                return $query->where('periodoPractica', 'LIKE', '%' . $periodos . '%');
+            })
             ->orderBy('estudiantes.apellidos', 'asc')
             ->get(['practicasiii.*']);
+
+
         $sheet = $spreadsheet->getActiveSheet();
 
         $filaInicio = 9;
@@ -1629,16 +1695,36 @@ class DocumentoController extends Controller
 
     public function reportesPracticaIV(Request $request)
     {
+        $profesor = $request->input('profesor4');
+        $empresa = $request->input('empresa4');
+        $periodos = $request->input('periodos4');
+
+
         // Define the path to the Excel template
-        $plantillaPath = public_path('Plantillas/Reporte-Practicas1.2.xlsx');
+        $plantillaPath = public_path('Plantillas/Reporte-Practicas1.3.xlsx');
 
         // Load the Excel template
         $spreadsheet = IOFactory::load($plantillaPath);
 
         // Retrieve all records from PracticaIV
         $practicaIV = PracticaIV::join('estudiantes', 'practicasiv.estudianteId', '=', 'estudiantes.estudianteId')
+            ->when($profesor, function ($query, $profesor) {
+                return $query->whereHas('tutorAcademico', function ($query) use ($profesor) {
+                    $query->where('nombres', 'LIKE', '%' . $profesor . '%');
+                });
+            })
+            ->when($empresa, function ($query, $empresa) {
+                return $query->whereHas('empresa', function ($query) use ($empresa) {
+                    $query->where('nombreEmpresa', 'LIKE', '%' . $empresa . '%');
+                });
+            })
+            ->when($periodos, function ($query, $periodos) {
+                return $query->where('periodoPractica', 'LIKE', '%' . $periodos . '%');
+            })
             ->orderBy('estudiantes.apellidos', 'asc')
             ->get(['practicasiv.*']);
+
+
         $sheet = $spreadsheet->getActiveSheet();
 
         // Determine the starting row for data and the number of records
