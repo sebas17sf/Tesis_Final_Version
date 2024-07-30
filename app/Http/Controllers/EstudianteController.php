@@ -607,44 +607,44 @@ class EstudianteController extends Controller
 
     ////////////////////guardar actividad practica 1
     public function guardarActividadPractica1(Request $request)
-    {
-        $request->validate([
-            'EstudianteID' => 'required',
-            'PracticasI' => 'required',
-            'Actividad' => 'required',
-            'horas' => 'required|integer',
-            'observaciones' => 'required|string',
-            'fechaActividad' => 'required|date',
-            'departamento' => 'required|string',
-            'funcion' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'EstudianteID' => 'required',
+        'PracticasI' => 'required',
+        'Actividad' => 'required',
+        'horas' => 'required|integer',
+        'observaciones' => 'required|string',
+        'fechaActividad' => 'required|date',
+        'departamento' => 'required|string',
+        'funcion' => 'required|string',
+    ]);
 
-        $datosActividad = $request->only([
-            'horas',
-            'observaciones',
-            'fechaActividad',
-            'departamento',
-            'funcion',
-        ]);
+    $datosActividad = $request->only([
+        'horas',
+        'observaciones',
+        'fechaActividad',
+        'departamento',
+        'funcion',
+    ]);
 
-        try {
-            $evidencia = $request->file('evidencia');
-            if ($evidencia) {
-                $img = Image::make($evidencia)->encode('jpg', 75);
-                $datosActividad['evidencia'] = base64_encode($img->encoded);
-            }
-
-            $datosActividad['estudianteId'] = $request->EstudianteID;
-            $datosActividad['idPracticasi'] = $request->PracticasI;
-            $datosActividad['actividad'] = $request->Actividad;
-
-            ActividadesPracticas::create($datosActividad);
-
-            return redirect()->back()->with('success', 'Actividad guardada exitosamente.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Ha ocurrido un error al guardar la actividad: ' . $e->getMessage());
+    try {
+        $evidencia = $request->file('evidencia');
+        if ($evidencia) {
+            $img = Image::make($evidencia)->encode('jpg', 75);
+            $datosActividad['evidencia'] = base64_encode($img->encoded);
         }
+
+        $datosActividad['estudianteId'] = $request->EstudianteID;
+        $datosActividad['idPracticasi'] = $request->PracticasI;
+        $datosActividad['actividad'] = $request->Actividad;
+
+        ActividadesPracticas::create($datosActividad);
+
+        return redirect()->back()->with('success', 'Actividad guardada exitosamente.');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Ha ocurrido un error al guardar la actividad: ' . $e->getMessage());
     }
+}
 
 
     ////////////////////guardar actividad practica 2
@@ -711,51 +711,48 @@ class EstudianteController extends Controller
 
     //////editar actividad practica 1
     public function updateActividadPracticas1(Request $request, $id)
-    {
-        $actividad = ActividadesPracticas::findOrFail($id);
+{
+    $actividad = ActividadesPracticas::findOrFail($id);
 
-        $request->validate([
-            'Actividad' => 'required',
-            'horas' => 'required',
-            'observaciones' => 'required',
-            'fechaActividad' => 'required',
-            'departamento' => 'required',
-            'funcion' => 'required',
-            'evidencia' => 'required',
-        ]);
+    $request->validate([
+        'Actividad' => 'required',
+        'horas' => 'required',
+        'observaciones' => 'required',
+        'fechaActividad' => 'required',
+        'departamento' => 'required',
+        'funcion' => 'required',
+     ]);
 
-        $datosActividad = $request->only([
-            'Actividad',
-            'horas',
-            'observaciones',
-            'fechaActividad',
-            'departamento',
-            'funcion',
-        ]);
+ 
+    $datosActividad = $request->only([
+        'Actividad',
+        'horas',
+        'observaciones',
+        'fechaActividad',
+        'departamento',
+        'funcion',
+    ]);
 
-        $evidencia = $request->file('evidencia');
+    $evidencia = $request->file('evidencia');
 
-        try {
-            if ($evidencia) {
-                $maxFileSize = 500000;
-                if ($evidencia->getSize() > $maxFileSize) {
-                    return redirect()->back()->with('error', 'La imagen es muy pesada. El tamaño máximo permitido es de 500 KB.');
-                }
-
-                $img = Image::make($evidencia)->encode('jpg', 75);
-                $datosActividad['evidencia'] = base64_encode($img->encoded);
+    try {
+        if ($evidencia) {
+            $maxFileSize = 500000;
+            if ($evidencia->getSize() > $maxFileSize) {
+                return redirect()->back()->with('error', 'La imagen es muy pesada. El tamaño máximo permitido es de 500 KB.');
             }
 
-
-
-
-            $actividad->update($datosActividad);
-
-            return redirect()->back()->with('success', 'Actividad actualizada exitosamente.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Ha ocurrido un error al actualizar la actividad: ' . $e->getMessage());
+            $img = Image::make($evidencia)->encode('jpg', 75);
+            $datosActividad['evidencia'] = base64_encode($img->encoded);
         }
+
+        $actividad->update($datosActividad);
+
+        return redirect()->back()->with('success', 'Actividad actualizada exitosamente.');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Ha ocurrido un error al actualizar la actividad: ' . $e->getMessage());
     }
+}
 
     //////editar actividad practica 2
     public function updateActividadPracticas2(Request $request, $id)
