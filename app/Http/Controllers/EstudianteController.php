@@ -723,9 +723,9 @@ class EstudianteController extends Controller
         'funcion' => 'required',
      ]);
 
- 
+
     $datosActividad = $request->only([
-        'Actividad',
+        'actividad',
         'horas',
         'observaciones',
         'fechaActividad',
@@ -766,8 +766,7 @@ class EstudianteController extends Controller
             'fechaActividad' => 'required',
             'departamento' => 'required',
             'funcion' => 'required',
-            'evidencia' => 'required',
-        ]);
+         ]);
 
         $datosActividad = $request->only([
             'Actividad',
