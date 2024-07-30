@@ -172,7 +172,9 @@
                                                 {{ $asignaciones->estudiante->carrera }}</td>
                                             <td
                                                 style="text-align:center; text-transform: uppercase; word-wrap: break-word;">
-                                                {{ $asignaciones->estudiante->notas->notaFinal ?? 'AUN NO TIENE NOTA' }}
+                                                @foreach ($asignaciones->estudiante->notas as $nota)
+                                                    {{ $nota->notaFinal ?? 'AUN NO TIENE NOTA' }}
+                                                @endforeach
                                             </td>
                                             <td
                                                 style="text-align:center; text-transform: uppercase; word-wrap: break-word;">
@@ -395,7 +397,9 @@
                                                     {{ $asignaciones->estudiante->carrera }}</td>
                                                 <td
                                                     style="text-align:center; text-transform: uppercase; word-wrap: break-word;">
-                                                    {{ $asignaciones->estudiante->notas->notaFinal ?? 'AUN NO TIENE NOTA' }}
+                                                    @foreach ($asignaciones->estudiante->notas as $nota)
+                                                        {{ $nota->notaFinal ?? 'AUN NO TIENE NOTA' }}
+                                                    @endforeach
                                                 </td>
 
                                                 <td

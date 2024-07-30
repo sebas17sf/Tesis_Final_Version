@@ -54,7 +54,7 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th class="tamanio1 ">VERIFICACIÓN</th>
+                                        <th class="tamanio1 ">PROCESO </th>
                                         <th class="tamanio2">REENVIAR</th>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
