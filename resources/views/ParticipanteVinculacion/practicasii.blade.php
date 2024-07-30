@@ -31,15 +31,15 @@
                             <tbody>
                                 @foreach ($estudiantes as $practica)
                                     <tr>
-                                        <td>{{ $practica->apellidos }} {{ $practica->nombres }}</td>
-                                        <td>{{ $practica->carrera }}</td>
+                                        <td style="text-transform: uppercase;">{{ $practica->apellidos }} {{ $practica->nombres }}</td>
+                                        <td style="text-transform: uppercase;">{{ $practica->carrera }}</td>
                                         <td>{{ $practica->correo }}</td>
-                                        <td>{{ $practica->celular }}</td>
-                                        <td>{{ $practica->practicasii->empresa->nombreEmpresa }}</td>
-                                        <td>{{ $practica->practicasii->NombreTutorEmpresarial }}</td>
-                                        <td>{{ $practica->practicasii->HorasPlanificadas }}</td>
-                                        <td>{{ $practica->practicasii->FechaInicio }}</td>
-                                        <td>{{ $practica->practicasii->FechaFinalizacion }}</td>
+                                        <td style="text-transform: uppercase;">{{ $practica->celular }}</td>
+                                        <td style="text-transform: uppercase;">{{ $practica->practicasii->empresa->nombreEmpresa }}</td>
+                                        <td style="text-transform: uppercase;">{{ $practica->practicasii->NombreTutorEmpresarial }}</td>
+                                        <td style="text-transform: uppercase;">{{ $practica->practicasii->HorasPlanificadas }}</td>
+                                        <td style="text-transform: uppercase;">{{ $practica->practicasii->FechaInicio }}</td>
+                                        <td style="text-transform: uppercase;">{{ $practica->practicasii->FechaFinalizacion }}</td>
                                         <td>
                                             <button type="button" class="btn btn-primary" data-toggle="modal"
                                                 data-target="#actividadesModal">

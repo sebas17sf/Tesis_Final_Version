@@ -105,40 +105,40 @@
             </thead>
             <tbody>
                 <tr>
-                    <th class="small-th" style="text-transform: uppercase; font-size: 12px; background-color:white !important;">Estudiante:</th>
-                    <td class="large-td" style="text-transform: uppercase; font-size: 12px;">{{ strtoupper($practicaPendiente->estudiante->apellidos) }} {{ strtoupper($practicaPendiente->estudiante->nombres) }}</td>
-                    <th class="small-th" style="text-transform: uppercase; font-size: 12px; background-color:white !important;">Docente Tutor:</th>
-                    <td class="large-td" style="text-transform: uppercase; font-size: 12px;">{{ strtoupper($practicaPendiente->tutorAcademico->apellidos) }} {{ strtoupper($practicaPendiente->tutorAcademico->nombres) }}</td>
+                    <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Estudiante:</th>
+                    <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($practicaPendiente->estudiante->apellidos) }} {{ strtoupper($practicaPendiente->estudiante->nombres) }}</td>
+                    <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Docente Tutor:</th>
+                    <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($practicaPendiente->tutorAcademico->apellidos) }} {{ strtoupper($practicaPendiente->tutorAcademico->nombres) }}</td>
                 </tr>
                 <tr>
-                    <th class="small-th" style="text-transform: uppercase; font-size: 12px; background-color:white !important;">Empresa:</th>
-                    <td class="large-td" style="text-transform: uppercase; font-size: 12px;">{{ strtoupper($practicaPendiente->Empresa->nombreEmpresa) }}</td>
-                    <th class="small-th" style="text-transform: uppercase; font-size: 12px; background-color:white !important;">Tutor Empresarial:</th>
-                    <td class="large-td" style="text-transform: uppercase; font-size: 12px;">{{ strtoupper($practicaPendiente->NombreTutorEmpresarial) }}</td>
+                    <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Empresa:</th>
+                    <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($practicaPendiente->Empresa->nombreEmpresa) }}</td>
+                    <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Tutor Empresarial:</th>
+                    <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($practicaPendiente->NombreTutorEmpresarial) }}</td>
                 </tr>
                 <tr>
-                    <th class="small-th" style="text-transform: uppercase; font-size: 12px; background-color:white !important;">Cédula Tutor Empresarial:</th>
-                    <td class="large-td" style="text-transform: uppercase; font-size: 12px;">{{ $practicaPendiente->CedulaTutorEmpresarial }}</td>
-                    <th class="small-th" style="text-transform: uppercase; font-size: 12px; background-color:white !important;">Función:</th>
-                    <td class="large-td" style="text-transform: uppercase; font-size: 12px;">{{ strtoupper($practicaPendiente->Funcion) }}</td>
+                    <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Cédula Tutor Empresarial:</th>
+                    <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ $practicaPendiente->CedulaTutorEmpresarial }}</td>
+                    <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Función:</th>
+                    <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($practicaPendiente->Funcion) }}</td>
                 </tr>
                 <tr>
-                    <th class="small-th" style="text-transform: uppercase; font-size: 12px; background-color:white !important;">Teléfono Tutor Empresarial:</th>
-                    <td class="large-td" style="text-transform: uppercase; font-size: 12px;">{{ $practicaPendiente->TelefonoTutorEmpresarial }}</td>
-                    <th class="small-th" style="text-transform: uppercase; font-size: 12px; background-color:white !important;">Estado de Fase I:</th>
-                    <td class="large-td" style="text-transform: uppercase; font-size: 12px;">{{ strtoupper($practicaPendiente->Estado) }}</td>
+                    <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Teléfono Tutor Empresarial:</th>
+                    <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ $practicaPendiente->TelefonoTutorEmpresarial }}</td>
+                    <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Estado de Fase I:</th>
+                    <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($practicaPendiente->Estado) }}</td>
                 </tr>
                 <tr>
-                    <th class="small-th" style="text-transform: uppercase; font-size: 12px; background-color:white !important;">Email Tutor Empresarial:</th>
-                    <td class="large-td" style="font-size: 12px;">{{ $practicaPendiente->EmailTutorEmpresarial }}</td>
-                    <th class="small-th" style="text-transform: uppercase; font-size: 12px; background-color:white !important;">Horas planificadas:</th>
-                    <td class="large-td" style="text-transform: uppercase; font-size: 12px;">{{ strtoupper($practicaPendiente->HorasPlanificadas) }}</td>
+                    <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Email Tutor Empresarial:</th>
+                    <td class="large-td" style="font-size: .7em;">{{ $practicaPendiente->EmailTutorEmpresarial }}</td>
+                    <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Horas planificadas:</th>
+                    <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($practicaPendiente->HorasPlanificadas) }}</td>
                 </tr>
                 <tr>
-                    <th class="small-th" style="text-transform: uppercase; font-size: 12px; background-color:white !important;">Fecha de Inicio:</th>
-                    <td class="large-td" style="text-transform: uppercase; font-size: 12px;">{{ $practicaPendiente->FechaInicio }}</td>
-                    <th class="small-th" style="text-transform: uppercase; font-size: 12px; background-color:white !important;">Fecha de Finalización:</th>
-                    <td class="large-td" style="text-transform: uppercase; font-size: 12px;">{{ $practicaPendiente->FechaFinalizacion }}</td>
+                    <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Fecha de Inicio:</th>
+                    <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ $practicaPendiente->FechaInicio }}</td>
+                    <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Fecha de Finalización:</th>
+                    <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ $practicaPendiente->FechaFinalizacion }}</td>
                 </tr>
             </tbody>
         </table>
@@ -146,83 +146,79 @@
 </div>
 
 
-        <div class="col-md-6">
-          
-    <!-- Formulario para agregar actividad -->
-    <div class="formulario_actividad">
+<!-- Formulario para agregar/editar actividad -->
+<div class="col-md-6 formulario_actividad">
         <h4><b>Agregar Actividades</b></h4>
         <hr>
         <form id="actividadForm" action="{{ route('estudiantes.guardarActividadesPracticas1') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <input type="hidden" id="EstudianteID" name="EstudianteID" value="{{ $practicaPendiente->estudiante->estudianteId }}">
             <input type="hidden" id="PracticasI" name="PracticasI" value="{{ $practicaPendiente->practicasi }}">
+            <input type="hidden" id="ActividadID" name="ActividadID" value="">
             <div class="form-group">
                 <label class="label" for="Actividad"><strong>Actividad Realizada:</strong></label>
                 <textarea id="Actividad" name="Actividad" class="form-control input"></textarea>
             </div>
             <div class="row">
                 <div class="col-md-6">
-                 
-            <div class="form-group">
-                <label class="label" for="horas"><strong>Número de Horas:</strong></label>
-                <input type="text" id="horas" name="horas" class="form-control input">
-            </div>
-            </div>
-            <div class="col-md-6">
-            <div class="form-group">
-                <label class="label" for="fechaActividad"><strong>Fecha de la Actividad:</strong></label>
-                <input type="date" id="fechaActividad" name="fechaActividad" class="form-control input">
-            </div>
-            </div>
+                    <div class="form-group">
+                        <label class="label" for="horas"><strong>Número de Horas:</strong></label>
+                        <input type="text" id="horas" name="horas" class="form-control input">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="label" for="fechaActividad"><strong>Fecha de la Actividad:</strong></label>
+                        <input type="date" id="fechaActividad" name="fechaActividad" class="form-control input">
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
-            <div class="form-group">
-                <label class="label" for="observaciones"><strong>Observación:</strong></label>
-                <input type="text" id="observaciones" name="observaciones" class="form-control input">
-            </div>
-            </div>
-            <div class="col-md-6">
-            <div class="form-group">
-                <label class="label" for="departamento"><strong>Departamento:</strong></label>
-                <input type="text" id="departamento" name="departamento" class="form-control input">
-            </div>
-            </div>
+                    <div class="form-group">
+                        <label class="label" for="observaciones"><strong>Observación:</strong></label>
+                        <input type="text" id="observaciones" name="observaciones" class="form-control input">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="label" for="departamento"><strong>Departamento:</strong></label>
+                        <input type="text" id="departamento" name="departamento" class="form-control input">
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="label" for="funcion"><strong>Función Asignada:</strong></label>
+                        <input type="text" id="funcion" name="funcion" class="form-control input">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="evidencia"><strong>Evidencia:</strong></label>
+                        <div class="form-group">
+                            <div class="input_file input">
+                                <span id="fileText2" class="fileText">
+                                    <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
+                                </span>
+                                <input type="file" class="form-control-file input input_file" id="evidencia" name="evidencia" onchange="displayFileName(this, 'fileText2')">
+                                <span title="Eliminar archivo" onclick="removeFile(this)" class="remove-icon">✖</span>
+                            </div>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="eliminarEvidencia" name="eliminarEvidencia">
+                            <label class="form-check-label" for="eliminarEvidencia">Eliminar evidencia actual</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
-                <label class="label" for="funcion"><strong>Función Asignada:</strong></label>
-                <input type="text" id="funcion" name="funcion" class="form-control input">
-            </div>
-            </div>
-            <div class="col-md-6">
-            <div class="form-group">
-                <label for="evidencia">Evidencia:</label>
-                <div class="form-group">
-                                                <div class="input_file input">
-                                                    <span id="fileText2" class="fileText">
-                                                        <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
-                                                    </span>
-                                                    <input type="file" class="form-control-file input input_file"
-                                                        id="evidencia" name="evidencia"
-                                                        onchange="displayFileName(this, 'fileText2')" required>
-                                                    <span title="Eliminar archivo" onclick="removeFile(this)"
-                                                        class="remove-icon">✖</span>
-                                                </div>
-                                            </div>
-
-            </div>
-            </div>
-            </div>
-           <div class="form-group">
-           <center> <button type="submit" class="button1">Guardar Actividad</button></center>
+                <center><button type="submit" id="submitButton" class="button1">Guardar Actividad</button></center>
             </div> 
         </form>
     </div>
 </div>
-</div>
-
 <br>
         <!-- Table for activities -->
         <div class="contenedor_tabla">
@@ -231,7 +227,8 @@
                     <table id="tablaAsignaciones" class="mat-mdc-table">
                         <thead class="ng-star-inserted">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                <th>ACTIVIDAD REALIZADA</th>
+                            <th >N°</th>  
+                            <th>ACTIVIDAD REALIZADA</th>
                                 <th>HORAS</th>
                                 <th>OBSERVACIONES</th>
                                 <th>FECHA DE LA ACTIVIDAD</th>
@@ -249,32 +246,31 @@
                             @else
                                 @foreach ($actividades as $actividad)
                                     <tr>
-                                        <td style="text-transform: uppercase;">{{ $actividad->actividad }}</td>
-                                        <td style="text-transform: uppercase;">{{ $actividad->horas }}</td>
-                                        <td style="text-transform: uppercase;">{{ $actividad->observaciones }}</td>
-                                        <td style="text-transform: uppercase;">{{ $actividad->fechaActividad }}</td>
-                                        <td style="text-transform: uppercase;">{{ $actividad->departamento }}</td>
-                                        <td style="text-transform: uppercase;">{{ $actividad->funcion }}</td>
+                                        <td style="text-transform: uppercase; text-align:center; font-size: .7em; min-width: 30px !important;">{{ $loop->iteration }}</td>
+                                        <td style="text-transform: uppercase; font-size: .7em; max-width: 130px !important;">{{ $actividad->actividad }}</td>
+                                        <td style="text-transform: uppercase; text-align:center; font-size: .7em;  min-width: 30px !important;"">{{ $actividad->horas }}</td>
+                                        <td style="text-transform: uppercase; font-size: .7em;">{{ $actividad->observaciones }}</td>
+                                        <td style="text-transform: uppercase; text-align:center; font-size: .7em;">{{ $actividad->fechaActividad }}</td>
+                                        <td style="text-transform: uppercase; font-size: .7em;">{{ $actividad->departamento }}</td>
+                                        <td style="text-transform: uppercase; font-size: .7em;">{{ $actividad->funcion }}</td>
                                         <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             <img src="data:image/png;base64,{{ $actividad->evidencia }}" width="100" height="100" alt="Evidencia de la actividad">
                                         </td>
-                                        <td>
-                                            <form action="{{ route('estudiantes.eliminarActividadPracticas1', $actividad->id) }}" method="POST">
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                            <form action="{{ route('estudiantes.eliminarActividadPracticas1', $actividad->id) }}" method="POST"  style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <div class="tooltip-container">
-                                                    <span class="tooltip-text">Eliminar</span>
                                                     <button type="submit" class="button3 efects_button btn_eliminar3"> 
                                                         <i class="material-icons">delete</i>
                                                     </button>
                                                 </div>
                                             </form>
                                             <div class="tooltip-container">
-                                                <span class="tooltip-text">Editar</span>
-                                                <button type="button" class="button3 efects_button btn_editar3" data-toggle="modal" data-target="#modalEditarActividad{{ $actividad->id }}">
-                                                    <i class="material-icons">edit</i>
-                                                </button>
-                                            </div>
+                                        <button type="button" class="button3 efects_button btn_editar3" onclick="editActividad({{ $actividad }})">
+                                            <i class="material-icons">edit</i>
+                                        </button>
+                                    </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -634,6 +630,50 @@
             $(this).addClass('active');
         });
     });
+    function editActividad(actividad) {
+    // Asigna los valores de la actividad al formulario
+    $('#ActividadID').val(actividad.id);
+    $('#Actividad').val(actividad.actividad);
+    $('#horas').val(actividad.horas);
+    $('#observaciones').val(actividad.observaciones);
+    $('#fechaActividad').val(actividad.fechaActividad);
+    $('#departamento').val(actividad.departamento);
+    $('#funcion').val(actividad.funcion);
+
+    // Mostrar el checkbox de eliminar evidencia solo si existe evidencia
+    if (actividad.evidencia) {
+        $('#eliminarEvidencia').closest('.form-check').show();
+    } else {
+        $('#eliminarEvidencia').closest('.form-check').hide();
+    }
+
+    // Cambia el método y la acción del formulario para la edición
+    $('#actividadForm').attr('action', `/estudiantes/{id}/editar-actividad-practicas1/${actividad.id}`);
+    $('#actividadForm').append('<input type="hidden" name="_method" value="PUT">');
+
+    // Cambia el texto del botón de guardar a actualizar
+    $('#submitButton').text('Actualizar Actividad');
+}
+
+// Función para visualizar el nombre del archivo seleccionado
+function displayFileName(input, textElementId) {
+    var fileName = input.files[0].name;
+    document.getElementById(textElementId).innerText = fileName;
+}
+
+// Función para eliminar el archivo seleccionado
+function removeFile(element) {
+    var input = element.previousElementSibling;
+    input.value = '';
+    document.getElementById('fileText2').innerText = 'Haz clic aquí para subir el documento';
+}
+
+// Asegúrate de ocultar el checkbox de eliminar evidencia al cargar la página
+$(document).ready(function() {
+    $('#eliminarEvidencia').closest('.form-check').hide();
+});
+
+
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -751,7 +791,12 @@
     padding: 8px;
   }
 }
-
+.contenedor_tabla .table-container table td .tamanio11 {
+    width: 200px;
+    min-width: 0px !important;
+    font-size: 10px;
+    padding: .5rem !important;
+}
 
 .small-th {
     width: 20%;
