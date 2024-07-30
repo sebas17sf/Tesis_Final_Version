@@ -162,6 +162,10 @@ class DocumentoController extends Controller
         // Obtener el usuario autenticado
         $usuario = auth()->user();
 
+        function formatName($name) {
+            return ucwords(strtolower($name));
+        }
+
         // Obtener el estudiante relacionado con el usuario
         $estudiante = $usuario->estudiante;
 
@@ -216,8 +220,8 @@ class DocumentoController extends Controller
 
 
         // Obtener los datos del estudiante
-        $apellidosEstudiante = $estudiante->apellidos;
-        $nombresEstudiante = $estudiante->nombres;
+        $apellidosEstudiante = formatName($estudiante->apellidos);
+        $nombresEstudiante = formatName($estudiante->nombres);
         $cedulaEstudiante = $estudiante->cedula;
         $carreraEstudiante = $estudiante->carrera;
         $provinciaEstudiante = 'Santo Domingo';
@@ -274,6 +278,10 @@ class DocumentoController extends Controller
         // Verificar si el archivo de plantilla existe
         if (!file_exists($plantillaPath)) {
             abort(404, 'El archivo de plantilla no existe.');
+        }
+
+        function formatName($name) {
+            return ucwords(strtolower($name));
         }
 
         // Cargar la plantilla XLSX existente
@@ -387,7 +395,7 @@ class DocumentoController extends Controller
         // Bucle para reemplazar los valores en la plantilla
         foreach ($datosEstudiantes as $index => $estudiante) {
             $filaActual = $filaInicio + $index;
-            $apellidoNombre = $estudiante->apellidos . ' ' . $estudiante->nombres;
+            $apellidoNombre = formatName($estudiante->apellidos) . ' ' . formatName($estudiante->nombres);
             $sheet->setCellValue('C' . $filaActual, $apellidoNombre);
             $sheet->setCellValue('D' . $filaActual, $estudiante->cedula);
             $sheet->setCellValue('E' . $filaActual, $estudiante->celular);
@@ -681,6 +689,9 @@ class DocumentoController extends Controller
         $template->cloneRow('Nombres', count($datosEstudiantes));
         $template->cloneRow('actividades', count($datosEstudiantes2));
 
+        function formatName($name) {
+            return ucwords(strtolower($name));
+        }
 
 
         // Ordenar los datos por apellidos en orden ascendente (A-Z)
@@ -690,8 +701,8 @@ class DocumentoController extends Controller
         $contador = 1; // Inicializamos el contador en 1
         foreach ($datosEstudiantes as $index => $estudiante) {
             $template->setValue('Numero#' . ($index + 1), $contador);
-            $template->setValue('Apellidos#' . ($index + 1), $estudiante->Apellidos);
-            $template->setValue('Nombres#' . ($index + 1), $estudiante->nombres);
+            $template->setValue('Apellidos#' . ($index + 1), formatName($estudiante->Apellidos));
+            $template->setValue('Nombres#' . ($index + 1), formatName($estudiante->nombres));
             $template->setValue('Cedula#' . ($index + 1), $estudiante->cedula);
             $template->setValue('Carrera#' . ($index + 1), $estudiante->carrera);
             $template->setValue('HorasVinculacion#' . ($index + 1), $horasVinculacionConstante);
@@ -932,6 +943,9 @@ class DocumentoController extends Controller
         $hojaCalculo->getStyle("E20")->getFont()->setBold(true);
         $hojaCalculo->getStyle("E20")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
+        function formatName($name) {
+            return ucwords(strtolower($name));
+        }
 
         //mostra datos del input
         $hojaCalculo->setCellValue("E6", "Fecha: $fechaFormateada");
@@ -941,7 +955,7 @@ class DocumentoController extends Controller
         foreach ($estudiantes as $index => $estudiante) {
             $filaActual = $filaInicio + $index;
             $hojaCalculo->setCellValue("A$filaActual", $contador);
-            $nombreCompleto = $estudiante->Estudiante->apellidos . ' ' . $estudiante->Estudiante->nombres;
+            $nombreCompleto = formatName($estudiante->Estudiante->apellidos) . ' ' . formatName($estudiante->Estudiante->nombres);
             $hojaCalculo->setCellValue("B$filaActual", $nombreCompleto);
             $hojaCalculo->setCellValue("C$filaActual", $estudiante->Estudiante->cedula);
             $hojaCalculo->setCellValue("D$filaActual", $estudiante->Estudiante->carrera);
@@ -2293,6 +2307,11 @@ class DocumentoController extends Controller
             ->orderBy('fechaActividad', 'asc')
             ->get();
 
+            ///////validar si hay actividades registradas
+        if ($actividadesPracticas->isEmpty()) {
+            return back()->with('error', 'No hay actividades registradas.');
+        }
+
         $template->setValue('estudiante', $estudiante->nombres . ' ' . $estudiante->apellidos);
         $template->setValue('cedula', $estudiante->cedula);
         $template->setValue('espe_id', $estudiante->espeId);
@@ -2378,6 +2397,10 @@ class DocumentoController extends Controller
         $actividadesPracticas = ActividadesPracticas::where('estudianteId', $estudiante->estudianteId)
             ->orderBy('fechaActividad', 'asc')
             ->get();
+
+         if ($actividadesPracticas->isEmpty()) {
+            return back()->with('error', 'No hay actividades registradas.');
+        }
 
         $template->setValue('estudiante', $estudiante->nombres . ' ' . $estudiante->apellidos);
         $template->setValue('cedula', $estudiante->cedula);
@@ -2811,6 +2834,10 @@ class DocumentoController extends Controller
             ->orderBy('fechaActividad', 'asc')
             ->get();
 
+         if ($actividadesPracticas->isEmpty()) {
+            return back()->with('error', 'No hay actividades registradas.');
+        }
+
         $template->setValue('estudiante', $estudiante->nombres . ' ' . $estudiante->apellidos);
         $template->setValue('cedula', $estudiante->cedula);
         $template->setValue('espe_id', $estudiante->espeId);
@@ -2896,6 +2923,11 @@ class DocumentoController extends Controller
         $actividadesPracticas = ActividadesPracticasII::where('estudianteId', $estudiante->estudianteId)
             ->orderBy('fechaActividad', 'asc')
             ->get();
+
+        ///////validar si hay actividades registradas
+        if ($actividadesPracticas->isEmpty()) {
+            return back()->with('error', 'No hay actividades registradas.');
+        }
 
         $template->setValue('estudiante', $estudiante->nombres . ' ' . $estudiante->apellidos);
         $template->setValue('cedula', $estudiante->cedula);
