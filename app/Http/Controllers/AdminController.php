@@ -66,7 +66,13 @@ class AdminController extends Controller
 
                 $searchTerm = $request->input('search');
 
+                $filtroDepartamento = $request->input('departamentos');
+
+
                 $query = ProfesUniversidad::query();
+
+
+
 
                 if ($searchTerm) {
                     $query->where(function ($q) use ($searchTerm) {
@@ -77,11 +83,20 @@ class AdminController extends Controller
                             ->orWhere('Cedula', 'like', "%{$searchTerm}%")
                             ->orWhere('departamento', 'like', "%{$searchTerm}%");
                     });
+
+
                 }
+
+                if ($filtroDepartamento) {
+                    $query->where('departamento', 'like', "%{$filtroDepartamento}%");
+                }
+
+
 
                 $estadoProfesores = ProfesUniversidad::with('usuarios')->get();
 
                 $profesores = $query->paginate($perPage);
+
 
 
                 $periodos = Periodo::all();
@@ -105,6 +120,7 @@ class AdminController extends Controller
                     'perPage' => $perPage,
                     'profesoresVerificar' => $profesoresVerificar,
                     'estadoProfesores' => $estadoProfesores,
+                    'filtroDepartamento' => $filtroDepartamento,
 
 
 

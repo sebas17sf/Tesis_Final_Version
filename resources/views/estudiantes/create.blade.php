@@ -2,7 +2,6 @@
 
 @section('title', 'Ingresar Datos del Estudiante')
 
-
 @section('content')
 
 <div class="mat-elevation-z8 contenedor_general">
@@ -12,25 +11,24 @@
 
         @if (session('success'))
         <div class="contenedor_alerta success">
-    <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Éxito!</div>
-      <div class="body">{{ session('success') }}</div>
-    </div>
-  </div>
+            <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Éxito!</div>
+                <div class="body">{{ session('success') }}</div>
+            </div>
+        </div>
         @endif
 
         @if (session('error'))
         <div class="contenedor_alerta error">
-    <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Error!</div>
-      <div class="body">{{ session('error') }}</div>
-    </div>
-  </div>
+            <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Error!</div>
+                <div class="body">{{ session('error') }}</div>
+            </div>
+        </div>
         @endif
         <div class="container-fluid">
-
 
             <form method="POST" action="{{ route('estudiantes.store') }}" class="custom-form">
                 @csrf
@@ -87,12 +85,23 @@
                                     @error('correo')
                                     <small style="color: red;">{{ $message }}</small>
                                     @enderror
-
                                 </div>
                             </div>
 
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="departamento">Seleccione el departamento al que
+                                            pertenece:</label>
+                                    <select id="departamento" name="departamento" class="form-control input_select input"
+                                        required>
+                                        <option value="Ciencias de la Computación">Ciencias de la Computación</option>
+                                        <option value="Ciencias de la Vida y Agricultura">Ciencias de la Vida y Agricultura
+                                        </option>
+                                        <option value="Ciencias Exactas">Ciencias Exactas</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-
                     </div>
 
                     <div class="col-md-4">
@@ -114,19 +123,20 @@
                             <select class="form-control input input_select" id="Carrera" name="Carrera" required>
                                 <option value="">Seleccione su Carrera</option>
                                 <option value="Tecnologías de la información"
-                                    {{ old('Carrera', $estudiante->carrera ?? '') == 'Ingeniería en Tecnologías de la información' ? 'selected' : '' }}>
+                                    {{ old('Carrera', $estudiante->carrera ?? '') == 'Tecnologías de la información' ? 'selected' : '' }}>
                                     Tecnologías de la información</option>
                                 <option value="Agropecuaria"
-                                    {{ old('Carrera', $estudiante->carrera ?? '') == 'Ingeniería en Agropecuaria' ? 'selected' : '' }}>
+                                    {{ old('Carrera', $estudiante->carrera ?? '') == 'Agropecuaria' ? 'selected' : '' }}>
                                     Agropecuaria</option>
                                 <option value="Biotecnologia"
-                                    {{ old('Carrera', $estudiante->carrera ?? '') == 'Ingeniería en Biotecnologia' ? 'selected' : '' }}>
+                                    {{ old('Carrera', $estudiante->carrera ?? '') == 'Biotecnologia' ? 'selected' : '' }}>
                                     Biotecnologia</option>
                             </select>
                             @error('Carrera')
                             <small style="color: red;">{{ $message }}</small>
                             @enderror
                         </div>
+
 
                     </div>
 
@@ -179,7 +189,6 @@
                     </div>
                 </div>
 
-
                 <br>
 
                 <div class="button-container">
@@ -187,9 +196,6 @@
                 </div>
                 <br>
             </form>
-
-
-
         </div>
     </div>
 </div>
