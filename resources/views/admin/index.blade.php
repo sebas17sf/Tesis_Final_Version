@@ -102,9 +102,10 @@
                 <table class="mat-mdc-table">
                     <thead class="ng-star-inserted">
                         <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                            <th>N°</th>
+                            <th style="min-width: 30px !important;">N°</th>
                             <th>DOCENTE</th>
-                            <th>ID ESPE</th>
+                           <th>CÉDULA</th> 
+                            <th >ID ESPE</th>
                             <th>CORREO</th>
                             <th>DEPARTAMENTO</th>
                             <th>ESTADO</th>
@@ -114,30 +115,31 @@
                     <tbody>
                         @forelse ($profesoresVerificar as $index => $docente)
                             <tr>
-                                <td style="min-width: 30px !important;">{{ $index + 1 }}</td>
-                                <td>{{ $docente->profesorUniversidad->apellidos ?? '' }}
+                                <td style=" text-align: center; min-width: 30px !important;">{{ $index + 1 }}</td>
+                                <td style="text-transform: uppercase; font-size: .7em;"> {{ $docente->profesorUniversidad->apellidos ?? '' }}
                                     {{ $docente->profesorUniversidad->nombres ?? '' }}</td>
-                                <td>{{ $docente->profesorUniversidad->espeId ?? '' }}</td>
-                                <td>{{ $docente->correoElectronico ?? '' }}</td>
-                                <td>{{ $docente->profesorUniversidad->departamento ?? '' }}</td>
-                                <td>{{ $docente->estado ?? '' }}</td>
-                                <td>
+                                <td style="text-align: center; font-size: .7em;">{{ $docente->profesorUniversidad->cedula ?? '' }}</td>
+                                <td style="text-transform: uppercase; font-size: .7em; text-align: center;">{{ $docente->profesorUniversidad->espeId ?? '' }}</td>
+                                <td style="font-size: .7em;">{{ $docente->correoElectronico ?? '' }}</td>
+                                <td style="text-transform: uppercase; font-size: .7em;">{{ $docente->profesorUniversidad->departamento ?? '' }}</td>
+                                <td style="text-transform: uppercase; font-size: .7em; text-align: center;">{{ $docente->estado ?? '' }}</td>
+                                <td style="text-align: center;">
                                     <form action="{{ route('admin.aceptarDocente', ['id' => $docente->userId]) }}"
-                                        method="POST">
+                                        method="POST" style="display: inline-block;">
                                         @csrf
                                         @method('PUT')
-                                        <button type="submit" class="button3 efects_button btn_editar3">
-                                            <i class="bx bx-check"></i>
+                                        <button type="submit" class="button3 efects_button btn_editar3" style="margin-right: 5px;">
+                                        <i class="fa-solid fa-check"></i>
                                         </button>
                                     </form>
 
                                     <form action="{{ route('admin.rechazarDocente', ['id' => $docente->userId]) }}"
-                                        method="POST">
+                                        method="POST" style="display: inline-block;">
                                         @csrf
                                         @method('PUT')
                                         <button type="submit" class="button3 efects_button btn_eliminar3">
-                                            <i class="bx bx-x"></i>
-                                        </button>
+                                        <i class="fa-solid fa-xmark"></i>
+                                                                            </button>
                                     </form>
                                 </td>
                             </tr>

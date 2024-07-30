@@ -61,7 +61,8 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio1">ESTUDIANTE</th>
+                                    
+                                <th class="tamanio1">ESTUDIANTE</th>
                                     <th class="tamanio2">ID ESPE</th>
                                     <th class="tamanio2">CÉDULA</th>
                                     <th>COHORTE</th>
@@ -531,12 +532,12 @@
             width: 200px;
             min-width: 150px;
             font-size: 11px !important;
-            padding: .5rem !important;
+            padding: .7rem !important;
         }
 
         .contenedor_tabla .table-container table th {
             position: sticky;
-            font-size: .8em !important;
+            font-size: 0.9em !important;
         }
     </style>
 @endsection

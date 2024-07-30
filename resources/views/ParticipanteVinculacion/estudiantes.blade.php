@@ -59,16 +59,16 @@
                                 @else
                                     @foreach ($estudiantes as $estudiante)
                                         <tr>
-                                            <td class="wide-cell" style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                            <td class="wide-cell" style=" font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                 {{ $estudiante->apellidos }} {{ $estudiante->nombres }}
                                             </td>
-                                            <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                            <td style=" font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                 {{ $estudiante->espeId }}
                                             </td>
-                                            <td style="text-transform: uppercase; word-wrap: break-word; text-align: left;">
+                                            <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: left;">
                                                 {{ $estudiante->carrera }}
                                             </td>
-                                            <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                            <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                 {{ $estudiante->departamento }}
                                             </td>
                                             <td><input type="number" name="cumple_tareas[]" value="" min="0" max="10" step="0.01" required><small class="form-text text-danger" style="display: none;"></small></td>
@@ -132,40 +132,40 @@
                             <tbody class="mdc-data-table__content ng-star-inserted">
                                 @foreach ($estudiantesConNotas as $estudiante)
                                     <tr id="row{{ $estudiante->estudianteId }}">
-                                        <td class="wide-cell" style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                        <td class="wide-cell" style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             {{ $estudiante->apellidos }} {{ $estudiante->nombres }}
                                         </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                        <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             {{ $estudiante->espeId }}
                                         </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: left;">
+                                        <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: left;">
                                             {{ $estudiante->carrera }}
                                         </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                        <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             {{ $estudiante->departamento }}
                                         </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                        <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             <input type="number" name="tareas" value="{{ $estudiante->notas->first()->tareas ?? '' }}" min="0" max="10" step="0.01" disabled>
                                         </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                        <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             <input type="number" name="resultados_alcanzados" value="{{ $estudiante->notas->first()->resultadosAlcanzados ?? '' }}" min="0" max="10" step="0.01" disabled>
                                         </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                        <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             <input type="number" name="conocimientos_area" value="{{ $estudiante->notas->first()->conocimientos ?? '' }}" min="0" max="10" step="0.01" disabled>
                                         </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                        <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             <input type="number" name="adaptabilidad" value="{{ $estudiante->notas->first()->adaptabilidad ?? '' }}" min="0" max="10" step="0.01" disabled>
                                         </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                        <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             <input type="number" name="Aplicacion" value="{{ $estudiante->notas->first()->aplicacion ?? '' }}" min="0" max="10" step="0.01" disabled>
                                         </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                        <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             <input type="number" name="capacidad_liderazgo" value="{{ $estudiante->notas->first()->CapacidadLiderazgo ?? '' }}" min="0" max="10" step="0.01" disabled>
                                         </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                        <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             <input type="number" name="asistencia_puntual" value="{{ $estudiante->notas->first()->asistencia ?? '' }}" min="0" max="10" step="0.01" disabled>
                                         </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                        <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             {{ $estudiante->notas->first()->informe ?? 'Pendiente' }}
                                         </td>
                                         <td style="text-align: center;">

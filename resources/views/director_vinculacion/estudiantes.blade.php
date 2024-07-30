@@ -27,8 +27,8 @@
 
     <div class="contenedor_registro_genero">
         <div class="mat-elevation-z8 contenedor_general">
-            <h4><b>Estudiantes por calificar</b></h4>
-            <h4>Actualizar Informe de Servicio Comunitario</h4>
+            <h4><b>Estudiantes por calificar informe</b></h4>
+            
             <form method="post" action="{{ route('director_vinculacion.actualizarInforme') }}">
                 @csrf
                 <div class="contenedor_tabla">

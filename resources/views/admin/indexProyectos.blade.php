@@ -98,47 +98,52 @@
                             </div>
 
                             <!-- Card de Filtros -->
-                            <div class="draggable-card1_2" id="filtersCard" style="display: none;">
-                                <div class="card-header">
-                                    <span class="card-title">Filtros</span>
-                                    <button type="button" class="close" onclick="closeCard('filtersCard')"><i
-                                            class="fa-thin fa-xmark"></i></button>
-                                </div>
-                                <div class="card-body">
-                                    <form id="filtersForm" method="GET" action="{{ route('admin.indexProyectos') }}">
-                                        <div class="form-group">
-                                            <label for="estado" class="mr-2">Estado del Proyecto:</label>
-                                            <select name="estado" id="estado"
-                                                class="form-control input input_select">
-                                                <option value="">Todos</option>
-                                                <option value="Ejecucion"
-                                                    {{ request('estado') == 'Ejecucion' ? 'selected' : '' }}>En Ejecución
-                                                </option>
-                                                <option value="Terminado"
-                                                    {{ request('estado') == 'Terminado' ? 'selected' : '' }}>Terminado
-                                                </option>
-                                            </select>
-                                        </div>
+<div class="draggable-card1_2" id="filtersCard" style="display: none;">
+    <div class="card-header">
+        <span class="card-title">Filtros</span>
+        <button type="button" class="close" onclick="closeCard('filtersCard')">
+            <i class="fa-thin fa-xmark"></i>
+        </button>
+    </div>
+    <div class="card-body">
+        <form id="filtersForm" method="GET" action="{{ route('admin.indexProyectos') }}">
+            <div class="form-group">
+                <label for="estado" class="mr-2">Estado del Proyecto:</label>
+                <select name="estado" id="estado" class="form-control input input_select">
+                    <option value="">Todos</option>
+                    <option value="Ejecucion" {{ request('estado') == 'Ejecucion' ? 'selected' : '' }}>En Ejecución</option>
+                    <option value="Terminado" {{ request('estado') == 'Terminado' ? 'selected' : '' }}>Terminado</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="departamento" class="mr-2">Departamento:</label>
+                <select name="departamento" id="departamento" class="form-control input input_select">
+                    <option value="">Todos</option>
+                    <option value="Ciencias de la Computación" {{ request('departamento') == 'Ciencias de la Computación' ? 'selected' : '' }}>Ciencias de la Computación</option>
+                    <option value="Ciencias Exactas" {{ request('departamento') == 'Ciencias Exactas' ? 'selected' : '' }}>Ciencias Exactas</option>
+                    <option value="Ciencias de la Vida y Agricultura" {{ request('departamento') == 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>Ciencias de la Vida y Agricultura</option>
+                </select>
+            </div>
+        </form>
+        
+        <!-- Formulario para descargar el reporte en Excel -->
+        <form method="POST" action="{{ route('coordinador.reportesProyectos') }}" class="form-inline d-flex align-items-center">
+            @csrf
+            <input type="hidden" name="estado" id="hiddenEstado" value="{{ request('estado') }}">
+            <input type="hidden" name="departamento" id="hiddenDepartamento" value="{{ request('departamento') }}">
+            <div style="display: flex; align-items: center;">
+                <label for="submitButton" style="margin-right: 30px;">Descargar Reporte</label>
+                <button type="submit" class="button3 efects_button btn_excel" id="submitButton">
+                    <span id="loadingIcon" style="display: none !important;">
+                        <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+                    </span>
+                    <i class="fa-solid fa-download"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
-                                        <div class="form-group">
-                                            <label for="departamento" class="mr-2">Departamento:</label>
-                                            <select name="departamento" id="departamento"
-                                                class="form-control input input_select">
-                                                <option value="">Todos</option>
-                                                <option value="Ciencias de la Computación"
-                                                    {{ request('departamento') == 'Ciencias de la Computación' ? 'selected' : '' }}>
-                                                    Ciencias de la Computación</option>
-                                                <option value="Ciencias Exactas"
-                                                    {{ request('departamento') == 'Ciencias Exactas' ? 'selected' : '' }}>
-                                                    Ciencias Exactas</option>
-                                                <option value="Ciencias de la Vida y Agricultura"
-                                                    {{ request('departamento') == 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>
-                                                    Ciencias de la Vida y Agricultura</option>
-                                            </select>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
 
                             <!-- Botón de Eliminar Filtros -->
                             <div class="tooltip-container mx-2">
@@ -393,65 +398,64 @@
                                     </button>
                                 </div>
 
-                                <!-- Card de Filtros para Profesores y Periodos -->
-                                <div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
-                                    <div class="card-header">
-                                        <span class="card-title">Filtros Profesores y Periodos</span>
-                                        <button type="button" class="close"
-                                            onclick="closeCard('filtersCardProfesores')"><i
-                                                class="fa-thin fa-xmark"></i></button>
-                                    </div>
-                                    <div class="card-body">
-                                        <form id="filterFormProfesores" method="GET"
-                                            action="{{ route('admin.indexProyectos') }}">
-                                            <div class="form-group">
-                                                <label for="profesor">Profesor</label>
-                                                <select name="profesor" id="profesor"
-                                                    class="form-control input input_select">
-                                                    <option value="">Todos los docentes</option>
-                                                    @foreach ($profesores as $profesor)
-                                                        <option value="{{ $profesor->id }}"
-                                                            {{ request('profesor') == $profesor->id ? 'selected' : '' }}>
-                                                            {{ $profesor->apellidos }} {{ $profesor->nombres }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="periodos">Períodos</label>
-                                                <select name="periodos" id="periodos"
-                                                    class="form-control input input_select">
-                                                    <option value="">Todos los periodos</option>
-                                                    @foreach ($periodos as $periodo)
-                                                        <option value="{{ $periodo->id }}"
-                                                            {{ request('periodos') == $periodo->id ? 'selected' : '' }}>
-                                                            {{ $periodo->numeroPeriodo }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+                               <!-- Card de Filtros para Profesores y Periodos -->
+<div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
+    <div class="card-header">
+        <span class="card-title">Filtros Profesores y Periodos</span>
+        <button type="button" class="close" onclick="closeCard('filtersCardProfesores')"><i class="fa-thin fa-xmark"></i></button>
+    </div>
+    <div class="card-body">
+        <form id="filterFormProfesores" method="GET" action="{{ route('admin.indexProyectos') }}">
+            <div class="form-group">
+                <label for="profesor">Profesor</label>
+                <select name="profesor" id="profesor" class="form-control input input_select">
+                    <option value="">Todos los docentes</option>
+                    @foreach ($profesores as $profesor)
+                        <option value="{{ $profesor->id }}" {{ request('profesor') == $profesor->id ? 'selected' : '' }}>
+                            {{ $profesor->apellidos }} {{ $profesor->nombres }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="periodos">Períodos</label>
+                <select name="periodos" id="periodos" class="form-control input input_select">
+                    <option value="">Todos los periodos</option>
+                    @foreach ($periodos as $periodo)
+                        <option value="{{ $periodo->id }}" {{ request('periodos') == $periodo->id ? 'selected' : '' }}>
+                            {{ $periodo->numeroPeriodo }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="fechaInicio">Fecha inicio</label>
+                <input type="date" class="input" name="fechaInicio" id="fechaInicio">
+            </div>
+            <div class="form-group">
+                <label for="fechaFin">Fecha Fin</label>
+                <input type="date" class="input" name="fechaFin" id="fechaFin">
+            </div>
+        </form>
+        
+        <!-- Formulario para descargar el reporte en Excel -->
+        <form action="{{ route('reporte.matrizVinculacion') }}" method="POST" id="reportForm">
+            @csrf
+            <input type="hidden" name="fechaInicio" id="hiddenFechaInicio">
+            <input type="hidden" name="fechaFin" id="hiddenFechaFin">
+            <input type="hidden" name="profesor" id="hiddenProfesor">
+            <input type="hidden" name="periodos" id="hiddenPeriodos">
+            
+            <div style="display: flex; align-items: center;">
+            <label for="submitButton" style="margin-right: 20px;">Descargar Reporte</label>
+                <button type="submit" class="button3 efects_button btn_excel">
+                <i class="fa-solid fa-download"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
-                                            <div class="form-group">
-                                                <label for="fechaInicio">Fecha inicio</label>
-                                                <input type="date" class="input" name="fechaInicio"
-                                                    id="fechaInicio">
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="fechaFin">Fecha Fin</label>
-                                                <input type="date" class="input" name="fechaFin" id="fechaFin">
-                                            </div>
-
-
-
-
-
-
-                                        </form>
-
-
-                                    </div>
-                                </div>
 
                                 <!-- Botón de Eliminar Filtros Profesores y Periodos -->
                                 <div class="tooltip-container mx-1">

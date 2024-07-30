@@ -134,7 +134,8 @@
                     <table class="mat-mdc-table">
                         <thead class="ng-star-inserted">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                <th>FECHA</th>
+                               
+                            <th>FECHA</th>
                                 <th style="width: 161px !important; min-width:200px !important;">ACTIVIDADES</th>
                                 <th>NÚMERO DE HORAS</th>
                                 <th>NOMBRE DE ACTIVIDAD</th>
@@ -150,12 +151,12 @@
                             @else
                                 @foreach ($actividadesRegistradas as $actividad)
                                     <tr>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $actividad->fecha }}</td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: justify;">{{ $actividad->actividades }}</td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $actividad->numeroHoras }}</td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">{{ $actividad->nombreActividad }}</td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;"><img src="data:image/png;base64,{{ $actividad->evidencias }}" alt="Evidencia" width="100" height="100"></td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center; font-size: .7em;">{{ $actividad->fecha }}</td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: justify; font-size: .7em;">{{ $actividad->actividades }}</td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center; font-size: .7em;">{{ $actividad->numeroHoras }}</td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center; font-size: .7em;">{{ $actividad->nombreActividad }}</td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center; font-size: .7em;"><img src="data:image/png;base64,{{ $actividad->evidencias }}" alt="Evidencia" width="100" height="100"></td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center; font-size: .7em;">
                                             <div class="btn-group shadow-1">
                                                 <form action="{{ route('eliminarActividad', $actividad->idActividades) }}" method="POST">
                                                     @csrf
