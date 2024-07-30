@@ -247,7 +247,7 @@
                                 @foreach ($actividades as $actividad)
                                     <tr>
                                         <td style="text-transform: uppercase; text-align:center; font-size: .7em; min-width: 30px !important;">{{ $loop->iteration }}</td>
-                                        <td style="text-transform: uppercase; font-size: .7em; max-width: 130px !important;">{{ $actividad->actividad }}</td>
+                                        <td style="text-transform: uppercase; font-size: .7em; max-width: 100px !important;">{{ $actividad->actividad }}</td>
                                         <td style="text-transform: uppercase; text-align:center; font-size: .7em;  min-width: 30px !important;"">{{ $actividad->horas }}</td>
                                         <td style="text-transform: uppercase; font-size: .7em;">{{ $actividad->observaciones }}</td>
                                         <td style="text-transform: uppercase; text-align:center; font-size: .7em;">{{ $actividad->fechaActividad }}</td>
