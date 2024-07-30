@@ -740,7 +740,6 @@ class AdminController extends Controller
             'FechaFinalizacion.after' => 'La fecha de finalización debe ser posterior a la fecha de inicio',
         ]);
 
-
         AsignacionSinEstudiante::create([
             'proyectoId' => $request->proyecto_id,
             'participanteId' => $request->ProfesorParticipante,
@@ -751,11 +750,9 @@ class AdminController extends Controller
 
         $this->actualizarUsuarioYRol($request->ProfesorParticipante, 'ParticipanteVinculacion');
 
-
-        return redirect()->route('admin.indexProyectos')->with('success', 'Asignación realizada.');
-
-
+        return back()->with('success', 'Asignación realizada.');
     }
+
 
 
     public function guardarMaestro(Request $request)
@@ -1490,7 +1487,6 @@ class AdminController extends Controller
 
     //////////////////////////////////PRACTICAS//////////////////////////////////////////
 
-
     public function actualizarEstadoEstudiante(Request $request, $id)
     {
         // Validación de datos
@@ -1504,26 +1500,23 @@ class AdminController extends Controller
             ->first();
 
         if (!$practica) {
-            return redirect()->route('admin.aceptarFaseI')->with('error', 'Práctica no encontrada.');
+            return back()->with('error', 'Práctica no encontrada.');
         }
 
         // Actualiza el estado usando update()
         $nuevoEstado = $request->input('nuevoEstado');
         $practica->update(['Estado' => $nuevoEstado]);
 
-
         // Maneja las redirecciones según el estado seleccionado
         if ($nuevoEstado === 'En ejecucion') {
-            return redirect()->route('admin.aceptarFaseI')->with('success', 'Práctica aprobada..');
+            return back()->with('success', 'Práctica aprobada.');
         } elseif ($nuevoEstado === 'Negado') {
             $practica->delete();
-            return redirect()->route('admin.index')->with('success', 'Práctica negada y eliminada..');
+            return back()->with('success', 'Práctica negada y eliminada.');
         } else {
-            return redirect()->route('admin.aceptarFaseI')->with('success', 'Estado de la práctica actualizado..');
+            return back()->with('success', 'Estado de la práctica actualizado.');
         }
     }
-
-
 
     public function actualizarEstadoEstudiante2(Request $request, $id)
     {
@@ -1535,7 +1528,7 @@ class AdminController extends Controller
         $practica = PracticaII::where('estudianteId', $id)->first();
 
         if (!$practica) {
-            return redirect()->route('admin.aceptarFaseI')->with('error', 'Práctica no encontrada.');
+            return back()->with('error', 'Práctica no encontrada.');
         }
 
         // Actualiza el estado de la práctica
@@ -1544,16 +1537,18 @@ class AdminController extends Controller
         $practica->save();
 
         if ($nuevoEstado === 'En ejecucion') {
-            return redirect()->route('admin.aceptarFaseI')->with('success', 'Práctica II aprobada..');
+            return back()->with('success', 'Práctica II aprobada.');
         }
 
         if ($nuevoEstado === 'Negado') {
             $practica->delete();
-            return redirect()->route('admin.index')->with('success', 'Práctica II negada y eliminada..');
+            return back()->with('success', 'Práctica II negada y eliminada.');
         }
 
-        return redirect()->route('admin.aceptarFaseI')->with('success', 'Estado de la Práctica II actualizado..');
+        return back()->with('success', 'Estado de la Práctica II actualizado.');
     }
+
+
 
     /////////////////////////////////EDITAR EMPRESA DEL ESTUDIANTE
     public function editarNombreEmpresa($id)

@@ -14,7 +14,6 @@
         </div>
     @endif
 
-
     @if (session('error'))
         <div class="contenedor_alerta error">
             <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
@@ -25,25 +24,25 @@
         </div>
     @endif
 
-    <h4><b>Finalizar prácticas</b></h4>
+    <h4><b>Estudiantes en prácticas</b></h4>
     <hr>
-    <div class="mat-elevation-z8 ">
+    <div class="mat-elevation-z8">
         <div class="contenedor_tabla">
             <div class="table-container mat-elevation-z8">
-
                 <div id="tablaDocentes">
                     <table class="mat-mdc-table">
                         <thead class="ng-star-inserted">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                <th class="tamanio1">ESTUDIANTE</th>
-                                <th class="tamanio1">CARRERA</th>
+                                <th>ESTUDIANTE</th>
+                                <th>CARRERA</th>
                                 <th>CORREO</th>
                                 <th>TELÉFONO</th>
                                 <th>EMPRESA</th>
                                 <th>TUTOR EMPRESARIAL</th>
                                 <th>HORAS DE PRÁCTICAS</th>
-                                <th>FECHA INICIO </th>
-                                <th>FFECHA FIN </th>
+                                <th>FECHA INICIO</th>
+                                <th>FECHA FIN</th>
+                                <th>ACCIONES</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,21 +58,17 @@
                                     <td>{{ $practica->practicasi->FechaInicio }}</td>
                                     <td>{{ $practica->practicasi->FechaFinalizacion }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#actividadesModal">
-                                            Ver Actividades
+                                        <button type="button" class="button3 efects_button btn_eliminar3" data-toggle="modal" data-target="#actividadesModal{{ $practica->estudianteId }}">
+                                            <i class="fa-solid fa-eye"></i>
                                         </button>
 
                                         <!-- Modal para mostrar actividades -->
-                                        <div class="modal fade" id="actividadesModal" tabindex="-1" role="dialog"
-                                            aria-labelledby="actividadesModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="actividadesModal{{ $practica->estudianteId }}" tabindex="-1" role="dialog" aria-labelledby="actividadesModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="actividadesModalLabel">Actividades
-                                                            del Estudiante</h5>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
+                                                        <h5 class="modal-title" id="actividadesModalLabel">Actividades del Estudiante</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
@@ -86,15 +81,13 @@
                                                                 <p>Departamento: {{ $actividad->departamento }}</p>
                                                                 <p>Función: {{ $actividad->funcion }}</p>
                                                                 <p>Evidencias: </p>
-                                                                <img src="data:image/png;base64,{{ $actividad->evidencia }}"
-                                                                    alt="evidencia" width="100" height="100">
+                                                                <img src="data:image/png;base64,{{ $actividad->evidencia }}" alt="evidencia" width="100" height="100">
                                                                 <hr>
                                                             @endforeach
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Cerrar</button>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -105,37 +98,34 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
+        <br>
+
+        <form id="cerrarPracticaForm" action="{{ route('director_vinculacion.cerrarProcesoPracticas1') }}" method="POST">
+            @csrf
+            @method('PUT')
+            <button type="button" id="cerrarPracticaBtn" class="button1_1">Cerrar Práctica I estudiantes</button>
+        </form>
     </div>
-    <br>
-    <form id="cerrarPracticaForm" action="{{ route('director_vinculacion.cerrarProcesoPracticas1') }}" method="POST">
-        @csrf
-        @method('PUT')
-        <button type="button" id="cerrarPracticaBtn" class="button1_1">Cerrar Práctica I estudiantes</button>
-    </form>
 
     <br>
-
     <h4><b>Estudiantes a calificar</b></h4>
     <hr>
-    <div class="mat-elevation-z8 ">
+    <div class="mat-elevation-z8">
         <div class="contenedor_tabla">
             <div class="table-container mat-elevation-z8">
-
                 <div id="tablaDocentes">
                     <table class="mat-mdc-table">
                         <thead class="ng-star-inserted">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                <th class="tamanio1">ESTUDIANTE</th>
+                                <th>ESTUDIANTE</th>
                                 <th>CORREO</th>
                                 <th>TELÉFONO</th>
                                 <th>NOTA PRACTICA</th>
-
+                                <th>ESTADO</th>
                                 <th>ACCIONES</th>
-
-                            </tr>
+                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($estudiantesCalificar as $index => $practica)
@@ -150,27 +140,23 @@
                                             <input type="number" name="notaTutorEmpresarial" id="notaTutorEmpresarial">
                                             <span id="errorMensaje" style="color: red; display: none;"></span>
                                         </td>
-
-                                        <td><button type="submit">Guardar</button></td>
+                                        <td><button class="button1" type="submit">Guardar</button></td>
                                     </tr>
                                 </form>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>
 
     <br>
-    <h4><b>Estudiantes Calificados</b></h4>
-
+    <h4><b>Estudiantes calificados</b></h4>
     <hr>
-    <div class="mat-elevation-z8 ">
+    <div class="mat-elevation-z8">
         <div class="contenedor_tabla">
             <div class="table-container mat-elevation-z8">
-
                 <div id="tablaDocentes">
                     <table class="mat-mdc-table">
                         <thead class="ng-star-inserted">
@@ -181,78 +167,32 @@
                                 <th>NOTA FINAL</th>
                                 <th>ESTADO</th>
                                 <th>ACCIONES</th>
-
-
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($estudiantesCalificados as $index => $practica)
-                                <tr>
+                                <tr id="row{{ $practica->estudianteId }}">
                                     <td>{{ $practica->apellidos }} {{ $practica->nombres }}</td>
                                     <td>{{ $practica->carrera }}</td>
                                     <td>{{ $practica->correo }}</td>
-                                    <td>{{ $practica->practicasi->nota_final ?? 'NO CALIFICADO' }}
-                                     </td>
-                                     <td style="text-align: center;">
-                                        @if ($practica->practicasi->nota_final <= 16)
+                                    <td>
+                                        <input type="number" name="notaTutorEmpresarial" value="{{ $practica->practicasi->nota_final ?? '' }}" min="0" max="10" step="0.01" disabled>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        @if ($practica->practicasi->nota_final <= 14)
                                             <span class="badge badge-danger">REPROBADO</span>
                                         @else
                                             <span class="badge badge-success">APROBADO</span>
                                         @endif
                                     </td>
-
-                                        <td>
-                                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#calificacionModal">
-                                            editar calificacion
-                                        </button>
-
-                                        <!-- Modal para mostrar actividades -->
-                                        <div class="modal fade " id="calificacionModal" tabindex="-1" role="dialog"
-                                            aria-labelledby="calificacionModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="calificacionModalLabel">Editar
-                                                            Calificacion del Estudiante</h5>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <form
-                                                        action="{{ route('director_vinculacion.editarNotasPracticas1', ['id' => $practica->estudianteId]) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        @method('PUT')
-
-                                                        <div class="modal-body ">
-                                                            <input type="hidden" name="estudianteId"
-                                                                value="{{ $practica->estudianteId }}">
-                                                            <div class="form-group row">
-                                                                <label for="notaTutorEmpresarial"
-                                                                    class="col-md-4 col-form-label text-md-right">Nota
-                                                                    Tutor Empresarial</label>
-                                                                <div class="col-md-6">
-                                                                    <input id="notaTutorEmpresarial" type="number"
-                                                                        class="form-control" name="notaTutorEmpresarial"
-                                                                        value="{{ $practica->practicasi->nota_final }}"
-                                                                        step="any" required>
-                                                                    <span id="errorMensaje"
-                                                                        style="color: red; display: none;"></span>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">Cerrar</button>
-                                                            <button type="submit"
-                                                                class="btn btn-primary">Guardar</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
+                                    <td>
+                                        <div class="btn-group shadow-0">
+                                            <button class="button3 efects_button btn_editar3" onclick="editRow({{ $practica->estudianteId }})" style="margin-right: 5px;">
+                                                <i class="bx bx-edit-alt"></i>
+                                            </button>
+                                            <button class="button3 efects_button btn_save" onclick="saveRow({{ $practica->estudianteId }})" style="display: none; margin-right: 5px;">
+                                                <i class="fa-solid fa-save"></i>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -260,19 +200,86 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
-    <script src="js\admin\acciones.js"></script>
+    <!-- Formulario oculto para editar notas -->
+    <form id="hidden-form" method="POST" action="">
+        @csrf
+        @method('PUT')
+        <input type="hidden" name="notaTutorEmpresarial" id="hidden-notaTutorEmpresarial">
+    </form>
+
+    <script src="{{ asset('js/participante/practicas.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
 
+    <script>
+        function openCard(cardId) {
+            document.getElementById(cardId).style.display = 'block';
+        }
 
-     <script src="js\admin\index.js"></script>
-     <script src="{{ asset('js/participante/practicas.js') }}"></script>
+        function closeCard(cardId) {
+            document.getElementById(cardId).style.display = 'none';
+        }
 
+        function editRow(estudianteId) {
+            let row = document.getElementById('row' + estudianteId);
+            let inputs = row.getElementsByTagName('input');
+            for (let i = 0; i < inputs.length; i++) {
+                inputs[i].disabled = false;
+            }
+            row.querySelector('.btn_editar3').style.display = 'none';
+            row.querySelector('.btn_save').style.display = 'inline';
+        }
+
+        function saveRow(estudianteId) {
+            let row = document.getElementById('row' + estudianteId);
+            let inputs = row.getElementsByTagName('input');
+            let hiddenForm = document.getElementById('hidden-form');
+
+            // Establecer la acción del formulario con el ID del estudiante
+            hiddenForm.action = `/director-vinculacion/${estudianteId}/editar-notas-practicas1`;
+
+            for (let i = 0; i < inputs.length; i++) {
+                let inputName = inputs[i].name;
+                let inputValue = inputs[i].value;
+                let hiddenInput = document.getElementById('hidden-' + inputName);
+
+                if (hiddenInput) {
+                    hiddenInput.value = inputValue;
+                } else {
+                    // Crear un nuevo input oculto si no existe
+                    hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = inputName;
+                    hiddenInput.id = 'hidden-' + inputName;
+                    hiddenInput.value = inputValue;
+                    hiddenForm.appendChild(hiddenInput);
+                }
+
+                inputs[i].disabled = true;
+            }
+
+            
+
+            hiddenForm.submit();
+
+            row.querySelector('.btn_editar3').style.display = 'inline';
+            row.querySelector('.btn_save').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Selecciona el elemento de la alerta
+            const alertElement = document.querySelector('.contenedor_alerta');
+            // Establece un temporizador para ocultar la alerta después de 2 segundos
+            setTimeout(() => {
+                if (alertElement) {
+                    alertElement.style.display = 'none';
+                }
+            }, 2000); // 2000 milisegundos = 2 segundos
+        });
+    </script>
 @endsection

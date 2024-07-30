@@ -1,4 +1,4 @@
-@extends('layouts.director')
+@extends('layouts.admin')
 @section('title', 'Panel Practicas')
 @section('title_component', 'Panel Practicas')
 @section('content')
@@ -25,7 +25,8 @@
 
     <section class="contenedor_agregar_periodo">
 
-        <h4><b>Estudiantes Práctica 1</b></h4>
+
+         <h4><b>Estudiantes Práctica 1</b></h4>
         <hr>
         <section>
             <div class="mat-elevation-z8 contenedor_general">
@@ -34,24 +35,127 @@
                     <div class="contenedor_botones">
                         <div class="tooltip-container">
                             <span class="tooltip-text">Excel</span>
-                            <form action="{{ route('coordinador.reportesPracticaI') }}" method="POST">
+                            <form id="reportForm" action="{{ route('coordinador.reportesPracticaI') }}" method="POST">
                                 @csrf
+                                <input type="hidden" name="profesor" id="hiddenProfesor">
+                                <input type="hidden" name="empresa" id="hiddenEmpresa">
+                                <input type="hidden" name="periodos" id="hiddenPeriodos">
                                 <button type="submit" class="button3 efects_button btn_excel">
                                     <i class="fas fa-file-excel"></i>
                                 </button>
                             </form>
                         </div>
+                        <!-- Botón de Importar archivo -->
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Importar archivo</span>
+                            <button type="button" class="button3 efects_button btn_copy"
+                                onclick="openCard('cardImportarArchivo');">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                        </div>
+                        <!-- Card de Importar archivo -->
+                        <div class="draggable-card1_4" id="cardImportarArchivo" style="display: none;">
+                            <div class="card-header">
+                                <span class="card-title">Importar archivo</span>
+                                <button type="button" class="close" onclick="closeCard('cardImportarArchivo')"><i
+                                        class="fa-thin fa-xmark"></i></button>
+                            </div>
+                            <div class="card-body">
+                                <form id="idModalImportar2" action="{{ route('import-practicas1') }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="form-group">
+                                        <div class="input_file input">
+                                            <span id="fileText2" class="fileText">
+                                                <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
+                                            </span>
+                                            <input type="file" class="form-control-file input input_file"
+                                                id="file2" name="file"
+                                                onchange="displayFileName(this, 'fileText2')" required>
+                                            <span title="Eliminar archivo" onclick="removeFile(this)"
+                                                class="remove-icon">✖</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-center align-items-center">
+                                        <button type="submit" class="button">Importar Archivo</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Filtros</span>
+                            <button class="button3 efects_button btn_filtro"
+                                onclick="openCard('filtersCardProfesores1');">
+                                <i class="fa-solid fa-filter-list"></i>
+                            </button>
+                        </div>
 
+                        <!-- Card de Filtros para Profesores y Periodos -->
+                        <div class="draggable-card1_2" id="filtersCardProfesores1" style="display: none;">
+                            <div class="card-header">
+                                <span class="card-title">Filtros Profesores y Periodos</span>
+                                <button type="button" class="close" onclick="closeCard('filtersCardProfesores1')"><i
+                                        class="fa-thin fa-xmark"></i></button>
+                            </div>
 
+                            <div class="card-body">
+                                <form id="filterFormProfesores" method="GET"
+                                    action="{{ route('admin.aceptarFaseI') }}">
+                                    <div class="form-group">
+                                        <label for="profesor">Tutor academico</label>
+                                        <select name="profesor" id="profesor" class="form-control input input_select">
+                                            <option value="">Todos los docentes</option>
+                                            @foreach ($todosLosDocentes as $docenetes)
+                                                <option value="{{ $docenetes->nombres }}">
+                                                    {{ $docenetes->apellidos }} {{ $docenetes->nombres }}</option>
+                                            @endforeach
+                                            </option>
+                                        </select>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="empresa">Empresa</label>
+                                        <select name="empresa" id="empresa" class="form-control input input_select">
+                                            <option value="">Todas las empresas</option>
+                                            @foreach ($todasLasEmpresas as $empresa)
+                                                <option value="{{ $empresa->nombreEmpresa }}">
+                                                    {{ $empresa->nombreEmpresa }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group ">
+                                        <label for="fechaInicio">Periodos</label>
+                                        <select name="periodos" id="periodos" class="form-control input input_select">
+                                            <option value="">Todos los periodos</option>
+                                            @foreach ($todosLosPeriodos as $periodo)
+                                                <option value="{{ $periodo->numeroPeriodo }}">
+                                                    {{ $periodo->numeroPeriodo }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Botón de Eliminar Filtros Profesores y Periodos -->
+                        <div class="tooltip-container ">
+                            <span class="tooltip-text">Eliminar Filtros</span>
+                            <button class="button3 efects_button btn_delete_filter" onclick="resetFiltersProfesores()">
+                                <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+                            </button>
+                        </div>
                     </div>
+
+
 
 
 
                     <div class="contenedor_buscador">
                         <div>
                             <form id="formbusquedaPractica1">
-                                <input type="text" class="input" name="search" value="{{ $search }}" matInput
-                                    placeholder="Buscar en practicas 1...">
+                                <input type="text" class="input" name="search" value="{{ $search }}"
+                                    matInput placeholder="Buscar en practicas 1...">
                                 <i class='bx bx-search-alt'></i>
                             </form>
                         </div>
@@ -77,6 +181,7 @@
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
                                         <th>HORAS PLANIFICADAS</th>
+                                        <th>NOTA</th>
                                         <th>ESTADO</th>
 
                                     </tr>
@@ -101,13 +206,18 @@
                                                 <td style="text-transform: uppercase; text-align: left;">
                                                     {{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrc->nrc ?? 'No cuenta con NRC') }}
+                                                <td> {{ strtoupper(optional($nrcs->firstWhere('id', $practicaI->nrc))->nrc ?? 'NO CUENTA CON NRC') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrc->periodo->numeroPeriodo ?? 'No cuenta con NRC') }}
+
+                                                <td>{{ strtoupper($practicaI->periodoPractica ?? 'NO CUENTA CON PERIODO') }}
                                                 </td>
+
+
                                                 <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                                                 <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
+                                                <td>{{ strtoupper($practicaI->nota_final ?? 'AUN NO TIENE CALIFICACION') }}
+                                                </td>
                                                 <td>{{ strtoupper($practicaI->Estado) }}</td>
                                             </tr>
                                         @endif
@@ -161,8 +271,8 @@
                                     @endif
                                     @foreach (range(max(1, $estudiantesPracticas->currentPage() - 2), min($estudiantesPracticas->currentPage() + 2, $estudiantesPracticas->lastPage())) as $i)
                                         @if ($i == $estudiantesPracticas->currentPage())
-                                            <li class="page-item active"><span class="page-link">{{ $i }}</span>
-                                            </li>
+                                            <li class="page-item active"><span
+                                                    class="page-link">{{ $i }}</span></li>
                                         @else
                                             <li class="page-item"><a class="page-link"
                                                     href="{{ $estudiantesPracticas->appends(['paginacion1' => $perPage1])->url($i) }}#practicas1">{{ $i }}</a>
@@ -216,17 +326,122 @@
 
                         <div class="tooltip-container">
                             <span class="tooltip-text">Excel</span>
-                            <form action="{{ route('coordinador.reportesPracticaIII') }}" method="POST">
+                            <form id="reportForm2" action="{{ route('coordinador.reportesPracticaIII') }}"
+                                method="POST">
                                 @csrf
+                                <input type="hidden" name="profesor3" id="hiddenProfesor3">
+                                <input type="hidden" name="empresa3" id="hiddenEmpresa3">
+                                <input type="hidden" name="periodos3" id="hiddenPeriodos3">
+
                                 <button type="submit" class="button3 efects_button btn_excel">
                                     <i class="fas fa-file-excel"></i>
                                 </button>
                             </form>
                         </div>
 
+                        <!-- Botón de Importar archivo -->
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Importar archivo</span>
+                            <button type="button" class="button3 efects_button btn_copy"
+                                onclick="openCard('cardImportarArchivo2');">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                        </div>
+                        <!-- Card de Importar archivo -->
+                        <div class="draggable-card1_4" id="cardImportarArchivo2" style="display: none;">
+                            <div class="card-header">
+                                <span class="card-title">Importar archivo</span>
+                                <button type="button" class="close" onclick="closeCard('cardImportarArchivo2')"><i
+                                        class="fa-thin fa-xmark"></i></button>
+                            </div>
+                            <div class="card-body">
+                                <form id="idModalImportar2" action="{{ route('import-practicas2') }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="form-group">
+                                        <div class="input_file input">
+                                            <span id="fileText2" class="fileText">
+                                                <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
+                                            </span>
+                                            <input type="file" class="form-control-file input input_file"
+                                                id="file2" name="file"
+                                                onchange="displayFileName(this, 'fileText2')" required>
+                                            <span title="Eliminar archivo" onclick="removeFile(this)"
+                                                class="remove-icon">✖</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-center align-items-center">
+                                        <button type="submit" class="button">Importar Archivo</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Botón de Filtros para Profesores y Periodos -->
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Filtros</span>
+                            <button class="button3 efects_button btn_filtro"
+                                onclick="openCard('filtersCardProfesores3');">
+                                <i class="fa-solid fa-filter-list"></i>
+                            </button>
+                        </div>
+
+                        <!-- Card de Filtros para Profesores y Periodos -->
+                        <div class="draggable-card1_2" id="filtersCardProfesores3" style="display: none;">
+                            <div class="card-header">
+                                <span class="card-title">Filtros Profesores y Periodos</span>
+                                <button type="button" class="close" onclick="closeCard('filtersCardProfesores3')"><i
+                                        class="fa-thin fa-xmark"></i></button>
+                            </div>
+                            <div class="card-body">
+                                <form id="filterFormProfesores3" method="GET"
+                                    action="{{ route('admin.aceptarFaseI') }}">
+                                    <div class="form-group">
+                                        <label for="profesor3">Tutor academico</label>
+                                        <select name="profesor3" id="profesor3" class="form-control input input_select">
+                                            <option value="">Todos los docentes</option>
+                                            @foreach ($todosLosDocentes as $docenetes)
+                                                <option value="{{ $docenetes->nombres }}">
+                                                    {{ $docenetes->apellidos }} {{ $docenetes->nombres }}</option>
+                                            @endforeach
+                                            </option>
+                                        </select>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="empresa3">Empresa</label>
+                                        <select name="empresa3" id="empresa3" class="form-control input input_select">
+                                            <option value="">Todas las empresas</option>
+                                            @foreach ($todasLasEmpresas as $empresa)
+                                                <option value="{{ $empresa->nombreEmpresa }}">
+                                                    {{ $empresa->nombreEmpresa }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group ">
+                                        <label for="periodos3">Periodos</label>
+                                        <select name="periodos3" id="periodos3" class="form-control input input_select">
+                                            <option value="">Todos los periodos</option>
+                                            @foreach ($todosLosPeriodos as $periodo)
+                                                <option value="{{ $periodo->numeroPeriodo }}">
+                                                    {{ $periodo->numeroPeriodo }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
 
 
 
+                        <!-- Botón de Eliminar Filtros Profesores y Periodos -->
+                        <div class="tooltip-container ">
+                            <span class="tooltip-text">Eliminar Filtros</span>
+                            <button class="button3 efects_button btn_delete_filter" onclick="resetFiltersProfesores()">
+                                <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="contenedor_buscador">
@@ -260,6 +475,7 @@
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
                                         <th>HORAS PLANIFICADAS</th>
+                                        <th>NOTA FINAL</th>
                                         <th>ESTADO</th>
 
                                     </tr>
@@ -284,13 +500,17 @@
                                                 <td style="text-transform: uppercase; text-align: left;">
                                                     {{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->nrc ?? 'No cuenta con NRC') }}
+                                                <td> {{ strtoupper(optional($nrcs->firstWhere('id', $practicaI->nrc))->nrc ?? 'NO CUENTA CON NRC') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->periodo->numeroPeriodo ?? 'No cuenta con NRC') }}
+
+                                                <td>{{ strtoupper($practicaI->periodoPractica ?? 'NO CUENTA CON PERIODO') }}
                                                 </td>
+
                                                 <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                                                 <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
+                                                <td>{{ strtoupper($practicaI->nota_final ?? 'AUN NO TIENE CALIFICACION') }}
+                                                </td>
                                                 <td>{{ $practicaI->Estado }}</td>
                                             </tr>
                                         @endif
@@ -397,8 +617,12 @@
 
                         <div class="tooltip-container">
                             <span class="tooltip-text">Excel</span>
-                            <form action="{{ route('coordinador.reportesPracticaIV') }}" method="POST">
+                            <form id="reportForm4" action="{{ route('coordinador.reportesPracticaIV') }}"
+                                method="POST">
                                 @csrf
+                                <input type="hidden" name="profesor4" id="hiddenProfesor4">
+                                <input type="hidden" name="empresa4" id="hiddenEmpresa4">
+                                <input type="hidden" name="periodos4" id="hiddenPeriodos4">
                                 <button type="submit" class="button3 efects_button btn_excel">
                                     <i class="fas fa-file-excel"></i>
                                 </button>
@@ -412,8 +636,99 @@
                                 <i class="fa fa-upload"></i>
                             </button>
                         </div>
+                        <!-- Card de Importar archivo -->
+                        <div class="draggable-card1_4" id="cardImportarArchivo3" style="display: none;">
+                            <div class="card-header">
+                                <span class="card-title">Importar archivo</span>
+                                <button type="button" class="close" onclick="closeCard('cardImportarArchivo3')"><i
+                                        class="fa-thin fa-xmark"></i></button>
+                            </div>
+                            <div class="card-body">
+                                <form id="idModalImportar2" action="{{ route('import-practicas3') }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="form-group">
+                                        <div class="input_file input">
+                                            <span id="fileText2" class="fileText">
+                                                <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
+                                            </span>
+                                            <input type="file" class="form-control-file input input_file"
+                                                id="file2" name="file"
+                                                onchange="displayFileName(this, 'fileText2')" required>
+                                            <span title="Eliminar archivo" onclick="removeFile(this)"
+                                                class="remove-icon">✖</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-center align-items-center">
+                                        <button type="submit" class="button">Importar Archivo</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
 
+                        <!-- Botón de Filtros para Profesores y Periodos -->
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Filtros</span>
+                            <button class="button3 efects_button btn_filtro"
+                                onclick="openCard('filtersCardProfesores4');">
+                                <i class="fa-solid fa-filter-list"></i>
+                            </button>
+                        </div>
 
+                        <!-- Card de Filtros para Profesores y Periodos -->
+                        <div class="draggable-card1_2" id="filtersCardProfesores4" style="display: none;">
+                            <div class="card-header">
+                                <span class="card-title">Filtros Profesores y Periodos</span>
+                                <button type="button" class="close" onclick="closeCard('filtersCardProfesores4')"><i
+                                        class="fa-thin fa-xmark"></i></button>
+                            </div>
+                            <div class="card-body">
+                                <form id="filterFormProfesores4" method="GET"
+                                    action="{{ route('admin.aceptarFaseI') }}">
+                                    <div class="form-group">
+                                        <label for="profesor4">Tutor academico</label>
+                                        <select name="profesor4" id="profesor4" class="form-control input input_select">
+                                            <option value="">Todos los docentes</option>
+                                            @foreach ($todosLosDocentes as $docenetes)
+                                                <option value="{{ $docenetes->nombres }}">
+                                                    {{ $docenetes->apellidos }} {{ $docenetes->nombres }}</option>
+                                            @endforeach
+                                            </option>
+                                        </select>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="empresa4">Empresa</label>
+                                        <select name="empresa4" id="empresa4" class="form-control input input_select">
+                                            <option value="">Todas las empresas</option>
+                                            @foreach ($todasLasEmpresas as $empresa)
+                                                <option value="{{ $empresa->nombreEmpresa }}">
+                                                    {{ $empresa->nombreEmpresa }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group ">
+                                        <label for="periodos4">Periodos</label>
+                                        <select name="periodos4" id="periodos4" class="form-control input input_select">
+                                            <option value="">Todos los periodos</option>
+                                            @foreach ($todosLosPeriodos as $periodo)
+                                                <option value="{{ $periodo->numeroPeriodo }}">
+                                                    {{ $periodo->numeroPeriodo }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Botón de Eliminar Filtros Profesores y Periodos -->
+                        <div class="tooltip-container ">
+                            <span class="tooltip-text">Eliminar Filtros</span>
+                            <button class="button3 efects_button btn_delete_filter" onclick="resetFiltersProfesores()">
+                                <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="contenedor_buscador">
                         <div>
@@ -445,6 +760,7 @@
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
                                         <th>HORAS PLANIFICADAS</th>
+                                        <th>NOTA FINAL</th>
                                         <th>ESTADO</th>
 
                                     </tr>
@@ -468,13 +784,16 @@
                                                 <td style="text-transform: uppercase; text-align: left;">
                                                     {{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->nrc ?? 'No cuenta con NRC') }}
+                                                <td> {{ strtoupper(optional($nrcs->firstWhere('id', $practicaI->nrc))->nrc ?? 'NO CUENTA CON NRC') }}
+
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->periodo->numeroPeriodo ?? 'No cuenta con NRC') }}
+                                                <td>{{ strtoupper($practicaI->periodoPractica ?? 'NO CUENTA CON PERIODO') }}
                                                 </td>
                                                 <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                                                 <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
+                                                <td>{{ strtoupper($practicaI->nota_final ?? 'AUN NO TIENE CALIFICACION') }}
+                                                </td>
                                                 <td>{{ $practicaI->Estado }}</td>
 
 
@@ -567,18 +886,120 @@
                     <div class="contenedor_botones">
                         <div class="tooltip-container">
                             <span class="tooltip-text">Excel</span>
-                            <form action="{{ route('coordinador.reportesPracticaII') }}" method="POST">
+                            <form id="reportForm3" action="{{ route('coordinador.reportesPracticaII') }}"
+                                method="POST">
                                 @csrf
+                                <input type="hidden" name="profesor2" id="hiddenProfesor2">
+                                <input type="hidden" name="empresa2" id="hiddenEmpresa2">
+                                <input type="hidden" name="periodos2" id="hiddenPeriodos2">
+
                                 <button type="submit" class="button3 efects_button btn_excel">
                                     <i class="fas fa-file-excel"></i>
                                 </button>
                             </form>
                         </div>
+                        <!-- Botón de Importar archivo -->
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Importar archivo</span>
+                            <button type="button" class="button3 efects_button btn_copy"
+                                onclick="openCard('cardImportarArchivo4');">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                        </div>
+                        <!-- Card de Importar archivo -->
+                        <div class="draggable-card1_4" id="cardImportarArchivo4" style="display: none;">
+                            <div class="card-header">
+                                <span class="card-title">Importar archivo</span>
+                                <button type="button" class="close" onclick="closeCard('cardImportarArchivo4')"><i
+                                        class="fa-thin fa-xmark"></i></button>
+                            </div>
+                            <div class="card-body">
+                                <form id="idModalImportar2" action="{{ route('import-practicas4') }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="form-group">
+                                        <div class="input_file input">
+                                            <span id="fileText2" class="fileText">
+                                                <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
+                                            </span>
+                                            <input type="file" class="form-control-file input input_file"
+                                                id="file2" name="file"
+                                                onchange="displayFileName(this, 'fileText2')" required>
+                                            <span title="Eliminar archivo" onclick="removeFile(this)"
+                                                class="remove-icon">✖</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-center align-items-center">
+                                        <button type="submit" class="button">Importar Archivo</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
 
+                        <!-- Botón de Filtros para Profesores y Periodos -->
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Filtros</span>
+                            <button class="button3 efects_button btn_filtro"
+                                onclick="openCard('filtersCardProfesores2');">
+                                <i class="fa-solid fa-filter-list"></i>
+                            </button>
+                        </div>
 
+                        <!-- Card de Filtros para Profesores y Periodos -->
+                        <div class="draggable-card1_2" id="filtersCardProfesores2" style="display: none;">
+                            <div class="card-header">
+                                <span class="card-title">Filtros Profesores y Periodos</span>
+                                <button type="button" class="close" onclick="closeCard('filtersCardProfesores2')"><i
+                                        class="fa-thin fa-xmark"></i></button>
+                            </div>
 
+                            <div class="card-body">
+                                <form id="filterFormProfesores2" method="GET"
+                                    action="{{ route('admin.aceptarFaseI') }}">
+                                    <div class="form-group">
+                                        <label for="profesor2">Tutor academico</label>
+                                        <select name="profesor2" id="profesor2" class="form-control input input_select">
+                                            <option value="">Todos los docentes</option>
+                                            @foreach ($todosLosDocentes as $docenetes)
+                                                <option value="{{ $docenetes->nombres }}">
+                                                    {{ $docenetes->apellidos }} {{ $docenetes->nombres }}</option>
+                                            @endforeach
+                                            </option>
+                                        </select>
 
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="empresa2">Empresa</label>
+                                        <select name="empresa2" id="empresa2" class="form-control input input_select">
+                                            <option value="">Todas las empresas</option>
+                                            @foreach ($todasLasEmpresas as $empresa)
+                                                <option value="{{ $empresa->nombreEmpresa }}">
+                                                    {{ $empresa->nombreEmpresa }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
 
+                                    <div class="form-group ">
+                                        <label for="periodos2">Periodos</label>
+                                        <select name="periodos2" id="periodos2" class="form-control input input_select">
+                                            <option value="">Todos los periodos</option>
+                                            @foreach ($todosLosPeriodos as $periodo)
+                                                <option value="{{ $periodo->numeroPeriodo }}">
+                                                    {{ $periodo->numeroPeriodo }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Botón de Eliminar Filtros Profesores y Periodos -->
+                        <div class="tooltip-container ">
+                            <span class="tooltip-text">Eliminar Filtros</span>
+                            <button class="button3 efects_button btn_delete_filter" onclick="resetFiltersProfesores()">
+                                <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="contenedor_buscador">
                         <div>
@@ -610,6 +1031,7 @@
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
                                         <th>HORAS PLANIFICADAS</th>
+                                        <th>NOTA FINAL</th>
                                         <th>ESTADO</th>
 
                                     </tr>
@@ -633,13 +1055,15 @@
                                                 <td style="text-transform: uppercase; text-align: left;">
                                                     {{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->nrc ?? 'No cuenta con NRC') }}
+                                                <td> {{ strtoupper(optional($nrcs->firstWhere('id', $practicaI->nrc))->nrc ?? 'NO CUENTA CON NRC') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->periodo->numeroPeriodo ?? 'No cuenta con NRC') }}
+                                                <td>{{ strtoupper($practicaI->periodoPractica ?? 'NO CUENTA CON PERIODO') }}
                                                 </td>
                                                 <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                                                 <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
+                                                <td>{{ strtoupper($practicaI->nota_final ?? 'AUN NO TIENE CALIFICACION') }}
+                                                </td>
                                                 <td>{{ $practicaI->Estado }}</td>
 
 
@@ -754,12 +1178,109 @@
                                 </button>
                             </form>
                         </div>
+                        <!-- Botón de Importar archivo -->
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Importar archivo</span>
+                            <button type="button" class="button3 efects_button btn_copy"
+                                onclick="openCard('cardImportarArchivo5');">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                        </div>
+                        <!-- Card de Importar archivo -->
+                        <div class="draggable-card1_4" id="cardImportarArchivo5" style="display: none;">
+                            <div class="card-header">
+                                <span class="card-title">Importar archivo</span>
+                                <button type="button" class="close" onclick="closeCard('cardImportarArchivo5')"><i
+                                        class="fa-thin fa-xmark"></i></button>
+                            </div>
+                            <div class="card-body">
+                                <form id="idModalImportar2" action="{{ route('import-practicas5') }}" method="POST"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="form-group">
+                                        <div class="input_file input">
+                                            <span id="fileText2" class="fileText">
+                                                <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
+                                            </span>
+                                            <input type="file" class="form-control-file input input_file"
+                                                id="file2" name="file"
+                                                onchange="displayFileName(this, 'fileText2')" required>
+                                            <span title="Eliminar archivo" onclick="removeFile(this)"
+                                                class="remove-icon">✖</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-center align-items-center">
+                                        <button type="submit" class="button">Importar Archivo</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
 
+                        <!-- Botón de Filtros para Profesores y Periodos -->
+                        <div class="tooltip-container">
+                            <span class="tooltip-text">Filtros</span>
+                            <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCardProfesores');">
+                                <i class="fa-solid fa-filter-list"></i>
+                            </button>
+                        </div>
 
+                        <!-- Card de Filtros para Profesores y Periodos -->
+                        <div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
+                            <div class="card-header">
+                                <span class="card-title">Filtros Profesores y Periodos</span>
+                                <button type="button" class="close" onclick="closeCard('filtersCardProfesores')"><i
+                                        class="fa-thin fa-xmark"></i></button>
+                            </div>
+                            <div class="card-body">
+                                <form id="filterFormProfesores" method="GET"
+                                    action="{{ route('admin.indexProyectos') }}">
+                                    <div class="form-group">
+                                        <label for="profesor">Profesor</label>
+                                        <select name="profesor" id="profesor" class="form-control input input_select">
+                                            <option value="">Todos los docentes</option>
 
+                                            <option value="#">
+
+                                            </option>
+
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="periodos">Períodos</label>
+                                        <select name="periodos" id="periodos" class="form-control input input_select">
+                                            <option value="">Todos los periodos</option>
+                                            @foreach ($periodos as $periodo)
+                                                <option value="{{ $periodo->id }}"
+                                                    {{ request('periodos') == $periodo->id ? 'selected' : '' }}>
+                                                    {{ $periodo->numeroPeriodo }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="fechaInicio">Fecha inicio</label>
+                                        <input type="date" class="input" name="fechaInicio" id="fechaInicio">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="fechaFin">Fecha Fin</label>
+                                        <input type="date" class="input" name="fechaFin" id="fechaFin">
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Botón de Eliminar Filtros Profesores y Periodos -->
+                        <div class="tooltip-container ">
+                            <span class="tooltip-text">Eliminar Filtros</span>
+                            <button class="button3 efects_button btn_delete_filter" onclick="resetFiltersProfesores()">
+                                <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
 
@@ -779,6 +1300,7 @@
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
                                         <th>HORAS PLANIFICADAS</th>
+                                        <th>NOTA FINAL</th>
                                         <th>ESTADO</th>
 
                                     </tr>
@@ -802,13 +1324,15 @@
                                                 <td style="text-transform: uppercase; text-align: left;">
                                                     {{ strtoupper($practicaI->Empresa->nombreEmpresa ?? 'No por el momento') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->nrc ?? 'No cuenta con NRC') }}
+                                                <td> {{ strtoupper(optional($nrcs->firstWhere('id', $practicaI->nrc))->nrc ?? 'NO CUENTA CON NRC') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->nrcPractica->periodo->numeroPeriodo ?? 'No cuenta con NRC') }}
+                                                <td>{{ strtoupper($practicaI->periodoPractica ?? 'NO CUENTA CON PERIODO') }}
                                                 </td>
                                                 <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
                                                 <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
                                                 <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
+                                                <td>{{ strtoupper($practicaI->nota_final ?? 'AUN NO TIENE CALIFICACION') }}
+                                                </td>
                                                 <td>{{ $practicaI->Estado }}</td>
 
 
@@ -820,7 +1344,19 @@
 
                         </div>
                     </div>
+                    <div class="paginator-container">
+                        <nav aria-label="..."
+                            style="display: flex; justify-content: space-between; align-items: baseline; color: gray; ">
+
+
+                            <ul class="pagination" style=" padding: 10px 30px; !important">
+                                <div id="totalRows">Estudiantes: {{ $estudiantesPracticasIII->total() }}</div>
+                            </ul>
+                        </nav>
+                    </div>
+                    </nav>
                 </div>
+            </div>
 
             </div>
         </section>
@@ -833,7 +1369,6 @@
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js/admin/acciones.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
     <script>
@@ -843,7 +1378,7 @@
             var query = $(this).val();
             delayTimer = setTimeout(function() {
                 $.ajax({
-                    url: '{{ route('director.practicas') }}',
+                    url: '{{ route('admin.aceptarFaseI') }}',
                     type: 'GET',
                     data: {
                         search: query
@@ -863,7 +1398,7 @@
             var query = $(this).val();
             delayTimer = setTimeout(function() {
                 $.ajax({
-                    url: '{{ route('director.practicas') }}',
+                    url: '{{ route('admin.aceptarFaseI') }}',
                     type: 'GET',
                     data: {
                         search2: query
@@ -882,7 +1417,7 @@
             var query = $(this).val();
             delayTimer = setTimeout(function() {
                 $.ajax({
-                    url: '{{ route('director.practicas') }}',
+                    url: '{{ route('admin.aceptarFaseI') }}',
                     type: 'GET',
                     data: {
                         search4: query
@@ -901,7 +1436,7 @@
             var query = $(this).val();
             delayTimer = setTimeout(function() {
                 $.ajax({
-                    url: '{{ route('director.practicas') }}',
+                    url: '{{ route('admin.aceptarFaseI') }}',
                     type: 'GET',
                     data: {
                         search3: query
@@ -948,6 +1483,175 @@
                 '<i class="fa fa-upload"></i> Haz clic aquí para subir el documento'; // Reset the text
             document.querySelector('.remove-icon').style.display = 'none'; // Ocultar la "X"
         }
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#profesor, #empresa, #periodos').change(function() {
+                var profesorParticipante = $('#profesor').val();
+                var periodoParticipante = $('#periodos').val();
+                var empresaParticipante = $('#empresa').val();
+
+                $.ajax({
+                    url: "{{ route('admin.aceptarFaseI') }}",
+                    method: 'GET',
+                    data: {
+                        profesor: profesorParticipante,
+                        periodos: periodoParticipante,
+                        empresa: empresaParticipante
+                    },
+                    success: function(response) {
+                        $('#practicas1').html($(response).find('#practicas1')
+                            .html());
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#profesor2, #empresa2, #periodos2').change(function() {
+                var profesorParticipante2 = $('#profesor2').val();
+                var periodoParticipante2 = $('#periodos2').val();
+                var empresaParticipante2 = $('#empresa2').val();
+
+                $.ajax({
+                    url: "{{ route('admin.aceptarFaseI') }}",
+                    method: 'GET',
+                    data: {
+                        profesor2: profesorParticipante2,
+                        periodos2: periodoParticipante2,
+                        empresa2: empresaParticipante2
+                    },
+                    success: function(response) {
+                        $('#practicas4').html($(response).find('#practicas4').html());
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#profesor3, #empresa3, #periodos3').change(function() {
+                var profesorParticipante3 = $('#profesor3').val();
+                var empresaParticipante3 = $('#empresa3').val();
+                var periodoParticipante3 = $('#periodos3').val();
+
+                $.ajax({
+                    url: "{{ route('admin.aceptarFaseI') }}",
+                    method: 'GET',
+                    data: {
+                        profesor3: profesorParticipante3,
+                        empresa3: empresaParticipante3,
+                        periodos3: periodoParticipante3
+                    },
+                    success: function(response) {
+                        $('#practicas2').html($(response).find('#practicas2').html());
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#profesor4, #empresa4, #periodos4').change(function() {
+                var profesorParticipante4 = $('#profesor4').val();
+                var empresaParticipante4 = $('#empresa4').val();
+                var periodoParticipante4 = $('#periodos4').val();
+
+                $.ajax({
+                    url: "{{ route('admin.aceptarFaseI') }}",
+                    method: 'GET',
+                    data: {
+                        profesor4: profesorParticipante4,
+                        empresa4: empresaParticipante4,
+                        periodos4: periodoParticipante4
+                    },
+                    success: function(response) {
+                        $('#practicas3').html($(response).find('#practicas3').html());
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        function resetFiltersProfesores() {
+            $('#profesor').val('');
+            $('#empresa').val('');
+            $('#periodos').val('');
+            $('#profesor2').val('');
+            $('#empresa2').val('');
+            $('#periodos2').val('');
+            $('#profesor3').val('');
+            $('#empresa3').val('');
+            $('#periodos3').val('');
+            $('#profesor4').val('');
+            $('#empresa4').val('');
+            $('#periodos4').val('');
+            $.ajax({
+                url: "{{ route('admin.aceptarFaseI') }}",
+                method: 'GET',
+                success: function(response) {
+                    $('#practicas1').html($(response).find('#practicas1').html());
+                    $('#practicas2').html($(response).find('#practicas2').html());
+                    $('#practicas3').html($(response).find('#practicas3').html());
+                    $('#practicas4').html($(response).find('#practicas4').html());
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+    </script>
+
+    <script>
+        document.getElementById('reportForm').addEventListener('submit', function() {
+            document.getElementById('hiddenProfesor').value = document.getElementById('profesor').value;
+            document.getElementById('hiddenEmpresa').value = document.getElementById('empresa').value;
+            document.getElementById('hiddenPeriodos').value = document.getElementById('periodos').value;
+        });
+    </script>
+
+    <script>
+        document.getElementById('reportForm2').addEventListener('submit', function() {
+            document.getElementById('hiddenProfesor3').value = document.getElementById('profesor3').value;
+            document.getElementById('hiddenEmpresa3').value = document.getElementById('empresa3').value;
+            document.getElementById('hiddenPeriodos3').value = document.getElementById('periodos3').value;
+        });
+    </script>
+
+    <script>
+        document.getElementById('reportForm4').addEventListener('submit', function() {
+            document.getElementById('hiddenProfesor4').value = document.getElementById('profesor4').value;
+            document.getElementById('hiddenEmpresa4').value = document.getElementById('empresa4').value;
+            document.getElementById('hiddenPeriodos4').value = document.getElementById('periodos4').value;
+        });
+    </script>
+
+    <script>
+        document.getElementById('reportForm3').addEventListener('submit', function() {
+            document.getElementById('hiddenProfesor2').value = document.getElementById('profesor2').value;
+            document.getElementById('hiddenEmpresa2').value = document.getElementById('empresa2').value;
+            document.getElementById('hiddenPeriodos2').value = document.getElementById('periodos2').value;
+
+
+        });
     </script>
 
 

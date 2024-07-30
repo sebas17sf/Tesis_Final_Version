@@ -12,6 +12,7 @@ use App\Models\PracticaIII;
 use App\Models\PracticaIV;
 use App\Models\PracticaV;
 use App\Models\ProfesUniversidad;
+use App\Models\Empresa;
 use App\Models\Proyecto;
 use App\Models\UsuariosSession;
 use Illuminate\Support\Facades\Auth;
@@ -28,11 +29,26 @@ class DirectorController extends Controller
     {
         $estadoProyecto = $request->input('estado');
         $departamento = $request->input('departamento');
+        $profesorId = $request->input('profesor');
+        $periodoId = $request->input('periodos');
 
         $periodos = Periodo::all();
-        $nrcs = NrcVinculacion::all();
-        $profesores = ProfesUniversidad::whereDoesntHave('proyectosDirigidos')->get();
 
+
+        $nrcs = NrcVinculacion::where('tipo', 'Vinculacion')->get();
+
+
+        $profesores = ProfesUniversidad::whereDoesntHave('proyectosDirigidos')
+            ->orWhereHas('proyectosDirigidos', function ($query) {
+                $query->where('estado', 'Terminado');
+            })
+            ->orderBy('apellidos', 'asc')
+            ->get();
+
+        ///obtener los periodos que tengan fecha de inicio y fin con la fecha actual
+        $periodoAsignacion = Periodo::where('inicioPeriodo', '<=', now())
+            ->where('finPeriodo', '>=', now())
+            ->get();
 
 
         $perPage = $request->input('perPage', 10);
@@ -127,12 +143,12 @@ class DirectorController extends Controller
             });
 
         $total = $asignacionesAgrupadas->count();
-        $paginatedData = $asignacionesAgrupadas->forPage($page2, $perPage2);
+        $paginatedData = $asignacionesAgrupadas->forPage($request->input('page2', 1), $request->input('perPage2', 10));
         $paginator = new LengthAwarePaginator(
             $paginatedData,
             $total,
-            $perPage2,
-            $page2,
+            $request->input('perPage2', 10),
+            $request->input('page2', 1),
             ['path' => route('director.indexProyectos'), 'pageName' => 'page2']
         );
         return view('director.proyectos', [
@@ -148,6 +164,12 @@ class DirectorController extends Controller
             'periodos' => $periodos,
             'search' => $search,
             'search2' => $search2,
+            'estadoProyecto' => $estadoProyecto,
+            'profesorId' => $profesorId,
+            'periodoId' => $periodoId,
+            'paginatedData' => $paginatedData,
+            'total' => $total,
+            'periodoAsignacion' => $periodoAsignacion,
         ]);
         if ($estadoProyecto) {
             $query->where('estado', $estadoProyecto);
@@ -168,12 +190,40 @@ class DirectorController extends Controller
         $proyectos = $query->paginate($perPage, ['*'], 'page', $page);
 
         if ($request->ajax()) {
-            return view('tablaProyectos', compact('proyectos'))->render();
+            if ($request->has('search2')) {
+                return response()->json([
+                    'html' => view('partials.tablaAsignaciones', compact('asignacionesAgrupadas', 'paginator'))->render()
+                ]);
+            } else {
+                return response()->json([
+                    'html' => view('partials.tablaProyectos', compact('proyectos'))->render()
+                ]);
+            }
         }
 
-        return view('director.proyectos', compact('proyectos', 'periodos', 'nrcs', 'profesores', 'estadoProyecto', 'search'));
+        return view('director.proyectos', [
+            'proyectos' => $proyectos,
+            'proyectosDisponibles' => $proyectosDisponibles,
+            'estudiantesAprobados' => $estudiantesAprobados,
+            'perPage' => $perPage,
+            'perPage2' => $perPage2,
+            'paginator' => $paginator,
+            'profesores' => $profesores,
+            'nrcs' => $nrcs,
+            'asignacionesAgrupadas' => $paginator,
+            'periodos' => $periodos,
+            'search' => $search,
+            'search2' => $search2,
+            'estadoProyecto' => $estadoProyecto,
+            'profesorId' => $profesorId,
+            'periodoId' => $periodoId,
+            'paginatedData' => $paginatedData,
+            'total' => $total,
+            'periodoAsignacion' => $periodoAsignacion,
+        ]);
 
     }
+
 
 
     public function index()
@@ -189,6 +239,11 @@ class DirectorController extends Controller
     {
 
 
+        $todosLosDocentes = ProfesUniversidad::all();
+        $todasLasEmpresas = Empresa::all();
+        $todosLosPeriodos = Periodo::orderBy('inicioPeriodo', 'asc')->get();
+
+
 
         $search = $request->input('search');
         $search2 = $request->input('search2');
@@ -197,26 +252,39 @@ class DirectorController extends Controller
 
 
 
+
+
+
         $perPage1 = $request->input('paginacion1', 10);
         $perPage2 = $request->input('paginacion2', 10);
         $perPage3 = $request->input('paginacion3', 10);
         $perPage4 = $request->input('paginacion4', 10);
 
-        $estudiantesConPracticaI = PracticaI::with('estudiante')
-            ->where('estado', 'PracticaI')
+        $estudiantesConPracticaI = PracticaI::with(['estudiante', 'tutorAcademico', 'empresa', 'nrc'])
+            ->where('Estado', 'PracticaI')
+            ->whereNotIn('Estado', ['Reprobado'])
             ->get();
+
+
+
 
         $estudiantesConPracticaII = PracticaII::with('estudiante')
             ->where('estado', 'PracticaII')
             ->get();
 
-        $estudiantesPracticas = PracticaI::with('estudiante')
+
+
+        $docente1 = $request->input('profesor');
+        $empresa1 = $request->input('empresa');
+        $periodo1 = $request->input('periodos');
+
+        $estudiantesPracticas = PracticaI::with(['estudiante', 'tutorAcademico', 'empresa', 'nrc'])
             ->where(function ($query) use ($search) {
                 $query->where('Estado', 'En ejecucion')
-                    ->orWhere('Estado', 'Finalizado');
+                    ->orWhere('Estado', 'Finalizado')
+                    ->orWhere('Estado', 'Reprobado');
             })
             ->where(function ($query) use ($search) {
-
                 $query->where('estudianteId', 'LIKE', '%' . $search . '%')
                     ->orWhereHas('estudiante', function ($query) use ($search) {
                         $query->where('nombres', 'LIKE', '%' . $search . '%')
@@ -234,22 +302,43 @@ class DirectorController extends Controller
                             ->orWhere('rucEmpresa', 'LIKE', '%' . $search . '%')
                             ->orWhere('provincia', 'LIKE', '%' . $search . '%')
                             ->orWhere('ciudad', 'LIKE', '%' . $search . '%')
-
                             ->orWhere('NombreTutorEmpresarial', 'LIKE', '%' . $search . '%')
                             ->orWhere('tipoPractica', 'LIKE', '%' . $search . '%');
                     });
+            });
 
-            })
-            ->paginate($perPage1, ['*'], 'page1');
+        if ($docente1) {
+            $estudiantesPracticas->whereHas('tutorAcademico', function ($query) use ($docente1) {
+                $query->where('nombres', 'LIKE', '%' . $docente1 . '%')
+                    ->orWhere('apellidos', 'LIKE', '%' . $docente1 . '%');
+            });
+        }
+
+        if ($empresa1) {
+            $estudiantesPracticas->whereHas('empresa', function ($query) use ($empresa1) {
+                $query->where('nombreEmpresa', 'LIKE', '%' . $empresa1 . '%');
+            });
+        }
+
+        if ($periodo1) {
+            $estudiantesPracticas->where('periodoPractica', 'LIKE', '%' . $periodo1 . '%');
+        }
+
+        $estudiantesPracticas = $estudiantesPracticas->paginate($perPage1, ['*'], 'page1');
+
+
+
+
+        $docente2 = $request->input('profesor2');
+        $empresa2 = $request->input('empresa2');
+        $periodo2 = $request->input('periodos2');
 
         $estudiantesPracticasII = PracticaII::with('estudiante')
             ->where(function ($query) {
-                $query->where('estado', 'En ejecucion')
-                    ->orWhere('estado', 'Finalizado');
+                $query->where('Estado', 'En ejecucion')
+                    ->orWhere('Estado', 'Finalizado');
             })
-
             ->where(function ($query) use ($search2) {
-
                 $query->where('EstudianteID', 'LIKE', '%' . $search2 . '%')
                     ->orWhereHas('estudiante', function ($query) use ($search2) {
                         $query->where('nombres', 'LIKE', '%' . $search2 . '%')
@@ -267,13 +356,35 @@ class DirectorController extends Controller
                             ->orWhere('rucEmpresa', 'LIKE', '%' . $search2 . '%')
                             ->orWhere('provincia', 'LIKE', '%' . $search2 . '%')
                             ->orWhere('ciudad', 'LIKE', '%' . $search2 . '%')
-
                             ->orWhere('NombreTutorEmpresarial', 'LIKE', '%' . $search2 . '%')
                             ->orWhere('tipoPractica', 'LIKE', '%' . $search2 . '%');
                     });
+            });
 
-            })
-            ->paginate($perPage2, ['*'], 'page2');
+        if ($docente2) {
+            $estudiantesPracticasII->whereHas('tutorAcademico', function ($query) use ($docente2) {
+                $query->where('nombres', 'LIKE', '%' . $docente2 . '%')
+                    ->orWhere('apellidos', 'LIKE', '%' . $docente2 . '%');
+            });
+        }
+
+        if ($empresa2) {
+            $estudiantesPracticasII->whereHas('empresa', function ($query) use ($empresa2) {
+                $query->where('nombreEmpresa', 'LIKE', '%' . $empresa2 . '%');
+            });
+        }
+
+        if ($periodo2) {
+            $estudiantesPracticasII->where('periodoPractica', 'LIKE', '%' . $periodo2 . '%');
+        }
+
+        $estudiantesPracticasII = $estudiantesPracticasII->paginate($perPage2, ['*'], 'page2');
+
+
+        $docente3 = $request->input('profesor3');
+        $empresa3 = $request->input('empresa3');
+        $periodo3 = $request->input('periodos3');
+
 
         $estudiantesPracticasIII = PracticaIII::with('estudiante')
             ->where(function ($query) {
@@ -304,13 +415,39 @@ class DirectorController extends Controller
                             ->orWhere('tipoPractica', 'LIKE', '%' . $search3 . '%');
                     });
 
-            })
-            ->paginate($perPage3, ['*'], 'page3');
+            });
+
+        if ($docente3) {
+            $estudiantesPracticasIII->whereHas('tutorAcademico', function ($query) use ($docente3) {
+                $query->where('nombres', 'LIKE', '%' . $docente3 . '%')
+                    ->orWhere('apellidos', 'LIKE', '%' . $docente3 . '%');
+            });
+        }
+
+        if ($empresa3) {
+            $estudiantesPracticasIII->whereHas('empresa', function ($query) use ($empresa3) {
+                $query->where('nombreEmpresa', 'LIKE', '%' . $empresa3 . '%');
+            });
+        }
+
+        if ($periodo3) {
+            $estudiantesPracticasIII->where('periodoPractica', 'LIKE', '%' . $periodo3 . '%');
+        }
+
+        $estudiantesPracticasIII = $estudiantesPracticasIII->paginate($perPage3, ['*'], 'page3');
+
+
+
+        $docente4 = $request->input('profesor4');
+        $empresa4 = $request->input('empresa4');
+        $periodo4 = $request->input('periodos4');
+
+
 
         $estudiantesPracticasIV = PracticaIV::with('estudiante')
             ->where(function ($query) {
-                $query->where('estado', 'En ejecucion')
-                    ->orWhere('estado', 'Finalizado');
+                $query->where('Estado', 'En ejecucion')
+                    ->orWhere('Estado', 'Finalizado');
             })
             ->where(function ($query) use ($search4) {
 
@@ -336,15 +473,38 @@ class DirectorController extends Controller
                             ->orWhere('tipoPractica', 'LIKE', '%' . $search4 . '%');
                     });
 
-            })
-            ->paginate($perPage4, ['*'], 'page4');
+            });
+
+        if ($docente4) {
+            $estudiantesPracticasIV->whereHas('tutorAcademico', function ($query) use ($docente4) {
+                $query->where('nombres', 'LIKE', '%' . $docente4 . '%')
+                    ->orWhere('apellidos', 'LIKE', '%' . $docente4 . '%');
+            });
+        }
+
+        if ($empresa4) {
+            $estudiantesPracticasIV->whereHas('empresa', function ($query) use ($empresa4) {
+                $query->where('nombreEmpresa', 'LIKE', '%' . $empresa4 . '%');
+            });
+        }
+
+        if ($periodo4) {
+            $estudiantesPracticasIV->where('periodoPractica', 'LIKE', '%' . $periodo4 . '%');
+        }
+
+        $estudiantesPracticasIV = $estudiantesPracticasIV->paginate($perPage4, ['*'], 'page4');
+
 
         $estudiantesPracticasV = PracticaV::with('estudiante')
             ->where(function ($query) {
-                $query->where('estado', 'En ejecucion')
-                    ->orWhere('estado', 'Finalizado');
+                $query->where('Estado', 'En ejecucion')
+                    ->orWhere('Estado', 'Finalizado');
             })
             ->get();
+
+        $nrcs = NrcVinculacion::all();
+        $periodos = Periodo::all();
+
 
         return view(
             'director.practicas',
@@ -363,7 +523,12 @@ class DirectorController extends Controller
                 'search',
                 'search2',
                 'search3',
-                'search4'
+                'search4',
+                'nrcs',
+                'periodos',
+                'todosLosDocentes',
+                'todasLasEmpresas',
+                'todosLosPeriodos'
 
             )
         );
@@ -372,42 +537,58 @@ class DirectorController extends Controller
 
     public function mostrarEstudiantesAprobados(Request $request)
     {
+        $periodos = Periodo::orderBy('inicioPeriodo', 'asc')->get();
+
         $elementosPorPagina = $request->input('elementosPorPagina');
         $elementosPorPaginaAprobados = $request->input('elementosPorPaginaAprobados'); // Cambio de nombre
 
         $search2 = $request->input('search2');
 
         // Consulta para estudiantes en revisión
-        $queryEstudiantesEnRevision = Estudiante::where('Estado', 'En proceso de revisión')
-            ->orderBy('Nombres', 'asc');
+        $queryEstudiantesEnRevision = Estudiante::where('estado', 'En proceso de revisión')
+            ->orderBy('nombres', 'asc');
 
         // Búsqueda de estudiantes en revisión
         if ($request->has('buscarEstudiantesEnRevision')) {
             $busquedaEstudiantesEnRevision = $request->input('buscarEstudiantesEnRevision');
             $queryEstudiantesEnRevision->where(function ($query) use ($busquedaEstudiantesEnRevision) {
-                $query->where('Nombres', 'like', '%' . $busquedaEstudiantesEnRevision . '%')
-                    ->orWhere('Apellidos', 'like', '%' . $busquedaEstudiantesEnRevision . '%');
+                $query->where('nombres', 'like', '%' . $busquedaEstudiantesEnRevision . '%')
+                    ->orWhere('apellidos', 'like', '%' . $busquedaEstudiantesEnRevision . '%');
             });
         }
 
         $estudiantesEnRevision = $queryEstudiantesEnRevision->get();
 
         // Consulta y paginación para estudiantes aprobados
-        $queryEstudiantesAprobados = Estudiante::whereIn('Estado', ['Aprobado', 'Aprobado-prácticas', 'Desactivados']);
+        $queryEstudiantesAprobados = Estudiante::whereIn('estado', ['Aprobado', 'Aprobado-prácticas', 'Desactivados']);
 
         // Búsqueda de estudiantes aprobados
         if ($request->has('search2')) {
             $busquedaEstudiantesAprobados = $request->input('search2');
             $queryEstudiantesAprobados->where(function ($query) use ($busquedaEstudiantesAprobados) {
-                $query->where('Nombres', 'like', '%' . $busquedaEstudiantesAprobados . '%')
-                    ->orWhere('Apellidos', 'like', '%' . $busquedaEstudiantesAprobados . '%')
-                    ->orWhere('espe_id', 'like', '%' . $busquedaEstudiantesAprobados . '%')
+                $query->where('nombres', 'like', '%' . $busquedaEstudiantesAprobados . '%')
+                    ->orWhere('apellidos', 'like', '%' . $busquedaEstudiantesAprobados . '%')
+                    ->orWhere('espeId', 'like', '%' . $busquedaEstudiantesAprobados . '%')
                     ->orWhere('celular', 'like', '%' . $busquedaEstudiantesAprobados . '%')
-                    ->orWhere('cedula', 'like', '%' . $busquedaEstudiantesAprobados . '%')
                     ->orWhere('Cohorte', 'like', '%' . $busquedaEstudiantesAprobados . '%')
-                    ->orWhere('Departamento', 'like', '%' . $busquedaEstudiantesAprobados . '%');
-            });
+                    ->orWhere('correo', 'like', '%' . $busquedaEstudiantesAprobados . '%')
+                    ->orWhere('departamento', 'like', '%' . $busquedaEstudiantesAprobados . '%');
+            })
+                ->orderBy('apellidos', 'asc');
         }
+
+        if ($request->has('Departamento') && $request->input('Departamento')) {
+            $departamento = $request->input('Departamento');
+            $queryEstudiantesAprobados->where('departamento', $departamento);
+        }
+
+        if ($request->has('periodos') && $request->input('periodos')) {
+            $periodo = $request->input('periodos');
+            $queryEstudiantesAprobados->where('Cohorte', $periodo);
+        }
+
+
+
 
         $estudiantesAprobados = $queryEstudiantesAprobados->paginate($elementosPorPaginaAprobados); // Cambio de nombre
 
@@ -419,6 +600,7 @@ class DirectorController extends Controller
             'elementosPorPagina' => $elementosPorPagina,
             'elementosPorPaginaAprobados' => $elementosPorPaginaAprobados,
             'search2' => $search2,
+            'periodos' => $periodos,
         ]);
     }
 

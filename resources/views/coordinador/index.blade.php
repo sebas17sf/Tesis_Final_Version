@@ -33,6 +33,15 @@
             <h4><b>Listado de Proyectos Sociales</b></h4>
             <hr>
 
+            <button type="button" class="button1 mr-2" onclick="openCard('draggableCardNRC');">Agregar NRC</button>
+            <button type="button" class="button1 mr-2" onclick="openCard('draggableCardPeriodo');">Agregar
+                Periodo</button>
+            <button type="button" class="button1 mr-2" onclick="openCard('draggableCardEditarPeriodo');">Editar
+                Periodo</button>
+
+            <hr>
+
+
             <div class="mat-elevation-z8 contenedor_general">
                 <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                     <!-- Botones -->
@@ -104,10 +113,11 @@
                                             class="fa-thin fa-xmark"></i></button>
                                 </div>
                                 <div class="card-body">
-                                    <form id="filtersForm" method="GET" action="{{ route('coordinador.index') }}">
+                                    <form id="filtersForm" method="GET" action="{{ route('admin.indexProyectos') }}">
                                         <div class="form-group">
                                             <label for="estado" class="mr-2">Estado del Proyecto:</label>
-                                            <select name="estado" id="estado" class="form-control input input_select">
+                                            <select name="estado" id="estado"
+                                                class="form-control input input_select">
                                                 <option value="">Todos</option>
                                                 <option value="Ejecucion"
                                                     {{ request('estado') == 'Ejecucion' ? 'selected' : '' }}>En Ejecución
@@ -172,10 +182,10 @@
                                         <th class="tamanio4">DIRECTOR</th>
                                         <th class="tamanio">DESCRIPCIÓN</th>
                                         <th>DEPARTAMENTO</th>
-                                        <th class="tamanio3">CÓDIGO DEL PROYECTO SOCIAL</th>
+                                        <th class="tamanio3">CÓDIGO DEL PROYECTO</th>
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
-                                        <th>ESTADO DEL PROYECTO</th>
+                                        <th>ESTADO</th>
                                         <th>ACCIONES</th>
                                     </tr>
                                 </thead>
@@ -183,12 +193,14 @@
                                     @if ($proyectos->isEmpty())
                                         <tr style="text-align:center">
                                             <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">
-                                                No hay estudiantes en proceso de revisión.</td>
+                                                Proyectos no disponibles.</td>
                                         </tr>
                                     @else
                                         @foreach ($proyectos as $index => $proyecto)
                                             <tr>
-                                                <td style="text-align: center;">{{ $proyectos->currentPage() == 1 ? $index + 1 : $index + 1 + ($proyectos->perPage() * ($proyectos->currentPage() - 1)) }}</td>
+                                                <td style="text-align: center;">
+                                                    {{ $proyectos->currentPage() == 1 ? $index + 1 : $index + 1 + $proyectos->perPage() * ($proyectos->currentPage() - 1) }}
+                                                </td>
 
                                                 <td
                                                     style="text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
@@ -229,15 +241,20 @@
                                                             <i class="bx bx-edit-alt"></i>
                                                         </a>
                                                     </div>
-                                                    <form class="btn-group shadow-1" id="deleteProjectForm"
+                                                    <form class="btn-group shadow-1"
+                                                        id="deleteProjectForm{{ $proyecto->proyectoId }}"
                                                         action="{{ route('admin.deleteProyecto', ['ProyectoID' => $proyecto->proyectoId]) }}"
                                                         method="POST">
                                                         @csrf
                                                         @method('DELETE')
+                                                        <input type="hidden" name="proyectoId"
+                                                            value="{{ $proyecto->proyectoId }}">
                                                         <button type="submit" class="button3 efects_button btn_eliminar3"
-                                                            onclick="confirmDeleteProject(event)"><i
-                                                                class='bx bx-trash'></i></button>
+                                                            onclick="confirmDeleteProject(event, '{{ $proyecto->proyectoId }}')">
+                                                            <i class='bx bx-trash'></i>
+                                                        </button>
                                                     </form>
+
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -321,8 +338,14 @@
                                 <!-- Botones -->
                                 <div class="tooltip-container mx-1">
                                     <span class="tooltip-text">Excel</span>
-                                    <form action="{{ route('reporte.matrizVinculacion') }}" method="POST">
+                                    <form action="{{ route('reporte.matrizVinculacion') }}" method="POST"
+                                        id="reportForm">
                                         @csrf
+                                        <input type="hidden" name="fechaInicio" id="hiddenFechaInicio">
+                                        <input type="hidden" name="fechaFin" id="hiddenFechaFin">
+                                        <input type="hidden" name="profesor" id="hiddenProfesor">
+                                        <input type="hidden" name="periodos" id="hiddenPeriodos">
+
                                         <button type="submit" class="button3 efects_button btn_excel">
                                             <i class="fas fa-file-excel"></i>
                                         </button>
@@ -388,7 +411,7 @@
                                     </div>
                                     <div class="card-body">
                                         <form id="filterFormProfesores" method="GET"
-                                            action="{{ route('coordinador.index') }}">
+                                            action="{{ route('admin.indexProyectos') }}">
                                             <div class="form-group">
                                                 <label for="profesor">Profesor</label>
                                                 <select name="profesor" id="profesor"
@@ -415,7 +438,26 @@
                                                     @endforeach
                                                 </select>
                                             </div>
+
+                                            <div class="form-group">
+                                                <label for="fechaInicio">Fecha inicio</label>
+                                                <input type="date" class="input" name="fechaInicio"
+                                                    id="fechaInicio">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="fechaFin">Fecha Fin</label>
+                                                <input type="date" class="input" name="fechaFin" id="fechaFin">
+                                            </div>
+
+
+
+
+
+
                                         </form>
+
+
                                     </div>
                                 </div>
 
@@ -467,7 +509,7 @@
                                             class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                             <th>N°</th>
                                             <th class="tamanio"> NOMBRE DE PROYECTO</th>
-                                            <th class="tamanio3">CÓDIGO DE PROYECTO</th>
+                                            <th class="tamanio3">CÓDIGO DEL PROYECTO</th>
                                             <th class="tamanio4">DIRECTOR</th>
                                             <th class="tamanio4">DOCENTES PARTICIPANTES</th>
                                             <th>FECHA ASIGNACIÓN</th>
@@ -488,10 +530,10 @@
                                                     proceso de revisión.</td>
                                             </tr>
                                         @else
-                                        @foreach ($asignacionesAgrupadas as $grupo)
-                                        <tr>
-                                            <td>{{ $asignacionesAgrupadas->currentPage() == 1 ? $loop->index + 1 : $loop->index + 1 + ($asignacionesAgrupadas->perPage() * ($asignacionesAgrupadas->currentPage() - 1)) }}</td>
-
+                                            @foreach ($asignacionesAgrupadas as $grupo)
+                                                <tr>
+                                                    <td>{{ $asignacionesAgrupadas->currentPage() == 1 ? $loop->index + 1 : $loop->index + 1 + $asignacionesAgrupadas->perPage() * ($asignacionesAgrupadas->currentPage() - 1) }}
+                                                    </td>
                                                     <td
                                                         style="text-transform: uppercase; text-align: justify; padding: 5px 8px;">
                                                         {{ $grupo->first()->proyecto->nombreProyecto ?? '' }}</td>
@@ -524,7 +566,7 @@
                                                     <td>
                                                         @foreach ($grupo as $asignacion)
                                                             @foreach ($asignacion->estudiante->horas_vinculacion as $hora)
-                                                                {{ $hora->horasVinculacion ?? '' }}<br>
+                                                                {{ $hora->horasVinculacion ?? 'NO ASIGNADA' }}<br>
                                                             @endforeach
                                                         @endforeach
                                                     </td>
@@ -532,7 +574,7 @@
                                                     <td>
                                                         @foreach ($grupo as $asignacion)
                                                             @foreach ($asignacion->estudiante->notas as $nota)
-                                                                {{ $nota->notaFinal ?? 'Sin calificar' }}<br>
+                                                                {{ $nota->notaFinal ?? 'SIN CALIFICAR' }}<br>
                                                             @endforeach
                                                         @endforeach
                                                     </td>
@@ -563,7 +605,8 @@
 
 
                                     <li class="page-item mx-3 d-flex align-items-center">
-                                        <form method="GET" action="{{ route('coordinador.index') }}#tablaAsignaciones"
+                                        <form method="GET"
+                                            action="{{ route('admin.indexProyectos') }}#tablaAsignaciones"
                                             class="form-inline">
                                             <div class="form-group">
                                                 <label for="perPage2" class="sr-only">Items per page</label>
@@ -643,7 +686,7 @@
                     class="fa-thin fa-xmark"></i></button>
         </div>
         <div class="card-body">
-            <form method="POST" action="{{ route('coordinador.index') }}">
+            <form method="POST" action="{{ route('coordinador.guardarAsignacion') }}">
                 @csrf
                 <div class="row">
                     <div class="col-md-12">
@@ -756,8 +799,7 @@
     <div class="draggable-card1_3" id="draggableCardAsignarDocente">
         <div class="card-header">
             <span class="card-title">Asignar Docente</span>
-            <button type="button" class="close" onclick="$('#draggableCardAsignarDocente').hide()"><i
-            class="fa-thin fa-xmark"></i></button>
+            <button type="button" class="close" onclick="$('#draggableCardAsignarDocente').hide()">&times;</button>
         </div>
         <div class="card-body">
             <form method="POST" action="{{ route('admin.guardarDocentesProyectos') }}">
@@ -845,6 +887,166 @@
             </form>
         </div>
     </div>
+
+
+
+    <!------------------------- BOTONES DEL ADMIN PARA PERIODO O NRC-------------------------->
+    <!-- Tarjeta movible para Agregar NRC -->
+    <div class="draggable-card" id="draggableCardNRC">
+        <div class="card-header">
+            <span class="card-title">Agregar NRC</span>
+            <button type="button" class="close" onclick="$('#draggableCardNRC').hide()"><i
+                    class="fa-thin fa-xmark"></i></button>
+        </div>
+        <div class="card-body">
+            <form class="FormularioNRC" action="{{ route('admin.nrcVinculacion') }}" method="post">
+                @csrf
+                <div class="form-group">
+                    <label class="label" for="nrc"><strong>Ingrese el NRC:</strong></label>
+                    <input type="text" id="nrc" name="nrc" class="form-control input"
+                        placeholder="Ingrese 5 números" pattern="\d{5}" title="Ingrese exactamente 5 dígitos"
+                        value="{{ old('nrc') }}" required>
+                    <small id="nrcError" class="form-text text-danger" style="display: none;"></small>
+                    @error('nrc')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="periodo"><strong>Seleccione el período:</strong></label>
+                    <select id="periodo" name="periodo" class="form-control input_select input" required>
+                        <option value="">Seleccione un período</option>
+                        @foreach ($periodos as $periodo)
+                            <option value="{{ $periodo->id }}" {{ old('periodo') == $periodo->id ? 'selected' : '' }}>
+                                {{ $periodo->numeroPeriodo }} - {{ $periodo->periodo }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('periodo')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="tipo"><strong>Tipo de proceso:</strong></label>
+                    <select id="tipo" name="tipo" class="form-control input_select input" required>
+                        <option value="">Seleccione el proceso</option>
+                        <option value="Vinculacion">Vinculación con la Sociedad</option>
+                        <option value="Practicas">Practicas preprofesionales</option>
+                    </select>
+                    @error('tipo')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="card-footer1 d-flex justify-content-center align-items-center">
+                    <button type="submit" class="button01">Guardar NRC</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tarjeta movible para Agregar Periodo -->
+    <div class="draggable-card" id="draggableCardPeriodo">
+        <div class="card-header">
+            <span class="card-title">Agregar Periodo</span>
+            <button type="button" class="close" onclick="$('#draggableCardPeriodo').hide()"><i
+                    class="fa-thin fa-xmark"></i></button>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('admin.guardarPeriodo') }}" method="post">
+                @csrf
+                <div class="form-group">
+                    <label for="periodoInicio"><strong>Ingrese el inicio del Periodo
+                            Académico:</strong></label>
+                    <input type="date" id="periodoInicio" name="periodoInicio" class="form-control input"
+                        value="{{ old('periodoInicio') }}" required>
+                    @error('periodoInicio')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="periodoFin"><strong>Ingrese el fin del Periodo Académico:</strong></label>
+                    <input type="date" id="periodoFin" name="periodoFin" class="form-control input"
+                        value="{{ old('periodoFin') }}" required>
+                    @error('periodoFin')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="numeroPeriodo"><strong>Ingrese el número identificador del
+                            periodo:</strong></label>
+                    <input type="text" id="numeroPeriodo" name="numeroPeriodo" placeholder="Ingrese 6 números"
+                        class="form-control input" pattern="[0-9]{1,6}"
+                        title="Ingrese un número no negativo de hasta 6 dígitos" value="{{ old('numeroPeriodo') }}"
+                        required>
+                    <small id="numeroPeriodoError" class="form-text text-danger" style="display: none;"></small>
+                    @error('numeroPeriodo')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="card-footer1 d-flex justify-content-center align-items-center">
+                    <button type="submit" class="button01">Guardar Periodo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tarjeta movible para Editar Periodo -->
+    <div class="draggable-card" id="draggableCardEditarPeriodo">
+        <div class="card-header">
+            <span class="card-title">Editar Periodo</span>
+            <button type="button" class="close" onclick="$('#draggableCardEditarPeriodo').hide()"><i
+                    class="fa-thin fa-xmark"></i></button>
+        </div>
+        <div class="card-body">
+            <div class="form-group col-md-12">
+                <label for="periodo"><strong>Periodos Agregados (Seleccione el periodo a
+                        editar):</strong></label>
+                <select id="selectPeriodo" class="form-control input input_select">
+                    <option value="" data-inicio="" data-fin="" data-numero="">Seleccionar Periodo
+                    </option>
+                    @foreach ($periodos as $periodo)
+                        <option value="{{ $periodo->id }}" data-inicio="{{ $periodo->inicioPeriodo }}"
+                            data-fin="{{ $periodo->finPeriodo }}" data-numero="{{ $periodo->numeroPeriodo }}">
+                            {{ $periodo->numeroPeriodo }} {{ $periodo->periodo }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-12" hidden>
+                <div class="form-group col-md-6">
+                    <form id="editarPeriodoForm" method="GET">
+                        @csrf
+                        <button type="submit" class="button">Editar</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-12" id="desplegarEditarPeriodo">
+                <form class="formulario" method="POST"
+                    action="{{ route('admin.actualizarPeriodo', ['id' => $periodo->id]) }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group">
+                        <label for="periodoInicio">Fecha de Inicio:</label>
+                        <input type="date" name="periodoInicio" id="periodoInicio" class="form-control input"
+                            value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="periodoFin">Fecha de Fin:</label>
+                        <input type="date" name="periodoFin" id="periodoFin" class="form-control input"
+                            value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="numeroPeriodo">Ingrese el numero identificador del periodo:</label>
+                        <input type="text" name="numeroPeriodo" id="numeroPeriodo" class="form-control input"
+                            value="" required>
+                    </div>
+                    <div class="card-footer1 d-flex justify-content-center align-items-center">
+                        <center><button type="submit" class="button01">Guardar Cambios</button></center>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
 
 
@@ -1115,4 +1317,16 @@
             alert.style.display = 'none';
         }
     </script>
+
+    <script>
+        document.getElementById('reportForm').addEventListener('submit', function() {
+            document.getElementById('hiddenFechaInicio').value = document.getElementById('fechaInicio').value;
+            document.getElementById('hiddenFechaFin').value = document.getElementById('fechaFin').value;
+            document.getElementById('hiddenProfesor').value = document.getElementById('profesor').value;
+            document.getElementById('hiddenPeriodos').value = document.getElementById('periodos').value;
+        });
+    </script>
+        <script src="{{ asset('js\admin\index.js') }}"></script>
+
+
 @endsection
