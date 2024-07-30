@@ -210,7 +210,7 @@ class ParticipanteVinculacionController extends Controller
     {
         $profesor = Auth::user()->profesorUniversidad;
 
-         $proyecto = AsignacionProyecto::where('participanteId', $profesor->id)
+        $proyecto = AsignacionProyecto::where('participanteId', $profesor->id)
             ->whereHas('estudiante', function ($query) {
                 $query->where('estado', 'Aprobado');
             })
@@ -221,21 +221,21 @@ class ParticipanteVinculacionController extends Controller
             ])
             ->first();
 
-         $inicioFecha = null;
+        $inicioFecha = null;
         $finalizacionFecha = null;
 
-         if ($proyecto) {
-             $inicioFecha = $proyecto->nrcVinculacion->periodo->inicioPeriodo ?? null;
+        if ($proyecto) {
+            $inicioFecha = $proyecto->nrcVinculacion->periodo->inicioPeriodo ?? null;
             $finalizacionFecha = $proyecto->nrcVinculacion->periodo->finPeriodo ?? null;
         } else {
-             $fechaActual = Carbon::now()->format('Y-m-d');
+            $fechaActual = Carbon::now()->format('Y-m-d');
             $proyecto = AsignacionSinEstudiante::where('participanteId', $profesor->id)
                 ->where('inicioFecha', '<=', $fechaActual)
                 ->where('finalizacionFecha', '>=', $fechaActual)
                 ->with(['proyecto'])
                 ->first();
 
-             if ($proyecto) {
+            if ($proyecto) {
                 $inicioFecha = $proyecto->inicioFecha ?? null;
                 $finalizacionFecha = $proyecto->finalizacionFecha ?? null;
             }
@@ -598,7 +598,7 @@ class ParticipanteVinculacionController extends Controller
             $query->where('idTutorAcademico', $idTutorAcademico);
         })->get();
 
-        return view('director_vinculacion.practicaii', compact('estudiantes', 'estudiantesCalificar', 'estudiantesCalificados', 'actividades'));
+        return view('ParticipanteVinculacion.practicasii', compact('estudiantes', 'estudiantesCalificar', 'estudiantesCalificados', 'actividades'));
     }
 
 

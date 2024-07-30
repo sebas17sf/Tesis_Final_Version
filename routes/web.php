@@ -193,6 +193,9 @@ Route::middleware(['auth'])->group(function () {
     ///ruta para actualizar las notas del estudiante
     Route::put('/participante-vinculacion/{id}/actualizar-notas', [ParticipanteVinculacionController::class, 'editarNotas'])->name('actualizar-notas');
 
+
+
+    
     ////////////practticas
     Route::get('/participante-vinculacion/practicas', [ParticipanteVinculacionController::class, 'practicas'])->name('ParticipanteVinculacion.practicas');
     //////guardarNotasPracticasi
@@ -312,6 +315,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/director-vinculacion/desasignar-estudiantes/{EstudianteID}', [DirectorVinculacionController::class, 'designarEstudiante'])->name('director_vinculacion.desasignarEstudiantes');
 
     Route::delete('/director-vinculacion/eliminar-estudiantes/{EstudianteID}', [DirectorVinculacionController::class, 'eliminarEstudiante'])->name('director_vinculacion.eliminarEstudiante');
+
+
+
 
     ////////director vinculacion practicas 1
     Route::get('/director-vinculacion/practicas1', [DirectorVinculacionController::class, 'practicas1'])->name('director_vinculacion.practicas1');
