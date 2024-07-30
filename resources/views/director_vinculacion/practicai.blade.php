@@ -102,7 +102,7 @@
         </div>
         <br>
 
-        <form id="cerrarPracticaForm" action="{{ route('ParticipanteVinculacion.cerrarProcesoPracticasI') }}" method="POST">
+        <form id="cerrarPracticaForm" action="{{ route('director_vinculacion.cerrarProcesoPracticas1') }}" method="POST">
             @csrf
             @method('PUT')
             <button type="button" id="cerrarPracticaBtn" class="button1_1">Cerrar Práctica I estudiantes</button>
@@ -129,7 +129,7 @@
                         </thead>
                         <tbody>
                             @foreach ($estudiantesCalificar as $index => $practica)
-                                <form action="{{ route('ParticipanteVinculacion.guardarNotasPracticasi') }}" method="POST">
+                                <form action="{{ route('director_vinculacion.guardarNotasPracticas1') }}" method="POST">
                                     @csrf
                                     <tr>
                                         <td>{{ $practica->apellidos }} {{ $practica->nombres }}</td>
@@ -241,7 +241,7 @@
             let hiddenForm = document.getElementById('hidden-form');
 
             // Establecer la acción del formulario con el ID del estudiante
-            hiddenForm.action = `/participante-vinculacion/${estudianteId}/editar-notas-practicasi`;
+            hiddenForm.action = `/director-vinculacion/${estudianteId}/editar-notas-practicas1`;
 
             for (let i = 0; i < inputs.length; i++) {
                 let inputName = inputs[i].name;
@@ -262,6 +262,8 @@
 
                 inputs[i].disabled = true;
             }
+
+            
 
             hiddenForm.submit();
 
