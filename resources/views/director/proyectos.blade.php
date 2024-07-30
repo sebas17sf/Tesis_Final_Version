@@ -7,31 +7,32 @@
 @section('content')
 
     @if (session('success'))
-    <div class="contenedor_alerta success">
-    <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Éxito!</div>
-      <div class="body">{{ session('success') }}</div>
-    </div>
-  </div>
+        <div class="contenedor_alerta success">
+            <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Éxito!</div>
+                <div class="body">{{ session('success') }}</div>
+            </div>
+        </div>
     @endif
 
 
     @if (session('error'))
-    <div class="contenedor_alerta error">
-    <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
-    <div class="content_alert">
-      <div class="title">Error!</div>
-      <div class="body">{{ session('error') }}</div>
-    </div>
-  </div>
+        <div class="contenedor_alerta error">
+            <div class="icon_alert"><i class="fa-regular fa-circle-x fa-beat"></i></div>
+            <div class="content_alert">
+                <div class="title">Error!</div>
+                <div class="body">{{ session('error') }}</div>
+            </div>
+        </div>
     @endif
 
 
     <section>
         <div class="contenedor_registro_genero ">
             <h4><b>Listado de Proyectos Sociales</b></h4>
-            <hr>
+
+
 
             <div class="mat-elevation-z8 contenedor_general">
                 <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
@@ -40,7 +41,13 @@
                         <div class="col-md-12 d-flex align-items-center">
                             <!-- Formulario para exportar a Excel -->
                             <!-- Botón para agregar proyecto -->
-
+                            <div class="tooltip-container mr-2">
+                                <span class="tooltip-text">Agregar</span>
+                                <button type="button" onclick="location.href='{{ route('admin.agregarProyecto') }}';"
+                                    class="button3 efects_button btn_primary" id="button3">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
                             <form method="POST" action="{{ route('coordinador.reportesProyectos') }}"
                                 class="form-inline mr-2 d-flex align-items-center">
                                 @csrf
@@ -167,22 +174,24 @@
                                         <th class="tamanio4">DIRECTOR</th>
                                         <th class="tamanio">DESCRIPCIÓN</th>
                                         <th>DEPARTAMENTO</th>
-                                        <th class="tamanio3">CÓDIGO DEL PROYECTO SOCIAL</th>
+                                        <th class="tamanio3">CÓDIGO DEL PROYECTO</th>
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
-                                        <th>ESTADO DEL PROYECTO</th>
+                                        <th>ESTADO</th>
                                      </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
                                     @if ($proyectos->isEmpty())
                                         <tr style="text-align:center">
                                             <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">
-                                                No hay estudiantes en proceso de revisión.</td>
+                                                Proyectos no disponibles.</td>
                                         </tr>
                                     @else
                                         @foreach ($proyectos as $index => $proyecto)
                                             <tr>
-                                                <td style="text-align: center;">{{ $proyectos->currentPage() == 1 ? $index + 1 : $index + 1 + ($proyectos->perPage() * ($proyectos->currentPage() - 1)) }}</td>
+                                                <td style="text-align: center;">
+                                                    {{ $proyectos->currentPage() == 1 ? $index + 1 : $index + 1 + $proyectos->perPage() * ($proyectos->currentPage() - 1) }}
+                                                </td>
 
                                                 <td
                                                     style="text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
@@ -299,8 +308,14 @@
                                 <!-- Botones -->
                                 <div class="tooltip-container mx-1">
                                     <span class="tooltip-text">Excel</span>
-                                    <form action="{{ route('reporte.matrizVinculacion') }}" method="POST">
+                                    <form action="{{ route('reporte.matrizVinculacion') }}" method="POST"
+                                        id="reportForm">
                                         @csrf
+                                        <input type="hidden" name="fechaInicio" id="hiddenFechaInicio">
+                                        <input type="hidden" name="fechaFin" id="hiddenFechaFin">
+                                        <input type="hidden" name="profesor" id="hiddenProfesor">
+                                        <input type="hidden" name="periodos" id="hiddenPeriodos">
+
                                         <button type="submit" class="button3 efects_button btn_excel">
                                             <i class="fas fa-file-excel"></i>
                                         </button>
@@ -393,7 +408,26 @@
                                                     @endforeach
                                                 </select>
                                             </div>
+
+                                            <div class="form-group">
+                                                <label for="fechaInicio">Fecha inicio</label>
+                                                <input type="date" class="input" name="fechaInicio"
+                                                    id="fechaInicio">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="fechaFin">Fecha Fin</label>
+                                                <input type="date" class="input" name="fechaFin" id="fechaFin">
+                                            </div>
+
+
+
+
+
+
                                         </form>
+
+
                                     </div>
                                 </div>
 
@@ -445,7 +479,7 @@
                                             class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                             <th>N°</th>
                                             <th class="tamanio"> NOMBRE DE PROYECTO</th>
-                                            <th class="tamanio3">CÓDIGO DE PROYECTO</th>
+                                            <th class="tamanio3">CÓDIGO DEL PROYECTO</th>
                                             <th class="tamanio4">DIRECTOR</th>
                                             <th class="tamanio4">DOCENTES PARTICIPANTES</th>
                                             <th>FECHA ASIGNACIÓN</th>
@@ -468,7 +502,8 @@
                                         @else
                                             @foreach ($asignacionesAgrupadas as $grupo)
                                                 <tr>
-                                                    <td>{{ $asignacionesAgrupadas->currentPage() == 1 ? $loop->index + 1 : $loop->index + 1 + ($asignacionesAgrupadas->perPage() * ($asignacionesAgrupadas->currentPage() - 1)) }}</td>
+                                                    <td>{{ $asignacionesAgrupadas->currentPage() == 1 ? $loop->index + 1 : $loop->index + 1 + $asignacionesAgrupadas->perPage() * ($asignacionesAgrupadas->currentPage() - 1) }}
+                                                    </td>
                                                     <td
                                                         style="text-transform: uppercase; text-align: justify; padding: 5px 8px;">
                                                         {{ $grupo->first()->proyecto->nombreProyecto ?? '' }}</td>
@@ -501,7 +536,7 @@
                                                     <td>
                                                         @foreach ($grupo as $asignacion)
                                                             @foreach ($asignacion->estudiante->horas_vinculacion as $hora)
-                                                                {{ $hora->horasVinculacion ?? '' }}<br>
+                                                                {{ $hora->horasVinculacion ?? 'NO ASIGNADA' }}<br>
                                                             @endforeach
                                                         @endforeach
                                                     </td>
@@ -509,7 +544,7 @@
                                                     <td>
                                                         @foreach ($grupo as $asignacion)
                                                             @foreach ($asignacion->estudiante->notas as $nota)
-                                                                {{ $nota->notaFinal ?? 'Sin calificar' }}<br>
+                                                                {{ $nota->notaFinal ?? 'SIN CALIFICAR' }}<br>
                                                             @endforeach
                                                         @endforeach
                                                     </td>
@@ -604,6 +639,109 @@
 
     </section>
     <hr>
+
+
+
+
+    <!------------------------- BOTONES DEL ADMIN PARA PERIODO O NRC-------------------------->
+    <!-- Tarjeta movible para Agregar NRC -->
+    <div class="draggable-card" id="draggableCardNRC">
+        <div class="card-header">
+            <span class="card-title">Agregar NRC</span>
+            <button type="button" class="close" onclick="$('#draggableCardNRC').hide()"><i
+                    class="fa-thin fa-xmark"></i></button>
+        </div>
+        <div class="card-body">
+            <form class="FormularioNRC" action="{{ route('admin.nrcVinculacion') }}" method="post">
+                @csrf
+                <div class="form-group">
+                    <label class="label" for="nrc"><strong>Ingrese el NRC:</strong></label>
+                    <input type="text" id="nrc" name="nrc" class="form-control input"
+                        placeholder="Ingrese 5 números" pattern="\d{5}" title="Ingrese exactamente 5 dígitos"
+                        value="{{ old('nrc') }}" required>
+                    <small id="nrcError" class="form-text text-danger" style="display: none;"></small>
+                    @error('nrc')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="periodo"><strong>Seleccione el período:</strong></label>
+                    <select id="periodo" name="periodo" class="form-control input_select input" required>
+                        <option value="">Seleccione un período</option>
+                        @foreach ($periodos as $periodo)
+                            <option value="{{ $periodo->id }}" {{ old('periodo') == $periodo->id ? 'selected' : '' }}>
+                                {{ $periodo->numeroPeriodo }} - {{ $periodo->periodo }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('periodo')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="tipo"><strong>Tipo de proceso:</strong></label>
+                    <select id="tipo" name="tipo" class="form-control input_select input" required>
+                        <option value="">Seleccione el proceso</option>
+                        <option value="Vinculacion">Vinculación con la Sociedad</option>
+                        <option value="Practicas">Practicas preprofesionales</option>
+                    </select>
+                    @error('tipo')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="card-footer1 d-flex justify-content-center align-items-center">
+                    <button type="submit" class="button01">Guardar NRC</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tarjeta movible para Agregar Periodo -->
+    <div class="draggable-card" id="draggableCardPeriodo">
+        <div class="card-header">
+            <span class="card-title">Agregar Periodo</span>
+            <button type="button" class="close" onclick="$('#draggableCardPeriodo').hide()"><i
+                    class="fa-thin fa-xmark"></i></button>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('admin.guardarPeriodo') }}" method="post">
+                @csrf
+                <div class="form-group">
+                    <label for="periodoInicio"><strong>Ingrese el inicio del Periodo
+                            Académico:</strong></label>
+                    <input type="date" id="periodoInicio" name="periodoInicio" class="form-control input"
+                        value="{{ old('periodoInicio') }}" required>
+                    @error('periodoInicio')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="periodoFin"><strong>Ingrese el fin del Periodo Académico:</strong></label>
+                    <input type="date" id="periodoFin" name="periodoFin" class="form-control input"
+                        value="{{ old('periodoFin') }}" required>
+                    @error('periodoFin')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="numeroPeriodo"><strong>Ingrese el número identificador del
+                            periodo:</strong></label>
+                    <input type="text" id="numeroPeriodo" name="numeroPeriodo" placeholder="Ingrese 6 números"
+                        class="form-control input" pattern="[0-9]{1,6}"
+                        title="Ingrese un número no negativo de hasta 6 dígitos" value="{{ old('numeroPeriodo') }}"
+                        required>
+                    <small id="numeroPeriodoError" class="form-text text-danger" style="display: none;"></small>
+                    @error('numeroPeriodo')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="card-footer1 d-flex justify-content-center align-items-center">
+                    <button type="submit" class="button01">Guardar Periodo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
 
 
@@ -876,4 +1014,16 @@
             alert.style.display = 'none';
         }
     </script>
+
+    <script>
+        document.getElementById('reportForm').addEventListener('submit', function() {
+            document.getElementById('hiddenFechaInicio').value = document.getElementById('fechaInicio').value;
+            document.getElementById('hiddenFechaFin').value = document.getElementById('fechaFin').value;
+            document.getElementById('hiddenProfesor').value = document.getElementById('profesor').value;
+            document.getElementById('hiddenPeriodos').value = document.getElementById('periodos').value;
+        });
+    </script>
+        <script src="{{ asset('js\admin\index.js') }}"></script>
+
+
 @endsection

@@ -36,11 +36,79 @@
         <div class="mat-elevation-z8 contenedor_general">
 
             <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
-                <!-- Botones -->
                 <div class="contenedor_botones">
+
+                    <div class="tooltip-container">
+                        <span class="tooltip-text">Reporte Estudiante</span>
+                        <form id="formdatos" action="{{ route('admin.reportesEstudiantes') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="Departamento" id="hiddenDepartamento">
+                            <input type="hidden" name="periodos" id="hiddenPeriodo">
+                            <button type="submit" class="button3 efects_button btn_excel">
+                                <i class="fas fa-file-excel"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="tooltip-container">
+                        <span class="tooltip-text">Filtros</span>
+                        <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCardProfesores');">
+                            <i class="fa-solid fa-filter-list"></i>
+                        </button>
+                    </div>
+
+                    <div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
+                        <div class="card-header">
+                            <span class="card-title">Filtros</span>
+                            <button type="button" class="close" onclick="closeCard('filtersCardProfesores')"><i
+                                    class="fa-thin fa-xmark"></i></button>
+                        </div>
+                        <div class="card-body">
+                            <form id="filterFormProfesores" method="GET" action="{{ route('admin.indexProyectos') }}">
+                                <div class="form-group">
+                                    <label for="Departamento">Departamento:</label>
+                                    <select class="form-control input input_select" id="Departamento" name="Departamento"
+                                        required>
+                                        <option value="">Todos los departamentos</option>
+                                        <option value="Ciencias de la Computación"
+                                            {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias de la Computación' ? 'selected' : '' }}>
+                                            DCCO - Ciencias de la Computación</option>
+                                        <option value="Ciencias Exactas"
+                                            {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias Exactas' ? 'selected' : '' }}>
+                                            DCEX - Ciencias Exactas</option>
+                                        <option value="Ciencias de la Vida y Agricultura"
+                                            {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>
+                                            DCVA - Ciencias de la Vida y Agricultura</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="periodos">Períodos</label>
+                                    <select name="periodos" id="periodos" class="form-control input input_select">
+                                        <option value="">Todos los periodos</option>
+                                        @foreach ($periodos as $periodo)
+                                            <option value="{{ $periodo->numeroPeriodo }}">{{ $periodo->numeroPeriodo }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Botón de Eliminar Filtros Profesores y Periodos -->
+                    <div class="tooltip-container ">
+                        <span class="tooltip-text">Eliminar Filtros</span>
+                        <button class="button3 efects_button btn_delete_filter" onclick="resetFiltersProfesores()">
+                            <i class="fa-sharp fa-solid fa-filter-circle-xmark"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="contenedor_buscador">
                     <div>
+
+
+
+
+
                         <form id="formBusquedaEstudiantes">
                             <input type="text" class="input" name="search2" value="{{ $search2 }}" matInput
                                 placeholder="Buscar estudiantes...">
@@ -60,12 +128,12 @@
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                     <th>N°</th>
-                                    <th class="tamanio1">NOMBRES</th>
+                                    <th class="tamanio1">ESTUDIANTE</th>
                                     <th>ID ESPE</th>
-                                    <th class="tamanio1">CARRERA</th>
+                                    <th class="tamanio3">CARRERA</th>
                                     <th>CÉDULA</th>
                                     <th>COHORTE</th>
-                                    <th class="tamanio3">PERIODO</th>
+                                    <th>PERIODO</th>
                                     <th class="tamanio2">DEPARTAMENTO</th>
                                     <th>ESTADO</th>
 
@@ -79,7 +147,7 @@
                                 @else
                                     @foreach ($estudiantesAprobados as $index => $estudiante)
                                         <tr>
-                                            <td>{{ $estudiantesAprobados ->firstItem() + $index }}</td>
+                                            <td>{{ $estudiantesAprobados->firstItem() + $index }}</td>
 
 
                                             <td style="text-transform: uppercase; text-align: left;">
@@ -90,7 +158,7 @@
                                                 {{ strtoupper($estudiante->carrera) }}</td>
                                             <td>{{ $estudiante->cedula }}</td>
                                             <td>{{ $estudiante->periodos->numeroPeriodo ?? '' }}</td>
-                                            <td>{{ $estudiante->periodos->periodo ?? ''}}</td>
+                                            <td>{{ $estudiante->periodos->periodo ?? '' }}</td>
                                             <td style="text-transform: uppercase; ">
                                                 {{ strtoupper($estudiante->departamento) }}</td>
                                             <td style="text-transform: uppercase;">
@@ -190,13 +258,10 @@
 
         </div>
     </section>
-
-
-
-    <br>
-
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script src="{{ asset('js/admin/acciones.js') }}"></script>
     <script>
         function enviarFormulario(e) {
             e.preventDefault();
@@ -235,14 +300,14 @@
             var query = $(this).val();
             delayTimer = setTimeout(function() {
                 $.ajax({
-                    url: '{{ route('director.estudiantesAprobados') }}',
+                    url: '{{ route('coordinador.estudiantesAprobados') }}',
                     type: 'GET',
                     data: {
                         search2: query
                     },
                     success: function(response) {
                         $('#tablaEstudiantes').html($(response).find('#tablaEstudiantes')
-                        .html());
+                            .html());
                     }
                 });
             }, 500);
@@ -259,29 +324,117 @@
                 periodoInput.value = periodo ? periodo : '';
             });
         });
-
-
-
-        $('#modalImportar').on('hidden.bs.modal', function() {
-            console.log('Modal hidden');
-            $('#idModalImportar')[0].reset();
-            $('#idModalImportar').find('.form-group').removeClass('has-error');
-            $('#idModalImportar').find('.help-block').text('');
-            removeFile();
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Selecciona el elemento de la alerta
+            const alertElement = document.querySelector('.contenedor_alerta');
+            // Establece un temporizador para ocultar la alerta después de 2 segundos
+            setTimeout(() => {
+                if (alertElement) {
+                    alertElement.style.display = 'none';
+                }
+            }, 1000); // 2000 milisegundos = 2 segundos
         });
+    </script>
 
+    <script>
+        $(document).ready(function() {
+            $('#Departamento, #periodos').change(function() {
+                var departamento = $('#Departamento').val();
+                var periodo = $('#periodos').val();
 
-        function displayFileName(input, fileTextId) {
-            const fileName = input.files[0].name;
-            document.getElementById(fileTextId).textContent = fileName;
-            document.querySelector('.remove-icon').style.display = 'inline'; // Mostrar la "X"
-        }
+                $.ajax({
+                    url: "{{ route('coordinador.estudiantesAprobados') }}",
+                    method: 'GET',
+                    data: {
+                        Departamento: departamento,
+                        periodos: periodo
+                    },
+                    success: function(response) {
+                        $('#tablaEstudiantes').html($(response).find('#tablaEstudiantes')
+                            .html());
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
 
-        function removeFile(inputId, fileTextId) {
-            document.getElementById(inputId).value = ""; // Clear the input
-            document.getElementById(fileTextId).innerHTML =
-                '<i class="fa fa-upload"></i> Haz clic aquí para subir el documento'; // Reset the text
-            document.querySelector('.remove-icon').style.display = 'none'; // Ocultar la "X"
+    <script>
+        function resetFiltersProfesores() {
+            $('#Departamento').val('');
+            $('#periodos').val('');
+            $.ajax({
+                url: "{{ route('coordinador.estudiantesAprobados') }}",
+                method: 'GET',
+                data: {
+                    Departamento: '',
+                    periodos: ''
+                },
+                success: function(response) {
+                    $('#tablaEstudiantes').html($(response).find('#tablaEstudiantes').html());
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+            });
         }
     </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#Departamento, #periodos').change(function() {
+                var departamento = $('#Departamento').val();
+                var periodo = $('#periodos').val();
+
+                $.ajax({
+                    url: "{{ route('coordinador.estudiantesAprobados') }}",
+                    method: 'GET',
+                    data: {
+                        Departamento: departamento,
+                        periodos: periodo
+                    },
+                    success: function(response) {
+                        $('#tablaEstudiantes').html(response.html);
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
+
+<script>
+    document.getElementById('formdatos').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var profesor = document.getElementById('Departamento').value;
+        var periodo = document.getElementById('periodos').value;
+        document.getElementById('hiddenDepartamento').value = profesor;
+        document.getElementById('hiddenPeriodo').value = periodo;
+
+        this.submit();
+    });
+</script>
+
+
+
+
+    <style>
+        .contenedor_tabla .table-container table td {
+            width: 200px;
+            min-width: 150px;
+            font-size: 11px !important;
+            padding: .5rem !important;
+        }
+
+        .contenedor_tabla .table-container table th {
+            position: sticky;
+            font-size: .8em !important;
+        }
+    </style>
 @endsection
