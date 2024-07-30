@@ -172,10 +172,10 @@
               height: 30px;
 
               .icon-sidebar-item {
-                height: 23px;
+                height: 20px;
                 width: 30px;
                 margin-right: 1px;
-                font-size: 0.9em !important;
+                font-size: 0.8em !important;
               }
             }
           }
@@ -281,7 +281,7 @@
               margin: 0 auto;
            
               transform-origin: top left;
-           
+              height: 23px;
               transition: transform 0.3s ease; 
             }
           }

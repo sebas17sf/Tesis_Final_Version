@@ -68,6 +68,7 @@
 
 
     <section class="contenedor_agregar_periodo">
+        
         <br>
 
         <div class="d-flex  justify-content-center">
@@ -119,7 +120,7 @@
                                     {{ $docente->profesorUniversidad->nombres ?? '' }}</td>
                                 <td>{{ $docente->profesorUniversidad->espeId ?? '' }}</td>
                                 <td>{{ $docente->correoElectronico ?? '' }}</td>
-                                <td>{{ $docente->profesorUniversidad->departamento }}</td>
+                                <td>{{ $docente->profesorUniversidad->departamento ?? '' }}</td>
                                 <td>{{ $docente->estado ?? '' }}</td>
                                 <td>
                                     <form action="{{ route('admin.aceptarDocente', ['id' => $docente->userId]) }}"
