@@ -1955,14 +1955,24 @@ class DocumentoController extends Controller
 
     ////////////////////////reporte de docentes///////////////////////
 
-    public function ReporteProyectos()
+    public function ReporteProyectos(Request $request)
     {
         $plantillaPath = public_path('Plantillas/Reporte-Docentes.xlsx');
 
         $spreadsheet = IOFactory::load($plantillaPath);
 
-        // Obtener todos los docentes ordenados por apellido de manera alfabética
-        $docentes = ProfesUniversidad::orderBy('apellidos')->get();
+        $departamento = $request->input('departamentos');
+ 
+
+         $docentes = ProfesUniversidad::orderBy('apellidos');
+
+         if ($departamento) {
+            $docentes->where('departamento', 'LIKE', '%' . $departamento . '%');
+        }
+
+        $docentes = $docentes->get();
+
+
 
         $sheet = $spreadsheet->getActiveSheet();
 

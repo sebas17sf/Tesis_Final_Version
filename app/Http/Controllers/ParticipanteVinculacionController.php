@@ -210,31 +210,40 @@ class ParticipanteVinculacionController extends Controller
     {
         $profesor = Auth::user()->profesorUniversidad;
 
-        $proyecto = AsignacionProyecto::where('participanteId', $profesor->id)
+         $proyecto = AsignacionProyecto::where('participanteId', $profesor->id)
             ->whereHas('estudiante', function ($query) {
                 $query->where('estado', 'Aprobado');
             })
-            ->with(['proyecto', 'estudiante'])
+            ->with([
+                'proyecto',
+                'estudiante',
+                'nrcVinculacion.periodo'
+            ])
             ->first();
 
-        if (!$proyecto) {
-            $fechaActual = Carbon::now()->format('Y-m-d');
+         $inicioFecha = null;
+        $finalizacionFecha = null;
+
+         if ($proyecto) {
+             $inicioFecha = $proyecto->nrcVinculacion->periodo->inicioPeriodo ?? null;
+            $finalizacionFecha = $proyecto->nrcVinculacion->periodo->finPeriodo ?? null;
+        } else {
+             $fechaActual = Carbon::now()->format('Y-m-d');
             $proyecto = AsignacionSinEstudiante::where('participanteId', $profesor->id)
                 ->where('inicioFecha', '<=', $fechaActual)
                 ->where('finalizacionFecha', '>=', $fechaActual)
                 ->with(['proyecto'])
                 ->first();
 
+             if ($proyecto) {
+                $inicioFecha = $proyecto->inicioFecha ?? null;
+                $finalizacionFecha = $proyecto->finalizacionFecha ?? null;
+            }
         }
-
-
-
-        $inicioFecha = $proyecto->inicioFecha ?? null;
-        $finalizacionFecha = $proyecto->finalizacionFecha ?? null;
-
 
         return view('ParticipanteVinculacion.baremo', compact('inicioFecha', 'finalizacionFecha'));
     }
+
 
 
 
@@ -302,25 +311,17 @@ class ParticipanteVinculacionController extends Controller
     public function editarNotas(Request $request, $id)
     {
         $rules = [
-            'tareas' => 'required|numeric|min:1|max:10',
-            'resultados_alcanzados' => 'required|numeric|min:1|max:10',
-            'conocimientos_area' => 'required|numeric|min:1|max:10',
-            'adaptabilidad' => 'required|numeric|min:1|max:10',
-            'Aplicacion' => 'required|numeric|min:1|max:10',
-            'capacidad_liderazgo' => 'required|numeric|min:1|max:10',
-            'asistencia_puntual' => 'required|numeric|min:1|max:10',
+            'tareas' => 'required',
+            'resultados_alcanzados' => 'required',
+            'conocimientos_area' => 'required',
+            'adaptabilidad' => 'required',
+            'Aplicacion' => 'required',
+            'capacidad_liderazgo' => 'required',
+            'asistencia_puntual' => 'required',
+
         ];
 
-        $messages = [
-            'required' => 'El campo :attribute es obligatorio.',
-            'numeric' => 'El campo :attribute debe ser un número.',
-            'min' => 'El campo :attribute debe ser mayor que :min.',
-            'max' => 'El campo :attribute debe ser menor que :max.',
-        ];
-
-        $this->validate($request, $rules, $messages);
-
-        $nota = NotasEstudiante::where('EstudianteID', $id)->first();
+        $nota = NotasEstudiante::where('estudianteId', $id)->first();
         $nota->tareas = $request->input('tareas');
         $nota->resultadosAlcanzados = $request->input('resultados_alcanzados');
         $nota->conocimientos = $request->input('conocimientos_area');

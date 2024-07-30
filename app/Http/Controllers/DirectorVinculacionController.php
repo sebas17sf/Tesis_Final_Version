@@ -159,7 +159,7 @@ class DirectorVinculacionController extends Controller
                 ->get();
             $estudiantesAsignados->load('estudiante');
 
-             $estudiantesAsignados = $estudiantesAsignados->filter(function ($asignacion) {
+            $estudiantesAsignados = $estudiantesAsignados->filter(function ($asignacion) {
                 return !AsignacionProyecto::where('estudianteId', $asignacion->EstudianteID)->exists();
             });
         }
@@ -297,16 +297,25 @@ class DirectorVinculacionController extends Controller
             'informe_servicio.*' => 'required|string',
             'estudiante_id.*' => 'required|numeric',
         ]);
-        ///actualiza el informe de los estudiantes de NotasEstudiante
-        foreach ($request->estudiante_id as $key => $estudianteID) {
-            $notas = NotasEstudiante::where('EstudianteID', $estudianteID)->first();
-            $notas->Informe = $request->informe_servicio[$key];
-            $notas->save();
-        }
 
+        foreach ($request->estudiante_id as $key => $estudianteID) {
+            $notas = NotasEstudiante::where('estudianteId', $estudianteID)->first();
+
+            if ($notas) {
+                $notas->informe = $request->informe_servicio[$key];
+
+                $suma = $notas->tareas + $notas->resultadosAlcanzados + $notas->conocimientos + $notas->adaptabilidad +
+                    $notas->aplicacion + $notas->CapacidadLiderazgo + $notas->asistencia + $notas->informe;
+                $notaFinal = ($suma * 20) / 100;
+
+                $notas->notaFinal = $notaFinal;
+                $notas->save();
+            }
+        }
 
         return redirect()->route('director_vinculacion.estudiantes')->with('success', 'Se han actualizado los informes de los estudiantes.');
     }
+
 
 
 
@@ -318,11 +327,20 @@ class DirectorVinculacionController extends Controller
             'estudiante_id' => 'required',
         ]);
 
+
+
+
+
         // Buscar el estudiante por su ID y actualizar su nota
-        $notas = NotasEstudiante::where('EstudianteID', $request->estudiante_id)->first();
+        $notas = NotasEstudiante::where('estudianteId', $request->estudiante_id)->first();
+        $suma = $notas->tareas + $notas->resultadosAlcanzados + $notas->conocimientos + $notas->adaptabilidad + $notas->aplicacion + $notas->CapacidadLiderazgo + $notas->asistencia + $notas->informe;
+        $suma = ($suma * 20) / 100;
 
         if ($notas) {
-            $notas->Informe = $request->nota_servicio;
+            $notas->informe = $request->nota_servicio;
+            $notas->notaFinal = $suma;
+
+
             $notas->save();
 
             return redirect()->route('director_vinculacion.estudiantes')->with('success', 'Se ha actualizado la nota del estudiante.');

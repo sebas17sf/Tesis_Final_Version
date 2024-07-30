@@ -60,8 +60,21 @@ class EstudianteController extends Controller
             'Periodo' => 'required',
             'Carrera' => 'required',
             'correo' => 'required',
-            'Departamento' => 'required',
+            'departamento' => 'required',
+        ], [
+            'Nombres.required' => 'El campo Nombres es obligatorio',
+            'Apellidos.required' => 'El campo Apellidos es obligatorio',
+            'espe_id.required' => 'El campo Especialidad es obligatorio',
+            'celular.required' => 'El campo Celular es obligatorio',
+            'cedula.required' => 'El campo Cédula es obligatorio',
+            'Cohorte.required' => 'El campo Cohorte es obligatorio',
+            'Periodo.required' => 'El campo Periodo es obligatorio',
+            'Carrera.required' => 'El campo Carrera es obligatorio',
+            'correo.required' => 'El campo Correo Electrónico es obligatorio',
+            'departamento.required' => 'El campo Departamento es obligatorio',
+
         ]);
+
 
         $correoElectronico = explode('@', $validatedData['correo'])[0];
 
@@ -78,10 +91,11 @@ class EstudianteController extends Controller
                 'Cohorte' => $validatedData['Cohorte'],
                 'idPeriodo' => $validatedData['Periodo'],
                 'carrera' => $validatedData['Carrera'],
-                'departamento' => $validatedData['Departamento'],
+                'departamento' => $validatedData['departamento'],
                 'comentario' => 'Sin comentarios',
                 'estado' => 'En proceso de revisión',
-                'activacion' => true
+                'activacion' => true,
+                'correo' => $validatedData['correo'],
             ]
 
         );

@@ -113,10 +113,9 @@
                     </thead>
                     <tbody>
                         @forelse ($profesoresVerificar as $index => $docente)
-
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                 <td>{{ $docente->profesorUniversidad->apellidos ?? '' }}
+                                <td>{{ $docente->profesorUniversidad->apellidos ?? '' }}
                                     {{ $docente->profesorUniversidad->nombres ?? '' }}</td>
                                 <td>{{ $docente->profesorUniversidad->espeId ?? '' }}</td>
                                 <td>{{ $docente->correoElectronico ?? '' }}</td>
@@ -256,8 +255,9 @@
                     </div>
                     <div class="tooltip-container">
                         <span class="tooltip-text">Excel</span>
-                        <form action="{{ route('admin.reportesDocentes') }}" method="POST">
+                        <form id="reportForm" action="{{ route('admin.reportesDocentes') }}" method="POST">
                             @csrf
+                            <input type="hidden" id="hiiddendepartamentos" name="departamentos">
                             <button type="submit" class="button3 efects_button btn_excel">
                                 <i class="fas fa-file-excel"></i>
                             </button>
@@ -274,46 +274,23 @@
                     <!-- Card de Filtros para Profesores y Periodos -->
                     <div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
                         <div class="card-header">
-                            <span class="card-title">Filtros Profesores y Periodos</span>
+                            <span class="card-title">Filtros Docentes</span>
                             <button type="button" class="close" onclick="closeCard('filtersCardProfesores')"><i
                                     class="fa-thin fa-xmark"></i></button>
                         </div>
                         <div class="card-body">
-                            <form id="filterFormProfesores" method="GET" action="{{ route('admin.indexProyectos') }}">
+                            <form id="filterFormProfesores" method="GET" action="{{ route('admin.index') }}">
                                 <div class="form-group">
-                                    <label for="profesor">Profesor</label>
-                                    <select name="profesor" id="profesor" class="form-control input input_select">
-                                        <option value="">Todos los docentes</option>
-
-                                        <option value="#">
-
+                                    <label for="departamentos"><strong>Departamento:</strong></label>
+                                    <select id="departamentos" name="departamentos"
+                                        class="form-control input_select input">
+                                        <option value="">Todos</option>
+                                        <option value="Ciencias de la Computación">Ciencias de la Computación</option>
+                                        <option value="Ciencias de la Vida y Agricultura">Ciencias de la Vida y Agricultura
                                         </option>
-
+                                        <option value="Ciencias Exactas">Ciencias Exactas</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label for="periodos">Períodos</label>
-                                    <select name="periodos" id="periodos" class="form-control input input_select">
-                                        <option value="">Todos los periodos</option>
-                                        @foreach ($periodos as $periodo)
-                                            <option value="{{ $periodo->id }}"
-                                                {{ request('periodos') == $periodo->id ? 'selected' : '' }}>
-                                                {{ $periodo->numeroPeriodo }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="fechaInicio">Fecha inicio</label>
-                                    <input type="date" class="input" name="fechaInicio" id="fechaInicio">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="fechaFin">Fecha Fin</label>
-                                    <input type="date" class="input" name="fechaFin" id="fechaFin">
-                                </div>
-
                             </form>
                         </div>
                     </div>
@@ -796,6 +773,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="js\admin\index.js"></script>
 
 
@@ -837,7 +815,61 @@
     </script>
 
 
+
+
+    <script>
+        function resetFiltersProfesores() {
+            $('#departamento').val('');
+            $.ajax({
+                url: '{{ route('admin.index') }}',
+                method: 'GET',
+                success: function(response) {
+                    $('#tablaDocentes').html(response.html);
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
     </script>
+
+
+
+    <script>
+        $(document).ready(function() {
+            $('#departamentos').on('change', function() {
+                var  departamentos = $('#departamentos').val();
+
+                $.ajax({
+                    url: "{{ route('admin.index') }}",
+                    method: 'GET',
+                    data: {
+                        departamentos: departamentos
+                    },
+                    success: function(response) {
+                        $('#tablaDocentes').html($(response).find('#tablaDocentes')
+                            .html());
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.getElementById('reportForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var profesor = document.getElementById('departamentos').value;
+
+            document.getElementById('hiiddendepartamentos').value = profesor;
+
+            this.submit();
+        });
+    </script>
+
+
 
 
 @endsection
