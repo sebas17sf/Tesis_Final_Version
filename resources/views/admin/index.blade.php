@@ -114,7 +114,7 @@
                     <tbody>
                         @forelse ($profesoresVerificar as $index => $docente)
                             <tr>
-                                <td>{{ $index + 1 }}</td>
+                                <td style="min-width: 30px !important;">{{ $index + 1 }}</td>
                                 <td>{{ $docente->profesorUniversidad->apellidos ?? '' }}
                                     {{ $docente->profesorUniversidad->nombres ?? '' }}</td>
                                 <td>{{ $docente->profesorUniversidad->espeId ?? '' }}</td>

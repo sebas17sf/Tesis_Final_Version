@@ -129,7 +129,8 @@
                     <nav class="nav">
                         <ul class="nav-list">
                             <a href="{{ route('estudiantes.create') }}" class="p-element">
-                                <div class="icon-sidebar-item">
+                                <div class="icon-sidebar-item" style="    justify-content: end;;
+}">
                                     <i class="material-icons">check_circle</i>
                                 </div>
                                 <div class="name-sidebar-item">
