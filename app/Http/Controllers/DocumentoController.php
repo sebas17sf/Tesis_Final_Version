@@ -32,109 +32,115 @@ class DocumentoController extends Controller
 {
 
     public function generar()
-    {
-        // Ruta a la plantilla de Word en la carpeta "public/Plantillas"
-        $plantillaPath = public_path('Plantillas/1.2-Acta-Designacion-Estudiantes.docx');
+{
+    // Ruta a la plantilla de Word en la carpeta "public/Plantillas"
+    $plantillaPath = public_path('Plantillas/1.2-Acta-Designacion-Estudiantes.docx');
 
-        // Verificar si el archivo de plantilla existe
-        if (!file_exists($plantillaPath)) {
-            abort(404, 'El archivo de plantilla no existe.');
-        }
-
-        // Cargar la plantilla de Word existente
-        $template = new TemplateProcessor($plantillaPath);
-
-        // Obtener el usuario actual (asegúrate de que el usuario esté autenticado)
-        $usuario = auth()->user();
-
-        if (!$usuario) {
-            // Manejar el caso en que el usuario no esté autenticado
-            abort(403, 'No estás autenticado.');
-        }
-
-        // Obtener el estudiante asociado al usuario
-        $estudiante = $usuario->estudiante;
-
-        if (!$estudiante) {
-            // Manejar el caso en que no se encontró el estudiante asociado al usuario
-            abort(404, 'No se encontró el estudiante asociado a tu usuario.');
-        }
-
-        // Obtener el ProyectoID del modelo AsignacionProyecto del estudiante
-        $asignacionProyecto = $estudiante->asignaciones->first();
-
-        ////obtener el periodov de la asignacion
-        $idPeriodo = $asignacionProyecto->idPeriodo;
-
-        if ($asignacionProyecto) {
-            $proyectoID = $asignacionProyecto->proyectoId;
-        } else {
-            return redirect()->route('estudiantes.documentos')->with('error', 'No esta asignado a un proyecto.');
-        }
-
-        $datosEstudiantes = DB::table('estudiantes')
-            ->join('asignacionproyectos', 'estudiantes.estudianteId', '=', 'asignacionproyectos.estudianteId')
-            ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
-            ->select(
-                'estudiantes.apellidos',
-                'estudiantes.nombres',
-                'estudiantes.cedula',
-                'estudiantes.carrera',
-                'asignacionproyectos.inicioFecha',
-                'proyectos.nombreProyecto',
-            )
-            ->where('asignacionproyectos.proyectoId', $proyectoID)
-            ->where('asignacionproyectos.idPeriodo', $asignacionProyecto->idPeriodo)
-            ->orderBy('estudiantes.apellidos', 'asc')
-            ->get();
-
-        // Obtener Carrera, Provincia y FechaInicio del primer estudiante asignado al proyecto
-        $primerEstudiante = $datosEstudiantes->first();
-        $carreraEstudiante = mb_strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú'], ['A', 'E', 'I', 'O', 'U'], $primerEstudiante->carrera));
-        $carreraNormal = $primerEstudiante->carrera;
-        $fechaInicioProyecto = $primerEstudiante->inicioFecha;
-        $meses = [
-            'January' => 'enero',
-            'February' => 'febrero',
-            'March' => 'marzo',
-            'April' => 'abril',
-            'May' => 'mayo',
-            'June' => 'junio',
-            'July' => 'julio',
-            'August' => 'agosto',
-            'September' => 'septiembre',
-            'October' => 'octubre',
-            'November' => 'noviembre',
-            'December' => 'diciembre',
-        ];
-        $fechaFormateada = date('d', strtotime($fechaInicioProyecto)) . ' ' . $meses[date('F', strtotime($fechaInicioProyecto))] . ' ' . date('Y', strtotime($fechaInicioProyecto));
-        $NombreProyecto = $primerEstudiante->nombreProyecto;
-        $horasVinculacionConstante = 96;
-
-        // Clonar las filas en la plantilla
-        $template->cloneRow('Nombres', count($datosEstudiantes));
-
-        // Ordenar los datos por apellidos en orden ascendente (A-Z)
-        $datosEstudiantes = $datosEstudiantes->sortBy('Apellidos');
-
-        // Bucle para reemplazar los valores en la plantilla
-        foreach ($datosEstudiantes as $index => $estudiante) {
-            $template->setValue('Apellidos#' . ($index + 1), $estudiante->apellidos);
-            $template->setValue('Nombres#' . ($index + 1), $estudiante->nombres);
-            $template->setValue('Cedula#' . ($index + 1), $estudiante->cedula);
-            $template->setValue('HorasVinculacion#' . ($index + 1), $horasVinculacionConstante);
-        }
-
-        // Reemplazar los valores constantes en la plantilla
-        $template->setValue('Carrera', $carreraEstudiante);
-        $template->setValue('CarreraNormal', $carreraNormal);
-        $template->setValue('FechaInicio', $fechaFormateada);
-        $template->setValue('NombreProyecto', $NombreProyecto);
-
-        $nombreArchivo = '1.2-Acta-Designacion-Estudiantes.docx';
-        $template->saveAs($nombreArchivo);
-        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+    // Verificar si el archivo de plantilla existe
+    if (!file_exists($plantillaPath)) {
+        abort(404, 'El archivo de plantilla no existe.');
     }
+
+    // Cargar la plantilla de Word existente
+    $template = new TemplateProcessor($plantillaPath);
+
+    // Obtener el usuario actual (asegúrate de que el usuario esté autenticado)
+    $usuario = auth()->user();
+
+    if (!$usuario) {
+        // Manejar el caso en que el usuario no esté autenticado
+        abort(403, 'No estás autenticado.');
+    }
+
+    // Obtener el estudiante asociado al usuario
+    $estudiante = $usuario->estudiante;
+
+    if (!$estudiante) {
+        // Manejar el caso en que no se encontró el estudiante asociado al usuario
+        abort(404, 'No se encontró el estudiante asociado a tu usuario.');
+    }
+
+    // Obtener el ProyectoID del modelo AsignacionProyecto del estudiante
+    $asignacionProyecto = $estudiante->asignaciones->first();
+
+    // Obtener el periodo de la asignación
+    $idPeriodo = $asignacionProyecto->idPeriodo;
+
+    if ($asignacionProyecto) {
+        $proyectoID = $asignacionProyecto->proyectoId;
+    } else {
+        return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');
+    }
+
+    $datosEstudiantes = DB::table('estudiantes')
+        ->join('asignacionproyectos', 'estudiantes.estudianteId', '=', 'asignacionproyectos.estudianteId')
+        ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
+        ->select(
+            'estudiantes.apellidos',
+            'estudiantes.nombres',
+            'estudiantes.cedula',
+            'estudiantes.carrera',
+            'asignacionproyectos.inicioFecha',
+            'proyectos.nombreProyecto'
+        )
+        ->where('asignacionproyectos.proyectoId', $proyectoID)
+        ->where('asignacionproyectos.idPeriodo', $asignacionProyecto->idPeriodo)
+        ->orderBy('estudiantes.apellidos', 'asc')
+        ->get();
+
+    // Obtener Carrera, Provincia y FechaInicio del primer estudiante asignado al proyecto
+    $primerEstudiante = $datosEstudiantes->first();
+    $carreraEstudiante = mb_strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú'], ['A', 'E', 'I', 'O', 'U'], $primerEstudiante->carrera));
+    $carreraNormal = $primerEstudiante->carrera;
+    $fechaInicioProyecto = $primerEstudiante->inicioFecha;
+    $meses = [
+        'January' => 'enero',
+        'February' => 'febrero',
+        'March' => 'marzo',
+        'April' => 'abril',
+        'May' => 'mayo',
+        'June' => 'junio',
+        'July' => 'julio',
+        'August' => 'agosto',
+        'September' => 'septiembre',
+        'October' => 'octubre',
+        'November' => 'noviembre',
+        'December' => 'diciembre',
+    ];
+    $fechaFormateada = date('d', strtotime($fechaInicioProyecto)) . ' ' . $meses[date('F', strtotime($fechaInicioProyecto))] . ' ' . date('Y', strtotime($fechaInicioProyecto));
+    $NombreProyecto = $primerEstudiante->nombreProyecto;
+    $horasVinculacionConstante = 96;
+
+    // Clonar las filas en la plantilla
+    $template->cloneRow('Nombres', count($datosEstudiantes));
+
+    // Ordenar los datos por apellidos en orden ascendente (A-Z)
+    $datosEstudiantes = $datosEstudiantes->sortBy('apellidos');
+
+    // Función para formatear nombres y apellidos
+    function formatName($name) {
+        return ucwords(strtolower($name));
+    }
+
+    // Bucle para reemplazar los valores en la plantilla
+    foreach ($datosEstudiantes as $index => $estudiante) {
+        $template->setValue('Apellidos#' . ($index + 1), formatName($estudiante->apellidos));
+        $template->setValue('Nombres#' . ($index + 1), formatName($estudiante->nombres));
+        $template->setValue('Cedula#' . ($index + 1), $estudiante->cedula);
+        $template->setValue('HorasVinculacion#' . ($index + 1), $horasVinculacionConstante);
+    }
+
+    // Reemplazar los valores constantes en la plantilla
+    $template->setValue('Carrera', $carreraEstudiante);
+    $template->setValue('CarreraNormal', $carreraNormal);
+    $template->setValue('FechaInicio', $fechaFormateada);
+    $template->setValue('NombreProyecto', $NombreProyecto);
+
+    $nombreArchivo = '1.2-Acta-Designacion-Estudiantes.docx';
+    $template->saveAs($nombreArchivo);
+    return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+}
+
 
 
 
@@ -1962,7 +1968,7 @@ class DocumentoController extends Controller
         $spreadsheet = IOFactory::load($plantillaPath);
 
         $departamento = $request->input('departamentos');
- 
+
 
          $docentes = ProfesUniversidad::orderBy('apellidos');
 
