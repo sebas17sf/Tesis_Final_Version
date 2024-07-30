@@ -216,7 +216,7 @@
             </div>
             </div>
            <div class="form-group">
-           <center> <button type="submit" class="button">Guardar Actividad</button></center>
+           <center> <button type="submit" class="button1">Guardar Actividad</button></center>
             </div> 
         </form>
     </div>
@@ -289,8 +289,7 @@
                 </div>
             </div>
         </div>
-    </div>
-
+   
 
 <br>
     <button class="button1" onclick="toggleForm()">Generar Informe</button>
