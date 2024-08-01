@@ -2,7 +2,7 @@ document.getElementById('notaTutorEmpresarial').addEventListener('input', functi
     const valor = parseFloat(this.value); // Convierte el valor a un número flotante
     const mensajeError = document.getElementById('errorMensaje');
     // Verifica si el valor está en el rango permitido o es igual a 0
-    if ((valor < 0 || valor > 12) && valor !== 0) {
+    if ((valor < 0 || valor > 20)) {
         mensajeError.textContent = 'Valor no válido';
         mensajeError.style.display = 'inline';
     } else {
@@ -10,7 +10,18 @@ document.getElementById('notaTutorEmpresarial').addEventListener('input', functi
     }
 });
 
- 
+document.getElementById('notaeditartutor').addEventListener('input', function () {
+    const valor = parseFloat(this.value); // Convierte el valor a un número flotante
+    const mensajeError = document.getElementById('errorMensaje');
+     if (valor < 0 || valor > 20 || isNaN(valor)) {
+        mensajeError.textContent = 'Valor no válido. Debe estar entre 0 y 20.';
+        mensajeError.style.display = 'inline';
+    } else {
+        mensajeError.style.display = 'none';
+    }
+});
+
+
 
 
 document.getElementById('cerrarPracticaBtn').addEventListener('click', function (event) {

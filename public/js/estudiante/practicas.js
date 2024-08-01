@@ -126,3 +126,21 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+
+//////si hay errores en practicasForm no se debe enviar el formulario
+document.addEventListener('DOMContentLoaded', function () {
+    const practicasForm = document.getElementById('practicasForm');
+
+    practicasForm.addEventListener('submit', function (event) {
+        const errorCedula = document.getElementById('errorCedula').textContent;
+        const errorNombre = document.getElementById('errorNombre').textContent;
+        const errorTelefono = document.getElementById('errorTelefono').textContent;
+        const errorEmail = document.getElementById('errorEmail').textContent;
+        const errorHorasPlanificadas = document.getElementById('errorHorasPlanificadas').textContent;
+
+        if (errorCedula || errorNombre || errorTelefono || errorEmail || errorHorasPlanificadas) {
+            event.preventDefault();
+        }
+    });
+});

@@ -312,11 +312,11 @@
             <center><button type="submit" class="button1">Descargar Informe</button></center>
         </form>
     @else
-    
-   
+
+
     <h4> <b>Fase 1 - Inicio del proceso de prácticas pre profesionales del estudiante </b> </h4>
     <hr>
-    <form action="{{ route('guardarPracticas') }}" method="POST">
+    <form action="{{ route('guardarPracticas') }}" method="POST" id="practicasForm">
     @csrf
     <div class="row">
         <div class="col-md-6">
