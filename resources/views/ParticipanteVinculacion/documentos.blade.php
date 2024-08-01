@@ -240,7 +240,7 @@
 
 
             <center><button type="submit" class="button1">
-                    <i class="fas fa-cogs"></i> Generar
+                    <i class="fas fa-cogs"></i> Generar Informe
                 </button>
             </center>
         </form>
@@ -255,18 +255,18 @@
             <div class="row">
                 <div class="col-md-6 form-group">
                     <label for="lugar"><strong>Lugar de la reunión:</strong></label>
-                    <input type="text" id="lugar" name="lugar" class="form-control input">
+                    <input type="text" id="lugar" placeholder="Ingrese el lugar de reunion" name="lugar" class="form-control input">
                 </div>
 
                 <div class="col-md-6 form-group">
                     <label for="tema"><strong>Tema de la reunión:</strong></label>
-                    <input type="text" id="tema" name="tema" class="form-control input">
+                    <input type="text" id="tema" name="tema" placeholder="Ingrese el tema de reunion" class="form-control input">
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-4 form-group">
                     <label for="fecha"><strong>Fecha de la reunión:</strong></label>
-                    <input type="date" id="fecha" name="fecha" class="form-control input">
+                    <input type="date" id="fecha" name="fecha" placeholder="Ingrese la fecha de reunion" class="form-control input">
                 </div>
 
                 <div class="col-md-4 form-group">
@@ -281,30 +281,30 @@
             </div>
             <div class="row">
                 <div class="col-md-6 form-group">
-                    <label for="objetivo"><strong>objetivo:</strong></label>
-                    <textarea id="objetivo" name="objetivo" class="form-control input"></textarea>
+                    <label for="objetivo"><strong>Objetivo:</strong></label>
+                    <textarea id="objetivo" name="objetivo" placeholder="Ingrese el objetivo" class="form-control input"></textarea>
                 </div>
 
                 <div class="col-md-6 form-group">
-                    <label for="antecedentes"><strong>antecedentes:</strong></label>
-                    <textarea id="antecedentes" name="antecedentes" class="form-control input"></textarea>
+                    <label for="antecedentes"><strong>Antecedentes:</strong></label>
+                    <textarea id="antecedentes" name="antecedentes" placeholder="Ingrese los antecedentes" class="form-control input"></textarea>
                 </div>
             </div>
             <div id="campos2">
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="acciones"><strong>Acciones a realizar:</strong></label>
-                        <textarea name="acciones[]" class="form-control input" rows="2" required></textarea>
+                        <textarea name="acciones[]" class="form-control input" placeholder="Ingrese las acciones a realizar" rows="2" required></textarea>
                     </div>
 
                     <div class="form-group col-md-4">
                         <label for="responsable"><strong>Responsable:</strong></label>
-                        <textarea name="responsable[]" class="form-control input" rows="2" required></textarea>
+                        <textarea name="responsable[]" class="form-control input" placeholder="Ingrese el nombre del responable" rows="2" required></textarea>
                     </div>
 
                     <div class="form-group col-md-4">
                         <label for="fechaAcciones"><strong>Fecha termino:</strong></label>
-                        <input type="date" name="fechaAcciones[]" class="form-control input" rows="2"
+                        <input type="date" name="fechaAcciones[]" class="form-control input" placeholder="Ingrese la fecha" rows="2"
                             required></input>
                     </div>
                 </div>
@@ -320,7 +320,7 @@
             <center>
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="button1 mr-2">
-                        <i class="fas fa-cogs"></i> Generar
+                        <i class="fas fa-cogs"></i> Generar Acta de Reunión
                     </button>
 
                 </div>
