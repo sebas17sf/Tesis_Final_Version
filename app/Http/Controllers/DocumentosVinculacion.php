@@ -893,7 +893,7 @@ class DocumentosVinculacion extends Controller
                 if ($estudiante) {
                     $estudiante->update($data);
                 } else {
-                    $estudiante = Estudiante::create($data);
+                    Estudiante::create($data);
                 }
             }
         }
@@ -935,7 +935,16 @@ class DocumentosVinculacion extends Controller
                     'estado' => $row[19],
                 ];
 
-                AsignacionProyecto::create($data);
+                AsignacionProyecto::updateOrCreate(
+                    [
+                        'estudianteId' => $data['estudianteId'],
+                        'proyectoId' => $data['proyectoId'],
+                        'participanteId' => $data['participanteId'],
+                        'idPeriodo' => $data['idPeriodo'],
+                        'nrc' => $data['nrc']
+                    ],
+                    $data
+                );
             }
 
             if (!empty($row[20])) {
@@ -969,7 +978,16 @@ class DocumentosVinculacion extends Controller
                     'estado' => $row[30],
                 ];
 
-                AsignacionProyecto::create($data);
+                AsignacionProyecto::updateOrCreate(
+                    [
+                        'estudianteId' => $data['estudianteId'],
+                        'proyectoId' => $data['proyectoId'],
+                        'participanteId' => $data['participanteId'],
+                        'idPeriodo' => $data['idPeriodo'],
+                        'nrc' => $data['nrc']
+                    ],
+                    $data
+                );
             }
         }
 
@@ -1012,17 +1030,14 @@ class DocumentosVinculacion extends Controller
         return back()->with('success', 'Datos importados con éxito!');
     }
 
-    private function convertToDate($dateString)
+    private function convertToDate($excelDate)
     {
-        if (!empty($dateString) && strlen($dateString) >= 8) {
-            try {
-                return Carbon::createFromFormat('d/m/Y', $dateString)->format('Y-m-d');
-            } catch (\Exception $e) {
-                return null;
-            }
+        if (is_numeric($excelDate)) {
+            return \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($excelDate)->format('Y-m-d');
         }
         return null;
     }
+
 
 
 

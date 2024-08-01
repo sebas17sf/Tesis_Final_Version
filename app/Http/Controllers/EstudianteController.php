@@ -113,7 +113,7 @@ class EstudianteController extends Controller
         $estudiante->update(['userId' => $user->userId]);
 
         $asignacionProyecto = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->first();
-        if ($asignacionProyecto) {
+        if ($asignacionProyecto && $asignacionProyecto->estado === 'En ejecucion') {
             $estudiante->update(['estado' => 'Aprobado-practicas']);
         }
 
@@ -134,7 +134,7 @@ class EstudianteController extends Controller
         if (Auth::check() && Auth::user()->estudiante) {
             // Obtén los datos del estudiante relacionado con el usuario
             $estudiante = Auth::user()->estudiante;
- 
+
             $periodo = Periodo::find($estudiante->idPeriodo);
 
             // Obtén la asignación de proyecto del estudiante (si existe)
@@ -715,48 +715,48 @@ class EstudianteController extends Controller
 
     //////editar actividad practica 1
     public function updateActividadPracticas1(Request $request, $id)
-{
-    $actividad = ActividadesPracticas::findOrFail($id);
+    {
+        $actividad = ActividadesPracticas::findOrFail($id);
 
-    $request->validate([
-        'Actividad' => 'required',
-        'horas' => 'required',
-        'observaciones' => 'required',
-        'fechaActividad' => 'required',
-        'departamento' => 'required',
-        'funcion' => 'required',
-     ]);
+        $request->validate([
+            'Actividad' => 'required',
+            'horas' => 'required',
+            'observaciones' => 'required',
+            'fechaActividad' => 'required',
+            'departamento' => 'required',
+            'funcion' => 'required',
+        ]);
 
 
-    $datosActividad = $request->only([
-        'actividad',
-        'horas',
-        'observaciones',
-        'fechaActividad',
-        'departamento',
-        'funcion',
-    ]);
+        $datosActividad = $request->only([
+            'actividad',
+            'horas',
+            'observaciones',
+            'fechaActividad',
+            'departamento',
+            'funcion',
+        ]);
 
-    $evidencia = $request->file('evidencia');
+        $evidencia = $request->file('evidencia');
 
-    try {
-        if ($evidencia) {
-            $maxFileSize = 500000;
-            if ($evidencia->getSize() > $maxFileSize) {
-                return redirect()->back()->with('error', 'La imagen es muy pesada. El tamaño máximo permitido es de 500 KB.');
+        try {
+            if ($evidencia) {
+                $maxFileSize = 500000;
+                if ($evidencia->getSize() > $maxFileSize) {
+                    return redirect()->back()->with('error', 'La imagen es muy pesada. El tamaño máximo permitido es de 500 KB.');
+                }
+
+                $img = Image::make($evidencia)->encode('jpg', 75);
+                $datosActividad['evidencia'] = base64_encode($img->encoded);
             }
 
-            $img = Image::make($evidencia)->encode('jpg', 75);
-            $datosActividad['evidencia'] = base64_encode($img->encoded);
+            $actividad->update($datosActividad);
+
+            return redirect()->back()->with('success', 'Actividad actualizada exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Ha ocurrido un error al actualizar la actividad: ' . $e->getMessage());
         }
-
-        $actividad->update($datosActividad);
-
-        return redirect()->back()->with('success', 'Actividad actualizada exitosamente.');
-    } catch (\Exception $e) {
-        return redirect()->back()->with('error', 'Ha ocurrido un error al actualizar la actividad: ' . $e->getMessage());
     }
-}
 
     //////editar actividad practica 2
     public function updateActividadPracticas2(Request $request, $id)
@@ -770,7 +770,7 @@ class EstudianteController extends Controller
             'fechaActividad' => 'required',
             'departamento' => 'required',
             'funcion' => 'required',
-         ]);
+        ]);
 
         $datosActividad = $request->only([
             'Actividad',
