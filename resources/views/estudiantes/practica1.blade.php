@@ -251,7 +251,7 @@
                                         <td style="text-transform: uppercase; font-size: .7em;">{{ $actividad->departamento }}</td>
                                         <td style="text-transform: uppercase; font-size: .7em;">{{ $actividad->funcion }}</td>
                                         <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            <img src="data:image/png;base64,{{ $actividad->evidencia }}" width="100" height="100" alt="Evidencia de la actividad">
+                                            <img src="data:image/png;base64,{{ $actividad->evidencia }}" width="100" height="100" alt="SIN EVIDENCIA">
                                         </td>
                                         <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             <form action="{{ route('estudiantes.eliminarActividadPracticas1', $actividad->id) }}" method="POST" style="display: inline-block;">
@@ -557,58 +557,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('[data-toggle="tooltip"]').tooltip({
-                template: '<div class="tooltip custom-tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
-            });
-
-            $('.card-button').on('click', function() {
-                $('.card-button').removeClass('active');
-                $(this).addClass('active');
-            });
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip({
+            template: '<div class="tooltip custom-tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
         });
 
-        function editActividad(actividad) {
-            // Asigna los valores de la actividad al formulario
-            $('#ActividadID').val(actividad.id);
-            $('#Actividad').val(actividad.actividad);
-            $('#horas').val(actividad.horas);
-            $('#observaciones').val(actividad.observaciones);
-            $('#fechaActividad').val(actividad.fechaActividad);
-            $('#departamento').val(actividad.departamento);
-            $('#funcion').val(actividad.funcion);
-
-            // Mostrar el checkbox de eliminar evidencia solo si existe evidencia
-            if (actividad.evidencia) {
-                $('#eliminarEvidencia').closest('.form-check').show();
-            } else {
-                $('#eliminarEvidencia').closest('.form-check').hide();
-            }
-
-            // Cambia el método y la acción del formulario para la edición
-            $('#actividadForm').attr('action', /estudiantes/${actividad.id}/editar-actividad-practicas1);
-            $('#actividadForm').append('<input type="hidden" name="_method" value="PUT">');
-
-            // Cambia el texto del botón de guardar a actualizar
-            $('#submitButton').text('Actualizar Actividad');
-        }
-
-        // Función para visualizar el nombre del archivo seleccionado
-        function displayFileName(input, textElementId) {
-            var fileName = input.files[0].name;
-            document.getElementById(textElementId).innerText = fileName;
-        }
-
-        // Función para eliminar el archivo seleccionado
-        function removeFile(element) {
-            var input = element.previousElementSibling;
-            input.value = '';
-            document.getElementById('fileText2').innerText = 'Haz clic aquí para subir el documento';
-        }
-
-        // Asegúrate de ocultar el checkbox de eliminar evidencia al cargar la página
-        $(document).ready(function() {
-            $('#eliminarEvidencia').closest('.form-check').hide();
+        $('.card-button').on('click', function(){
+            $('.card-button').removeClass('active');
+            $(this).addClass('active');
         });
     });
     function editActividad(actividad) {

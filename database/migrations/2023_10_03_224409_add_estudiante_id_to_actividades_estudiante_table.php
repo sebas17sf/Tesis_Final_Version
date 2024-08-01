@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('fecha');
             $table->text('actividades');
             $table->integer('numeroHoras');
-            $table->longText('evidencias');
+            $table->longText('evidencias')->nullable();
             $table->string('nombreActividad');
             $table->timestamps();
         });

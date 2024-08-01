@@ -493,6 +493,7 @@ class CoordinadorController extends Controller
                     'nrc' => $request->nrc,
                     'inicioFecha' => $request->FechaInicio,
                     'finalizacionFecha' => $request->FechaFinalizacion,
+                    'estado' => 'En ejecucion',
                 ]);
             }
         } else {
@@ -505,6 +506,7 @@ class CoordinadorController extends Controller
                 'nrc' => $request->nrc,
                 'inicioFecha' => $request->FechaInicio,
                 'finalizacionFecha' => $request->FechaFinalizacion,
+                'estado' => 'En ejecucion',
             ]);
         }
         $this->actualizarUsuarioYRol($request->ProfesorParticipante, 'ParticipanteVinculacion');

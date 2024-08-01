@@ -173,12 +173,12 @@ class ParticipanteVinculacionController extends Controller
 
                 // Obtener estudiantes con notas y sin notas según la lógica previamente definida
                 $estudiantesConNotas = Estudiante::with('notas')
-                    ->whereIn('estudianteId', $todosEstudiantes)
-                    ->whereHas('proyectos', function ($query) {
-                        $query->where('estado', 'Ejecucion');
-                    })
-                    ->get();
-
+                ->whereIn('estudianteId', $todosEstudiantes)
+                ->whereHas('proyectos', function ($query) {
+                    $query->where('proyectos.estado', 'Ejecucion');
+                })
+                ->get();
+ 
                 $estudiantes = Estudiante::whereIn('estudianteId', $todosEstudiantes)
                     ->whereDoesntHave('notas')
                     ->get();

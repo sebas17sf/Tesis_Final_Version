@@ -129,11 +129,12 @@ class EstudianteController extends Controller
 
     public function index()
     {
+
         // Verifica si el usuario está autenticado y si es un estudiante
         if (Auth::check() && Auth::user()->estudiante) {
             // Obtén los datos del estudiante relacionado con el usuario
             $estudiante = Auth::user()->estudiante;
-
+ 
             $periodo = Periodo::find($estudiante->idPeriodo);
 
             // Obtén la asignación de proyecto del estudiante (si existe)
@@ -607,44 +608,47 @@ class EstudianteController extends Controller
 
     ////////////////////guardar actividad practica 1
     public function guardarActividadPractica1(Request $request)
-{
-    $request->validate([
-        'EstudianteID' => 'required',
-        'PracticasI' => 'required',
-        'Actividad' => 'required',
-        'horas' => 'required|integer',
-        'observaciones' => 'required|string',
-        'fechaActividad' => 'required|date',
-        'departamento' => 'required|string',
-        'funcion' => 'required|string',
-    ]);
+    {
+        $request->validate([
+            'EstudianteID' => 'required',
+            'PracticasI' => 'required',
+            'Actividad' => 'required',
+            'horas' => 'required|integer',
+            'observaciones' => 'required|string',
+            'fechaActividad' => 'required|date',
+            'departamento' => 'required|string',
+            'funcion' => 'required|string',
+        ]);
 
-    $datosActividad = $request->only([
-        'horas',
-        'observaciones',
-        'fechaActividad',
-        'departamento',
-        'funcion',
-    ]);
+        $datosActividad = $request->only([
+            'horas',
+            'observaciones',
+            'fechaActividad',
+            'departamento',
+            'funcion',
+        ]);
 
-    try {
-        $evidencia = $request->file('evidencia');
-        if ($evidencia) {
-            $img = Image::make($evidencia)->encode('jpg', 75);
-            $datosActividad['evidencia'] = base64_encode($img->encoded);
+        try {
+            $evidencia = $request->file('evidencia');
+            if ($evidencia) {
+                $img = Image::make($evidencia)->encode('jpg', 75);
+                $datosActividad['evidencia'] = base64_encode($img->encoded);
+            } else {
+                $datosActividad['evidencia'] = null;
+            }
+
+            $datosActividad['estudianteId'] = $request->EstudianteID;
+            $datosActividad['idPracticasi'] = $request->PracticasI;
+            $datosActividad['actividad'] = $request->Actividad;
+
+            ActividadesPracticas::create($datosActividad);
+
+            return redirect()->back()->with('success', 'Actividad guardada exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Ha ocurrido un error al guardar la actividad: ' . $e->getMessage());
         }
-
-        $datosActividad['estudianteId'] = $request->EstudianteID;
-        $datosActividad['idPracticasi'] = $request->PracticasI;
-        $datosActividad['actividad'] = $request->Actividad;
-
-        ActividadesPracticas::create($datosActividad);
-
-        return redirect()->back()->with('success', 'Actividad guardada exitosamente.');
-    } catch (\Exception $e) {
-        return redirect()->back()->with('error', 'Ha ocurrido un error al guardar la actividad: ' . $e->getMessage());
     }
-}
+
 
 
     ////////////////////guardar actividad practica 2

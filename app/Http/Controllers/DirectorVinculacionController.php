@@ -278,6 +278,15 @@ class DirectorVinculacionController extends Controller
             $query->where('directorId', $director->id);
         })->get();
 
+         $asignaciones = AsignacionProyecto::whereHas('proyecto', function ($query) use ($director) {
+            $query->where('directorId', $director->id);
+        })->get();
+
+        foreach ($asignaciones as $asignacion) {
+            $asignacion->estado = 'Finalizado';
+            $asignacion->save();
+        }
+
         foreach ($estudiantes as $estudiante) {
             $estudiante->estado = 'Aprobado-practicas';
             $estudiante->save();

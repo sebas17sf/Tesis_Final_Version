@@ -118,6 +118,7 @@
                     <th>Fecha Fin</th>
                     <th>Horas realizadas</th>
                     <th>NOTA FINAL</th>
+                    <th>ESTADO</th>
                 </tr>
             </thead>
             <tbody>
@@ -131,6 +132,7 @@
                         <td>{{ $asignacion->periodo->numeroPeriodo }}</td>
                         <td>{{ $asignacion->inicioFecha }}</td>
                         <td>{{ $asignacion->finalizacionFecha }}</td>
+
                         <td>
                             @foreach ($asignacion->estudiante->horas_vinculacion as $hora)
                                 {{ $hora->horasVinculacion ?? 'SIN HORAS' }}<br>
@@ -141,6 +143,8 @@
                                 {{ $nota->notaFinal }}<br>
                             @endforeach
                         </td>
+                        <td>{{ $asignacion->estado }}</td>
+
                     </tr>
                 @empty
                     <tr>
