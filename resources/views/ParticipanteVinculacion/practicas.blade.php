@@ -65,70 +65,7 @@
                                     <td style="min-width: 100px !important; text-transform: uppercase; text-align:center; font-size:.7em; ">{{ $practica->practicasi->FechaInicio }}</td>
                                     <td style="min-width: 100px !important; text-transform: uppercase; text-align:center; font-size:.7em; ">{{ $practica->practicasi->FechaFinalizacion }}</td>
                                     <td style="min-width: 100px !important; text-transform: uppercase; font-size:.7em; ">
-                                        <center><button type="button" class="button3 efects_button btn_eliminar3" data-toggle="modal" <td>
-    <center>
-        <button type="button" class="card-button" data-toggle="modal" data-target="#actividadesModal{{ $practica->estudianteId }}">
-            <span><b>VER ACTIVIDADES</b></span>
-            <i class="fa-solid fa-eye"></i>
-        </button>
-    </center>
-
-    <!-- Modal para mostrar actividades -->
-    <div class="draggable-card1_3" id="actividadesModal{{ $practica->estudianteId }}" tabindex="-1" role="dialog" aria-labelledby="actividadesModalLabel" aria-hidden="true">
-        <div class="modal-content">
-            <div class="card-header">
-                <span class="card-title1" id="actividadesModalLabel">Actividades del Estudiante</span>
-                <button type="button" class="close" onclick="$('#actividadesModal{{ $practica->estudianteId }}').hide()">
-                    <i class="fa-thin fa-xmark"></i>
-                </button>
-            </div>
-            <div class="contenedor_tabla">
-                <div class="table-container mat-elevation-z8">
-                    <div id="tablaActivida">
-                        <table class="mat-mdc-table">
-                            <thead class="ng-star-inserted">
-                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th>FECHA</th>
-                                    <th>ACTIVIDADES</th>
-                                    <th>HORA</th>
-                                    <th>NOMBRE DE LA ACTIVIDAD</th>
-                                    <th>EVIDENCIA</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($actividades as $actividad)
-                                    <tr>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            {{ $actividad->fechaActividad }}
-                                        </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
-                                            {{ $actividad->actividad }}
-                                        </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            {{ $actividad->horas }}
-                                        </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            {{ $actividad->nombreActividad }}
-                                        </td>
-                                        <td>
-                                            <img width="100px" src="data:image/png;base64,{{ $actividad->evidencia }}" alt="Evidencia" />
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="card-button" onclick="$('#actividadesModal{{ $practica->estudianteId }}').hide()">
-                    Cerrar
-                </button>
-            </div>
-        </div>
-    </div>
-</td>
->
+                                        <center><button type="button" class="button3 efects_button btn_eliminar3" data-toggle="modal" onclick="openCard('actividadesModal{{ $practica->estudianteId }}');">
                                             <i class="fa-solid fa-eye"></i>
                                         </button></center>
 
@@ -298,7 +235,7 @@
                                             </button></center>
                                             <center><button class="button3 efects_button btn_save" onclick="saveRow({{ $practica->estudianteId }})" style="display: none; margin-right: 5px;">
                                                 <i class="fa-solid fa-save"></i>
-                                            </button></center>
+                                            </button> </center>
                                         </div>
                                     </td>
                                 </tr>
