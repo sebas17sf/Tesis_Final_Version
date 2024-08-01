@@ -105,7 +105,7 @@
         <form id="cerrarPracticaForm" action="{{ route('director_vinculacion.cerrarProcesoPracticas2') }}" method="POST">
             @csrf
             @method('PUT')
-            <button type="button" id="cerrarPracticaBtn" class="button1_1">Cerrar Práctica I estudiantes</button>
+            <button type="button" id="cerrarPracticaBtn" class="button1_1">Cerrar Práctica II estudiantes</button>
         </form>
     </div>
 
@@ -217,6 +217,13 @@
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
 
     <script>
+         $(document).ready(function() {
+                    // Hacer que los cards sean draggable
+                    $('.draggable-card1_3').draggable({
+                        handle: ".card-header",
+                        containment: "window"
+                    });
+                });
         function openCard(cardId) {
             document.getElementById(cardId).style.display = 'block';
         }

@@ -312,8 +312,8 @@
             <center><button type="submit" class="button1">Descargar Informe</button></center>
         </form>
     @else
-        <br>
-    <br>
+    
+   
     <h4> <b>Fase 1 - Inicio del proceso de prácticas pre profesionales del estudiante </b> </h4>
     <hr>
     <form action="{{ route('guardarPracticas') }}" method="POST">
@@ -398,7 +398,7 @@
                         <tr>
                             <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Estado Académico Actual:</th>
                             <td class="large-td" >
-                                <select id="EstadoAcademico" name="EstadoAcademico" class="form-control input input_select4">
+                                <select id="EstadoAcademico" name="EstadoAcademico" class="form-control input input_select3">
                                     <option value="1">Seleccione un estado académico</option>
                                     <option value="FINALIZANDO ESTUDIOS">FINALIZANDO ESTUDIOS</option>
                                     <option value="CURSANDO ESTUDIOS">CURSANDO ESTUDIOS</option>
@@ -408,38 +408,38 @@
                         <tr>
                             <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Fecha de inicio de la práctica:</th>
                             <td class="large-td" >
-                                <input type="date" id="FechaInicio" name="FechaInicio" class="form-control input input_select4">
+                                <input type="date" id="FechaInicio" name="FechaInicio" class="form-control input input_select3">
                             </td>
                         </tr>
                         <tr>
                             <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Fecha de finalización de la práctica:</th>
                             <td class="large-td" >
-                                <input type="date" id="FechaFinalizacion" name="FechaFinalizacion" class="form-control input input_select4">
+                                <input type="date" id="FechaFinalizacion" name="FechaFinalizacion" class="form-control input input_select3">
                             </td>
                         </tr>
                         <tr>
                             <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Horas planificadas:</th>
                             <td class="large-td" >
-                                <input type="number" id="HorasPlanificadas" name="HorasPlanificadas" class="form-control input input_select4" min="80" max="144" placeholder="Ingrese el número de horas">
+                                <input type="number" id="HorasPlanificadas" name="HorasPlanificadas" class="form-control input input_select3" min="80" max="144" placeholder="Ingrese el número de horas">
                                 <small id="errorHorasPlanificadas" style="color: red;"></small>
                             </td>
                         </tr>
                         <tr>
                             <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Horario de entrada:</th>
                             <td class="large-td" >
-                                <input type="time" id="HoraEntrada" name="HoraEntrada" class="form-control input input_select4">
+                                <input type="time" id="HoraEntrada" name="HoraEntrada" class="form-control input input_select3">
                             </td>
                         </tr>
                         <tr>
                             <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Horario de salida:</th>
                             <td class="large-td" >
-                                <input type="time" id="HoraSalida" name="HoraSalida" class="form-control input input_select4">
+                                <input type="time" id="HoraSalida" name="HoraSalida" class="form-control input input_select3">
                             </td>
                         </tr>
                         <tr>
                             <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Área de conocimiento:</th>
                             <td class="large-td" >
-                                <input type="text" id="AreaConocimiento" name="AreaConocimiento" class="form-control input input_select4" placeholder="Ingrese el área de conocimiento">
+                                <input type="text" id="AreaConocimiento" name="AreaConocimiento" class="form-control input input_select3" placeholder="Ingrese el área de conocimiento">
                             </td>
                         </tr>
                     </tbody>
@@ -533,8 +533,11 @@
     </table>
 </div>
 <br>
-<center><button type="submit" id="iniciarPracticasBtn" class="button1 btn_excel" style="display: none;">Iniciar prácticas</button></center>
-</form>
+<center>
+    <button type="submit" id="iniciarPracticasBtn" class="button1 btn_excel">
+        Iniciar prácticas
+    </button>
+</center></form>
 @endif
 </div>
 

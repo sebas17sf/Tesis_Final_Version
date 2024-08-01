@@ -148,8 +148,8 @@
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                    <th class="tamanio">EMPRESA</th>
                                     <th>TUTOR EMPRESARIAL</th>
-                                    <th>TUTOR ACADEMICO</th>
-                                    <th>TIPO DE PRACTICA</th>
+                                    <th>TUTOR ACADÉMICO</th>
+                                    <th>TIPO DE PRÁCTICA</th>
                                     <th>HORA ENTRADA</th>
                                     <th>HORA SALIDA</th>
                                     <th>FECHA INICIO</th>
@@ -203,8 +203,8 @@
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                    <th class="tamanio">EMPRESA</th>
                                     <th>TUTOR EMPRESARIAL</th>
-                                    <th>TUTOR ACADEMICO</th>
-                                    <th>TIPO DE PRACTICA</th>
+                                    <th>TUTOR ACADÉMICO</th>
+                                    <th>TIPO DE PRÁCTICA</th>
                                     <th>HORA ENTRADA</th>
                                     <th>HORA SALIDA</th>
                                     <th>FECHA INICIO</th>
@@ -259,8 +259,8 @@
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                    <th class="tamanio">EMPRESA</th>
                                     <th>TUTOR EMPRESARIAL</th>
-                                    <th class="tamanio">TUTOR ACADEMICO</th>
-                                    <th>TIPO DE PRACTICA</th>
+                                    <th class="tamanio">TUTOR ACADÉMICO</th>
+                                    <th>TIPO DE PRÁCTICA</th>
                                     <th>HORA ENTRADA</th>
                                     <th>HORA SALIDA</th>
                                     <th>FECHA INICIO</th>
@@ -315,8 +315,8 @@
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                    <th class="tamanio">EMPRESA</th>
                                     <th>TUTOR EMPRESARIAL</th>
-                                    <th class="tamanio">TUTOR ACADEMICO</th>
-                                    <th>TIPO DE PRACTICA</th>
+                                    <th class="tamanio">TUTOR ACADÉMICO</th>
+                                    <th>TIPO DE PRÁCTICA</th>
                                     <th>HORA ENTRADA</th>
                                     <th>HORA SALIDA</th>
                                     <th>FECHA INICIO</th>
@@ -371,8 +371,8 @@
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                    <th class="tamanio">EMPRESA</th>
                                     <th>TUTOR EMPRESARIAL</th>
-                                    <th class="tamanio">TUTOR ACADEMICO</th>
-                                    <th>TIPO DE PRACTICA</th>
+                                    <th class="tamanio">TUTOR ACADÉMICO</th>
+                                    <th>TIPO DE PRÁCTICA</th>
                                     <th>HORA ENTRADA</th>
                                     <th>HORA SALIDA</th>
                                     <th>FECHA INICIO</th>

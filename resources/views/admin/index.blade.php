@@ -787,6 +787,13 @@
                 containment: "window"
             });
         });
+        $(document).ready(function() {
+            // Hacer que los cards sean draggable
+            $('.draggable-card').draggable({
+                handle: ".card-header",
+                containment: "window"
+            });
+        });
 
         var delayTimer;
         $('#formBusquedaDocentes input[name="search"]').on('keyup', function() {

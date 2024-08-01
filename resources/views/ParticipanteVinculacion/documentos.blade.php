@@ -23,79 +23,87 @@
             </div>
         </div>
     @endif
-
-
-    <div class="container mt-5">
-
-
-        <div class="contenedor_tabla">
-            <div class="table-container mat-elevation-z8">
-
-                <div id="tablaDocentes">
-                    <table class="mat-mdc-table">
-                        <thead class="ng-star-inserted">
-                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                <th class="tamanio1">NOMBRE DEL REPORTE</th>
-                                <th class="tamanio1">ACCIÓN</th>
-                            </tr>
-                        </thead>
-                        <tbody class="mdc-data-table__content ng-star-inserted">
-                            <tr>
-                                <td style=" font-size: 11px !important;">GENERAR EVALUACIÓN DE DOCENTE</td>
-                                <td>
-                                    <form action="{{ route('ParticipanteVinculacion.generarEvaluacionEstudiante') }}"
-                                        method="post">
-                                        @csrf
-                                        <center><button type="submit"
-                                                class="button1 btn_excel efects_button input_select1">
-                                                <i class="fas fa-file-excel"></i> Generar
-                                            </button></center>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style=" font-size: 11px !important;">GENERAR NUMERO DE HORAS DE DOCENTE</td>
-                                <td>
-                                    <form action="{{ route('ParticipanteVinculacion.generarHorasDocente') }}"
-                                        method="post">
-                                        @csrf
-                                        <center><button type="submit"
-                                                class="button1 btn_excel efects_button input_select1">
-                                                <i class="fas fa-file-excel"></i> Generar
-                                            </button></center>
-                                    </form>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style=" font-size: 11px !important;">REGISTRO DE ESTUDIANTES</td>
-                                <td>
-                                    <form action="{{ route('ParticipanteVinculacion.generarAsistencia') }}" method="post">
-                                        @csrf
-                                        <div class="form-group">
-                                            <label for="fecha" class="label"><b>Fecha de asistencia:</b></label>
-                                            <input type="date" id="fecha" name="fecha"
-                                                class="form-control input input_select1">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="lugar" class="label"><b>Lugar de la actividad:</b></label>
-                                            <input type="text" id="lugar" name="lugar"
-                                                class="form-control input input_select1">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="actividades" class="label"><b>Actividades a realizar:</b></label>
-                                            <textarea id="actividades" name="actividades" class="form-control input input_select1"></textarea>
-                                        </div>
-                                        <center> <button type="submit" class="button1 input_select1">
-                                                <i class="fas fa-save"></i> Generar
-                                            </button></center>
-                                    </form>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+    <div class="title_icon_info" style="text-align:left !important;">
+    <b>Generar documentación</b>
+</div>
+<section class="content_recent_courses">
+    <div class="container_cources_cards">
+        <hr>
+        <div class="container_cources scroll_element">
+            <div class="cards">
+                <form action="{{ route('ParticipanteVinculacion.generarEvaluacionEstudiante') }}" method="post">
+                    @csrf
+                    <button type="submit" class="card-button">
+                        <span><b> EVALUACIÓN DE DOCENTE</b></span>
+                        <i class="fas fa-file-excel"></i>
+                    </button>
+                </form>
             </div>
+            <div class="cards">
+                <form action="{{ route('ParticipanteVinculacion.generarHorasDocente') }}" method="post">
+                    @csrf
+                    <button type="submit" class="card-button">
+                        <span><b>NÚMERO DE HORAS DE DOCENTE</b></span>
+                        <i class="fas fa-file-excel"></i>
+                    </button>
+                </form>
+            </div>
+            <!-- Botón para abrir el modal -->
+            <div class="cards">
+    <button type="button" class="card-button" onclick="$('#draggableCardRegistroHoras').show()">
+        <span><b>REGISTRAR DE ESTUDIANTES</b></span>
+        <i class="fas fa-save"></i>
+    </button>
+</div>
+<!-- Tarjeta movible para Registro de Horas -->
+<div class="draggable-card" id="draggableCardRegistroHoras">
+    <div class="card-header">
+        <span class="card-title">Registro de estudiantes</span>
+        <button type="button" class="close" onclick="$('#draggableCardRegistroHoras').hide()"><i
+                class="fa-thin fa-xmark"></i></button>
+    </div>
+    <div class="card-body">
+        <form class="FormularioRegistroHoras" action="{{ route('ParticipanteVinculacion.generarAsistencia') }}" method="post">
+            @csrf
+            <div class="form-group">
+                <label class="label" for="fecha"><strong>Fecha de asistencia:</strong></label>
+                <input type="date" id="fecha" name="fecha" class="form-control input" required>
+                <small id="fechaError" class="form-text text-danger" style="display: none;"></small>
+                @error('fecha')
+                    <small class="form-text text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label class="label" for="lugar"><strong>Lugar de la actividad:</strong></label>
+                <input type="text" id="lugar" name="lugar" class="form-control input" placeholder=" Escribir el lugar de la actividad" required>
+                <small id="lugarError" class="form-text text-danger" style="display: none;"></small>
+                @error('lugar')
+                    <small class="form-text text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label class="label" for="actividades"><strong>Actividades a realizar:</strong></label>
+                <textarea id="actividades" name="actividades" class="form-control input" placeholder=" Escribir la actividad" required></textarea>
+                <small id="actividadesError" class="form-text text-danger" style="display: none;"></small>
+                @error('actividades')
+                    <small class="form-text text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+            <div class="card-footer1 d-flex justify-content-center align-items-center">
+                <button type="submit" class="button1 input_select1">
+                    <span>GENERAR</span>
+                    <i class="fas fa-save"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
         </div>
+    </div>
+</section>
+
+   
         <hr>
         <h4><b>Informe Docente - Vinculación a la Sociedad</b></h4>
         <hr>
@@ -321,14 +329,15 @@
         </form>
 
 
-
-        <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
-        <script src="js\admin\acciones.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    <script src="js\admin\acciones.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="js\admin\index.js"></script>
 
 
         <script>
@@ -363,6 +372,13 @@
         </script>
 
         <script>
+            $(document).ready(function() {
+            // Hacer que los cards sean draggable
+            $('.draggable-card').draggable({
+                handle: ".card-header",
+                containment: "window"
+            });
+        });
             function agregarCampo2() {
                 var campos = document.getElementById('campos2');
                 var nuevoCampo = document.createElement('div');

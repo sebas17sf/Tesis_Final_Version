@@ -27,7 +27,7 @@
         <h4><b>Estudiantes a realizar Prácticas</b></h4>
         <hr>
         <section>
-            <div class="mat-elevation-z8 contenedor_general">
+            
 
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
@@ -37,62 +37,64 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th class="tamanio1">ESTUDIANTE</th>
-                                        <th>PRÁCTICA</th>
-                                        <th class="tamanio4">TUTOR ACADÉMICO</th>
-                                        <th class="tamanio4">TUTOR EMPRESARIAL</th>
-                                        <th class="tamanio1">EMPRESA</th>
-                                        <th class="tamanio3">NRC</th>
-                                        <th>PERIODO</th>
-                                        <th>FECHA INICIO</th>
-                                        <th>FECHA FIN</th>
-                                        <th>HORAS PLANIFICADAS</th>
-                                        <th>ESTADO</th>
-                                        <th class="tamanio1">ACCIÓN</th>
+                                       
+                                        <th style="min-width: 100px !important; text-transform: uppercase;">ESTUDIANTE</th>
+                                        <th style="min-width: 100px !important; text-transform: uppercase;">PRÁCTICA</th>
+                                        <th style="min-width: 120px !important; text-transform: uppercase;">TUTOR ACADÉMICO</th>
+                                        <th style="min-width: 120px !important; text-transform: uppercase;">TUTOR EMPRESARIAL</th>
+                                        <th style="min-width: 130px !important; text-transform: uppercase;">EMPRESA</th>
+                                        <th style="min-width: 90px !important; text-transform: uppercase;">NRC</th>
+                                        <th style="min-width: 100px !important; text-transform: uppercase;">PERIODO</th>
+                                        <th style="min-width: 120px !important; text-transform: uppercase;">FECHA INICIO</th>
+                                        <th style="min-width: 120px !important; text-transform: uppercase;">FECHA FIN</th>
+                                        <th style="min-width: 100px !important; text-transform: uppercase;">HORAS PLANIFICADAS</th>
+                                        <th style="min-width: 100px !important; text-transform: uppercase;">ESTADO</th>
+                                        <th style="min-width: 90px !important; text-transform: uppercase;">ACCIÓN</th>
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
                                     @if ($estudiantesConPracticaI->isEmpty() && $estudiantesConPracticaII->isEmpty())
                                     <tr style="text-align:center">
-                                        <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">No hay
+                                        <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="15">No hay
                                             estudiantes en proceso de revisión.</td>
                                     </tr>
                                     @endif
                                     @foreach ($estudiantesConPracticaI as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
-                                                <td style="text-transform: uppercase; text-align: left;">
+                                               
+                                                <td style="text-transform: uppercase; min-width: 220px;  text-align: left; font-size: .7em;">
                                                     {{ strtoupper($practicaI->estudiante->apellidos) }}
                                                     {{ strtoupper($practicaI->estudiante->nombres) }}</td>
-                                                <td style="text-transform: uppercase; text-align: left;">
+                                                <td style="text-transform: uppercase; min-width: 150px;  text-align: left; font-size: .7em;">
                                                     {{ strtoupper($practicaI->tipoPractica) }}</td>
-                                                <td style="text-transform: uppercase; text-align: left;">
+                                                <td style="text-transform: uppercase; min-width: 130px;  text-align: left; font-size: .7em;">
                                                     {{ strtoupper($practicaI->tutorAcademico->apellidos) }}
                                                     {{ strtoupper($practicaI->tutorAcademico->nombres) }}</td>
-                                                <td style="text-transform: uppercase; text-align: left;">
+                                                <td style="text-transform: uppercase; text-align: left; min-width: 130px; font-size: .7em;">
                                                     {{ strtoupper($practicaI->NombreTutorEmpresarial) }}</td>
-                                                <td style="text-transform: uppercase; text-align: left;">
+                                                <td style="text-transform: uppercase; text-align: left; min-width: 220px; font-size: .7em;">
                                                     {{ strtoupper($practicaI->Empresa->nombreEmpresa) }}</td>
-                                                <td> {{ strtoupper(optional($nrcs->firstWhere('id', $practicaI->nrc))->nrc ?? 'NO CUENTA CON NRC') }}
+                                                <td style="text-transform: uppercase; min-width: 100px;  text-align: center; font-size: .7em;"> {{ strtoupper(optional($nrcs->firstWhere('id', $practicaI->nrc))->nrc ?? 'NO CUENTA CON NRC') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->periodoPractica ?? 'NO REQUIERE PERIODO') }}
+                                                <td style="text-transform: uppercase; min-width: 100px; text-align: center; font-size: .7em;">{{ strtoupper($practicaI->periodoPractica ?? 'NO REQUIERE PERIODO') }}
                                                 </td>
-                                                <td>{{ strtoupper($practicaI->FechaInicio) }}</td>
-                                                <td>{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
-                                                <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
-                                                <td>{{ $practicaI->Estado }}</td>
-                                                <td>
+                                                <td style="text-transform: uppercase; min-width: 100px; text-align: center; font-size: .7em;">{{ strtoupper($practicaI->FechaInicio) }}</td>
+                                                <td style="text-transform: uppercase; min-width: 100px; text-align: center; font-size: .7em;">{{ strtoupper($practicaI->FechaFinalizacion) }}</td>
+                                                <td style="text-transform: uppercase; text-align: center; font-size: .7em;">{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
+                                                <td style="text-transform: uppercase; min-width: 100px; text-align: center; font-size: .7em;">{{ $practicaI->Estado }}</td>
+                                                <td style="text-transform: uppercase; text-align: center; font-size: .7em;">
                                                     <form
                                                         action="{{ route('admin.actualizarEstadoEstudiante', ['id' => $practicaI->estudiante->estudianteId]) }}"
                                                         method="POST"
                                                         style="display: flex; align-items: center; justify-content: center;">
                                                         @csrf
                                                         @method('PUT')
-                                                        <input type="hidden" name="id"
+                                                        <input type="hidden" name="id" 
                                                             value="{{ $practicaI->estudiante->estudianteId }}"
-                                                            class="input">
+                                                            class="input input_select3">
                                                         <select name="nuevoEstado"
-                                                            class="form-control input1 input input_select1"
+                                                            class="form-control input1 input input_select3"
                                                             style="margin-right: 10px;">
                                                             <option value="En ejecucion">Aprobado</option>
                                                             <option value="Negado">Negar</option>
@@ -161,12 +163,12 @@
 
                 </div>
 
-            </div>
+           
         </section>
 
         <!-- ----------------------------------------------------practicas----------------------------------------------------------------------------------- -->
 
-
+        <div class="mat-elevation-z8 contenedor_general">
         <br>
         <h4><b>Estudiantes Práctica 1</b></h4>
         <hr>
