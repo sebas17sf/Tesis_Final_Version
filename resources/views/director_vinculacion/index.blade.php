@@ -133,6 +133,7 @@
                                         <th class="tamanio2">NOTA</th>
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
+                                        <th>ESTADO</th>
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
@@ -182,6 +183,9 @@
                                             <td
                                                 style="text-align:center; text-transform: uppercase; word-wrap: break-word;">
                                                 {{ $asignaciones->finalizacionFecha }}</td>
+
+                                                <td style="text-align:center; text-transform: uppercase; word-wrap: break-word;">
+                                                {{ $asignaciones->estado }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -356,6 +360,7 @@
                                             <th class="tamanio2">NOTA</th>
                                             <th>FECHA INICIO</th>
                                             <th>FECHA FIN</th>
+                                            <th>ESTADO</th>
                                         </tr>
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
@@ -409,6 +414,12 @@
                                                 <td
                                                     style="text-align:center; text-transform: uppercase; word-wrap: break-word;">
                                                     {{ $asignaciones->finalizacionFecha }}</td>
+
+                                                    <td
+                                                    style="text-align:center; text-transform: uppercase; word-wrap: break-word;">
+                                                    {{ $asignaciones->estado }}</td>
+
+
                                             </tr>
                                         @endforeach
 

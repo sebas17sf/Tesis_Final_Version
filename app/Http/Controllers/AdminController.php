@@ -695,6 +695,7 @@ class AdminController extends Controller
                     'nrc' => $request->nrc,
                     'inicioFecha' => $request->FechaInicio,
                     'finalizacionFecha' => $request->FechaFinalizacion,
+                    'estado' => 'En ejecucion',
                 ]);
             }
         } else {
@@ -707,6 +708,7 @@ class AdminController extends Controller
                 'nrc' => $request->nrc,
                 'inicioFecha' => $request->FechaInicio,
                 'finalizacionFecha' => $request->FechaFinalizacion,
+                'estado' => 'En ejecucion',
             ]);
         }
         $this->actualizarUsuarioYRol($request->ProfesorParticipante, 'ParticipanteVinculacion');

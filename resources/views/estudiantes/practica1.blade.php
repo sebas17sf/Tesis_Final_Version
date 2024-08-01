@@ -251,7 +251,7 @@
                                         <td style="text-transform: uppercase; font-size: .7em;">{{ $actividad->departamento }}</td>
                                         <td style="text-transform: uppercase; font-size: .7em;">{{ $actividad->funcion }}</td>
                                         <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            <img src="data:image/png;base64,{{ $actividad->evidencia }}" width="100" height="100" alt="Evidencia de la actividad">
+                                            <img src="data:image/png;base64,{{ $actividad->evidencia }}" width="100" height="100" alt="SIN EVIDENCIAS">
                                         </td>
                                         <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             <form action="{{ route('estudiantes.eliminarActividadPracticas1', $actividad->id) }}" method="POST" style="display: inline-block;">

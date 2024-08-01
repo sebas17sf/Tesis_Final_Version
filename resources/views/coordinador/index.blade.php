@@ -520,6 +520,7 @@
                                             <th>NRC</th>
                                             <th>FECHA INICIO</th>
                                             <th>FECHA FIN</th>
+                                            <th>ESTADO</th>
                                         </tr>
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
@@ -585,6 +586,11 @@
                                                     </td>
                                                     <td>{{ $grupo->first()->inicioFecha ?? '' }}</td>
                                                     <td>{{ $grupo->first()->finalizacionFecha ?? '' }}</td>
+                                                    <td>
+                                                        @foreach ($grupo as $asignacion)
+                                                            {{ $asignacion->estado ?? '' }}<br>
+                                                        @endforeach
+                                                    </td>
                                                 </tr>
                                             @endforeach
                                         @endif

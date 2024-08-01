@@ -19,6 +19,7 @@ use App\Models\PracticaIV;
 use App\Models\PracticaV;
 use Illuminate\Support\Facades\Auth;
 use App\Models\HoraVinculacion;
+use Carbon\Carbon;
 
 
 
@@ -577,14 +578,15 @@ class DocumentosVinculacion extends Controller
                     $hojaCalculo->setCellValue("S$filaActual", mb_strtoupper($participante->departamento));
                     $hojaCalculo->setCellValue("T$filaActual", mb_strtoupper($asignacion->inicioFecha));
                     $hojaCalculo->setCellValue("U$filaActual", mb_strtoupper($asignacion->finalizacionFecha));
+                    $hojaCalculo->setCellValue("AH$filaActual", mb_strtoupper($asignacion->estado));
 
                     // Copiar el estilo de la fila 9
-                    $hojaCalculo->duplicateStyle($hojaCalculo->getStyle('A9:AG9'), 'A' . $filaActual . ':AG' . $filaActual);
+                    $hojaCalculo->duplicateStyle($hojaCalculo->getStyle('A9:AH9'), 'A' . $filaActual . ':AH' . $filaActual);
 
                     $filaInicio++;
                 } else { // Las asignaciones adicionales se colocan en las columnas a partir de S
                     $columnaActual = 'W';
-                    $hojaCalculo->setCellValue('V' . ($filaActual - 1), mb_strtoupper($periodo->numeroPeriodo)); // Número de período adicional
+                    $hojaCalculo->setCellValue('V' . ($filaActual - 1), mb_strtoupper($periodo->numeroPeriodo ?? '')); // Número de período adicional
                     $hojaCalculo->setCellValue($columnaActual . ($filaActual - 1), mb_strtoupper($proyecto->nombreProyecto)); // Nombre del proyecto adicional
                     $hojaCalculo->setCellValue('X' . ($filaActual - 1), mb_strtoupper($proyecto->departamentoTutor)); // Departamento tutor adicional
                     $hojaCalculo->setCellValue('Y' . ($filaActual - 1), mb_strtoupper($director->apellidos . ' ' . $director->nombres)); // Nombre del director adicional
@@ -595,6 +597,7 @@ class DocumentosVinculacion extends Controller
                     $hojaCalculo->setCellValue('AD' . ($filaActual - 1), mb_strtoupper($proyecto->finFecha)); // Fecha de finalización adicional
                     $hojaCalculo->setCellValue('AF' . ($filaActual - 1), isset($notas[1]) ? mb_strtoupper($notas[1]->notaFinal) : ''); // Segunda nota final
                     $hojaCalculo->setCellValue('AE' . ($filaActual - 1), isset($horas[1]) ? mb_strtoupper($horas[1]->horasVinculacion) : ''); // Segunda hora de vinculación
+                    $hojaCalculo->setCellValue('AH' . ($filaActual - 1), mb_strtoupper($asignacion->estado));
                     $columnaActual++;
                 }
 
@@ -603,7 +606,7 @@ class DocumentosVinculacion extends Controller
             }
         }
 
-        $hojaCalculo->getStyle('A9:AG' . ($filaInicio - 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_JUSTIFY)->setVertical(Alignment::VERTICAL_CENTER);
+        $hojaCalculo->getStyle('A9:Ah' . ($filaInicio - 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_JUSTIFY)->setVertical(Alignment::VERTICAL_CENTER);
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $nombreArchivo = "Reporte_asignación_proyectos_sociales.xlsx";
@@ -707,11 +710,13 @@ class DocumentosVinculacion extends Controller
             $horasRealizadas = $asignacion->estudiante->horas_vinculacion->first()->horasVinculacion ?? '0';
             $hojaCalculo->setCellValue("K$filaActual", $horasRealizadas);
 
+            $hojaCalculo->setCellValue("V$filaActual", $asignacion->estado);
+
 
         }
 
         ////justificar y centrar
-        $hojaCalculo->getStyle('A9:U' . ($filaInicio + $cantidadFilas - 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_JUSTIFY)->setVertical(Alignment::VERTICAL_CENTER);
+        $hojaCalculo->getStyle('A9:V' . ($filaInicio + $cantidadFilas - 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_JUSTIFY)->setVertical(Alignment::VERTICAL_CENTER);
 
         $nombreParticipante = $participanteVinculacion->apellidos . '_' . $participanteVinculacion->nombres;
         $nombreParticipante = str_replace([' ', '/', '\\'], '_', $nombreParticipante);
@@ -806,6 +811,7 @@ class DocumentosVinculacion extends Controller
             $hojaCalculo->setCellValue("B$filaActual", $nombreCompleto);
             $hojaCalculo->setCellValue("E$filaActual", $asignacion->estudiante->correo ?? '');
             $hojaCalculo->setCellValue("F$filaActual", $asignacion->estudiante->Cohorte ?? '');
+             $hojaCalculo->setCellValue("V$filaActual", $asignacion->estado);
 
             /////departamento del participante
 
@@ -820,7 +826,7 @@ class DocumentosVinculacion extends Controller
         }
 
         ////justificar y centrar
-        $hojaCalculo->getStyle('A9:U' . ($filaInicio + $cantidadFilas))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+        $hojaCalculo->getStyle('A9:V' . ($filaInicio + $cantidadFilas))->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_JUSTIFY)->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
 
         $nombreDirector = $director->apellidos . '_' . $director->nombres;
         $nombreDirector = str_replace([' ', '/', '\\'], '_', $nombreDirector);
@@ -856,23 +862,14 @@ class DocumentosVinculacion extends Controller
 
     ///////////////////////////////////prueba de carga de matriz para generar datos
 
-    function getFecha($fecha)
-    {
-        $fecha = DateTime::createFromFormat('d/m/Y', $fecha);
-        return $fecha ? $fecha->format('Y-m-d') : null;
-    }
-
-
     public function import(Request $request)
     {
         $spreadsheet = IOFactory::load($request->file('file'));
         $worksheet = $spreadsheet->getActiveSheet();
         $rows = $worksheet->toArray();
 
-        // Skip the header row
         $dataRows = array_slice($rows, 1);
 
-        // Process each row for Estudiantes
         foreach ($dataRows as $row) {
             if (!empty($row[0]) && !empty($row[1]) && !empty($row[2]) && !empty($row[3]) && !empty($row[4]) && !empty($row[5]) && !empty($row[6])) {
                 $periodo = Periodo::where('numeroPeriodo', $row[5])->first();
@@ -901,12 +898,10 @@ class DocumentosVinculacion extends Controller
             }
         }
 
-        // Process each row for AsignacionProyecto and ProfesUniversidad
         foreach ($dataRows as $row) {
             if (!empty($row[7]) && !empty($row[8]) && !empty($row[6]) && !empty($row[9]) && !empty($row[10]) && !empty($row[11]) && !empty($row[15])) {
                 $estudiante = Estudiante::where('espeId', $row[0])->first();
 
-                // Trim any leading or trailing whitespace from the project name
                 $projectName = trim($row[18]);
                 $proyecto = Proyecto::where('nombreProyecto', 'like', '%' . $projectName . '%')->first();
 
@@ -923,21 +918,11 @@ class DocumentosVinculacion extends Controller
                         ->first();
                 }
 
-
-
-                $asignacion = AsignacionProyecto::where('estudianteId', $estudiante ? $estudiante->estudianteId : null)
-                    ->where('proyectoId', $proyecto ? $proyecto->proyectoId : null)
-                    ->where('idPeriodo', $periodo ? $periodo->id : null)
-                    ->first();
-
-                $fechaInicio = $this->getFecha($row[12]);
-                $fechaFinalizacion = $this->getFecha($row[13]);
-
+                $fechaInicio = $this->convertToDate($row[12]);
+                $fechaFinalizacion = $this->convertToDate($row[13]);
 
                 $nrc = NrcVinculacion::where('nrc', $row[9])->first();
-                if ($nrc == null) {
-                    $nrc = null;
-                }
+
                 $data = [
                     'estudianteId' => $estudiante ? $estudiante->estudianteId : null,
                     'proyectoId' => $proyecto ? $proyecto->proyectoId : null,
@@ -947,22 +932,18 @@ class DocumentosVinculacion extends Controller
                     'inicioFecha' => $fechaInicio,
                     'finalizacionFecha' => $fechaFinalizacion,
                     'asignacionFecha' => now(),
+                    'estado' => $row[19],
                 ];
 
-                if ($asignacion) {
-                    $asignacion->update($data);
-                } else {
-                    AsignacionProyecto::create($data);
-                }
+                AsignacionProyecto::create($data);
             }
 
-            // Procesar segundas asignaciones
-            if (!empty($row[19])) {
-                $projectName = trim($row[21]);
+            if (!empty($row[20])) {
+                $projectName = trim($row[22]);
                 $proyecto = Proyecto::where('nombreProyecto', 'like', '%' . $projectName . '%')->first();
-                $periodo = Periodo::where('numeroPeriodo', $row[19])->first();
+                $periodo = Periodo::where('numeroPeriodo', $row[20])->first();
 
-                $nombreCompleto = $row[22];
+                $nombreCompleto = $row[23];
                 $partesNombre = explode(" ", $nombreCompleto);
                 if (count($partesNombre) >= 2) {
                     $apellido = trim($partesNombre[0]);
@@ -973,18 +954,8 @@ class DocumentosVinculacion extends Controller
                         ->first();
                 }
 
-                $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[23]);
-                $fechaInicioFormatted = $fechaInicio ? $fechaInicio->format('Y-m-d') : null;
-
-                $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $row[24]);
-                $fechaFinalizacionFormatted = $fechaFinalizacion ? $fechaFinalizacion->format('Y-m-d') : null;
-
-                $asignacion = AsignacionProyecto::where('estudianteId', $estudiante ? $estudiante->estudianteId : null)
-                    ->where('proyectoId', $proyecto ? $proyecto->proyectoId : null)
-                    ->where('idPeriodo', $periodo ? $periodo->id : null)
-                    ->first();
-
-                $nrc = NrcVinculacion::where('nrc', $row[20])->first();
+                $fechaInicio = $this->convertToDate($row[24]);
+                $fechaFinalizacion = $this->convertToDate($row[25]);
 
                 $data = [
                     'estudianteId' => $estudiante ? $estudiante->estudianteId : null,
@@ -992,55 +963,68 @@ class DocumentosVinculacion extends Controller
                     'participanteId' => $participante ? $participante->id : null,
                     'idPeriodo' => $periodo ? $periodo->id : null,
                     'nrc' => $nrc ? $nrc->id : null,
-                    'inicioFecha' => $fechaInicioFormatted,
-                    'finalizacionFecha' => $fechaFinalizacionFormatted,
+                    'inicioFecha' => $fechaInicio,
+                    'finalizacionFecha' => $fechaFinalizacion,
                     'asignacionFecha' => now(),
+                    'estado' => $row[30],
                 ];
 
-                if ($asignacion) {
-                    $asignacion->update($data);
-                } else {
-                    AsignacionProyecto::create($data);
+                AsignacionProyecto::create($data);
+            }
+        }
+
+        foreach ($dataRows as $row) {
+            $estudiante = Estudiante::where('espeId', $row[0])->first();
+
+            if ($estudiante) {
+                NotasEstudiante::updateOrCreate(
+                    ['estudianteId' => $estudiante->estudianteId, 'notaFinal' => $row[15] ?? '1'],
+                    ['notaFinal' => $row[15] ?? '1']
+                );
+
+                if (!empty($row[27])) {
+                    NotasEstudiante::updateOrCreate(
+                        ['estudianteId' => $estudiante->estudianteId, 'notaFinal' => $row[27] ?? '1'],
+                        ['notaFinal' => $row[27] ?? '1']
+                    );
                 }
             }
         }
 
-        // Process each row for NotasEstudiante
         foreach ($dataRows as $row) {
             $estudiante = Estudiante::where('espeId', $row[0])->first();
 
-            // Crear o actualizar la primera nota
-            NotasEstudiante::updateOrCreate(
-                ['estudianteId' => $estudiante ? $estudiante->estudianteId : null, 'notaFinal' => $row[15] ?? '0']
-            );
-
-            // Crear o actualizar la segunda nota si existe
-            if (!empty($row[26])) {
-                NotasEstudiante::updateOrCreate(
-                    ['estudianteId' => $estudiante ? $estudiante->estudianteId : null, 'notaFinal' => $row[26] ?? '0']
-                );
-            }
-        }
-
-        // Process each row for HoraVinculacion
-        foreach ($dataRows as $row) {
-            $estudiante = Estudiante::where('espeId', $row[0])->first();
-
-            // Crear o actualizar la primera hora de vinculación
-            HoraVinculacion::updateOrCreate(
-                ['estudianteId' => $estudiante ? $estudiante->estudianteId : null, 'horasVinculacion' => $row[14] ?? '0']
-            );
-
-            // Crear o actualizar la segunda hora de vinculación si existe
-            if (!empty($row[25])) {
+            if ($estudiante) {
                 HoraVinculacion::updateOrCreate(
-                    ['estudianteId' => $estudiante ? $estudiante->estudianteId : null, 'horasVinculacion' => $row[25] ?? '0']
+                    ['estudianteId' => $estudiante->estudianteId, 'horasVinculacion' => $row[14] ?? '1'],
+                    ['horasVinculacion' => $row[14] ?? '1']
                 );
+
+                if (!empty($row[26])) {
+                    HoraVinculacion::updateOrCreate(
+                        ['estudianteId' => $estudiante->estudianteId, 'horasVinculacion' => $row[26] ?? '1'],
+                        ['horasVinculacion' => $row[26] ?? '1']
+                    );
+                }
             }
         }
 
         return back()->with('success', 'Datos importados con éxito!');
     }
+
+    private function convertToDate($dateString)
+    {
+        if (!empty($dateString) && strlen($dateString) >= 8) {
+            try {
+                return Carbon::createFromFormat('d/m/Y', $dateString)->format('Y-m-d');
+            } catch (\Exception $e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+
 
 
 

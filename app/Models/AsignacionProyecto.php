@@ -24,7 +24,8 @@ class AsignacionProyecto extends Model
         'nrc',
         'inicioFecha',
         'finalizacionFecha',
-        'asignacionFecha'
+        'asignacionFecha',
+        'estado'
 
     ];
 

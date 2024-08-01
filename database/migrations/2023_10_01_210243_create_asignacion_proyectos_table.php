@@ -26,7 +26,11 @@ return new class extends Migration {
             $table->foreign('nrc')->references('id')->on('nrc');
             $table->foreign('participanteId')->references('id')->on('profesuniversidad');
             $table->foreign('idPeriodo')->references('id')->on('periodo');
-        });
+            $table->string('estado')->nullable();
+
+
+
+         });
     }
 
     public function down()

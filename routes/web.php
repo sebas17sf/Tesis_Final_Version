@@ -13,10 +13,11 @@ use App\Http\Controllers\ParticipanteVinculacionController;
 use App\Http\Controllers\DocumentosVinculacion;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\GraficaController;
 use Laravel\Socialite\Facades\Socialite;
 
 
-
+ 
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
 
 Route::get('/keep-alive', [SessionController::class, 'keepAlive']);
@@ -195,7 +196,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    
+
     ////////////practticas
     Route::get('/participante-vinculacion/practicas', [ParticipanteVinculacionController::class, 'practicas'])->name('ParticipanteVinculacion.practicas');
     //////guardarNotasPracticasi

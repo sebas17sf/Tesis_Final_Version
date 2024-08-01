@@ -23,7 +23,7 @@ return new class extends Migration
             $table->date('fechaActividad');
             $table->string('departamento');
             $table->string('funcion');
-            $table->longText('evidencia');
+            $table->longText('evidencia')->nullable();
             $table->timestamps();
         });
     }
