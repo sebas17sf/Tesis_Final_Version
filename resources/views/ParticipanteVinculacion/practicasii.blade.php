@@ -49,81 +49,102 @@
                         <tbody>
                             @if (count($estudiantes) == 0)
                                 <tr>
-                                    <td colspan="15" <td class="noExisteRegistro1" style="font-size: 16px !important;" >No hay estudiantes en prácticas</td>
+                                    <td colspan="15" <td class="noExisteRegistro1" style="font-size: 16px !important;">No
+                                        hay estudiantes en prácticas</td>
                                 </tr>
                             @endif
                             @foreach ($estudiantes as $practica)
                                 <tr>
-                                    <td style="min-width: 30px !important; text-transform: uppercase; font-size:.7em; " >{{ $loop->iteration }}</td>
-                                    <td style="min-width: 170px !important; text-transform: uppercase; font-size:.7em; ">{{ $practica->apellidos }} {{ $practica->nombres }}</td>
-                                    <td style="min-width: 100px !important; text-transform: uppercase; font-size:.7em; ">{{ $practica->carrera }}</td>
+                                    <td style="min-width: 30px !important; text-transform: uppercase; font-size:.7em; ">
+                                        {{ $loop->iteration }}</td>
+                                    <td style="min-width: 170px !important; text-transform: uppercase; font-size:.7em; ">
+                                        {{ $practica->apellidos }} {{ $practica->nombres }}</td>
+                                    <td style="min-width: 100px !important; text-transform: uppercase; font-size:.7em; ">
+                                        {{ $practica->carrera }}</td>
                                     <td style="min-width: 100px !important; font-size:.7em; ">{{ $practica->correo }}</td>
-                                    <td style="min-width: 100px !important; text-transform: uppercase; font-size:.7em; ">{{ $practica->celular }}</td>
-                                    <td style="min-width: 100px !important; text-transform: uppercase; font-size:.7em; ">{{ $practica->practicasii->empresa->nombreEmpresa }}</td>
-                                    <td style="min-width: 100px !important; text-transform: uppercase; font-size:.7em; ">{{ $practica->practicasii->NombreTutorEmpresarial }}</td>
-                                    <td style="min-width: 100px !important; text-transform: uppercase; font-size:.7em; ">{{ $practica->practicasii->HorasPlanificadas }}</td>
-                                    <td style="min-width: 100px !important; text-transform: uppercase; font-size:.7em; ">{{ $practica->practicasii->FechaInicio }}</td>
-                                    <t style="min-width: 100px !important; text-transform: uppercase; font-size:.7em; "d>{{ $practica->practicasii->FechaFinalizacion }}</td>
-                                    <td>
-    <center>
-        <button type="button" class="card-button" data-toggle="modal" onclick="openCard('actividadesModal{{ $practica->estudianteId }}');" >
-            <span><b>VER ACTIVIDADES</b></span>
-            <i class="fa-solid fa-eye"></i>
-        </button>
-    </center>
-
-    <!-- Modal para mostrar actividades -->
-    <div class="draggable-card1_3" id="actividadesModal{{ $practica->estudianteId }}" >
-        
-            <div class="card-header">
-                <span class="card-title1" id="actividadesModalLabel">Actividades del Estudiante</span>
-                <button type="button" class="close" onclick="$('#actividadesModal{{ $practica->estudianteId }}').hide()">
-                    <i class="fa-thin fa-xmark"></i>
-                </button>
-            </div>
-            <div class="contenedor_tabla">
-                <div class="table-container mat-elevation-z8">
-                    <div id="tablaActivida">
-                        <table class="mat-mdc-table">
-                            <thead class="ng-star-inserted">
-                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    
-                                    <th>FECHA</th>
-                                    <th>ACTIVIDADES</th>
-                                    <th>HORA</th>
-                                    <th>NOMBRE DE LA ACTIVIDAD</th>
-                                    <th>EVIDENCIA</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($actividades as $actividad)
-                                    <tr>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            {{ $actividad->fechaActividad }}
-                                        </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
-                                            {{ $actividad->actividad }}
-                                        </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            {{ $actividad->horas }}
-                                        </td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            {{ $actividad->nombreActividad }}
-                                        </td>
+                                    <td style="min-width: 100px !important; text-transform: uppercase; font-size:.7em; ">
+                                        {{ $practica->celular }}</td>
+                                    <td style="min-width: 100px !important; text-transform: uppercase; font-size:.7em; ">
+                                        {{ $practica->practicasii->empresa->nombreEmpresa }}</td>
+                                    <td style="min-width: 100px !important; text-transform: uppercase; font-size:.7em; ">
+                                        {{ $practica->practicasii->NombreTutorEmpresarial }}</td>
+                                    <td style="min-width: 100px !important; text-transform: uppercase; font-size:.7em; ">
+                                        {{ $practica->practicasii->HorasPlanificadas }}</td>
+                                    <td style="min-width: 100px !important; text-transform: uppercase; font-size:.7em; ">
+                                        {{ $practica->practicasii->FechaInicio }}</td>
+                                    <t style="min-width: 100px !important; text-transform: uppercase; font-size:.7em; "d>
+                                        {{ $practica->practicasii->FechaFinalizacion }}</td>
                                         <td>
-                                            <img width="100px" src="data:image/png;base64,{{ $actividad->evidencia }}" alt="Evidencia" />
+                                            <center>
+                                                <button type="button" class="card-button" data-toggle="modal"
+                                                    onclick="openCard('actividadesModal{{ $practica->estudianteId }}');">
+                                                    <span><b>VER ACTIVIDADES</b></span>
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </button>
+                                            </center>
+
+                                            <!-- Modal para mostrar actividades -->
+                                            <div class="draggable-card1_3"
+                                                id="actividadesModal{{ $practica->estudianteId }}">
+
+                                                <div class="card-header">
+                                                    <span class="card-title1" id="actividadesModalLabel">Actividades del
+                                                        Estudiante</span>
+                                                    <button type="button" class="close"
+                                                        onclick="$('#actividadesModal{{ $practica->estudianteId }}').hide()">
+                                                        <i class="fa-thin fa-xmark"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="contenedor_tabla">
+                                                    <div class="table-container mat-elevation-z8">
+                                                        <div id="tablaActivida">
+                                                            <table class="mat-mdc-table">
+                                                                <thead class="ng-star-inserted">
+                                                                    <tr
+                                                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+
+                                                                        <th>FECHA</th>
+                                                                        <th>ACTIVIDADES</th>
+                                                                        <th>HORA</th>
+                                                                        <th>NOMBRE DE LA ACTIVIDAD</th>
+                                                                        <th>EVIDENCIA</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($actividades as $actividad)
+                                                                        <tr>
+                                                                            <td
+                                                                                style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                                                {{ $actividad->fechaActividad }}
+                                                                            </td>
+                                                                            <td
+                                                                                style="text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
+                                                                                {{ $actividad->actividad }}
+                                                                            </td>
+                                                                            <td
+                                                                                style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                                                {{ $actividad->horas }}
+                                                                            </td>
+                                                                            <td
+                                                                                style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                                                {{ $actividad->nombreActividad }}
+                                                                            </td>
+                                                                            <td>
+                                                                                <img width="100px"
+                                                                                    src="data:image/png;base64,{{ $actividad->evidencia }}"
+                                                                                    alt="Evidencia" />
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
                                         </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-   
-</td>
 
                                 </tr>
                             @endforeach
@@ -134,7 +155,8 @@
         </div>
         <br>
 
-        <form id="cerrarPracticaForm" action="{{ route('ParticipanteVinculacion.cerrarProcesoPracticasii') }}" method="POST">
+        <form id="cerrarPracticaBtn" action="{{ route('ParticipanteVinculacion.cerrarProcesoPracticasii') }}"
+            method="POST">
             @csrf
             @method('PUT')
             <button type="button" id="cerrarPracticaBtn" class="button1_1">Cerrar Práctica II estudiantes</button>
@@ -160,30 +182,48 @@
                                 <th>NOTA PRACTICA</th>
                                 <th>ESTADO</th>
                                 <th>ACCIONES</th>
-                             </tr>
+                            </tr>
                         </thead>
                         <tbody>
                             @if (count($estudiantesCalificar) == 0)
                                 <tr>
-                                    <td colspan="10" <td class="noExisteRegistro1" style="font-size: 16px !important;" >No hay estudiantes para calificar</td>
+                                    <td colspan="10" <td class="noExisteRegistro1" style="font-size: 16px !important;">No
+                                        hay estudiantes para calificar</td>
                                 </tr>
                             @endif
                             @foreach ($estudiantesCalificar as $index => $practica)
-                                <form action="{{ route('ParticipanteVinculacion.guardarNotasPracticasii') }}" method="POST">
+                                <form action="{{ route('ParticipanteVinculacion.guardarNotasPracticasii') }}"
+                                    method="POST">
                                     @csrf
                                     <tr>
-                                        <td style="min-width: 30px !important; text-transform: uppercase; font-size:.7em; text-align:center;  ">{{ $index + 1 }}</td>
-                                        <td style="min-width: 170px !important; text-transform: uppercase; font-size:.7em; ">{{ $practica->apellidos }} {{ $practica->nombres }}</td>
-                                        <td style="min-width: 170px !important; text-transform: uppercase; font-size:.7em; ">{{ $practica->carrera }}</td>
-                                        <td style="min-width: 170px !important; font-size:.7em; ">{{ $practica->correo }}</td>
-                                        <td style="min-width: 170px !important; text-transform: uppercase; font-size:.7em; ">{{ $practica->celular }}</td>
-                                        <td style="min-width: 100px !important; text-align:center; text-transform: uppercase; font-size:.7em; ">{{ $practica->practicasii->HorasPlanificadas }}</td>
+                                        <td
+                                            style="min-width: 30px !important; text-transform: uppercase; font-size:.7em; text-align:center;  ">
+                                            {{ $index + 1 }}</td>
+                                        <td
+                                            style="min-width: 170px !important; text-transform: uppercase; font-size:.7em; ">
+                                            {{ $practica->apellidos }} {{ $practica->nombres }}</td>
+                                        <td
+                                            style="min-width: 170px !important; text-transform: uppercase; font-size:.7em; ">
+                                            {{ $practica->carrera }}</td>
+                                        <td style="min-width: 170px !important; font-size:.7em; ">{{ $practica->correo }}
+                                        </td>
+                                        <td
+                                            style="min-width: 170px !important; text-transform: uppercase; font-size:.7em; ">
+                                            {{ $practica->celular }}</td>
+                                        <td
+                                            style="min-width: 100px !important; text-align:center; text-transform: uppercase; font-size:.7em; ">
+                                            {{ $practica->practicasii->HorasPlanificadas }}</td>
                                         <input type="hidden" name="estudianteId" value="{{ $practica->estudianteId }}">
-                                        <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            <input type="number" name="notaTutorEmpresarial" class="input input_select_4" placeholder="0" id="notaTutorEmpresarial">
+                                        <td
+                                            style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                            <input type="number" name="notaTutorEmpresarial" class="input input_select_4"
+                                                placeholder="0" id="notaTutorEmpresarial">
                                             <span id="errorMensaje" style="color: red; display: none;"></span>
                                         </td>
-                                        <td><center><button class="button3 efects_button btn_save" type="submit"><i class="fa-solid fa-save"></i></button></center></td>
+                                        <td>
+                                            <center><button class="button3 efects_button btn_save" type="submit"><i
+                                                        class="fa-solid fa-save"></i></button></center>
+                                        </td>
                                     </tr>
                                 </form>
                             @endforeach
@@ -204,11 +244,11 @@
                     <table class="mat-mdc-table">
                         <thead class="ng-star-inserted">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                            <th>N°</th>
+                                <th>N°</th>
                                 <th>ESTUDIANTE</th>
                                 <th>CARRERA</th>
                                 <th>CORREO</th>
-                                
+
                                 <th>TELÉFONO</th>
                                 <th>HORAS DE PRÁCTICAS</th>
                                 <th>NOTA FINAL</th>
@@ -219,19 +259,28 @@
                         <tbody>
                             @if (count($estudiantesCalificados) == 0)
                                 <tr>
-                                    <td colspan="10" <td class="noExisteRegistro1" style="font-size: 16px !important;" >No hay estudiantes calificados</td>
+                                    <td colspan="10" <td class="noExisteRegistro1" style="font-size: 16px !important;">
+                                        No hay estudiantes calificados</td>
                                 </tr>
                             @endif
                             @foreach ($estudiantesCalificados as $index => $practica)
                                 <tr id="row{{ $practica->estudianteId }}">
-                                <td style="min-width: 30px !important; text-transform: uppercase; font-size:.7em; ">{{ $loop->iteration }}</td>
-                                    <td style="min-width: 170px !important; text-transform: uppercase; font-size:.7em; ">{{ $practica->apellidos }} {{ $practica->nombres }}</td>
-                                    <td style="min-width: 170px !important; text-transform: uppercase; font-size:.7em;" >{{ $practica->carrera }}</td>
+                                    <td style="min-width: 30px !important; text-transform: uppercase; font-size:.7em; ">
+                                        {{ $loop->iteration }}</td>
+                                    <td style="min-width: 170px !important; text-transform: uppercase; font-size:.7em; ">
+                                        {{ $practica->apellidos }} {{ $practica->nombres }}</td>
+                                    <td style="min-width: 170px !important; text-transform: uppercase; font-size:.7em;">
+                                        {{ $practica->carrera }}</td>
                                     <td style="min-width: 170px !important; font-size:.7em; ">{{ $practica->correo }}</td>
-                                    <td style="min-width: 100px !important; text-transform: uppercase; font-size:.7em; ">{{ $practica->celular }}</td>
-                                    <td style="min-width: 100px !important; text-align:center; text-transform: uppercase; font-size:.7em; ">{{ $practica->practicasii->HorasPlanificadas }}</td>
                                     <td style="min-width: 100px !important; text-transform: uppercase; font-size:.7em; ">
-                                        <input type="number" name="notaTutorEmpresarial" value="{{ $practica->practicasii->nota_final ?? '' }}" min="0" max="10" step="0.01" disabled>
+                                        {{ $practica->celular }}</td>
+                                    <td
+                                        style="min-width: 100px !important; text-align:center; text-transform: uppercase; font-size:.7em; ">
+                                        {{ $practica->practicasii->HorasPlanificadas }}</td>
+                                    <td style="min-width: 100px !important; text-transform: uppercase; font-size:.7em; ">
+                                        <input type="number" name="notaTutorEmpresarial"
+                                            value="{{ $practica->practicasii->nota_final ?? '' }}" min="0"
+                                            max="10" step="0.01" disabled>
                                     </td>
                                     <td style="text-align: center;">
                                         @if ($practica->practicasii->nota_final <= 14)
@@ -242,12 +291,16 @@
                                     </td>
                                     <td style="text-align: center;">
                                         <div class="btn-group shadow-0">
-                                           <center> <button class="button3 efects_button btn_editar3" onclick="editRow({{ $practica->estudianteId }})" style="margin-right: 5px;">
-                                                <i class="bx bx-edit-alt"></i>
-                                            </button> </center>
-                                            <center> <button class="button3 efects_button btn_save" onclick="saveRow({{ $practica->estudianteId }})" style="display: none; margin-right: 5px;">
-                                                <i class="fa-solid fa-save"></i>
-                                            </button> </center>
+                                            <center> <button class="button3 efects_button btn_editar3"
+                                                    onclick="editRow({{ $practica->estudianteId }})"
+                                                    style="margin-right: 5px;">
+                                                    <i class="bx bx-edit-alt"></i>
+                                                </button> </center>
+                                            <center> <button class="button3 efects_button btn_save"
+                                                    onclick="saveRow({{ $practica->estudianteId }})"
+                                                    style="display: none; margin-right: 5px;">
+                                                    <i class="fa-solid fa-save"></i>
+                                                </button> </center>
                                         </div>
                                     </td>
                                 </tr>
@@ -272,13 +325,14 @@
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
 
     <script>
-         $(document).ready(function() {
-                    // Hacer que los cards sean draggable
-                    $('.draggable-card1_3').draggable({
-                        handle: ".card-header",
-                        containment: "window"
-                    });
-                });
+        $(document).ready(function() {
+            // Hacer que los cards sean draggable
+            $('.draggable-card1_3').draggable({
+                handle: ".card-header",
+                containment: "window"
+            });
+        });
+
         function openCard(cardId) {
             document.getElementById(cardId).style.display = 'block';
         }
@@ -340,6 +394,24 @@
                     alertElement.style.display = 'none';
                 }
             }, 2000); // 2000 milisegundos = 2 segundos
+        });
+    </script>
+
+    <script>
+        document.getElementById('cerrarPracticaBtn').addEventListener('click', function(event) {
+            event.preventDefault(); // Previene el envío del formulario
+            Swal.fire({
+                title: '¿Está seguro de finalizar a los estudiantes?',
+                text: "Debe verificar que todos los estudiantes hayan generado todos sus documentos antes de finalizar el proceso.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, cerrar práctica!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('cerrarPracticaForm').submit();
+                }
+            });
         });
     </script>
 @endsection

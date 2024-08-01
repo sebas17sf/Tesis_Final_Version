@@ -140,7 +140,7 @@
     </div>
     <br>
 
-    <form id="cerrarPracticaForm" action="{{ route('ParticipanteVinculacion.cerrarProcesoPracticasI') }}" method="POST">
+    <form id="cerrarPracticaBtn" action="{{ route('ParticipanteVinculacion.cerrarProcesoPracticasI') }}" method="POST">
         @csrf
         @method('PUT')
         <button type="button" id="cerrarPracticaBtn" class="button1_1">Cerrar Práctica I estudiantes</button>
@@ -417,6 +417,23 @@
     }
 </script>
 
+<script>
+    document.getElementById('cerrarPracticaBtn').addEventListener('click', function (event) {
+    event.preventDefault(); // Previene el envío del formulario
+    Swal.fire({
+        title: '¿Está seguro de finalizar a los estudiantes?',
+        text: "Debe verificar que todos los estudiantes hayan generado todos sus documentos antes de finalizar el proceso.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, cerrar práctica!',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('cerrarPracticaForm').submit();
+        }
+    });
+});
+</script>
 
 
 
