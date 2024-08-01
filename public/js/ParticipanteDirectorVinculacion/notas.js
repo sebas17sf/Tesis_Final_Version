@@ -1,18 +1,68 @@
 // Función para validar un campo de entrada de tipo número
-function validateNumberInput(input) {
+ // Function to validate individual inputs in the "Estudiantes por calificar" table
+function validateNumberInputCalificar(input) {
     const value = parseFloat(input.value);
     if (value < 0 || value > 10 || isNaN(value)) {
         input.style.borderColor = 'red';
-        input.nextElementSibling.innerText = 'El valor debe estar entre 1 y 10.';
+        input.nextElementSibling.innerText = 'El valor debe estar entre 0 y 10.';
         input.nextElementSibling.style.display = 'block';
-        return false; // Retorna false si hay errores
+        return false;
     } else {
         input.style.borderColor = '';
         input.nextElementSibling.innerText = '';
         input.nextElementSibling.style.display = 'none';
-        return true; // Retorna true si no hay errores
+        return true;
     }
 }
+
+// Add event listeners for real-time validation on the "Estudiantes por calificar" inputs
+document.querySelectorAll('.number-input-calificar').forEach(input => {
+    input.addEventListener('input', function() {
+        validateNumberInputCalificar(input);
+    });
+});
+
+// Form submission validation for "Estudiantes por calificar"
+document.getElementById('formNotasVinculacion').addEventListener('submit', function(event) {
+    const inputs = this.querySelectorAll('.number-input-calificar');
+    let isValid = true;
+
+    inputs.forEach(input => {
+        if (!validateNumberInputCalificar(input)) {
+            isValid = false;
+        }
+    });
+
+    if (!isValid) {
+        event.preventDefault();
+    }
+});
+
+// Function to validate individual inputs in the "Estudiantes Calificados" table
+function validateFormCalificados() {
+    let inputs = document.querySelectorAll('.validated-input-calificados');
+    let valid = true;
+
+    inputs.forEach(input => {
+        let value = parseFloat(input.value);
+        let errorMessage = input.nextElementSibling;
+
+        if (value < 0 || value > 10 || isNaN(value)) {
+            valid = false;
+            input.style.borderColor = 'red';
+            errorMessage.innerText = 'El valor debe estar entre 0 y 10.';
+            errorMessage.style.display = 'block';
+        } else {
+            input.style.borderColor = '';
+            errorMessage.innerText = '';
+            errorMessage.style.display = 'none';
+        }
+    });
+
+    return valid;
+}
+
+
 
 // Función para validar un campo de entrada de tipo texto
 function validateTextInput(input) {

@@ -118,8 +118,8 @@ document.addEventListener('DOMContentLoaded', function () {
     inputHorasPlanificadas.addEventListener('input', function () {
         const horas = parseInt(inputHorasPlanificadas.value, 10);
 
-        if (horas > 144 || horas < 80) {
-            errorHorasPlanificadas.textContent = 'Debe ingresar un valor entre 80 y 144 horas.';
+        if (horas > 144 || horas < 40) {
+            errorHorasPlanificadas.textContent = 'Debe ingresar un valor entre 40 y 144 horas.';
             errorHorasPlanificadas.style.color = 'red';
         } else {
             errorHorasPlanificadas.textContent = '';

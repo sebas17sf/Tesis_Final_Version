@@ -129,11 +129,12 @@ class EstudianteController extends Controller
 
     public function index()
     {
+
         // Verifica si el usuario está autenticado y si es un estudiante
         if (Auth::check() && Auth::user()->estudiante) {
             // Obtén los datos del estudiante relacionado con el usuario
             $estudiante = Auth::user()->estudiante;
-
+ 
             $periodo = Periodo::find($estudiante->idPeriodo);
 
             // Obtén la asignación de proyecto del estudiante (si existe)
