@@ -15,6 +15,7 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use App\Models\PracticaI;
 use App\Models\PracticaII;
 use App\Models\PracticaIII;
+
 use App\Models\PracticaIV;
 use App\Models\PracticaV;
 use Illuminate\Support\Facades\Auth;
@@ -1032,13 +1033,8 @@ class DocumentosVinculacion extends Controller
 
     private function convertToDate($excelDate)
     {
-        if (is_numeric($excelDate)) {
-            return \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($excelDate)->format('Y-m-d');
-        }
-        return null;
+        return Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($excelDate))->format('Y-m-d');
     }
-
-
 
 
 
