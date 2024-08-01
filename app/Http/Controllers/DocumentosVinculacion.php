@@ -1033,7 +1033,11 @@ class DocumentosVinculacion extends Controller
 
     private function convertToDate($excelDate)
     {
-        return Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($excelDate))->format('Y-m-d');
+        if (is_numeric($excelDate)) {
+            return Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($excelDate))->format('Y-m-d');
+        } else {
+            return Carbon::parse($excelDate)->format('Y-m-d');
+        }
     }
 
 
