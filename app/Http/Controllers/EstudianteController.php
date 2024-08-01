@@ -113,8 +113,12 @@ class EstudianteController extends Controller
         $estudiante->update(['userId' => $user->userId]);
 
         $asignacionProyecto = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->first();
-        if ($asignacionProyecto && $asignacionProyecto->estado === 'En ejecucion') {
-            $estudiante->update(['estado' => 'Aprobado-practicas']);
+        if ($asignacionProyecto) {
+            if ($asignacionProyecto->estado === 'En ejecucion') {
+                $estudiante->update(['estado' => 'Aprobado']);
+            } elseif ($asignacionProyecto->estado === 'Finalizado') {
+                $estudiante->update(['estado' => 'Aprobado-practicas']);
+            }
         }
 
 
