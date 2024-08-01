@@ -32,7 +32,7 @@
             <button type="submit" class="button1_1">Generar acta de designación Estudiante</button>
         </form>
         <br>
-        <div class="mat-elevation-z8 contenedor_general">
+      
         <div class="contenedor_tabla">
             <div class="table-container mat-elevation-z8">
 
@@ -40,17 +40,24 @@
                     <table class="mat-mdc-table">
                         <thead class="ng-star-inserted">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                <th style="min-width: 10px !important;">N°</th>
 
                                 <th class="tamanio1">ESTUDIANTE</th>
-                                <th class="tamanio3">DOCENTE ASIGNADO</th>
+                                <th class="tamanio1">DOCENTE ASIGNADO</th>
                                 <th class="tamanio">PROYECTO</th>
                                 <th>ACCIONES</th>
                             </tr>
                         </thead>
                         <tbody class="mdc-data-table__content ng-star-inserted">
+                            @if ($asignacionesEstudiantesDirector->isEmpty())
+                                <tr>
+                                    <td class="noExisteRegistro1" colspan="5" style="text-align: center; font-size: 16px !important;"">No hay asignaciones de estudiantes</td>
+                                </tr>
+                                @endif
 
                             @foreach ($asignacionesEstudiantesDirector as $asignacion)
                                 <tr>
+                                    <td style="text-align: center; width: 10px !important;">{{ $loop->iteration }}</td>
                                     <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left; ">
                                         {{ $asignacion->estudiante->apellidos }} {{ $asignacion->estudiante->nombres }}</td>
                                     <td style=" text-transform: uppercase; word-wrap: break-word; text-align: left; ">
@@ -269,9 +276,7 @@
         .contenedor_tabla {
             min-height: 1px !important;
         }
-        .table-container {
-    height: 275px !important;
-        }
+        
         div:where(.swal2-container) .swal2-textarea {
     height: 3.75em;
     width: 25em !important;

@@ -37,17 +37,18 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio1" style="min-width: 90px !important;">Estudiante</th>
-                                    <th style="min-width: 90px !important;">ESPE ID</th>
-                                    <th>Carrera</th>
-                                    <th>Departamento</th>
-                                    <th style="min-width: 150px !important;">Cumple con las tareas planificadas. Sobre 10</th>
-                                    <th style="min-width: 150px !important;">Resultados alcanzados. Sobre 10</th>
-                                    <th style="min-width: 150px !important;">Demuestra conocimientos en el área de práctica preprofesional. Sobre 10</th>
-                                    <th style="min-width: 150px !important;">Adaptabilidad e integración al sistema de trabajo del proyecto. Sobre 10</th>
-                                    <th style="min-width: 150px !important;">Aplicación y manejo de destrezas y habilidades acordes al perfil profesional.</th>
-                                    <th style="min-width: 150px !important;">Demuestra capacidad de liderazgo y de trabajo en equipo. Sobre 10</th>
-                                    <th style="min-width: 150px !important;">Asiste puntualmente. Sobre 10</th>
+                                    <th style="min-width: 30px !important; font-size:.76em;"">N°</th>
+                                    <th class="tamanio1" style="min-width: 90px !important; text-transform: uppercase; font-size:.76em;">Estudiante</th>
+                                    <th style="min-width: 90px !important; text-transform: uppercase; font-size:.76em;">ESPE ID</th>
+                                    <th style="min-width: 100px !important; text-transform: uppercase; font-size:.76em;">Carrera</th>
+                                    <th style="min-width: 130px !important; text-transform: uppercase; font-size:.76em;">Departamento</th>
+                                    <th style="min-width: 170px !important; text-transform: uppercase; font-size:.76em;">Cumple con las tareas planificadas</th>
+                                    <th style="min-width: 170px !important; text-transform: uppercase; font-size:.76em; ">Resultados alcanzados</th>
+                                    <th style="min-width: 170px !important; text-transform: uppercase; font-size:.76em; padding: 0% 0.50% ;">Demuestra conocimientos en el área de práctica preprofesional </th>
+                                    <th style="min-width: 170px !important; text-transform: uppercase; font-size:.76em; padding: 0% 0.50% ;">Adaptabilidad e integración al sistema de trabajo del proyecto</th>
+                                    <th style="min-width: 180px !important; text-transform: uppercase; font-size:.76em; padding: 0.15% 0.50% ;">Aplicación y manejo de destrezas y habilidades acordes al perfil profesional</th>
+                                    <th style="min-width: 170px !important; text-transform: uppercase; font-size:.76em; padding: 0% 0.50%;">Demuestra capacidad de liderazgo y de trabajo en equipo</th>
+                                    <th style="min-width: 170px !important; text-transform: uppercase; font-size:.76em;  padding: 0% 0.50% ;">Asiste puntualmente </th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -59,7 +60,9 @@
                                 @else
                                     @foreach ($estudiantes as $estudiante)
                                         <tr>
-                                            <td class="wide-cell" style=" font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                            <td style="font-size: .7em; text-align: center; min-width: 30px !important;">
+                                                {{ $loop->iteration }}
+                                            <td class="wide-cell" style=" font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: left;">
                                                 {{ $estudiante->apellidos }} {{ $estudiante->nombres }}
                                             </td>
                                             <td style=" font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
@@ -71,14 +74,14 @@
                                             <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                 {{ $estudiante->departamento }}
                                             </td>
-                                            <td><input type="number" name="cumple_tareas[]" value="" min="0" max="10" step="0.01" required><small class="form-text text-danger" style="display: none;"></small></td>
-                                            <td><input type="number" name="resultados_alcanzados[]" value="" min="0" max="10" step="0.01" required><small class="form-text text-danger" style="display: none;"></small></td>
-                                            <td><input type="number" name="conocimientos_area[]" value="" min="0" max="10" step="0.01" required><small class="form-text text-danger" style="display: none;"></small></td>
-                                            <td><input type="number" name="adaptabilidad[]" value="" min="0" max="10" step="0.01" required><small class="form-text text-danger" style="display: none;"></small></td>
-                                            <td><input type="number" name="Aplicacion[]" value="" min="0" max="10" step="0.01" required><small class="form-text text-danger" style="display: none;"></small></td>
-                                            <td><input type="number" name="capacidad_liderazgo[]" value="" min="0" max="10" step="0.01" required><small class="form-text text-danger" style="display: none;"></small></td>
-                                            <td><input type="number" name="asistencia_puntual[]" value="" min="0" max="10" step="0.01" required><small class="form-text text-danger" style="display: none;"></small></td>
-                                            <td><input type="hidden" name="estudiante_id[]" value="{{ $estudiante->estudianteId }}"></td>
+                                            <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;"><input style="text-align:center;  " type="number" name="cumple_tareas[]" value="" min="0" max="10" step="0.01" required><small class="form-text text-danger" style="display: none;"></small></td>
+                                            <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;"><input style="text-align:center;  " type="number" name="resultados_alcanzados[]" value="" min="0" max="10" step="0.01" required><small class="form-text text-danger" style="display: none;"></small></td>
+                                            <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;"><input style="text-align:center;  " type="number" name="conocimientos_area[]" value="" min="0" max="10" step="0.01" required><small class="form-text text-danger" style="display: none;"></small></td>
+                                            <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;"><input style="text-align:center;  " type="number" name="adaptabilidad[]" value="" min="0" max="10" step="0.01" required><small class="form-text text-danger" style="display: none;"></small></td>
+                                            <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;"><input style="text-align:center;  " type="number" name="Aplicacion[]" value="" min="0" max="10" step="0.01" required><small class="form-text text-danger" style="display: none;"></small></td>
+                                            <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;"><input style="text-align:center;  " type="number" name="capacidad_liderazgo[]" value="" min="0" max="10" step="0.01" required><small class="form-text text-danger" style="display: none;"></small></td>
+                                            <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;"><input style="text-align:center;  " type="number" name="asistencia_puntual[]" value="" min="0" max="10" step="0.01" required><small class="form-text text-danger" style="display: none;"></small></td>
+                                            <td style="font-size: .7em; text-align: center; min-width: 10px !important;"><input style="text-align:center;  " class="input" type="hidden" name="estudiante_id[]" value="{{ $estudiante->estudianteId }}"></td>
                                         </tr>
                                     @endforeach
                                 @endif
@@ -107,31 +110,39 @@
         <hr>
         <h4><b>Estudiantes Calificados</b></h4>
         <hr>
-        @if (!$estudiantesConNotas->isEmpty())
+       
             <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
                     <div id="tablaDocentes">
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th>Estudiante</th>
-                                    <th>Espe ID</th>
-                                    <th>Carrera</th>
-                                    <th>Departamento</th>
-                                    <th>Cumple con las tareas planificadas. Sobre 10</th>
-                                    <th>Resultados Alcanzados. Sobre 10</th>
-                                    <th>Demuestra conocimientos en el área</th>
-                                    <th>Adaptabilidad</th>
-                                    <th>Aplicación de destrezas y habilidades</th>
-                                    <th>Capacidad de liderazgo</th>
-                                    <th>Asistencia puntual</th>
-                                    <th>Informe de Servicio Comunitario</th>
-                                    <th>Acciones</th>
+                                <th style="min-width: 30px !important; font-size:.76em;">N°</th>
+                                    <th  style="min-width: 90px !important; text-transform: uppercase; font-size:.76em;">ESTUDIANTE</th>
+                                    <th style="min-width: 90px !important; text-transform: uppercase; font-size:.76em;">Espe ID</th>
+                                    <th style="min-width: 90px !important; text-transform: uppercase; font-size:.76em;">Carrera</th>
+                                    <th style="min-width: 90px !important; text-transform: uppercase; font-size:.76em;">Departamento</th>
+                                    <th style="min-width: 130px !important; text-transform: uppercase; font-size:.76em; ">Cumple con las tareas planificadas</th>
+                                    <th style="min-width: 130px !important; text-transform: uppercase; font-size:.76em;">Resultados Alcanzados</th>
+                                    <th style="min-width: 130px !important; text-transform: uppercase; font-size:.76em;">Demuestra conocimientos en el área</th>
+                                    <th style="min-width: 130px !important; text-transform: uppercase; font-size:.76em;">Adaptabilidad</th>
+                                    <th style="min-width: 130px !important; text-transform: uppercase; font-size:.76em;">Aplicación de destrezas y habilidades</th>
+                                    <th style="min-width: 130px !important; text-transform: uppercase; font-size:.76em;">Capacidad de liderazgo</th>
+                                    <th style="min-width: 130px !important; text-transform: uppercase; font-size:.76em;">Asistencia puntual</th>
+                                    <th style="min-width: 130px !important; text-transform: uppercase; font-size:.76em;">Informe de Servicio Comunitario</th>
+                                    <th style="min-width: 95px !important; text-transform: uppercase; font-size:.76em;">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody class="mdc-data-table__content ng-star-inserted">
+                                 @if ($estudiantesConNotas->isEmpty())
+                                    <tr>
+                                        <td class="noExisteRegistro1" style="font-size: 16px !important;" colspan="12">No hay estudiantes calificados.</td>
+                                    </tr>
+                                @else
                                 @foreach ($estudiantesConNotas as $estudiante)
                                     <tr id="row{{ $estudiante->estudianteId }}">
+                                        <td style="font-size: .7em; text-align: center; min-width: 30px !important;">
+                                            {{ $loop->iteration }}
                                         <td class="wide-cell" style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             {{ $estudiante->apellidos }} {{ $estudiante->nombres }}
                                         </td>
@@ -145,25 +156,25 @@
                                             {{ $estudiante->departamento }}
                                         </td>
                                         <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            <input type="number" name="tareas" value="{{ $estudiante->notas->first()->tareas ?? '' }}" min="0" max="10" step="0.01" disabled>
+                                            <input style="text-align:center;  "  type="number" name="tareas" value="{{ $estudiante->notas->first()->tareas ?? '' }}" min="0" max="10" step="0.01" disabled>
                                         </td>
                                         <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            <input type="number" name="resultados_alcanzados" value="{{ $estudiante->notas->first()->resultadosAlcanzados ?? '' }}" min="0" max="10" step="0.01" disabled>
+                                            <input style="text-align:center;  "  type="number" name="resultados_alcanzados" value="{{ $estudiante->notas->first()->resultadosAlcanzados ?? '' }}" min="0" max="10" step="0.01" disabled>
                                         </td>
                                         <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            <input type="number" name="conocimientos_area" value="{{ $estudiante->notas->first()->conocimientos ?? '' }}" min="0" max="10" step="0.01" disabled>
+                                            <input style="text-align:center;  "  type="number" name="conocimientos_area" value="{{ $estudiante->notas->first()->conocimientos ?? '' }}" min="0" max="10" step="0.01" disabled>
                                         </td>
                                         <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            <input type="number" name="adaptabilidad" value="{{ $estudiante->notas->first()->adaptabilidad ?? '' }}" min="0" max="10" step="0.01" disabled>
+                                            <input style="text-align:center;  "  type="number" name="adaptabilidad" value="{{ $estudiante->notas->first()->adaptabilidad ?? '' }}" min="0" max="10" step="0.01" disabled>
                                         </td>
                                         <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            <input type="number" name="Aplicacion" value="{{ $estudiante->notas->first()->aplicacion ?? '' }}" min="0" max="10" step="0.01" disabled>
+                                            <input style="text-align:center;  "   type="number" name="Aplicacion" value="{{ $estudiante->notas->first()->aplicacion ?? '' }}" min="0" max="10" step="0.01" disabled>
                                         </td>
                                         <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            <input type="number" name="capacidad_liderazgo" value="{{ $estudiante->notas->first()->CapacidadLiderazgo ?? '' }}" min="0" max="10" step="0.01" disabled>
+                                            <input style="text-align:center;  "  type="number" name="capacidad_liderazgo" value="{{ $estudiante->notas->first()->CapacidadLiderazgo ?? '' }}" min="0" max="10" step="0.01" disabled>
                                         </td>
                                         <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            <input type="number" name="asistencia_puntual" value="{{ $estudiante->notas->first()->asistencia ?? '' }}" min="0" max="10" step="0.01" disabled>
+                                            <input style="text-align:center;  "  type="number" name="asistencia_puntual" value="{{ $estudiante->notas->first()->asistencia ?? '' }}" min="0" max="10" step="0.01" disabled>
                                         </td>
                                         <td style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             {{ $estudiante->notas->first()->informe ?? 'Pendiente' }}
@@ -229,12 +240,13 @@
                                                 </div>
                                             </div>
                                 @endforeach
+                            @endif
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-        @endif
+        
 
         <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
         <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
@@ -338,4 +350,11 @@
                 row.querySelector('.btn_save').style.display = 'none';
             }
         </script>
+        <style>
+            .tabla-center{
+                font-size: .8em; 
+                text-transform: uppercase; 
+                word-wrap: break-word; 
+                text-align: center;}
+        </style>
     @endsection

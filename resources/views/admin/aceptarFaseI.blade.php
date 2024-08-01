@@ -42,7 +42,7 @@
                                         <th class="tamanio4">TUTOR ACADÉMICO</th>
                                         <th class="tamanio4">TUTOR EMPRESARIAL</th>
                                         <th class="tamanio1">EMPRESA</th>
-                                        <th>NRC</th>
+                                        <th class="tamanio3">NRC</th>
                                         <th>PERIODO</th>
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
@@ -52,6 +52,12 @@
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
+                                    @if ($estudiantesConPracticaI->isEmpty() && $estudiantesConPracticaII->isEmpty())
+                                    <tr style="text-align:center">
+                                        <td class="noExisteRegistro1" style="font-size: 16px !important;"colspan="10">No hay
+                                            estudiantes en proceso de revisión.</td>
+                                    </tr>
+                                    @endif
                                     @foreach ($estudiantesConPracticaI as $practicaI)
                                         @if ($practicaI->estudiante)
                                             <tr>
@@ -312,7 +318,7 @@
                                         <th class="tamanio4">TUTOR ACADÉMICO</th>
                                         <th class="tamanio4">TUTOR EMPRESARIAL</th>
                                         <th class="tamanio1">EMPRESA</th>
-                                        <th>NRC</th>
+                                        <th class="tamanio3">NRC</th>
                                         <th>PERIODO</th>
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
@@ -606,7 +612,7 @@
                                         <th class="tamanio4">TUTOR ACADÉMICO</th>
                                         <th class="tamanio4">TUTOR EMPRESARIAL</th>
                                         <th class="tamanio1">EMPRESA</th>
-                                        <th>NRC</th>
+                                        <th class="tamanio3">NRC</th>
                                         <th>PERIODO</th>
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
@@ -891,7 +897,7 @@
                                         <th class="tamanio4">TUTOR ACADÉMICO</th>
                                         <th class="tamanio4">TUTOR EMPRESARIAL</th>
                                         <th class="tamanio1">EMPRESA</th>
-                                        <th>NRC</th>
+                                        <th class="tamanio3">NRC</th>
                                         <th>PERIODO</th>
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
@@ -1162,7 +1168,7 @@
                                         <th class="tamanio4">TUTOR ACADÉMICO</th>
                                         <th class="tamanio4">TUTOR EMPRESARIAL</th>
                                         <th class="tamanio1">EMPRESA</th>
-                                        <th>NRC</th>
+                                        <th class="tamanio3">NRC</th>
                                         <th>PERIODO</th>
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>
@@ -1431,7 +1437,7 @@
                                         <th class="tamanio4">TUTOR ACADÉMICO</th>
                                         <th class="tamanio4">TUTOR EMPRESARIAL</th>
                                         <th class="tamanio1">EMPRESA</th>
-                                        <th>NRC</th>
+                                        <th class="tamanio3">NRC</th>
                                         <th>PERIODO</th>
                                         <th>FECHA INICIO</th>
                                         <th>FECHA FIN</th>

@@ -443,7 +443,17 @@ tr:hover {
     padding-right: 5px !important;
     border: 1px solid #40456c;
     border-radius: 0.25rem;
-    font-size: 0.8rem !important;
+    font-size: 0.7rem !important;
+    color: rgb(34, 34, 34) !important; /* Increase font size for select */
+}
+.input_select_3 {
+    width: 30%;
+    height: 30px !important;
+    padding-left: 10px !important;
+    padding-right: 5px !important;
+    border: 1px solid #40456c;
+    border-radius: 0.25rem;
+    font-size: 0.7rem !important;
     color: rgb(34, 34, 34) !important; /* Increase font size for select */
 }
 .input_select4 {

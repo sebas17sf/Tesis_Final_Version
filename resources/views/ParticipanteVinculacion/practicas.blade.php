@@ -46,6 +46,11 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @if (count($estudiantes) == 0)
+                                <tr>
+                                    <td colspan="10" style="text-align: center;">No hay estudiantes en prácticas</td>
+                                </tr>
+                            @endif
                             @foreach ($estudiantes as $practica)
                                 <tr>
                                     <td>{{ $practica->apellidos }} {{ $practica->nombres }}</td>
