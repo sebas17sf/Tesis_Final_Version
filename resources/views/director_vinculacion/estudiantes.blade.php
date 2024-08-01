@@ -26,9 +26,9 @@
     @endif
 
     <div class="contenedor_registro_genero">
-        <div class="mat-elevation-z8 contenedor_general">
+        
             <h4><b>Estudiantes por calificar informe</b></h4>
-            
+            <hr>
             <form method="post" action="{{ route('director_vinculacion.actualizarInforme') }}">
                 @csrf
                 <div class="contenedor_tabla">
@@ -38,38 +38,41 @@
                                 <thead class="ng-star-inserted">
                                     <tr
                                         class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th class="tamanio1">ESTUDIANTE</th>
-                                        <th>ESPE ID</th>
-                                        <th>CARRERA</th>
-                                        <th>DEPARTAMENTO</th>
-                                        <th>INFORME DE SERVICIO COMUNITARIO 30%</th>
+                                        <th  style="width: 30px !important;">N°</th>
+                                        <th style="min-width: 90px !important; text-transform: uppercase; font-size:. .8em;">ESTUDIANTE</th>
+                                        <th style="min-width: 90px !important; text-transform: uppercase; font-size:. .8em;">ESPE ID</th>
+                                        <th style="min-width: 90px !important; text-transform: uppercase; font-size:. .8em;">CARRERA</th>
+                                        <th style="min-width: 90px !important; text-transform: uppercase; font-size:. .8em;">DEPARTAMENTO</th>
+                                        <th style="min-width: 90px !important; text-transform: uppercase; font-size:. .8em;">INFORME DE SERVICIO COMUNITARIO 30%</th>
                                     </tr>
                                 </thead>
                                 <tbody class="mdc-data-table__content ng-star-inserted">
                                     @if ($estudiantesConNotasPendientes->isEmpty())
                                         <tr style="text-align:center">
-                                            <td class="noExisteRegistro1" style="font-size: 16px !important;" colspan="5">
+                                            <td class="noExisteRegistro1" style="font-size: 16px !important;" colspan="6">
                                                 El docente participante aún no ha calificado a los estudiantes.
                                             </td>
                                         </tr>
                                     @else
                                         @foreach ($estudiantesConNotasPendientes as $estudiante)
                                             <tr>
-                                                <td class="wide-cell" style="text-transform: uppercase; word-wrap: break-word; text-align: left;">
+                                                <td style="text-transform: uppercase; width: 10px !important; word-wrap: break-word; text-align: center;">
+                                                    {{ $loop->iteration }}
+                                                <td class="wide-cell" style="text-transform: uppercase; font-size: .7em;  word-wrap: break-word; text-align: left;">
                                                     {{ $estudiante->apellidos }} {{ $estudiante->nombres }}
                                                 </td>
-                                                <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                <td style="text-transform: uppercase; word-wrap: break-word; font-size: .7em;  text-align: center;">
                                                     {{ $estudiante->espeId }}
                                                 </td>
-                                                <td class="wide-cell" style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                <td style="text-transform: uppercase; font-size: .7em;  word-wrap: break-word; text-align: center;">
                                                     {{ $estudiante->carrera }}
                                                 </td>
-                                                <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                <td style="text-transform: uppercase; font-size: .7em;  word-wrap: break-word; text-align: center;">
                                                     {{ $estudiante->departamento }}
                                                 </td>
-                                                <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                                    <input type="hidden" class="input input_select2" name="estudiante_id[]" value="{{ $estudiante->estudianteId }}">
-                                                    <input type="text" class="input" name="informe_servicio[]" value="{{ $estudiante->notas->first()->informe === 'Pendiente' ? '' : $estudiante->notas->first()->informe }}" required>
+                                                <td style="text-transform: uppercase; font-size: .6em; word-wrap: break-word; text-align: center;">
+                                                    <input style="text-align: center;" type="hidden" class=" form-control input input_select3" name="estudiante_id[]" value="{{ $estudiante->estudianteId }}">
+                                                    <center><input style="text-align: center;" type="text" class="form-control input input_select_3" name="informe_servicio[]" value="{{ $estudiante->notas->first()->informe === 'Pendiente' ? '' : $estudiante->notas->first()->informe }}" required></center>
                                                     <small class="form-text text-danger" style="display: none;"></small>
                                                 </td>
 
@@ -87,7 +90,7 @@
             </form>
         </div>
         <br>
-        <div class="mat-elevation-z8 contenedor_general">
+        
             <h4><b>Estudiantes Calificados</b></h4>
             <hr>
             <div class="contenedor_tabla">
@@ -96,21 +99,22 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio1">ESTUDIANTE</th>
-                                    <th>ESPE ID</th>
-                                    <th class="tamanio4">CARRERA</th>
-                                    <th class="tamanio3">DEPARTAMENTO</th>
-                                    <th>TAREAS</th>
-                                    <th>RESULTADOS ALCANZADOS</th>
-                                    <th>CONOCIMIENTOS EN EL ÁREA</th>
-                                    <th>ADAPTABILIDAD</th>
-                                    <th>APLICACION DE DESTREZAS Y HABILIDADES</th>
-                                    <th>CAPACIDAD DE LIDERAZGO</th>
-                                    <th>ASISTENCIA</th>
-                                    <th>INFORME DE SERVICIO COMUNITARIO</th>
-                                    <th>NOTA FINAL</th>
-                                    <th>ESTADO</th>
-                                    <th>EDITAR NOTAS</th>
+                                    <th style="min-width: 30px !important; text-transform: uppercase; font-size:. .8em;">N°</th>
+                                    <th style="min-width: 100px !important; text-transform: uppercase; font-size:. .8em;">ESTUDIANTE</th>
+                                    <th style="min-width: 100px !important; text-transform: uppercase; font-size:. .8em;">ESPE ID</th>
+                                    <th style="min-width: 100px !important; text-transform: uppercase; font-size:. .8em;">CARRERA</th>
+                                    <th style="min-width: 100px !important; text-transform: uppercase; font-size:. .8em;">DEPARTAMENTO</th>
+                                    <th style="min-width: 90px !important; text-transform: uppercase; font-size:. .8em;">TAREAS</th>
+                                    <th style="min-width: 120px !important; text-transform: uppercase; font-size:. .8em;">RESULTADOS ALCANZADOS</th>
+                                    <th style="min-width: 120px !important; text-transform: uppercase; font-size:. .8em;">CONOCIMIENTOS EN EL ÁREA</th>
+                                    <th style="min-width: 140px !important; text-transform: uppercase; font-size:. .8em;">ADAPTABILIDAD</th>
+                                    <th style="min-width: 130px !important; text-transform: uppercase; font-size: .9em;">APLICACION DE DESTREZAS Y HABILIDADES</th>
+                                    <th style="min-width: 100px !important; text-transform: uppercase; font-size:. .8em;">CAPACIDAD DE LIDERAZGO</th>
+                                    <th style="min-width: 100px !important; text-transform: uppercase; font-size:. .8em;">ASISTENCIA</th>
+                                    <th style="min-width: 100px !important; text-transform: uppercase; font-size:. .8em;">INFORME DE SERVICIO COMUNITARIO</th>
+                                    <th style="min-width: 100px !important; text-transform: uppercase; font-size:. .8em; padding: 0% 0.50%;">NOTA FINAL</th>
+                                    <th style="min-width: 100px !important; text-transform: uppercase; font-size:. .8em;">ESTADO</th>
+                                    <th style="min-width: 100px !important; text-transform: uppercase; font-size:. .8em; ">EDITAR NOTAS</th>
                                 </tr>
                             </thead>
                             <tbody class="mdc-data-table__content ng-star-inserted">
@@ -123,55 +127,58 @@
                                 @else
                                     @foreach ($estudiantesCalificados as $estudiante)
                                         <tr id="row{{ $estudiante->estudianteId }}">
-                                            <td class="wide-cell" style="text-transform: uppercase; word-wrap: break-word; text-align: left;">
+                                            <td style="text-transform: uppercase; font-size: .7em;  min-width: 30px !important; word-wrap: break-word; text-align: center;">
+                                                {{ $loop->iteration }}
+                                            
+                                            <td class="wide-cell" style="text-transform: uppercase; font-size: .7em; word-wrap: break-word; text-align: left;">
                                                 {{ $estudiante->apellidos }} {{ $estudiante->nombres }}
                                             </td>
-                                            <td>{{ $estudiante->espeId }}</td>
-                                            <td class="wide-cell" style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                            <td style="text-transform: uppercase; word-wrap: break-word; font-size: .7em; text-align: center;">{{ $estudiante->espeId }}</td>
+                                            <td class="wide-cell" style="text-transform: uppercase; font-size: .7em; word-wrap: break-word; text-align: center;">
                                                 {{ $estudiante->carrera }}
                                             </td>
-                                            <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                            <td style="text-transform: uppercase; word-wrap: break-word; font-size: .7em; text-align: center;">
                                                 {{ $estudiante->departamento }}
                                             </td>
-                                            <td style="text-align: center;">
+                                            <td style="text-align: center; font-size: .7em; ">
                                                 @foreach ($estudiante->notas as $nota)
                                                     {{ $nota->tareas }}<br>
                                                 @endforeach
                                             </td>
-                                            <td style="text-align: center;">
+                                            <td style="text-align: center; font-size: .7em;">
                                                 @foreach ($estudiante->notas as $nota)
                                                     {{ $nota->resultadosAlcanzados }}<br>
                                                 @endforeach
                                             </td>
-                                            <td style="text-align: center;">
+                                            <td style="text-align: center; font-size: .7em;">
                                                 @foreach ($estudiante->notas as $nota)
                                                     {{ $nota->conocimientos }}<br>
                                                 @endforeach
                                             </td>
-                                            <td style="text-align: center;">
+                                            <td style="text-align: center; font-size: .7em;">
                                                 @foreach ($estudiante->notas as $nota)
                                                     {{ $nota->adaptabilidad }}<br>
                                                 @endforeach
                                             </td>
-                                            <td style="text-align: center;">
+                                            <td style="text-align: center; font-size: .7em;">
                                                 @foreach ($estudiante->notas as $nota)
                                                     {{ $nota->aplicacion }}<br>
                                                 @endforeach
                                             </td>
-                                            <td style="text-align: center;">
+                                            <td style="text-align: center; font-size: .7em;">
                                                 @foreach ($estudiante->notas as $nota)
                                                     {{ $nota->CapacidadLiderazgo }}<br>
                                                 @endforeach
                                             </td>
-                                            <td style="text-align: center;">
+                                            <td style="text-align: center; font-size: .7em;">
                                                 @foreach ($estudiante->notas as $nota)
                                                     {{ $nota->asistencia }}<br>
                                                 @endforeach
                                             </td>
-                                            <td style="text-align: center;">
-                                                <input type="text" class="input" name="nota_servicio" value="{{ $estudiante->notas->first()->informe ?? '' }}" disabled>
+                                            <td style="text-align: center; font-size: .7em;">
+                                                <input  style="text-align: center; font-size: .7em;" type="text" class="form-control input input_select3" name="nota_servicio" value="{{ $estudiante->notas->first()->informe ?? '' }}" disabled>
                                             </td>
-                                            <td style="text-align: center;">
+                                            <td style="text-align: center; font-size: .7em; min-width: 60px !important;">
                                                 @php
                                                     $notaTotal = $estudiante->notas->sum(function ($nota) {
                                                         return floatval($nota->tareas) +
@@ -187,20 +194,20 @@
                                                 @endphp
                                                 {{ $notaFinal }}
                                             </td>
-                                            <td style="text-align: center;">
+                                            <td style="text-align: center; font-size: .7em; min-width: 50px !important;">
                                                 @if ($notaFinal <= 16)
                                                     <span class="badge badge-danger">REPROBADO</span>
                                                 @else
                                                     <span class="badge badge-success">APROBADO</span>
                                                 @endif
                                             </td>
-                                            <td style="text-align: center;">
-                                                <button class="button3 efects_button btn_editar3" onclick="editRow({{ $estudiante->estudianteId }})">
+                                            <td style="text-align: center; center; font-size: .7em; min-width: 70px !important;">
+                                              <center>  <button  class="button3 efects_button btn_editar3" onclick="editRow({{ $estudiante->estudianteId }})">
                                                     <i class="bx bx-edit-alt"></i>
-                                                </button>
-                                                <button class="button3 efects_button btn_save" onclick="saveRow({{ $estudiante->estudianteId }})" style="display: none;">
+                                                </button> </center>
+                                              <center>  <button class="button3 efects_button btn_save" onclick="saveRow({{ $estudiante->estudianteId }})" style="display: none;">
                                                     <i class="fa-solid fa-save"></i>
-                                                </button>
+                                                </button> </center>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -210,7 +217,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+      
     </div>
 
     <form id="hidden-form" method="POST" action="">
@@ -272,19 +279,13 @@
     </script>
 
     <style>
-        .contenedor_tabla .table-container table td {
-            width: 200px;
-            min-width: 1px !important;
-            font-size: 11px !important;
-            padding: .5rem !important;
-        }
-
-        .contenedor_general .contenedor_tabla {
-            min-height: 1px !important;
-        }
-
-        .table-container {
-            height: 275px !important;
-        }
+        
+   
+    hr {
+  margin-top: 0.5rem !important; 
+  margin-bottom: 0.8rem !important;
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, .1);
+}
     </style>
 @endsection
