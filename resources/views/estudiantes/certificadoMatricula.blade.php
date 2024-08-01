@@ -61,6 +61,21 @@
             margin-top: 20px;
             margin-bottom: 10px;
         }
+        .no-border-table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .no-border-table th, .no-border-table td {
+        border: none;
+        padding: 8px;
+        text-align: left;
+        font-size: .8em;
+    }
+
+    .no-border-table th {
+        width: 20%;
+    }
     </style>
 </head>
 
@@ -75,16 +90,40 @@
     <hr style="color: rgb(17, 31, 95);">
     <hr style="color: rgb(17, 31, 95);">
 
-    <h4>Datos del estudiante</h4>
-    <p><strong>Estudiante:</strong> {{ $estudiante->apellidos }} {{ $estudiante->nombres }}</p>
-    <p><strong>Cohorte:</strong> {{ $estudiante->periodos->numeroPeriodo }}</p>
-    <p><strong>Carrera:</strong> {{ $estudiante->carrera }}</p>
-    <p><strong>Correo:</strong> {{ $estudiante->correo }}</p>
-    <p><strong>Teléfono:</strong> {{ $estudiante->celular }}</p>
-    <p><strong>Cédula:</strong> {{ $estudiante->cedula }}</p>
-    <p><strong>ESPE ID:</strong> {{ $estudiante->espeId }}</p>
-    <p><strong>Departamento:</strong> {{ $estudiante->departamento }}</p>
+    <h4>DATOS DEL ESTUDIANTE</h4>
+    
+    <table class="no-border-table">
+    <tr>
+        <th>Estudiante:</th>
+        <td>{{ $estudiante->apellidos }} {{ $estudiante->nombres }}</td>
+        <th>Teléfono:</th>
+        <td>{{ $estudiante->celular }}</td>
+    </tr>
+    <tr>
+        <th>Cohorte:</th>
+        <td>{{ $estudiante->periodos->numeroPeriodo }}</td>
+        <th>Cédula:</th>
+        <td>{{ $estudiante->cedula }}</td>
+    </tr>
+    <tr>
+        <th>Carrera:</th>
+        <td>{{ $estudiante->carrera }}</td>
+        <th>ESPE ID:</th>
+        <td>{{ $estudiante->espeId }}</td>
+    </tr>
+    
+        <th>Correo:</th>
+        <td style="text-transform: lowercase;">{{ $estudiante->correo }}</td>
+        <th>Departamento:</th>
+        <td>{{ $estudiante->departamento }}</td>
+    </tr>
+    <tr>
+        <th>Campus:</th>
+        <td>EXTENSIÓN SANTO DOMINGO</td>
 
+    <tr>
+</table>
+    
     <h4>Proceso actualmente:</h4>
     <p><strong>Estado:</strong>
         @if ($estudiante->estado == 'Aprobado')
@@ -95,370 +134,433 @@
             {{ $estudiante->Estado }}
         @endif
     </p>
+    <hr style="color: rgb(17, 31, 95);">
+    <hr style="color: rgb(17, 31, 95);">
 
     <div class="section-title">
-        <h4>Información de los proceso realizados:</h4>
+        <h4>INFORMACIÓN DE PROCESOS REALIZADOS</h4>
     </div>
+
     <hr style="color: rgb(17, 31, 95);">
-    <hr style="color: rgb(17, 31, 95);">
+  
 
     @if($asignaciones->isNotEmpty())
-        <div class="section-title">
-            <h4>Vinculación</h4>
-        </div>
+    <div class="section-title">
+        <h4>VINCULACIÓN</h4>
+    </div>
 
-        <table>
-            <thead>
+    <table class="no-border-table">
+        <tbody>
+            @forelse ($asignaciones as $asignacion)
                 <tr>
-                    <th>NOMBRE DEL PROYECTO</th>
-                    <th>Director de proyecto</th>
-                    <th>Docente participante</th>
-                    <th>Periodo de vinculación</th>
-                    <th>Fecha Inicio</th>
-                    <th>Fecha Fin</th>
-                    <th>Horas realizadas</th>
-                    <th>NOTA FINAL</th>
-                    <th>ESTADO</th>
+                    <th>NOMBRE DEL PROYECTO:</th>
+                    <td>{{ $asignacion->proyecto->nombreProyecto }}</td>
+                    <th>Director de proyecto:</th>
+                    <td>{{ $asignacion->proyecto->director->apellidos }} {{ $asignacion->proyecto->director->nombres }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                @forelse ($asignaciones as $asignacion)
-                    <tr>
-                        <td>{{ $asignacion->proyecto->nombreProyecto }}</td>
-                        <td>{{ $asignacion->proyecto->director->apellidos }}
-                            {{ $asignacion->proyecto->director->nombres }}</td>
-                        <td>{{ $asignacion->docenteParticipante->apellidos }}
-                            {{ $asignacion->docenteParticipante->nombres }}</td>
-                        <td>{{ $asignacion->periodo->numeroPeriodo }}</td>
-                        <td>{{ $asignacion->inicioFecha }}</td>
-                        <td>{{ $asignacion->finalizacionFecha }}</td>
-
-                        <td>
-                            @foreach ($asignacion->estudiante->horas_vinculacion as $hora)
-                                {{ $hora->horasVinculacion ?? 'SIN HORAS' }}<br>
-                            @endforeach
-                        </td>
-                        <td>
-                            @foreach ($asignacion->estudiante->notas as $nota)
-                                {{ $nota->notaFinal }}<br>
-                            @endforeach
-                        </td>
-                        <td>{{ $asignacion->estado }}</td>
-
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="8">No ha realizado este proceso.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    @endif
-
-    @if($practicasi->isNotEmpty())
-        <div class="section-title">
-            <h4>Prácticas 1</h4>
-        </div>
-
-        @php
-            $tieneReprobado = $practicasi->contains(function ($practica) {
-                return $practica->Estado == 'Reprobado';
-            });
-        @endphp
-
-        <table>
-            <thead>
                 <tr>
-                    <th>Empresa</th>
-                    <th>Tutor empresarial</th>
-                    <th>Tutor académico</th>
-                    <th>Periodo de la práctica</th>
-                    <th>Fecha Inicio</th>
-                    <th>Fecha Fin</th>
-                    <th>Horas realizadas</th>
-                    <th>Nota Final</th>
-                    <th>Estado</th>
+                    <th>Docente participante:</th>
+                    <td>{{ $asignacion->docenteParticipante->apellidos }} {{ $asignacion->docenteParticipante->nombres }}</td>
+                    <th>Periodo de vinculación:</th>
+                    <td>{{ $asignacion->periodo->numeroPeriodo }}</td>
                 </tr>
-            </thead>
+                <tr>
+                    <th>Fecha Inicio:</th>
+                    <td>{{ $asignacion->inicioFecha }}</td>
+                    <th>Fecha Fin:</th>
+                    <td>{{ $asignacion->finalizacionFecha }}</td>
+                </tr>
+                <tr>
+                    <th>Horas realizadas:</th>
+                    <td>
+                        @foreach ($asignacion->estudiante->horas_vinculacion as $hora)
+                            {{ $hora->horasVinculacion ?? 'SIN HORAS' }}<br>
+                        @endforeach
+                    </td>
+                    <th>NOTA FINAL:</th>
+                    <td>
+                        @foreach ($asignacion->estudiante->notas as $nota)
+                            {{ $nota->notaFinal }}<br>
+                        @endforeach
+                    </td>
+                </tr>
+                <tr>
+                    <th>ESTADO:</th>
+                    <td colspan="3">{{ $asignacion->estado }}</td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="4">No ha realizado este proceso.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+@endif
+<br>
+<br>
+<hr style="color: rgb(17, 31, 95);">
+<hr style="color: rgb(17, 31, 95);">
+
+@if($practicasi->isNotEmpty())
+    <div class="section-title">
+        <h4>PRÁCTICA 1</h4>
+    </div>
+
+    @php
+        $tieneReprobado = $practicasi->contains(function ($practica) {
+            return $practica->Estado == 'Reprobado';
+        });
+    @endphp
+
+    <table class="no-border-table">
+        <tbody>
+            @forelse ($practicasi as $practica)
+                @if ($practica->Estado != 'Reprobado')
+                    <tr>
+                        <th>Empresa</th>
+                        <td>{{ $practica->empresa->nombreEmpresa }}</td>
+                        <th>Tutor empresarial</th>
+                        <td>{{ $practica->NombreTutorEmpresarial}}</td>
+                    </tr>
+                    
+
+                        
+                   
+                        <th>Tutor académico</th>
+                        <td>{{ $practica->tutorAcademico->apellidos }} {{ $practica->tutorAcademico->nombres }}</td>
+                        <th>Periodo de la práctica</th>
+                        <td>{{ $practica->periodoPractica }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fecha Inicio</th>
+                        <td>{{ $practica->FechaInicio }}</td>
+                        <th>Fecha Fin</th>
+                        <td>{{ $practica->FechaFinalizacion }}</td>
+                    </tr>
+                    <tr>
+                        <th>Horas realizadas</th>
+                        <td>{{ $practica->HorasPlanificadas }}</td>
+                        <th>Nota Final</th>
+                        <td>{{ $practica->nota_final }}</td>
+                    </tr>
+                    <tr>
+                    <th>Tipo de práctica</th>
+                    <td>{{ $practica->tipoPractica }}</td>
+                        <th>Estado</th>
+                        <td colspan="3">{{ $practica->Estado }}</td>
+                       
+                    </tr>
+                @endif
+            @empty
+                <tr>
+                    <td colspan="4">No ha realizado este proceso.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+
+    @if ($tieneReprobado)
+        <div class="section-title">
+            <h4>PRÁCTICA 1 REPROBADA</h4>
+        </div>
+        <table class="no-border-table">
             <tbody>
                 @forelse ($practicasi as $practica)
-                    @if ($practica->Estado != 'Reprobado')
+                    @if ($practica->Estado == 'Reprobado')
                         <tr>
+                            <th>Empresa</th>
                             <td>{{ $practica->empresa->nombreEmpresa }}</td>
+                            <th>Tutor empresarial</th>
                             <td>{{ $practica->NombreTutorEmpresarial}}</td>
+                        </tr>
+                        <tr>
+                            <th>Tutor académico</th>
                             <td>{{ $practica->tutorAcademico->apellidos }} {{ $practica->tutorAcademico->nombres }}</td>
+                            <th>Periodo de la práctica</th>
                             <td>{{ $practica->periodoPractica }}</td>
+                        </tr>
+                        <tr>
+                            <th>Fecha Inicio</th>
                             <td>{{ $practica->FechaInicio }}</td>
+                            <th>Fecha Fin</th>
                             <td>{{ $practica->FechaFinalizacion }}</td>
+                        </tr>
+                        <tr>
+                            <th>Horas realizadas</th>
                             <td>{{ $practica->HorasPlanificadas }}</td>
+                            <th>Nota Final</th>
                             <td>{{ $practica->nota_final }}</td>
-                            <td>{{ $practica->Estado }}</td>
+                        </tr>
+                        <tr>
+                        <th>Tipo de práctica</th>
+                        <td>{{ $practica->tipoPractica }}</td>
+                            <th>Estado</th>
+                            <td colspan="3">{{ $practica->Estado }}</td>
                         </tr>
                     @endif
                 @empty
                     <tr>
-                        <td colspan="9">No ha realizado este proceso.</td>
+                        <td colspan="4">No ha realizado este proceso.</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
+    @endif
+    <br>
+<hr style="color: rgb(17, 31, 95);">
+<hr style="color: rgb(17, 31, 95);">
+@endif
 
-        @if ($tieneReprobado)
-            <div class="section-title">
-                <h4>Prácticas 1 Reprobada</h4>
-            </div>
-            <table>
-                <thead>
+@if($practicasiii->isNotEmpty())
+    <div class="section-title">
+        <h4>PRÁCTICA 1.2</h4>
+    </div>
+
+    <table class="no-border-table">
+        <tbody>
+            @forelse ($practicasiii as $practica)
+                <tr>
+                    <th>Empresa</th>
+                    <td>{{ $practica->empresa->nombreEmpresa }}</td>
+                    <th>Tutor empresarial</th>
+                    <td>{{ $practica->NombreTutorEmpresarial }}</td>
+                </tr>
+                <tr>
+                    <th>Tutor académico</th>
+                    <td>{{ $practica->tutorAcademico->apellidos }} {{ $practica->tutorAcademico->nombres }}</td>
+                    <th>Periodo de la práctica</th>
+                    <td>{{ $practica->periodoPractica }}</td>
+                </tr>
+                <tr>
+                    <th>Fecha Inicio</th>
+                    <td>{{ $practica->FechaInicio }}</td>
+                    <th>Fecha Fin</th>
+                    <td>{{ $practica->FechaFinalizacion }}</td>
+                </tr>
+                <tr>
+                    <th>Horas realizadas</th>
+                    <td>{{ $practica->HorasPlanificadas }}</td>
+                    <th>Nota Final</th>
+                    <td>{{ $practica->nota_final }}</td>
+                </tr>
+                <tr>
+                <th>Tipo de práctica</th>
+                <td>{{ $practica->tipoPractica }}</td>
+                    <th>Estado</th>
+                    <td colspan="3">{{ $practica->Estado }}</td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="4">No ha realizado este proceso.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+    <br>
+    <hr style="color: rgb(17, 31, 95);">
+    <hr style="color: rgb(17, 31, 95);">
+@endif
+    
+    @if($practicasiv->isNotEmpty())
+    <div class="section-title">
+        <h4>PRÁCTICA 1.3</h4>
+    </div>
+
+    <table class="no-border-table">
+        <tbody>
+            @forelse ($practicasiv as $practica)
+                <tr>
+                    <th>Empresa</th>
+                    <td>{{ $practica->empresa->nombreEmpresa }}</td>
+                    <th>Tutor empresarial</th>
+                    <td>{{ $practica->NombreTutorEmpresarial }}</td>
+                </tr>
+                <tr>
+                    <th>Tutor académico</th>
+                    <td>{{ $practica->tutorAcademico->apellidos }} {{ $practica->tutorAcademico->nombres }}</td>
+                    <th>Periodo de la práctica</th>
+                    <td>{{ $practica->periodoPractica }}</td>
+                </tr>
+                <tr>
+                    <th>Fecha Inicio</th>
+                    <td>{{ $practica->FechaInicio }}</td>
+                    <th>Fecha Fin</th>
+                    <td>{{ $practica->FechaFinalizacion }}</td>
+                </tr>
+                <tr>
+                    <th>Horas realizadas</th>
+                    <td>{{ $practica->HorasPlanificadas }}</td>
+                    <th>Nota Final</th>
+                    <td>{{ $practica->nota_final }}</td>
+                </tr>
+                <tr>
+                <th>Tipo de práctica</th>
+                <td>{{ $practica->tipoPractica }}</td>
+                    <th>Estado</th>
+                    <td colspan="3">{{ $practica->Estado }}</td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="4">No ha realizado este proceso.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+    <hr style="color: rgb(17, 31, 95);">
+    <hr style="color: rgb(17, 31, 95);">
+@endif
+   
+    @if($practicasii->isNotEmpty())
+    <div class="section-title">
+        <h4>PRÁCTICA 2</h4>
+    </div>
+
+    @php
+        $tieneReprobado = $practicasii->contains(function ($practica) {
+            return $practica->Estado == 'Reprobado';
+        });
+    @endphp
+
+    <table class="no-border-table">
+        <tbody>
+            @forelse ($practicasii as $practica)
+                @if ($practica->Estado != 'Reprobado')
                     <tr>
                         <th>Empresa</th>
+                        <td>{{ $practica->empresa->nombreEmpresa }}</td>
                         <th>Tutor empresarial</th>
+                        <td>{{ $practica->NombreTutorEmpresarial}}</td>
+                    </tr>
+                    <tr>
                         <th>Tutor académico</th>
+                        <td>{{ $practica->tutorAcademico->apellidos }} {{ $practica->tutorAcademico->nombres }}</td>
                         <th>Periodo de la práctica</th>
+                        <td>{{ $practica->periodoPractica }}</td>
+                    </tr>
+                    <tr>
                         <th>Fecha Inicio</th>
+                        <td>{{ $practica->FechaInicio }}</td>
                         <th>Fecha Fin</th>
+                        <td>{{ $practica->FechaFinalizacion }}</td>
+                    </tr>
+                    <tr>
                         <th>Horas realizadas</th>
+                        <td>{{ $practica->HorasPlanificadas }}</td>
                         <th>Nota Final</th>
+                        <td>{{ $practica->nota_final }}</td>
+                    </tr>
+                    <tr>
+                    <th>Tipo de práctica</th>
+                    <td>{{ $practica->tipoPractica }}</td>
                         <th>Estado</th>
+                        <td colspan="3">{{ $practica->Estado }}</td>
                     </tr>
-                </thead>
-                <tbody>
-                    @forelse ($practicasi as $practica)
-                        @if ($practica->Estado == 'Reprobado')
-                            <tr>
-                                <td>{{ $practica->empresa->nombreEmpresa }}</td>
-                                <td>{{ $practica->NombreTutorEmpresarial}}</td>
-                                <td>{{ $practica->tutorAcademico->apellidos }} {{ $practica->tutorAcademico->nombres }}
-                                </td>
-                                <td>{{ $practica->periodoPractica }}</td>
-                                <td>{{ $practica->FechaInicio }}</td>
-                                <td>{{ $practica->FechaFinalizacion }}</td>
-                                <td>{{ $practica->HorasPlanificadas }}</td>
-                                <td>{{ $practica->nota_final }}</td>
-                                <td>{{ $practica->Estado }}</td>
-                            </tr>
-                        @endif
-                    @empty
-                        <tr>
-                            <td colspan="9">No ha realizado este proceso.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        @endif
-    @endif
-
-    @if($practicasiii->isNotEmpty())
-        <div class="section-title">
-            <h4>Práctica 1.2</h4>
-        </div>
-        <table>
-            <thead>
+                @endif
+            @empty
                 <tr>
-                    <th>Empresa</th>
-                    <th>Tutor empresarial</th>
-                    <th>Tutor académico</th>
-                    <th>Periodo de la práctica</th>
-                    <th>Fecha Inicio</th>
-                    <th>Fecha Fin</th>
-                    <th>Horas realizadas</th>
-                    <th>Nota Final</th>
-                    <th>Estado</th>
+                    <td colspan="4">No ha realizado este proceso.</td>
                 </tr>
-            </thead>
-            <tbody>
-                @forelse ($practicasiii as $practica)
-                    <tr>
-                        <td>{{ $practica->empresa->nombreEmpresa }}</td>
-                        <td>{{ $practica->NombreTutorEmpresarial}}</td>
-                        <td>{{ $practica->tutorAcademico->apellidos }} {{ $practica->tutorAcademico->nombres }}</td>
-                        <td>{{ $practica->periodoPractica }}</td>
-                        <td>{{ $practica->FechaInicio }}</td>
-                        <td>{{ $practica->FechaFinalizacion }}</td>
-                        <td>{{ $practica->HorasPlanificadas }}</td>
-                        <td>{{ $practica->nota_final }}</td>
-                        <td>{{ $practica->Estado }}</td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="9">No ha realizado este proceso.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    @endif
+            @endforelse
+        </tbody>
+    </table>
 
-    @if($practicasiv->isNotEmpty())
+    @if ($tieneReprobado)
         <div class="section-title">
-            <h4>Práctica 1.3</h4>
+            <h4>PRÁCTICA 2 REPROBADA</h4>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Empresa</th>
-                    <th>Tutor empresarial</th>
-                    <th>Tutor académico</th>
-                    <th>Periodo de la práctica</th>
-                    <th>Fecha Inicio</th>
-                    <th>Fecha Fin</th>
-                    <th>Horas realizadas</th>
-                    <th>Nota Final</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($practicasiv as $practica)
-                    <tr>
-                        <td>{{ $practica->empresa->nombreEmpresa }}</td>
-                        <td>{{ $practica->NombreTutorEmpresarial}}</td>
-                        <td>{{ $practica->tutorAcademico->apellidos }} {{ $practica->tutorAcademico->nombres }}</td>
-                        <td>{{ $practica->periodoPractica }}</td>
-                        <td>{{ $practica->FechaInicio }}</td>
-                        <td>{{ $practica->FechaFinalizacion }}</td>
-                        <td>{{ $practica->HorasPlanificadas }}</td>
-                        <td>{{ $practica->nota_final }}</td>
-                        <td>{{ $practica->Estado }}</td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="9">No ha realizado este proceso.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    @endif
-
-    @if($practicasii->isNotEmpty())
-        <div class="section-title">
-            <h4>Prácticas 2</h4>
-        </div>
-
-        @php
-            $tieneReprobado = $practicasii->contains(function ($practica) {
-                return $practica->Estado == 'Reprobado';
-            });
-        @endphp
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Empresa</th>
-                    <th>Tutor empresarial</th>
-                    <th>Tutor académico</th>
-                    <th>Periodo de la práctica</th>
-                    <th>Fecha Inicio</th>
-                    <th>Fecha Fin</th>
-                    <th>Horas realizadas</th>
-                    <th>Nota Final</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
+        <table class="no-border-table">
             <tbody>
                 @forelse ($practicasii as $practica)
-                    @if ($practica->Estado != 'Reprobado')
+                    @if ($practica->Estado == 'Reprobado')
                         <tr>
+                            <th>Empresa:</th>
                             <td>{{ $practica->empresa->nombreEmpresa }}</td>
+                            <th>Tutor empresarial:</th>
                             <td>{{ $practica->NombreTutorEmpresarial}}</td>
+                        </tr>
+                        <tr>
+                            <th>Tutor académico:</th>
                             <td>{{ $practica->tutorAcademico->apellidos }} {{ $practica->tutorAcademico->nombres }}</td>
+                            <th>Periodo de la práctica:</th>
                             <td>{{ $practica->periodoPractica }}</td>
+                        </tr>
+                        <tr>
+                            <th>Fecha Inicio:</th>
                             <td>{{ $practica->FechaInicio }}</td>
+                            <th>Fecha Fin:</th>
                             <td>{{ $practica->FechaFinalizacion }}</td>
+                        </tr>
+                        <tr>
+                            <th>Horas realizadas:</th>
                             <td>{{ $practica->HorasPlanificadas }}</td>
+                            <th>Nota Final:</th>
                             <td>{{ $practica->nota_final }}</td>
-                            <td>{{ $practica->Estado }}</td>
+                        </tr>
+                        <tr>
+                        <th>Tipo de práctica</th>
+                        <td>{{ $practica->tipoPractica }}</td>
+                            <th>Estado:</th>
+                            <td colspan="3">{{ $practica->Estado }}</td>
                         </tr>
                     @endif
                 @empty
                     <tr>
-                        <td colspan="9">No ha realizado este proceso.</td>
+                        <td colspan="4">No ha realizado este proceso.</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
-
-        @if ($tieneReprobado)
-            <div class="section-title">
-                <h4>Prácticas 2 Reprobada</h4>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Empresa</th>
-                        <th>Tutor empresarial</th>
-                        <th>Tutor académico</th>
-                        <th>Periodo de la práctica</th>
-                        <th>Fecha Inicio</th>
-                        <th>Fecha Fin</th>
-                        <th>Horas realizadas</th>
-                        <th>Nota Final</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($practicasii as $practica)
-                        @if ($practica->Estado == 'Reprobado')
-                            <tr>
-                                <td>{{ $practica->empresa->nombreEmpresa }}</td>
-                                <td>{{ $practica->NombreTutorEmpresarial}}</td>
-                                <td>{{ $practica->tutorAcademico->apellidos }} {{ $practica->tutorAcademico->nombres }}
-                                </td>
-                                <td>{{ $practica->periodoPractica }}</td>
-                                <td>{{ $practica->FechaInicio }}</td>
-                                <td>{{ $practica->FechaFinalizacion }}</td>
-                                <td>{{ $practica->HorasPlanificadas }}</td>
-                                <td>{{ $practica->nota_final }}</td>
-                                <td>{{ $practica->Estado }}</td>
-                            </tr>
-                        @endif
-                    @empty
-                        <tr>
-                            <td colspan="9">No ha realizado este proceso.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        @endif
     @endif
-
+@endif
+    <br>
+    <hr style="color: rgb(17, 31, 95);">
+    <hr style="color: rgb(17, 31, 95);">
     @if($practicasv->isNotEmpty())
-        <div class="section-title">
-            <h4>Prácticas 2.2</h4>
-        </div>
+    <div class="section-title">
+        <h4>PRÁCTICA 2.2</h4>
+    </div>
 
-        <table>
-            <thead>
+    <table class="no-border-table">
+        <tbody>
+            @forelse ($practicasv as $practica)
                 <tr>
                     <th>Empresa</th>
+                    <td>{{ $practica->empresa->nombreEmpresa }}</td>
                     <th>Tutor empresarial</th>
-                    <th>Tutor académico</th>
-                    <th>Periodo de la práctica</th>
-                    <th>Fecha Inicio</th>
-                    <th>Fecha Fin</th>
-                    <th>Horas realizadas</th>
-                    <th>Nota Final</th>
-                    <th>Estado</th>
+                    <td>{{ $practica->NombreTutorEmpresarial }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                @forelse ($practicasv as $practica)
-                    <tr>
-                        <td>{{ $practica->empresa->nombreEmpresa }}</td>
-                        <td>{{ $practica->NombreTutorEmpresarial}}</td>
-                        <td>{{ $practica->tutorAcademico->apellidos }} {{ $practica->tutorAcademico->nombres }}</td>
-                        <td>{{ $practica->periodoPractica }}</td>
-                        <td>{{ $practica->FechaInicio }}</td>
-                        <td>{{ $practica->FechaFinalizacion }}</td>
-                        <td>{{ $practica->HorasPlanificadas }}</td>
-                        <td>{{ $practica->nota_final }}</td>
-                        <td>{{ $practica->Estado }}</td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="9">No ha realizado este proceso.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    @endif
+                <tr>
+                    <th>Tutor académico</th>
+                    <td>{{ $practica->tutorAcademico->apellidos }} {{ $practica->tutorAcademico->nombres }}</td>
+                    <th>Periodo de la práctica</th>
+                    <td>{{ $practica->periodoPractica }}</td>
+                </tr>
+                <tr>
+                    <th>Fecha Inicio</th>
+                    <td>{{ $practica->FechaInicio }}</td>
+                    <th>Fecha Fin</th>
+                    <td>{{ $practica->FechaFinalizacion }}</td>
+                </tr>
+                <tr>
+                    <th>Horas realizadas</th>
+                    <td>{{ $practica->HorasPlanificadas }}</td>
+                    <th>Nota Final</th>
+                    <td>{{ $practica->nota_final }}</td>
+                </tr>
+                <tr>
+                <th>Tipo de práctica</th>
+                <td>{{ $practica->tipoPractica }}</td>
+                    <th>Estado</th>
+                    <td colspan="3">{{ $practica->Estado }}</td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="4">No ha realizado este proceso.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+@endif
 </body>
 
 </html>
