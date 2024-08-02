@@ -24,7 +24,7 @@
         </div>
     @endif
     <section class="contenedor_agregar_periodo">
-    
+
         <br>
 
         <form action="{{ route('generar-actaEstudiante') }}" method="POST">
@@ -32,7 +32,7 @@
             <button type="submit" class="button1_1">Generar acta de designación Estudiante</button>
         </form>
         <br>
-      
+
         <div class="contenedor_tabla">
             <div class="table-container mat-elevation-z8">
 
@@ -51,9 +51,11 @@
                         <tbody class="mdc-data-table__content ng-star-inserted">
                             @if ($asignacionesEstudiantesDirector->isEmpty())
                                 <tr>
-                                    <td class="noExisteRegistro1" colspan="5" style="text-align: center; font-size: 16px !important;"">No hay asignaciones de estudiantes</td>
+                                    <td class="noExisteRegistro1" colspan="5"
+                                        style="text-align: center; font-size: 16px !important;"">No hay asignaciones de
+                                        estudiantes</td>
                                 </tr>
-                                @endif
+                            @endif
 
                             @foreach ($asignacionesEstudiantesDirector as $asignacion)
                                 <tr>
@@ -68,90 +70,102 @@
                                         style=" text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
                                         {{ $asignacion->proyecto->nombreProyecto }}</td>
                                     <td style="text-align: center;">
-                                    <div class="btn-group shadow-0">
-                                        <form id="eliminarEstudianteForm_{{ $asignacion->estudianteId }}"
-                                            action="{{ route('director_vinculacion.eliminarEstudiante', ['EstudianteID' => $asignacion->estudianteId]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <input type="hidden" name="estudiante_id"
-                                                value="{{ $asignacion->estudianteId }}">
-                                            <center><button class="button3 efects_button btn_eliminar3" type="button"
-                                                    onclick="mostrarSweetAlert('{{ $asignacion->estudianteId }}')" style="margin-right: 5px;"><i
-                                                        class='bx bx-trash'></i> </button></center>
-                                            <input type="hidden" name="motivo_negacion"
-                                                id="motivoNegacion_{{ $asignacion->estudianteId }}">
-                                        </form>
+                                        <div class="btn-group shadow-0">
+                                            <form id="eliminarEstudianteForm_{{ $asignacion->estudianteId }}"
+                                                action="{{ route('director_vinculacion.eliminarEstudiante', ['EstudianteID' => $asignacion->estudianteId]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <input type="hidden" name="estudiante_id"
+                                                    value="{{ $asignacion->estudianteId }}">
+                                                <center><button class="button3 efects_button btn_eliminar3" type="button"
+                                                        onclick="mostrarSweetAlert('{{ $asignacion->estudianteId }}')"
+                                                        style="margin-right: 5px;"><i class='bx bx-trash'></i> </button>
+                                                </center>
+                                                <input type="hidden" name="motivo_negacion"
+                                                    id="motivoNegacion_{{ $asignacion->estudianteId }}">
+                                            </form>
 
-                                        <!-- Botón para abrir el modal -->
-                                        <button type="button" class="button3 efects_button btn_editar3"
-                                        data-toggle="modal"
-                                            onclick="openCard('tablaActividad{{ $asignacion->estudianteId }}');">
-                                            
-                                            <i class="fa-solid fa-eye"></i>
-                                        </button>
+                                            <!-- Botón para abrir el modal -->
+                                            <button type="button" class="button3 efects_button btn_editar3"
+                                                data-toggle="modal"
+                                                onclick="openCard('tablaActividad{{ $asignacion->estudianteId }}');">
 
-                                        <!-- Modal -->
-                                        <div class="draggable-card1_3" id="tablaActividad{{ $asignacion->estudianteId }}" >
-                                           
-                                                    <div class="card-header">
-                                                        <span class="card-title1"
-                                                            id="modalLabel{{ $asignacion->estudianteId }}">Actividades del
-                                                            Estudiante </span>
-                                                            <button type="button" class="close"
-                                                             onclick="closeCard('tablaActividad{{ $asignacion->estudianteId }}')"><i
-                                                                class="fa-thin fa-xmark"></i></button>
-                                                    </div>
-                                                    <div class="contenedor_tabla">
-                                                        <div class="table-container mat-elevation-z8">
+                                                <i class="fa-solid fa-eye"></i>
+                                            </button>
 
-                                                            <div id="tablaActivida">
-                                                                <table class="mat-mdc-table">
-                                                                    <thead class="ng-star-inserted">
-                                                                        <tr
-                                                                            class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                                                             <th>FECHA</th>
-                                                                    <th>ACTIVIDADES</th>
-                                                                    <th>HORA</th>
-                                                                    <th>NOMBRE DE LA ACTIVIDAD</th>
-                                                                    <th>EVIDENCIA</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach ($asignacion->estudiante->actividades as $actividad)
-                                                                    <tr>
-                                                                        <td
-                                                                            style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                                                            {{ $actividad->fecha }}
-                                                                        </td>
-                                                                        <td
-                                                                            style="text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
-                                                                            {{ $actividad->actividades }}
-                                                                        </td>
-                                                                        <td
-                                                                            style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                                                            {{ $actividad->numeroHoras }}
-                                                                        </td>
-                                                                        <td
-                                                                            style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                                                            {{ $actividad->nombreActividad }}
-                                                                        </td>
+                                            <form id="cerrarEstudianteForm_{{ $asignacion->estudianteId }}"
+                                                action="{{ route('director.cerrarEstudianteIndividual', ['estudianteId' => $asignacion->estudianteId]) }}"
+                                                method="POST">
+                                                @csrf
+                                                <button type="button" class="button3 efects_button btn_check3"
+                                                    style="margin-right: 5px;"
+                                                    onclick="confirmSubmit('{{ $asignacion->estudianteId }}')">
+                                                    <i class="fa fa-check"></i>
+                                                </button>
+                                            </form>
+                                            <!-- Modal -->
+                                            <div class="draggable-card1_3"
+                                                id="tablaActividad{{ $asignacion->estudianteId }}">
 
-                                                                        <td>
+                                                <div class="card-header">
+                                                    <span class="card-title1"
+                                                        id="modalLabel{{ $asignacion->estudianteId }}">Actividades del
+                                                        Estudiante </span>
+                                                    <button type="button" class="close"
+                                                        onclick="closeCard('tablaActividad{{ $asignacion->estudianteId }}')"><i
+                                                            class="fa-thin fa-xmark"></i></button>
+                                                </div>
+                                                <div class="contenedor_tabla">
+                                                    <div class="table-container mat-elevation-z8">
 
-                                                                            <img width="100px"
-                                                                                src="data:image/jpeg;base64,{{ $actividad->evidencias }}"
-                                                                                alt="Evidencia" />
-                                                                        </td>
+                                                        <div id="tablaActivida">
+                                                            <table class="mat-mdc-table">
+                                                                <thead class="ng-star-inserted">
+                                                                    <tr
+                                                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                                                        <th>FECHA</th>
+                                                                        <th>ACTIVIDADES</th>
+                                                                        <th>HORA</th>
+                                                                        <th>NOMBRE DE LA ACTIVIDAD</th>
+                                                                        <th>EVIDENCIA</th>
                                                                     </tr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($asignacion->estudiante->actividades as $actividad)
+                                                                        <tr>
+                                                                            <td
+                                                                                style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                                                {{ $actividad->fecha }}
+                                                                            </td>
+                                                                            <td
+                                                                                style="text-transform: uppercase; word-wrap: break-word; text-align: justify; padding: 5px 8px;">
+                                                                                {{ $actividad->actividades }}
+                                                                            </td>
+                                                                            <td
+                                                                                style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                                                {{ $actividad->numeroHoras }}
+                                                                            </td>
+                                                                            <td
+                                                                                style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                                                                {{ $actividad->nombreActividad }}
+                                                                            </td>
+
+                                                                            <td>
+
+                                                                                <img width="100px"
+                                                                                    src="data:image/jpeg;base64,{{ $actividad->evidencias }}"
+                                                                                    alt="Evidencia" />
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
                                                     </div>
-                                                  
                                                 </div>
                                             </div>
-                                        </div>
 
 
 
@@ -162,27 +176,27 @@
                         @endforeach
                     </table>
                 </div>
-</div>
-</div>
-
-
-                <br>
-
-               <center> <form id="finalizarForm" action="{{ route('director_vinculacion.cerrarProcesoEstudiantes') }}"
-                    method="POST">
-                    @csrf
-                    <button id="finalizarBtn" type="button" class="button1_1">Finalizar actividades de los
-                        estudiantes</button>
-                </form>
-            </center> 
-
             </div>
+        </div>
+
+
+        <br>
+
+        <center>
+            <form id="finalizarForm" action="{{ route('director_vinculacion.cerrarProcesoEstudiantes') }}" method="POST">
+                @csrf
+                <button id="finalizarBtn" type="button" class="button1_1">Finalizar actividades de los
+                    estudiantes</button>
+            </form>
+        </center>
+
+        </div>
 
         <script src="{{ asset('js/ParticipanteDirectorVinculacion/notas.js') }}"></script>
-    <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
-    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ asset('js/admin/acciones.js') }}"></script>
+        <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
+        <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="{{ asset('js/admin/acciones.js') }}"></script>
 
         <script>
             function eliminarEstudiante(estudianteID) {
@@ -233,7 +247,7 @@
                     finalizarBtn.addEventListener('click', function(e) {
                         Swal.fire({
                             title: '¿Está seguro de finalizar a los estudiantes?',
-                            text: 'Debe verificar que todos los estudiantes hayan generado todos sus documentos antes de finalizar el proceso.',
+                            text: 'Debe verificar que el estudiante este calificado o subiera sus actividades.',
                             icon: 'warning',
                             showCancelButton: true,
                             confirmButtonText: 'Sí, finalizar',
@@ -247,53 +261,117 @@
                 }
             };
             $(document).ready(function() {
-                    // Hacer que los cards sean draggable
-                    $('.draggable-card1_3').draggable({
-                        handle: ".card-header",
-                        containment: "window"
-                    });
+                // Hacer que los cards sean draggable
+                $('.draggable-card1_3').draggable({
+                    handle: ".card-header",
+                    containment: "window"
                 });
-                document.addEventListener('DOMContentLoaded', (event) => {
-                    // Selecciona el elemento de la alerta
-                    const alertElement = document.querySelector('.contenedor_alerta');
-                    // Establece un temporizador para ocultar la alerta después de 2 segundos
-                    setTimeout(() => {
-                        if (alertElement) {
-                            alertElement.style.display = 'none';
-                        }
-                    }, 1000); // 2000 milisegundos = 2 segundos
+            });
+            document.addEventListener('DOMContentLoaded', (event) => {
+                // Selecciona el elemento de la alerta
+                const alertElement = document.querySelector('.contenedor_alerta');
+                // Establece un temporizador para ocultar la alerta después de 2 segundos
+                setTimeout(() => {
+                    if (alertElement) {
+                        alertElement.style.display = 'none';
+                    }
+                }, 1000); // 2000 milisegundos = 2 segundos
+            });
+        </script>
+        <script>
+            function confirmSubmit(estudianteId) {
+                Swal.fire({
+                    title: '¿Está seguro de realizar este proceso?',
+                    text: 'Debe verificar que el estudiante este calificado o subiera sus actividades.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sí, estoy seguro',
+                    cancelButtonText: 'No, cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById('cerrarEstudianteForm_' + estudianteId).submit();
+                    }
                 });
+            }
         </script>
         <style>
-        .contenedor_tabla .table-container table td {
-            width: 200px;
-            min-width: 150px;
-            font-size: 11px !important;
-            padding: .5rem !important;
-        }
-        .contenedor_general 
-        
-        .contenedor_tabla {
-            min-height: 1px !important;
-        }
-        
-        div:where(.swal2-container) .swal2-textarea {
-    height: 3.75em;
-    width: 25em !important;
-    /* padding: .75em; */
-}
-.swal2-input-label {
-    font-size:14px;
-}
-    .swal2-styled.swal2-confirm {
+            .contenedor_tabla .table-container table td {
+                width: 200px;
+                min-width: 150px;
+                font-size: 11px !important;
+                padding: .5rem !important;
+            }
 
-    background-color: #5d508a;
+            .contenedor_general .contenedor_tabla {
+                min-height: 1px !important;
+            }
 
-}
-.modal {
-    background-color: none !important;
-    z-index: none !important;
-}
-    </style>
-        @endsection
+            div:where(.swal2-container) .swal2-textarea {
+                height: 3.75em;
+                width: 25em !important;
+                /* padding: .75em; */
+            }
 
+            .swal2-input-label {
+                font-size: 14px;
+            }
+
+            .swal2-styled.swal2-confirm {
+
+                background-color: #5d508a;
+
+            }
+
+
+
+            .modal {
+                background-color: none !important;
+                z-index: none !important;
+            }
+
+            /* Estilos personalizados para SweetAlert2 */
+            .swal2-popup-custom {
+                background-color: #f0f0f0;
+                /* Fondo personalizado */
+                border-radius: 10px;
+                /* Bordes redondeados */
+                padding: 20px;
+                /* Espaciado interno */
+            }
+
+            .swal2-title-custom {
+                color: #333;
+                /* Color del título */
+                font-size: 24px;
+                /* Tamaño de fuente del título */
+                font-weight: bold;
+                /* Negrita */
+            }
+
+            .swal2-confirm-button-custom {
+                background-color: #3085d6;
+                /* Color de fondo del botón de confirmación */
+                color: #fff;
+                /* Color del texto del botón de confirmación */
+                border: none;
+                /* Sin borde */
+                border-radius: 5px;
+                /* Bordes redondeados */
+                padding: 10px 20px;
+                /* Espaciado interno */
+            }
+
+            .swal2-cancel-button-custom {
+                background-color: #d33;
+                /* Color de fondo del botón de cancelación */
+                color: #fff;
+                /* Color del texto del botón de cancelación */
+                border: none;
+                /* Sin borde */
+                border-radius: 5px;
+                /* Bordes redondeados */
+                padding: 10px 20px;
+                /* Espaciado interno */
+            }
+        </style>
+    @endsection

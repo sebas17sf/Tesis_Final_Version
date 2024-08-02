@@ -608,12 +608,14 @@
                                                     </td>
                                                     <td>{{ $grupo->first()->inicioFecha ?? '' }}</td>
                                                     <td>{{ $grupo->first()->finalizacionFecha ?? '' }}</td>
-                                                     <td>
+                                                    <td
+                                                        style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
+                                                        
                                                         @foreach ($grupo as $asignacion)
                                                             {{ $asignacion->estado ?? '' }}<br>
                                                         @endforeach
                                                     </td>
-                                                 </tr>
+                                                </tr>
                                             @endforeach
                                         @endif
                                     </tbody>

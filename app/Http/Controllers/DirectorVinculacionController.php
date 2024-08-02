@@ -16,6 +16,7 @@ use App\Models\Proyecto;
 use App\Models\Usuario;
 use App\Models\UsuariosSession;
 use App\Models\ActividadEstudiante;
+use App\Models\HoraVinculacion;
 
 use App\Models\AsignacionEstudiantesDirector;
 use App\Models\ProfesUniversidad;
@@ -278,7 +279,7 @@ class DirectorVinculacionController extends Controller
             $query->where('directorId', $director->id);
         })->get();
 
-         $asignaciones = AsignacionProyecto::whereHas('proyecto', function ($query) use ($director) {
+        $asignaciones = AsignacionProyecto::whereHas('proyecto', function ($query) use ($director) {
             $query->where('directorId', $director->id);
         })->get();
 
@@ -295,6 +296,60 @@ class DirectorVinculacionController extends Controller
         return redirect()->route('director.repartoEstudiantes')->with('success', 'Se han cerrado las actividades de los estudiantes.');
     }
 
+    public function cerrarProcesoEstudianteIndividual($estudianteId)
+    {
+        $estudiante = Estudiante::find($estudianteId);
+
+        if (!$estudiante) {
+            return redirect()->route('director.repartoEstudiantes')->with('error', 'Estudiante no encontrado.');
+        }
+
+        $correoDirector = Auth::user()->profesorUniversidad->userId;
+        $director = ProfesUniversidad::where('userId', $correoDirector)->first();
+
+        if (!$director) {
+            return redirect()->route('director.repartoEstudiantes')->with('error', 'Director no encontrado.');
+        }
+
+        $proyecto = Proyecto::where('directorId', $director->id)
+            ->whereHas('asignaciones', function ($query) use ($estudianteId) {
+                $query->where('estudianteId', $estudianteId);
+            })->first();
+
+        if (!$proyecto) {
+            return redirect()->route('director.repartoEstudiantes')->with('error', 'No está autorizado para cerrar este proceso.');
+        }
+
+        $notaFinal = NotasEstudiante::where('estudianteId', $estudianteId)->value('notaFinal');
+
+        if (is_null($notaFinal)) {
+            return redirect()->route('director.repartoEstudiantes')->with('error', 'El estudiante no tiene notas asignadas.');
+        }
+
+        $estadoAsignacion = $notaFinal < 16 ? 'Reprobado' : 'Finalizado';
+
+
+        AsignacionProyecto::where('estudianteId', $estudianteId)
+            ->where('proyectoId', $proyecto->proyectoId)
+            ->update([
+                'estado' => $estadoAsignacion,
+                'finalizacionFecha' => now()->format('Y-m-d'),
+            ]);
+
+        $horaVinculacion = new HoraVinculacion();
+        $horaVinculacion->estudianteId = $estudianteId;
+        $horaVinculacion->horasVinculacion = 96;
+        $horaVinculacion->save();
+
+
+        $estudiante->estado = $estadoAsignacion === 'Reprobado' ? 'Reprobado-Vinculacion' : 'Aprobado-practicas';
+        $estudiante->save();
+
+        return redirect()->route('director.repartoEstudiantes')->with('success', 'Se han cerrado las actividades del estudiante.');
+    }
+
+
+
 
 
 
@@ -303,8 +358,8 @@ class DirectorVinculacionController extends Controller
     public function actualizarInforme(Request $request)
     {
         $request->validate([
-            'informe_servicio.*' => 'required|string',
-            'estudiante_id.*' => 'required|numeric',
+            'informe_servicio.*' => 'required',
+            'estudiante_id.*' => 'required',
         ]);
 
         foreach ($request->estudiante_id as $key => $estudianteID) {
@@ -313,10 +368,20 @@ class DirectorVinculacionController extends Controller
             if ($notas) {
                 $notas->informe = $request->informe_servicio[$key];
 
-                $suma = $notas->tareas + $notas->resultadosAlcanzados + $notas->conocimientos + $notas->adaptabilidad +
-                    $notas->aplicacion + $notas->CapacidadLiderazgo + $notas->asistencia + $notas->informe;
+                $notas->save();
+
+                $suma = $notas->tareas
+                    + $notas->resultadosAlcanzados
+                    + $notas->conocimientos
+                    + $notas->adaptabilidad
+                    + $notas->aplicacion
+                    + $notas->CapacidadLiderazgo
+                    + $notas->asistencia
+                    + $notas->informe;
+
                 $notaFinal = ($suma * 20) / 100;
 
+                // Actualizar la nota final
                 $notas->notaFinal = $notaFinal;
                 $notas->save();
             }
@@ -324,6 +389,8 @@ class DirectorVinculacionController extends Controller
 
         return redirect()->route('director_vinculacion.estudiantes')->with('success', 'Se han actualizado los informes de los estudiantes.');
     }
+
+
 
 
 
@@ -336,20 +403,28 @@ class DirectorVinculacionController extends Controller
             'estudiante_id' => 'required',
         ]);
 
-
-
-
-
-        // Buscar el estudiante por su ID y actualizar su nota
+        // Buscar las notas del estudiante por su ID
         $notas = NotasEstudiante::where('estudianteId', $request->estudiante_id)->first();
-        $suma = $notas->tareas + $notas->resultadosAlcanzados + $notas->conocimientos + $notas->adaptabilidad + $notas->aplicacion + $notas->CapacidadLiderazgo + $notas->asistencia + $notas->informe;
-        $suma = ($suma * 20) / 100;
 
         if ($notas) {
+            // Primero actualizar la nota del informe
             $notas->informe = $request->nota_servicio;
-            $notas->notaFinal = $suma;
+            $notas->save();
 
+            // Luego recalcular la suma y la nota final
+            $suma = $notas->tareas
+                + $notas->resultadosAlcanzados
+                + $notas->conocimientos
+                + $notas->adaptabilidad
+                + $notas->aplicacion
+                + $notas->CapacidadLiderazgo
+                + $notas->asistencia
+                + $notas->informe;
 
+            $notaFinal = ($suma * 20) / 100;
+
+            // Actualizar la nota final
+            $notas->notaFinal = $notaFinal;
             $notas->save();
 
             return redirect()->route('director_vinculacion.estudiantes')->with('success', 'Se ha actualizado la nota del estudiante.');
