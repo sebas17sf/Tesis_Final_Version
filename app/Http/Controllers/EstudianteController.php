@@ -465,7 +465,6 @@ class EstudianteController extends Controller
             'fecha' => 'required|date',
             'actividades' => 'required|string',
             'horas' => 'required|integer',
-            'evidencias' => 'required|file|mimes:jpeg,jpg,png|max:500000',
             'nombre_actividad' => 'required|string',
         ]);
 
@@ -482,6 +481,7 @@ class EstudianteController extends Controller
             // Comprimir la imagen y convertirla en base64
             $compressedImage = Image::make($evidencia)->encode('jpg', 75);
             $evidenciaBase64 = base64_encode($compressedImage->encoded);
+
 
             $actividadEstudiante = new ActividadEstudiante([
                 'estudianteId' => $estudiante->estudianteId,
