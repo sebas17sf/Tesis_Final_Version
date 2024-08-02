@@ -297,18 +297,19 @@
             <form action="{{ route('estudiantes.generarInforme') }}" method="post">
                 @csrf
                 <div class="form-row">
-                    <div class="form-group col-md-1">
+                    <div class="form-group col-md-3">
                         <label for="tipoInforme"><strong>Generar Informe:</strong></label>
                         <select class="form-control input input_select3" name="tipo" id="tipo">
                             <option value="grupal">Grupal</option>
                             <option value="individual">Individual</option>
                         </select>
                     </div>
-                </div>
+              
 
-                <div class="form-group">
+                <div class="form-group col-md-10">
                     <label for="nombreComunidad"><strong>Nombre de la Comunidad o Comunidades Beneficiarias:</strong></label>
                     <input type="text" id="nombreComunidad" name="nombreComunidad" class="form-control input" required>
+                </div>
                 </div>
 
                 <div class="form-row">
@@ -362,60 +363,50 @@
                     </div>
                 </div>
                 <br>
-                <table>
-                    <tr>
-                        <td>
-                            <label for="razones"><strong>Explicar las razones que justifican las actividades realizadas:</strong></label>
-                        </td>
-                        <td>
-                            <textarea id="razones" class="textarea input" name="razones" rows="10" cols="100"></textarea>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="2">
-                            <label for="conclusiones"><strong>Conclusiones:</strong></label>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label for="conclusiones1"><strong>¿Qué resultados de aprendizaje obtuvo realizando las actividades de servicio comunitario?:</strong></label>
-                        </td>
-                        <td>
-                            <textarea id="conclusiones1" class="textarea input" name="conclusiones1" rows="10" cols="100"></textarea>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label for="conclusiones2"><strong>¿Qué limitaciones tuvo para realizar sus actividades de servicio comunitario?:</strong></label>
-                        </td>
-                        <td>
-                            <textarea id="conclusiones2" class="textarea input" name="conclusiones2" rows="10" cols="100"></textarea>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label for="conclusiones3"><strong>¿Qué éxitos alcanzados se obtuvo cuando realizó sus actividades de servicio comunitario?:</strong></label>
-                        </td>
-                        <td>
-                            <textarea id="conclusiones3" class="textarea input" name="conclusiones3" rows="10" cols="100"></textarea>
-                        </td>
-                    </tr>
-
-
-
-                    <tr>
-                        <td>
-                            <label for="recomendaciones"><strong>Recomendaciones:</strong></label>
-                        </td>
-                        <td>
-                            <textarea id="recomendaciones" class="textarea input" name="recomendaciones" rows="10" cols="100"></textarea>
-                        </td>
-                    </tr>
-                </table>
+                <table class="four-column-table">
+    <tr>
+        <td>
+            <label for="razones">Explicar las razones que justifican las actividades realizadas:</label>
+        </td>
+        <td class="textarea-cell">
+            <textarea id="razones" class="textarea input" name="razones" rows="10"></textarea>
+        </td>
+        <td>
+            <label for="conclusiones">Conclusiones:</label>
+        </td>
+        <td class="textarea-cell">
+            <textarea id="conclusiones" class="textarea input" name="conclusiones" rows="10"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="conclusiones1">¿Qué resultados de aprendizaje obtuvo realizando las actividades de servicio comunitario?</label>
+        </td>
+        <td class="textarea-cell">
+            <textarea id="conclusiones1" class="textarea input" name="conclusiones1" rows="10"></textarea>
+        </td>
+        <td>
+            <label for="conclusiones2">¿Qué limitaciones tuvo para realizar sus actividades de servicio comunitario?</label>
+        </td>
+        <td class="textarea-cell">
+            <textarea id="conclusiones2" class="textarea input" name="conclusiones2" rows="10"></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="conclusiones3">¿Qué éxitos alcanzados se obtuvo cuando realizó sus actividades de servicio comunitario?</label>
+        </td>
+        <td class="textarea-cell">
+            <textarea id="conclusiones3" class="textarea input" name="conclusiones3" rows="10"></textarea>
+        </td>
+        <td>
+            <label for="recomendaciones">Recomendaciones:</label>
+        </td>
+        <td class="textarea-cell">
+            <textarea id="recomendaciones" class="textarea input" name="recomendaciones" rows="10"></textarea>
+        </td>
+    </tr>
+</table>
                 <center>
                     <button type="submit" class="button1">Crear Informe</button>
                 </center>
@@ -495,5 +486,32 @@
             padding: .5rem !important;
 
         }
+    
+    .four-column-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .four-column-table td {
+        padding: 10px;
+        vertical-align: top;
+    }
+
+    .four-column-table label {
+        display: block;
+        font-weight: bold;
+    }
+
+    .four-column-table textarea {
+        width: 95%;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+
+    .four-column-table .textarea-cell {
+        width: 30%;
+    }
+
+
     </style>
 @endsection
