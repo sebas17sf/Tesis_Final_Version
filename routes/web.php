@@ -17,7 +17,7 @@ use App\Http\Controllers\GraficaController;
 use Laravel\Socialite\Facades\Socialite;
 
 
- 
+
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
 
 Route::get('/keep-alive', [SessionController::class, 'keepAlive']);
@@ -188,7 +188,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/participante-vinculacion/baremo', [ParticipanteVinculacionController::class, 'baremo'])->name('ParticipanteVinculacion.baremo');
 
     Route::get('/director-vinculacion/baremo', [DirectorVinculacionController::class, 'baremo'])->name('director.baremo');
-
+    /////////cerrarProcesoEstudianteIndividual
+    Route::post('/director-vinculacion/cerrar-proceso-estudiante-individual/{estudianteId}', [DirectorVinculacionController::class, 'cerrarProcesoEstudianteIndividual'])->name('director.cerrarEstudianteIndividual');
     ///rutas para guardar las notas del estudiante, participante
     Route::post('/participante-vinculacion/guardar-notas', [ParticipanteVinculacionController::class, 'guardarNotas'])->name('guardar-notas');
     ///ruta para actualizar las notas del estudiante

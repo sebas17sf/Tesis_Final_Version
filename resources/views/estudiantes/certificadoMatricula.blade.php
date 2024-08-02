@@ -91,7 +91,7 @@
     <hr style="color: rgb(17, 31, 95);">
 
     <h4>DATOS DEL ESTUDIANTE</h4>
-    
+
     <table class="no-border-table">
     <tr>
         <th>Estudiante:</th>
@@ -111,7 +111,7 @@
         <th>ESPE ID:</th>
         <td>{{ $estudiante->espeId }}</td>
     </tr>
-    
+
         <th>Correo:</th>
         <td style="text-transform: lowercase;">{{ $estudiante->correo }}</td>
         <th>Departamento:</th>
@@ -123,17 +123,20 @@
 
     <tr>
 </table>
-    
+
     <h4>Proceso actualmente:</h4>
     <p><strong>Estado:</strong>
-        @if ($estudiante->estado == 'Aprobado')
-            Aprobado Vinculación
+        @if ($finalizadoProcesos)
+            Finalizado procesos
+        @elseif ($estudiante->estado == 'Aprobado')
+            Vinculación
         @elseif ($estudiante->estado == 'Aprobado-practicas')
             Practicas
         @else
-            {{ $estudiante->Estado }}
+            {{ $estudiante->estado }}
         @endif
     </p>
+
     <hr style="color: rgb(17, 31, 95);">
     <hr style="color: rgb(17, 31, 95);">
 
@@ -142,7 +145,7 @@
     </div>
 
     <hr style="color: rgb(17, 31, 95);">
-  
+
 
     @if($asignaciones->isNotEmpty())
     <div class="section-title">
@@ -222,10 +225,10 @@
                         <th>Tutor empresarial</th>
                         <td>{{ $practica->NombreTutorEmpresarial}}</td>
                     </tr>
-                    
 
-                        
-                   
+
+
+
                         <th>Tutor académico</th>
                         <td>{{ $practica->tutorAcademico->apellidos }} {{ $practica->tutorAcademico->nombres }}</td>
                         <th>Periodo de la práctica</th>
@@ -248,7 +251,7 @@
                     <td>{{ $practica->tipoPractica }}</td>
                         <th>Estado</th>
                         <td colspan="3">{{ $practica->Estado }}</td>
-                       
+
                     </tr>
                 @endif
             @empty
@@ -360,7 +363,7 @@
     <hr style="color: rgb(17, 31, 95);">
     <hr style="color: rgb(17, 31, 95);">
 @endif
-    
+
     @if($practicasiv->isNotEmpty())
     <div class="section-title">
         <h4>PRÁCTICA 1.3</h4>
@@ -409,7 +412,7 @@
     <hr style="color: rgb(17, 31, 95);">
     <hr style="color: rgb(17, 31, 95);">
 @endif
-   
+
     @if($practicasii->isNotEmpty())
     <div class="section-title">
         <h4>PRÁCTICA 2</h4>

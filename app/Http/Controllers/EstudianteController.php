@@ -601,12 +601,23 @@ class EstudianteController extends Controller
             $practicasiv = $estudiante->practicasiv()->with('empresa', 'tutorAcademico')->get();
             $practicasv = $estudiante->practicasv()->with('empresa', 'tutorAcademico')->get();
 
-            $pdf = PDF::loadView('estudiantes.certificadoMatricula', compact('estudiante', 'asignaciones', 'practicasi', 'practicasii', 'practicasiii', 'practicasiv', 'practicasv'));
+            $asignacionesCompletadas = $asignaciones->where('estado', 'Finalizado')->count();
+            $practicasCompletadas = $practicasi->where('Estado', 'Finalizado')->count() +
+                $practicasii->where('Estado', 'Finalizado')->count() +
+                $practicasiii->where('Estado', 'Finalizado')->count() +
+                $practicasiv->where('Estado', 'Finalizado')->count() +
+                $practicasv->where('Estado', 'Finalizado')->count();
+ 
+            // Ajuste de la lógica
+            $finalizadoProcesos = $practicasCompletadas >= 5 || $practicasCompletadas >= 2;
+
+            $pdf = PDF::loadView('estudiantes.certificadoMatricula', compact('estudiante', 'asignaciones', 'practicasi', 'practicasii', 'practicasiii', 'practicasiv', 'practicasv', 'finalizadoProcesos'));
             return $pdf->download('certificadoMatricula.pdf');
         } else {
             return redirect()->back()->with('error', 'No se pudo encontrar al estudiante.');
         }
     }
+
 
 
 
