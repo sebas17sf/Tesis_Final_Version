@@ -543,6 +543,7 @@
                                             <th>FECHA INICIO</th>
                                             <th>FECHA FIN</th>
                                             <th>ESTADO</th>
+                                            <th>ACCIONES</th>
                                         </tr>
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
@@ -628,6 +629,13 @@
                                                         @foreach ($grupo as $asignacion)
                                                             {{ $asignacion->estado ?? '' }}<br>
                                                         @endforeach
+                                                    </td>
+                                                    <td>
+                                                        <form action="{{ route('admin.revertirAsignacion', ['proyectoId' => $grupo->first()->proyectoId, 'idPeriodo' => $grupo->first()->idPeriodo]) }}" method="POST">
+                                                            @csrf
+                                                            @method('PATCH')
+                                                            <button type="submit" class="btn btn-warning">Revertir</button>
+                                                        </form>
                                                     </td>
                                                 </tr>
                                             @endforeach

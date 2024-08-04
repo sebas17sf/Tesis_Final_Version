@@ -162,6 +162,7 @@ Route::middleware(['auth'])->group(function () {
     ///ruta para mostrar los proyectos
     Route::get('/director/proyectos', [DirectorController::class, 'indexProyectos'])->name('director.indexProyectos');
 
+    Route::patch('/admin/revertir-asignacion/{proyectoId}/{idPeriodo}', [AdminController::class, 'revertirAsignacion'])->name('admin.revertirAsignacion');
 
 
 

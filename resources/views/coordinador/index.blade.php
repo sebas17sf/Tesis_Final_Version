@@ -521,6 +521,7 @@
                                             <th>FECHA INICIO</th>
                                             <th>FECHA FIN</th>
                                             <th>ESTADO</th>
+                                            <th>ACCIONES</th>
                                         </tr>
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
@@ -584,12 +585,38 @@
                                                     <td>{{ $grupo->first()->periodo->numeroPeriodo ?? '' }}</td>
                                                     <td>{{ $grupo->first()->nrcVinculacion->nrc ?? 'NO REQUERIA DE NRC' }}
                                                     </td>
-                                                    <td>{{ $grupo->first()->inicioFecha ?? '' }}</td>
-                                                    <td>{{ $grupo->first()->finalizacionFecha ?? '' }}</td>
-                                                    <td>
+                                                    <td
+                                                        style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
+
+                                                        @foreach ($grupo as $asignacion)
+                                                            {{ $asignacion->inicioFecha ?? '' }}<br>
+                                                        @endforeach
+
+                                                    </td>
+                                                    <td
+                                                        style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
+
+                                                        @foreach ($grupo as $asignacion)
+                                                            {{ $asignacion->finalizacionFecha ?? '' }}<br>
+                                                        @endforeach
+
+                                                    </td>
+                                                    <td
+                                                        style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
+
                                                         @foreach ($grupo as $asignacion)
                                                             {{ $asignacion->estado ?? '' }}<br>
                                                         @endforeach
+                                                    </td>
+                                                    <td>
+                                                        <form
+                                                            action="{{ route('admin.revertirAsignacion', ['proyectoId' => $grupo->first()->proyectoId, 'idPeriodo' => $grupo->first()->idPeriodo]) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('PATCH')
+                                                            <button type="submit"
+                                                                class="btn btn-warning">Revertir</button>
+                                                        </form>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -1332,7 +1359,7 @@
             document.getElementById('hiddenPeriodos').value = document.getElementById('periodos').value;
         });
     </script>
-        <script src="{{ asset('js\admin\index.js') }}"></script>
+    <script src="{{ asset('js\admin\index.js') }}"></script>
 
 
 @endsection

@@ -24,6 +24,8 @@ use App\Mail\AsignacionProyectoMailable;
 
 
 
+
+
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 
@@ -1772,6 +1774,37 @@ class AdminController extends Controller
 
 
 
+    public function revertirAsignacion($proyectoId, $idPeriodo)
+    {
+        try {
+            // Encuentra todas las asignaciones del proyecto con el mismo idPeriodo
+            $asignaciones = AsignacionProyecto::where('proyectoId', $proyectoId)
+                                              ->where('idPeriodo', $idPeriodo)
+                                              ->get();
 
+            foreach ($asignaciones as $asignacion) {
+                // Encuentra al estudiante asociado a la asignación
+                $estudiante = Estudiante::findOrFail($asignacion->estudianteId);
 
+                // Actualiza el estado del estudiante a "Aprobado"
+                $estudiante->estado = 'Aprobado';
+                $estudiante->save();
+
+                // Actualiza el estado de la asignación a "En ejecucion"
+                $asignacion->estado = 'En ejecucion';
+                $asignacion->save();
+            }
+
+            // Redirige de vuelta con un mensaje de éxito
+            return redirect()->back()->with('success', 'El estado de los estudiantes y las asignaciones han sido revertidos exitosamente.');
+        } catch (\Exception $e) {
+            // Redirige de vuelta con un mensaje de error
+            return redirect()->back()->with('error', 'Ocurrió un error al revertir el estado de los estudiantes y las asignaciones: ' . $e->getMessage());
+        }
+    }
 }
+
+
+
+
+
