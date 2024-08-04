@@ -23,7 +23,20 @@
         </div>
     @endif
 
+    <div class="form-group col-md-1">
+        <label for="tipoInforme"><strong>Generar Documentación:</strong></label>
+        <select class="form-control input input_select3" name="tipoDocumentos" id="tipoInforme">
+            <option value="grupal">Grupal</option>
+            <option value="individual">Individual</option>
+        </select>
+    </div>
+
+
+
     <div class="container mt-4">
+
+
+
         <div class="container">
             <div class="row">
                 <div class="col-md-4 d-flex">
@@ -31,13 +44,14 @@
                         <div class="card-body d-flex flex-column">
                             <h4 class="card-title flex-grow-1"><i>Generar Acta de Designación de Estudiantes</i></h4>
                             <hr>
-                            <form action="{{ route('generar-documento') }}" method="post"
-                                class="d-flex justify-content-center">
+                            <form action="{{ route('generar-documento') }}" method="post" class="d-flex justify-content-center">
                                 @csrf
+                                <input type="hidden" name="tipoDocumentos" id="tipoDocumentos1">
                                 <button type="submit" class="button1 btn_word efects_button">
                                     <i class="fa-solid fa-file-word"></i> Generar
                                 </button>
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -61,9 +75,9 @@
                         <div class="card-body d-flex flex-column">
                             <h4 class="card-title flex-grow-1"><i>Generar Número de Horas de Estudiantes</i></h4>
                             <hr>
-                            <form action="{{ route('generar-documento-numeroHoras') }}" method="POST"
-                                class="d-flex justify-content-center">
+                            <form action="{{ route('generar-documento-numeroHoras') }}" method="POST" class="d-flex justify-content-center">
                                 @csrf
+                                <input type="hidden" name="tipoDocumentos" id="tipoDocumentos2">
                                 <button type="submit" class="button1 btn_excel efects_button">
                                     <i class="fas fa-file-excel"></i> Generar
                                 </button>
@@ -140,7 +154,6 @@
                     <table class="mat-mdc-table">
                         <thead class="ng-star-inserted">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-
                                 <th>FECHA</th>
                                 <th style="width: 161px !important; min-width:200px !important;">ACTIVIDADES</th>
                                 <th>NÚMERO DE HORAS</th>
@@ -178,15 +191,17 @@
                                         <td
                                             style="text-transform: uppercase; word-wrap: break-word; text-align: center; font-size: .7em;">
                                             <div class="btn-group shadow-1">
-                                                <form action="{{ route('eliminarActividad', $actividad->idActividades) }}"
-                                                    method="POST">
+                                                <form action="{{ route('eliminarActividad', $actividad->idActividades) }}" method="POST" id="delete-form-{{ $actividad->idActividades }}">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="button3 efects_button btn_eliminar3"
-                                                        onclick="confirmDeleteEstudiante(event)"><i
-                                                            class='bx bx-trash'></i></button>
+                                                    <button type="button" class="button3 efects_button btn_eliminar3" onclick="confirmDeleteEstudiante({{ $actividad->idActividades }})">
+                                                        <i class='bx bx-trash'></i>
+                                                    </button>
                                                 </form>
                                             </div>
+
+
+
                                             <div class="btn-group shadow-1">
                                                 <!-- Botón para abrir el card de editar actividad -->
                                                 <div class="tooltip-container mx-1">
@@ -280,6 +295,13 @@
                             @endif
                         </tbody>
                     </table>
+
+                    @if (!$actividadesRegistradas->isEmpty())
+                        <div style="text-align: center; margin-top: 20px;">
+                            <strong>Número total de horas registradas: {{ $totalHoras }}/96</strong>
+                        </div>
+                    @endif
+
                 </div>
             </div>
         </div>
@@ -478,6 +500,58 @@
             }, 1000); // 2000 milisegundos = 2 segundos
         });
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tipoInformeSelect = document.getElementById('tipoInforme');
+        const tipoDocumentos1 = document.getElementById('tipoDocumentos1');
+        const tipoDocumentos2 = document.getElementById('tipoDocumentos2');
+
+        tipoInformeSelect.addEventListener('change', function() {
+            tipoDocumentos1.value = this.value;
+            tipoDocumentos2.value = this.value;
+        });
+
+        // Inicialmente establecer el valor al cargar la página
+        tipoDocumentos1.value = tipoInformeSelect.value;
+        tipoDocumentos2.value = tipoInformeSelect.value;
+    });
+</script>
+
+<script>
+    function confirmDeleteEstudiante(id) {
+        Swal.fire({
+            title: '¿Estás seguro de eliminar la actividad?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#7066e0',
+            cancelButtonColor: '#808080',
+            confirmButtonText: 'Aceptar',
+            customClass: {
+                container: 'my-swal',
+                popup: 'my-swal-popup',
+                header: 'my-swal-header',
+                title: 'my-swal-title',
+                closeButton: 'my-swal-close-button',
+                icon: 'my-swal-icon',
+                image: 'my-swal-image',
+                content: 'my-swal-content',
+                input: 'my-swal-input',
+                actions: 'my-swal-actions',
+                confirmButton: 'my-swal-confirm-button',
+                cancelButton: 'my-swal-cancel-button',
+                footer: 'my-swal-footer'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + id).submit();
+            }
+        });
+    }
+</script>
+
+
     <style>
         .contenedor_tabla .table-container table td {
             width: 200px;
@@ -514,4 +588,6 @@
 
 
     </style>
+
+
 @endsection

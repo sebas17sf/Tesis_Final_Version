@@ -25,7 +25,7 @@ function submitForm(event) {
         var a = document.createElement('a');
         a.href = url;
         a.download = 'Reporte-Docentes.xlsx'; // specify the file name
-        document.body.appendChild(a); 
+        document.body.appendChild(a);
         a.click();
         a.remove();
         window.URL.revokeObjectURL(url);
@@ -41,14 +41,14 @@ function submitForm(event) {
 
 
 document.addEventListener('DOMContentLoaded', (event) => {
-  // Selecciona el elemento de la alerta
-  const alertElement = document.querySelector('.contenedor_alerta');
-  // Establece un temporizador para ocultar la alerta después de 2 segundos
-  setTimeout(() => {
-    if (alertElement) {
-      alertElement.style.display = 'none';
-    }
-  }, 2000); // 2000 milisegundos = 2 segundos
+    // Selecciona el elemento de la alerta
+    const alertElement = document.querySelector('.contenedor_alerta');
+    // Establece un temporizador para ocultar la alerta después de 2 segundos
+    setTimeout(() => {
+        if (alertElement) {
+            alertElement.style.display = 'none';
+        }
+    }, 2000); // 2000 milisegundos = 2 segundos
 });
 
 
@@ -85,9 +85,9 @@ function toggleIcon(icon, isCheck) {
 function formatDataForClipboard() {
     const table = document.getElementById('professorsTable');
     const headers = Array.from(table.querySelectorAll('thead th'))
-                        .slice(0, -1) // Excluye el último encabezado ("Acciones")
-                        .map(th => th.innerText.trim())
-                        .join('\t');
+        .slice(0, -1) // Excluye el último encabezado ("Acciones")
+        .map(th => th.innerText.trim())
+        .join('\t');
     const rows = table.querySelectorAll('tbody tr');
     let data = headers + '\n';
 
@@ -95,9 +95,9 @@ function formatDataForClipboard() {
         const cells = row.querySelectorAll('td');
         if (cells.length > 0) {  // Asegúrate de que hay celdas para procesar
             const rowData = Array.from(cells)
-                                .slice(0, -1) // Excluye la última celda (acciones)
-                                .map(cell => cell.innerText.trim())
-                                .join('\t');
+                .slice(0, -1) // Excluye la última celda (acciones)
+                .map(cell => cell.innerText.trim())
+                .join('\t');
             data += rowData + '\n';
         }
     });
@@ -150,15 +150,15 @@ function closeAlert(alertId) {
     const alert = document.getElementById(alertId);
     alert.style.display = 'none';
 }
-    // Asegurarse de que el evento de clic esté registrado
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.icon_remove button').forEach(button => {
-            button.addEventListener('click', function() {
-                const alertId = this.closest('.contenedor_alerta').id;
-                closeAlert(alertId);
-            });
+// Asegurarse de que el evento de clic esté registrado
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.icon_remove button').forEach(button => {
+        button.addEventListener('click', function () {
+            const alertId = this.closest('.contenedor_alerta').id;
+            closeAlert(alertId);
         });
     });
+});
 
 function copyDataToClipboard(event) {
     const button = event.currentTarget;
@@ -191,9 +191,9 @@ function toggleIcon(icon, isCheck) {
 function formatDataForClipboard() {
     const table = document.getElementById('professorsTable');
     const headers = Array.from(table.querySelectorAll('thead th'))
-                        .slice(0, -1) // Excluye el último encabezado ("Acciones")
-                        .map(th => th.innerText.trim())
-                        .join('\t');
+        .slice(0, -1) // Excluye el último encabezado ("Acciones")
+        .map(th => th.innerText.trim())
+        .join('\t');
     const rows = table.querySelectorAll('tbody tr');
     let data = headers + '\n';
 
@@ -201,9 +201,9 @@ function formatDataForClipboard() {
         const cells = row.querySelectorAll('td');
         if (cells.length > 0) {  // Asegúrate de que hay celdas para procesar
             const rowData = Array.from(cells)
-                                .slice(0, -1) // Excluye la última celda (acciones)
-                                .map(cell => cell.innerText.trim())
-                                .join('\t');
+                .slice(0, -1) // Excluye la última celda (acciones)
+                .map(cell => cell.innerText.trim())
+                .join('\t');
             data += rowData + '\n';
         }
     });
@@ -234,19 +234,19 @@ function removeFile() {
     document.querySelector('.remove-icon').style.display = 'none';
 }
 
-$(document).ready(function(){
+$(document).ready(function () {
     $(".draggable-card").draggable({
         handle: ".card-header",
         containment: "window"
     });
 });
-$(document).ready(function(){
+$(document).ready(function () {
     $(".draggable-card1_1").draggable({
         handle: ".card-header",
         containment: "window"
     });
 });
-$(document).ready(function() {
+$(document).ready(function () {
     // Hacer que los cards sean draggable
     $('.draggable-card1_4').draggable({
         handle: ".card-header",
@@ -254,7 +254,7 @@ $(document).ready(function() {
     });
 });
 
-$(document).ready(function() {
+$(document).ready(function () {
     // Hacer que los cards sean draggable
     $('.draggable-card1_2').draggable({
         handle: ".card-header",
@@ -262,7 +262,7 @@ $(document).ready(function() {
     });
 });
 
-$(document).ready(function(){
+$(document).ready(function () {
     $(".draggable-card1").draggable({
         handle: ".card-header",
         containment: "window"
@@ -303,8 +303,8 @@ function makeElementDraggable(element) {
     }
 }
 
-$(document).ready(function() {
-    $('.draggable-card').each(function() {
+$(document).ready(function () {
+    $('.draggable-card').each(function () {
         makeElementDraggable(this);
     });
 });

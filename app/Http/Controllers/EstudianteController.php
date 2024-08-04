@@ -475,6 +475,15 @@ class EstudianteController extends Controller
             return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');
         }
 
+        // Calcular el total de horas registradas por el estudiante
+        $totalHoras = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)->sum('numeroHoras');
+
+        // Verificar si la suma de las horas actuales y las nuevas horas supera el límite permitido
+        $nuevasHoras = $request->input('horas');
+        if ($totalHoras + $nuevasHoras > 96) {
+            return redirect()->route('estudiantes.documentos')->with('error', 'Registrar esta actividad supera el límite de 96 horas.');
+        }
+
         if ($request->hasFile('evidencias')) {
             $evidencia = $request->file('evidencias');
 
@@ -482,12 +491,11 @@ class EstudianteController extends Controller
             $compressedImage = Image::make($evidencia)->encode('jpg', 75);
             $evidenciaBase64 = base64_encode($compressedImage->encoded);
 
-
             $actividadEstudiante = new ActividadEstudiante([
                 'estudianteId' => $estudiante->estudianteId,
                 'fecha' => $request->input('fecha'),
                 'actividades' => $request->input('actividades'),
-                'numeroHoras' => $request->input('horas'),
+                'numeroHoras' => $nuevasHoras,
                 'evidencias' => $evidenciaBase64,
                 'nombreActividad' => $request->input('nombre_actividad'),
             ]);
@@ -503,6 +511,8 @@ class EstudianteController extends Controller
             return redirect()->back()->with('error', 'Verifica el ingreso de los datos en la Actividad.');
         }
     }
+
+
 
 
     ////eliminar actividad
@@ -607,7 +617,7 @@ class EstudianteController extends Controller
                 $practicasiii->where('Estado', 'Finalizado')->count() +
                 $practicasiv->where('Estado', 'Finalizado')->count() +
                 $practicasv->where('Estado', 'Finalizado')->count();
- 
+
             // Ajuste de la lógica
             $finalizadoProcesos = $practicasCompletadas >= 5 || $practicasCompletadas >= 2;
 
