@@ -262,6 +262,9 @@ Route::middleware(['auth'])->group(function () {
     ///ruta para generarAsistencia
     Route::post('/participante-vinculacion/generar-asistencia', [DocumentosVinculacion::class, 'generarAsistencia'])->name('ParticipanteVinculacion.generarAsistencia');
 
+    Route::post('/estudiante/generar-asistencia', [DocumentoController::class, 'generarAsistenciaEstudiantes'])->name('estudiante.generarAsistenciaEstudiantes');
+
+
     //configuracion estudiantes
     Route::get('/estudiantes/configuracion', [EstudianteController::class, 'configuracion'])->name('estudiantes.configuracion');
     Route::put('/estudiantes/actualizar-configuracion/{id}', [EstudianteController::class, 'actualizarConfiguracion'])->name('estudiantes.actualizarConfiguracion');
