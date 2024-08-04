@@ -506,9 +506,8 @@
 
     <style>
         .contenedor_tabla .table-container table td {
-            width: 200px;
-            min-width: 150px;
-            font-size: 11px !important;
+
+            font-size: .7em !important;
             padding: .5rem !important;
         }
 
@@ -516,9 +515,6 @@
             min-height: 1px !important;
         }
 
-        .table-container {
-            height: 275px !important;
-        }
     </style>
 
     <script>
