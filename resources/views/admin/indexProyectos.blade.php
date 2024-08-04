@@ -606,11 +606,25 @@
                                                     <td>{{ $grupo->first()->periodo->numeroPeriodo ?? '' }}</td>
                                                     <td>{{ $grupo->first()->nrcVinculacion->nrc ?? 'NO REQUERIA DE NRC' }}
                                                     </td>
-                                                    <td>{{ $grupo->first()->inicioFecha ?? '' }}</td>
-                                                    <td>{{ $grupo->first()->finalizacionFecha ?? '' }}</td>
                                                     <td
                                                         style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
-                                                        
+
+                                                        @foreach ($grupo as $asignacion)
+                                                            {{ $asignacion->inicioFecha ?? '' }}<br>
+                                                        @endforeach
+
+                                                    </td>
+                                                    <td
+                                                        style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
+
+                                                        @foreach ($grupo as $asignacion)
+                                                            {{ $asignacion->finalizacionFecha ?? '' }}<br>
+                                                        @endforeach
+
+                                                    </td>
+                                                    <td
+                                                        style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
+
                                                         @foreach ($grupo as $asignacion)
                                                             {{ $asignacion->estado ?? '' }}<br>
                                                         @endforeach
