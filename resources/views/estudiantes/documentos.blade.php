@@ -22,136 +22,110 @@
             </div>
         </div>
     @endif
-
-    <div class="form-group col-md-1">
+    <div class="title_icon_info" style="text-align:left !important;">
+            <b>Documentación</b>
+        </div>
+    
+    <section class="content_recent_courses">
+    <div class="container_cources_cards">
+        <hr>
+        <div class="container_cources scroll_element">
+            <div class="cards">
+            <div class="form-group">
         <label for="tipoInforme"><strong>Generar Documentación:</strong></label>
         <select class="form-control input input_select3" name="tipoDocumentos" id="tipoInforme">
             <option value="grupal">Grupal</option>
             <option value="individual">Individual</option>
         </select>
     </div>
+    </div>
+    
 
+            <div class="cards">
+                
+                <form action="{{ route('generar-documento') }}" method="post">
+                    @csrf
+                    <input type="hidden" name="tipoDocumentos" id="tipoDocumentos1">
+                    <button type="submit" class="card-button">
+                        <span><b>ACTA DE DESIGNACIÓN DE ESTUDIANTES</b></span>
+                        <i class="fa-solid fa-file-word"></i>
+                    </button>
+                </form>
+            </div>
+            <div class="cards">
+                <form action="{{ route('generar-documento-cartaCompromiso') }}" method="post">
+                    @csrf
+                    <button type="submit" class="card-button">
+                        <span><b>CARTA DE COMPROMISO DE ESTUDIANTE</b></span>
+                        <i class="fa-solid fa-file-word"></i>
+                    </button>
+                </form>
+            </div>
+            <div class="cards">
+                <form action="{{ route('generar-documento-numeroHoras') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="tipoDocumentos" id="tipoDocumentos2">
+                    <button type="submit" class="card-button">
+                        <span><b>NÚMERO DE HORAS DE ESTUDIANTES</b></span>
+                        <i class="fas fa-file-excel"></i>
+                    </button>
+                </form>
+            </div>
+            <div class="cards">
+                <button type="button" class="card-button" onclick="$('#draggableCardRegistroHoras').show()">
+                    <span><b>REGISTRO DE ESTUDIANTES</b></span>
+                    <i class="fas fa-save"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
 
-
-    <div class="container mt-4">
-
-
-
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 d-flex">
-                    <div class="card custom-card mb-4 w-100">
-                        <div class="card-body d-flex flex-column">
-                            <h4 class="card-title flex-grow-1"><i>Generar Acta de Designación de Estudiantes</i></h4>
-                            <hr>
-                            <form action="{{ route('generar-documento') }}" method="post"
-                                class="d-flex justify-content-center">
-                                @csrf
-                                <input type="hidden" name="tipoDocumentos" id="tipoDocumentos1">
-                                <button type="submit" class="button1 btn_word efects_button">
-                                    <i class="fa-solid fa-file-word"></i> Generar
-                                </button>
-                            </form>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 d-flex">
-                    <div class="card custom-card mb-4 w-100">
-                        <div class="card-body d-flex flex-column">
-                            <h4 class="card-title flex-grow-1"><i>Generar Carta de Compromiso de Estudiante</i></h4>
-                            <hr>
-                            <form action="{{ route('generar-documento-cartaCompromiso') }}" method="post"
-                                class="d-flex justify-content-center">
-                                @csrf
-                                <button type="submit" class="button1 btn_word efects_button">
-                                    <i class="fa-solid fa-file-word"></i> Generar
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 d-flex">
-                    <div class="card custom-card mb-4 w-100">
-                        <div class="card-body d-flex flex-column">
-                            <h4 class="card-title flex-grow-1"><i>Generar Número de Horas de Estudiantes</i></h4>
-                            <hr>
-                            <form action="{{ route('generar-documento-numeroHoras') }}" method="POST"
-                                class="d-flex justify-content-center">
-                                @csrf
-                                <input type="hidden" name="tipoDocumentos" id="tipoDocumentos2">
-                                <button type="submit" class="button1 btn_excel efects_button">
-                                    <i class="fas fa-file-excel"></i> Generar
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 d-flex">
-                    <div class="card custom-card mb-4 w-100">
-                        <div class="card-body d-flex flex-column">
-                            <!-- Botón para abrir el modal -->
-                            <div class="cards">
-                                <button type="button" class="card-button"
-                                    onclick="$('#draggableCardRegistroHoras').show()">
-                                    <span><b>REGISTRAR DE ESTUDIANTES</b></span>
-                                    <i class="fas fa-save"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tarjeta movible para Registro de Horas -->
-                <div class="draggable-card" id="draggableCardRegistroHoras">
-                    <div class="card-header">
-                        <span class="card-title">Registro de estudiantes</span>
-                        <button type="button" class="close" onclick="$('#draggableCardRegistroHoras').hide()"><i
-                                class="fa-thin fa-xmark"></i></button>
-                    </div>
-                    <div class="card-body">
-                        <form class="FormularioRegistroHoras"
-                            action="{{ route('estudiante.generarAsistenciaEstudiantes') }}" method="post"
-                            id="formAsistencia">
-                            @csrf
-                            <input type="hidden" name="tipoDocumentos" id="tipoDocumentosHidden">
-
-                            <div class="form-group">
-                                <label class="label" for="fecha"><strong>Fecha de asistencia:</strong></label>
-                                <input type="date" id="fecha" name="fecha" class="form-control input" required>
-                                <small id="fechaError" class="form-text text-danger" style="display: none;"></small>
-                                @error('fecha')
-                                    <small class="form-text text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label class="label" for="lugar"><strong>Lugar de la actividad:</strong></label>
-                                <input type="text" id="lugar" name="lugar" class="form-control input"
-                                    placeholder=" Escribir el lugar de la actividad" required>
-                                <small id="lugarError" class="form-text text-danger" style="display: none;"></small>
-                                @error('lugar')
-                                    <small class="form-text text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label class="label" for="actividades"><strong>Actividades a realizar:</strong></label>
-                                <textarea id="actividades" name="actividades" class="form-control input" placeholder=" Escribir la actividad"
-                                    required></textarea>
-                                <small id="actividadesError" class="form-text text-danger"
-                                    style="display: none;"></small>
-                                @error('actividades')
-                                    <small class="form-text text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <div class="card-footer1 d-flex justify-content-center align-items-center">
-                                <button type="submit" class="button1 input_select1">
-                                    <span>GENERAR</span>
-                                    <i class="fas fa-save"></i>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+<!-- Tarjeta movible para Registro de Horas -->
+<div class="draggable-card" id="draggableCardRegistroHoras" style="display:none;">
+    <div class="card-header">
+        <span class="card-title">Registro de estudiantes</span>
+        <button type="button" class="close" onclick="$('#draggableCardRegistroHoras').hide()">
+            <i class="fa-thin fa-xmark"></i>
+        </button>
+    </div>
+    <div class="card-body">
+        <form class="FormularioRegistroHoras" action="{{ route('estudiante.generarAsistenciaEstudiantes') }}" method="post" id="formAsistencia">
+            @csrf
+            <input type="hidden" name="tipoDocumentos" id="tipoDocumentosHidden">
+            <div class="form-group">
+                <label class="label" for="fecha"><strong>Fecha de asistencia:</strong></label>
+                <input type="date" id="fecha" name="fecha" class="form-control input" required>
+                <small id="fechaError" class="form-text text-danger" style="display: none;"></small>
+                @error('fecha')
+                    <small class="form-text text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label class="label" for="lugar"><strong>Lugar de la actividad:</strong></label>
+                <input type="text" id="lugar" name="lugar" class="form-control input" placeholder="Escribir el lugar de la actividad" required>
+                <small id="lugarError" class="form-text text-danger" style="display: none;"></small>
+                @error('lugar')
+                    <small class="form-text text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label class="label" for="actividades"><strong>Actividades a realizar:</strong></label>
+                <textarea id="actividades" name="actividades" class="form-control input" placeholder="Escribir la actividad" required></textarea>
+                <small id="actividadesError" class="form-text text-danger" style="display: none;"></small>
+                @error('actividades')
+                    <small class="form-text text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+            <div class="card-footer1 d-flex justify-content-center align-items-center">
+                <button type="submit" class="button1 input_select1">
+                    <span>Generar</span>
+                    <i class="fas fa-save"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
 
                 <!-- Card de Registro de Actividades -->
@@ -225,6 +199,7 @@
                                     <thead class="ng-star-inserted">
                                         <tr
                                             class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                            
                                             <th>FECHA</th>
                                             <th style="width: 161px !important; min-width:200px !important;">ACTIVIDADES
                                             </th>
@@ -379,13 +354,14 @@
                                             @endforeach
                                         @endif
                                     </tbody>
+                                   <tfoot>
+                            <tr>
+                                <td colspan="8" align="left"><strong>Total horas realizadas:</strong> {{ $totalHoras }} / 96</td>
+                            </tr>
+                        </tfoot>
                                 </table>
 
-                                @if (!$actividadesRegistradas->isEmpty())
-                                    <div style="text-align: center; margin-top: 20px;">
-                                        <strong>Número total de horas registradas: {{ $totalHoras }}/96</strong>
-                                    </div>
-                                @endif
+                            
 
                             </div>
                         </div>
@@ -562,7 +538,7 @@
                         containment: "window"
                     });
                 });
-
+                
                 function openCard(cardId) {
                     document.getElementById(cardId).style.display = 'block';
                 }
@@ -597,6 +573,13 @@
                         }
                     }, 1000); // 2000 milisegundos = 2 segundos
                 });
+                 // Hacer que los cards sean draggable
+                 $('.draggable-card').draggable({
+                        handle: ".card-header",
+                        containment: "window"
+                    });
+              
+
             </script>
 
             <script>

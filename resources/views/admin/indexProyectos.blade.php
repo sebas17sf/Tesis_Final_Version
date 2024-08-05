@@ -634,7 +634,7 @@
                                                         <form action="{{ route('admin.revertirAsignacion', ['proyectoId' => $grupo->first()->proyectoId, 'idPeriodo' => $grupo->first()->idPeriodo]) }}" method="POST">
                                                             @csrf
                                                             @method('PATCH')
-                                                            <button type="submit" class="btn btn-warning">Revertir</button>
+                                                            <button type="submit" class="btn btn-warning"> Revertir</button>
                                                         </form>
                                                     </td>
                                                 </tr>
