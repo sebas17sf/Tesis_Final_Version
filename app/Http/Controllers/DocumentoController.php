@@ -2060,7 +2060,6 @@ class DocumentoController extends Controller
 
         $departamento = $request->input('departamentos');
 
-
         $docentes = ProfesUniversidad::orderBy('apellidos');
 
         if ($departamento) {
@@ -2069,14 +2068,20 @@ class DocumentoController extends Controller
 
         $docentes = $docentes->get();
 
-
+        // Filtrar los docentes para excluir los correos específicos
+        $correosExcluidos = ['directordepartamento@espe.edu.ec', 'directorcarrera@espe.edu.ec'];
+        $docentes = $docentes->filter(function ($docente) use ($correosExcluidos) {
+            return !in_array($docente->correo, $correosExcluidos);
+        })->values(); // Re-indexar la colección después de filtrar
 
         $sheet = $spreadsheet->getActiveSheet();
 
         $filaInicio = 9;
 
-        $cantidadFilas = count($docentes);
-        $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
+        $cantidadFilas = $docentes->count();
+        if ($cantidadFilas > 1) {
+            $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
+        }
 
         $contador = 1;
 
@@ -2085,10 +2090,10 @@ class DocumentoController extends Controller
             $currentRow = $filaInicio + $index;
 
             $sheet->setCellValue('A' . $currentRow, $contador);
-            $nombreCompleto = mb_strtoupper($docente->apellidos . ', ' . $docente->nombres, 'UTF-8');
+            $nombreCompleto = mb_strtoupper($docente->apellidos . ' ' . $docente->nombres, 'UTF-8');
             $sheet->setCellValue('B' . $currentRow, $nombreCompleto);
             $sheet->setCellValue('C' . $currentRow, $docente->correo); // No convertir a mayúsculas
-            $sheet->setCellValue('D' . $currentRow, mb_strtoupper($docente->usuario, 'UTF-8'));
+            $sheet->setCellValue('D' . $currentRow, $docente->usuario);
             $sheet->setCellValue('E' . $currentRow, mb_strtoupper($docente->cedula, 'UTF-8'));
             $sheet->setCellValue('F' . $currentRow, mb_strtoupper($docente->departamento, 'UTF-8'));
             $sheet->setCellValue('G' . $currentRow, mb_strtoupper($docente->espeId, 'UTF-8'));

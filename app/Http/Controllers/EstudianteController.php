@@ -622,11 +622,14 @@ class EstudianteController extends Controller
             $finalizadoProcesos = $practicasCompletadas >= 5 || $practicasCompletadas >= 2;
 
             $pdf = PDF::loadView('estudiantes.certificadoMatricula', compact('estudiante', 'asignaciones', 'practicasi', 'practicasii', 'practicasiii', 'practicasiv', 'practicasv', 'finalizadoProcesos'));
-            return $pdf->download('certificadoMatricula.pdf');
+
+            $filename = 'Historial-Practicas-vinculacion-' . $estudiante->apellidos . '-' . $estudiante->nombres . '.pdf';
+            return $pdf->download($filename);
         } else {
             return redirect()->back()->with('error', 'No se pudo encontrar al estudiante.');
         }
     }
+
 
 
 
