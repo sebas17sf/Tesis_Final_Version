@@ -113,10 +113,30 @@ class EstudianteController extends Controller
         $estudiante->update(['userId' => $user->userId]);
 
         $asignacionProyecto = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->first();
+
         if ($asignacionProyecto) {
             if ($asignacionProyecto->estado === 'En ejecucion') {
                 $estudiante->update(['estado' => 'Aprobado']);
             } elseif ($asignacionProyecto->estado === 'Finalizado') {
+                $estudiante->update(['estado' => 'Aprobado-practicas']);
+            }
+        }
+
+        /////si el estudiante tiene practicasi en Finalizado o En ejecucion
+        $practicaI = PracticaI::where('estudianteId', $estudiante->estudianteId)->first();
+        if ($practicaI) {
+            if ($practicaI->Estado === 'Finalizado') {
+                $estudiante->update(['estado' => 'Aprobado-practicas']);
+            } elseif ($practicaI->Estado === 'En ejecucion') {
+                $estudiante->update(['estado' => 'Aprobado-practicas']);
+            }
+        }
+        /////si el estudiante tiene practicasii en Finalizado o En ejecucion
+        $practicaII = PracticaII::where('estudianteId', $estudiante->estudianteId)->first();
+        if ($practicaII) {
+            if ($practicaII->Estado === 'Finalizado') {
+                $estudiante->update(['estado' => 'Aprobado-practicas']);
+            } elseif ($practicaII->Estado === 'En ejecucion') {
                 $estudiante->update(['estado' => 'Aprobado-practicas']);
             }
         }
