@@ -543,7 +543,7 @@
                                             <th>FECHA INICIO</th>
                                             <th>FECHA FIN</th>
                                             <th>ESTADO</th>
-                                            <th>ACCIONES</th>
+                                            <th>PERMITIR CAMBIOS</th>
                                         </tr>
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
@@ -631,11 +631,17 @@
                                                         @endforeach
                                                     </td>
                                                     <td>
-                                                        <form action="{{ route('admin.revertirAsignacion', ['proyectoId' => $grupo->first()->proyectoId, 'idPeriodo' => $grupo->first()->idPeriodo]) }}" method="POST">
+                                                        <form class="btn-group shadow-1"
+                                                            action="{{ route('admin.revertirAsignacion', ['proyectoId' => $grupo->first()->proyectoId, 'idPeriodo' => $grupo->first()->idPeriodo]) }}"
+                                                            method="POST">
                                                             @csrf
                                                             @method('PATCH')
-                                                            <button type="submit" class="btn btn-warning"> Revertir</button>
+                                                            <button type="submit" class="button3 efects_button btn_eliminar3">
+
+                                                                <i class="bx bx-undo"></i>
+                                                            </button>
                                                         </form>
+
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -1379,6 +1385,18 @@
         });
     </script>
     <script src="{{ asset('js\admin\index.js') }}"></script>
+
+    <style>
+        .btn_revertir3 {
+            color: #ffc107;
+            /* Puedes ajustar este color para que coincida con el estilo deseado */
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            font-size: 1.5em;
+            /* Ajusta el tamaño del ícono si es necesario */
+        }
+    </style>
 
 
 @endsection
