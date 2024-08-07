@@ -182,6 +182,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/estudiantes/generar-documento-cartaCompromiso', [DocumentoController::class, 'generarCartaCompromiso'])->name('generar-documento-cartaCompromiso');
     Route::post('/estudiantes/generar-documento-numeroHoras', [DocumentoController::class, 'generarHorasEstudiante'])->name('generar-documento-numeroHoras');
     Route::post('/estudiantes/generar-informe', [DocumentoController::class, 'generarInforme'])->name('estudiantes.generarInforme');
+    Route::post('/estudiantes/guardar-datos', [EstudianteController::class, 'guardarDatos'])->name('estudiantes.guardarDatos');
+    Route::get('/estudiantes/recuperar-datos', [EstudianteController::class, 'recuperarDatos'])->name('estudiantes.recuperarDatos');
 
     ////rutas del participante vinculacion
     Route::get('/participante-vinculacion', [ParticipanteVinculacionController::class, 'index'])->name('ParticipanteVinculacion.index');

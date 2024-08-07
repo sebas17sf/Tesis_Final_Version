@@ -745,17 +745,35 @@ class DocumentoController extends Controller
         $template->setValue('ApellidoAsignado', $ApellidoAsignado);
         $template->setValue('FechaFin', $fechaFormateada2);
 
-        // Obtener Input nombreComunidad
+        // Obtener los datos del formulario
         $nombreComunidad = $request->input('nombreComunidad');
-        $provincia = $request->input('provincia');
-        $template->setValue('provincia', $provincia);
-        $canton = $request->input('canton');
-        $template->setValue('canton', $canton);
-        $parroquia = $request->input('parroquia');
-        $template->setValue('parroquia', $parroquia);
-        $direccion = $request->input('direccion');
-        $template->setValue('direccion', $direccion);
+        $provincias = $request->input('provincia');
+        $cantones = $request->input('canton');
+        $parroquias = $request->input('parroquia');
+        $direcciones = $request->input('direccion');
+        $razones = $request->input('razones');
+        $conclusiones1 = $request->input('conclusiones1');
+        $conclusiones2 = $request->input('conclusiones2');
+        $conclusiones3 = $request->input('conclusiones3');
+        $recomendaciones = $request->input('recomendaciones');
+
         $template->setValue('comunidad', $nombreComunidad);
+        $template->setValue('razones', $razones);
+        $template->setValue('conclusiones1', $conclusiones1);
+        $template->setValue('conclusiones2', $conclusiones2);
+        $template->setValue('conclusiones3', $conclusiones3);
+        $template->setValue('recomendaciones', $recomendaciones);
+
+        $totalFilas = count($provincias);
+        $template->cloneRow('provincia', $totalFilas);
+
+        for ($i = 0; $i < $totalFilas; $i++) {
+            $template->setValue('provincia#' . ($i + 1), $provincias[$i]);
+            $template->setValue('canton#' . ($i + 1), $cantones[$i]);
+            $template->setValue('parroquia#' . ($i + 1), $parroquias[$i]);
+            $template->setValue('direccion#' . ($i + 1), $direcciones[$i]);
+        }
+
 
         $razones = $request->input('razones');
         $template->setValue('razones', $razones);
@@ -3568,21 +3586,21 @@ class DocumentoController extends Controller
 
     /////////entrar a la vista
     public function mostrarFormulario()
-{
-    $estudiante = Auth::user()->estudiante;
+    {
+        $estudiante = Auth::user()->estudiante;
 
-    if ($estudiante->estado === 'En proceso de revision') {
-        return redirect()->back()->with('error', 'No tienes acceso a esta página en este momento.');
+        if ($estudiante->estado === 'En proceso de revision') {
+            return redirect()->back()->with('error', 'No tienes acceso a esta página en este momento.');
+        }
+
+        $actividadesRegistradas = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)->get();
+        $totalHoras = $actividadesRegistradas->sum('numeroHoras');
+
+        return view('estudiantes.documentos', [
+            'actividadesRegistradas' => $actividadesRegistradas,
+            'totalHoras' => $totalHoras
+        ]);
     }
-
-    $actividadesRegistradas = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)->get();
-    $totalHoras = $actividadesRegistradas->sum('numeroHoras');
-
-    return view('estudiantes.documentos', [
-        'actividadesRegistradas' => $actividadesRegistradas,
-        'totalHoras' => $totalHoras
-    ]);
-}
 
 
 

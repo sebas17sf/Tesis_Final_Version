@@ -31,6 +31,7 @@ use App\Models\UsuariosSession;
 use App\Models\ActividadEstudiante;
 use App\Models\Usuario;
 use Intervention\Image\Facades\Image;
+use App\Models\InformeVinculacionEstudiante;
 
 
 
@@ -958,6 +959,84 @@ class EstudianteController extends Controller
     }
 
 
+    public function guardarDatos(Request $request)
+{
+    $data = $request->validate([
+         'nombreComunidad' => 'required|string',
+        'provincia' => 'required|array',
+        'provincia.*' => 'required|string',
+        'canton' => 'required|array',
+        'canton.*' => 'required|string',
+        'parroquia' => 'required|array',
+        'parroquia.*' => 'required|string',
+        'direccion' => 'required|array',
+        'direccion.*' => 'required|string',
+        'especificos' => 'required|array',
+        'especificos.*' => 'required|string',
+        'alcanzados' => 'required|array',
+        'alcanzados.*' => 'required|string',
+        'porcentaje' => 'required|array',
+        'porcentaje.*' => 'required|string',
+         'conclusiones1' => 'required|string',
+        'conclusiones2' => 'required|string',
+        'conclusiones3' => 'required|string',
+        'recomendaciones' => 'required|string'
+    ]);
+
+    $estudianteId = auth()->user()->estudiante->estudianteId;
+
+    // Encuentra el registro existente o crea uno nuevo
+    $informe = InformeVinculacionEstudiante::updateOrCreate(
+        ['estudianteId' => $estudianteId],
+        [
+            'nombre_comunidad' => $data['nombreComunidad'],
+            'provincias' => json_encode($data['provincia']),
+            'cantones' => json_encode($data['canton']),
+            'parroquias' => json_encode($data['parroquia']),
+            'direcciones' => json_encode($data['direccion']),
+            'especificos' => json_encode($data['especificos']),
+            'alcanzados' => json_encode($data['alcanzados']),
+            'porcentajes' => json_encode($data['porcentaje']),
+             'conclusiones1' => $data['conclusiones1'],
+            'conclusiones2' => $data['conclusiones2'],
+            'conclusiones3' => $data['conclusiones3'],
+            'recomendaciones' => $data['recomendaciones']
+        ]
+    );
+
+    return redirect()->back()->withInput()->with('success', 'Datos guardados exitosamente.');
+}
+
+
+
+    public function recuperarDatos(Request $request)
+    {
+        $estudianteId = auth()->user()->estudiante->estudianteId;
+        $informe = InformeVinculacionEstudiante::where('estudianteId', $estudianteId)->latest()->first();
+
+        if (!$informe) {
+            return redirect()->back()->with('error', 'No se encontraron datos previos.');
+        }
+
+        $data = [
+            'tipo' => $informe->tipo,
+            'nombreComunidad' => $informe->nombre_comunidad,
+            'provincia' => json_decode($informe->provincias, true),
+            'canton' => json_decode($informe->cantones, true),
+            'parroquia' => json_decode($informe->parroquias, true),
+            'direccion' => json_decode($informe->direcciones, true),
+            'especificos' => json_decode($informe->especificos, true),
+            'alcanzados' => json_decode($informe->alcanzados, true),
+            'porcentaje' => json_decode($informe->porcentajes, true),
+            'razones' => $informe->razones,
+            'conclusiones1' => $informe->conclusiones1,
+            'conclusiones2' => $informe->conclusiones2,
+            'conclusiones3' => $informe->conclusiones3,
+            'recomendaciones' => $informe->recomendaciones,
+        ];
+
+        return redirect()->back()->withInput($data);
+    }
 
 
 
