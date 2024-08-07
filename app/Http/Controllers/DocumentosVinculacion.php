@@ -711,7 +711,7 @@ class DocumentosVinculacion extends Controller
             $horasRealizadas = $asignacion->estudiante->horas_vinculacion->first()->horasVinculacion ?? '0';
             $hojaCalculo->setCellValue("K$filaActual", $horasRealizadas);
 
-            $hojaCalculo->setCellValue("V$filaActual", $asignacion->estado);
+            $hojaCalculo->setCellValue("V$filaActual",  mb_strtoupper($asignacion->estado, 'UTF-8' ?? ''));
 
 
         }
@@ -812,7 +812,7 @@ class DocumentosVinculacion extends Controller
             $hojaCalculo->setCellValue("B$filaActual", $nombreCompleto);
             $hojaCalculo->setCellValue("E$filaActual", $asignacion->estudiante->correo ?? '');
             $hojaCalculo->setCellValue("F$filaActual", $asignacion->estudiante->Cohorte ?? '');
-             $hojaCalculo->setCellValue("V$filaActual", $asignacion->estado);
+            $hojaCalculo->setCellValue("V$filaActual",  mb_strtoupper($asignacion->estado, 'UTF-8' ?? ''));
 
             /////departamento del participante
 

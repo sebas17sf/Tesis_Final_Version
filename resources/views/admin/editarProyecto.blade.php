@@ -70,9 +70,9 @@
                         <div class="form-group">
                             <label for="DepartamentoTutor">Departamento:</label>
                             <select class="form-control input input-select" id="DepartamentoTutor" name="DepartamentoTutor" required>
-                                <option value="DCCO" {{ $proyecto->departamentoTutor === 'DCCO' ? 'selected' : '' }}>DCCO - Departamento de Computación</option>
-                                <option value="DCEX" {{ $proyecto->departamentoTutor === 'DCEX' ? 'selected' : '' }}>DCEX - Ciencias Exactas</option>
-                                <option value="DCVA" {{ $proyecto->departamentoTutor === 'DCVA' ? 'selected' : '' }}>DCVA - Departamento de Ciencias de la Vida y Agricultura</option>
+                                <option value="Ciencias de la Computación" {{ $proyecto->departamentoTutor === 'Ciencias de la Computación' ? 'selected' : '' }}>Ciencias de la Computación</option>
+                                <option value="Ciencias Exactas" {{ $proyecto->departamentoTutor === 'Ciencias Exactas' ? 'selected' : '' }}>Ciencias Exactas</option>
+                                <option value="Ciencias de la Vida y Agricultura" {{ $proyecto->departamentoTutor === 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>Ciencias de la Vida y Agricultura</option>
                             </select>
                         </div>
                     </div>
