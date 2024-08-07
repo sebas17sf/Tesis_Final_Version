@@ -2121,7 +2121,7 @@ class DocumentoController extends Controller
 
 
     //////////////////////acta desginacion estudaintes para el director
-    public function generarActaDirector()
+    public function generarActaDirector(Request $request)
     {
         // Ruta a la plantilla de Word en la carpeta "public/Plantillas"
         $plantillaPath = public_path('Plantillas/1.2-Acta-Designacion-Estudiantes.docx');
@@ -2138,43 +2138,38 @@ class DocumentoController extends Controller
         $usuario = auth()->user();
 
         if (!$usuario) {
-            // Manejar el caso en que el usuario no esté autenticado
             abort(403, 'No estás autenticado.');
         }
 
         $director = $usuario->profesorUniversidad;
 
-
         if (!$director) {
             abort(404, 'No se encontró el director asociado a tu usuario.');
         }
 
-        ///obtener el proyecto del director de Proyecto
+        // Obtener el proyecto del director de Proyecto
         $proyecto = Proyecto::where('directorId', $director->id)->first();
 
         if (!$proyecto) {
-            return redirect()->route('director.repartoEstudiantes')->with('error', 'No esta asignado a un proyecto.');
+            return redirect()->route('director.repartoEstudiantes')->with('error', 'No está asignado a un proyecto.');
         }
 
-        // Obtener los estudiantes asignados al proyecto
-        $asignacionProyecto = AsignacionProyecto::where('proyectoId', $proyecto->proyectoId)
+        // Obtener el estudiante seleccionado o todos los estudiantes asignados al proyecto
+        $estudianteId = $request->input('estudiante');
+
+        $asignacionQuery = AsignacionProyecto::where('proyectoId', $proyecto->proyectoId)
             ->whereHas('estudiante', function ($query) {
                 $query->where('estado', 'Aprobado');
-            })
-            ->first();
+            });
 
-        if (!$asignacionProyecto) {
-            return redirect()->route('director.repartoEstudiantes')->with('error', 'No esta asignado a un proyecto.');
+        if ($estudianteId) {
+            $asignacionQuery->where('estudianteId', $estudianteId);
         }
 
+        $asignacionProyectos = $asignacionQuery->get();
 
-
-
-        if ($asignacionProyecto) {
-            $proyectoID = $asignacionProyecto->proyectoId;
-            $periodo = $asignacionProyecto->idPeriodo;
-        } else {
-            return redirect()->route('director.repartoEstudiantes')->with('error', 'No esta asignado a un proyecto.');
+        if ($asignacionProyectos->isEmpty()) {
+            return redirect()->route('director.repartoEstudiantes')->with('error', 'No hay estudiantes asignados al proyecto.');
         }
 
         $datosEstudiantes = DB::table('estudiantes')
@@ -2186,11 +2181,14 @@ class DocumentoController extends Controller
                 'estudiantes.cedula',
                 'estudiantes.carrera',
                 'asignacionproyectos.inicioFecha',
-                'proyectos.nombreProyecto',
+                'proyectos.nombreProyecto'
             )
-            ->where('asignacionproyectos.proyectoId', $proyectoID)
-            ->where('asignacionproyectos.idPeriodo', $periodo)
+            ->where('asignacionproyectos.proyectoId', $proyecto->proyectoId)
+            ->where('asignacionproyectos.idPeriodo', $asignacionProyectos->first()->idPeriodo)
             ->where('estudiantes.estado', 'Aprobado')
+            ->when($estudianteId, function ($query) use ($estudianteId) {
+                return $query->where('estudiantes.estudianteId', $estudianteId);
+            })
             ->orderBy('estudiantes.apellidos', 'asc')
             ->get();
 
