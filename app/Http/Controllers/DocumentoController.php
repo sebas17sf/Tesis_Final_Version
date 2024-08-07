@@ -2149,9 +2149,6 @@ class DocumentoController extends Controller
             abort(404, 'El archivo de plantilla no existe.');
         }
 
-        // Cargar la plantilla de Word existente
-        $template = new TemplateProcessor($plantillaPath);
-
         // Obtener el usuario actual (asegúrate de que el usuario esté autenticado)
         $usuario = auth()->user();
 
@@ -2214,11 +2211,7 @@ class DocumentoController extends Controller
             return redirect()->route('director.repartoEstudiantes')->with('error', 'No hay estudiantes asignados al proyecto.');
         }
 
-        // Obtener Carrera, Provincia y FechaInicio del primer estudiante asignado al proyecto
-        $primerEstudiante = $datosEstudiantes->first();
-        $carreraEstudiante = mb_strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú'], ['A', 'E', 'I', 'O', 'U'], $primerEstudiante->carrera));
-        $carreraNormal = $primerEstudiante->carrera;
-        $fechaInicioProyecto = $primerEstudiante->inicioFecha;
+        $estudiantesPorFecha = $datosEstudiantes->groupBy('inicioFecha');
         $meses = [
             'January' => 'enero',
             'February' => 'febrero',
@@ -2233,34 +2226,52 @@ class DocumentoController extends Controller
             'November' => 'noviembre',
             'December' => 'diciembre',
         ];
-        $fechaFormateada = date('d', strtotime($fechaInicioProyecto)) . ' ' . $meses[date('F', strtotime($fechaInicioProyecto))] . ' ' . date('Y', strtotime($fechaInicioProyecto));
-        $NombreProyecto = $primerEstudiante->nombreProyecto;
-        $horasVinculacionConstante = 96;
 
-        // Clonar las filas en la plantilla
-        $template->cloneRow('Nombres', count($datosEstudiantes));
+        foreach ($estudiantesPorFecha as $fechaInicio => $estudiantes) {
+            $template = new TemplateProcessor($plantillaPath);
 
-        // Ordenar los datos por apellidos en orden ascendente (A-Z)
-        $datosEstudiantes = $datosEstudiantes->sortBy('Apellidos');
+            $carreraEstudiante = mb_strtoupper(str_replace(['á', 'é', 'í', 'ó', 'ú'], ['A', 'E', 'I', 'O', 'U'], $estudiantes->first()->carrera));
+            $carreraNormal = $estudiantes->first()->carrera;
+            $fechaFormateada = date('d', strtotime($fechaInicio)) . ' ' . $meses[date('F', strtotime($fechaInicio))] . ' ' . date('Y', strtotime($fechaInicio));
+            $NombreProyecto = $estudiantes->first()->nombreProyecto;
+            $horasVinculacionConstante = 96;
 
-        // Bucle para reemplazar los valores en la plantilla
-        foreach ($datosEstudiantes as $index => $estudiante) {
-            $template->setValue('Apellidos#' . ($index + 1), $estudiante->apellidos);
-            $template->setValue('Nombres#' . ($index + 1), $estudiante->nombres);
-            $template->setValue('Cedula#' . ($index + 1), $estudiante->cedula);
-            $template->setValue('HorasVinculacion#' . ($index + 1), $horasVinculacionConstante);
+            $template->cloneRow('Nombres', count($estudiantes));
+
+            foreach ($estudiantes as $index => $estudiante) {
+                $template->setValue('Apellidos#' . ($index + 1), $estudiante->apellidos);
+                $template->setValue('Nombres#' . ($index + 1), $estudiante->nombres);
+                $template->setValue('Cedula#' . ($index + 1), $estudiante->cedula);
+                $template->setValue('HorasVinculacion#' . ($index + 1), $horasVinculacionConstante);
+            }
+
+            $template->setValue('Carrera', $carreraEstudiante);
+            $template->setValue('CarreraNormal', $carreraNormal);
+            $template->setValue('FechaInicio', $fechaFormateada);
+            $template->setValue('NombreProyecto', $NombreProyecto);
+
+            $nombreArchivo = 'Acta-Designacion-Estudiantes-' . $fechaInicio . '.docx';
+            $template->saveAs($nombreArchivo);
+            $archivos[] = $nombreArchivo;
         }
 
-        // Reemplazar los valores constantes en la plantilla
-        $template->setValue('Carrera', $carreraEstudiante);
-        $template->setValue('CarreraNormal', $carreraNormal);
-        $template->setValue('FechaInicio', $fechaFormateada);
-        $template->setValue('NombreProyecto', $NombreProyecto);
+        // Descargar los archivos generados como un archivo zip
+        $zip = new \ZipArchive();
+        $zipFileName = 'Actas-Designacion-Estudiantes.zip';
+        if ($zip->open(public_path($zipFileName), \ZipArchive::CREATE) === TRUE) {
+            foreach ($archivos as $archivo) {
+                $zip->addFile(public_path($archivo), basename($archivo));
+            }
+            $zip->close();
+        }
 
-        $nombreArchivo = '1.2-Acta-Designacion-Estudiantes.docx';
-        $template->saveAs($nombreArchivo);
-        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+        foreach ($archivos as $archivo) {
+            unlink(public_path($archivo));
+        }
+
+        return response()->download(public_path($zipFileName))->deleteFileAfterSend(true);
     }
+
 
 
 

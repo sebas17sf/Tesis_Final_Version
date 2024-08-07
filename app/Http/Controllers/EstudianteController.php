@@ -555,33 +555,29 @@ class EstudianteController extends Controller
 
     public function updateActividad(Request $request, $id)
     {
-
         $actividad = ActividadEstudiante::findOrFail($id);
 
         if ($request->hasFile('evidencias')) {
             $evidencia = $request->file('evidencias');
 
-
-            $maxFileSize = 500000;
+            $maxFileSize = 500000; // 500 KB
             if ($evidencia->getSize() > $maxFileSize) {
                 return redirect()->back()->with('error', 'La imagen es muy pesada. El tamaño máximo permitido es de 500 KB.');
             }
 
             $evidenciaBase64 = base64_encode(File::get($evidencia));
-
-            $actividad->update([
-                'fecha' => $request->input('fecha'),
-                'actividades' => $request->input('actividades'),
-                'numeroHoras' => $request->input('numero_horas'),
-                'evidencias' => $evidenciaBase64,
-                'nombreActividad' => $request->input('nombre_actividad'),
-            ]);
-
-            return redirect()->route('estudiantes.documentos')->with('success', 'Actividad actualizada exitosamente.');
-        } else {
-            return redirect()->back()->with('error', 'Verifica el ingreso de los datos en la Actividad.');
+            $actividad->evidencias = $evidenciaBase64;
         }
+
+        $actividad->fecha = $request->input('fecha');
+        $actividad->actividades = $request->input('actividades');
+        $actividad->numeroHoras = $request->input('numero_horas');
+        $actividad->nombreActividad = $request->input('nombre_actividad');
+        $actividad->save();
+
+        return redirect()->route('estudiantes.documentos')->with('success', 'Actividad actualizada exitosamente.');
     }
+
 
 
 

@@ -196,10 +196,8 @@
                     <table class="mat-mdc-table">
                         <thead class="ng-star-inserted">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-
                                 <th>FECHA</th>
-                                <th style="width: 161px !important; min-width:200px !important;">ACTIVIDADES
-                                </th>
+                                <th style="width: 161px !important; min-width:200px !important;">ACTIVIDADES</th>
                                 <th>NÚMERO DE HORAS</th>
                                 <th>NOMBRE DE ACTIVIDAD</th>
                                 <th>EVIDENCIAS</th>
@@ -217,16 +215,20 @@
                                     <tr>
                                         <td
                                             style="text-transform: uppercase; word-wrap: break-word; text-align: center; font-size: .7em;">
-                                            {{ $actividad->fecha }}</td>
+                                            {{ $actividad->fecha }}
+                                        </td>
                                         <td
                                             style="text-transform: uppercase; word-wrap: break-word; text-align: justify; font-size: .7em;">
-                                            {{ $actividad->actividades }}</td>
+                                            {{ $actividad->actividades }}
+                                        </td>
                                         <td
                                             style="text-transform: uppercase; word-wrap: break-word; text-align: center; font-size: .7em;">
-                                            {{ $actividad->numeroHoras }}</td>
+                                            {{ $actividad->numeroHoras }}
+                                        </td>
                                         <td
                                             style="text-transform: uppercase; word-wrap: break-word; text-align: center; font-size: .7em;">
-                                            {{ $actividad->nombreActividad }}</td>
+                                            {{ $actividad->nombreActividad }}
+                                        </td>
                                         <td
                                             style="text-transform: uppercase; word-wrap: break-word; text-align: center; font-size: .7em;">
                                             <img src="data:image/png;base64,{{ $actividad->evidencias }}" alt="Evidencia"
@@ -246,8 +248,6 @@
                                                 </form>
                                             </div>
 
-
-
                                             <div class="btn-group shadow-1">
                                                 <!-- Botón para abrir el card de editar actividad -->
                                                 <div class="tooltip-container mx-1">
@@ -263,8 +263,7 @@
                                                     id="cardEditActividad{{ $actividad->idActividades }}"
                                                     style="display: none;">
                                                     <div class="card-header">
-                                                        <span class="card-title input_select1">Editar
-                                                            Actividad</span>
+                                                        <span class="card-title input_select1">Editar Actividad</span>
                                                         <button type="button" class="close"
                                                             onclick="closeCard('cardEditActividad{{ $actividad->idActividades }}')">&times;</button>
                                                     </div>
@@ -300,26 +299,6 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="label"
-                                                                    for="evidencias{{ $actividad->idActividades }}"><b>Evidencias</b></label>
-                                                                <div class="input-group input_file">
-                                                                    <span id="fileText{{ $actividad->idActividades }}"
-                                                                        class="fileText input input_file input_select1"><i
-                                                                            class="fa-solid fa-arrow-up-from-bracket"></i>
-                                                                        Haz clic aquí para subir el
-                                                                        documento</span>
-                                                                    <input type="file"
-                                                                        id="evidencias{{ $actividad->idActividades }}"
-                                                                        name="evidencias"
-                                                                        accept="image/jpeg, image/jpg, image/png"
-                                                                        class="form-control-file input input_file" required
-                                                                        onchange="displayFileName(this, 'fileText{{ $actividad->idActividades }}')">
-                                                                    <span title="Eliminar archivo"
-                                                                        onclick="removeFile(this)"
-                                                                        class="remove-icon">✖</span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="label"
                                                                     for="nombre_actividad{{ $actividad->idActividades }}"><b>Nombre
                                                                         de la Actividad</b></label>
                                                                 <input type="text"
@@ -328,11 +307,33 @@
                                                                     name="nombre_actividad"
                                                                     value="{{ $actividad->nombreActividad }}">
                                                             </div>
+                                                            <div class="form-group">
+                                                                <label class="label"
+                                                                    for="evidencias{{ $actividad->idActividades }}"><b>Evidencias</b></label>
+                                                                <div>
+                                                                    <img src="data:image/png;base64,{{ $actividad->evidencias }}"
+                                                                        alt="Evidencia" width="100" height="100">
+                                                                </div>
+                                                                <div class="input-group input_file mt-2">
+                                                                    <span id="fileText{{ $actividad->idActividades }}"
+                                                                        class="fileText input input_file input_select1"><i
+                                                                            class="fa-solid fa-arrow-up-from-bracket"></i>
+                                                                        Haz clic aquí para subir una nueva imagen</span>
+                                                                    <input type="file"
+                                                                        id="evidencias{{ $actividad->idActividades }}"
+                                                                        name="evidencias"
+                                                                        accept="image/jpeg, image/jpg, image/png"
+                                                                        class="form-control-file input input_file"
+                                                                        onchange="displayFileName(this, 'fileText{{ $actividad->idActividades }}')">
+                                                                    <span title="Eliminar archivo"
+                                                                        onclick="removeFile(this)"
+                                                                        class="remove-icon">✖</span>
+                                                                </div>
+                                                            </div>
                                                             <div
                                                                 class="card-footer d-flex justify-content-center align-items-center">
                                                                 <button type="submit"
-                                                                    class="button input_select1">Guardar
-                                                                    cambios</button>
+                                                                    class="button input_select1">Guardar cambios</button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -350,12 +351,16 @@
                             </tr>
                         </tfoot>
                     </table>
-
-
-
                 </div>
+
+
+
+
+
+
             </div>
         </div>
+    </div>
     </div>
 
     <br>
@@ -377,12 +382,15 @@
                             <label for="tipoInforme"><strong>Generar Informe:</strong></label>
                             <select class="form-control input input_select3" name="tipo" id="tipo">
                                 <option value="grupal" {{ old('tipo') == 'grupal' ? 'selected' : '' }}>Grupal</option>
-                                <option value="individual" {{ old('tipo') == 'individual' ? 'selected' : '' }}>Individual</option>
+                                <option value="individual" {{ old('tipo') == 'individual' ? 'selected' : '' }}>Individual
+                                </option>
                             </select>
                         </div>
                         <div class="form-group col-md-10">
-                            <label for="nombreComunidad"><strong>Nombre de la Comunidad o Comunidades Beneficiarias:</strong></label>
-                            <input type="text" id="nombreComunidad" name="nombreComunidad" class="form-control input" value="{{ old('nombreComunidad') }}" required>
+                            <label for="nombreComunidad"><strong>Nombre de la Comunidad o Comunidades
+                                    Beneficiarias:</strong></label>
+                            <input type="text" id="nombreComunidad" name="nombreComunidad" class="form-control input"
+                                value="{{ old('nombreComunidad') }}" required>
                         </div>
                     </div>
                     <div id="dynamicFieldContainer">
@@ -391,19 +399,23 @@
                                 <div class="form-row dynamic-field">
                                     <div class="form-group col-md-3">
                                         <label for="provincia"><strong>Provincia:</strong></label>
-                                        <input type="text" id="provincia" name="provincia[]" class="form-control input" value="{{ $provincia }}" required>
+                                        <input type="text" id="provincia" name="provincia[]"
+                                            class="form-control input" value="{{ $provincia }}" required>
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="canton"><strong>Cantón:</strong></label>
-                                        <input type="text" id="canton" name="canton[]" class="form-control input" value="{{ old('canton')[$index] }}" required>
+                                        <input type="text" id="canton" name="canton[]" class="form-control input"
+                                            value="{{ old('canton')[$index] }}" required>
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="parroquia"><strong>Parroquia:</strong></label>
-                                        <input type="text" id="parroquia" name="parroquia[]" class="form-control input" value="{{ old('parroquia')[$index] }}" required>
+                                        <input type="text" id="parroquia" name="parroquia[]"
+                                            class="form-control input" value="{{ old('parroquia')[$index] }}" required>
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="direccion"><strong>Dirección:</strong></label>
-                                        <input type="text" id="direccion" name="direccion[]" class="form-control input" value="{{ old('direccion')[$index] }}" required>
+                                        <input type="text" id="direccion" name="direccion[]"
+                                            class="form-control input" value="{{ old('direccion')[$index] }}" required>
                                     </div>
                                 </div>
                             @endforeach
@@ -411,19 +423,23 @@
                             <div class="form-row dynamic-field">
                                 <div class="form-group col-md-3">
                                     <label for="provincia"><strong>Provincia:</strong></label>
-                                    <input type="text" id="provincia" name="provincia[]" class="form-control input" required>
+                                    <input type="text" id="provincia" name="provincia[]" class="form-control input"
+                                        required>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="canton"><strong>Cantón:</strong></label>
-                                    <input type="text" id="canton" name="canton[]" class="form-control input" required>
+                                    <input type="text" id="canton" name="canton[]" class="form-control input"
+                                        required>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="parroquia"><strong>Parroquia:</strong></label>
-                                    <input type="text" id="parroquia" name="parroquia[]" class="form-control input" required>
+                                    <input type="text" id="parroquia" name="parroquia[]" class="form-control input"
+                                        required>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="direccion"><strong>Dirección:</strong></label>
-                                    <input type="text" id="direccion" name="direccion[]" class="form-control input" required>
+                                    <input type="text" id="direccion" name="direccion[]" class="form-control input"
+                                        required>
                                 </div>
                             </div>
                         @endif
@@ -431,7 +447,8 @@
                     <div class="d-flex">
                         <div class="tooltip-container">
                             <span class="tooltip-text">Agregar</span>
-                            <button type="button" class="button3 efects_button btn_primary mr-2" onclick="agregarFila()">
+                            <button type="button" class="button3 efects_button btn_primary mr-2"
+                                onclick="agregarFila()">
                                 <i class="fa-solid fa-plus"></i>
                             </button>
                         </div>
@@ -480,7 +497,8 @@
                     <div class="d-flex">
                         <div class="tooltip-container">
                             <span class="tooltip-text">Agregar</span>
-                            <button type="button" class="button3 efects_button btn_primary mr-2" onclick="agregarCampo()">
+                            <button type="button" class="button3 efects_button btn_primary mr-2"
+                                onclick="agregarCampo()">
                                 <i class="fa-solid fa-plus"></i>
                             </button>
                         </div>
@@ -495,13 +513,15 @@
                     <table class="four-column-table">
                         <tr>
                             <td>
-                                <label for="conclusiones1">¿Qué resultados de aprendizaje obtuvo realizando las actividades de servicio comunitario?</label>
+                                <label for="conclusiones1">¿Qué resultados de aprendizaje obtuvo realizando las actividades
+                                    de servicio comunitario?</label>
                             </td>
                             <td class="textarea-cell">
                                 <textarea id="conclusiones1" class="textarea input" name="conclusiones1" rows="10">{{ old('conclusiones1') }}</textarea>
                             </td>
                             <td>
-                                <label for="conclusiones2">¿Qué limitaciones tuvo para realizar sus actividades de servicio comunitario?</label>
+                                <label for="conclusiones2">¿Qué limitaciones tuvo para realizar sus actividades de servicio
+                                    comunitario?</label>
                             </td>
                             <td class="textarea-cell">
                                 <textarea id="conclusiones2" class="textarea input" name="conclusiones2" rows="10">{{ old('conclusiones2') }}</textarea>
@@ -509,7 +529,8 @@
                         </tr>
                         <tr>
                             <td>
-                                <label for="conclusiones3">¿Qué éxitos alcanzados se obtuvo cuando realizó sus actividades de servicio comunitario?</label>
+                                <label for="conclusiones3">¿Qué éxitos alcanzados se obtuvo cuando realizó sus actividades
+                                    de servicio comunitario?</label>
                             </td>
                             <td class="textarea-cell">
                                 <textarea id="conclusiones3" class="textarea input" name="conclusiones3" rows="10">{{ old('conclusiones3') }}</textarea>
@@ -523,9 +544,13 @@
                         </tr>
                     </table>
                     <center>
-                        <button type="submit" class="button1" onclick="setScrollAndAction('{{ route('estudiantes.guardarDatos') }}')">Guardar Datos</button>
-                        <button type="submit" class="button1" onclick="setScrollAndAction('{{ route('estudiantes.generarInforme') }}')">Crear Informe</button>
-                        <a href="{{ route('estudiantes.recuperarDatos') }}" class="button1" onclick="setScrollAndLink('{{ route('estudiantes.recuperarDatos') }}')">Recuperar Datos</a>
+                        <button type="submit" class="button1"
+                            onclick="setScrollAndAction('{{ route('estudiantes.guardarDatos') }}')">Guardar Datos</button>
+                        <button type="submit" class="button1"
+                            onclick="setScrollAndAction('{{ route('estudiantes.generarInforme') }}')">Crear
+                            Informe</button>
+                        <a href="{{ route('estudiantes.recuperarDatos') }}" class="button1"
+                            onclick="setScrollAndLink('{{ route('estudiantes.recuperarDatos') }}')">Recuperar Datos</a>
                     </center>
                 </form>
             </div>
@@ -736,12 +761,12 @@
         });
     </script>
 
-<script>
-    function agregarCampo() {
-        const camposContainer = document.getElementById('campos');
-        const nuevoCampo = document.createElement('div');
-        nuevoCampo.classList.add('form-row');
-        nuevoCampo.innerHTML = `
+    <script>
+        function agregarCampo() {
+            const camposContainer = document.getElementById('campos');
+            const nuevoCampo = document.createElement('div');
+            nuevoCampo.classList.add('form-row');
+            nuevoCampo.innerHTML = `
             <div class="form-group col-md-4">
                 <label for="especificos"><strong>Objetivos Específicos:</strong></label>
                 <textarea name="especificos[]" class="form-control input" rows="4" required></textarea>
@@ -755,40 +780,64 @@
                 <textarea name="porcentaje[]" class="form-control input" rows="4" required></textarea>
             </div>
         `;
-        camposContainer.appendChild(nuevoCampo);
-    }
-
-    function eliminarCampo() {
-        const camposContainer = document.getElementById('campos');
-        if (camposContainer.children.length > 1) {
-            camposContainer.removeChild(camposContainer.lastElementChild);
+            camposContainer.appendChild(nuevoCampo);
         }
-    }
 
-    function setScrollAndAction(actionUrl) {
-        sessionStorage.setItem('scrollToForm', 'true');
-        document.getElementById('formularioInforme').action = actionUrl;
-    }
-
-    function setScrollAndLink(linkUrl) {
-        sessionStorage.setItem('scrollToForm', 'true');
-        window.location.href = linkUrl;
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
-        if (sessionStorage.getItem('scrollToForm') === 'true') {
-            const element = document.getElementById('formularioContainer');
-            if (element) {
-                window.scrollTo({
-                    top: element.offsetTop,
-                    behavior: 'smooth'
-                });
-                document.getElementById('registroInforme').style.display = 'block';
+        function eliminarCampo() {
+            const camposContainer = document.getElementById('campos');
+            if (camposContainer.children.length > 1) {
+                camposContainer.removeChild(camposContainer.lastElementChild);
             }
-            sessionStorage.removeItem('scrollToForm');
         }
-    });
-</script>
+
+        function setScrollAndAction(actionUrl) {
+            sessionStorage.setItem('scrollToForm', 'true');
+            document.getElementById('formularioInforme').action = actionUrl;
+        }
+
+        function setScrollAndLink(linkUrl) {
+            sessionStorage.setItem('scrollToForm', 'true');
+            window.location.href = linkUrl;
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            if (sessionStorage.getItem('scrollToForm') === 'true') {
+                const element = document.getElementById('formularioContainer');
+                if (element) {
+                    window.scrollTo({
+                        top: element.offsetTop,
+                        behavior: 'smooth'
+                    });
+                    document.getElementById('registroInforme').style.display = 'block';
+                }
+                sessionStorage.removeItem('scrollToForm');
+            }
+        });
+    </script>
+
+    <script>
+        function displayFileName(input, fileTextId) {
+            const fileName = input.files[0].name;
+            document.getElementById(fileTextId).textContent = fileName;
+        }
+
+        function removeFile(element) {
+            const input = element.previousElementSibling;
+            const fileText = element.previousElementSibling.previousElementSibling;
+            input.value = "";
+            fileText.textContent =
+                '<i class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir una nueva imagen';
+            element.style.display = 'none';
+        }
+
+        function openCard(cardId) {
+            document.getElementById(cardId).style.display = 'block';
+        }
+
+        function closeCard(cardId) {
+            document.getElementById(cardId).style.display = 'none';
+        }
+    </script>
 
 
 
