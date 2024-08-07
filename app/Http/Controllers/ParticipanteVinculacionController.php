@@ -21,6 +21,7 @@ use App\Models\ActividadEstudiante;
 use App\Models\AsignacionProyecto;
 use App\Models\Estudiante;
 use App\Models\NotasEstudiante;
+use App\Models\InformeParticipanteVinculacion;
 use App\Models\UsuariosSession;
 
 class ParticipanteVinculacionController extends Controller
@@ -173,12 +174,12 @@ class ParticipanteVinculacionController extends Controller
 
                 // Obtener estudiantes con notas y sin notas según la lógica previamente definida
                 $estudiantesConNotas = Estudiante::with('notas')
-                ->whereIn('estudianteId', $todosEstudiantes)
-                ->whereHas('proyectos', function ($query) {
-                    $query->where('proyectos.estado', 'Ejecucion');
-                })
-                ->get();
- 
+                    ->whereIn('estudianteId', $todosEstudiantes)
+                    ->whereHas('proyectos', function ($query) {
+                        $query->where('proyectos.estado', 'Ejecucion');
+                    })
+                    ->get();
+
                 $estudiantes = Estudiante::whereIn('estudianteId', $todosEstudiantes)
                     ->whereDoesntHave('notas')
                     ->get();
@@ -691,6 +692,108 @@ class ParticipanteVinculacionController extends Controller
 
         return redirect()->route('ParticipanteVinculacion.practicasii')->with('success', 'Práctica cerrada exitosamente.');
     }
+
+
+    public function guardarDatos(Request $request)
+    {
+        $data = $request->validate([
+            'Objetivos' => 'required',
+            'intervencion' => 'required',
+            'planificadas' => 'required',
+            'planificadas.*' => 'required',
+            'alcanzados' => 'required',
+            'alcanzados.*' => 'required',
+            'porcentaje' => 'required',
+            'porcentaje.*' => 'required',
+            'Hombres' => 'required',
+            'Mujeres' => 'required',
+            'Niños' => 'required',
+            'capacidad' => 'required',
+            'Observaciones1' => 'required',
+            'Observaciones2' => 'required',
+            'Observaciones3' => 'required',
+            'Observaciones4' => 'required',
+            'Conclusiones' => 'required',
+            'Recomendaciones' => 'required',
+        ]);
+
+        $userId = auth()->user()->userId;
+        $userId = ProfesUniversidad::where('userId', $userId)->first()->id;
+        $informe = InformeParticipanteVinculacion::where('participanteId', $userId)->first();
+
+        if ($informe) {
+            $informe->update([
+                'objetivos' => $data['Objetivos'],
+                'intervencion' => $data['intervencion'],
+                'actividadesPlanificadas' => json_encode($data['planificadas']),
+                'resultadosAlcanzados' => json_encode($data['alcanzados']),
+                'porcentajesAlcanzados' => json_encode($data['porcentaje']),
+                'hombres' => $data['Hombres'],
+                'mujeres' => $data['Mujeres'],
+                'niños' => $data['Niños'],
+                'personasConDiscapacidad' => $data['capacidad'],
+                'observacionesHombres' => $data['Observaciones1'],
+                'observacionesMujeres' => $data['Observaciones2'],
+                'observacionesNiños' => $data['Observaciones3'],
+                'observacionesPersonasConCapacidad' => $data['Observaciones4'],
+                'conclusiones' => $data['Conclusiones'],
+                'recomendaciones' => $data['Recomendaciones']
+            ]);
+        } else {
+            InformeParticipanteVinculacion::create([
+                'participanteId' => $userId,
+                'objetivos' => $data['Objetivos'],
+                'intervencion' => $data['intervencion'],
+                'actividadesPlanificadas' => json_encode($data['planificadas']),
+                'resultadosAlcanzados' => json_encode($data['alcanzados']),
+                'porcentajesAlcanzados' => json_encode($data['porcentaje']),
+                'hombres' => $data['Hombres'],
+                'mujeres' => $data['Mujeres'],
+                'niños' => $data['Niños'],
+                'personasConDiscapacidad' => $data['capacidad'],
+                'observacionesHombres' => $data['Observaciones1'],
+                'observacionesMujeres' => $data['Observaciones2'],
+                'observacionesNiños' => $data['Observaciones3'],
+                'observacionesPersonasConCapacidad' => $data['Observaciones4'],
+                'conclusiones' => $data['Conclusiones'],
+                'recomendaciones' => $data['Recomendaciones']
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Datos guardados exitosamente.')->withInput();
+    }
+
+    public function recuperarDatos()
+    {
+        $participanteId = ProfesUniversidad::where('userId', auth()->user()->userId)->first()->id;
+        $informe = InformeParticipanteVinculacion::where('participanteId', $participanteId)->first();
+
+        if (!$informe) {
+            return redirect()->back()->with('error', 'No se encontraron datos previos.');
+        }
+
+        $data = [
+            'Objetivos' => $informe->objetivos,
+            'intervencion' => $informe->intervencion,
+            'planificadas' => json_decode($informe->actividadesPlanificadas, true),
+            'alcanzados' => json_decode($informe->resultadosAlcanzados, true),
+            'porcentaje' => json_decode($informe->porcentajesAlcanzados, true),
+            'Hombres' => $informe->hombres,
+            'Mujeres' => $informe->mujeres,
+            'Niños' => $informe->niños,
+            'capacidad' => $informe->personasConDiscapacidad,
+            'Observaciones1' => $informe->observacionesHombres,
+            'Observaciones2' => $informe->observacionesMujeres,
+            'Observaciones3' => $informe->observacionesNiños,
+            'Observaciones4' => $informe->observacionesPersonasConCapacidad,
+            'Conclusiones' => $informe->conclusiones,
+            'Recomendaciones' => $informe->recomendaciones,
+        ];
+
+        return redirect()->back()->withInput($data);
+    }
+
+
 
 
 

@@ -188,7 +188,7 @@ class DirectorVinculacionController extends Controller
 
         }
 
- 
+
 
 
 
@@ -486,13 +486,13 @@ class DirectorVinculacionController extends Controller
             })
             ->first();
 
-         if (!$asignacion) {
+        if (!$asignacion) {
             return redirect()->back()->with('error', 'No se encontró ninguna asignación de proyecto para el director.');
         }
 
         $proyecto = Proyecto::find($asignacion->proyectoId);
 
-        ////revisar si el proyecto fue encontrado
+        // Revisar si el proyecto fue encontrado
         if (!$proyecto) {
             return redirect()->back()->with('error', 'No se encontró el proyecto.');
         }
@@ -517,9 +517,6 @@ class DirectorVinculacionController extends Controller
         $alcanzados = $request->input('alcanzados');
         $porcentaje = $request->input('porcentaje');
         $contadorObjetivos = count($planificadas);
-
-        $plantilla->setValue('alcanzados', $alcanzados[0]);
-        $plantilla->setValue('porcentaje', $porcentaje[0]);
 
         $plantilla->cloneRow('planificadas', $contadorObjetivos);
 
@@ -609,6 +606,7 @@ class DirectorVinculacionController extends Controller
 
         return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
     }
+
 
 
 

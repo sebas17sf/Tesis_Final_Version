@@ -109,19 +109,19 @@
     <hr>
     <h4><b>Informe Docente - Vinculación a la Sociedad</b></h4>
     <hr>
-    <form action="{{ route('director_vinculacion.generarInformeDirector') }}" method="POST">
+    <form id="informeForm" action="{{ route('director_vinculacion.generarInformeDirector') }}" method="POST">
         @csrf
 
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="Objetivos"><strong>Ingrese el Objetivo del Proyecto:</strong></label>
-                <textarea placeholder="Ingrese el objetivo" class="form-control input" id="Objetivos" rows="2" name="Objetivos"></textarea>
+                <textarea placeholder="Ingrese el objetivo" class="form-control input" id="Objetivos" rows="2" name="Objetivos">{{ old('Objetivos', session('Objetivos')) }}</textarea>
             </div>
 
             <div class="form-group col-md-6">
                 <label for="intervencion"><strong>Lugar de intervención del Proyecto:</strong></label>
                 <input placeholder="Ingrese el lugar donde se realizo el proyecto" type="text" class="form-control input"
-                    id="intervencion" name="intervencion">
+                    id="intervencion" name="intervencion" value="{{ old('intervencion', session('intervencion')) }}">
             </div>
         </div>
 
@@ -129,82 +129,100 @@
         <h4><b>Actividades Planificadas y Resultados Alcanzados</b></h4>
         <hr>
 
-
         <div id="campos">
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="planificadas"><strong>Actividades planificadas:</strong></label>
-                    <textarea placeholder="Ingrese las actividades planificadas" name="planificadas[]" class="form-control input"
-                        rows="2" required></textarea>
-                </div>
+            @if (old('planificadas', session('planificadas')))
+                @foreach (old('planificadas', session('planificadas')) as $index => $planificada)
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="planificadas"><strong>Actividades planificadas:</strong></label>
+                            <textarea placeholder="Ingrese las actividades planificadas" name="planificadas[]" class="form-control input"
+                                rows="2" required>{{ $planificada }}</textarea>
+                        </div>
 
-                <div class="form-group col-md-4">
-                    <label for="alcanzados"><strong>Resultados alcanzados:</strong></label>
-                    <textarea placeholder="Ingrese los resultados alcanzados" name="alcanzados[]" class="form-control input"
-                        rows="2" required></textarea>
-                </div>
+                        <div class="form-group col-md-4">
+                            <label for="alcanzados"><strong>Resultados alcanzados:</strong></label>
+                            <textarea placeholder="Ingrese los resultados alcanzados" name="alcanzados[]" class="form-control input"
+                                rows="2" required>{{ old('alcanzados')[$index] ?? session('alcanzados')[$index] }}</textarea>
+                        </div>
 
-                <div class="form-group col-md-4">
-                    <label for="porcentaje"><strong>Porcentaje alcanzado:</strong></label>
-                    <textarea placeholder="Ingrese los resultados alcanzados" name="porcentaje[]" class="form-control input"
-                        rows="2" required></textarea>
+                        <div class="form-group col-md-4">
+                            <label for="porcentaje"><strong>Porcentaje alcanzado:</strong></label>
+                            <textarea placeholder="Ingrese los resultados alcanzados" name="porcentaje[]" class="form-control input"
+                                rows="2" required>{{ old('porcentaje')[$index] ?? session('porcentaje')[$index] }}</textarea>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="planificadas"><strong>Actividades planificadas:</strong></label>
+                        <textarea placeholder="Ingrese las actividades planificadas" name="planificadas[]" class="form-control input"
+                            rows="2" required></textarea>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="alcanzados"><strong>Resultados alcanzados:</strong></label>
+                        <textarea placeholder="Ingrese los resultados alcanzados" name="alcanzados[]" class="form-control input"
+                            rows="2" required></textarea>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="porcentaje"><strong>Porcentaje alcanzado:</strong></label>
+                        <textarea placeholder="Ingrese los resultados alcanzados" name="porcentaje[]" class="form-control input"
+                            rows="2" required></textarea>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
 
         <div class="d-flex">
             <button type="button" class="button3 efects_button btn_primary mr-2" onclick="agregarCampo()"><i
-                    class="fa-solid fa-plus"></i></button></button>
-            <button type="button" class="button3 efects_button btn_eliminar1 1mr-2" onclick="eliminarCampo()"><i
+                    class="fa-solid fa-plus"></i></button>
+            <button type="button" class="button3 efects_button btn_eliminar1 mr-2" onclick="eliminarCampo()"><i
                     class='bx bx-trash'></i></button>
         </div>
+
         <hr>
         <h4><b>Beneficiarios atendidos</b></h4>
         <hr>
-
         <div class="form-row">
             <div class="form-group col-md-3">
                 <label for="Hombres"><strong>Cantidad de Hombres beneficiarios-atendidos:</strong></label>
                 <input placeholder="Ingrese los Hombres beneficiados" type="number" class="form-control input"
-                    id="Hombres" name="Hombres" min="1">
+                    id="Hombres" name="Hombres" value="{{ old('Hombres', session('Hombres')) }}" min="1">
             </div>
 
             <div class="form-group col-md-3">
                 <label for="Mujeres"><strong>Cantidad de Mujeres beneficiarios-atendidos:</strong></label>
                 <input placeholder="Ingrese las Mujeres beneficiadas" type="number" class="form-control input"
-                    id="Mujeres" name="Mujeres" min="1">
+                    id="Mujeres" name="Mujeres" value="{{ old('Mujeres', session('Mujeres')) }}" min="1">
             </div>
 
             <div class="form-group col-md-3">
                 <label for="Niños"><strong>Cantidad de Niños beneficiarios-atendidos:</strong></label>
                 <input placeholder="Ingrese los Niños beneficiados" type="number" class="form-control input"
-                    id="Niños" name="Niños" min="1">
+                    id="Niños" name="Niños" value="{{ old('Niños', session('Niños')) }}" min="1">
             </div>
 
             <div class="form-group col-md-3">
-                <label for="capacidad"><strong>Cantidad de Personas con capacidad
-                        beneficiarios-atendidos:</strong></label>
+                <label for="capacidad"><strong>Cantidad de Personas con capacidad beneficiarios-atendidos:</strong></label>
                 <input placeholder="Ingrese los Personas beneficiadas" type="number" class="form-control input"
-                    id="capacidad" name="capacidad" min="1">
+                    id="capacidad" name="capacidad" value="{{ old('capacidad', session('capacidad')) }}"
+                    min="1">
             </div>
         </div>
-
-
-
-
-
 
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="Observaciones1"><strong>Observaciones en Hombres:</strong></label>
                 <textarea placeholder="Ingrese las Observaciones" class="form-control input" id="Observaciones1" rows="3"
-                    name="Observaciones1"></textarea>
+                    name="Observaciones1">{{ old('Observaciones1', session('Observaciones1')) }}</textarea>
             </div>
 
             <div class="form-group col-md-6">
                 <label for="Observaciones2"><strong>Observaciones en Mujeres:</strong></label>
                 <textarea placeholder="Ingrese las Observaciones" class="form-control input" id="Observaciones2" rows="3"
-                    name="Observaciones2"></textarea>
+                    name="Observaciones2">{{ old('Observaciones2', session('Observaciones2')) }}</textarea>
             </div>
         </div>
 
@@ -212,38 +230,38 @@
             <div class="form-group col-md-6">
                 <label for="Observaciones3"><strong>Observaciones en Niños:</strong></label>
                 <textarea placeholder="Ingrese las Observaciones" class="form-control input" id="Observaciones3" rows="3"
-                    name="Observaciones3"></textarea>
+                    name="Observaciones3">{{ old('Observaciones3', session('Observaciones3')) }}</textarea>
             </div>
 
             <div class="form-group col-md-6">
-                <label for="Observaciones4"><strong>Observaciones en Personas con capacidad:</strong></label>
+                <label for="Observaciones4"><strong>Observaciones en Personas con discapacidad:</strong></label>
                 <textarea placeholder="Ingrese las Observaciones" class="form-control input" id="Observaciones4" rows="3"
-                    name="Observaciones4"></textarea>
+                    name="Observaciones4">{{ old('Observaciones4', session('Observaciones4')) }}</textarea>
             </div>
         </div>
 
         <hr>
         <h4><b>Conclusiones y Recomendaciones</b></h4>
         <hr>
-
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="Conclusiones"><strong>Conclusiones:</strong></label>
                 <textarea placeholder="Ingrese la conclusion" class="form-control input" id="Conclusiones" rows="3"
-                    name="Conclusiones"></textarea>
+                    name="Conclusiones">{{ old('Conclusiones', session('Conclusiones')) }}</textarea>
             </div>
 
             <div class="form-group col-md-6">
                 <label for="Recomendaciones"><strong>Recomendaciones:</strong></label>
                 <textarea placeholder="Ingrese la recomendacion" class="form-control input" id="Recomendaciones" rows="3"
-                    name="Recomendaciones"></textarea>
+                    name="Recomendaciones">{{ old('Recomendaciones', session('Recomendaciones')) }}</textarea>
             </div>
         </div>
 
-
-        <center><button type="submit" class="button1">
-                <i class="fas fa-cogs"></i> Generar Informe
-            </button>
+        <center>
+            <button type="submit" class="button1"><i class="fas fa-cogs"></i> Generar Informe</button>
+            <a href="{{ route('participante.guardarDatos') }}" class="button1"
+                onclick="guardarDatos(event)">Guardar Datos</a>
+            <a href="{{ route('participante.recuperarDatos') }}" class="button1">Recuperar Datos</a>
         </center>
     </form>
 
@@ -414,6 +432,45 @@
                 campos.removeChild(camposAdicionales[camposAdicionales.length - 1]);
             }
         }
+    </script>
+
+    <script>
+        function agregarCampo() {
+            var container = document.getElementById('campos');
+            var newField = container.children[0].cloneNode(true);
+            newField.querySelectorAll('textarea').forEach(textarea => textarea.value = '');
+            container.appendChild(newField);
+        }
+
+        function eliminarCampo() {
+            var container = document.getElementById('campos');
+            var fields = container.querySelectorAll('.form-row');
+            if (fields.length > 1) {
+                container.removeChild(fields[fields.length - 1]);
+            }
+        }
+
+        function guardarDatos(event) {
+            event.preventDefault();
+            var form = document.getElementById('informeForm');
+            form.action = "{{ route('participante.guardarDatos') }}";
+            form.submit();
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const scrollElementId = urlParams.get('scroll');
+            if (scrollElementId) {
+                const element = document.getElementById(scrollElementId);
+                if (element) {
+                    window.scrollTo({
+                        top: element.offsetTop,
+                        behavior: 'smooth'
+                    });
+                    document.getElementById('registroInforme').style.display = 'block';
+                }
+            }
+        });
     </script>
 
 

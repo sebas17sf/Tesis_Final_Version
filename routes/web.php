@@ -219,6 +219,14 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/participante-vinculacion/{id}/editar-notas-practicasii', [ParticipanteVinculacionController::class, 'editarNotasPracticasii'])->name('ParticipanteVinculacion.editarNotasPracticasii');
     ///cerrarProcesoPracticasii
     Route::put('/participante-vinculacion/cerrar-proceso-practicasii', [ParticipanteVinculacionController::class, 'cerrarPracticasii'])->name('ParticipanteVinculacion.cerrarProcesoPracticasii');
+    Route::post('/participante-vinculacion/guardar-datos-informe', [ParticipanteVinculacionController::class, 'guardarDatos'])->name('participante.guardarDatos');
+    Route::get('/participante-vinculacion/recuperar-datos-informe', [ParticipanteVinculacionController::class, 'recuperarDatos'])->name('participante.recuperarDatos');
+
+
+
+
+
+
 
 
     ///acta de reunion
