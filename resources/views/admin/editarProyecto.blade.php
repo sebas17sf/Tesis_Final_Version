@@ -69,10 +69,15 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="DepartamentoTutor">Departamento:</label>
-                            <select class="form-control input input-select" id="DepartamentoTutor" name="DepartamentoTutor" required>
-                                <option value="Ciencias de la Computación" {{ $proyecto->departamentoTutor === 'Ciencias de la Computación' ? 'selected' : '' }}>Ciencias de la Computación</option>
-                                <option value="Ciencias Exactas" {{ $proyecto->departamentoTutor === 'Ciencias Exactas' ? 'selected' : '' }}>Ciencias Exactas</option>
-                                <option value="Ciencias de la Vida y Agricultura" {{ $proyecto->departamentoTutor === 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>Ciencias de la Vida y Agricultura</option>
+                            <select id="DepartamentoTutor" name="DepartamentoTutor" class="form-control input_select input">
+                                <option value="">Seleccione un
+                                    departamento</option>
+                                @foreach ($departamentos as $departamento)
+                                    <option value="{{ $departamento->departamento }}"
+                                        data-nombre="{{ $departamento->departamento }}">
+                                        {{ $departamento->departamento }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                     </div>

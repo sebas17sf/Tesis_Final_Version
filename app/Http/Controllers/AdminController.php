@@ -15,6 +15,7 @@ use App\Mail\EstudianteNegado;
 use App\Models\AsignacionProyecto;
 use App\Models\Empresa;
 use App\Models\Role;
+use App\Models\Departamento;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Mail\AsignacionProyectoMailable;
@@ -47,6 +48,9 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
+
+        $departamentos = Departamento::all();
+
 
         $profesoresVerificar = Usuario::where('estado', 'En verificación')
             ->get();
@@ -123,6 +127,7 @@ class AdminController extends Controller
                     'profesoresVerificar' => $profesoresVerificar,
                     'estadoProfesores' => $estadoProfesores,
                     'filtroDepartamento' => $filtroDepartamento,
+                    'departamentos' => $departamentos,
 
 
 
@@ -528,8 +533,9 @@ class AdminController extends Controller
     public function crearProyectoForm()
     {
         $profesores = ProfesUniversidad::all();
+        $departamentos = Departamento::all();
 
-        return view('admin.agregarProyecto', compact('profesores'));
+        return view('admin.agregarProyecto', compact('profesores', 'departamentos'));
     }
 
 
@@ -586,8 +592,10 @@ class AdminController extends Controller
 
         $profesores = ProfesUniversidad::all();
 
+        $departamentos = Departamento::all();
+
         $proyecto = Proyecto::findOrFail($ProyectoID);
-        return view('admin.editarProyecto', compact('proyecto', 'nrcs', 'profesores'));
+        return view('admin.editarProyecto', compact('proyecto', 'nrcs', 'profesores', 'departamentos'));
     }
 
 
@@ -1779,8 +1787,8 @@ class AdminController extends Controller
         try {
             // Encuentra todas las asignaciones del proyecto con el mismo idPeriodo
             $asignaciones = AsignacionProyecto::where('proyectoId', $proyectoId)
-                                              ->where('idPeriodo', $idPeriodo)
-                                              ->get();
+                ->where('idPeriodo', $idPeriodo)
+                ->get();
 
             foreach ($asignaciones as $asignacion) {
                 // Encuentra al estudiante asociado a la asignación
@@ -1802,6 +1810,44 @@ class AdminController extends Controller
             return redirect()->back()->with('error', 'Ocurrió un error al revertir el estado de los estudiantes y las asignaciones: ' . $e->getMessage());
         }
     }
+
+
+    ///////////////////////////////////departamentos
+    public function agregarDepartamento(Request $request)
+    {
+        $request->validate([
+            'departamento' => 'required|string|max:255|unique:departamentos,departamento',
+        ]);
+
+        $departamento = new Departamento([
+            'departamento' => $request->departamento,
+        ]);
+
+        $departamento->save();
+
+        return back()->with('success', 'Departamento guardado exitosamente.')->withInput();
+    }
+
+    public function actualizarDepartamento(Request $request, $id)
+    {
+        $request->validate([
+            'departamento' => 'required|string|max:255|unique:departamentos,departamento,' . $id,
+        ]);
+
+        $departamento = Departamento::findOrFail($id);
+        $departamento->departamento = $request->departamento;
+        $departamento->save();
+
+        return back()->with('success', 'Departamento actualizado exitosamente.')->withInput();
+    }
+
+
+
+
+
+
+
+
 }
 
 

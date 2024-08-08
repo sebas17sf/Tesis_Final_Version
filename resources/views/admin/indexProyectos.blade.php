@@ -534,8 +534,8 @@
                                             <th class="tamanio3">CÓDIGO DEL PROYECTO</th>
                                             <th class="tamanio4">DIRECTOR</th>
                                             <th class="tamanio4">DOCENTES PARTICIPANTES</th>
-                                            <th>FECHA ASIGNACIÓN</th>
                                             <th>ESTUDIANTES</th>
+                                            <th>DEPARTAMENTO</th>
                                             <th>HORAS REALIZADAS</th>
                                             <th>NOTA</th>
                                             <th>PERIODO</th>
@@ -569,13 +569,14 @@
                                                     </td>
 
 
+
+
                                                     <td style="text-transform: uppercase; text-align: left;">
 
                                                         {{ $grupo->first()->docenteParticipante->apellidos ?? '' }}
                                                         {{ $grupo->first()->docenteParticipante->nombres ?? '' }}<br>
 
                                                     </td>
-                                                    <td>{{ $grupo->first()->asignacionFecha ?? '' }}</td>
 
                                                     <td
                                                         style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
@@ -583,6 +584,15 @@
                                                         @foreach ($grupo as $asignacion)
                                                             {{ $asignacion->estudiante->apellidos ?? '' }}
                                                             {{ $asignacion->estudiante->nombres ?? '' }}<br>
+                                                        @endforeach
+
+                                                    </td>
+
+                                                    <td
+                                                        style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
+
+                                                        @foreach ($grupo as $asignacion)
+                                                            {{ $asignacion->estudiante->departamento ?? '' }}<br>
                                                         @endforeach
 
                                                     </td>
@@ -636,7 +646,8 @@
                                                             method="POST">
                                                             @csrf
                                                             @method('PATCH')
-                                                            <button type="submit" class="button3 efects_button btn_eliminar3">
+                                                            <button type="submit"
+                                                                class="button3 efects_button btn_eliminar3">
 
                                                                 <i class="bx bx-undo"></i>
                                                             </button>

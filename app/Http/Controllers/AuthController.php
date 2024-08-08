@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Estudiante;
 use App\Models\Role;
 use App\Models\Periodo;
+use App\Models\Departamento;
 
 
 
@@ -27,6 +28,8 @@ class AuthController extends Controller
 
         ////obtener todos los periodos
         $periodos = Periodo::orderBy('inicioPeriodo', 'asc')->get();
+
+        $departamentos = Departamento::all();
 
 
 
@@ -50,12 +53,13 @@ class AuthController extends Controller
         $estudiante = Estudiante::where('cedula', $request->cedula)->firstOrFail();
 
         // Retornar la vista con los datos del estudiante
-        return view('estudiantes.create', compact('estudiante', 'periodos'));
+        return view('estudiantes.create', compact('estudiante', 'periodos', 'departamentos'));
     }
 
     public function mostrarRegistroDocente()
     {
-        return view('ParticipanteVinculacion.create');
+        $departamentos = Departamento::all();
+        return view('ParticipanteVinculacion.create', compact('departamentos'));
     }
     public function registerDocente(Request $request)
     {

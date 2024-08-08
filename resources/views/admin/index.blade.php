@@ -68,7 +68,7 @@
 
 
     <section class="contenedor_agregar_periodo">
-        
+
         <br>
 
         <div class="d-flex  justify-content-center">
@@ -89,6 +89,9 @@
             <button type="button" class="button1 mr-2" onclick="openCard('draggableCardEditarPeriodo');">Editar
                 Periodo</button>
 
+            <button type="button" class="button1 mr-2" onclick="openCard('draggableCardDepartamentos');">
+                Departamentos</button>
+
         </div>
         <br>
         <div>
@@ -104,8 +107,8 @@
                         <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                             <th style="min-width: 30px !important;">N°</th>
                             <th>DOCENTE</th>
-                           <th>CÉDULA</th> 
-                            <th >ID ESPE</th>
+                            <th>CÉDULA</th>
+                            <th>ID ESPE</th>
                             <th>CORREO</th>
                             <th>DEPARTAMENTO</th>
                             <th>ESTADO</th>
@@ -116,20 +119,26 @@
                         @forelse ($profesoresVerificar as $index => $docente)
                             <tr>
                                 <td style=" text-align: center; min-width: 30px !important;">{{ $index + 1 }}</td>
-                                <td style="text-transform: uppercase; font-size: .7em;"> {{ $docente->profesorUniversidad->apellidos ?? '' }}
+                                <td style="text-transform: uppercase; font-size: .7em;">
+                                    {{ $docente->profesorUniversidad->apellidos ?? '' }}
                                     {{ $docente->profesorUniversidad->nombres ?? '' }}</td>
-                                <td style="text-align: center; font-size: .7em;">{{ $docente->profesorUniversidad->cedula ?? '' }}</td>
-                                <td style="text-transform: uppercase; font-size: .7em; text-align: center;">{{ $docente->profesorUniversidad->espeId ?? '' }}</td>
+                                <td style="text-align: center; font-size: .7em;">
+                                    {{ $docente->profesorUniversidad->cedula ?? '' }}</td>
+                                <td style="text-transform: uppercase; font-size: .7em; text-align: center;">
+                                    {{ $docente->profesorUniversidad->espeId ?? '' }}</td>
                                 <td style="font-size: .7em;">{{ $docente->correoElectronico ?? '' }}</td>
-                                <td style="text-transform: uppercase; font-size: .7em;">{{ $docente->profesorUniversidad->departamento ?? '' }}</td>
-                                <td style="text-transform: uppercase; font-size: .7em; text-align: center;">{{ $docente->estado ?? '' }}</td>
+                                <td style="text-transform: uppercase; font-size: .7em;">
+                                    {{ $docente->profesorUniversidad->departamento ?? '' }}</td>
+                                <td style="text-transform: uppercase; font-size: .7em; text-align: center;">
+                                    {{ $docente->estado ?? '' }}</td>
                                 <td style="text-align: center;">
                                     <form action="{{ route('admin.aceptarDocente', ['id' => $docente->userId]) }}"
                                         method="POST" style="display: inline-block;">
                                         @csrf
                                         @method('PUT')
-                                        <button type="submit" class="button3 efects_button btn_editar3" style="margin-right: 5px;">
-                                        <i class="fa-solid fa-check"></i>
+                                        <button type="submit" class="button3 efects_button btn_editar3"
+                                            style="margin-right: 5px;">
+                                            <i class="fa-solid fa-check"></i>
                                         </button>
                                     </form>
 
@@ -138,8 +147,8 @@
                                         @csrf
                                         @method('PUT')
                                         <button type="submit" class="button3 efects_button btn_eliminar3">
-                                        <i class="fa-solid fa-xmark"></i>
-                                                                            </button>
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
@@ -224,12 +233,13 @@
                         <div class="form-group col-md-4">
                             <label for="departamento"><strong>Seleccione el departamento al que
                                     pertenece:</strong></label>
-                            <select id="departamento" name="departamento" class="form-control input_select input"
-                                required>
-                                <option value="Ciencias de la Computación">Ciencias de la Computación</option>
-                                <option value="Ciencias de la Vida y Agricultura">Ciencias de la Vida y Agricultura
-                                </option>
-                                <option value="Ciencias Exactas">Ciencias Exactas</option>
+                            <select id="departamento" name="departamento" class="form-control input_select input">
+                                <option value="">Seleccione un departamento</option>
+                                @foreach ($departamentos as $departamento)
+                                    <option value="{{ $departamento->departamento }}"
+                                        data-nombre="{{ $departamento->departamento }}">
+                                        {{ $departamento->departamento }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -240,7 +250,53 @@
             </div>
         </div>
 
-        <!--------------------------------------- -->
+        <!--------------DEPARTAMENTTOSSSSSSSSSSSSSSSSSSSSSS-->
+
+        <div class="draggable-card1_1" id="draggableCardDepartamentos" style="max-width: 400px; margin: auto;">
+            <div class="card-header">
+                <span class="card-title">Agregar Departamento</span>
+                <button type="button" class="close"
+                    onclick="document.getElementById('draggableCardDepartamentos').style.display='none'">
+                    <i class="fa-thin fa-xmark"></i>
+                </button>
+            </div>
+            <div class="card-body">
+                <form id="departamentoForm" action="{{ route('admin.agregarDepartamento') }}" method="post">
+                    @csrf
+                    <div class="form-group">
+                        <label for="departamento"><strong>Ingrese el Departamento:</strong></label>
+                        <input type="text" id="departamento" name="departamento" class="form-control input"
+                            placeholder="Ingrese el departamento" value="{{ old('departamento') }}" required>
+                        @if ($errors->has('departamento'))
+                            <small id="departamentoError"
+                                class="form-text text-danger">{{ $errors->first('departamento') }}</small>
+                        @endif
+                    </div>
+                    <div class="form-group">
+                        <label for="departamentosDisponibles"><strong>Departamentos Disponibles:</strong></label>
+                        <select id="departamentosDisponibles" class="form-control input_select input"
+                            onchange="editarDepartamento()">
+                            <option value="">Seleccione un departamento</option>
+                            @foreach ($departamentos as $departamento)
+                                <option value="{{ $departamento->departamento }}" data-id="{{ $departamento->id }}">
+                                    {{ $departamento->departamento }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="card-footer1 text-right">
+                        <button type="submit" id="submitButton" class="button01 btn btn-primary">Guardar
+                            Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+
+
+
+        <!---------------------------------------------------------------------------------------->
+
 
         <div class="mat-elevation-z8 contenedor_general">
             <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
@@ -472,31 +528,25 @@
                                                                 </div>
                                                                 <div class="form-row">
                                                                     <div class="form-group col-md-4">
-                                                                        <label class="label"
-                                                                            for="departamento"><strong>Seleccione el
+                                                                        <label for="departamento"><strong>Seleccione el
                                                                                 departamento al que
                                                                                 pertenece:</strong></label>
                                                                         <select id="departamento" name="departamento"
-                                                                            class="form-control input input_select1"
-                                                                            required>
-                                                                            <option value="Ciencias de la Computación"
-                                                                                {{ $profesor->departamento === 'Ciencias de la Computación' ? 'selected' : '' }}>
-                                                                                Departamento de Ciencias de Computación
-                                                                            </option>
-                                                                            <option
-                                                                                value="Ciencias de la Vida y Agricultura"
-                                                                                {{ $profesor->departamento === 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>
-                                                                                Departamento de Ciencias de la Vida
-                                                                            </option>
-                                                                            <option value="Ciencias Exactas"
-                                                                                {{ $profesor->departamento === 'Ciencias Exactas' ? 'selected' : '' }}>
-                                                                                Departamento de Ciencias Exactas
-                                                                            </option>
+                                                                            class="form-control input_select input">
+                                                                            <option value="">Seleccione un
+                                                                                departamento</option>
+                                                                            @foreach ($departamentos as $departamento)
+                                                                                <option
+                                                                                    value="{{ $departamento->departamento }}"
+                                                                                    data-nombre="{{ $departamento->departamento }}">
+                                                                                    {{ $departamento->departamento }}
+                                                                                </option>
+                                                                            @endforeach
                                                                         </select>
                                                                     </div>
                                                                 </div>
                                                                 <div
-                                                                    class="card-footer1 d-flex justify-content-center align-items-center"">
+                                                                    class="card-footer1 d-flex justify-content-center align-items-center">
 
                                                                     <button type="submit"
                                                                         class="button input_select1">Guardar
@@ -847,7 +897,7 @@
     <script>
         $(document).ready(function() {
             $('#departamentos').on('change', function() {
-                var  departamentos = $('#departamentos').val();
+                var departamentos = $('#departamentos').val();
 
                 $.ajax({
                     url: "{{ route('admin.index') }}",
@@ -876,6 +926,29 @@
 
             this.submit();
         });
+    </script>
+
+
+    <script>
+        function editarDepartamento() {
+            const select = document.getElementById('departamentosDisponibles');
+            const selectedOption = select.options[select.selectedIndex];
+            const nombreDepartamento = selectedOption.value;
+            const inputDepartamento = document.getElementById('departamento');
+            const form = document.getElementById('departamentoForm');
+            const submitButton = document.getElementById('submitButton');
+            const departamentoId = selectedOption.getAttribute('data-id');
+
+            if (departamentoId) {
+                inputDepartamento.value = nombreDepartamento;
+                form.action = `/admin/actualizarDepartamento/${departamentoId}`;
+                submitButton.textContent = 'Editar';
+            } else {
+                inputDepartamento.value = '';
+                form.action = `{{ route('admin.agregarDepartamento') }}`;
+                submitButton.textContent = 'Guardar Cambios';
+            }
+        }
     </script>
 
 

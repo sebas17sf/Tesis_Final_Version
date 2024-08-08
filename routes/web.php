@@ -163,8 +163,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/director/proyectos', [DirectorController::class, 'indexProyectos'])->name('director.indexProyectos');
 
     Route::patch('/admin/revertir-asignacion/{proyectoId}/{idPeriodo}', [AdminController::class, 'revertirAsignacion'])->name('admin.revertirAsignacion');
-
-
+    ///////////agregarDepartamento
+    Route::post('/admin/guardar-departamento', [AdminController::class, 'agregarDepartamento'])->name('admin.agregarDepartamento');
+    Route::post('/admin/actualizarDepartamento/{id}', [AdminController::class, 'actualizarDepartamento'])->name('admin.actualizarDepartamento');
 
 
     ///ruta para guardar guardarPracticas del estudiante
