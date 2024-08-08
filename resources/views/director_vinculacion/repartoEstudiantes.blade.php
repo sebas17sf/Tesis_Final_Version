@@ -224,6 +224,7 @@
                                     <th>FECHA INICIO</th>
                                     <th>FECHA FIN</th>
                                     <th>ESTADO</th>
+                                    <th>INFORMACION</th>
                                 </tr>
                             </thead>
                             <tbody class="mdc-data-table__content ng-star-inserted">
@@ -250,15 +251,88 @@
 
                                         <td style="text-align:center; text-transform: uppercase; word-wrap: break-word;">
                                             {{ $asignaciones->estado }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+
+                                        <td class="center_size">
+                                            <div class="btn-group shadow-1">
+                                                <button type="button" class="button3 efects_button btn_editar3"
+                                                    style="margin-right: 5px;"
+                                                    onclick="openCard('draggableCardEditaProyecto{{ $asignaciones->proyectoId }}');">
+                                                    <i class="bx bx-edit-alt"></i>
+                                                </button>
+
+                                                <div class="draggable-card1_1"
+                                                    id="draggableCardEditaProyecto{{ $asignaciones->proyectoId }}">
+                                                    <div class="card-header">
+                                                        <span class="card-title1">Informacion Proyecto</span>
+                                                        <button type="button" class="close"
+                                                            onclick="$('#draggableCardEditaProyecto{{ $asignaciones->proyectoId }}').hide()"><i
+                                                                class="fa-thin fa-xmark"></i></button>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <form
+                                                            action="{{ route('proyecto.update', $asignaciones->proyectoId) }}"
+                                                            method="POST" id="formularioEditarMaestro">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-4">
+                                                                    <label class="label" for="comunidad"><strong>Nombre
+                                                                            de la comunidad:</strong></label>
+                                                                    <input type="text" id="comunidad" name="comunidad"
+                                                                        class="form-control input input_select1 form-text"
+                                                                        value="{{ $asignaciones->comunidad ?? '' }}">
+                                                                </div>
+                                                                <div class="form-group col-md-4">
+                                                                    <label class="label"
+                                                                        for="provincia"><strong>Provincia:</strong></label>
+                                                                    <input type="text" id="provincia" name="provincia"
+                                                                        class="form-control input input_select1"
+                                                                        value="{{ $asignaciones->provincia ?? '' }}">
+                                                                </div>
+                                                                <div class="form-group col-md-4">
+                                                                    <label class="label"
+                                                                        for="canton"><strong>Cantón:</strong></label>
+                                                                    <input type="text" id="canton" name="canton"
+                                                                        class="form-control input input_select1"
+                                                                        value="{{ $asignaciones->canton ?? '' }}">
+                                                                </div>
+                                                                <div class="form-group col-md-4">
+                                                                    <label class="label"
+                                                                        for="parroquia"><strong>Parroquia:</strong></label>
+                                                                    <input type="text" id="parroquia" name="parroquia"
+                                                                        class="form-control input input_select1"
+                                                                        value="{{ $asignaciones->parroquia ?? '' }}">
+                                                                </div>
+                                                                <div class="form-group col-md-4">
+                                                                    <label class="label"
+                                                                        for="direccion"><strong>Dirección:</strong></label>
+                                                                    <input type="text" id="direccion" name="direccion"
+                                                                        class="form-control input input_select1"
+                                                                        value="{{ $asignaciones->direccion ?? '' }}">
+                                                                </div>
+                                                            </div>
+                                                            <div
+                                                                class="card-footer1 d-flex justify-content-center align-items-center">
+                                                                <button type="submit"
+                                                                    class="button input_select1">Guardar Cambios</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </td>
                     </div>
+                    </tr>
+                    @endforeach
+                    </tbody>
+                    </table>
                 </div>
-
-
             </div>
+
+
+        </div>
         </div>
 
 

@@ -344,6 +344,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/director-vinculacion/{id}/editar-notas-practicas1', [DirectorVinculacionController::class, 'editarNotasPracticasi'])->name('director_vinculacion.editarNotasPracticas1');
     ///cerrarProcesoPracticas1
     Route::put('/director-vinculacion/cerrar-proceso-practicas1', [DirectorVinculacionController::class, 'cerrarPracticasi'])->name('director_vinculacion.cerrarProcesoPracticas1');
+    Route::put('/proyecto/{id}', [DirectorVinculacionController::class, 'updateDatosProyectos'])->name('proyecto.update');
 
 
     ////////director vinculacion practicas 2

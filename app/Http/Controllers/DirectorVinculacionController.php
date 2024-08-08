@@ -199,7 +199,7 @@ class DirectorVinculacionController extends Controller
 
 
 
-        return view('director_vinculacion.repartoEstudiantes', compact('directorProyecto', 'estudiantesAsignados', 'asignacionesEstudiantesDirector','proyectos', 'actividadesEstudiantes'));
+        return view('director_vinculacion.repartoEstudiantes', compact('directorProyecto', 'estudiantesAsignados', 'asignacionesEstudiantesDirector', 'proyectos', 'actividadesEstudiantes'));
     }
 
 
@@ -965,8 +965,28 @@ class DirectorVinculacionController extends Controller
 
 
 
+    public function updateDatosProyectos(Request $request, $id)
+    {
+        $request->validate([
+            'comunidad' => 'required',
+            'provincia' => 'required',
+            'canton' => 'required',
+            'parroquia' => 'required',
+            'direccion' => 'required',
+        ]);
+
+        $proyecto = Proyecto::findOrFail($id);
+        $proyecto->comunidad = $request->comunidad;
+        $proyecto->provincia = $request->provincia;
+        $proyecto->canton = $request->canton;
+        $proyecto->parroquia = $request->parroquia;
+        $proyecto->direccion = $request->direccion;
+        $proyecto->save();
 
 
+
+        return redirect()->back()->with('success', 'Proyecto actualizado exitosamente.');
+    }
 
 
 
