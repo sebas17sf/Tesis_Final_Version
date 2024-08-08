@@ -203,7 +203,64 @@
             </form>
         </center>
 
+        <br>
+
+        <h4><b>Informacion del Proyecto</b></h4>
+
+        <div class="mat-elevation-z8 contenedor_general">
+
+            <div class="contenedor_tabla">
+                <div class="table-container mat-elevation-z8">
+
+                    <div id="tablaDirector">
+                        <table class="mat-mdc-table">
+                            <thead class="ng-star-inserted">
+                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                    <th>N°</th>
+                                    <th class="tamanio">NOMBRE DE PROYECTO</th>
+                                    <th class="tamanio3">CÓDIGO DE PROYECTO</th>
+                                    <th class="tamanio4">DIRECTOR</th>
+                                    <th class="tamanio2">DEPARTAMENTO DIRECTOR</th>
+                                    <th>FECHA INICIO</th>
+                                    <th>FECHA FIN</th>
+                                    <th>ESTADO</th>
+                                </tr>
+                            </thead>
+                            <tbody class="mdc-data-table__content ng-star-inserted">
+                                @foreach ($proyectos as $index => $asignaciones)
+                                    <tr class="mat-mdc-row mdc-data-table__row ng-star-inserted">
+                                        <td style="text-align: center;">
+                                        </td>
+                                        <td style="text-align:justify; text-transform: uppercase; word-wrap: break-word;">
+                                            {{ $asignaciones->nombreProyecto }}</td>
+                                        <td style="text-align:center; text-transform: uppercase; word-wrap: break-word;">
+                                            {{ $asignaciones->codigoProyecto }}</td>
+                                        <td style="text-align:left; text-transform: uppercase; word-wrap: break-word;">
+                                            {{ $asignaciones->director->nombres }}
+                                            {{ $asignaciones->director->apellidos }}</td>
+                                        <td style="text-align:center; text-transform: uppercase; word-wrap: break-word;">
+                                            {{ $asignaciones->departamentoTutor }}</td>
+
+
+
+                                        <td style="text-align:center; text-transform: uppercase; word-wrap: break-word;">
+                                            {{ $asignaciones->inicioFecha }}</td>
+                                        <td style="text-align:center; text-transform: uppercase; word-wrap: break-word;">
+                                            {{ $asignaciones->finFecha }}</td>
+
+                                        <td style="text-align:center; text-transform: uppercase; word-wrap: break-word;">
+                                            {{ $asignaciones->estado }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+            </div>
         </div>
+
 
         <script src="{{ asset('js/ParticipanteDirectorVinculacion/notas.js') }}"></script>
         <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">

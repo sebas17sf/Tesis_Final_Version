@@ -153,9 +153,6 @@ class DirectorVinculacionController extends Controller
             ->first();
 
 
-
-
-        // Obtener los estudiantes asignados al proyecto en ejecución que no estén en AsignacionEstudiantesDirector
         $estudiantesAsignados = collect([]);
         if ($proyectoEjecucion) {
             $estudiantesAsignados = AsignacionProyecto::where('proyectoId', $proyectoEjecucion->ProyectoID)
@@ -166,9 +163,6 @@ class DirectorVinculacionController extends Controller
                 return !AsignacionProyecto::where('estudianteId', $asignacion->EstudianteID)->exists();
             });
         }
-
-
-
 
 
         $asignacionesEstudiantesDirector = collect([]);
@@ -190,8 +184,6 @@ class DirectorVinculacionController extends Controller
 
 
 
-
-
         $actividadesEstudiantes = ActividadEstudiante::join('asignacionproyectos', 'asignacionproyectos.estudianteId', '=', 'actividades_estudiante.estudianteId')
             ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
             ->select('actividades_estudiante.*')
@@ -200,10 +192,14 @@ class DirectorVinculacionController extends Controller
             ->get();
 
 
+        /////obtener proyectos en ejecucion
+        $proyectos = Proyecto::where('directorId', $directorProyecto->id)
+            ->where('estado', 'Ejecucion')
+            ->get();
 
 
 
-        return view('director_vinculacion.repartoEstudiantes', compact('directorProyecto', 'estudiantesAsignados', 'asignacionesEstudiantesDirector', 'actividadesEstudiantes'));
+        return view('director_vinculacion.repartoEstudiantes', compact('directorProyecto', 'estudiantesAsignados', 'asignacionesEstudiantesDirector','proyectos', 'actividadesEstudiantes'));
     }
 
 
