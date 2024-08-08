@@ -120,18 +120,17 @@
                                             <!-- Modal -->
                                             <div class="draggable-card1_3"
                                                 id="tablaActividad{{ $asignacion->estudianteId }}">
-
                                                 <div class="card-header">
                                                     <span class="card-title1"
                                                         id="modalLabel{{ $asignacion->estudianteId }}">Actividades del
-                                                        Estudiante </span>
+                                                        Estudiante</span>
                                                     <button type="button" class="close"
-                                                        onclick="closeCard('tablaActividad{{ $asignacion->estudianteId }}')"><i
-                                                            class="fa-thin fa-xmark"></i></button>
+                                                        onclick="closeCard('tablaActividad{{ $asignacion->estudianteId }}')">
+                                                        <i class="fa-thin fa-xmark"></i>
+                                                    </button>
                                                 </div>
                                                 <div class="contenedor_tabla">
                                                     <div class="table-container mat-elevation-z8">
-
                                                         <div id="tablaActivida">
                                                             <table class="mat-mdc-table">
                                                                 <thead class="ng-star-inserted">
@@ -163,9 +162,7 @@
                                                                                 style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                                                 {{ $actividad->nombreActividad }}
                                                                             </td>
-
                                                                             <td>
-
                                                                                 <img width="100px"
                                                                                     src="data:image/jpeg;base64,{{ $actividad->evidencias }}"
                                                                                     alt="Evidencia" />
@@ -175,10 +172,10 @@
                                                                 </tbody>
                                                             </table>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </div>
+
 
 
 
@@ -465,6 +462,14 @@
                 background-color: #5d508a;
 
             }
+
+            .draggable-card1_3 {
+                max-height: 80vh;
+                /* Altura máxima del modal */
+                overflow-y: auto;
+                /* Habilitar el scroll vertical */
+            }
+
 
 
 
