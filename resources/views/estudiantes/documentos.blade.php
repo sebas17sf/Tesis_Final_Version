@@ -370,10 +370,33 @@
     </center>
     <hr>
 
-
+   
     <div class="contenedor_list_filtros">
         <div id="registroInforme" style="display: none;">
+        <div class="mat-elevation-z8 contenedor_general">
+            <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+                <div class="contenedor_botones">
+                    <div class="tooltip-container">
+                    <span class="tooltip-text">Guardar Datos</span>
+                        <button type="submit" class="button3 efects_button btn_primary"
+                            onclick="setScrollAndAction('{{ route('estudiantes.guardarDatos') }}')"><i class="fa-regular fa-floppy-disk"></i></button>
+                    </div>
+                    
+                    <div class="tooltip-container">
+                    <span class="tooltip-text">Recuperar Datos</span>
+                        <a href="{{ route('estudiantes.recuperarDatos') }}" class="button3 efects_button btn_filtro"
+                            onclick="setScrollAndLink('{{ route('estudiantes.recuperarDatos') }}')"><i class="fa-solid fa-window-restore"></i></a>
+                    </center>
+                    </div>
+                </form>
+            </div>
 
+           </div>
+            
+
+
+        </div>
+        <br>
             <div id="formularioContainer">
                 <form id="formularioInforme" action="{{ route('estudiantes.generarInforme') }}" method="post">
                     @csrf
@@ -447,14 +470,14 @@
                     <div class="d-flex">
                         <div class="tooltip-container">
                             <span class="tooltip-text">Agregar</span>
-                            <button type="button" class="button3 efects_button btn_primary mr-2"
+                            <button type="button" class="button3 efects_button btn_nuevo3 mr-2"
                                 onclick="agregarFila()">
                                 <i class="fa-solid fa-plus"></i>
                             </button>
                         </div>
                         <div class="tooltip-container">
                             <span class="tooltip-text">Eliminar</span>
-                            <button type="button" class="button3 efects_button btn_eliminar1" onclick="eliminarFila()">
+                            <button type="button" class="button3 efects_button btn_eliminar3" onclick="eliminarFila()">
                                 <i class='bx bx-trash'></i>
                             </button>
                         </div>
@@ -464,17 +487,17 @@
                         @if (old('especificos'))
                             @foreach (old('especificos') as $index => $especifico)
                                 <div class="form-row">
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-3">
                                         <label for="especificos"><strong>Objetivos Específicos:</strong></label>
                                         <textarea name="especificos[]" class="textarea input input_select2" rows="4" required placeholder="Ingrese los objetivos específicos...">{{ $especifico }}</textarea>
                                     </div>
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-3">
                                         <label for="alcanzados"><strong>Resultados alcanzados:</strong></label>
-                                        <textarea name="alcanzados[]" class="form-control input" rows="4" required>{{ old('alcanzados')[$index] }}</textarea>
+                                        <textarea name="alcanzados[]" class="textarea input input_select2" placeholder="Ingrese que limitaciones tuvo..." rows="4" required>{{ old('alcanzados')[$index] }}</textarea>
                                     </div>
-                                    <div class="form-group col-md-4">
+                                    <div class="form-group col-md-3">
                                         <label for="porcentaje"><strong>Porcentaje alcanzado:</strong></label>
-                                        <textarea name="porcentaje[]" class="textarea input input_select2"" rows="4" required>{{ old('porcentaje')[$index] }}</textarea>
+                                        <textarea name="porcentaje[]" class="textarea input input_select2" rows="4" required>{{ old('porcentaje')[$index] }}</textarea>
                                     </div>
                                 </div>
                             @endforeach
@@ -482,34 +505,37 @@
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="especificos"><strong>Objetivos Específicos:</strong></label>
-                                    <textarea name="especificos[]" class="form-control input" rows="4" required></textarea>
+                                    <textarea name="especificos[]" class="form-control input" placeholder="Ingrese los objetivos específicos..." rows="4" required></textarea>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="alcanzados"><strong>Resultados alcanzados:</strong></label>
-                                    <textarea name="alcanzados[]" class="form-control input" rows="4" required></textarea>
+                                    <textarea name="alcanzados[]" class="form-control input" rows="4"  placeholder="Ingrese los resultados alzanzados" required></textarea>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="porcentaje"><strong>Porcentaje alcanzado:</strong></label>
-                                    <textarea name="porcentaje[]" class="form-control input" rows="4" required></textarea>
+                                    <textarea name="porcentaje[]" class="form-control input" rows="4"  placeholder="Ingrese el porcentaje alcanzado..." required></textarea>
                                 </div>
                             </div>
-                        @endif
-                    </div>
-                    <div class="d-flex">
-                        <div class="tooltip-container">
+                            
+                                <div class="d-flex" styele="align-items: center !important;">
+                        <div class="tooltip-container" >
                             <span class="tooltip-text">Agregar</span>
-                            <button type="button" class="button3 efects_button btn_primary mr-2"
+                            <button type="button" class="button3 efects_button btn_nuevo3 mr-2"
                                 onclick="agregarCampo()">
                                 <i class="fa-solid fa-plus"></i>
                             </button>
                         </div>
                         <div class="tooltip-container">
                             <span class="tooltip-text">Eliminar</span>
-                            <button type="button" class="button3 efects_button btn_eliminar1" onclick="eliminarCampo()">
+                            <button type="button" class="button3 efects_button btn_eliminar3" onclick="eliminarCampo()">
                                 <i class='bx bx-trash'></i>
                             </button>
-                        </div>
+                        
                     </div>
+                            </div>
+                        @endif
+                    </div>
+                    
                     <br>
                     <table class="four-column-table">
                         <tr>
@@ -545,20 +571,12 @@
                         </tr>
                     </table>
                     <center>
-                        <button type="submit" class="button1"
-                            onclick="setScrollAndAction('{{ route('estudiantes.guardarDatos') }}')">Guardar Datos</button>
-                        <button type="submit" class="button1"
-                            onclick="setScrollAndAction('{{ route('estudiantes.generarInforme') }}')">Crear
-                            Informe</button>
-                        <a href="{{ route('estudiantes.recuperarDatos') }}" class="button1"
-                            onclick="setScrollAndLink('{{ route('estudiantes.recuperarDatos') }}')">Recuperar Datos</a>
-                    </center>
-                </form>
-            </div>
-
-
-
-        </div>
+                    <div class="tooltip-container">
+                 
+                        <button type="submit" class="button1 efects_button btn_primary"
+                            onclick="setScrollAndAction('{{ route('estudiantes.generarInforme') }}')"><i class="fa-sharp fa-regular fa-layer-plus"></i>
+                           Generar informe </button>
+                    </div>
     </div>
     </div>
 
@@ -768,17 +786,17 @@
             const nuevoCampo = document.createElement('div');
             nuevoCampo.classList.add('form-row');
             nuevoCampo.innerHTML = `
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
                 <label for="especificos"><strong>Objetivos Específicos:</strong></label>
-                <textarea name="especificos[]" class="form-control input" rows="4" required></textarea>
+                <textarea name="especificos[]" class="form-control input" placeholder="Ingrese los objetivos específicos..." rows="4" required></textarea>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
                 <label for="alcanzados"><strong>Resultados alcanzados:</strong></label>
-                <textarea name="alcanzados[]" class="form-control input" rows="4" required></textarea>
+                <textarea name="alcanzados[]" class="form-control input" placeholder="Ingrese los resultado alcanzados..." rows="4" required></textarea>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
                 <label for="porcentaje"><strong>Porcentaje alcanzado:</strong></label>
-                <textarea name="porcentaje[]" class="form-control input" rows="4" required></textarea>
+                <textarea name="porcentaje[]" class="form-control input" placeholder="Ingrese el porcentaje alcanzado..." rows="4" required></textarea>
             </div>
         `;
             camposContainer.appendChild(nuevoCampo);

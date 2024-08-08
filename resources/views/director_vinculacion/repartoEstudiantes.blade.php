@@ -101,7 +101,7 @@
 
                                             <!-- Botón para abrir el modal -->
                                             <button type="button" class="button3 efects_button btn_editar3"
-                                                data-toggle="modal"
+                                                data-toggle="modal" style="margin-right: 5px;"
                                                 onclick="openCard('tablaActividad{{ $asignacion->estudianteId }}');">
 
                                                 <i class="fa-solid fa-eye"></i>

@@ -108,7 +108,24 @@
 
     <hr>
     <h4><b>Informe Docente - Vinculación a la Sociedad</b></h4>
-    <hr>
+    
+        <div class="mat-elevation-z8 contenedor_general">
+            <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+                <div class="contenedor_botones">
+                    <div class="tooltip-container">
+                    <span class="tooltip-text">Guardar Datos</span>
+        <a href="{{ route('participante.guardarDatos') }}" class="button3 efects_button btn_primary"
+                onclick="guardarDatos(event)"><i class="fa-regular fa-floppy-disk"></i></a>
+        </div>
+        <div class="tooltip-container">
+            <span class="tooltip-text">Recuperar Datos</span>
+            <a href="{{ route('participante.recuperarDatos') }}" class="button3 efects_button btn_filtro"> <i class="fa-solid fa-window-restore"></i></a>
+            </div>
+        </div>
+    </div>
+
+   <hr>
+    
     <form id="informeForm" action="{{ route('director_vinculacion.generarInformeDirector') }}" method="POST">
         @csrf
 
@@ -176,33 +193,56 @@
         </div>
 
         <div class="d-flex">
-            <button type="button" class="button3 efects_button btn_primary mr-2" onclick="agregarCampo()"><i
+            <button type="button" class="button3 efects_button btn_nuevo3 mr-2" onclick="agregarCampo()"><i
                     class="fa-solid fa-plus"></i></button>
-            <button type="button" class="button3 efects_button btn_eliminar1 mr-2" onclick="eliminarCampo()"><i
+            <button type="button" class="button3 efects_button btn_eliminar3 mr-2" onclick="eliminarCampo()"><i
                     class='bx bx-trash'></i></button>
         </div>
 
         <hr>
         <h4><b>Beneficiarios atendidos</b></h4>
         <hr>
-        <div class="form-row">
+        <div class="form-row" style="align-items: center !important;">
             <div class="form-group col-md-3">
                 <label for="Hombres"><strong>Cantidad de Hombres beneficiarios-atendidos:</strong></label>
                 <input placeholder="Ingrese los Hombres beneficiados" type="number" class="form-control input"
                     id="Hombres" name="Hombres" value="{{ old('Hombres', session('Hombres')) }}" min="1">
             </div>
-
+            <div class="form-group col-md-3">
+                <label for="Observaciones1"><strong>Observaciones en Hombres:</strong></label>
+                <textarea placeholder="Ingrese las Observaciones" class="form-control input" id="Observaciones1" rows="3"
+                    name="Observaciones1">{{ old('Observaciones1', session('Observaciones1')) }}</textarea>
+            </div>
             <div class="form-group col-md-3">
                 <label for="Mujeres"><strong>Cantidad de Mujeres beneficiarios-atendidos:</strong></label>
                 <input placeholder="Ingrese las Mujeres beneficiadas" type="number" class="form-control input"
                     id="Mujeres" name="Mujeres" value="{{ old('Mujeres', session('Mujeres')) }}" min="1">
             </div>
+            
 
             <div class="form-group col-md-3">
+                <label for="Observaciones2"><strong>Observaciones en Mujeres:</strong></label>
+                <textarea placeholder="Ingrese las Observaciones" class="form-control input" id="Observaciones2" rows="3"
+                    name="Observaciones2">{{ old('Observaciones2', session('Observaciones2')) }}</textarea>
+            </div>
+            
+        </div>
+
+        <div class="form-row">
+        <div class="form-group col-md-3">
                 <label for="Niños"><strong>Cantidad de Niños beneficiarios-atendidos:</strong></label>
                 <input placeholder="Ingrese los Niños beneficiados" type="number" class="form-control input"
                     id="Niños" name="Niños" value="{{ old('Niños', session('Niños')) }}" min="1">
             </div>
+            
+
+        
+            <div class="form-group col-md-3">
+                <label for="Observaciones3"><strong>Observaciones en Niños:</strong></label>
+                <textarea placeholder="Ingrese las Observaciones" class="form-control input" id="Observaciones3" rows="3"
+                    name="Observaciones3">{{ old('Observaciones3', session('Observaciones3')) }}</textarea>
+            </div>
+
 
             <div class="form-group col-md-3">
                 <label for="capacidad"><strong>Cantidad de Personas con capacidad beneficiarios-atendidos:</strong></label>
@@ -210,30 +250,9 @@
                     id="capacidad" name="capacidad" value="{{ old('capacidad', session('capacidad')) }}"
                     min="1">
             </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="Observaciones1"><strong>Observaciones en Hombres:</strong></label>
-                <textarea placeholder="Ingrese las Observaciones" class="form-control input" id="Observaciones1" rows="3"
-                    name="Observaciones1">{{ old('Observaciones1', session('Observaciones1')) }}</textarea>
-            </div>
-
-            <div class="form-group col-md-6">
-                <label for="Observaciones2"><strong>Observaciones en Mujeres:</strong></label>
-                <textarea placeholder="Ingrese las Observaciones" class="form-control input" id="Observaciones2" rows="3"
-                    name="Observaciones2">{{ old('Observaciones2', session('Observaciones2')) }}</textarea>
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="Observaciones3"><strong>Observaciones en Niños:</strong></label>
-                <textarea placeholder="Ingrese las Observaciones" class="form-control input" id="Observaciones3" rows="3"
-                    name="Observaciones3">{{ old('Observaciones3', session('Observaciones3')) }}</textarea>
-            </div>
-
-            <div class="form-group col-md-6">
+            
+        
+            <div class="form-group col-md-3">
                 <label for="Observaciones4"><strong>Observaciones en Personas con discapacidad:</strong></label>
                 <textarea placeholder="Ingrese las Observaciones" class="form-control input" id="Observaciones4" rows="3"
                     name="Observaciones4">{{ old('Observaciones4', session('Observaciones4')) }}</textarea>
@@ -259,9 +278,7 @@
 
         <center>
             <button type="submit" class="button1"><i class="fas fa-cogs"></i> Generar Informe</button>
-            <a href="{{ route('participante.guardarDatos') }}" class="button1"
-                onclick="guardarDatos(event)">Guardar Datos</a>
-            <a href="{{ route('participante.recuperarDatos') }}" class="button1">Recuperar Datos</a>
+         
         </center>
     </form>
 
@@ -336,9 +353,9 @@
         </div>
 
         <div class="d-flex">
-            <button type="button" class="button3 efects_button btn_primary mr-2" onclick="agregarCampo2()"><i
+            <button type="button" class="button3 efects_button btn_nuevo3 mr-2" onclick="agregarCampo2()"><i
                     class="fa-solid fa-plus"></i></button></button>
-            <button type="button" class="button3 efects_button btn_eliminar1 1mr-2" onclick="eliminarCampo2()"><i
+            <button type="button" class="button3 efects_button btn_eliminar3 1mr-2" onclick="eliminarCampo2()"><i
                     class='bx bx-trash'></i></button>
         </div>
 
