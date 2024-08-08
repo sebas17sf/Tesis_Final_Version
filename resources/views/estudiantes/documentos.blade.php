@@ -358,7 +358,7 @@
 
 
 
-            </div>
+            
         </div>
     </div>
     </div>
@@ -386,11 +386,11 @@
                                 </option>
                             </select>
                         </div>
-                        <div class="form-group col-md-10">
+                        <div class="form-group col-md-9">
                             <label for="nombreComunidad"><strong>Nombre de la Comunidad o Comunidades
                                     Beneficiarias:</strong></label>
                             <input type="text" id="nombreComunidad" name="nombreComunidad" class="form-control input"
-                                value="{{ old('nombreComunidad') }}" required>
+                                value="{{ old('nombreComunidad') }}" placeholder="Ingrese el nombre de la comunidad..." required>
                         </div>
                     </div>
                     <div id="dynamicFieldContainer">
@@ -400,22 +400,22 @@
                                     <div class="form-group col-md-3">
                                         <label for="provincia"><strong>Provincia:</strong></label>
                                         <input type="text" id="provincia" name="provincia[]"
-                                            class="form-control input" value="{{ $provincia }}" required>
+                                            class="form-control input" value="{{ $provincia }}" placeholder="Ingrese la provincia..." required>
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="canton"><strong>Cantón:</strong></label>
                                         <input type="text" id="canton" name="canton[]" class="form-control input"
-                                            value="{{ old('canton')[$index] }}" required>
+                                            value="{{ old('canton')[$index] }}" placeholder="Ingrese el cantón..." required>
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="parroquia"><strong>Parroquia:</strong></label>
                                         <input type="text" id="parroquia" name="parroquia[]"
-                                            class="form-control input" value="{{ old('parroquia')[$index] }}" required>
+                                            class="form-control input" value="{{ old('parroquia')[$index] }}" placeholder="Ingrese la parroquia..." required>
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="direccion"><strong>Dirección:</strong></label>
                                         <input type="text" id="direccion" name="direccion[]"
-                                            class="form-control input" value="{{ old('direccion')[$index] }}" required>
+                                            class="form-control input" value="{{ old('direccion')[$index] }}" placeholder="Ingrese la dirección..." required>
                                     </div>
                                 </div>
                             @endforeach
@@ -423,22 +423,22 @@
                             <div class="form-row dynamic-field">
                                 <div class="form-group col-md-3">
                                     <label for="provincia"><strong>Provincia:</strong></label>
-                                    <input type="text" id="provincia" name="provincia[]" class="form-control input"
+                                    <input type="text" id="provincia" name="provincia[]" class="form-control input" placeholder="Ingrese la provincia..."
                                         required>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="canton"><strong>Cantón:</strong></label>
-                                    <input type="text" id="canton" name="canton[]" class="form-control input"
+                                    <input type="text" id="canton" name="canton[]" class="form-control input" placeholder="Ingrese el cantón..."
                                         required>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="parroquia"><strong>Parroquia:</strong></label>
-                                    <input type="text" id="parroquia" name="parroquia[]" class="form-control input"
+                                    <input type="text" id="parroquia" name="parroquia[]" class="form-control input" placeholder="Ingrese la parroquia..."
                                         required>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="direccion"><strong>Dirección:</strong></label>
-                                    <input type="text" id="direccion" name="direccion[]" class="form-control input"
+                                    <input type="text" id="direccion" name="direccion[]" placeholder="Ingrese la dirección..." class="form-control input"
                                         required>
                                 </div>
                             </div>
@@ -459,13 +459,14 @@
                             </button>
                         </div>
                     </div>
+                    <br>
                     <div id="campos">
                         @if (old('especificos'))
                             @foreach (old('especificos') as $index => $especifico)
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
                                         <label for="especificos"><strong>Objetivos Específicos:</strong></label>
-                                        <textarea name="especificos[]" class="form-control input" rows="4" required>{{ $especifico }}</textarea>
+                                        <textarea name="especificos[]" class="textarea input input_select2" rows="4" required placeholder="Ingrese los objetivos específicos...">{{ $especifico }}</textarea>
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="alcanzados"><strong>Resultados alcanzados:</strong></label>
@@ -473,7 +474,7 @@
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="porcentaje"><strong>Porcentaje alcanzado:</strong></label>
-                                        <textarea name="porcentaje[]" class="form-control input" rows="4" required>{{ old('porcentaje')[$index] }}</textarea>
+                                        <textarea name="porcentaje[]" class="textarea input input_select2"" rows="4" required>{{ old('porcentaje')[$index] }}</textarea>
                                     </div>
                                 </div>
                             @endforeach
@@ -517,14 +518,14 @@
                                     de servicio comunitario?</label>
                             </td>
                             <td class="textarea-cell">
-                                <textarea id="conclusiones1" class="textarea input" name="conclusiones1" rows="10">{{ old('conclusiones1') }}</textarea>
+                                <textarea id="conclusiones1" placeholder="Ingrese los resultados de aprendizaje..." class="textarea input input_select2" name="conclusiones1" rows="10">{{ old('conclusiones1') }}</textarea>
                             </td>
                             <td>
                                 <label for="conclusiones2">¿Qué limitaciones tuvo para realizar sus actividades de servicio
                                     comunitario?</label>
                             </td>
                             <td class="textarea-cell">
-                                <textarea id="conclusiones2" class="textarea input" name="conclusiones2" rows="10">{{ old('conclusiones2') }}</textarea>
+                                <textarea id="conclusiones2" placeholder="Ingrese que limitaciones tuvo..." class="textarea input input_select2" name="conclusiones2" rows="10">{{ old('conclusiones2') }}</textarea>
                             </td>
                         </tr>
                         <tr>
@@ -533,13 +534,13 @@
                                     de servicio comunitario?</label>
                             </td>
                             <td class="textarea-cell">
-                                <textarea id="conclusiones3" class="textarea input" name="conclusiones3" rows="10">{{ old('conclusiones3') }}</textarea>
+                                <textarea id="conclusiones3" class="textarea input input_select2" placeholder="Ingrese los éxitos alcanzadod..." name="conclusiones3" rows="10">{{ old('conclusiones3') }}</textarea>
                             </td>
                             <td>
                                 <label for="recomendaciones">Recomendaciones:</label>
                             </td>
                             <td class="textarea-cell">
-                                <textarea id="recomendaciones" class="textarea input" name="recomendaciones" rows="10">{{ old('recomendaciones') }}</textarea>
+                                <textarea id="recomendaciones" class="textarea input input_select2" placeholder="Ingrese las recomendaciones..." name="recomendaciones" rows="10">{{ old('recomendaciones') }}</textarea>
                             </td>
                         </tr>
                     </table>

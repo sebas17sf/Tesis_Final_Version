@@ -196,8 +196,8 @@
         <main class="navbar">
             <button class="profile-icon dropdown" id="profile-button">
                 <div class="name-profile">
-                    <span> {{ explode(' ', Auth::user()->estudiante->nombres)[0] }}
-                        {{ explode(' ', Auth::user()->estudiante->apellidos)[0] }}</span>
+                    <span> {{ explode(' ', Auth::user()->estudiante->nombres)[0] }}</span>
+                        <span>{{ explode(' ', Auth::user()->estudiante->apellidos)[0] }} </span>
                 </div>
                 <div class="icon-profile">
                     <img src="../img/default/user.svg">
@@ -211,7 +211,7 @@
                         <span>Cambiar modulo</span>
                     </a>
 
-                    <a href="{{ route('estudiantes.cambio-credenciales') }}" class="change_password">
+                    <a href="{{ route('estudiantes.cambio-credenciales') }}" class="change_password active-section p-element">
                         <i class="fa-regular fa-user"></i>
                         <span>Credenciales</span>
                     </a>

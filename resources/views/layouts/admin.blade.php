@@ -189,6 +189,7 @@
 
                 <div class="name-profile">
                     <span><?php echo Auth::user()->nombreUsuario; ?></span>
+                   <span>Sistema</span> 
                 </div>
                 <div class="icon-profile">
                     <img src="/img/default/user.svg">
@@ -202,7 +203,7 @@
                         <span>Cambiar modulo</span>
                     </a>
 
-                    <a href="{{ route('admin.cambio-credenciales') }}" class="change_password">
+                    <a href="{{ route('admin.cambio-credenciales') }}" class="change_password active-section p-element">
                         <i class="fa-regular fa-user"></i>
                         <span>Credenciales</span>
                     </a>

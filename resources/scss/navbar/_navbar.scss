@@ -1,4 +1,5 @@
 @use "../vars/colors" as colors;
+@use "../vars/fonts" as fonts;
 @use "app.component";
 
 .dimension-nav {
@@ -20,7 +21,7 @@ $fondo-active-hover: darken(colors.$primary, 5);
   position: fixed;
   top: 0;
   right: 0;
-  padding: 1px 20px;
+  padding: 8px 20px;
   align-items: center;
   color: colors.$white;
   background-color: colors.$primary;
@@ -58,9 +59,11 @@ $fondo-active-hover: darken(colors.$primary, 5);
     min-height: 50px;
     align-items: center;
     justify-content: right;
+    padding: 0rem 0rem !important;
     // TODO: responsive 300px
     @media screen and (max-width: 300px) {
       width: auto;
+
     }
 
     .profile-icon {
@@ -85,7 +88,7 @@ $fondo-active-hover: darken(colors.$primary, 5);
         gap: 1px;
 
         span {
-          font-size: 15px;
+          font-size: fonts.$text-nav;
           letter-spacing: 1.7px;
           text-align: left;
           text-transform: capitalize;
@@ -101,14 +104,12 @@ $fondo-active-hover: darken(colors.$primary, 5);
         align-items: center;
         justify-content: center;
         border: 1px solid darken(colors.$primary, 20);
-        transition: .3s;
+        transition: 0.3s;
 
         img {
           width: 35px;
         }
       }
-
-
 
       &:hover {
         .icon-profile {

@@ -176,7 +176,7 @@
                         <span>Cambiar modulo</span>
                     </a>
 
-                    <a href="{{ route('coordinador.cambio-credenciales') }}" class="change_password">
+                    <a href="{{ route('coordinador.cambio-credenciales') }}" class="change_password active-section p-element">
                         <i class="fa-regular fa-user"></i>
                         <span>Credenciales</span>
                     </a>

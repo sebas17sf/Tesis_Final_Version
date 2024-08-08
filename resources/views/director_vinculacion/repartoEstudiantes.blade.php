@@ -29,9 +29,9 @@
 
         <form action="{{ route('generar-actaEstudiante') }}" method="POST" class="form-inline custom-form">
             @csrf
-            <div class="form-group mr-2">
-                <label for="estudiante" class="mr-2">Selecciona un estudiante:</label>
-                <select name="estudiante" id="estudiante" class="form-control input input_select custom-select">
+            <div class="form-group mr-4">
+                <label for="estudiante" class="mr-4">Selecciona un estudiante:</label>
+                <select name="estudiante" id="estudiante" class="form-control input input_select2 custom-select">
                     <option value="">Todos los estudiantes</option>
                     @foreach ($asignacionesEstudiantesDirector as $asignacion)
                         @if ($asignacion->estudiante)
