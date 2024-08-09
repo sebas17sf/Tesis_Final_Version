@@ -711,7 +711,7 @@ class DocumentosVinculacion extends Controller
             $horasRealizadas = $asignacion->estudiante->horas_vinculacion->first()->horasVinculacion ?? '0';
             $hojaCalculo->setCellValue("K$filaActual", $horasRealizadas);
 
-            $hojaCalculo->setCellValue("V$filaActual",  mb_strtoupper($asignacion->estado, 'UTF-8' ?? ''));
+            $hojaCalculo->setCellValue("V$filaActual", mb_strtoupper($asignacion->estado, 'UTF-8' ?? ''));
 
 
         }
@@ -812,7 +812,7 @@ class DocumentosVinculacion extends Controller
             $hojaCalculo->setCellValue("B$filaActual", $nombreCompleto);
             $hojaCalculo->setCellValue("E$filaActual", $asignacion->estudiante->correo ?? '');
             $hojaCalculo->setCellValue("F$filaActual", $asignacion->estudiante->Cohorte ?? '');
-            $hojaCalculo->setCellValue("V$filaActual",  mb_strtoupper($asignacion->estado, 'UTF-8' ?? ''));
+            $hojaCalculo->setCellValue("V$filaActual", mb_strtoupper($asignacion->estado, 'UTF-8' ?? ''));
 
             /////departamento del participante
 
@@ -862,8 +862,7 @@ class DocumentosVinculacion extends Controller
 
 
     ///////////////////////////////////prueba de carga de matriz para generar datos
-
-    public function import(Request $request)
+    public function previewImport(Request $request)
     {
         $spreadsheet = IOFactory::load($request->file('file'));
         $worksheet = $spreadsheet->getActiveSheet();
@@ -871,6 +870,60 @@ class DocumentosVinculacion extends Controller
 
         $dataRows = array_slice($rows, 1);
 
+        $insertCount = 0;
+        $updateCount = 0;
+
+        foreach ($dataRows as $row) {
+            if (!empty($row[0]) && !empty($row[1]) && !empty($row[2]) && !empty($row[3]) && !empty($row[4]) && !empty($row[5]) && !empty($row[6])) {
+                $estudiante = Estudiante::where('espeId', $row[0])->first();
+
+                if ($estudiante) {
+                    $newData = [
+                        'correo' => $row[2],
+                        'apellidos' => $row[3],
+                        'cedula' => $row[1],
+                        'nombres' => $row[4],
+                        'Cohorte' => $row[5],
+                        'idPeriodo' => Periodo::where('numeroPeriodo', $row[5])->first()->id ?? null,
+                        'carrera' => $row[7],
+                        'departamento' => $row[6],
+                        'comentario' => 'Importado desde Excel',
+                        'activacion' => true,
+                    ];
+
+                    if ($estudiante->only(array_keys($newData)) != $newData) {
+                        $updateCount++;
+                    }
+                } else {
+                    $insertCount++;
+                }
+            }
+        }
+
+
+        return response()->json([
+            'insertCount' => $insertCount,
+            'updateCount' => $updateCount,
+        ]);
+    }
+
+
+
+    public function import(Request $request)
+    {
+        // Cargar el archivo Excel
+        $spreadsheet = IOFactory::load($request->file('file'));
+        $worksheet = $spreadsheet->getActiveSheet();
+        $rows = $worksheet->toArray();
+
+        // Excluir la primera fila (encabezados)
+        $dataRows = array_slice($rows, 1);
+
+        // Inicializar contadores
+        $insertCount = 0;
+        $updateCount = 0;
+
+        // Procesar cada fila del archivo Excel
         foreach ($dataRows as $row) {
             if (!empty($row[0]) && !empty($row[1]) && !empty($row[2]) && !empty($row[3]) && !empty($row[4]) && !empty($row[5]) && !empty($row[6])) {
                 $periodo = Periodo::where('numeroPeriodo', $row[5])->first();
@@ -887,19 +940,22 @@ class DocumentosVinculacion extends Controller
                     'carrera' => $row[7],
                     'departamento' => $row[6],
                     'comentario' => 'Importado desde Excel',
-                    'estado' => 'Desactivados',
+                    'estado' => 'Aprobado',
                     'activacion' => true,
                 ];
 
+                // Si el estudiante ya existe, actualizar
                 if ($estudiante) {
                     $estudiante->update($data);
+                    $updateCount++;
                 } else {
+                    // Si el estudiante no existe, crear nuevo
                     Estudiante::create($data);
+                    $insertCount++;
                 }
             }
-        }
 
-        foreach ($dataRows as $row) {
+            // Procesar la primera asignación de proyecto
             if (!empty($row[7]) && !empty($row[8]) && !empty($row[6]) && !empty($row[9]) && !empty($row[10]) && !empty($row[11]) && !empty($row[15])) {
                 $estudiante = Estudiante::where('espeId', $row[0])->first();
 
@@ -936,22 +992,34 @@ class DocumentosVinculacion extends Controller
                     'estado' => $row[19],
                 ];
 
-                AsignacionProyecto::updateOrCreate(
-                    [
-                        'estudianteId' => $data['estudianteId'],
-                        'proyectoId' => $data['proyectoId'],
-                        'participanteId' => $data['participanteId'],
-                        'idPeriodo' => $data['idPeriodo'],
-                        'nrc' => $data['nrc']
-                    ],
-                    $data
-                );
+                $existingAssignment = AsignacionProyecto::where([
+                    ['estudianteId', $data['estudianteId']],
+                    ['proyectoId', $data['proyectoId']],
+                    ['participanteId', $data['participanteId']],
+                    ['idPeriodo', $data['idPeriodo']],
+                    ['nrc', $data['nrc']],
+                ])->first();
+
+                if ($existingAssignment) {
+                    if ($existingAssignment->only(array_keys($data)) != $data) {
+                        $existingAssignment->update($data);
+                        $updateCount++;
+                    }
+                } else {
+                    AsignacionProyecto::create($data);
+                    $insertCount++;
+                }
             }
 
+            // Procesar la segunda asignación de proyecto
             if (!empty($row[20])) {
+                $estudiante = Estudiante::where('espeId', $row[0])->first();
+
                 $projectName = trim($row[22]);
                 $proyecto = Proyecto::where('nombreProyecto', 'like', '%' . $projectName . '%')->first();
                 $periodo = Periodo::where('numeroPeriodo', $row[20])->first();
+                $nrc = NrcVinculacion::where('nrc', $row[21])->first();
+
 
                 $nombreCompleto = $row[23];
                 $partesNombre = explode(" ", $nombreCompleto);
@@ -963,6 +1031,8 @@ class DocumentosVinculacion extends Controller
                         ->where('apellidos', 'like', '%' . $nombre . '%')
                         ->first();
                 }
+
+
 
                 $fechaInicio = $this->convertToDate($row[24]);
                 $fechaFinalizacion = $this->convertToDate($row[25]);
@@ -979,57 +1049,106 @@ class DocumentosVinculacion extends Controller
                     'estado' => $row[30],
                 ];
 
-                AsignacionProyecto::updateOrCreate(
-                    [
-                        'estudianteId' => $data['estudianteId'],
-                        'proyectoId' => $data['proyectoId'],
-                        'participanteId' => $data['participanteId'],
-                        'idPeriodo' => $data['idPeriodo'],
-                        'nrc' => $data['nrc']
-                    ],
-                    $data
-                );
-            }
-        }
+                $existingAssignment = AsignacionProyecto::where([
+                    ['estudianteId', $data['estudianteId']],
+                    ['proyectoId', $data['proyectoId']],
+                    ['participanteId', $data['participanteId']],
+                    ['idPeriodo', $data['idPeriodo']],
+                    ['nrc', $data['nrc']],
+                ])->first();
 
-        foreach ($dataRows as $row) {
+                if ($existingAssignment) {
+                    if ($existingAssignment->only(array_keys($data)) != $data) {
+                        $existingAssignment->update($data);
+                        $updateCount++;
+                    }
+                } else {
+                    AsignacionProyecto::create($data);
+                    $insertCount++;
+                }
+            }
+
+            // Notas del estudiante
             $estudiante = Estudiante::where('espeId', $row[0])->first();
 
             if ($estudiante) {
-                NotasEstudiante::updateOrCreate(
-                    ['estudianteId' => $estudiante->estudianteId, 'notaFinal' => $row[15] ?? '1'],
-                    ['notaFinal' => $row[15] ?? '1']
-                );
+                $notaEstudiante = NotasEstudiante::where('estudianteId', $estudiante->estudianteId)
+                    ->where('notaFinal', $row[15] ?? '1')
+                    ->first();
+
+                if ($notaEstudiante) {
+                    if ($notaEstudiante->notaFinal != ($row[15] ?? '1')) {
+                        $notaEstudiante->update(['notaFinal' => $row[15] ?? null]);
+                    }
+                } else {
+                    NotasEstudiante::create([
+                        'estudianteId' => $estudiante->estudianteId,
+                        'notaFinal' => $row[15] ?? null
+                    ]);
+                }
 
                 if (!empty($row[27])) {
-                    NotasEstudiante::updateOrCreate(
-                        ['estudianteId' => $estudiante->estudianteId, 'notaFinal' => $row[27] ?? '1'],
-                        ['notaFinal' => $row[27] ?? '1']
-                    );
+                    $notaEstudiante = NotasEstudiante::where('estudianteId', $estudiante->estudianteId)
+                        ->where('notaFinal', $row[27] ?? '1')
+                        ->first();
+
+                    if ($notaEstudiante) {
+                        if ($notaEstudiante->notaFinal != ($row[27] ?? '1')) {
+                            $notaEstudiante->update(['notaFinal' => $row[27] ?? null]);
+                        }
+                    } else {
+                        NotasEstudiante::create([
+                            'estudianteId' => $estudiante->estudianteId,
+                            'notaFinal' => $row[27] ?? null
+                        ]);
+                    }
                 }
             }
-        }
 
-        foreach ($dataRows as $row) {
-            $estudiante = Estudiante::where('espeId', $row[0])->first();
-
+            // Horas de vinculación del estudiante
             if ($estudiante) {
-                HoraVinculacion::updateOrCreate(
-                    ['estudianteId' => $estudiante->estudianteId, 'horasVinculacion' => $row[14] ?? '1'],
-                    ['horasVinculacion' => $row[14] ?? '1']
-                );
+                $horaVinculacion = HoraVinculacion::where('estudianteId', $estudiante->estudianteId)
+                    ->where('horasVinculacion', $row[14] ?? '1')
+                    ->first();
+
+                if ($horaVinculacion) {
+                    if ($horaVinculacion->horasVinculacion != ($row[14] ?? '1')) {
+                        $horaVinculacion->update(['horasVinculacion' => $row[14] ?? '1']);
+                    }
+                } else {
+                    HoraVinculacion::create([
+                        'estudianteId' => $estudiante->estudianteId,
+                        'horasVinculacion' => $row[14] ?? '1'
+                    ]);
+                }
 
                 if (!empty($row[26])) {
-                    HoraVinculacion::updateOrCreate(
-                        ['estudianteId' => $estudiante->estudianteId, 'horasVinculacion' => $row[26] ?? '1'],
-                        ['horasVinculacion' => $row[26] ?? '1']
-                    );
+                    $horaVinculacion = HoraVinculacion::where('estudianteId', $estudiante->estudianteId)
+                        ->where('horasVinculacion', $row[26] ?? '1')
+                        ->first();
+
+                    if ($horaVinculacion) {
+                        if ($horaVinculacion->horasVinculacion != ($row[26] ?? '1')) {
+                            $horaVinculacion->update(['horasVinculacion' => $row[26] ?? '1']);
+                        }
+                    } else {
+                        HoraVinculacion::create([
+                            'estudianteId' => $estudiante->estudianteId,
+                            'horasVinculacion' => $row[26] ?? '1'
+                        ]);
+                    }
                 }
             }
         }
 
-        return back()->with('success', 'Datos importados con éxito!');
+        return redirect()->back()->with([
+            'success' => 'Datos importados con éxito!',
+        ]);
     }
+
+
+
+
 
     private function convertToDate($excelDate)
     {

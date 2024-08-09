@@ -6,6 +6,9 @@
 
 @section('content')
 
+
+
+
     @if (session('success'))
         <div class="contenedor_alerta success">
             <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
@@ -348,7 +351,6 @@
                             <div class="col-md-12 d-flex">
 
                                 <!-- Botón de Matriz de Vinculación -->
-                                <!-- Botones -->
                                 <div class="tooltip-container mx-1">
                                     <span class="tooltip-text">Excel</span>
                                     <form action="{{ route('reporte.matrizVinculacion') }}" method="POST"
@@ -364,7 +366,6 @@
                                         </button>
                                     </form>
                                 </div>
-
                                 <!-- Botón de Importar archivo -->
                                 <div class="tooltip-container mx-1">
                                     <span class="tooltip-text">Importar archivo</span>
@@ -399,7 +400,8 @@
                                                 </div>
                                             </div>
                                             <div class="card-footer d-flex justify-content-center align-items-center">
-                                                <button type="submit" class="button">Importar Archivo</button>
+                                                <button type="button" class="button"
+                                                    onclick="showImportConfirmation()">Importar Archivo</button>
                                             </div>
                                         </form>
                                     </div>
@@ -537,7 +539,7 @@
                                             <th>ESTUDIANTES</th>
                                             <th>DEPARTAMENTO</th>
                                             <th>HORAS REALIZADAS</th>
-                                            <th>NOTA</th>
+                                            <th class="tamanio4">NOTA</th>
                                             <th>PERIODO</th>
                                             <th>NRC</th>
                                             <th>FECHA INICIO</th>
@@ -599,19 +601,24 @@
 
                                                     <td>
                                                         @foreach ($grupo as $asignacion)
-                                                            @foreach ($asignacion->estudiante->horas_vinculacion as $hora)
-                                                                {{ $hora->horasVinculacion ?? 'NO ASIGNADA' }}<br>
-                                                            @endforeach
+                                                            @php
+                                                                $horas = $asignacion->estudiante->horas_vinculacion->pluck('horasVinculacion')->filter()->toArray();
+                                                                echo implode(' / ', $horas) ?: 'NO ASIGNADA';
+                                                            @endphp
+                                                            <br>
                                                         @endforeach
                                                     </td>
 
                                                     <td>
                                                         @foreach ($grupo as $asignacion)
-                                                            @foreach ($asignacion->estudiante->notas as $nota)
-                                                                {{ $nota->notaFinal ?? 'SIN CALIFICAR' }}<br>
-                                                            @endforeach
+                                                            @php
+                                                                $notas = $asignacion->estudiante->notas->pluck('notaFinal')->filter()->toArray();
+                                                                echo implode(' / ', $notas) ?: 'SIN CALIFICAR';
+                                                            @endphp
+                                                            <br>
                                                         @endforeach
                                                     </td>
+
                                                     </td>
                                                     </td>
                                                     <td>{{ $grupo->first()->periodo->numeroPeriodo ?? '' }}</td>
@@ -1395,6 +1402,81 @@
             document.getElementById('hiddenPeriodos').value = document.getElementById('periodos').value;
         });
     </script>
+
+    <script>
+        function displayFileName(input, fileTextId) {
+            const fileName = input.files[0]?.name || 'Haz clic aquí para subir el documento';
+            document.getElementById(fileTextId).textContent = fileName;
+        }
+
+        function showImportConfirmation() {
+            const fileInput = document.getElementById('file2');
+
+            // Validar que un archivo esté seleccionado
+            if (!fileInput.files.length) {
+                Swal.fire('Error', 'Por favor, seleccione un archivo primero.', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            // Mostrar SweetAlert de carga
+            Swal.fire({
+                title: 'Cargando...',
+                text: 'Procesando archivo, por favor espere',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Realizar la solicitud AJAX para previsualizar la importación
+            fetch('{{ route('import.preview') }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    Swal.close(); // Cerrar la alerta de carga
+                    Swal.fire({
+                        title: 'Confirmación de Importación',
+                        html: `
+                    <p>Se van a <strong>insertar</strong> ${data.insertCount} registros.</p>
+                    <p>Se van a <strong>actualizar</strong> ${data.updateCount} registros.</p>
+                    <p>¿Deseas proceder con esta operación?</p>
+                `,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, proceder',
+                        cancelButtonText: 'Cancelar',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.getElementById('idModalImportar2').submit();
+                        }
+                    });
+                })
+                .catch(error => {
+                    Swal.close(); // Cerrar la alerta de carga
+                    Swal.fire('Error', 'Ocurrió un error al previsualizar la importación.', 'error');
+                    console.error('Error:', error);
+                });
+        }
+
+        function removeFile(span) {
+            const fileInput = document.getElementById('file2');
+            fileInput.value = ''; // Limpiar el input file
+            document.getElementById('fileText2').textContent = 'Haz clic aquí para subir el documento'; // Resetear el texto
+        }
+    </script>
+
+
+
+
+
     <script src="{{ asset('js\admin\index.js') }}"></script>
 
     <style>

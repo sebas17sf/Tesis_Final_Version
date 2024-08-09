@@ -247,6 +247,12 @@ Route::middleware(['auth'])->group(function () {
 
     //////////////importar de matriz de excel para los datos
     Route::post('/import', [DocumentosVinculacion::class, 'import'])->name('import');
+    ////////////////prewie vinculacion
+    Route::post('/import-preview', [DocumentosVinculacion::class, 'previewImport'])->name('import.preview');
+
+
+
+
     /////////////////importar de las empresas
     Route::post('/import-empresas', [DocumentosVinculacion::class, 'importaEmpresas'])->name('import-empresas');
     /////////////////////importar practcias 1

@@ -2227,6 +2227,8 @@ class DocumentoController extends Controller
             'December' => 'diciembre',
         ];
 
+        $archivos = [];
+
         foreach ($estudiantesPorFecha as $fechaInicio => $estudiantes) {
             $template = new TemplateProcessor($plantillaPath);
 
@@ -2255,22 +2257,29 @@ class DocumentoController extends Controller
             $archivos[] = $nombreArchivo;
         }
 
-        // Descargar los archivos generados como un archivo zip
-        $zip = new \ZipArchive();
-        $zipFileName = 'Actas-Designacion-Estudiantes.zip';
-        if ($zip->open(public_path($zipFileName), \ZipArchive::CREATE) === TRUE) {
-            foreach ($archivos as $archivo) {
-                $zip->addFile(public_path($archivo), basename($archivo));
+        if (count($archivos) > 1) {
+            // Si hay más de un archivo, crear un zip
+            $zip = new \ZipArchive();
+            $zipFileName = 'Actas-Designacion-Estudiantes.zip';
+            if ($zip->open(public_path($zipFileName), \ZipArchive::CREATE) === TRUE) {
+                foreach ($archivos as $archivo) {
+                    $zip->addFile(public_path($archivo), basename($archivo));
+                }
+                $zip->close();
+
+                // Borrar los archivos DOCX individuales
+                foreach ($archivos as $archivo) {
+                    unlink(public_path($archivo));
+                }
+
+                return response()->download(public_path($zipFileName))->deleteFileAfterSend(true);
             }
-            $zip->close();
+        } else {
+            // Si solo hay un archivo, descargar el archivo individual
+            return response()->download(public_path($archivos[0]))->deleteFileAfterSend(true);
         }
-
-        foreach ($archivos as $archivo) {
-            unlink(public_path($archivo));
-        }
-
-        return response()->download(public_path($zipFileName))->deleteFileAfterSend(true);
     }
+
 
 
 
