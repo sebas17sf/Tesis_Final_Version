@@ -1166,6 +1166,53 @@ class DocumentosVinculacion extends Controller
 
     //////////////////////////////////////////////AGREGAR EMPRESSAS POR EXCEL//////////////////////////////////////
 
+    public function previewImportEmpresas(Request $request)
+{
+    $spreadsheet = IOFactory::load($request->file('file'));
+    $worksheet = $spreadsheet->getActiveSheet();
+    $rows = $worksheet->toArray();
+
+    $dataRows = array_slice($rows, 1);
+
+    $insertCount = 0;
+    $updateCount = 0;
+
+    foreach ($dataRows as $row) {
+        $nombre = $row[1] ?? null;
+
+        if ($nombre) {
+            $empresa = Empresa::where('nombreEmpresa', $nombre)->first();
+
+            if ($empresa) {
+                // Verificar si los datos son diferentes antes de actualizar
+                $newData = [
+                    'rucEmpresa' => $row[2] ?? null,
+                    'provincia' => $row[3] ?? null,
+                    'ciudad' => $row[4] ?? null,
+                    'direccion' => $row[5] ?? null,
+                    'correo' => $row[6] ?? null,
+                    'nombreContacto' => $row[7] ?? null,
+                    'telefonoContacto' => $row[8] ?? null,
+                    'actividadesMacro' => $row[9] ?? null,
+                ];
+
+                // Comparar los datos actuales con los nuevos
+                if ($empresa->only(array_keys($newData)) != $newData) {
+                    $updateCount++;
+                }
+            } else {
+                $insertCount++;
+            }
+        }
+    }
+
+    return response()->json([
+        'insertCount' => $insertCount,
+        'updateCount' => $updateCount,
+    ]);
+}
+
+
     public function importaEmpresas(Request $request)
     {
         $spreadsheet = IOFactory::load($request->file('file'));

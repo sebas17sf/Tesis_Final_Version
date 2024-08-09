@@ -31,7 +31,7 @@
 
 
             <div class="container">
-                
+
                 <form action="{{ route('admin.guardarEmpresa') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row">
@@ -178,11 +178,11 @@
 
                         </div>
 
-                       <center> 
-                        
-                                <button type="submit" class="button1 efects_button">Guardar Empresa</button>
-                           
-                         </center>
+                        <center>
+
+                            <button type="submit" class="button1 efects_button">Guardar Empresa</button>
+
+                        </center>
 
                 </form>
             </div>
@@ -223,8 +223,7 @@
                                     class="fa-thin fa-xmark"></i></button>
                         </div>
                         <div class="card-body">
-                            <form id="idModalImportar" action="{{ route('import-empresas') }}" method="POST"
-                                enctype="multipart/form-data">
+                            <form id="idModalImportar" action="{{ route('import-empresas') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
                                     <div class="input_file input">
@@ -238,10 +237,14 @@
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex justify-content-center align-items-center">
-                                    <button type="submit" class="button">Importar Archivo</button>
+                                    <button type="button" class="button" onclick="showPreviewImportEmpresas()">Importar
+                                        Archivo</button>
                                 </div>
                             </form>
                         </div>
+
+
+
                     </div>
 
 
@@ -291,16 +294,16 @@
 
                                         @foreach ($empresas as $index => $empresa)
                                             <tr>
-                                                <td>{{ $empresas ->firstItem() + $index }}</td>
+                                                <td>{{ $empresas->firstItem() + $index }}</td>
 
 
-                                                 <td style="text-transform: uppercase; text-align: left;">
-                                                    {{ strtoupper( $empresa->nombreEmpresa) }}
+                                                <td style="text-transform: uppercase; text-align: left;">
+                                                    {{ strtoupper($empresa->nombreEmpresa) }}
                                                 </td>
                                                 <td>{{ strtoupper($empresa->rucEmpresa) }}
                                                 </td>
                                                 <td style="text-transform: uppercase; text-align: left;">
-                                                    {{ strtoupper( $empresa->provincia) }}
+                                                    {{ strtoupper($empresa->provincia) }}
                                                 </td>
                                                 <td style="text-transform: uppercase; text-align: left;">
                                                     {{ strtoupper($empresa->ciudad) }}
@@ -311,14 +314,14 @@
                                                 <td style="text-align: left;"">{{ $empresa->correo }}
                                                 </td>
                                                 <td style="text-transform: uppercase; text-align: left;">
-                                                    {{ strtoupper($empresa->nombreContacto)}}
+                                                    {{ strtoupper($empresa->nombreContacto) }}
                                                 </td>
-                                                <td>{{ strtoupper($empresa->telefonoContacto)}}
+                                                <td>{{ strtoupper($empresa->telefonoContacto) }}
                                                 </td>
                                                 <td style="text-transform: uppercase; text-align: justify;">
                                                     {{ strtoupper($empresa->actividadesMacro) }}
                                                 </td>
-                                                <td>{{ strtoupper( $empresa->cuposDisponibles) }}
+                                                <td>{{ strtoupper($empresa->cuposDisponibles) }}
                                                 </td>
                                                 <td>
                                                     @if ($empresa->cartaCompromiso)
@@ -519,7 +522,82 @@
                 '<i class="fa fa-upload"></i> Haz clic aquí para subir el documento'; // Reset the text
             document.querySelector('.remove-icon').style.display = 'none'; // Ocultar la "X"
         }
+        ///////previw para bajo
     </script>
+
+    <script>
+        function displayFileName(input, fileTextId) {
+            const fileName = input.files[0].name;
+            document.getElementById(fileTextId).textContent = fileName;
+        }
+
+        function removeFile(span) {
+            const fileInput = document.getElementById('file2');
+            fileInput.value = ''; // Limpiar el input file
+            document.getElementById('fileText2').textContent = 'Haz clic aquí para subir el documento'; // Resetear el texto
+        }
+
+        function showPreviewImportEmpresas() {
+            const fileInput = document.getElementById('file2');
+
+            if (!fileInput.files.length) {
+                Swal.fire('Error', 'Por favor, seleccione un archivo primero.', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            // Mostrar SweetAlert de carga
+            Swal.fire({
+                title: 'Cargando...',
+                text: 'Espere mientras se previsualizan los datos.',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Realizar la solicitud AJAX para previsualizar la importación
+            fetch('{{ route('import.previewImportEmpresas') }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    Swal.close(); // Cerrar el SweetAlert de carga
+
+                    Swal.fire({
+                        title: 'Confirmación de Importación',
+                        html: `
+                    <p>Se van a <strong>insertar</strong> ${data.insertCount} registros.</p>
+                    <p>Se van a <strong>actualizar</strong> ${data.updateCount} registros.</p>
+                    <p>¿Deseas proceder con esta operación?</p>
+                `,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, proceder',
+                        cancelButtonText: 'Cancelar',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.getElementById('idModalImportar').submit();
+                        }
+                    });
+                })
+                .catch(error => {
+                    Swal.fire('Error', 'Ocurrió un error al previsualizar la importación.', 'error');
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+
+
+
+
 
 
 @endsection
