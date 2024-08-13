@@ -261,6 +261,10 @@ Route::middleware(['auth'])->group(function () {
 
     /////////////////////importar practcias 1
     Route::post('/import-practicas1', [DocumentosVinculacion::class, 'importarPracticas1'])->name('import-practicas1');
+    Route::post('/preview-import-practicas1', [DocumentosVinculacion::class, 'previewImportarPracticas1'])->name('import.previewImportarPracticas1');
+
+
+
     ///////////////importar practicas 2
     Route::post('/import-practicas2', [DocumentosVinculacion::class, 'importarPracticas2'])->name('import-practicas2');
     ///////////////importar practicas 3
