@@ -196,8 +196,9 @@
                     <table class="mat-mdc-table">
                         <thead class="ng-star-inserted">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                
                                 <th>FECHA</th>
-                                <th style="width: 161px !important; min-width:200px !important;">ACTIVIDADES</th>
+                                <th class="tamanio">ACTIVIDADES</th>
                                 <th>NÚMERO DE HORAS</th>
                                 <th>NOMBRE DE ACTIVIDAD</th>
                                 <th>EVIDENCIAS</th>
@@ -226,7 +227,7 @@
                                             {{ $actividad->numeroHoras }}
                                         </td>
                                         <td
-                                            style="text-transform: uppercase; word-wrap: break-word; text-align: center; font-size: .7em;">
+                                            style="text-transform: uppercase; word-wrap: break-word; text-align: left; font-size: .7em;">
                                             {{ $actividad->nombreActividad }}
                                         </td>
                                         <td
@@ -368,38 +369,33 @@
     <center><button id="toggleFormBtn2" class="button1_1 efects_button">Crear Informe de Servicio a la
             comunidad</button>
     </center>
-    <hr>
 
-   
+   <br>
     <div class="contenedor_list_filtros">
         <div id="registroInforme" style="display: none;">
-        <div class="mat-elevation-z8 contenedor_general">
+       
+        
+            <div id="formularioContainer">
+           
+                <form id="formularioInforme" action="{{ route('estudiantes.generarInforme') }}" method="post">
+                
+                <div class="mat-elevation-z8 contenedor_general">
             <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                 <div class="contenedor_botones">
                     <div class="tooltip-container">
                     <span class="tooltip-text">Guardar Datos</span>
                         <button type="submit" class="button3 efects_button btn_primary"
                             onclick="setScrollAndAction('{{ route('estudiantes.guardarDatos') }}')"><i class="fa-regular fa-floppy-disk"></i></button>
-                    </div>
-                    
+                        </div>
                     <div class="tooltip-container">
-                    <span class="tooltip-text">Recuperar Datos</span>
                         <a href="{{ route('estudiantes.recuperarDatos') }}" class="button3 efects_button btn_filtro"
-                            onclick="setScrollAndLink('{{ route('estudiantes.recuperarDatos') }}')"><i class="fa-solid fa-window-restore"></i></a>
-                    </center>
-                    </div>
-                </form>
-            </div>
-
-           </div>
-            
-
-
-        </div>
-        <br>
-            <div id="formularioContainer">
-                <form id="formularioInforme" action="{{ route('estudiantes.generarInforme') }}" method="post">
-                    @csrf
+                            onclick="setScrollAndLink('{{ route('estudiantes.recuperarDatos') }}')"> <i class="fa-solid fa-window-restore"></i></a>
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+                            <hr>
+                            @csrf
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             <label for="tipoInforme"><strong>Generar Informe:</strong></label>
@@ -570,13 +566,12 @@
                             </td>
                         </tr>
                     </table>
-                    <center>
-                    <div class="tooltip-container">
-                 
-                        <button type="submit" class="button1 efects_button btn_primary"
-                            onclick="setScrollAndAction('{{ route('estudiantes.generarInforme') }}')"><i class="fa-sharp fa-regular fa-layer-plus"></i>
-                           Generar informe </button>
-                    </div>
+                  <center>
+                  <button type="submit" class="button1"
+                            onclick="setScrollAndAction('{{ route('estudiantes.generarInforme') }}')">Crear
+                            Informe</button>
+                                            </center>
+                   
     </div>
     </div>
 
