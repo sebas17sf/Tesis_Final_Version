@@ -17,11 +17,13 @@ class Proyecto extends Model
         'directorId',
         'nombreProyecto',
         'descripcionProyecto',
-         'departamentoTutor',
+        'departamentoTutor',
         'codigoProyecto',
         'inicioFecha',
         'finFecha',
         'estado',
+        
+
     ];
 
     public function estudiantes()

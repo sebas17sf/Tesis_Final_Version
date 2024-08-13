@@ -400,7 +400,7 @@
                     <hr>
                     @csrf
                     <div class="form-row">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-2">
                             <label for="tipoInforme"><strong>Generar Informe:</strong></label>
                             <select class="form-control input input_select3" name="tipo" id="tipo">
                                 <option value="grupal" {{ old('tipo') == 'grupal' ? 'selected' : '' }}>Grupal</option>
@@ -416,6 +416,34 @@
                                 required>
                         </div>
 
+                        @php
+                            $proyectoComunidad = $proyecto->proyecto->comunidad ?? 'Datos no ingresados';
+                            $proyectoProvincia = $proyecto->proyecto->provincia ?? 'Datos no ingresados';
+                            $proyectoCanton = $proyecto->proyecto->canton ?? 'Datos no ingresados';
+                            $proyectoParroquia = $proyecto->proyecto->parroquia ?? 'Datos no ingresados';
+                            $proyectoDireccion = $proyecto->proyecto->direccion ?? 'Datos no ingresados';
+
+                            $proyectoInfo = "Comunidad: {$proyectoComunidad}, Provincia: {$proyectoProvincia}, Cantón: {$proyectoCanton}, Parroquia: {$proyectoParroquia}, Dirección: {$proyectoDireccion}";
+                        @endphp
+
+                        <div class="form-group col-md-6">
+                            <label for="proyecto"><strong>Información del proyecto - Datos cargados:</strong></label>
+                            <input type="text" class="form-control input" id="proyecto" name="proyecto"
+                                value="{{ $proyectoInfo }}" readonly>
+
+                            <input type="hidden" name="proyecto_comunidad" value="{{ $proyectoComunidad }}">
+                            <input type="hidden" name="proyecto_provincia" value="{{ $proyectoProvincia }}">
+                            <input type="hidden" name="proyecto_canton" value="{{ $proyectoCanton }}">
+                            <input type="hidden" name="proyecto_parroquia" value="{{ $proyectoParroquia }}">
+                            <input type="hidden" name="proyecto_direccion" value="{{ $proyectoDireccion }}">
+                        </div>
+
+
+
+
+
+
+
 
                     </div>
                     <div id="dynamicFieldContainer">
@@ -426,25 +454,24 @@
                                         <label for="provincia"><strong>Provincia:</strong></label>
                                         <input type="text" id="provincia" name="provincia[]"
                                             class="form-control input" value="{{ $provincia }}"
-                                            placeholder="Ingrese la provincia..." required>
+                                            placeholder="Ingrese la provincia...">
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="canton"><strong>Cantón:</strong></label>
                                         <input type="text" id="canton" name="canton[]" class="form-control input"
-                                            value="{{ old('canton')[$index] }}" placeholder="Ingrese el cantón..."
-                                            required>
+                                            value="{{ old('canton')[$index] }}" placeholder="Ingrese el cantón...">
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="parroquia"><strong>Parroquia:</strong></label>
                                         <input type="text" id="parroquia" name="parroquia[]"
                                             class="form-control input" value="{{ old('parroquia')[$index] }}"
-                                            placeholder="Ingrese la parroquia..." required>
+                                            placeholder="Ingrese la parroquia...">
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="direccion"><strong>Dirección:</strong></label>
                                         <input type="text" id="direccion" name="direccion[]"
                                             class="form-control input" value="{{ old('direccion')[$index] }}"
-                                            placeholder="Ingrese la dirección..." required>
+                                            placeholder="Ingrese la dirección...">
                                     </div>
                                 </div>
                             @endforeach
@@ -453,22 +480,22 @@
                                 <div class="form-group col-md-3">
                                     <label for="provincia"><strong>Provincia:</strong></label>
                                     <input type="text" id="provincia" name="provincia[]" class="form-control input"
-                                        placeholder="Ingrese la provincia..." required>
+                                        placeholder="Ingrese la provincia...">
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="canton"><strong>Cantón:</strong></label>
                                     <input type="text" id="canton" name="canton[]" class="form-control input"
-                                        placeholder="Ingrese el cantón..." required>
+                                        placeholder="Ingrese el cantón...">
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="parroquia"><strong>Parroquia:</strong></label>
                                     <input type="text" id="parroquia" name="parroquia[]" class="form-control input"
-                                        placeholder="Ingrese la parroquia..." required>
+                                        placeholder="Ingrese la parroquia...">
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="direccion"><strong>Dirección:</strong></label>
                                     <input type="text" id="direccion" name="direccion[]"
-                                        placeholder="Ingrese la dirección..." class="form-control input" required>
+                                        placeholder="Ingrese la dirección..." class="form-control input">
                                 </div>
                             </div>
                         @endif

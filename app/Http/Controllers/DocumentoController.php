@@ -764,33 +764,48 @@ class DocumentoController extends Controller
         $template->setValue('conclusiones3', $conclusiones3);
         $template->setValue('recomendaciones', $recomendaciones);
 
-        $totalFilas = count($provincias);
-        $template->cloneRow('provincia', $totalFilas);
+        // Datos del proyecto cargados desde los inputs ocultos
+        $proyectoComunidad = $request->input('proyecto_comunidad');
+        $proyectoProvincia = $request->input('proyecto_provincia');
+        $proyectoCanton = $request->input('proyecto_canton');
+        $proyectoParroquia = $request->input('proyecto_parroquia');
+        $proyectoDireccion = $request->input('proyecto_direccion');
 
-        for ($i = 0; $i < $totalFilas; $i++) {
-            $template->setValue('provincia#' . ($i + 1), $provincias[$i]);
-            $template->setValue('canton#' . ($i + 1), $cantones[$i]);
-            $template->setValue('parroquia#' . ($i + 1), $parroquias[$i]);
-            $template->setValue('direccion#' . ($i + 1), $direcciones[$i]);
+        // Inicializa arrays con los datos del proyecto
+        $allProvincias = [$proyectoProvincia];
+        $allCantones = [$proyectoCanton];
+        $allParroquias = [$proyectoParroquia];
+        $allDirecciones = [$proyectoDireccion];
+
+        // Solo añadir datos adicionales si existen
+        if (!empty($provincias) && !empty($cantones) && !empty($parroquias) && !empty($direcciones)) {
+            $allProvincias = array_merge($allProvincias, $provincias);
+            $allCantones = array_merge($allCantones, $cantones);
+            $allParroquias = array_merge($allParroquias, $parroquias);
+            $allDirecciones = array_merge($allDirecciones, $direcciones);
         }
 
+        $totalFilas = count($allProvincias);
 
-        $razones = $request->input('razones');
-        $template->setValue('razones', $razones);
+        // Clonar filas solo si hay más de un conjunto de datos
+        if ($totalFilas > 1) {
+            $template->cloneRow('provincia', $totalFilas);
 
-        $conclusiones1 = $request->input('conclusiones1');
-        $template->setValue('conclusiones1', $conclusiones1);
+            for ($i = 0; $i < $totalFilas; $i++) {
+                $template->setValue('provincia#' . ($i + 1), $allProvincias[$i]);
+                $template->setValue('canton#' . ($i + 1), $allCantones[$i]);
+                $template->setValue('parroquia#' . ($i + 1), $allParroquias[$i]);
+                $template->setValue('direccion#' . ($i + 1), $allDirecciones[$i]);
+            }
+        } else {
+            // Si solo hay un conjunto de datos, no se clona, solo se usa una fila
+            $template->setValue('provincia', $proyectoProvincia);
+            $template->setValue('canton', $proyectoCanton);
+            $template->setValue('parroquia', $proyectoParroquia);
+            $template->setValue('direccion', $proyectoDireccion);
+        }
 
-        $conclusiones2 = $request->input('conclusiones2');
-        $template->setValue('conclusiones2', $conclusiones2);
-
-        $conclusiones3 = $request->input('conclusiones3');
-        $template->setValue('conclusiones3', $conclusiones3);
-
-        $recomendaciones = $request->input('recomendaciones');
-        $template->setValue('recomendaciones', $recomendaciones);
-
-        // Clonar las filas en la plantilla
+        // Clonar las filas en la plantilla para estudiantes y actividades
         $template->cloneRow('Nombres', count($datosEstudiantes));
         $template->cloneRow('actividades', count($datosEstudiantes2));
         $template->cloneRow('nombre_actividad', count($datosEstudiantes2));  // Clonar filas para nombre_actividad
@@ -3616,9 +3631,13 @@ class DocumentoController extends Controller
         $actividadesRegistradas = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)->get();
         $totalHoras = $actividadesRegistradas->sum('numeroHoras');
 
+         $proyecto = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->first();
+
+
         return view('estudiantes.documentos', [
             'actividadesRegistradas' => $actividadesRegistradas,
-            'totalHoras' => $totalHoras
+            'totalHoras' => $totalHoras,
+            'proyecto' => $proyecto
         ]);
     }
 

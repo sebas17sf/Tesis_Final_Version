@@ -942,7 +942,7 @@ class DocumentosVinculacion extends Controller
                     'carrera' => $row[7],
                     'departamento' => $row[6],
                     'comentario' => 'Importado desde Excel',
-                    'estado' => 'Aprobado',
+                    'estado' => 'Desactivado',
                     'activacion' => true,
                 ];
 
