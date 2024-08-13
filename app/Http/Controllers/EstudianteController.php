@@ -963,6 +963,7 @@ class EstudianteController extends Controller
         'provincia.*' => 'required|string',
         'canton' => 'required|array',
         'canton.*' => 'required|string',
+        'razones' => 'required|string',
         'parroquia' => 'required|array',
         'parroquia.*' => 'required|string',
         'direccion' => 'required|array',
@@ -994,6 +995,7 @@ class EstudianteController extends Controller
             'alcanzados' => json_encode($data['alcanzados']),
             'porcentajes' => json_encode($data['porcentaje']),
              'conclusiones1' => $data['conclusiones1'],
+             'razones' => $data['razones'],
             'conclusiones2' => $data['conclusiones2'],
             'conclusiones3' => $data['conclusiones3'],
             'recomendaciones' => $data['recomendaciones']

@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('estudianteId');
             $table->string('nombre_comunidad')->nullable();
+            $table->string('razones')->nullable();
             $table->json('provincias')->nullable();
             $table->json('cantones')->nullable();
             $table->json('parroquias')->nullable();
