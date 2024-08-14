@@ -519,14 +519,13 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/estudiantes/cambio-credenciales/{userId}', [EstudianteController::class, 'actualizarCredenciales'])->name('estudiantes.actualizarCredenciales');
     Route::put('/estudiantes/cambio-datos/{estudianteId}', [EstudianteController::class, 'actualizarDatosEstudiantesCredenciales'])->name('estudiantes.updateDatos');
 
-
-
     Route::get('/coordinador/cambio-credenciales', [CoordinadorController::class, 'cambiarCredencialesUsuario'])->name('coordinador.cambio-credenciales');
     Route::put('/coordinador/cambio-credenciales', [CoordinadorController::class, 'actualizarCredenciales'])->name('coordinador.updateCredenciales');
 
     //////////////////////////respaldo
     Route::post('/respaldo', [AdminController::class, 'backup'])->name('admin.respaldo');
 
+    Route::get('/admin/descargar-evidencias/{proyectoId}', [AdminController::class, 'descargarEvidencias'])->name('admin.descargarEvidencias');
 
 
 

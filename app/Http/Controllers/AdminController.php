@@ -16,6 +16,8 @@ use App\Models\AsignacionProyecto;
 use App\Models\Empresa;
 use App\Models\Role;
 use App\Models\Departamento;
+use App\Models\ActividadEstudiante;
+ use ZipArchive;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Mail\AsignacionProyectoMailable;
@@ -330,6 +332,8 @@ class AdminController extends Controller
 
     public function indexProyectos(Request $request)
     {
+        $todoslosProfesores = ProfesUniversidad::all();
+
         $estadoProyecto = $request->input('estado');
         $departamento = $request->input('departamento');
         $profesorId = $request->input('profesor');
@@ -473,6 +477,7 @@ class AdminController extends Controller
             'paginatedData' => $paginatedData,
             'total' => $total,
             'periodoAsignacion' => $periodoAsignacion,
+            'todoslosProfesores' => $todoslosProfesores,
         ]);
         if ($estadoProyecto) {
             $query->where('estado', $estadoProyecto);
@@ -523,6 +528,7 @@ class AdminController extends Controller
             'paginatedData' => $paginatedData,
             'total' => $total,
             'periodoAsignacion' => $periodoAsignacion,
+            'todoslosProfesores' => $todoslosProfesores,
         ]);
 
     }
@@ -1841,6 +1847,72 @@ class AdminController extends Controller
         return back()->with('success', 'Departamento actualizado exitosamente.')->withInput();
     }
 
+
+
+    ////////////////descargar evidencias
+
+
+    public function descargarEvidencias($proyectoId)
+    {
+        $asignaciones = AsignacionProyecto::where('proyectoId', $proyectoId)
+                                          ->with('estudiante.evidencias', 'periodo', 'proyecto')
+                                          ->get();
+
+        if ($asignaciones->isEmpty()) {
+            return back()->with('error', 'No se encontraron asignaciones para este proyecto.');
+        }
+
+        $proyectoNombre = $asignaciones->first()->proyecto->nombreProyecto ?? 'sin_nombre';
+        $periodoNombre = $asignaciones->first()->periodo->numeroPeriodo ?? 'sin_periodo';
+        $fileName = $proyectoNombre . '_' . $periodoNombre . '.zip';
+        $zipFilePath = public_path($fileName);
+
+        $zip = new ZipArchive;
+        if ($zip->open($zipFilePath, ZipArchive::CREATE) === TRUE) {
+            $evidenciasAgregadas = false;
+
+            foreach ($asignaciones as $asignacion) {
+                $estudianteNombre = $asignacion->estudiante->apellidos . '_' . $asignacion->estudiante->nombres;
+                $estudianteNombre = preg_replace('/[^A-Za-z0-9_\-]/', '_', $estudianteNombre);  // Sanitiza el nombre
+
+                foreach ($asignacion->estudiante->evidencias as $evidencia) {
+                    $decodedData = base64_decode($evidencia->evidencias);
+                    if ($decodedData === false) {
+                        \Log::error("No se pudo decodificar la evidencia Base64 para el estudiante con ID: {$asignacion->estudianteId}");
+                        continue;
+                    }
+
+                    $tempFilePath = tempnam(sys_get_temp_dir(), 'evidencia_');
+                    file_put_contents($tempFilePath, $decodedData);
+
+                    // Crear una estructura de carpetas dentro del ZIP: Periodo/Estudiante/Evidencia
+                    $zip->addFile($tempFilePath, $periodoNombre . '/' . $estudianteNombre . '/evidencia_' . $evidencia->idActividades . '.jpg');
+                    $evidenciasAgregadas = true;
+                }
+            }
+
+            $zip->close();
+
+            if (!$evidenciasAgregadas) {
+                if (file_exists($zipFilePath)) {
+                    unlink($zipFilePath);
+                }
+                return back()->with('error', 'No tiene actividades cargadas.');
+            }
+        } else {
+            \Log::error("No se pudo crear el archivo ZIP en la ruta: $zipFilePath.");
+            return back()->with('error', 'No se pudo crear el archivo ZIP.');
+        }
+
+        if (file_exists($zipFilePath)) {
+            // Guardar el mensaje de éxito en la sesión
+            session()->flash('success', 'El archivo ZIP se ha generado con éxito.');
+            return response()->download($zipFilePath)->deleteFileAfterSend(true);
+        } else {
+            \Log::error("El archivo ZIP $zipFilePath no existe después de crear.");
+            return back()->with('error', 'El archivo ZIP no existe.');
+        }
+    }
 
 
 

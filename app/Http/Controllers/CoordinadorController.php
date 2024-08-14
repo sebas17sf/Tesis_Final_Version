@@ -40,6 +40,9 @@ class CoordinadorController extends Controller
 {
     public function index(Request $request)
     {
+        $todoslosProfesores = ProfesUniversidad::all();
+
+
         $estadoProyecto = $request->input('estado');
         $departamento = $request->input('departamento');
         $profesorId = $request->input('profesor');
@@ -177,6 +180,8 @@ class CoordinadorController extends Controller
             'paginatedData' => $paginatedData,
             'total' => $total,
             'periodoAsignacion' => $periodoAsignacion,
+            'todoslosProfesores' => $todoslosProfesores,
+
         ]);
         if ($estadoProyecto) {
             $query->where('estado', $estadoProyecto);
@@ -227,6 +232,7 @@ class CoordinadorController extends Controller
             'paginatedData' => $paginatedData,
             'total' => $total,
             'periodoAsignacion' => $periodoAsignacion,
+            'todoslosProfesores' => $todoslosProfesores,
         ]);
 
     }

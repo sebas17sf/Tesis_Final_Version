@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Models\AsignacionProyecto;
 use App\Models\NrcVinculacion;
+use Illuminate\Support\Facades\Http;
 use App\Models\Proyecto;
 use App\Models\NotasEstudiante;
 use App\Models\Empresa;
@@ -488,6 +489,8 @@ class DocumentosVinculacion extends Controller
 
 
     //////////////////////////////////////////////////////MATRIZ VINCULACION/////////////////////////////////////////////////////////////////////////////////
+
+
     public function MatrizVinculacion(Request $request)
     {
         mb_internal_encoding('UTF-8');
@@ -496,7 +499,6 @@ class DocumentosVinculacion extends Controller
         $fechaFin = $request->input('fechaFin');
         $profesor = $request->input('profesor');
         $periodo = $request->input('periodos');
-
 
         $plantillaPath = public_path('Plantillas/Reporte-MatrizVinculacion.xlsx');
 
@@ -514,7 +516,7 @@ class DocumentosVinculacion extends Controller
         if ($fechaInicio && $fechaFin) {
             $query->whereHas('periodo', function ($query) use ($fechaInicio, $fechaFin) {
                 $query->where('inicioPeriodo', '<=', $fechaFin)
-                    ->where('finPeriodo', '>=', $fechaInicio);
+                      ->where('finPeriodo', '>=', $fechaInicio);
             });
         }
 
@@ -526,14 +528,23 @@ class DocumentosVinculacion extends Controller
             $query->where('idPeriodo', $periodo);
         }
 
-
-
-
-
         $asignacionProyecto = $query->with(['estudiante.notas', 'estudiante.horas_vinculacion', 'proyecto.director', 'docenteParticipante', 'periodo', 'nrcVinculacion'])->get();
 
         if ($asignacionProyecto->isEmpty()) {
             return redirect()->back()->with('error', 'No hay proyectos asignados' . ($fechaInicio && $fechaFin ? ' en el rango de fechas seleccionado' : ''));
+        }
+
+        // Obtener todos los datos de la API
+        $response = Http::get('http://10.3.1.105:3000/api/v1/academic/information');
+
+        if ($response->successful()) {
+            $dataFromApi = collect($response->json('data.academic')); // Acceder directamente al array "academic"
+
+            // Para depurar, imprimimos los primeros registros de la API
+            \Log::info('Datos de la API:', $dataFromApi->take(5)->toArray());
+
+        } else {
+            return redirect()->back()->with('error', 'No se pudo obtener información de la API');
         }
 
         // Agrupar las asignaciones por estudiante y ordenarlas por nombre completo
@@ -548,6 +559,21 @@ class DocumentosVinculacion extends Controller
         foreach ($asignacionesPorEstudiante as $asignaciones) {
             $estudiante = $asignaciones->first()->estudiante;
 
+            // Depurar espeId
+            \Log::info('Buscando espeId:', ['espeId' => $estudiante->espeId]);
+
+            // Buscar el estado del estudiante en los datos de la API
+            $estadoEstudiante = $dataFromApi->firstWhere('ID', $estudiante->espeId);
+
+            if ($estadoEstudiante) {
+                $estadoEstudiante = $estadoEstudiante['ESTADO_ESTUDIANTE'] ?? 'No Disponible';
+            } else {
+                $estadoEstudiante = 'No Disponible';
+            }
+
+            // Depurar resultado
+            \Log::info('Resultado para espeId:', ['espeId' => $estudiante->espeId, 'estadoEstudiante' => $estadoEstudiante]);
+
             $notas = $estudiante->notas->take(2); // Tomar hasta 2 notas
             $horas = $estudiante->horas_vinculacion->take(2); // Tomar hasta 2 horas de vinculación
 
@@ -559,49 +585,49 @@ class DocumentosVinculacion extends Controller
                 $periodo = $asignacion->periodo;
                 $nrc = $asignacion->nrcVinculacion;
 
-                if ($index == 0) { // La primera asignación se maneja normalmente
-                    $hojaCalculo->setCellValue("A$filaActual", $contador++); // Contador de asignación
-                    $hojaCalculo->setCellValue("B$filaActual", mb_strtoupper(($estudiante->apellidos ?? '') . ' ' . ($estudiante->nombres ?? ''))); // Nombre completo
-                    $hojaCalculo->setCellValue("C$filaActual", mb_strtoupper($estudiante->espeId ?? '')); // ID de la ESPE
-                    $hojaCalculo->setCellValue("D$filaActual", mb_strtoupper($estudiante->cedula ?? '')); // Cédula
-                    $hojaCalculo->setCellValue("E$filaActual", $estudiante->correo ?? ''); // Correo
-                    $hojaCalculo->setCellValue("F$filaActual", mb_strtoupper($estudiante->Cohorte ?? '')); // Cohorte
-                    $hojaCalculo->setCellValue("G$filaActual", mb_strtoupper($periodo->numeroPeriodo)); // Número de período
-                    $hojaCalculo->setCellValue("H$filaActual", mb_strtoupper($nrc->nrc ?? 'NO REQUIERE NRC')); // NRC
-                    $hojaCalculo->setCellValue("I$filaActual", mb_strtoupper($estudiante->departamento ?? '')); // Departamento
-                    $hojaCalculo->setCellValue("J$filaActual", mb_strtoupper($estudiante->carrera ?? '')); // Carrera
-                    $hojaCalculo->setCellValue("K$filaActual", isset($horas[0]) ? mb_strtoupper($horas[0]->horasVinculacion) : ''); // Primera hora de vinculación
-                    $hojaCalculo->setCellValue("L$filaActual", isset($notas[0]) ? mb_strtoupper($notas[0]->notaFinal) : ''); // Primera nota final
-                    $hojaCalculo->setCellValue("M$filaActual", mb_strtoupper($proyecto->nombreProyecto)); // Nombre del proyecto
-                    $hojaCalculo->setCellValue("N$filaActual", mb_strtoupper($proyecto->departamentoTutor)); // Departamento tutor
-                    $hojaCalculo->setCellValue("O$filaActual", mb_strtoupper($proyecto->descripcionProyecto)); // Descripción del proyecto
-                    $hojaCalculo->setCellValue("P$filaActual", mb_strtoupper($director->apellidos . ' ' . $director->nombres)); // Nombre del director
+                if ($index == 0) {
+                    $hojaCalculo->setCellValue("A$filaActual", $contador++);
+                    $hojaCalculo->setCellValue("B$filaActual", mb_strtoupper(($estudiante->apellidos ?? '') . ' ' . ($estudiante->nombres ?? '')));
+                    $hojaCalculo->setCellValue("C$filaActual", mb_strtoupper($estudiante->espeId ?? ''));
+                    $hojaCalculo->setCellValue("D$filaActual", mb_strtoupper($estudiante->cedula ?? ''));
+                    $hojaCalculo->setCellValue("E$filaActual", $estudiante->correo ?? '');
+                    $hojaCalculo->setCellValue("F$filaActual", mb_strtoupper($estudiante->Cohorte ?? ''));
+                    $hojaCalculo->setCellValue("G$filaActual", mb_strtoupper($periodo->numeroPeriodo));
+                    $hojaCalculo->setCellValue("H$filaActual", mb_strtoupper($nrc->nrc ?? 'NO REQUIERE NRC'));
+                    $hojaCalculo->setCellValue("I$filaActual", mb_strtoupper($estudiante->departamento ?? ''));
+                    $hojaCalculo->setCellValue("J$filaActual", mb_strtoupper($estudiante->carrera ?? ''));
+                    $hojaCalculo->setCellValue("K$filaActual", isset($horas[0]) ? mb_strtoupper($horas[0]->horasVinculacion) : '');
+                    $hojaCalculo->setCellValue("L$filaActual", isset($notas[0]) ? mb_strtoupper($notas[0]->notaFinal) : '');
+                    $hojaCalculo->setCellValue("M$filaActual", mb_strtoupper($proyecto->nombreProyecto));
+                    $hojaCalculo->setCellValue("N$filaActual", mb_strtoupper($proyecto->departamentoTutor));
+                    $hojaCalculo->setCellValue("O$filaActual", mb_strtoupper($proyecto->descripcionProyecto));
+                    $hojaCalculo->setCellValue("P$filaActual", mb_strtoupper($director->apellidos . ' ' . $director->nombres));
                     $hojaCalculo->setCellValue("Q$filaActual", mb_strtoupper($director->departamento));
-                    $hojaCalculo->setCellValue("R$filaActual", mb_strtoupper($participante->apellidos . ' ' . $participante->nombres)); // Nombre del participante
+                    $hojaCalculo->setCellValue("R$filaActual", mb_strtoupper($participante->apellidos . ' ' . $participante->nombres));
                     $hojaCalculo->setCellValue("S$filaActual", mb_strtoupper($participante->departamento));
                     $hojaCalculo->setCellValue("T$filaActual", mb_strtoupper($asignacion->inicioFecha));
                     $hojaCalculo->setCellValue("U$filaActual", mb_strtoupper($asignacion->finalizacionFecha));
                     $hojaCalculo->setCellValue("AH$filaActual", mb_strtoupper($asignacion->estado));
+                    $hojaCalculo->setCellValue("AI$filaActual", mb_strtoupper($estadoEstudiante)); // Añadir el estado del estudiante
 
                     // Copiar el estilo de la fila 9
-                    $hojaCalculo->duplicateStyle($hojaCalculo->getStyle('A9:AH9'), 'A' . $filaActual . ':AH' . $filaActual);
+                    $hojaCalculo->duplicateStyle($hojaCalculo->getStyle('A9:AI9'), 'A' . $filaActual . ':AH' . $filaActual);
 
                     $filaInicio++;
-                } else { // Las asignaciones adicionales se colocan en las columnas a partir de S
+                } else {
                     $columnaActual = 'W';
-                    $hojaCalculo->setCellValue('V' . ($filaActual - 1), mb_strtoupper($periodo->numeroPeriodo ?? '')); // Número de período adicional
-                    $hojaCalculo->setCellValue($columnaActual . ($filaActual - 1), mb_strtoupper($proyecto->nombreProyecto)); // Nombre del proyecto adicional
-                    $hojaCalculo->setCellValue('X' . ($filaActual - 1), mb_strtoupper($proyecto->departamentoTutor)); // Departamento tutor adicional
-                    $hojaCalculo->setCellValue('Y' . ($filaActual - 1), mb_strtoupper($director->apellidos . ' ' . $director->nombres)); // Nombre del director adicional
+                    $hojaCalculo->setCellValue('V' . ($filaActual - 1), mb_strtoupper($periodo->numeroPeriodo ?? ''));
+                    $hojaCalculo->setCellValue($columnaActual . ($filaActual - 1), mb_strtoupper($proyecto->nombreProyecto));
+                    $hojaCalculo->setCellValue('X' . ($filaActual - 1), mb_strtoupper($proyecto->departamentoTutor));
+                    $hojaCalculo->setCellValue('Y' . ($filaActual - 1), mb_strtoupper($director->apellidos . ' ' . $director->nombres));
                     $hojaCalculo->setCellValue('Z' . ($filaActual - 1), mb_strtoupper($director->departamento));
-                    $hojaCalculo->setCellValue('AA' . ($filaActual - 1), mb_strtoupper($participante->apellidos . ' ' . $participante->nombres)); // Nombre del participante adicional
+                    $hojaCalculo->setCellValue('AA' . ($filaActual - 1), mb_strtoupper($participante->apellidos . ' ' . $participante->nombres));
                     $hojaCalculo->setCellValue('AB' . ($filaActual - 1), mb_strtoupper($participante->departamento));
-                    $hojaCalculo->setCellValue('AC' . ($filaActual - 1), mb_strtoupper($proyecto->inicioFecha)); // Fecha de inicio adicional
-                    $hojaCalculo->setCellValue('AD' . ($filaActual - 1), mb_strtoupper($proyecto->finFecha)); // Fecha de finalización adicional
-                    $hojaCalculo->setCellValue('AF' . ($filaActual - 1), isset($notas[1]) ? mb_strtoupper($notas[1]->notaFinal) : ''); // Segunda nota final
-                    $hojaCalculo->setCellValue('AE' . ($filaActual - 1), isset($horas[1]) ? mb_strtoupper($horas[1]->horasVinculacion) : ''); // Segunda hora de vinculación
+                    $hojaCalculo->setCellValue('AC' . ($filaActual - 1), mb_strtoupper($proyecto->inicioFecha));
+                    $hojaCalculo->setCellValue('AD' . ($filaActual - 1), mb_strtoupper($proyecto->finFecha));
+                    $hojaCalculo->setCellValue('AE' . ($filaActual - 1), isset($horas[1]) ? mb_strtoupper($horas[1]->horasVinculacion) : '');
+                    $hojaCalculo->setCellValue('AF' . ($filaActual - 1), isset($notas[1]) ? mb_strtoupper($notas[1]->notaFinal) : '');
                     $hojaCalculo->setCellValue('AH' . ($filaActual - 1), mb_strtoupper($asignacion->estado));
-                    $columnaActual++;
                 }
 
                 // Suma de las horas de vinculación del estudiante
@@ -609,20 +635,13 @@ class DocumentosVinculacion extends Controller
             }
         }
 
-        $hojaCalculo->getStyle('A9:Ah' . ($filaInicio - 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_JUSTIFY)->setVertical(Alignment::VERTICAL_CENTER);
+        $hojaCalculo->getStyle('A9:AI' . ($filaInicio - 1))->getAlignment()->setHorizontal(Alignment::HORIZONTAL_JUSTIFY)->setVertical(Alignment::VERTICAL_CENTER);
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $nombreArchivo = "Reporte_asignación_proyectos_sociales.xlsx";
         $writer->save($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
     }
-
-
-
-
-
-
-
 
 
     //////////////////////////////////////reporte de docentes participantes/////////////////////////////////////////////////////////////////

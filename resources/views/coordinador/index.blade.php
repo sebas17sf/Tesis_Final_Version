@@ -417,7 +417,7 @@
                                                 <select name="profesor" id="profesor"
                                                     class="form-control input input_select">
                                                     <option value="">Todos los docentes</option>
-                                                    @foreach ($profesores as $profesor)
+                                                    @foreach ($todoslosProfesores as $profesor)
                                                         <option value="{{ $profesor->id }}"
                                                             {{ request('profesor') == $profesor->id ? 'selected' : '' }}>
                                                             {{ $profesor->apellidos }} {{ $profesor->nombres }}
@@ -506,22 +506,23 @@
 
                                     <thead class="ng-star-inserted">
                                         <tr
-                                            class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                            <th>N°</th>
-                                            <th class="tamanio"> NOMBRE DE PROYECTO</th>
-                                            <th class="tamanio3">CÓDIGO DEL PROYECTO</th>
-                                            <th class="tamanio4">DIRECTOR</th>
-                                            <th class="tamanio4">DOCENTES PARTICIPANTES</th>
-                                            <th>FECHA ASIGNACIÓN</th>
-                                            <th>ESTUDIANTES</th>
-                                            <th>HORAS REALIZADAS</th>
-                                            <th>NOTA</th>
-                                            <th>PERIODO</th>
-                                            <th>NRC</th>
-                                            <th>FECHA INICIO</th>
-                                            <th>FECHA FIN</th>
-                                            <th>ESTADO</th>
-                                            <th>ACCIONES</th>
+                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                        <th>N°</th>
+                                        <th class="tamanio"> NOMBRE DE PROYECTO</th>
+                                        <th class="tamanio3">CÓDIGO DEL PROYECTO</th>
+                                        <th class="tamanio4">DIRECTOR</th>
+                                        <th class="tamanio4">DOCENTES PARTICIPANTES</th>
+                                        <th>ESTUDIANTES</th>
+                                        <th>DEPARTAMENTO</th>
+                                        <th>HORAS REALIZADAS</th>
+                                        <th class="tamanio4">NOTA</th>
+                                        <th>PERIODO</th>
+                                        <th>NRC</th>
+                                        <th>FECHA INICIO</th>
+                                        <th>FECHA FIN</th>
+                                        <th>ESTADO</th>
+                                        <th>PERMITIR CAMBIOS</th>
+                                        <th>DESCARGAR EVIDENCIAS</th>
                                         </tr>
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
@@ -547,13 +548,14 @@
                                                     </td>
 
 
+
+
                                                     <td style="text-transform: uppercase; text-align: left;">
 
                                                         {{ $grupo->first()->docenteParticipante->apellidos ?? '' }}
                                                         {{ $grupo->first()->docenteParticipante->nombres ?? '' }}<br>
 
                                                     </td>
-                                                    <td>{{ $grupo->first()->asignacionFecha ?? '' }}</td>
 
                                                     <td
                                                         style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
@@ -565,21 +567,41 @@
 
                                                     </td>
 
+                                                    <td
+                                                        style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
+
+                                                        @foreach ($grupo as $asignacion)
+                                                            {{ $asignacion->estudiante->departamento ?? '' }}<br>
+                                                        @endforeach
+
+                                                    </td>
+
                                                     <td>
                                                         @foreach ($grupo as $asignacion)
-                                                            @foreach ($asignacion->estudiante->horas_vinculacion as $hora)
-                                                                {{ $hora->horasVinculacion ?? 'NO ASIGNADA' }}<br>
-                                                            @endforeach
+                                                            @php
+                                                                $horas = $asignacion->estudiante->horas_vinculacion
+                                                                    ->pluck('horasVinculacion')
+                                                                    ->filter()
+                                                                    ->toArray();
+                                                                echo implode(' / ', $horas) ?: 'NO ASIGNADA';
+                                                            @endphp
+                                                            <br>
                                                         @endforeach
                                                     </td>
 
                                                     <td>
                                                         @foreach ($grupo as $asignacion)
-                                                            @foreach ($asignacion->estudiante->notas as $nota)
-                                                                {{ $nota->notaFinal ?? 'SIN CALIFICAR' }}<br>
-                                                            @endforeach
+                                                            @php
+                                                                $notas = $asignacion->estudiante->notas
+                                                                    ->pluck('notaFinal')
+                                                                    ->filter()
+                                                                    ->toArray();
+                                                                echo implode(' / ', $notas) ?: 'SIN CALIFICAR';
+                                                            @endphp
+                                                            <br>
                                                         @endforeach
                                                     </td>
+
                                                     </td>
                                                     </td>
                                                     <td>{{ $grupo->first()->periodo->numeroPeriodo ?? '' }}</td>
@@ -609,15 +631,35 @@
                                                         @endforeach
                                                     </td>
                                                     <td>
-                                                        <form
+                                                        <form class="btn-group shadow-1"
                                                             action="{{ route('admin.revertirAsignacion', ['proyectoId' => $grupo->first()->proyectoId, 'idPeriodo' => $grupo->first()->idPeriodo]) }}"
                                                             method="POST">
                                                             @csrf
                                                             @method('PATCH')
                                                             <button type="submit"
-                                                                class="btn btn-warning">Revertir</button>
+                                                                class="button3 efects_button btn_eliminar3">
+
+                                                                <i class="bx bx-undo"></i>
+                                                            </button>
+                                                        </form>
+
+                                                    </td>
+
+                                                    <td>
+
+                                                        <form class="btn-group shadow-1"
+                                                            action="{{ route('admin.descargarEvidencias', ['proyectoId' => $grupo->first()->proyectoId]) }}"
+                                                            method="GET">
+                                                            <button type="submit"
+                                                                class="button3 efects_button btn_eliminar3">
+                                                                <i class="fas fa-download"></i>
+                                                            </button>
                                                         </form>
                                                     </td>
+
+
+
+
                                                 </tr>
                                             @endforeach
                                         @endif

@@ -1105,7 +1105,7 @@ class DocumentoController extends Controller
         $periodo = $request->input('periodos');
 
         // Construir la consulta con los filtros
-        $queryEstudiantes = Estudiante::query();
+        $queryEstudiantes = Estudiante::whereIn('estado', ['Desactivados', 'Aprobado', 'Aprobado-practicas']);
 
         if ($departamento) {
             $queryEstudiantes->where('departamento', $departamento);
