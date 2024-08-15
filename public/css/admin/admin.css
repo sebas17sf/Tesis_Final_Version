@@ -251,8 +251,8 @@ tr:hover {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 550px;
-    border: 3px solid #40456c;
-    border-radius: 5px;
+    border: 3px solid  #2c314e;
+    border-radius: 7px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     background-color: rgb(190, 85, 85);
     z-index: 1000;
@@ -262,8 +262,8 @@ tr:hover {
 }
 .draggable-card1_1 {
     width: 830px;
-    border: 3px solid #40456c;
-    border-radius: 5px;
+    border: 3px solid  #2c314e;
+    border-radius: 7px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     background-color: white;
     position: fixed; /* Changed from absolute to fixed */
@@ -289,8 +289,8 @@ tr:hover {
 }
 .draggable-card1_4 {
     width: 330px;
-    border: 3px solid #40456c;
-    border-radius: 5px;
+    border: 3px solid  #2c314e;
+    border-radius: 7px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     background-color: white;
     position: fixed; /* Fixed positioning */
@@ -302,8 +302,8 @@ tr:hover {
 }
 .draggable-card1_3 {
     width: 730px;
-    border: 3px solid #40456c;
-    border-radius: 5px;
+    border: 3px solid  #2c314e;
+    border-radius: 7px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     background-color: white;
     position: fixed; /* Changed from absolute to fixed */
@@ -316,6 +316,7 @@ tr:hover {
 .card-header {
     background-color: #2c314e;
     color: white;
+    font-size: 0.8rem;
     padding: 10px;
     cursor: move;
     border-radius: 5px 5px 0 0;

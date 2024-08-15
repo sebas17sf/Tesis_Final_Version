@@ -252,7 +252,7 @@
 
         <!--------------DEPARTAMENTTOSSSSSSSSSSSSSSSSSSSSSS-->
 
-        <div class="draggable-card1_1" id="draggableCardDepartamentos" style="max-width: 400px; margin: auto;">
+        <div class="draggable-card1_4" id="draggableCardDepartamentos" style="max-width: 400px; margin: auto;">
             <div class="card-header">
                 <span class="card-title">Agregar Departamento</span>
                 <button type="button" class="close"
@@ -528,11 +528,11 @@
                                                                 </div>
                                                                 <div class="form-row">
                                                                     <div class="form-group col-md-4">
-                                                                        <label for="departamento"><strong>Seleccione el
+                                                                        <label  class="label" for="departamento"><strong>Seleccione el
                                                                                 departamento al que
                                                                                 pertenece:</strong></label>
                                                                         <select id="departamento" name="departamento"
-                                                                            class="form-control input_select input">
+                                                                        class="form-control input_select1 input">
                                                                             <option value="">Seleccione un
                                                                                 departamento</option>
                                                                             @foreach ($departamentos as $departamento)
@@ -657,7 +657,7 @@
         <div class="container">
 
             <!-- Tarjeta movible para Agregar NRC -->
-            <div class="draggable-card" id="draggableCardNRC">
+            <div class="draggable-card1_2" id="draggableCardNRC">
                 <div class="card-header">
                     <span class="card-title">Agregar NRC</span>
                     <button type="button" class="close" onclick="$('#draggableCardNRC').hide()"><i
@@ -710,7 +710,7 @@
             </div>
 
             <!-- Tarjeta movible para Agregar Periodo -->
-            <div class="draggable-card" id="draggableCardPeriodo">
+            <div class="draggable-card1_2" id="draggableCardPeriodo">
                 <div class="card-header">
                     <span class="card-title">Agregar Periodo</span>
                     <button type="button" class="close" onclick="$('#draggableCardPeriodo').hide()"><i
@@ -757,7 +757,7 @@
             <!-- ----------------------------------------------------------------------------------- -->
 
             <!-- Tarjeta movible para Editar Periodo -->
-            <div class="draggable-card" id="draggableCardEditarPeriodo">
+            <div class="draggable-card1_2" id="draggableCardEditarPeriodo">
                 <div class="card-header">
                     <span class="card-title">Editar Periodo</span>
                     <button type="button" class="close" onclick="$('#draggableCardEditarPeriodo').hide()"><i
@@ -765,8 +765,8 @@
                 </div>
                 <div class="card-body">
                     <div class="form-group col-md-12">
-                        <label for="periodo"><strong>Periodos Agregados (Seleccione el periodo a
-                                editar):</strong></label>
+                        <label for="periodo"><strong>Seleccione el periodo a
+                                editar:</strong></label>
                         <select id="selectPeriodo" class="form-control input input_select">
                             <option value="" data-inicio="" data-fin="" data-numero="">Seleccionar Periodo
                             </option>
@@ -837,6 +837,11 @@
                 containment: "window"
             });
         });
+        $(document).ready(function () {
+    $('.draggable-card1_4').each(function () {
+        makeElementDraggable(this);
+    });
+});
         $(document).ready(function() {
             // Hacer que los cards sean draggable
             $('.draggable-card').draggable({
@@ -844,7 +849,11 @@
                 containment: "window"
             });
         });
-
+        $(document).ready(function () {
+    $('.draggable-card1_1').each(function () {
+        makeElementDraggable(this);
+    });
+});
         var delayTimer;
         $('#formBusquedaDocentes input[name="search"]').on('keyup', function() {
             clearTimeout(delayTimer);
