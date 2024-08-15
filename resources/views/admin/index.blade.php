@@ -16,7 +16,6 @@
         </div>
     @endif
 
-
     @if (session('maestro_con_proyectos'))
         <script>
             Swal.fire({
@@ -66,13 +65,9 @@
         </script>
     @endif
 
-
     <section class="contenedor_agregar_periodo">
-
         <br>
-
         <div class="d-flex  justify-content-center">
-
             <form action="{{ route('admin.reportesSesiones') }}" method="POST" class="mr-2">
                 @csrf
                 <button type="submit" class="button1">Historial sesiones usuarios</button>
@@ -91,7 +86,6 @@
 
             <button type="button" class="button1 mr-2" onclick="openCard('draggableCardDepartamentos');">
                 Departamentos</button>
-
         </div>
         <br>
         <div>
@@ -164,8 +158,6 @@
             </div>
         </div>
 
-
-
         <br>
 
         <!-- Archivos de notas -->
@@ -185,26 +177,23 @@
                         class="fa-thin fa-xmark"></i></button>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.guardarMaestro') }}" method="post">
+                <form id="formDocentesGuardar" action="{{ route('admin.guardarMaestro') }}" method="post">
                     @csrf
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="nombres"><strong>Ingrese Nombres:</strong></label>
-                            <input type="text" id="nombres" name="nombres" class="form-control input"
-                                placeholder="Ingrese los dos Nombres" required>
-                            <small id="nombresError" class="form-text text-danger" style="display: none;"></small>
+                            <input type="text" id="nombres" name="nombres" class="form-control input" placeholder="Ingrese los dos Nombres">
+                            <small id="nombresError" class="form-text text-danger" style="display: none;">Este campo es obligatorio.</small>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="apellidos"><strong>Ingrese Apellidos:</strong></label>
-                            <input type="text" id="apellidos" name="apellidos" class="form-control input"
-                                placeholder="Ingrese los dos Apellidos" required>
-                            <small id="apellidosError" class="form-text text-danger" style="display: none;"></small>
+                            <input type="text" id="apellidos" name="apellidos" class="form-control input" placeholder="Ingrese los dos Apellidos">
+                            <small id="apellidosError" class="form-text text-danger" style="display: none;">Este campo es obligatorio.</small>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="correo"><strong>Ingrese Correo:</strong></label>
-                            <input type="email" id="correo" name="correo" class="form-control input"
-                                placeholder="Ingrese el Correo Electrónico" required>
-                            <small id="correoError" class="form-text text-danger" style="display: none;"></small>
+                            <input type="email" id="correo" name="correo" class="form-control input" placeholder="Ingrese el Correo Electrónico">
+                            <small id="correoError" class="form-text text-danger" style="display: none;">Ingrese un correo válido.</small>
                             @error('correo')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
@@ -213,34 +202,30 @@
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="cedula"><strong>Ingrese la Cédula:</strong></label>
-                            <input type="text" id="cedula" name="cedula" class="form-control input"
-                                placeholder="Ingrese Cédula (10 dígitos)" pattern="\d{10}"
-                                title="Debe ingresar exactamente 10 números" required>
-                            <small id="cedulaError" class="form-text text-danger" style="display: none;"></small>
+                            <input type="text" id="cedula" name="cedula" class="form-control input" placeholder="Ingrese Cédula (10 dígitos)" pattern="\d{10}" title="Debe ingresar exactamente 10 números">
+                            <small id="cedulaError" class="form-text text-danger" style="display: none;">Este campo es obligatorio y debe tener 10 dígitos.</small>
                             @error('cedula')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="form-group col-md-4">
                             <label for="espe_id"><strong>Ingrese el la ID de la ESPE:</strong></label>
-                            <input type="text" id="espe_id" name="espe_id" class="form-control input"
-                                placeholder="Ingrese la ID de la ESPE" required>
-                            <small id="espeIdError" class="form-text text-danger" style="display: none;"></small>
+                            <input type="text" id="espe_id" name="espe_id" class="form-control input" placeholder="Ingrese la ID de la ESPE">
+                            <small id="espeIdError" class="form-text text-danger" style="display: none;">Este campo es obligatorio.</small>
                             @error('espe_id')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="departamento"><strong>Seleccione el departamento al que
-                                    pertenece:</strong></label>
+                            <label for="departamento"><strong>Seleccione el departamento al que pertenece:</strong></label>
                             <select id="departamento" name="departamento" class="form-control input_select input">
                                 <option value="">Seleccione un departamento</option>
                                 @foreach ($departamentos as $departamento)
-                                    <option value="{{ $departamento->departamento }}"
-                                        data-nombre="{{ $departamento->departamento }}">
+                                    <option value="{{ $departamento->departamento }}" data-nombre="{{ $departamento->departamento }}">
                                         {{ $departamento->departamento }}</option>
                                 @endforeach
                             </select>
+                            <small id="departamentoError" class="form-text text-danger" style="display: none;">Debe seleccionar un departamento.</small>
                         </div>
                     </div>
                     <div class="card-footer1">
@@ -266,7 +251,8 @@
                     <div class="form-group">
                         <label for="departamento"><strong>Ingrese el Departamento:</strong></label>
                         <input type="text" id="departamento" name="departamento" class="form-control input"
-                            placeholder="Ingrese el departamento" value="{{ old('departamento') }}" required>
+                            placeholder="Ingrese el departamento" value="{{ old('departamento') }}">
+                        <small id="departamentoError" class="form-text text-danger" style="display: none;">Este campo es obligatorio.</small>
                         @if ($errors->has('departamento'))
                             <small id="departamentoError"
                                 class="form-text text-danger">{{ $errors->first('departamento') }}</small>
@@ -274,8 +260,7 @@
                     </div>
                     <div class="form-group">
                         <label for="departamentosDisponibles"><strong>Departamentos Disponibles:</strong></label>
-                        <select id="departamentosDisponibles" class="form-control input_select input"
-                            onchange="editarDepartamento()">
+                        <select id="departamentosDisponibles" class="form-control input_select input" onchange="editarDepartamento()">
                             <option value="">Seleccione un departamento</option>
                             @foreach ($departamentos as $departamento)
                                 <option value="{{ $departamento->departamento }}" data-id="{{ $departamento->id }}">
@@ -284,19 +269,14 @@
                         </select>
                     </div>
                     <div class="card-footer1 text-right">
-                        <button type="submit" id="submitButton" class="button01 btn btn-primary">Guardar
-                            Cambios</button>
+                        <button type="submit" id="submitButton" class="button01 btn btn-primary">Guardar Cambios</button>
                     </div>
                 </form>
+
             </div>
         </div>
 
-
-
-
-
         <!---------------------------------------------------------------------------------------->
-
 
         <div class="mat-elevation-z8 contenedor_general">
             <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
@@ -370,14 +350,12 @@
                                 placeholder="Buscar docentes...">
                             <i class='bx bx-search-alt'></i>
                         </form>
-
                     </div>
                 </div>
             </div>
 
             <div class="contenedor_tabla">
                 <div class="table-container mat-elevation-z8">
-
                     <div id="tablaDocentes">
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
@@ -404,7 +382,6 @@
                                         <tr>
                                             <td style="text-align: center;">
                                                 {{ ($profesores->currentPage() - 1) * $profesores->perPage() + $index + 1 }}
-
                                             </td>
                                             <td
                                                 style=" text-transform: uppercase; word-wrap: break-word; text-align: left;">
@@ -442,115 +419,63 @@
                                                                     class="fa-thin fa-xmark"></i></button>
                                                         </div>
                                                         <div class="card-body">
-                                                            <form
-                                                                action="{{ route('admin.actualizarMaestro', ['id' => $profesor->id]) }}"
-                                                                method="POST" id="formularioEditarMaestro">
+                                                            <form action="{{ route('admin.actualizarMaestro', ['id' => $profesor->id]) }}" method="POST" id="formularioEditarMaestro">
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <div class="form-row">
                                                                     <div class="form-group col-md-4">
-                                                                        <label class="label"
-                                                                            for="nombresEditarMaestro"><strong>Ingrese
-                                                                                Nombres:</strong></label>
-                                                                        <input type="text" id="nombresEditarMaestro"
-                                                                            name="nombres"
-                                                                            class="form-control input input_select1 form-text"
-                                                                            value="{{ $profesor->nombres }}" required>
+                                                                        <label class="label" for="nombresEditarMaestro"><strong>Ingrese Nombres:</strong></label>
+                                                                        <input type="text" id="nombresEditarMaestro" name="nombres" class="form-control input input_select1 form-text" value="{{ $profesor->nombres }}">
+                                                                        <small id="nombresError2" class="form-text text-danger" style="display: none;">Este campo es obligatorio.</small>
                                                                     </div>
                                                                     <div class="form-group col-md-4">
-                                                                        <label class="label"
-                                                                            for="apellidosEditarMaestro"><strong>Ingrese
-                                                                                Apellidos:</strong></label>
-                                                                        <input type="text" id="apellidosEditarMaestro"
-                                                                            name="apellidos"
-                                                                            class="form-control input input_select1"
-                                                                            value="{{ $profesor->apellidos }}" required>
+                                                                        <label class="label" for="apellidosEditarMaestro"><strong>Ingrese Apellidos:</strong></label>
+                                                                        <input type="text" id="apellidosEditarMaestro" name="apellidos" class="form-control input input_select1" value="{{ $profesor->apellidos }}">
+                                                                        <small id="apellidosError2" class="form-text text-danger" style="display: none;">Este campo es obligatorio.</small>
                                                                     </div>
                                                                     <div class="form-group col-md-4">
-                                                                        <label class="label"
-                                                                            for="correoEditarMaestro"><strong>Ingrese
-                                                                                Correo:</strong></label>
-                                                                        <input type="email" id="correoEditarMaestro"
-                                                                            name="correo"
-                                                                            class="form-control input input_select1"
-                                                                            value="{{ $profesor->correo }}" readonly>
-                                                                        <small id="emailHelp"
-                                                                            class="form-text text-danger"
-                                                                            style="display: none;"></small>
+                                                                        <label class="label" for="correoEditarMaestro"><strong>Ingrese Correo:</strong></label>
+                                                                        <input type="email" id="correoEditarMaestro" name="correo" class="form-control input input_select1" value="{{ $profesor->correo }}" readonly>
                                                                         @error('correo')
-                                                                            <small
-                                                                                class="form-text text-danger">{{ $message }}</small>
+                                                                            <small class="form-text text-danger">{{ $message }}</small>
                                                                         @enderror
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-row">
                                                                     <div class="form-group col-md-4">
-                                                                        <label class="label"
-                                                                            for="Usuario"><strong>Ingrese el
-                                                                                Usuario:</strong></label>
-                                                                        <input type="text" id="Usuario"
-                                                                            name="Usuario"
-                                                                            class="form-control input input_select1"
-                                                                            value="{{ $profesor->usuario }}" readonly>
+                                                                        <label class="label" for="Usuario"><strong>Ingrese el Usuario:</strong></label>
+                                                                        <input type="text" id="Usuario" name="Usuario" class="form-control input input_select1" value="{{ $profesor->usuario }}" readonly>
                                                                     </div>
                                                                     <div class="form-group col-md-4">
-                                                                        <label class="label"
-                                                                            for="espeEditarMaestro"><strong>Ingrese el
-                                                                                ESPE ID:</strong></label>
-                                                                        <input type="text" id="espeEditarMaestro"
-                                                                            name="espe_id"
-                                                                            class="form-control input input_select1"
-                                                                            value="{{ $profesor->espeId }}" readonly>
-                                                                        <small id="espeHelp"
-                                                                            class="form-text text-danger"
-                                                                            style="display: none;"></small>
+                                                                        <label class="label" for="espeEditarMaestro"><strong>Ingrese el ESPE ID:</strong></label>
+                                                                        <input type="text" id="espeEditarMaestro" name="espe_id" class="form-control input input_select1" value="{{ $profesor->espeId }}" readonly>
                                                                         @error('espe_id')
-                                                                            <small
-                                                                                class="form-text text-danger">{{ $message }}</small>
+                                                                            <small class="form-text text-danger">{{ $message }}</small>
                                                                         @enderror
                                                                     </div>
                                                                     <div class="form-group col-md-4">
-                                                                        <label class="label"
-                                                                            for="cedulaEditarMaestro"><strong>Ingrese
-                                                                                la Cedula:</strong></label>
-                                                                        <input type="text" id="cedulaEditarMaestro"
-                                                                            name="cedula"
-                                                                            class="form-control input input_select1"
-                                                                            value="{{ $profesor->cedula }}" readonly>
-                                                                        <small id="cedulaHelp"
-                                                                            class="form-text text-danger"
-                                                                            style="display: none;"></small>
+                                                                        <label class="label" for="cedulaEditarMaestro"><strong>Ingrese la Cedula:</strong></label>
+                                                                        <input type="text" id="cedulaEditarMaestro" name="cedula" class="form-control input input_select1" value="{{ $profesor->cedula }}" readonly>
                                                                         @error('cedula')
-                                                                            <small
-                                                                                class="form-text text-danger">{{ $message }}</small>
+                                                                            <small class="form-text text-danger">{{ $message }}</small>
                                                                         @enderror
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-row">
                                                                     <div class="form-group col-md-4">
-                                                                        <label for="departamento"><strong>Seleccione el
-                                                                                departamento al que
-                                                                                pertenece:</strong></label>
-                                                                        <select id="departamento" name="departamento"
-                                                                            class="form-control input_select input">
-                                                                            <option value="">Seleccione un
-                                                                                departamento</option>
+                                                                        <label for="departamento"><strong>Seleccione el departamento al que pertenece:</strong></label>
+                                                                        <select id="departamento" name="departamento" class="form-control input_select input">
+                                                                            <option value="">Seleccione un departamento</option>
                                                                             @foreach ($departamentos as $departamento)
-                                                                                <option
-                                                                                    value="{{ $departamento->departamento }}"
-                                                                                    data-nombre="{{ $departamento->departamento }}">
+                                                                                <option value="{{ $departamento->departamento }}" data-nombre="{{ $departamento->departamento }}">
                                                                                     {{ $departamento->departamento }}
                                                                                 </option>
                                                                             @endforeach
                                                                         </select>
                                                                     </div>
                                                                 </div>
-                                                                <div
-                                                                    class="card-footer1 d-flex justify-content-center align-items-center">
-
-                                                                    <button type="submit"
-                                                                        class="button input_select1">Guardar
-                                                                        Cambios</button>
+                                                                <div class="card-footer1 d-flex justify-content-center align-items-center">
+                                                                    <button type="submit" class="button input_select1">Guardar Cambios</button>
                                                                 </div>
                                                             </form>
                                                         </div>
@@ -583,7 +508,6 @@
 
 
             <div class="paginator-container">
-
                 <nav aria-label="..."
                     style="display: flex; justify-content: space-between; align-items: baseline; color: gray;">
                     <div id="totalRows">Docentes: {{ $profesores->total() }}</div>
@@ -641,21 +565,12 @@
                                 <span class="page-link">Siguiente</span>
                             </li>
                         @endif
-
-
                     </ul>
                 </nav>
             </div>
-
-
-
         </div>
-        </div>
-
-
 
         <div class="container">
-
             <!-- Tarjeta movible para Agregar NRC -->
             <div class="draggable-card" id="draggableCardNRC">
                 <div class="card-header">
@@ -670,7 +585,7 @@
                             <label class="label" for="nrc"><strong>Ingrese el NRC:</strong></label>
                             <input type="text" id="nrc" name="nrc" class="form-control input"
                                 placeholder="Ingrese 5 números" pattern="\d{5}" title="Ingrese exactamente 5 dígitos"
-                                value="{{ old('nrc') }}" required>
+                                value="{{ old('nrc') }}">
                             <small id="nrcError" class="form-text text-danger" style="display: none;"></small>
                             @error('nrc')
                                 <small class="form-text text-danger">{{ $message }}</small>
@@ -678,7 +593,7 @@
                         </div>
                         <div class="form-group">
                             <label for="periodo"><strong>Seleccione el período:</strong></label>
-                            <select id="periodo" name="periodo" class="form-control input_select input" required>
+                            <select id="periodo" name="periodo" class="form-control input_select input">
                                 <option value="">Seleccione un período</option>
                                 @foreach ($periodos as $periodo)
                                     <option value="{{ $periodo->id }}"
@@ -693,7 +608,7 @@
                         </div>
                         <div class="form-group">
                             <label for="tipo"><strong>Tipo de proceso:</strong></label>
-                            <select id="tipo" name="tipo" class="form-control input_select input" required>
+                            <select id="tipo" name="tipo" class="form-control input_select input">
                                 <option value="">Seleccione el proceso</option>
                                 <option value="Vinculacion">Vinculación con la Sociedad</option>
                                 <option value="Practicas">Practicas preprofesionales</option>
@@ -723,7 +638,7 @@
                             <label for="periodoInicio"><strong>Ingrese el inicio del Periodo
                                     Académico:</strong></label>
                             <input type="date" id="periodoInicio" name="periodoInicio" class="form-control input"
-                                value="{{ old('periodoInicio') }}" required>
+                                value="{{ old('periodoInicio') }}">
                             @error('periodoInicio')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
@@ -731,7 +646,7 @@
                         <div class="form-group">
                             <label for="periodoFin"><strong>Ingrese el fin del Periodo Académico:</strong></label>
                             <input type="date" id="periodoFin" name="periodoFin" class="form-control input"
-                                value="{{ old('periodoFin') }}" required>
+                                value="{{ old('periodoFin') }}">
                             @error('periodoFin')
                                 <small class="form-text text-danger">{{ $message }}</small>
                             @enderror
@@ -742,7 +657,7 @@
                             <input type="text" id="numeroPeriodo" name="numeroPeriodo"
                                 placeholder="Ingrese 6 números" class="form-control input" pattern="[0-9]{1,6}"
                                 title="Ingrese un número no negativo de hasta 6 dígitos"
-                                value="{{ old('numeroPeriodo') }}" required>
+                                value="{{ old('numeroPeriodo') }}">
                             <small id="numeroPeriodoError" class="form-text text-danger" style="display: none;"></small>
                             @error('numeroPeriodo')
                                 <small class="form-text text-danger">{{ $message }}</small>
@@ -794,17 +709,17 @@
                             <div class="form-group">
                                 <label for="periodoInicio">Fecha de Inicio:</label>
                                 <input type="date" name="periodoInicio" id="periodoInicio" class="form-control input"
-                                    value="" required>
+                                    value="">
                             </div>
                             <div class="form-group">
                                 <label for="periodoFin">Fecha de Fin:</label>
                                 <input type="date" name="periodoFin" id="periodoFin" class="form-control input"
-                                    value="" required>
+                                    value="">
                             </div>
                             <div class="form-group">
                                 <label for="numeroPeriodo">Ingrese el numero identificador del periodo:</label>
                                 <input type="text" name="numeroPeriodo" id="numeroPeriodo" class="form-control input"
-                                    value="" required>
+                                    value="">
                             </div>
                             <div class="card-footer1 d-flex justify-content-center align-items-center">
                                 <center><button type="submit" class="button01">Guardar Cambios</button></center>
@@ -827,7 +742,6 @@
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="js\admin\index.js"></script>
-
 
     <script>
         $(document).ready(function() {
@@ -864,7 +778,6 @@
         });
     </script>
 
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var table = document.getElementById('tablaDocentes');
@@ -872,9 +785,6 @@
             document.getElementById('rowCounter').innerText = 'Total de filas: ' + rows;
         });
     </script>
-
-
-
 
     <script>
         function resetFiltersProfesores() {
@@ -891,8 +801,6 @@
             });
         }
     </script>
-
-
 
     <script>
         $(document).ready(function() {
@@ -928,7 +836,6 @@
         });
     </script>
 
-
     <script>
         function editarDepartamento() {
             const select = document.getElementById('departamentosDisponibles');
@@ -951,7 +858,6 @@
         }
     </script>
 
-
-
+        <script src="{{ asset('js/ValidacionesFormualario/admin/validaciones.js') }}" type="module"></script>
 
 @endsection
