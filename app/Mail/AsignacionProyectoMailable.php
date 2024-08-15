@@ -3,11 +3,10 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Queue\SerializesModels;
 
 class AsignacionProyectoMailable extends Mailable
 {
@@ -43,14 +42,17 @@ class AsignacionProyectoMailable extends Mailable
      */
     public function content(): Content
     {
+        // Adjuntar la imagen y obtener el CID
+        $imagePath = public_path('img/logos/itin-presencial.png');
+        $cid = $this->embed($imagePath);
+
         return new Content(
             view: 'emails.director-asignacion',
-            // Ensure you pass the correct variables to the view
             with: [
                 'proyecto' => $this->proyecto,
                 'estudiantes' => $this->estudiantesAsignados,
+                'imageCid' => $cid, // Pasar el CID a la vista
             ],
         );
     }
-
 }

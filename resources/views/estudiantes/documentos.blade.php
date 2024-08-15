@@ -90,13 +90,13 @@
             </button>
         </div>
         <div class="card-body">
-            <form class="FormularioRegistroHoras" action="{{ route('estudiante.generarAsistenciaEstudiantes') }}"
+            <form class="FormularioAsistenciaEstudiantes" action="{{ route('estudiante.generarAsistenciaEstudiantes') }}"
                 method="post" id="formAsistencia">
                 @csrf
                 <input type="hidden" name="tipoDocumentos" id="tipoDocumentosHidden">
                 <div class="form-group">
                     <label class="label" for="fecha"><strong>Fecha de asistencia:</strong></label>
-                    <input type="date" id="fecha" name="fecha" class="form-control input" required>
+                    <input type="date" id="fecha" name="fecha" class="form-control input">
                     <small id="fechaError" class="form-text text-danger" style="display: none;"></small>
                     @error('fecha')
                         <small class="form-text text-danger">{{ $message }}</small>
@@ -105,7 +105,7 @@
                 <div class="form-group">
                     <label class="label" for="lugar"><strong>Lugar de la actividad:</strong></label>
                     <input type="text" id="lugar" name="lugar" class="form-control input"
-                        placeholder="Escribir el lugar de la actividad" required>
+                        placeholder="Escribir el lugar de la actividad">
                     <small id="lugarError" class="form-text text-danger" style="display: none;"></small>
                     @error('lugar')
                         <small class="form-text text-danger">{{ $message }}</small>
@@ -113,7 +113,7 @@
                 </div>
                 <div class="form-group">
                     <label class="label" for="actividades"><strong>Actividades a realizar:</strong></label>
-                    <textarea id="actividades" name="actividades" class="form-control input" placeholder="Escribir la actividad" required></textarea>
+                    <textarea id="actividades" name="actividades" class="form-control input" placeholder="Escribir la actividad"></textarea>
                     <small id="actividadesError" class="form-text text-danger" style="display: none;"></small>
                     @error('actividades')
                         <small class="form-text text-danger">{{ $message }}</small>
@@ -135,7 +135,7 @@
         <div class="card-header">
             <span class="card-title">Registro de Actividades</span>
             <button type="button" class="close" onclick="closeCard('cardRegistroActividades')"><i
-            class="fa-thin fa-xmark"></i></button>
+                    class="fa-thin fa-xmark"></i></button>
         </div>
         <div class="card-body">
             <form action="{{ route('estudiantes.guardarActividad') }}" method="post" enctype="multipart/form-data">
@@ -268,7 +268,7 @@
                                                         <span class="card-title input_select1">Editar Actividad</span>
                                                         <button type="button" class="close"
                                                             onclick="closeCard('cardEditActividad{{ $actividad->idActividades }}')"><i
-                                                            class="fa-thin fa-xmark"></i></button>
+                                                                class="fa-thin fa-xmark"></i></button>
                                                     </div>
                                                     <div class="card-body">
                                                         <form
@@ -398,405 +398,402 @@
                                 </div>
                             </div>
                         </div>
-                    <div class="tooltip-container">
-                    <span class="tooltip-text">Recuperar Datos</span>
-                        <a href="{{ route('estudiantes.recuperarDatos') }}" class="button3 colorr efects_button btn_filtro"
-                            onclick="setScrollAndLink('{{ route('estudiantes.recuperarDatos') }}')"> <i class="fa-solid fa-window-restore"></i></a>
-                            </div>
-                            </div>
-                            </div>
-                            </div>
-                            <hr>
-                            @csrf
-                    <div class="form-row">
-                        <div class="form-group col-md-2">
-                            <label for="tipoInforme"><strong>Generar Informe:</strong></label>
-                            <select class="form-control input input_select3" name="tipo" id="tipo">
-                                <option value="#" disabled selected>Seleccione una opción</option>
-                                <option value="grupal" {{ old('tipo') == 'grupal' ? 'selected' : '' }}>Grupal</option>
-                                <option value="individual" {{ old('tipo') == 'individual' ? 'selected' : '' }}>Individual
-                                </option>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="nombreComunidad"><strong>Nombre de la Comunidad o Comunidades
-                                    Beneficiarias:</strong></label>
-                            <input type="text" id="nombreComunidad" name="nombreComunidad" class="form-control input"
-                                value="{{ old('nombreComunidad') }}" placeholder="Ingrese el nombre de la comunidad..."
-                                required>
-                        </div>
-
-                        @php
-                            $proyectoComunidad = $proyecto->proyecto->comunidad ?? 'Datos no ingresados';
-                            $proyectoProvincia = $proyecto->proyecto->provincia ?? 'Datos no ingresados';
-                            $proyectoCanton = $proyecto->proyecto->canton ?? 'Datos no ingresados';
-                            $proyectoParroquia = $proyecto->proyecto->parroquia ?? 'Datos no ingresados';
-                            $proyectoDireccion = $proyecto->proyecto->direccion ?? 'Datos no ingresados';
-
-                            $proyectoInfo = "Comunidad: {$proyectoComunidad}, Provincia: {$proyectoProvincia}, Cantón: {$proyectoCanton}, Parroquia: {$proyectoParroquia}, Dirección: {$proyectoDireccion}";
-                        @endphp
-
-                        <div class="form-group col-md-6">
-                            <label for="proyecto"><strong>Información del proyecto - Datos cargados:</strong></label>
-                            <input type="text" class="form-control input" id="proyecto" name="proyecto"
-                                value="{{ $proyectoInfo }}" readonly>
-
-                            <input type="hidden" name="proyecto_comunidad" value="{{ $proyectoComunidad }}">
-                            <input type="hidden" name="proyecto_provincia" value="{{ $proyectoProvincia }}">
-                            <input type="hidden" name="proyecto_canton" value="{{ $proyectoCanton }}">
-                            <input type="hidden" name="proyecto_parroquia" value="{{ $proyectoParroquia }}">
-                            <input type="hidden" name="proyecto_direccion" value="{{ $proyectoDireccion }}">
-                        </div>
-
-
-
-
-
-
-
-
-                    </div>
-                    <div id="dynamicFieldContainer">
-                        @if (old('provincia'))
-                            @foreach (old('provincia') as $index => $provincia)
-                                <div class="form-row dynamic-field">
-                                    <div class="form-group col-md-3">
-                                        <label for="provincia"><strong>Provincia:</strong></label>
-                                        <input type="text" id="provincia" name="provincia[]"
-                                            class="form-control input" value="{{ $provincia }}"
-                                            placeholder="Ingrese la provincia...">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="canton"><strong>Cantón:</strong></label>
-                                        <input type="text" id="canton" name="canton[]" class="form-control input"
-                                            value="{{ old('canton')[$index] }}" placeholder="Ingrese el cantón...">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="parroquia"><strong>Parroquia:</strong></label>
-                                        <input type="text" id="parroquia" name="parroquia[]"
-                                            class="form-control input" value="{{ old('parroquia')[$index] }}"
-                                            placeholder="Ingrese la parroquia...">
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="direccion"><strong>Dirección:</strong></label>
-                                        <input type="text" id="direccion" name="direccion[]"
-                                            class="form-control input" value="{{ old('direccion')[$index] }}"
-                                            placeholder="Ingrese la dirección...">
-                                    </div>
-                                </div>
-                            @endforeach
-                        @else
-                            <div class="form-row dynamic-field">
-                                <div class="form-group col-md-3">
-                                    <label for="provincia"><strong>Provincia:</strong></label>
-                                    <input type="text" id="provincia" name="provincia[]" class="form-control input"
-                                        placeholder="Ingrese la provincia...">
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label for="canton"><strong>Cantón:</strong></label>
-                                    <input type="text" id="canton" name="canton[]" class="form-control input"
-                                        placeholder="Ingrese el cantón...">
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label for="parroquia"><strong>Parroquia:</strong></label>
-                                    <input type="text" id="parroquia" name="parroquia[]" class="form-control input"
-                                        placeholder="Ingrese la parroquia...">
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label for="direccion"><strong>Dirección:</strong></label>
-                                    <input type="text" id="direccion" name="direccion[]"
-                                        placeholder="Ingrese la dirección..." class="form-control input">
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-                    <!-- Los botones siempre estarán visibles -->
-                    <div class="d-flex">
                         <div class="tooltip-container">
-                            <span class="tooltip-text">Agregar</span>
-                            <button type="button" class="button3 efects_button btn_nuevo3 mr-2" onclick="agregarFila()">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
-                        </div>
-                        <div class="tooltip-container">
-                            <span class="tooltip-text">Eliminar</span>
-                            <button type="button" class="button3 efects_button btn_eliminar3" onclick="eliminarFila()">
-                                <i class='bx bx-trash'></i>
-                            </button>
+                            <span class="tooltip-text">Recuperar Datos</span>
+                            <a href="{{ route('estudiantes.recuperarDatos') }}"
+                                class="button3 colorr efects_button btn_filtro"
+                                onclick="setScrollAndLink('{{ route('estudiantes.recuperarDatos') }}')"> <i
+                                    class="fa-solid fa-window-restore"></i></a>
                         </div>
                     </div>
+            </div>
+        </div>
+        <hr>
+        @csrf
+        <div class="form-row">
+            <div class="form-group col-md-2">
+                <label for="tipoInforme"><strong>Generar Informe:</strong></label>
+                <select class="form-control input input_select3" name="tipo" id="tipo">
+                    <option value="#" disabled selected>Seleccione una opción</option>
+                    <option value="grupal" {{ old('tipo') == 'grupal' ? 'selected' : '' }}>Grupal</option>
+                    <option value="individual" {{ old('tipo') == 'individual' ? 'selected' : '' }}>Individual
+                    </option>
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="nombreComunidad"><strong>Nombre de la Comunidad o Comunidades
+                        Beneficiarias:</strong></label>
+                <input type="text" id="nombreComunidad" name="nombreComunidad" class="form-control input"
+                    value="{{ old('nombreComunidad') }}" placeholder="Ingrese el nombre de la comunidad..." required>
+            </div>
+
+            @php
+                $proyectoComunidad = $proyecto->proyecto->comunidad ?? 'Datos no ingresados';
+                $proyectoProvincia = $proyecto->proyecto->provincia ?? 'Datos no ingresados';
+                $proyectoCanton = $proyecto->proyecto->canton ?? 'Datos no ingresados';
+                $proyectoParroquia = $proyecto->proyecto->parroquia ?? 'Datos no ingresados';
+                $proyectoDireccion = $proyecto->proyecto->direccion ?? 'Datos no ingresados';
+
+                $proyectoInfo = "Comunidad: {$proyectoComunidad}, Provincia: {$proyectoProvincia}, Cantón: {$proyectoCanton}, Parroquia: {$proyectoParroquia}, Dirección: {$proyectoDireccion}";
+            @endphp
+
+            <div class="form-group col-md-6">
+                <label for="proyecto"><strong>Información del proyecto - Datos cargados:</strong></label>
+                <input type="text" class="form-control input" id="proyecto" name="proyecto"
+                    value="{{ $proyectoInfo }}" readonly>
+
+                <input type="hidden" name="proyecto_comunidad" value="{{ $proyectoComunidad }}">
+                <input type="hidden" name="proyecto_provincia" value="{{ $proyectoProvincia }}">
+                <input type="hidden" name="proyecto_canton" value="{{ $proyectoCanton }}">
+                <input type="hidden" name="proyecto_parroquia" value="{{ $proyectoParroquia }}">
+                <input type="hidden" name="proyecto_direccion" value="{{ $proyectoDireccion }}">
+            </div>
 
 
-                    <br>
-                    <div id="campos">
-                        @if (old('especificos'))
-                            @foreach (old('especificos') as $index => $especifico)
-                                <div class="form-row">
-                                    <div class="form-group col-md-4">
-                                        <label for="especificos"><strong>Objetivos Específicos:</strong></label>
-                                        <textarea name="especificos[]" class="form-control input" rows="4" required
-                                            placeholder="Ingrese los objetivos específicos...">{{ $especifico }}</textarea>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="alcanzados"><strong>Resultados alcanzados:</strong></label>
-                                        <textarea name="alcanzados[]" class="form-control input" placeholder="Ingrese que limitaciones tuvo..."
-                                            rows="4" required>{{ old('alcanzados')[$index] }}</textarea>
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label for="porcentaje"><strong>Porcentaje alcanzado:</strong></label>
-                                        <textarea name="porcentaje[]" class="form-control input" rows="4" required>{{ old('porcentaje')[$index] }}</textarea>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @else
-                            <div class="form-row">
-                                <div class="form-group col-md-4">
-                                    <label for="especificos"><strong>Objetivos Específicos:</strong></label>
-                                    <textarea name="especificos[]" class="form-control input" placeholder="Ingrese los objetivos específicos..."
-                                        rows="4" required></textarea>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="alcanzados"><strong>Resultados alcanzados:</strong></label>
-                                    <textarea name="alcanzados[]" class="form-control input" rows="4"
-                                        placeholder="Ingrese los resultados alzanzados" required></textarea>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="porcentaje"><strong>Porcentaje alcanzado:</strong></label>
-                                    <textarea name="porcentaje[]" class="form-control input" rows="4"
-                                        placeholder="Ingrese el porcentaje alcanzado..." required></textarea>
-                                </div>
-                            </div>
 
 
-                        @endif
 
-                    </div>
-                    <div class="d-flex" styele="align-items: center !important;">
-                        <div class="tooltip-container">
-                            <span class="tooltip-text">Agregar</span>
-                            <button type="button" class="button3 efects_button btn_nuevo3 mr-2"
-                                onclick="agregarCampo()">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
+
+
+
+        </div>
+        <div id="dynamicFieldContainer">
+            @if (old('provincia'))
+                @foreach (old('provincia') as $index => $provincia)
+                    <div class="form-row dynamic-field">
+                        <div class="form-group col-md-3">
+                            <label for="provincia"><strong>Provincia:</strong></label>
+                            <input type="text" id="provincia" name="provincia[]" class="form-control input"
+                                value="{{ $provincia }}" placeholder="Ingrese la provincia...">
                         </div>
-                        <div class="tooltip-container">
-                            <span class="tooltip-text">Eliminar</span>
-                            <button type="button" class="button3 efects_button btn_eliminar3" onclick="eliminarCampo()">
-                                <i class='bx bx-trash'></i>
-                            </button>
-
+                        <div class="form-group col-md-3">
+                            <label for="canton"><strong>Cantón:</strong></label>
+                            <input type="text" id="canton" name="canton[]" class="form-control input"
+                                value="{{ old('canton')[$index] }}" placeholder="Ingrese el cantón...">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="parroquia"><strong>Parroquia:</strong></label>
+                            <input type="text" id="parroquia" name="parroquia[]" class="form-control input"
+                                value="{{ old('parroquia')[$index] }}" placeholder="Ingrese la parroquia...">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="direccion"><strong>Dirección:</strong></label>
+                            <input type="text" id="direccion" name="direccion[]" class="form-control input"
+                                value="{{ old('direccion')[$index] }}" placeholder="Ingrese la dirección...">
                         </div>
                     </div>
-
-                    <br>
-                    <table class="four-column-table">
-                        <tr>
-                            <td>
-                                <label for="conclusiones1">¿Qué resultados de aprendizaje obtuvo realizando las actividades
-                                    de servicio comunitario?</label>
-                            </td>
-                            <td class="textarea-cell">
-                                <textarea id="conclusiones1" placeholder="Ingrese los resultados de aprendizaje..."
-                                    class="textarea input input_select2" name="conclusiones1" rows="4">{{ old('conclusiones1') }}</textarea>
-                            </td>
-                            <td>
-                                <label for="conclusiones2">¿Qué limitaciones tuvo para realizar sus actividades de servicio
-                                    comunitario?</label>
-                            </td>
-                            <td class="textarea-cell">
-                                <textarea id="conclusiones2" placeholder="Ingrese que limitaciones tuvo..." class="textarea input input_select2"
-                                    name="conclusiones2" rows="4">{{ old('conclusiones2') }}</textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="razones">Explicar las razones que justifican las actividades
-                                    realizadas de servicio comunitario, acorde con su perfil:</label>
-                            </td>
-                            <td class="textarea-cell" colspan="3">
-                                <textarea id="razones" class="textarea input input_select2" placeholder="Ingrese las razones del proyecto..."
-                                    name="razones" rows="4" required>{{ old('razones') }}</textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="conclusiones3">¿Qué éxitos alcanzados se obtuvo cuando realizó sus actividades
-                                    de servicio comunitario?</label>
-                            </td>
-                            <td class="textarea-cell">
-                                <textarea id="conclusiones3" class="textarea input input_select2" placeholder="Ingrese los éxitos alcanzados..."
-                                    name="conclusiones3" rows="4">{{ old('conclusiones3') }}</textarea>
-                            </td>
-                            <td>
-                                <label for="recomendaciones">Recomendaciones:</label>
-                            </td>
-                            <td class="textarea-cell">
-                                <textarea id="recomendaciones" class="textarea input input_select2" placeholder="Ingrese las recomendaciones..."
-                                    name="recomendaciones" rows="4">{{ old('recomendaciones') }}</textarea>
-                            </td>
-                        </tr>
-
-                    </table>
-                    <center>
-                        <button type="submit" class="button1"
-                            onclick="setScrollAndAction('{{ route('estudiantes.generarInforme') }}')">Crear
-                            Informe</button>
-                    </center>
-
+                @endforeach
+            @else
+                <div class="form-row dynamic-field">
+                    <div class="form-group col-md-3">
+                        <label for="provincia"><strong>Provincia:</strong></label>
+                        <input type="text" id="provincia" name="provincia[]" class="form-control input"
+                            placeholder="Ingrese la provincia...">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="canton"><strong>Cantón:</strong></label>
+                        <input type="text" id="canton" name="canton[]" class="form-control input"
+                            placeholder="Ingrese el cantón...">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="parroquia"><strong>Parroquia:</strong></label>
+                        <input type="text" id="parroquia" name="parroquia[]" class="form-control input"
+                            placeholder="Ingrese la parroquia...">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="direccion"><strong>Dirección:</strong></label>
+                        <input type="text" id="direccion" name="direccion[]" placeholder="Ingrese la dirección..."
+                            class="form-control input">
+                    </div>
+                </div>
+            @endif
+        </div>
+        <!-- Los botones siempre estarán visibles -->
+        <div class="d-flex">
+            <div class="tooltip-container">
+                <span class="tooltip-text">Agregar</span>
+                <button type="button" class="button3 efects_button btn_nuevo3 mr-2" onclick="agregarFila()">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+            <div class="tooltip-container">
+                <span class="tooltip-text">Eliminar</span>
+                <button type="button" class="button3 efects_button btn_eliminar3" onclick="eliminarFila()">
+                    <i class='bx bx-trash'></i>
+                </button>
             </div>
         </div>
 
 
+        <br>
+        <div id="campos">
+            @if (old('especificos'))
+                @foreach (old('especificos') as $index => $especifico)
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="especificos"><strong>Objetivos Específicos:</strong></label>
+                            <textarea name="especificos[]" class="form-control input" rows="4" required
+                                placeholder="Ingrese los objetivos específicos...">{{ $especifico }}</textarea>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="alcanzados"><strong>Resultados alcanzados:</strong></label>
+                            <textarea name="alcanzados[]" class="form-control input" placeholder="Ingrese que limitaciones tuvo..."
+                                rows="4" required>{{ old('alcanzados')[$index] }}</textarea>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="porcentaje"><strong>Porcentaje alcanzado:</strong></label>
+                            <textarea name="porcentaje[]" class="form-control input" rows="4" required>{{ old('porcentaje')[$index] }}</textarea>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="especificos"><strong>Objetivos Específicos:</strong></label>
+                        <textarea name="especificos[]" class="form-control input" placeholder="Ingrese los objetivos específicos..."
+                            rows="4" required></textarea>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="alcanzados"><strong>Resultados alcanzados:</strong></label>
+                        <textarea name="alcanzados[]" class="form-control input" rows="4"
+                            placeholder="Ingrese los resultados alzanzados" required></textarea>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="porcentaje"><strong>Porcentaje alcanzado:</strong></label>
+                        <textarea name="porcentaje[]" class="form-control input" rows="4"
+                            placeholder="Ingrese el porcentaje alcanzado..." required></textarea>
+                    </div>
+                </div>
 
-        <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
-        <script src="{{ asset('js/documentosEstudiantes.js') }}"></script>
-        <script scr="{{ asset('js/admin/acciones.js') }}"></script>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Configurar el arrastre de modales y tarjetas
-                $('#registroActividadesModal .modal-dialog').draggable({
-                    handle: ".modal-header"
-                });
+            @endif
 
-                $('#registroActividadesModal').modal({
-                    backdrop: false
-                });
+        </div>
+        <div class="d-flex" styele="align-items: center !important;">
+            <div class="tooltip-container">
+                <span class="tooltip-text">Agregar</span>
+                <button type="button" class="button3 efects_button btn_nuevo3 mr-2" onclick="agregarCampo()">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+            <div class="tooltip-container">
+                <span class="tooltip-text">Eliminar</span>
+                <button type="button" class="button3 efects_button btn_eliminar3" onclick="eliminarCampo()">
+                    <i class='bx bx-trash'></i>
+                </button>
 
-                $('.draggable-card').draggable({
-                    handle: ".card-header",
-                    containment: "window"
-                });
+            </div>
+        </div>
 
-                $('.draggable-card1_4').draggable({
-                    handle: ".card-header",
-                    containment: "window"
-                });
+        <br>
+        <table class="four-column-table">
+            <tr>
+                <td>
+                    <label for="conclusiones1">¿Qué resultados de aprendizaje obtuvo realizando las actividades
+                        de servicio comunitario?</label>
+                </td>
+                <td class="textarea-cell">
+                    <textarea id="conclusiones1" placeholder="Ingrese los resultados de aprendizaje..."
+                        class="textarea input input_select2" name="conclusiones1" rows="4">{{ old('conclusiones1') }}</textarea>
+                </td>
+                <td>
+                    <label for="conclusiones2">¿Qué limitaciones tuvo para realizar sus actividades de servicio
+                        comunitario?</label>
+                </td>
+                <td class="textarea-cell">
+                    <textarea id="conclusiones2" placeholder="Ingrese que limitaciones tuvo..." class="textarea input input_select2"
+                        name="conclusiones2" rows="4">{{ old('conclusiones2') }}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="razones">Explicar las razones que justifican las actividades
+                        realizadas de servicio comunitario, acorde con su perfil:</label>
+                </td>
+                <td class="textarea-cell" colspan="3">
+                    <textarea id="razones" class="textarea input input_select2" placeholder="Ingrese las razones del proyecto..."
+                        name="razones" rows="4" required>{{ old('razones') }}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="conclusiones3">¿Qué éxitos alcanzados se obtuvo cuando realizó sus actividades
+                        de servicio comunitario?</label>
+                </td>
+                <td class="textarea-cell">
+                    <textarea id="conclusiones3" class="textarea input input_select2" placeholder="Ingrese los éxitos alcanzados..."
+                        name="conclusiones3" rows="4">{{ old('conclusiones3') }}</textarea>
+                </td>
+                <td>
+                    <label for="recomendaciones">Recomendaciones:</label>
+                </td>
+                <td class="textarea-cell">
+                    <textarea id="recomendaciones" class="textarea input input_select2" placeholder="Ingrese las recomendaciones..."
+                        name="recomendaciones" rows="4">{{ old('recomendaciones') }}</textarea>
+                </td>
+            </tr>
 
-                // Control de despliegue de formularios con scroll
-                if (sessionStorage.getItem('scrollToForm') === 'true') {
-                    const element = document.getElementById('formularioContainer');
-                    if (element) {
-                        window.scrollTo({
-                            top: element.offsetTop,
-                            behavior: 'smooth'
-                        });
-                        document.getElementById('registroInforme').style.display = 'block';
-                    }
-                    sessionStorage.removeItem('scrollToForm');
-                }
+        </table>
+        <center>
+            <button type="submit" class="button1"
+                onclick="setScrollAndAction('{{ route('estudiantes.generarInforme') }}')">Crear
+                Informe</button>
+        </center>
 
-                // Sincronizar el tipo de documento con los selectores
-                const tipoInformeSelect = document.getElementById('tipoInforme');
-                const tipoDocumentos1 = document.getElementById('tipoDocumentos1');
-                const tipoDocumentos2 = document.getElementById('tipoDocumentos2');
+    </div>
+    </div>
 
-                tipoInformeSelect.addEventListener('change', function() {
-                    tipoDocumentos1.value = this.value;
-                    tipoDocumentos2.value = this.value;
-                });
 
-                // Inicialmente establecer el valor al cargar la página
-                tipoDocumentos1.value = tipoInformeSelect.value;
-                tipoDocumentos2.value = tipoInformeSelect.value;
 
-                // Configurar auto-cierre de alertas
-                const alertElement = document.querySelector('.contenedor_alerta');
-                if (alertElement) {
-                    setTimeout(() => {
-                        alertElement.style.display = 'none';
-                    }, 1000); // 1000 ms = 1 segundo
-                }
+    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+    <script src="{{ asset('js/documentosEstudiantes.js') }}"></script>
+    <script scr="{{ asset('js/admin/acciones.js') }}"></script>
 
-                // Configurar el formAsistencia para sincronizar el tipo de informe
-                document.getElementById('formAsistencia').addEventListener('submit', function() {
-                    var tipoInforme = document.getElementById('tipoInforme').value;
-                    document.getElementById('tipoDocumentosHidden').value = tipoInforme;
-                });
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar el arrastre de modales y tarjetas
+            $('#registroActividadesModal .modal-dialog').draggable({
+                handle: ".modal-header"
             });
 
-            // Función para abrir y cerrar tarjetas modales
-            function openCard(cardId) {
-                document.getElementById(cardId).style.display = 'block';
-            }
+            $('#registroActividadesModal').modal({
+                backdrop: false
+            });
 
-            function closeCard(cardId) {
-                document.getElementById(cardId).style.display = 'none';
-            }
+            $('.draggable-card').draggable({
+                handle: ".card-header",
+                containment: "window"
+            });
 
-            // Funciones para manejar el archivo subido
-            function displayFileName(input, fileTextId) {
-                const fileName = input.files[0].name;
-                document.getElementById(fileTextId).textContent = fileName;
-            }
+            $('.draggable-card1_4').draggable({
+                handle: ".card-header",
+                containment: "window"
+            });
 
-            function removeFile(element) {
-                const input = element.previousElementSibling;
-                const fileText = element.previousElementSibling.previousElementSibling;
-                input.value = ""; // Limpiar el input
-                fileText.textContent =
-                    '<i class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir una nueva imagen';
-                element.style.display = 'none'; // Ocultar el botón de eliminar
-            }
-
-            // Función para confirmar la eliminación de un estudiante
-            function confirmDeleteEstudiante(id) {
-                Swal.fire({
-                    title: '¿Estás seguro de eliminar la actividad?',
-                    text: "¡No podrás revertir esto!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#7066e0',
-                    cancelButtonColor: '#808080',
-                    confirmButtonText: 'Aceptar',
-                    customClass: {
-                        container: 'my-swal',
-                        popup: 'my-swal-popup',
-                        header: 'my-swal-header',
-                        title: 'my-swal-title',
-                        closeButton: 'my-swal-close-button',
-                        icon: 'my-swal-icon',
-                        image: 'my-swal-image',
-                        content: 'my-swal-content',
-                        input: 'my-swal-input',
-                        actions: 'my-swal-actions',
-                        confirmButton: 'my-swal-confirm-button',
-                        cancelButton: 'my-swal-cancel-button',
-                        footer: 'my-swal-footer'
-                    }
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        document.getElementById('delete-form-' + id).submit();
-                    }
-                });
-            }
-
-            // Funciones para agregar y eliminar filas dinámicas en el formulario
-            function agregarFila() {
-                var container = document.getElementById('dynamicFieldContainer');
-                var newField = document.querySelector('.dynamic-field').cloneNode(true);
-                newField.querySelectorAll('input').forEach(input => input.value = '');
-                container.appendChild(newField);
-            }
-
-            function eliminarFila() {
-                var container = document.getElementById('dynamicFieldContainer');
-                var fields = container.querySelectorAll('.dynamic-field');
-                if (fields.length > 1) {
-                    container.removeChild(fields[fields.length - 1]);
+            // Control de despliegue de formularios con scroll
+            if (sessionStorage.getItem('scrollToForm') === 'true') {
+                const element = document.getElementById('formularioContainer');
+                if (element) {
+                    window.scrollTo({
+                        top: element.offsetTop,
+                        behavior: 'smooth'
+                    });
+                    document.getElementById('registroInforme').style.display = 'block';
                 }
+                sessionStorage.removeItem('scrollToForm');
             }
 
-            // Funciones para agregar y eliminar campos dinámicos en el formulario
-            function agregarCampo() {
-                const camposContainer = document.getElementById('campos');
-                const nuevoCampo = document.createElement('div');
-                nuevoCampo.classList.add('form-row');
-                nuevoCampo.innerHTML = `
+            // Sincronizar el tipo de documento con los selectores
+            const tipoInformeSelect = document.getElementById('tipoInforme');
+            const tipoDocumentos1 = document.getElementById('tipoDocumentos1');
+            const tipoDocumentos2 = document.getElementById('tipoDocumentos2');
+
+            tipoInformeSelect.addEventListener('change', function() {
+                tipoDocumentos1.value = this.value;
+                tipoDocumentos2.value = this.value;
+            });
+
+            // Inicialmente establecer el valor al cargar la página
+            tipoDocumentos1.value = tipoInformeSelect.value;
+            tipoDocumentos2.value = tipoInformeSelect.value;
+
+            // Configurar auto-cierre de alertas
+            const alertElement = document.querySelector('.contenedor_alerta');
+            if (alertElement) {
+                setTimeout(() => {
+                    alertElement.style.display = 'none';
+                }, 1000); // 1000 ms = 1 segundo
+            }
+
+            // Configurar el formAsistencia para sincronizar el tipo de informe
+            document.getElementById('formAsistencia').addEventListener('submit', function() {
+                var tipoInforme = document.getElementById('tipoInforme').value;
+                document.getElementById('tipoDocumentosHidden').value = tipoInforme;
+            });
+        });
+
+        // Función para abrir y cerrar tarjetas modales
+        function openCard(cardId) {
+            document.getElementById(cardId).style.display = 'block';
+        }
+
+        function closeCard(cardId) {
+            document.getElementById(cardId).style.display = 'none';
+        }
+
+        // Funciones para manejar el archivo subido
+        function displayFileName(input, fileTextId) {
+            const fileName = input.files[0].name;
+            document.getElementById(fileTextId).textContent = fileName;
+        }
+
+        function removeFile(element) {
+            const input = element.previousElementSibling;
+            const fileText = element.previousElementSibling.previousElementSibling;
+            input.value = ""; // Limpiar el input
+            fileText.textContent =
+                '<i class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir una nueva imagen';
+            element.style.display = 'none'; // Ocultar el botón de eliminar
+        }
+
+        // Función para confirmar la eliminación de un estudiante
+        function confirmDeleteEstudiante(id) {
+            Swal.fire({
+                title: '¿Estás seguro de eliminar la actividad?',
+                text: "¡No podrás revertir esto!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#7066e0',
+                cancelButtonColor: '#808080',
+                confirmButtonText: 'Aceptar',
+                customClass: {
+                    container: 'my-swal',
+                    popup: 'my-swal-popup',
+                    header: 'my-swal-header',
+                    title: 'my-swal-title',
+                    closeButton: 'my-swal-close-button',
+                    icon: 'my-swal-icon',
+                    image: 'my-swal-image',
+                    content: 'my-swal-content',
+                    input: 'my-swal-input',
+                    actions: 'my-swal-actions',
+                    confirmButton: 'my-swal-confirm-button',
+                    cancelButton: 'my-swal-cancel-button',
+                    footer: 'my-swal-footer'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
+
+        // Funciones para agregar y eliminar filas dinámicas en el formulario
+        function agregarFila() {
+            var container = document.getElementById('dynamicFieldContainer');
+            var newField = document.querySelector('.dynamic-field').cloneNode(true);
+            newField.querySelectorAll('input').forEach(input => input.value = '');
+            container.appendChild(newField);
+        }
+
+        function eliminarFila() {
+            var container = document.getElementById('dynamicFieldContainer');
+            var fields = container.querySelectorAll('.dynamic-field');
+            if (fields.length > 1) {
+                container.removeChild(fields[fields.length - 1]);
+            }
+        }
+
+        // Funciones para agregar y eliminar campos dinámicos en el formulario
+        function agregarCampo() {
+            const camposContainer = document.getElementById('campos');
+            const nuevoCampo = document.createElement('div');
+            nuevoCampo.classList.add('form-row');
+            nuevoCampo.innerHTML = `
         <div class="form-group col-md-4">
             <label for="especificos"><strong>Objetivos Específicos:</strong></label>
             <textarea name="especificos[]" class="form-control input" placeholder="Ingrese los objetivos específicos..." rows="4" required></textarea>
@@ -810,34 +807,34 @@
             <textarea name="porcentaje[]" class="form-control input" placeholder="Ingrese el porcentaje alcanzado..." rows="4" required></textarea>
         </div>
     `;
-                camposContainer.appendChild(nuevoCampo);
+            camposContainer.appendChild(nuevoCampo);
+        }
+
+        function eliminarCampo() {
+            const camposContainer = document.getElementById('campos');
+            if (camposContainer.children.length > 1) {
+                camposContainer.removeChild(camposContainer.lastElementChild);
             }
+        }
 
-            function eliminarCampo() {
-                const camposContainer = document.getElementById('campos');
-                if (camposContainer.children.length > 1) {
-                    camposContainer.removeChild(camposContainer.lastElementChild);
-                }
-            }
+        // Función para configurar la acción del formulario con scroll
+        function setScrollAndAction(actionUrl) {
+            sessionStorage.setItem('scrollToForm', 'true');
+            document.getElementById('formularioInforme').action = actionUrl;
+        }
 
-            // Función para configurar la acción del formulario con scroll
-            function setScrollAndAction(actionUrl) {
-                sessionStorage.setItem('scrollToForm', 'true');
-                document.getElementById('formularioInforme').action = actionUrl;
-            }
-
-            // Función para configurar un enlace con scroll
-            function setScrollAndLink(linkUrl) {
-                sessionStorage.setItem('scrollToForm', 'true');
-                window.location.href = linkUrl;
-            }
-        </script>
+        // Función para configurar un enlace con scroll
+        function setScrollAndLink(linkUrl) {
+            sessionStorage.setItem('scrollToForm', 'true');
+            window.location.href = linkUrl;
+        }
+    </script>
 
 
 
 
 
-      
+
     <script>
         function agregarCampo() {
             const camposContainer = document.getElementById('campos');
@@ -866,83 +863,151 @@
                 camposContainer.removeChild(camposContainer.lastElementChild);
             }
         }
-     </script>
+    </script>
 
-            <style>
-            .contenedor_tabla .table-container table td {
-                width: 200px;
-                min-width: 150px;
-                font-size: 11px !important;
-                padding: .5rem !important;
+    <script>
+        document.getElementById('formAsistencia').addEventListener('submit', function(event) {
+            let isValid = true;
 
+            // Seleccionar los campos del formulario
+            const fecha = document.getElementById('fecha');
+            const lugar = document.getElementById('lugar');
+            const actividades = document.getElementById('actividades');
+
+            // Limpiar mensajes de error previos
+            document.getElementById('fechaError').style.display = 'none';
+            document.getElementById('lugarError').style.display = 'none';
+            document.getElementById('actividadesError').style.display = 'none';
+
+            // Validación de campo "Fecha"
+            if (fecha.value.trim() === '') {
+                isValid = false;
+                const fechaError = document.getElementById('fechaError');
+                fechaError.textContent = 'El campo de fecha es requerido.';
+                fechaError.style.display = 'block';
             }
 
-            .four-column-table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-            .four-column-table td {
-                padding: 10px;
-                vertical-align: top;
-            }
-
-            .four-column-table label {
-                display: block;
-                font-weight: bold;
+            // Validación de campo "Lugar"
+            if (lugar.value.trim() === '') {
+                isValid = false;
+                const lugarError = document.getElementById('lugarError');
+                lugarError.textContent = 'El campo de lugar es requerido.';
+                lugarError.style.display = 'block';
             }
 
-            .four-column-table textarea {
-                width: 95%;
-                box-sizing: border-box;
-                font-size: 14px;
+            // Validación de campo "Actividades"
+            if (actividades.value.trim() === '') {
+                isValid = false;
+                const actividadesError = document.getElementById('actividadesError');
+                actividadesError.textContent = 'El campo de actividades es requerido.';
+                actividadesError.style.display = 'block';
             }
 
-            .four-column-table .textarea-cell {
-                width: 30%;
+            // Si algún campo es inválido, prevenir el envío del formulario
+            if (!isValid) {
+                event.preventDefault();
             }
+        });
 
-            .form-row .form-group.col-md-4 {
-                flex: 0 0 33.333%;
-                /* Esto asegura que cada columna ocupe un tercio del ancho del contenedor */
-                max-width: 33.333%;
+        // Función para eliminar el mensaje de error cuando el usuario empieza a escribir
+        function removeErrorMessage(event) {
+            const errorElement = document.getElementById(event.target.id + 'Error');
+            if (errorElement) {
+                errorElement.style.display = 'none';
             }
+        }
 
-            .form-row .form-group.col-md-4 textarea {
-                width: 100%;
-                /* Asegura que el textarea ocupe todo el ancho disponible dentro de su columna */
-                box-sizing: border-box;
-                /* Asegura que el padding se incluya dentro del ancho */
-            }
-        </style>
+        // Añadir eventos de input a cada campo para eliminar el mensaje de error al escribir
+        document.getElementById('fecha').addEventListener('input', removeErrorMessage);
+        document.getElementById('lugar').addEventListener('input', removeErrorMessage);
+        document.getElementById('actividades').addEventListener('input', removeErrorMessage);
+    </script>
 
-<style>
-    .textarea.form-control {
-         height: none !important;
-    }
 
-    .four-column-table {
-        width: 100%;
-        table-layout: fixed; /* Las columnas tendrán el mismo ancho */
-        border-collapse: separate;
-        border-spacing: 10px; /* Espaciado entre celdas */
-    }
 
-    .four-column-table td {
-        width: 25%; /* Cada columna ocupará el 25% del ancho total */
-        vertical-align: top;
-    }
 
-    .four-column-table .textarea-cell {
-        padding: 5px;
-    }
 
-    .four-column-table textarea {
-        width: 100%;
-        box-sizing: border-box; /* Asegura que el padding no expanda el ancho del textarea */
-    }
-    .colorr{
-        color: #ffffff !important;
-    }
-</style>
+    <style>
+        .contenedor_tabla .table-container table td {
+            width: 200px;
+            min-width: 150px;
+            font-size: 11px !important;
+            padding: .5rem !important;
+
+        }
+
+        .four-column-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .four-column-table td {
+            padding: 10px;
+            vertical-align: top;
+        }
+
+        .four-column-table label {
+            display: block;
+            font-weight: bold;
+        }
+
+        .four-column-table textarea {
+            width: 95%;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .four-column-table .textarea-cell {
+            width: 30%;
+        }
+
+        .form-row .form-group.col-md-4 {
+            flex: 0 0 33.333%;
+            /* Esto asegura que cada columna ocupe un tercio del ancho del contenedor */
+            max-width: 33.333%;
+        }
+
+        .form-row .form-group.col-md-4 textarea {
+            width: 100%;
+            /* Asegura que el textarea ocupe todo el ancho disponible dentro de su columna */
+            box-sizing: border-box;
+            /* Asegura que el padding se incluya dentro del ancho */
+        }
+    </style>
+
+    <style>
+        .textarea.form-control {
+            height: none !important;
+        }
+
+        .four-column-table {
+            width: 100%;
+            table-layout: fixed;
+            /* Las columnas tendrán el mismo ancho */
+            border-collapse: separate;
+            border-spacing: 10px;
+            /* Espaciado entre celdas */
+        }
+
+        .four-column-table td {
+            width: 25%;
+            /* Cada columna ocupará el 25% del ancho total */
+            vertical-align: top;
+        }
+
+        .four-column-table .textarea-cell {
+            padding: 5px;
+        }
+
+        .four-column-table textarea {
+            width: 100%;
+            box-sizing: border-box;
+            /* Asegura que el padding no expanda el ancho del textarea */
+        }
+
+        .colorr {
+            color: #ffffff !important;
+        }
+    </style>
 
 @endsection

@@ -23,8 +23,8 @@ class RecuperarContrasena extends Mailable
      * @param Usuario|null $usuario
      * @param Estudiante|null $estudiante
      * @param $token
-     * 
-     * 
+     *
+     *
      */
     public function __construct(?Usuario $usuario, ?Estudiante $estudiante, $token)
     {
@@ -41,7 +41,15 @@ class RecuperarContrasena extends Mailable
      */
     public function build()
     {
+        $path = public_path('img/logos/itin-presencial.png');
+
         return $this->subject('Recuperar Contraseña')
-                    ->markdown('emails.recuperar-contrasena');
+                    ->attach($path, [
+                        'as' => 'itin-presencial.png',
+                        'mime' => 'image/png',
+                    ])
+                    ->markdown('emails.recuperar-contrasena')
+                    ->with('imageCid', 'itin-presencial.png');
     }
+
 }
