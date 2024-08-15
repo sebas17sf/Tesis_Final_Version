@@ -101,7 +101,7 @@
             <div class="nameDirector">
                 <label class="labell">Usuario</label>
                 <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                    @if (Auth::user()->role->tipo == 'Director-Departamento')
+                    @if (Auth::user()->role->tipo == 'Director de Departamento')
                         Director de Departamento
                     @else
                         {{ Str::limit(Auth::user()->role->tipo, 30) }}
