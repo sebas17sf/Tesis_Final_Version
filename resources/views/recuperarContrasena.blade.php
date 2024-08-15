@@ -37,7 +37,7 @@
                     @csrf
                     <!-- Campo de correo electronico -->
                     <label class="description" for="CorreoElectronico">Correo Electrónico</label>
-                    <input type="email" class="input form_input" id="CorreoElectronico" name="email" placeholder="Ingrese su correo electrónico" required>
+                    <input type="email" class="input form_input" id="CorreoElectronico" name="email" placeholder="Ingrese su correo electrónico"  >
                     @error('email')
                     <small class="form-text text-danger">{{ $message }}</small>
                     @enderror

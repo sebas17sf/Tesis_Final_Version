@@ -146,12 +146,11 @@ class LoginController extends Controller
     public function cambiarContrasenaUsuario(Request $request, $correoElectronico)
     {
         $request->validate([
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|confirmed',
         ], [
             'password.required' => 'La contraseña es obligatoria.',
             'password.confirmed' => 'La confirmación de la contraseña no coincide.',
-            'password.min' => 'La contraseña debe tener al menos :min caracteres.',
-        ]);
+         ]);
 
         // Buscar al usuario por su correo electrónico
         $usuario = Usuario::where('CorreoElectronico', $correoElectronico)
