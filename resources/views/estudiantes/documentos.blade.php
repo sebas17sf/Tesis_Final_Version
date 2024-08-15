@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Documentación')
+@section('title', 'Documentacion')
 @section('title_component', 'Generar Documentos')
 @section('content')
     @if (session('success'))
@@ -392,22 +392,15 @@
                                 </div>
                                 <div class="tooltip-container">
                                     <a href="{{ route('estudiantes.recuperarDatos') }}"
-                                        class="button3 efects_button btn_filtro"
+                                        class="button3 efects_button btn_filtro colorr"
                                         onclick="setScrollAndLink('{{ route('estudiantes.recuperarDatos') }}')"> <i
                                             class="fa-solid fa-window-restore"></i></a>
                                 </div>
                             </div>
                         </div>
-                    <div class="tooltip-container">
-                    <span class="tooltip-text">Recuperar Datos</span>
-                        <a href="{{ route('estudiantes.recuperarDatos') }}" class="button3 colorr efects_button btn_filtro"
-                            onclick="setScrollAndLink('{{ route('estudiantes.recuperarDatos') }}')"> <i class="fa-solid fa-window-restore"></i></a>
-                            </div>
-                            </div>
-                            </div>
-                            </div>
-                            <hr>
-                            @csrf
+                    </div>
+                    <hr>
+                    @csrf
                     <div class="form-row">
                         <div class="form-group col-md-2">
                             <label for="tipoInforme"><strong>Generar Informe:</strong></label>
@@ -597,14 +590,14 @@
                             </td>
                             <td class="textarea-cell">
                                 <textarea id="conclusiones1" placeholder="Ingrese los resultados de aprendizaje..."
-                                    class="textarea input input_select2" name="conclusiones1" rows="4">{{ old('conclusiones1') }}</textarea>
+                                    class=" form-control textarea input input_select2" name="conclusiones1" rows="4">{{ old('conclusiones1') }}</textarea>
                             </td>
                             <td>
                                 <label for="conclusiones2">¿Qué limitaciones tuvo para realizar sus actividades de servicio
                                     comunitario?</label>
                             </td>
                             <td class="textarea-cell">
-                                <textarea id="conclusiones2" placeholder="Ingrese que limitaciones tuvo..." class="textarea input input_select2"
+                                <textarea id="conclusiones2" placeholder="Ingrese que limitaciones tuvo..." class="form-control textarea input input_select2"
                                     name="conclusiones2" rows="4">{{ old('conclusiones2') }}</textarea>
                             </td>
                         </tr>
@@ -613,25 +606,26 @@
                                 <label for="razones">Explicar las razones que justifican las actividades
                                     realizadas de servicio comunitario, acorde con su perfil:</label>
                             </td>
-                            <td class="textarea-cell" colspan="3">
-                                <textarea id="razones" class="textarea input input_select2" placeholder="Ingrese las razones del proyecto..."
+                            <td class="textarea-cell">
+                                <textarea id="razones" class="form-control textarea input input_select2" placeholder="Ingrese las razones del proyecto..."
                                     name="razones" rows="4" required>{{ old('razones') }}</textarea>
                             </td>
-                        </tr>
-                        <tr>
+                        
                             <td>
                                 <label for="conclusiones3">¿Qué éxitos alcanzados se obtuvo cuando realizó sus actividades
                                     de servicio comunitario?</label>
                             </td>
                             <td class="textarea-cell">
-                                <textarea id="conclusiones3" class="textarea input input_select2" placeholder="Ingrese los éxitos alcanzados..."
+                                <textarea id="conclusiones3" class="form-control textarea input input_select2" placeholder="Ingrese los éxitos alcanzados..."
                                     name="conclusiones3" rows="4">{{ old('conclusiones3') }}</textarea>
                             </td>
+</tr>
+<tr>
                             <td>
                                 <label for="recomendaciones">Recomendaciones:</label>
                             </td>
-                            <td class="textarea-cell">
-                                <textarea id="recomendaciones" class="textarea input input_select2" placeholder="Ingrese las recomendaciones..."
+                            <td class="textarea-cell" >
+                                <textarea id="recomendaciones" class="form-control textarea input input_select2" placeholder="Ingrese las recomendaciones..."
                                     name="recomendaciones" rows="4">{{ old('recomendaciones') }}</textarea>
                             </td>
                         </tr>
@@ -837,7 +831,16 @@
 
 
 
-      
+        <style>
+            .contenedor_tabla .table-container table td {
+                width: 200px;
+                min-width: 150px;
+                font-size: 11px !important;
+                padding: .5rem !important;
+
+            }
+
+<<<<<<< HEAD
     <script>
         function agregarCampo() {
             const camposContainer = document.getElementById('campos');
@@ -864,23 +867,13 @@
             const camposContainer = document.getElementById('campos');
             if (camposContainer.children.length > 1) {
                 camposContainer.removeChild(camposContainer.lastElementChild);
-            }
-        }
-     </script>
-
-            <style>
-            .contenedor_tabla .table-container table td {
-                width: 200px;
-                min-width: 150px;
-                font-size: 11px !important;
-                padding: .5rem !important;
-
-            }
-
+=======
             .four-column-table {
                 width: 100%;
                 border-collapse: collapse;
+>>>>>>> 321b7b2e3f1ce8a093362ccc3ac28658a9c14b61
             }
+
             .four-column-table td {
                 padding: 10px;
                 vertical-align: top;
@@ -945,4 +938,4 @@
     }
 </style>
 
-@endsection
+    @endsection
