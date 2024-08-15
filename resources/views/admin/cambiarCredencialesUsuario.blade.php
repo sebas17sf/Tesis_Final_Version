@@ -60,9 +60,7 @@
 
         <div class="elements_static">
           <br>
-          <div class="icon_block">
-            <i class="fa-brands fa-expeditedssl"></i>
-          </div>
+        
           <div>
             <label></label>
             <span></span>
@@ -111,9 +109,7 @@
         <span class="title_edit_profile"><b>Cambiar contraseña</b>
 
           <!-- Informacion sobre los datos -->
-          <div class="info-icon">
-            <i class="fa-regular fa-circle-info"></i>
-          </div>
+       
         </span>
         <hr>
       </div>

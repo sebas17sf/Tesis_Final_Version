@@ -40,9 +40,7 @@
 
                 <div class="elements_static">
 
-                    <div class="icon_block">
-                        <i class="fa-brands fa-expeditedssl"></i>
-                    </div>
+                   
 
                     <div>
                         <label>ID Espe</label>
@@ -79,9 +77,7 @@
                     <span class="title_edit_profile"><b>Cambiar contraseña</b>
 
                         <!-- Informacion sobre los datos -->
-                        <div class="info-icon">
-                            <i class="fa-regular fa-circle-info"></i>
-                        </div>
+                       
                     </span>
                     <hr>
                 </div>
@@ -124,9 +120,7 @@
                     <span class="title_edit_profile"><b>Actualizar datos personales</b>
 
                         <!-- Informacion sobre los datos -->
-                        <div class="info-icon">
-                            <i class="fa-regular fa-circle-info"></i>
-                        </div>
+                        
                     </span>
                     <hr>
                 </div>

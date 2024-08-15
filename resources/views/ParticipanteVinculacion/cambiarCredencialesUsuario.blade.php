@@ -79,9 +79,7 @@
         <span class="title_edit_profile"><b>Cambiar contraseña</b>
 
             <!-- Informacion sobre los datos -->
-          <div class="info-icon">
-            <i class="fa-regular fa-circle-info"></i>
-          </div>
+          
         </span>
                 <hr>
             </div>
@@ -117,9 +115,7 @@
         <span class="title_edit_profile"><b>Actualizar datos personales</b>
 
             <!-- Informacion sobre los datos -->
-          <div class="info-icon">
-            <i class="fa-regular fa-circle-info"></i>
-          </div>
+          
         </span>
                 <hr>
             </div>
@@ -135,12 +131,7 @@
                     <input type="text" id="lastname_student" class="input" placeholder="Ingrese sus apellidos">
                 </div>
 
-                <div>
-                    <label for="race_student">Carrera <span class="requerido">*</span></label>
-                    <select name="race_student" id="race_student" class="input input_select">
-                        <option value="0">Seleccione su carrera</option>
-                    </select>
-                </div>
+                
 
                 <div>
                     <label for="departament_student">Departamento <span class="requerido">*</span></label>
