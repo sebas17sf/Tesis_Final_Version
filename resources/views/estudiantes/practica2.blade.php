@@ -86,7 +86,7 @@
                 <div class="col-md-4">
                     <br>
                     <center>
-                        <h3><b>FORMATOS PRACTICA II</b></h3>
+                        <h3><b>FORMATOS PRÁCTICA II</b></h3>
                     </center>
                     <hr>
                     <div class="card-body">
@@ -471,7 +471,7 @@
                                 <option value="1">Seleccione una práctica</option>
                                 <option value="SERVICIO A LA COMUNIDAD">SERVICIO A LA COMUNIDAD</option>
                                 <option value="PASANTIAS">PASANTIAS</option>
-                                <option value="PRACTICAS PRE PROFESIONALES">PRACTICAS PRE PROFESIONALES
+                                <option value="PRACTICAS PRE PROFESIONALES">PRÁCTICAS PRE PROFESIONALES
                                 </option>
                                 <option value="AYUDANDIA DE CATEDRA">AYUDANDIA DE CATEDRA</option>
                                 <option value="AYUDANTIA DE INVESTIGACION">AYUDANTIA DE INVESTIGACION</option>
@@ -607,7 +607,7 @@
                     </tr>
 
                     <tr>
-                        <th>NRC Practica</th>
+                        <th>NRC Práctica</th>
                         <td>
                             <div class="form-group">
                                 <select name="nrc" class="form-control input input_select3" required>

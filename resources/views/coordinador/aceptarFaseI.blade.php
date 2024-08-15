@@ -1,6 +1,6 @@
 @extends('layouts.coordinador')
-@section('title', 'Panel Practicas')
-@section('title_component', 'Panel Practicas')
+@section('title', 'Panel Prácticas')
+@section('title_component', 'Panel Prácticas')
 @section('content')
     @if (session('success'))
         <div class="contenedor_alerta success">
@@ -291,7 +291,7 @@
                         <div>
                             <form id="formbusquedaPractica1">
                                 <input type="text" class="input" name="search" value="{{ $search }}"
-                                    matInput placeholder="Buscar en practicas 1...">
+                                    matInput placeholder="Buscar en prácticas 1...">
                                 <i class='bx bx-search-alt'></i>
                             </form>
                         </div>

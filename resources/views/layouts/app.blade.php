@@ -139,7 +139,7 @@
                                         <i class="fa-solid fa-play"></i>  
                                     </div>
                                     <div class="name-sidebar-item">
-                                        <li>Practicas I</li>
+                                        <li>Prácticas I</li>
                                     </div>
                                 </a>
                                 <a class="p-element subitem" href="{{ route('estudiantes.practica2') }}">
@@ -147,7 +147,7 @@
                                         <i class="fa-solid fa-check"></i>
                                     </div>
                                     <div class="name-sidebar-item">
-                                        <li>Practicas II</li>
+                                        <li>Prácticas II</li>
                                     </div>
                                 </a>
                             </div>

@@ -59,8 +59,8 @@
                         <tr>
                             <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                 @if ($estudiante->estado == 'Aprobado')
-                                    {{ strtoupper('Vinculacion') }}
-                                @elseif ($estudiante->estado == 'Aprobado-practicas')
+                                    {{ strtoupper('Vinculación') }}
+                                @elseif ($estudiante->estado == 'Aprobado-prácticas')
                                     {{ strtoupper('Practicas') }}
                                 @else
                                     {{ strtoupper($estudiante->estado) }}
@@ -133,7 +133,7 @@
 
         @if ($practica1)
             <div class="mt-4">
-                <h4><b>Información de Practicas 1</b></h4>
+                <h4><b>Información de Prácticas 1</b></h4>
                 <hr>
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
@@ -189,7 +189,7 @@
        
         @if ($practica2)
             <div class="mt-4">
-                <h4><b>Información de Practicas 2</b></h4>
+                <h4><b>Información de Prácticas 2</b></h4>
                 <hr>
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
@@ -245,7 +245,7 @@
 
         @if ($practica3)
             <div class="mt-4">
-                <h4><b>Información de Practicas 1.2</b></h4>
+                <h4><b>Información de Prácticas 1.2</b></h4>
                 <hr>
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
@@ -301,7 +301,7 @@
 
         @if ($practica4)
             <div class="mt-4">
-                <h4><b>Información de Practicas 1.3</b></h4>
+                <h4><b>Información de Prácticas 1.3</b></h4>
                 <hr>
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">
@@ -358,7 +358,7 @@
         @if ($practica5)
         
             <div class="mt-4">
-                <h4><b>Información de Practicas 2.2</b></h4>
+                <h4><b>Información de Prácticas 2.2</b></h4>
                 <hr>
                 <div class="contenedor_tabla">
                     <div class="table-container mat-elevation-z8">

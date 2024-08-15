@@ -1,6 +1,6 @@
 @extends('layouts.director')
-@section('title', 'Panel Practicas')
-@section('title_component', 'Panel Practicas')
+@section('title', 'Panel Prácticas')
+@section('title_component', 'Panel Prácticas')
 @section('content')
     @if (session('success'))
         <div class="contenedor_alerta success">
@@ -155,7 +155,7 @@
                         <div>
                             <form id="formbusquedaPractica1">
                                 <input type="text" class="input" name="search" value="{{ $search }}"
-                                    matInput placeholder="Buscar en practicas 1...">
+                                    matInput placeholder="Buscar en prácticas 1...">
                                 <i class='bx bx-search-alt'></i>
                             </form>
                         </div>
@@ -448,7 +448,7 @@
                         <div>
                             <form id="formbusquedaPractica2">
                                 <input type="text" class="input" name="search2" value="{{ $search2 }}"
-                                    matInput placeholder="Buscar en practicas 1.2...">
+                                    matInput placeholder="Buscar en prácticas 1.2...">
                                 <i class='bx bx-search-alt'></i>
                             </form>
                         </div>
@@ -734,7 +734,7 @@
                         <div>
                             <form id="formbusquedaPractica3">
                                 <input type="text" class="input" name="search3" value="{{ $search3 }}"
-                                    matInput placeholder="Buscar en practicas 1.3..">
+                                    matInput placeholder="Buscar en prácticas 1.3..">
                                 <i class='bx bx-search-alt'></i>
                             </form>
                         </div>
@@ -1005,7 +1005,7 @@
                         <div>
                             <form id="formbusquedaPractica1">
                                 <input type="text" class="input" name="search4" value="{{ $search4 }}"
-                                    matInput placeholder="Buscar en practicas 2...">
+                                    matInput placeholder="Buscar en prácticas 2...">
                                 <i class='bx bx-search-alt'></i>
                             </form>
                         </div>

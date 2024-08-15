@@ -1,5 +1,5 @@
 @extends('layouts.directorVinculacion')
-@section('title', 'Practicas')
+@section('title', 'Prácticas')
 
 @section('title_component', 'Panel Prácticas II')
 @section('content')
@@ -123,7 +123,7 @@
                                 <th>ESTUDIANTE</th>
                                 <th>CORREO</th>
                                 <th>TELÉFONO</th>
-                                <th>NOTA PRACTICA</th>
+                                <th>NOTA PRÁCTICA</th>
                                 <th>ESTADO</th>
                                 <th>ACCIONES</th>
                              </tr>

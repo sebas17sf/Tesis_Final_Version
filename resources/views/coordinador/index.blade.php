@@ -1005,7 +1005,7 @@
                     <select id="tipo" name="tipo" class="form-control input_select input" required>
                         <option value="">Seleccione el proceso</option>
                         <option value="Vinculacion">Vinculación con la Sociedad</option>
-                        <option value="Practicas">Practicas preprofesionales</option>
+                        <option value="Practicas">Prácticas preprofesionales</option>
                     </select>
                     @error('tipo')
                         <small class="form-text text-danger">{{ $message }}</small>

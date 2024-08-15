@@ -1,5 +1,5 @@
 @extends('layouts.participante')
-@section('title', 'Practicas')
+@section('title', 'Prácticas')
 
 @section('title_component', 'Panel Prácticas I')
 @section('content')

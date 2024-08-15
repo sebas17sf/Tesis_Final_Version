@@ -145,8 +145,8 @@
                     <input type="date" id="fecha" name="fecha" class="form-control input" required>
                 </div>
                 <div class="form-group">
-                    <label for="actividades"><strong>Actividades a realizar:</strong></label>
-                    <textarea id="actividades" name="actividades" class="form-control input" rows="4" required></textarea>
+                <label for="actividades"><strong>Actividades a realizar:</strong></label>
+                <textarea id="actividades" name="actividades" class="form-control input" rows="4" required></textarea>
                 </div>
                 <div class="form-group">
                     <label for="horas"><strong>Número de horas:</strong></label>

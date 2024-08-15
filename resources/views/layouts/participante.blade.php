@@ -109,7 +109,7 @@
                                     <i class="fa-solid fa-user-check"></i>
                                     </div>
                                     <div class="name-sidebar-item">
-                                        <li>Practicas I</li>
+                                        <li>Prácticas I</li>
                                     </div>
                                 </a>
                                 <a class="p-element subitem" href="{{ route('ParticipanteVinculacion.practicasii') }}">
@@ -117,7 +117,7 @@
                                     <i class="fa-sharp fa-solid fa-list-check"></i>
                                     </div>
                                     <div class="name-sidebar-item">
-                                        <li>Practicas II</li>
+                                        <li>Prácticas II</li>
                                     </div>
                                 </a>
                             </div>

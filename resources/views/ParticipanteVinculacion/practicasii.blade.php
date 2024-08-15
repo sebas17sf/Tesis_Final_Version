@@ -1,5 +1,5 @@
 @extends('layouts.participante')
-@section('title', 'Practicas')
+@section('title', 'Prácticas')
 
 @section('title_component', 'Panel Prácticas II')
 @section('content')
@@ -179,7 +179,7 @@
                                 <th>CORREO</th>
                                 <th>TELÉFONO</th>
                                 <th>HORAS DE PRÁCTICAS</th>
-                                <th>NOTA PRACTICA</th>
+                                <th>NOTA PRÁCTICA</th>
                                 <th>ESTADO</th>
                                 <th>ACCIONES</th>
                             </tr>
