@@ -213,38 +213,40 @@
     
 </section>
 <br>
-<span class="title_edit_profile"><b>Control de sesiones</b>
+<br>
+  
+<div class="sesion_history">
+            <div>
+        <span class="title_edit_profile"><b>Control de sesiones</b>
         </span>
                 <hr>
-        
+            </div>
 <!-- Historial de sesiones -->
-<div class="contenedor_tabla"><div class="content_info">
-            <div>
-        
+<div class="contenedor_tabla">
             <div class="table-container mat-elevation-z8">
                 <div id="tablaProyectos">
                     <table class="mat-mdc-table">
                         <thead class="ng-star-inserted">
                             <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
                                 <th>DISPOSITIVO</th>
-                <th>IP</th>
-                <th>HORA INGRESO</th>
-                <th>HORA SALIDA</th>
-                <th>UBICACIÓN</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($userSessions as $session)
-            <tr>
-                <td style="text-transform: uppercase ; text-align:center" >{{ $session->user_agent }}</td>
+            <th>IP</th>
+            <th>HORA DE INGRESO</th>
+            <th>HORA DE SALIDA</th>
+            <th>UBICACIÓN</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($userSessions as $session)
+        <tr>
+        <td style="text-transform: uppercase ; text-align:center" >{{ $session->user_agent }}</td>
                 <td style="text-transform: uppercase ; text-align:center" >{{ $session->ip_address }}</td>
                 <td style="text-transform: uppercase ; text-align:center" >{{ $session->start_time }}</td>
                 <td style="text-transform: uppercase ; text-align:center" >{{ $session->end_time }}</td>
                 <td>{{ $session->locality }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 </div>
 </div>
 </div>

@@ -28,177 +28,155 @@
 @endif
 <section class="content_profile">
 
-    <div class="section1">
-        <!-- Informacion estatica -->
-        <div class="content_static">
+  <style>
 
-            <div>
-        <span class="title_edit_profile"><b>Información personal</b>
-        </span>
-                <hr>
-            </div>
 
-            <div class="elements_static">
+    .icon_block {
+      color: #40456c; /* Color del icono */
+      font-size: 15px; /* Tamaño del icono */
+      display: flex; /* Alineación del icono */
+      align-items: center; /* Centrado vertical del icono */
+      left: 45% !important;
+    }
 
-                <div class="icon_block">
-                    <i class="fa-brands fa-expeditedssl"></i>
-                </div>
 
-                <div>
-                    <label>ID Espe</label>
-                    <span></span>
-                </div>
 
-                <div >
-                    <label for= "nombre">Usuario</label>
-                    <span type="text" id="nombre" name="nombre"
-                          required value="{{ $usuario->nombreUsuario }}"></span>
-                </div>
+    center {
+      display: flex; /* Alineación de elementos en fila */
+      justify-content: center; /* Centrado horizontal */
+      width: 100%; /* Ancho completo */
+    }
+  </style>
 
-                <div>
-                    <label>Cédula</label>
-                    <span></span>
-                </div>
+  <div class="section1">
+      <!-- Informacion estatica -->
+      <div class="content_static">
 
-                <div>
-                    <label>Teléfono</label>
-                    <span></span>
-                </div>
-
-                <div class="last-element">
-                    <label>Correo institucional</label>
-                    <span></span>
-                </div>
-
-            </div>
+        <div>
+          <span class="title_edit_profile"><b>Información personal</b>
+          </span>
+          <hr>
         </div>
 
-        <!-- Cambiar contraseña -->
-        <div class="content_change_pass">
-            <div>
+        <div class="elements_static">
+          <br>
+          <div class="icon_block">
+            <i class="fa-brands fa-expeditedssl"></i>
+          </div>
+          <div>
+            <label></label>
+            <span></span>
+          </div>
+          <div style="text-align: center;">
+            <label for="nombre">Usuario</label>
+            <span id="nombre" name="nombre" required>{{ $usuario->nombreUsuario }}</span>
+          </div>
+
+          <div style="text-align: center;">
+            <label for="correo">Correo</label>
+            <span id="nombre" name="correo" required>{{ $usuario->correoElectronico }}</span>
+          </div>
+          <div>
+            <label></label>
+            <span></span>
+          </div>
+          <div>
+            <label></label>
+            <span></span>
+          </div>
+         
+          <div style="text-align: center;">
+            <label for="nombre"></label>
+            <span></span>
+          </div>
+        
+          <div>
+            <label></label>
+            <span></span>
+        </div>
+        <div>
+          <label></label>
+          <span></span>
+          </div>
+      </div>
+  </div>
+
+   
+
+
+  </div>
+   <!-- Cambiar contraseña -->
+   <div class="content_change_pass">
+      <div>
         <span class="title_edit_profile"><b>Cambiar contraseña</b>
 
-            <!-- Informacion sobre los datos -->
+          <!-- Informacion sobre los datos -->
           <div class="info-icon">
             <i class="fa-regular fa-circle-info"></i>
           </div>
         </span>
-                <hr>
-            </div>
+        <hr>
+      </div>
 
-            <form class="form_change_passwd">
+      <form class="form_change_passwd">
 
-                <div>
-                    <label for="firstname_student">Nueva contraseña <span class="requerido">*</span></label>
-                    <input type="text" id="firstname_student" class="input" placeholder="Ingrese la clave">
-                </div>
-
-                <div>
-                    <label for="firstname_student">Confirmar contraseña <span class="requerido">*</span></label>
-                    <input type="text" id="firstname_student" class="input" placeholder="Ingrese de nuevo la clave">
-                </div>
-
-                <div class="content_button">
-                    <button class="button1 efects_button">Actualizar</button>
-                </div>
-            </form>
+        <div>
+          <label for="firstname_student">Nueva contraseña <span class="requerido">*</span></label>
+          <input type="text" id="firstname_student" class="input" placeholder="Ingrese la clave">
         </div>
 
+        <div>
+          <label for="firstname_student">Confirmar contraseña <span class="requerido">*</span></label>
+          <input type="text" id="firstname_student" class="input" placeholder="Ingrese de nuevo la clave">
+        </div>
 
+        <div class="content_button">
+          <button class="button1 efects_button">Actualizar</button>
+        </div>
+      </form>
     </div>
-
-
-    <div>
-        <!-- Informacion de perfil -->
-        <div class="content_info">
+  
+<br>
+  <div>
+  </section>
+  
+  <div class="sesion_history">
             <div>
-        <span class="title_edit_profile"><b>Actualizar datos personales</b>
-
-            <!-- Informacion sobre los datos -->
-          <div class="info-icon">
-            <i class="fa-regular fa-circle-info"></i>
-          </div>
+        <span class="title_edit_profile"><b>Control de sesiones</b>
         </span>
                 <hr>
             </div>
-
-            <form class="form_profile">
-                <div>
-                    <label for="firstname_student">Nombres <span class="requerido">*</span></label>
-                    <input type="text" id="firstname_student" class="input" placeholder="Ingrese sus nombres">
-                </div>
-
-                <div>
-                    <label for="lastname_student">Apellidos <span class="requerido">*</span></label>
-                    <input type="text" id="lastname_student" class="input" placeholder="Ingrese sus apellidos">
-                </div>
-
-                <div>
-                    <label for="cohorte_student">Cohorte <span class="requerido">*</span></label>
-                    <input type="text" id="cohorte_student" class="input" placeholder="Ingrese su cohorte">
-                </div>
-
-                <div>
-                    <label for="period_student">Período <span class="requerido">*</span></label>
-                    <select name="period_student" id="period_student" class="input input_select">
-                        <option value="0">Seleccione su período</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="race_student">Carrera <span class="requerido">*</span></label>
-                    <select name="race_student" id="race_student" class="input input_select">
-                        <option value="0">Seleccione su carrera</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="departament_student">Departamento <span class="requerido">*</span></label>
-                    <select name="departament_student" id="departament_student" class="input input_select">
-                        <option value="0">Seleccione su departamento</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="locality_student">Localidad <span class="requerido">*</span></label>
-                    <select name="locality_student" id="locality_student" class="input input_select">
-                        <option value="0">Seleccione su localidad</option>
-                    </select>
-                </div>
-
-                <div class="content_button">
-                    <button class="button1 efects_button">Actualizar</button>
-                </div>
-
-            </form>
-        </div>
-    </div>
-
-     <!-- Historial de sesiones -->
-     <table>
-        <thead>
-            <tr>
-                <th>Dispositivo</th>
-                <th>IP</th>
-                <th>Hora ingreso</th>
-                <th>Hora salida</th>
-                <th>Ubicación</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($userSessions as $session)
-            <tr>
-                <td>{{ $session->user_agent }}</td>
-                <td>{{ $session->ip_address }}</td>
-                <td>{{ $session->start_time }}</td>
-                <td>{{ $session->end_time }}</td>
+<!-- Historial de sesiones -->
+<div class="contenedor_tabla">
+            <div class="table-container mat-elevation-z8">
+                <div id="tablaProyectos">
+                    <table class="mat-mdc-table">
+                        <thead class="ng-star-inserted">
+                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                <th>DISPOSITIVO</th>
+            <th>IP</th>
+            <th>HORA DE INGRESO</th>
+            <th>HORA DE SALIDA</th>
+            <th>UBICACIÓN</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($userSessions as $session)
+        <tr>
+        <td style="text-transform: uppercase ; text-align:center" >{{ $session->user_agent }}</td>
+                <td style="text-transform: uppercase ; text-align:center" >{{ $session->ip_address }}</td>
+                <td style="text-transform: uppercase ; text-align:center" >{{ $session->start_time }}</td>
+                <td style="text-transform: uppercase ; text-align:center" >{{ $session->end_time }}</td>
                 <td>{{ $session->locality }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
 
-</section>
 <!--
     <form action="{{ route('admin.updateCredenciales') }}" method="POST">
         @csrf
@@ -242,20 +220,20 @@
 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
-    $(document).ready(function() {
-        $('#togglePassword').click(function() {
-            var passwordField = $('#password');
-            passwordField.attr('type', passwordField.attr('type') === 'password' ? 'text' : 'password');
-        });
+    <script>
+        $(document).ready(function() {
+            $('#togglePassword').click(function() {
+                var passwordField = $('#password');
+                passwordField.attr('type', passwordField.attr('type') === 'password' ? 'text' : 'password');
+            });
 
-        $('#toggleConfirmPassword').click(function() {
-            var confirmPasswordField = $('#password_confirmation');
-            confirmPasswordField.attr('type', confirmPasswordField.attr('type') === 'password' ?
-                'text' : 'password');
+            $('#toggleConfirmPassword').click(function() {
+                var confirmPasswordField = $('#password_confirmation');
+                confirmPasswordField.attr('type', confirmPasswordField.attr('type') === 'password' ?
+                    'text' : 'password');
+            });
         });
-    });
-</script>
+    </script>
 
 
 
