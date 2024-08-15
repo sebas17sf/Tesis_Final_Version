@@ -94,6 +94,7 @@
                 method="post" id="formAsistencia">
                 @csrf
                 <input type="hidden" name="tipoDocumentos" id="tipoDocumentosHidden">
+
                 <div class="form-group">
                     <label class="label" for="fecha"><strong>Fecha de asistencia:</strong></label>
                     <input type="date" id="fecha" name="fecha" class="form-control input">
@@ -102,6 +103,7 @@
                         <small class="form-text text-danger">{{ $message }}</small>
                     @enderror
                 </div>
+
                 <div class="form-group">
                     <label class="label" for="lugar"><strong>Lugar de la actividad:</strong></label>
                     <input type="text" id="lugar" name="lugar" class="form-control input"
@@ -111,6 +113,7 @@
                         <small class="form-text text-danger">{{ $message }}</small>
                     @enderror
                 </div>
+
                 <div class="form-group">
                     <label class="label" for="actividades"><strong>Actividades a realizar:</strong></label>
                     <textarea id="actividades" name="actividades" class="form-control input" placeholder="Escribir la actividad"></textarea>
@@ -119,6 +122,7 @@
                         <small class="form-text text-danger">{{ $message }}</small>
                     @enderror
                 </div>
+
                 <div class="card-footer1 d-flex justify-content-center align-items-center">
                     <button type="submit" class="button1 input_select1">
                         <span>Generar</span>
@@ -126,6 +130,7 @@
                     </button>
                 </div>
             </form>
+
         </div>
     </div>
 
@@ -407,12 +412,14 @@
                             <select class="form-control input input_select3" name="tipo" id="tipo">
                                 <option value="#" disabled selected>Seleccione una opción</option>
                                 <option value="grupal" {{ old('tipo') == 'grupal' ? 'selected' : '' }}>Grupal</option>
-                                <option value="individual" {{ old('tipo') == 'individual' ? 'selected' : '' }}>Individual</option>
+                                <option value="individual" {{ old('tipo') == 'individual' ? 'selected' : '' }}>Individual
+                                </option>
                             </select>
                             <small id="tipoInformeError" class="error-message" style="color: red;"></small>
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="nombreComunidad"><strong>Nombre de la Comunidad o Comunidades Beneficiarias:</strong></label>
+                            <label for="nombreComunidad"><strong>Nombre de la Comunidad o Comunidades
+                                    Beneficiarias:</strong></label>
                             <input type="text" id="nombreComunidad" name="nombreComunidad" class="form-control input"
                                 value="{{ old('nombreComunidad') }}" placeholder="Ingrese el nombre de la comunidad...">
                             <small id="nombreComunidadError" class="error-message" style="color: red;"></small>
@@ -446,8 +453,9 @@
                                 <div class="form-row dynamic-field">
                                     <div class="form-group col-md-3">
                                         <label for="provincia"><strong>Provincia:</strong></label>
-                                        <input type="text" id="provincia" name="provincia[]" class="form-control input"
-                                            value="{{ $provincia }}" placeholder="Ingrese la provincia...">
+                                        <input type="text" id="provincia" name="provincia[]"
+                                            class="form-control input" value="{{ $provincia }}"
+                                            placeholder="Ingrese la provincia...">
                                         <small id="provinciaError" class="error-message" style="color: red;"></small>
                                     </div>
                                     <div class="form-group col-md-3">
@@ -458,8 +466,9 @@
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="parroquia"><strong>Parroquia:</strong></label>
-                                        <input type="text" id="parroquia" name="parroquia[]" class="form-control input"
-                                            value="{{ old('parroquia')[$index] }}" placeholder="Ingrese la parroquia...">
+                                        <input type="text" id="parroquia" name="parroquia[]"
+                                            class="form-control input" value="{{ old('parroquia')[$index] }}"
+                                            placeholder="Ingrese la parroquia...">
                                         <small id="parroquiaError" class="error-message" style="color: red;"></small>
                                     </div>
                                     <div class="form-group col-md-3">
@@ -952,198 +961,254 @@
         </style>
 
 
-<script>
-    document.getElementById('formularioInforme').addEventListener('submit', function(event) {
-    // Limpiar mensajes de error previos
-    document.getElementById('nombreComunidadError').textContent = '';
-    document.getElementById('tipoInformeError').textContent = '';
-    document.getElementById('provinciaError').textContent = '';
-    document.getElementById('cantonError').textContent = '';
-    document.getElementById('parroquiaError').textContent = '';
-    document.getElementById('direccionError').textContent = '';
-    document.getElementById('especificosError').textContent = '';
-    document.getElementById('alcanzadosError').textContent = '';
-    document.getElementById('porcentajeError').textContent = '';
-    document.getElementById('conclusiones1Error').textContent = '';
-    document.getElementById('conclusiones2Error').textContent = '';
-    document.getElementById('razonesError').textContent = '';
-    document.getElementById('conclusiones3Error').textContent = '';
-    document.getElementById('recomendacionesError').textContent = '';
+        <script>
+            document.getElementById('formularioInforme').addEventListener('submit', function(event) {
+                // Limpiar mensajes de error previos
+                document.getElementById('nombreComunidadError').textContent = '';
+                document.getElementById('tipoInformeError').textContent = '';
+                document.getElementById('provinciaError').textContent = '';
+                document.getElementById('cantonError').textContent = '';
+                document.getElementById('parroquiaError').textContent = '';
+                document.getElementById('direccionError').textContent = '';
+                document.getElementById('especificosError').textContent = '';
+                document.getElementById('alcanzadosError').textContent = '';
+                document.getElementById('porcentajeError').textContent = '';
+                document.getElementById('conclusiones1Error').textContent = '';
+                document.getElementById('conclusiones2Error').textContent = '';
+                document.getElementById('razonesError').textContent = '';
+                document.getElementById('conclusiones3Error').textContent = '';
+                document.getElementById('recomendacionesError').textContent = '';
 
-    let formIsValid = true;
+                let formIsValid = true;
 
-    // Validar 'nombreComunidad'
-    const nombreComunidad = document.getElementById('nombreComunidad').value.trim();
-    if (nombreComunidad === "") {
-        document.getElementById('nombreComunidadError').textContent = 'El nombre de la comunidad es requerido.';
-        formIsValid = false;
-    }
+                // Validar 'nombreComunidad'
+                const nombreComunidad = document.getElementById('nombreComunidad').value.trim();
+                if (nombreComunidad === "") {
+                    document.getElementById('nombreComunidadError').textContent =
+                        'El nombre de la comunidad es requerido.';
+                    formIsValid = false;
+                }
 
-    // Validar 'tipoInforme'
-    const tipoInforme = document.getElementById('tipo').value.trim();
-    if (tipoInforme === "#") {
-        document.getElementById('tipoInformeError').textContent = 'Debe seleccionar un tipo de informe.';
-        formIsValid = false;
-    }
+                // Validar 'tipoInforme'
+                const tipoInforme = document.getElementById('tipo').value.trim();
+                if (tipoInforme === "#") {
+                    document.getElementById('tipoInformeError').textContent = 'Debe seleccionar un tipo de informe.';
+                    formIsValid = false;
+                }
 
-    // Validar 'provincia'
-    const provincia = document.getElementById('provincia').value.trim();
-    if (provincia === "") {
-        document.getElementById('provinciaError').textContent = 'La provincia es requerida.';
-        formIsValid = false;
-    }
+                // Validar 'provincia'
+                const provincia = document.getElementById('provincia').value.trim();
+                if (provincia === "") {
+                    document.getElementById('provinciaError').textContent = 'La provincia es requerida.';
+                    formIsValid = false;
+                }
 
-    // Validar 'canton'
-    const canton = document.getElementById('canton').value.trim();
-    if (canton === "") {
-        document.getElementById('cantonError').textContent = 'El cantón es requerido.';
-        formIsValid = false;
-    }
+                // Validar 'canton'
+                const canton = document.getElementById('canton').value.trim();
+                if (canton === "") {
+                    document.getElementById('cantonError').textContent = 'El cantón es requerido.';
+                    formIsValid = false;
+                }
 
-    // Validar 'parroquia'
-    const parroquia = document.getElementById('parroquia').value.trim();
-    if (parroquia === "") {
-        document.getElementById('parroquiaError').textContent = 'La parroquia es requerida.';
-        formIsValid = false;
-    }
+                // Validar 'parroquia'
+                const parroquia = document.getElementById('parroquia').value.trim();
+                if (parroquia === "") {
+                    document.getElementById('parroquiaError').textContent = 'La parroquia es requerida.';
+                    formIsValid = false;
+                }
 
-    // Validar 'direccion'
-    const direccion = document.getElementById('direccion').value.trim();
-    if (direccion === "") {
-        document.getElementById('direccionError').textContent = 'La dirección es requerida.';
-        formIsValid = false;
-    }
+                // Validar 'direccion'
+                const direccion = document.getElementById('direccion').value.trim();
+                if (direccion === "") {
+                    document.getElementById('direccionError').textContent = 'La dirección es requerida.';
+                    formIsValid = false;
+                }
 
-    // Validar 'especificos'
-    const especificos = document.querySelectorAll('textarea[name="especificos[]"]');
-    especificos.forEach(function (especifico, index) {
-        if (especifico.value.trim() === "") {
-            document.getElementById('especificosError').textContent = 'Los objetivos específicos son requeridos.';
-            formIsValid = false;
-        }
-    });
+                // Validar 'especificos'
+                const especificos = document.querySelectorAll('textarea[name="especificos[]"]');
+                especificos.forEach(function(especifico, index) {
+                    if (especifico.value.trim() === "") {
+                        document.getElementById('especificosError').textContent =
+                            'Los objetivos específicos son requeridos.';
+                        formIsValid = false;
+                    }
+                });
 
-    // Validar 'alcanzados'
-    const alcanzados = document.querySelectorAll('textarea[name="alcanzados[]"]');
-    alcanzados.forEach(function (alcanzado, index) {
-        if (alcanzado.value.trim() === "") {
-            document.getElementById('alcanzadosError').textContent = 'Los resultados alcanzados son requeridos.';
-            formIsValid = false;
-        }
-    });
+                // Validar 'alcanzados'
+                const alcanzados = document.querySelectorAll('textarea[name="alcanzados[]"]');
+                alcanzados.forEach(function(alcanzado, index) {
+                    if (alcanzado.value.trim() === "") {
+                        document.getElementById('alcanzadosError').textContent =
+                            'Los resultados alcanzados son requeridos.';
+                        formIsValid = false;
+                    }
+                });
 
-    // Validar 'porcentaje'
-    const porcentajes = document.querySelectorAll('textarea[name="porcentaje[]"]');
-    porcentajes.forEach(function (porcentaje, index) {
-        if (porcentaje.value.trim() === "") {
-            document.getElementById('porcentajeError').textContent = 'El porcentaje alcanzado es requerido.';
-            formIsValid = false;
-        }
-    });
+                // Validar 'porcentaje'
+                const porcentajes = document.querySelectorAll('textarea[name="porcentaje[]"]');
+                porcentajes.forEach(function(porcentaje, index) {
+                    if (porcentaje.value.trim() === "") {
+                        document.getElementById('porcentajeError').textContent =
+                            'El porcentaje alcanzado es requerido.';
+                        formIsValid = false;
+                    }
+                });
 
-    // Validar 'conclusiones1'
-    const conclusiones1 = document.getElementById('conclusiones1').value.trim();
-    if (conclusiones1 === "") {
-        document.getElementById('conclusiones1Error').textContent = 'Este campo es requerido.';
-        formIsValid = false;
-    }
+                // Validar 'conclusiones1'
+                const conclusiones1 = document.getElementById('conclusiones1').value.trim();
+                if (conclusiones1 === "") {
+                    document.getElementById('conclusiones1Error').textContent = 'Este campo es requerido.';
+                    formIsValid = false;
+                }
 
-    // Validar 'conclusiones2'
-    const conclusiones2 = document.getElementById('conclusiones2').value.trim();
-    if (conclusiones2 === "") {
-        document.getElementById('conclusiones2Error').textContent = 'Este campo es requerido.';
-        formIsValid = false;
-    }
+                // Validar 'conclusiones2'
+                const conclusiones2 = document.getElementById('conclusiones2').value.trim();
+                if (conclusiones2 === "") {
+                    document.getElementById('conclusiones2Error').textContent = 'Este campo es requerido.';
+                    formIsValid = false;
+                }
 
-    // Validar 'razones'
-    const razones = document.getElementById('razones').value.trim();
-    if (razones === "") {
-        document.getElementById('razonesError').textContent = 'Este campo es requerido.';
-        formIsValid = false;
-    }
+                // Validar 'razones'
+                const razones = document.getElementById('razones').value.trim();
+                if (razones === "") {
+                    document.getElementById('razonesError').textContent = 'Este campo es requerido.';
+                    formIsValid = false;
+                }
 
-    // Validar 'conclusiones3'
-    const conclusiones3 = document.getElementById('conclusiones3').value.trim();
-    if (conclusiones3 === "") {
-        document.getElementById('conclusiones3Error').textContent = 'Este campo es requerido.';
-        formIsValid = false;
-    }
+                // Validar 'conclusiones3'
+                const conclusiones3 = document.getElementById('conclusiones3').value.trim();
+                if (conclusiones3 === "") {
+                    document.getElementById('conclusiones3Error').textContent = 'Este campo es requerido.';
+                    formIsValid = false;
+                }
 
-    // Validar 'recomendaciones'
-    const recomendaciones = document.getElementById('recomendaciones').value.trim();
-    if (recomendaciones === "") {
-        document.getElementById('recomendacionesError').textContent = 'Este campo es requerido.';
-        formIsValid = false;
-    }
+                // Validar 'recomendaciones'
+                const recomendaciones = document.getElementById('recomendaciones').value.trim();
+                if (recomendaciones === "") {
+                    document.getElementById('recomendacionesError').textContent = 'Este campo es requerido.';
+                    formIsValid = false;
+                }
 
-    // Si el formulario no es válido, evitar el envío
-    if (!formIsValid) {
-        event.preventDefault();
-    }
-});
+                // Si el formulario no es válido, evitar el envío
+                if (!formIsValid) {
+                    event.preventDefault();
+                }
+            });
 
-// Eliminar mensaje de error al escribir
-document.getElementById('nombreComunidad').addEventListener('input', function() {
-    document.getElementById('nombreComunidadError').textContent = '';
-});
+            // Eliminar mensaje de error al escribir
+            document.getElementById('nombreComunidad').addEventListener('input', function() {
+                document.getElementById('nombreComunidadError').textContent = '';
+            });
 
-document.getElementById('tipo').addEventListener('change', function() {
-    document.getElementById('tipoInformeError').textContent = '';
-});
+            document.getElementById('tipo').addEventListener('change', function() {
+                document.getElementById('tipoInformeError').textContent = '';
+            });
 
-document.getElementById('provincia').addEventListener('input', function() {
-    document.getElementById('provinciaError').textContent = '';
-});
+            document.getElementById('provincia').addEventListener('input', function() {
+                document.getElementById('provinciaError').textContent = '';
+            });
 
-document.getElementById('canton').addEventListener('input', function() {
-    document.getElementById('cantonError').textContent = '';
-});
+            document.getElementById('canton').addEventListener('input', function() {
+                document.getElementById('cantonError').textContent = '';
+            });
 
-document.getElementById('parroquia').addEventListener('input', function() {
-    document.getElementById('parroquiaError').textContent = '';
-});
+            document.getElementById('parroquia').addEventListener('input', function() {
+                document.getElementById('parroquiaError').textContent = '';
+            });
 
-document.getElementById('direccion').addEventListener('input', function() {
-    document.getElementById('direccionError').textContent = '';
-});
+            document.getElementById('direccion').addEventListener('input', function() {
+                document.getElementById('direccionError').textContent = '';
+            });
 
-document.querySelectorAll('textarea[name="especificos[]"]').forEach(function (element) {
-    element.addEventListener('input', function() {
-        document.getElementById('especificosError').textContent = '';
-    });
-});
+            document.querySelectorAll('textarea[name="especificos[]"]').forEach(function(element) {
+                element.addEventListener('input', function() {
+                    document.getElementById('especificosError').textContent = '';
+                });
+            });
 
-document.querySelectorAll('textarea[name="alcanzados[]"]').forEach(function (element) {
-    element.addEventListener('input', function() {
-        document.getElementById('alcanzadosError').textContent = '';
-    });
-});
+            document.querySelectorAll('textarea[name="alcanzados[]"]').forEach(function(element) {
+                element.addEventListener('input', function() {
+                    document.getElementById('alcanzadosError').textContent = '';
+                });
+            });
 
-document.querySelectorAll('textarea[name="porcentaje[]"]').forEach(function (element) {
-    element.addEventListener('input', function() {
-        document.getElementById('porcentajeError').textContent = '';
-    });
-});
+            document.querySelectorAll('textarea[name="porcentaje[]"]').forEach(function(element) {
+                element.addEventListener('input', function() {
+                    document.getElementById('porcentajeError').textContent = '';
+                });
+            });
 
-document.getElementById('conclusiones1').addEventListener('input', function() {
-    document.getElementById('conclusiones1Error').textContent = '';
-});
+            document.getElementById('conclusiones1').addEventListener('input', function() {
+                document.getElementById('conclusiones1Error').textContent = '';
+            });
 
-document.getElementById('conclusiones2').addEventListener('input', function() {
-    document.getElementById('conclusiones2Error').textContent = '';
-});
+            document.getElementById('conclusiones2').addEventListener('input', function() {
+                document.getElementById('conclusiones2Error').textContent = '';
+            });
 
-document.getElementById('razones').addEventListener('input', function() {
-    document.getElementById('razonesError').textContent = '';
-});
+            document.getElementById('razones').addEventListener('input', function() {
+                document.getElementById('razonesError').textContent = '';
+            });
 
-document.getElementById('conclusiones3').addEventListener('input', function() {
-    document.getElementById('conclusiones3Error').textContent = '';
-});
+            document.getElementById('conclusiones3').addEventListener('input', function() {
+                document.getElementById('conclusiones3Error').textContent = '';
+            });
 
-document.getElementById('recomendaciones').addEventListener('input', function() {
-    document.getElementById('recomendacionesError').textContent = '';
-});
-</script>
+            document.getElementById('recomendaciones').addEventListener('input', function() {
+                document.getElementById('recomendacionesError').textContent = '';
+            });
+        </script>
+
+        <script>
+            document.getElementById('formAsistencia').addEventListener('submit', function(event) {
+                // Limpiar mensajes de error previos
+                document.getElementById('fechaError').style.display = 'none';
+                document.getElementById('lugarError').style.display = 'none';
+                document.getElementById('actividadesError').style.display = 'none';
+
+                let formIsValid = true;
+
+                // Validar 'fecha'
+                const fecha = document.getElementById('fecha').value.trim();
+                if (fecha === "") {
+                    document.getElementById('fechaError').textContent = 'La fecha de asistencia es requerida.';
+                    document.getElementById('fechaError').style.display = 'block';
+                    formIsValid = false;
+                }
+
+                // Validar 'lugar'
+                const lugar = document.getElementById('lugar').value.trim();
+                if (lugar === "") {
+                    document.getElementById('lugarError').textContent = 'El lugar de la actividad es requerido.';
+                    document.getElementById('lugarError').style.display = 'block';
+                    formIsValid = false;
+                }
+
+                // Validar 'actividades'
+                const actividades = document.getElementById('actividades').value.trim();
+                if (actividades === "") {
+                    document.getElementById('actividadesError').textContent =
+                        'Las actividades a realizar son requeridas.';
+                    document.getElementById('actividadesError').style.display = 'block';
+                    formIsValid = false;
+                }
+
+                // Si el formulario no es válido, evitar el envío
+                if (!formIsValid) {
+                    event.preventDefault();
+                }
+            });
+
+            // Eliminar mensaje de error al escribir
+            document.querySelectorAll('#formAsistencia input, #formAsistencia textarea').forEach(function(element) {
+                element.addEventListener('input', function() {
+                    const errorElement = document.getElementById(element.id + 'Error');
+                    if (errorElement) {
+                        errorElement.style.display = 'none';
+                    }
+                });
+            });
+        </script>
+
 
     @endsection
