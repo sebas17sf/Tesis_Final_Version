@@ -82,3 +82,60 @@ function validateTelefono(telefono) {
 
     return true;
 }
+
+
+
+
+document.getElementById('guardarEmpresa').addEventListener('submit', function(event) {
+    let isValid = true;
+
+    // Seleccionar todos los inputs, selects y textareas excepto convenio y cartaCompromiso
+    const requiredFields = document.querySelectorAll('#guardarEmpresa input:not(#convenio):not(#cartaCompromiso), #guardarEmpresa select, #guardarEmpresa textarea');
+
+    requiredFields.forEach(function(field) {
+        // Elimina cualquier mensaje de error previo
+        let errorMessage = field.parentNode.querySelector('.error-message');
+        if (errorMessage) {
+            errorMessage.remove();
+        }
+
+        // Validar si el campo está vacío
+        if (field.value.trim() === '') {
+            isValid = false;
+
+            // Crear y agregar mensaje de error
+            const error = document.createElement('span');
+            error.className = 'error-message';
+            error.style.color = 'red';
+            error.textContent = 'Este campo es requerido.';
+            field.parentNode.appendChild(error);
+        }
+
+        // Añadir un evento de input para eliminar el mensaje de error cuando el usuario escriba
+        field.addEventListener('input', function() {
+            let errorMessage = field.parentNode.querySelector('.error-message');
+            if (errorMessage) {
+                errorMessage.remove();
+            }
+        });
+    });
+
+    if (!isValid) {
+        event.preventDefault(); // Evita el envío del formulario
+    }
+});
+
+function displayFileName(input) {
+    const fileText = input.parentNode.querySelector('.fileText');
+    if (input.files && input.files.length > 0) {
+        fileText.textContent = input.files[0].name;
+    } else {
+        fileText.innerHTML = '<i class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir el documento';
+    }
+}
+
+function removeFile(button) {
+    const input = button.parentNode.querySelector('input[type="file"]');
+    input.value = '';
+    displayFileName(input);
+}

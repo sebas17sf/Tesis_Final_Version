@@ -922,11 +922,8 @@ class DocumentoController extends Controller
             }
 
             // Obtener la asignación del estudiante
-            $asignacionProyecto = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)
-                ->whereHas('estudiante', function ($query) {
-                    $query->where('estado', 'Aprobado');
-                })
-                ->first();
+            $asignacionProyecto = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->first();
+
 
             // Verificar si está asignado a un proyecto
             if ($asignacionProyecto == null) {

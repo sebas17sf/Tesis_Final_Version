@@ -32,38 +32,33 @@
 
             <div class="container">
 
-                <form action="{{ route('admin.guardarEmpresa') }}" method="POST" enctype="multipart/form-data">
+                <form id="guardarEmpresa" action="{{ route('admin.guardarEmpresa') }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
-
                             <div class="form-group">
                                 <label for="nombreEmpresa">Nombre de la Empresa:</label>
                                 <input type="text" class="form-control input" id="nombreEmpresa" name="nombreEmpresa"
-                                    placeholder="Ingrese el Nombre de la Empresa" required pattern="[A-Za-zÁ-úñÑ\s]+"
-                                    title="Ingrese solo letras (sin caracteres numéricos)">
-                                <span id="error-message-nombre" style="color: red; display: none;">Debe ingresar solo
-                                    caracteres</span>
+                                    placeholder="Ingrese el Nombre de la Empresa">
+                                <small id="error-message-nombre" style="color: red; display: none;">Debe ingresar solo
+                                    caracteres</small>
                             </div>
-
-
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="rucEmpresa">RUC de la Empresa:</label>
                                 <input type="text" class="form-control input" id="rucEmpresa" name="rucEmpresa"
-                                    placeholder="Ingrese RUC (13 dígitos)" required pattern="[0-9]{13}"
-                                    title="Ingrese 13 dígitos numéricos">
-                                <span id="error-message-rucEmpresa" style="color: red;"></span>
+                                    placeholder="Ingrese RUC (13 dígitos)">
+                                <small id="error-message-rucEmpresa" style="color: red;"></small>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="provincia">Provincia:</label>
-                                <select class="form-control input input-select" id="provincia" name="provincia" required>
-                                    <option value="" disabled selected>Selecciona una provincia</option>
+                                <select class="form-control input input-select" id="provincia" name="provincia">
                                     <option value="" disabled selected>Selecciona una provincia</option>
                                     <option value="Azuay">Azuay</option>
                                     <option value="Bolívar">Bolívar</option>
@@ -96,68 +91,64 @@
                             <div class="form-group">
                                 <label for="ciudad">Ciudad:</label>
                                 <input class="form-control input" id="ciudad" name="ciudad"
-                                    placeholder="Ingrese la Ciudad" required>
+                                    placeholder="Ingrese la Ciudad">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="direccion">Dirección:</label>
                                 <input class="form-control input" id="direccion" name="direccion"
-                                    placeholder="Ingrese la Direccion" required>
+                                    placeholder="Ingrese la Direccion">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="correo">Correo de contacto de la Empresa:</label>
                                 <input type="email" class="form-control input" id="correo" name="correo"
-                                    placeholder="Ingrese el Correo de la Empresa" required>
+                                    placeholder="Ingrese el Correo de la Empresa">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="nombreContacto">Nombre del contacto de la Empresa:</label>
-                                <input type="text" class="form-control input" id="nombreContacto"
-                                    name="nombreContacto" placeholder="Ingrese el Nombre del contacto de la Empresa"
-                                    required>
+                                <input type="text" class="form-control input" id="nombreContacto" name="nombreContacto"
+                                    placeholder="Ingrese el Nombre del contacto de la Empresa">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="telefonoContacto">Teléfono del contacto de la Empresa:</label>
                                 <input type="text" class="form-control input" id="telefonoContacto"
-                                    name="telefonoContacto" placeholder="Ingrese el celular de la Empresa (10 dígitos)"
-                                    required pattern="09[0-9]{8}" title="Ingrese 10 dígitos numéricos">
-                                <span id="error-message-telefono" style="color: red; display: none;">Número de teléfono no
-                                    válido</span>
+                                    name="telefonoContacto" placeholder="Ingrese el celular de la Empresa (10 dígitos)">
+                                <small id="error-message-telefono" style="color: red; display: none;">Número de teléfono no
+                                    válido</small>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="actividadesMacro">Actividades Macro requeridas:</label>
                                 <textarea class="form-control input" id="actividadesMacro" name="actividadesMacro" rows="4"
-                                    placeholder="Ingrese las actividades macro requeridas" required></textarea>
+                                    placeholder="Ingrese las actividades macro requeridas"></textarea>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="cuposDisponibles">Cupos Disponibles:</label>
                                 <input type="text" class="form-control input" id="cuposDisponibles"
-                                    name="cuposDisponibles" placeholder="Ingrese los cupos disponibles para la Empresa"
-                                    required pattern="[0-9]*" title="Solo se permiten números">
+                                    name="cuposDisponibles" placeholder="Ingrese los cupos disponibles para la Empresa">
                             </div>
                         </div>
                         <div class="col-md-6">
-
                             <div class="form-group">
                                 <label for="cartaCompromiso">Carta Compromiso (PDF):</label>
                                 <div class="input input_file">
-                                    <span id="fileText" class="fileText"><i
+                                    <small id="fileText" class="fileText"><i
                                             class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir el
-                                        documento</span>
+                                        documento</small>
                                     <input type="file" class="form-control-file input input_file" id="cartaCompromiso"
                                         name="cartaCompromiso" onchange="displayFileName(this)">
-                                    <span title="Eliminar archivo" onclick="removeFile(this)"
-                                        class="remove-icon">✖</span>
+                                    <small title="Eliminar archivo" onclick="removeFile(this)"
+                                        class="remove-icon">✖</small>
                                 </div>
                             </div>
                         </div>
@@ -165,26 +156,24 @@
                             <div class="form-group">
                                 <label for="convenio">Convenio (PDF):</label>
                                 <div class="input input_file">
-                                    <span id="fileText" class="fileText"><i
+                                    <small id="fileText" class="fileText"><i
                                             class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí
                                         para
-                                        subir el documento</span>
+                                        subir el documento</small>
                                     <input type="file" class="form-control-file input input_file" id="convenio"
                                         name="convenio" onchange="displayFileName(this)">
-                                    <span title="Eliminar archivo" onclick="removeFile(this)"
-                                        class="remove-icon">✖</span>
+                                    <small title="Eliminar archivo" onclick="removeFile(this)"
+                                        class="remove-icon">✖</small>
                                 </div>
                             </div>
-
                         </div>
-
                         <center>
-
                             <button type="submit" class="button1 efects_button">Guardar Empresa</button>
-
                         </center>
-
+                    </div>
                 </form>
+
+
             </div>
         </section>
         <br>
@@ -196,7 +185,7 @@
                 <div class="contenedor_botones">
                     <!-- Botones -->
                     <div class="tooltip-container">
-                        <span class="tooltip-text">Excel</span>
+                        <small class="tooltip-text">Excel</small>
                         <form action="{{ route('coordinador.reportesEmpresas') }}" method="post">
                             @csrf
                             <button type="submit" class="button3 efects_button btn_excel">
@@ -208,7 +197,7 @@
 
                     <!-- Botón de Importar archivo -->
                     <div class="tooltip-container">
-                        <span class="tooltip-text">Importar archivo</span>
+                        <small class="tooltip-text">Importar archivo</small>
                         <button type="button" class="button3 efects_button btn_copy"
                             onclick="openCard('cardImportarArchivo');">
                             <i class="fa fa-upload"></i>
@@ -218,22 +207,23 @@
                     <!-- Card de Importar archivo -->
                     <div class="draggable-card1_4" id="cardImportarArchivo" style="display: none;">
                         <div class="card-header">
-                            <span class="card-title">Importar archivo</span>
+                            <small class="card-title">Importar archivo</small>
                             <button type="button" class="close" onclick="closeCard('cardImportarArchivo')"><i
                                     class="fa-thin fa-xmark"></i></button>
                         </div>
                         <div class="card-body">
-                            <form id="idModalImportar" action="{{ route('import-empresas') }}" method="POST" enctype="multipart/form-data">
+                            <form id="idModalImportar" action="{{ route('import-empresas') }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
                                     <div class="input_file input">
-                                        <span id="fileText2" class="fileText">
+                                        <small id="fileText2" class="fileText">
                                             <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
-                                        </span>
+                                        </small>
                                         <input type="file" class="form-control-file input input_file" id="file2"
                                             name="file" onchange="displayFileName(this, 'fileText2')" required>
-                                        <span title="Eliminar archivo" onclick="removeFile(this)"
-                                            class="remove-icon">✖</span>
+                                        <small title="Eliminar archivo" onclick="removeFile(this)"
+                                            class="remove-icon">✖</small>
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex justify-content-center align-items-center">
@@ -330,7 +320,7 @@
                                                             <i class="material-icons">cloud_download</i>
                                                         </a>
                                                     @else
-                                                        <span class="text-muted">NO DISPONIBLE</span>
+                                                        <small class="text-muted">NO DISPONIBLE</small>
                                                     @endif
                                                 </td>
 
@@ -341,7 +331,7 @@
                                                             <i class="material-icons">cloud_download</i>
                                                         </a>
                                                     @else
-                                                        <span class="text-muted">NO DISPONIBLE</span>
+                                                        <small class="text-muted">NO DISPONIBLE</small>
                                                     @endif
                                                 </td>
 
@@ -416,7 +406,7 @@
 
                                     @if ($empresas->onFirstPage())
                                         <li class="page-item disabled">
-                                            <span class="page-link">Anterior</span>
+                                            <small class="page-link">Anterior</small>
                                         </li>
                                     @else
                                         <li class="page-item">
@@ -428,7 +418,7 @@
                                     @foreach ($empresas->getUrlRange(1, $empresas->lastPage()) as $page => $url)
                                         @if ($page == $empresas->currentPage())
                                             <li class="page-item active">
-                                                <span class="page-link">{{ $page }}</span>
+                                                <small class="page-link">{{ $page }}</small>
                                             </li>
                                         @else
                                             <li class="page-item">
@@ -445,7 +435,7 @@
                                         </li>
                                     @else
                                         <li class="page-item disabled">
-                                            <span class="page-link">Siguiente</span>
+                                            <small class="page-link">Siguiente</small>
                                         </li>
                                     @endif
 
@@ -531,7 +521,7 @@
             document.getElementById(fileTextId).textContent = fileName;
         }
 
-        function removeFile(span) {
+        function removeFile(small) {
             const fileInput = document.getElementById('file2');
             fileInput.value = ''; // Limpiar el input file
             document.getElementById('fileText2').textContent = 'Haz clic aquí para subir el documento'; // Resetear el texto
@@ -597,7 +587,15 @@
 
 
 
+<style>
+    .error-message {
+    font-size: 0.805em; /* Ajusta el tamaño del texto */
+    color: red;
+    margin-top: 0.25em;
+    display: block;
+}
 
+</style>
 
 
 @endsection

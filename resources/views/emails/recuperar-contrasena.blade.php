@@ -84,7 +84,7 @@
 
 <body>
     <div class="container">
-    <img src="{{ asset('img/logos/itin-presencial.png') }}" alt="Redes Sociales">
+        <img src="cid:itin-presencial.png" alt="Redes Sociales">
 
         <h1>Restablecimiento de contraseña</h1>
         <p>Recibes este correo porque has solicitado restablecer tu contraseña en nuestro sistema.</p>
