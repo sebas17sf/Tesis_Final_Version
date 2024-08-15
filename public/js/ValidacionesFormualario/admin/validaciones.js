@@ -96,3 +96,77 @@ document.getElementById('formularioEditarMaestro').addEventListener('submit', fu
         event.preventDefault();
     }
 });
+
+document.getElementById('formAgregarProyectos').addEventListener('submit', function(event) {
+    let valid = true;
+
+    // Obtener los campos
+    const nombreProyecto = document.getElementById('NombreProyecto');
+    const directorProyecto = document.getElementById('DirectorProyecto');
+    const descripcionProyecto = document.getElementById('DescripcionProyecto');
+    const departamentoTutor = document.getElementById('DepartamentoTutor');
+    const fechaInicio = document.getElementById('FechaInicio');
+    const fechaFinalizacion = document.getElementById('FechaFinalizacion');
+    const estado = document.getElementById('Estado');
+
+    // Validar Nombre del Proyecto
+    if (nombreProyecto.value.trim() === '') {
+        valid = false;
+        document.getElementById('NombreProyectoError').style.display = 'block';
+    } else {
+        document.getElementById('NombreProyectoError').style.display = 'none';
+    }
+
+    // Validar Director del Proyecto
+    if (directorProyecto.value === '') {
+        valid = false;
+        document.getElementById('DirectorProyectoError').style.display = 'block';
+    } else {
+        document.getElementById('DirectorProyectoError').style.display = 'none';
+    }
+
+    // Validar Descripción del Proyecto
+    if (descripcionProyecto.value.trim() === '') {
+        valid = false;
+        document.getElementById('DescripcionProyectoError').style.display = 'block';
+    } else {
+        document.getElementById('DescripcionProyectoError').style.display = 'none';
+    }
+
+    // Validar Departamento Tutor
+    if (departamentoTutor.value === '') {
+        valid = false;
+        document.getElementById('DepartamentoTutorError').style.display = 'block';
+    } else {
+        document.getElementById('DepartamentoTutorError').style.display = 'none';
+    }
+
+    // Validar Fecha de Inicio
+    if (fechaInicio.value === '') {
+        valid = false;
+        document.getElementById('FechaInicioError').style.display = 'block';
+    } else {
+        document.getElementById('FechaInicioError').style.display = 'none';
+    }
+
+    // Validar Fecha de Finalización
+    if (fechaFinalizacion.value === '') {
+        valid = false;
+        document.getElementById('FechaFinalizacionError').style.display = 'block';
+    } else {
+        document.getElementById('FechaFinalizacionError').style.display = 'none';
+    }
+
+    // Validar Estado del Proyecto
+    if (estado.value === '#') {
+        valid = false;
+        document.getElementById('EstadoError').style.display = 'block';
+    } else {
+        document.getElementById('EstadoError').style.display = 'none';
+    }
+
+    // Prevenir envío si no es válido
+    if (!valid) {
+        event.preventDefault();
+    }
+});

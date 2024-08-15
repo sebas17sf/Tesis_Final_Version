@@ -1079,7 +1079,7 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             // Maneja cualquier excepción que ocurra durante el proceso y registra el error
             return redirect()
-                ->route('coordinador.agregarEmpresa')
+                ->route('admin.agregarEmpresa')
                 ->with('error', 'Ocurrió un error al guardar la empresa: ' . $e->getMessage());
         }
     }
@@ -1114,7 +1114,8 @@ class AdminController extends Controller
     }
 
     public function eliminarEmpresa($id)
-    {
+{
+    try {
         $empresa = Empresa::find($id);
 
         if (!$empresa) {
@@ -1124,7 +1125,11 @@ class AdminController extends Controller
         $empresa->delete();
 
         return redirect()->route('admin.agregarEmpresa')->with('success', 'Empresa eliminada exitosamente.');
+    } catch (\Exception $e) {
+         return redirect()->back()->with('error', 'No se puede eliminar la empresa. ');
     }
+}
+
     ///editar empresa///////////////////
 
     public function editarEmpresa($id)
