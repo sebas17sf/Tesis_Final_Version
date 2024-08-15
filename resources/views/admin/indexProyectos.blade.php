@@ -455,12 +455,12 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="fechaInicio">Fecha inicio</label>
-                                                <input type="date" class="input" name="fechaInicio"
+                                                <input type="date" class=" form-control input input_f" name="fechaInicio"
                                                     id="fechaInicio">
                                             </div>
                                             <div class="form-group">
                                                 <label for="fechaFin">Fecha Fin</label>
-                                                <input type="date" class="input" name="fechaFin" id="fechaFin">
+                                                <input type="date" class=" form-control input input_f" name="fechaFin" id="fechaFin">
                                             </div>
                                         </form>
 
