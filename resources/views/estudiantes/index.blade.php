@@ -29,61 +29,63 @@
         <h4><b>
             <div class="icon-sidebar-item">Historial Estudiante</div>
         </b></h4>
-        <div class="mat-elevation-z8 contenedor_general1">
-            <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
-                <!-- Botones -->
-                <div class="contenedor_botones">
-                    <form action="{{ route('estudiantes.certificadoMatricula') }}" method="get" class="mr-2">
-                        <div class="tooltip-container">
-                            <span class="tooltip-text">Pdf</span>
-                            <button type="submit" class="button3_1_1 btn_pdf" tooltipPosition="top">
-                                <i class="fa-solid fa-file-pdf"></i>
-                            </button>
-                        </div>
-                    </form>
-                </div>
+        <hr>
+        <div style="display: flex; align-items: flex-start;">
+    <!-- Tarjeta (Card) -->
+    <div class="cards" style="margin-right: 20px;">
+        <form action="{{ route('estudiantes.certificadoMatricula') }}" method="get" class="mr-2">
+            <div class="tooltip-container">
+                <input type="hidden" name="tipoDocumentos" id="tipoDocumentos2">
+                <button type="submit" class="card-button">
+                    <span><b>REPORTE DE SEGUIMIENTO DE PRÁCTICAS</b></span>
+                    <i class="fa-solid fa-file-pdf"></i>
+                </button>
             </div>
-            <br>
-            <div class="contenedor_tabla">
-                <div class="table-container mat-elevation-z8">
-                    <div id="tablaProyectos">
-                        <table class="mat-mdc-table">
-                            <thead class="ng-star-inserted">
-                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio1">PROCESO</th>
-                                    <th class="tamanio2">REENVIAR</th>
-                                </tr>
-                            </thead>
-                            <tbody class="mdc-data-table__content ng-star-inserted">
-                                <tr>
-                                    <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                        @if ($estudiante->estado == 'Aprobado')
-                                            {{ strtoupper('Vinculacion') }}
-                                        @elseif ($estudiante->estado == 'Aprobado-practicas')
-                                            {{ strtoupper('Practicas') }}
-                                        @else
-                                            {{ strtoupper($estudiante->estado) }}
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <form method="POST" action="{{ route('estudiantes.resend', ['estudiante' => $estudiante->estudianteId]) }}">
-                                            @csrf
-                                            <div class="text-center">
-                                                <center>
-                                                    <button type="submit" class="button3">
-                                                        <i class="fa-solid fa-paper-plane-top"></i>
-                                                    </button>
-                                                </center>
-                                            </div>
-                                        </form>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        </form>
+    </div>
+
+    <!-- Tabla -->
+    <div class="contenedor_tabla" style="flex-grow: 1;">
+        <div class="table-container mat-elevation-z8">
+            <div id="tablaProyectos">
+                <table class="mat-mdc-table">
+                    <thead class="ng-star-inserted">
+                        <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                            <th class="tamanio1">PROCESO</th>
+                            <th class="tamanio2">REENVIAR</th>
+                        </tr>
+                    </thead>
+                    <tbody class="mdc-data-table__content ng-star-inserted">
+                        <tr>
+                            <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                @if ($estudiante->estado == 'Aprobado')
+                                    {{ strtoupper('Vinculacion') }}
+                                @elseif ($estudiante->estado == 'Aprobado-practicas')
+                                    {{ strtoupper('Practicas') }}
+                                @else
+                                    {{ strtoupper($estudiante->estado) }}
+                                @endif
+                            </td>
+                            <td>
+                                <form method="POST" action="{{ route('estudiantes.resend', ['estudiante' => $estudiante->estudianteId]) }}">
+                                    @csrf
+                                    <div class="text-center">
+                                        <center>
+                                            <button type="submit" class="button3">
+                                                <i class="fa-solid fa-paper-plane-top"></i>
+                                            </button>
+                                        </center>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
+</div>
+
         @if ($asignacionProyecto)
             <div class="mt-4">
                 <h4><b>Información Vinculación con la sociedad</b></h4>

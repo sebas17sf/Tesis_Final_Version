@@ -134,7 +134,8 @@
     <div class="draggable-card1_4" id="cardRegistroActividades" style="display: none;">
         <div class="card-header">
             <span class="card-title">Registro de Actividades</span>
-            <button type="button" class="close" onclick="closeCard('cardRegistroActividades')">&times;</button>
+            <button type="button" class="close" onclick="closeCard('cardRegistroActividades')"><i
+            class="fa-thin fa-xmark"></i></button>
         </div>
         <div class="card-body">
             <form action="{{ route('estudiantes.guardarActividad') }}" method="post" enctype="multipart/form-data">
@@ -191,13 +192,13 @@
         </div>
         <br>
         <div class="contenedor_tabla">
-            <div class="table-container mat-elevation-z8">
-                <div id="tablaProyectos">
-                    <table class="mat-mdc-table">
-                        <thead class="ng-star-inserted">
-                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                
-                                <th>FECHA</th>
+                <div class="table-container mat-elevation-z8">
+
+                    <div id="tablaDocentes">
+                        <table class="mat-mdc-table">
+                            <thead class="ng-star-inserted">
+                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                    <th>FECHA</th>
                                 <th class="tamanio">ACTIVIDADES</th>
                                 <th>NÚMERO DE HORAS</th>
                                 <th>NOMBRE DE ACTIVIDAD</th>
@@ -213,7 +214,7 @@
                                 </tr>
                             @else
                                 @foreach ($actividadesRegistradas as $actividad)
-                                    <tr>
+                                    <tr class="mat-mdc-row mdc-data-table__row ng-star-inserted">
                                         <td
                                             style="text-transform: uppercase; word-wrap: break-word; text-align: center; font-size: .7em;">
                                             {{ $actividad->fecha }}
@@ -266,7 +267,8 @@
                                                     <div class="card-header">
                                                         <span class="card-title input_select1">Editar Actividad</span>
                                                         <button type="button" class="close"
-                                                            onclick="closeCard('cardEditActividad{{ $actividad->idActividades }}')">&times;</button>
+                                                            onclick="closeCard('cardEditActividad{{ $actividad->idActividades }}')"><i
+                                                            class="fa-thin fa-xmark"></i></button>
                                                     </div>
                                                     <div class="card-body">
                                                         <form
@@ -388,7 +390,8 @@
                             onclick="setScrollAndAction('{{ route('estudiantes.guardarDatos') }}')"><i class="fa-regular fa-floppy-disk"></i></button>
                         </div>
                     <div class="tooltip-container">
-                        <a href="{{ route('estudiantes.recuperarDatos') }}" class="button3 efects_button btn_filtro"
+                    <span class="tooltip-text">Recuperar Datos</span>
+                        <a href="{{ route('estudiantes.recuperarDatos') }}" class="button3 colorr efects_button btn_filtro"
                             onclick="setScrollAndLink('{{ route('estudiantes.recuperarDatos') }}')"> <i class="fa-solid fa-window-restore"></i></a>
                             </div>
                             </div>
@@ -400,6 +403,7 @@
                         <div class="form-group col-md-3">
                             <label for="tipoInforme"><strong>Generar Informe:</strong></label>
                             <select class="form-control input input_select3" name="tipo" id="tipo">
+                                <option value="#" disabled selected>Seleccione una opción</option>
                                 <option value="grupal" {{ old('tipo') == 'grupal' ? 'selected' : '' }}>Grupal</option>
                                 <option value="individual" {{ old('tipo') == 'individual' ? 'selected' : '' }}>Individual
                                 </option>
@@ -483,15 +487,15 @@
                         @if (old('especificos'))
                             @foreach (old('especificos') as $index => $especifico)
                                 <div class="form-row">
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-md-4">
                                         <label for="especificos"><strong>Objetivos Específicos:</strong></label>
                                         <textarea name="especificos[]" class="textarea input input_select2" rows="4" required placeholder="Ingrese los objetivos específicos...">{{ $especifico }}</textarea>
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-md-4">
                                         <label for="alcanzados"><strong>Resultados alcanzados:</strong></label>
                                         <textarea name="alcanzados[]" class="textarea input input_select2" placeholder="Ingrese que limitaciones tuvo..." rows="4" required>{{ old('alcanzados')[$index] }}</textarea>
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-md-4">
                                         <label for="porcentaje"><strong>Porcentaje alcanzado:</strong></label>
                                         <textarea name="porcentaje[]" class="textarea input input_select2" rows="4" required>{{ old('porcentaje')[$index] }}</textarea>
                                     </div>
@@ -534,38 +538,35 @@
                     
                     <br>
                     <table class="four-column-table">
-                        <tr>
-                            <td>
-                                <label for="conclusiones1">¿Qué resultados de aprendizaje obtuvo realizando las actividades
-                                    de servicio comunitario?</label>
-                            </td>
-                            <td class="textarea-cell">
-                                <textarea id="conclusiones1" placeholder="Ingrese los resultados de aprendizaje..." class="textarea input input_select2" name="conclusiones1" rows="10">{{ old('conclusiones1') }}</textarea>
-                            </td>
-                            <td>
-                                <label for="conclusiones2">¿Qué limitaciones tuvo para realizar sus actividades de servicio
-                                    comunitario?</label>
-                            </td>
-                            <td class="textarea-cell">
-                                <textarea id="conclusiones2" placeholder="Ingrese que limitaciones tuvo..." class="textarea input input_select2" name="conclusiones2" rows="10">{{ old('conclusiones2') }}</textarea>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label for="conclusiones3">¿Qué éxitos alcanzados se obtuvo cuando realizó sus actividades
-                                    de servicio comunitario?</label>
-                            </td>
-                            <td class="textarea-cell">
-                                <textarea id="conclusiones3" class="textarea input input_select2" placeholder="Ingrese los éxitos alcanzadod..." name="conclusiones3" rows="10">{{ old('conclusiones3') }}</textarea>
-                            </td>
-                            <td>
-                                <label for="recomendaciones">Recomendaciones:</label>
-                            </td>
-                            <td class="textarea-cell">
-                                <textarea id="recomendaciones" class="textarea input input_select2" placeholder="Ingrese las recomendaciones..." name="recomendaciones" rows="10">{{ old('recomendaciones') }}</textarea>
-                            </td>
-                        </tr>
-                    </table>
+    <tr>
+        <td>
+            <label for="conclusiones1">¿Qué resultados de aprendizaje obtuvo realizando las actividades de servicio comunitario?</label>
+        </td>
+        <td class="textarea-cell">
+            <textarea id="conclusiones1" placeholder="Ingrese los resultados de aprendizaje..." class="form-control  input " name="conclusiones1" rows="4">{{ old('conclusiones1') }}</textarea>
+        </td>
+        <td>
+            <label for="conclusiones2">¿Qué limitaciones tuvo para realizar sus actividades de servicio comunitario?</label>
+        </td>
+        <td class="textarea-cell">
+            <textarea id="conclusiones2" placeholder="Ingrese que limitaciones tuvo..." class="form-control  input " name="conclusiones2" rows="4">{{ old('conclusiones2') }}</textarea>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="conclusiones3">¿Qué éxitos alcanzados se obtuvo cuando realizó sus actividades de servicio comunitario?</label>
+        </td>
+        <td class="textarea-cell">
+            <textarea id="conclusiones3" class="form-control  input input_select2" placeholder="Ingrese los éxitos alcanzados..." name="conclusiones3" rows="4">{{ old('conclusiones3') }}</textarea>
+        </td>
+        <td>
+            <label for="recomendaciones">Recomendaciones:</label>
+        </td>
+        <td class="textarea-cell">
+            <textarea id="recomendaciones" class="form-control  input input_select2" placeholder="Ingrese las recomendaciones..." name="recomendaciones" rows="4">{{ old('recomendaciones') }}</textarea>
+        </td>
+    </tr>
+</table>
                   <center>
                   <button type="submit" class="button1"
                             onclick="setScrollAndAction('{{ route('estudiantes.generarInforme') }}')">Crear
@@ -781,15 +782,15 @@
             const nuevoCampo = document.createElement('div');
             nuevoCampo.classList.add('form-row');
             nuevoCampo.innerHTML = `
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-4">
                 <label for="especificos"><strong>Objetivos Específicos:</strong></label>
                 <textarea name="especificos[]" class="form-control input" placeholder="Ingrese los objetivos específicos..." rows="4" required></textarea>
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-4">
                 <label for="alcanzados"><strong>Resultados alcanzados:</strong></label>
                 <textarea name="alcanzados[]" class="form-control input" placeholder="Ingrese los resultado alcanzados..." rows="4" required></textarea>
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-4">
                 <label for="porcentaje"><strong>Porcentaje alcanzado:</strong></label>
                 <textarea name="porcentaje[]" class="form-control input" placeholder="Ingrese el porcentaje alcanzado..." rows="4" required></textarea>
             </div>
@@ -853,44 +854,39 @@
         }
     </script>
 
+<style>
+    .textarea.form-control {
+         height: none !important;
+    }
+
+    .four-column-table {
+        width: 100%;
+        table-layout: fixed; /* Las columnas tendrán el mismo ancho */
+        border-collapse: separate;
+        border-spacing: 10px; /* Espaciado entre celdas */
+    }
+
+    .four-column-table td {
+        width: 25%; /* Cada columna ocupará el 25% del ancho total */
+        vertical-align: top;
+    }
+
+    .four-column-table .textarea-cell {
+        padding: 5px;
+    }
+
+    .four-column-table textarea {
+        width: 100%;
+        box-sizing: border-box; /* Asegura que el padding no expanda el ancho del textarea */
+    }
+    .colorr{
+        color: #ffffff !important;
+    }
+</style>
 
 
 
-
-    <style>
-        .contenedor_tabla .table-container table td {
-            width: 200px;
-            min-width: 150px;
-            font-size: 11px !important;
-            padding: .5rem !important;
-
-        }
-
-        .four-column-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .four-column-table td {
-            padding: 10px;
-            vertical-align: top;
-        }
-
-        .four-column-table label {
-            display: block;
-            font-weight: bold;
-        }
-
-        .four-column-table textarea {
-            width: 95%;
-            box-sizing: border-box;
-            font-size: 14px;
-        }
-
-        .four-column-table .textarea-cell {
-            width: 30%;
-        }
-    </style>
+   
 
 
 @endsection
