@@ -25,16 +25,10 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-
-        ////obtener todos los periodos
-        $periodos = Periodo::orderBy('inicioPeriodo', 'asc')->get();
-
+         $periodos = Periodo::orderBy('inicioPeriodo', 'asc')->get();
         $departamentos = Departamento::all();
 
-
-
-        // Validar los datos del formulario
-        $validatedData = $request->validate([
+         $validatedData = $request->validate([
             'cedula' => [
                 'required',
                 'string',
@@ -49,12 +43,15 @@ class AuthController extends Controller
             'cedula.string' => 'La cédula debe ser una cadena de texto',
         ]);
 
-        // Si los datos son válidos, continuamos aquí
         $estudiante = Estudiante::where('cedula', $request->cedula)->firstOrFail();
 
-        // Retornar la vista con los datos del estudiante
+        if ($estudiante->activacion) {
+            return redirect()->route('login')->with(['error' => 'No puede validar porque ya fue validado sus datos.']);
+        }
+
         return view('estudiantes.create', compact('estudiante', 'periodos', 'departamentos'));
     }
+
 
     public function mostrarRegistroDocente()
     {
@@ -97,7 +94,27 @@ class AuthController extends Controller
             'cedula' => 'required|string|max:20',
             'espe_id' => 'required|string|max:50',
             'departamento' => 'required|string|max:255',
-        ]);
+        ],
+            [
+                'nombres.required' => 'El nombre es requerido',
+                'nombres.string' => 'El nombre debe ser una cadena de texto',
+                'nombres.max' => 'El nombre no debe exceder los 255 caracteres',
+                'apellidos.required' => 'El apellido es requerido',
+                'apellidos.string' => 'El apellido debe ser una cadena de texto',
+                'apellidos.max' => 'El apellido no debe exceder los 255 caracteres',
+                'correo.required' => 'El correo es requerido',
+                'correo.string' => 'El correo debe ser una cadena de texto',
+                'correo.email' => 'El correo debe ser una dirección de correo válida',
+                'cedula.required' => 'La cédula es requerida',
+                'cedula.string' => 'La cédula debe ser una cadena de texto',
+                'cedula.max' => 'La cédula no debe exceder los 20 caracteres',
+                'espe_id.required' => 'La especialidad es requerida',
+                'espe_id.string' => 'La especialidad debe ser una cadena de texto',
+                'espe_id.max' => 'La especialidad no debe exceder los 50 caracteres',
+                'departamento.required' => 'El departamento es requerido',
+                'departamento.string' => 'El departamento debe ser una cadena de texto',
+                'departamento.max' => 'El departamento no debe exceder los 255 caracteres',
+            ]);
 
         $correoUsuario = explode("@", $validatedData['correo'])[0];
 
