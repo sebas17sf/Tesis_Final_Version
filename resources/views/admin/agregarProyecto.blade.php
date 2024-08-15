@@ -55,7 +55,7 @@
                             <div class="form-group">
                                 <label for="DirectorProyecto">Director del Proyecto:</label>
                                 <select name="DirectorProyecto" class="form-control input input-select" required>
-                                    <option value="">Seleccionar Director</option>
+                                    <option value="" disabled selected>Seleccionar Director</option>
                                     @foreach ($profesores as $profesor)
                                         <option value="{{ $profesor->id }}">
                                             {{ $profesor->apellidos }} {{ $profesor->nombres }} -

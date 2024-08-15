@@ -506,7 +506,8 @@
                             </div>
                             <div class="icon_remove" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
+                                    <span aria-hidden="true"><i
+                                    class="fa-thin fa-xmark"></i></span>
                                 </button>
                             </div>
                         </div>
@@ -898,7 +899,8 @@
     <div class="draggable-card1_3" id="draggableCardAsignarDocente">
         <div class="card-header">
             <span class="card-title">Asignar Docente</span>
-            <button type="button" class="close" onclick="$('#draggableCardAsignarDocente').hide()">&times;</button>
+            <button type="button" class="close" onclick="$('#draggableCardAsignarDocente').hide()"><i
+            class="fa-thin fa-xmark"></i></button>
         </div>
         <div class="card-body">
             <form method="POST" action="{{ route('admin.guardarDocentesProyectos') }}">
