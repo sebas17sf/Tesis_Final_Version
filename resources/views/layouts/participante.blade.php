@@ -78,7 +78,7 @@
                                     <i class="fa-solid fa-folder-open"></i>
                                 </div>
                                 <div class="name-sidebar-item">
-                                    <li>Documentacion</li>
+                                    <li>Documentación</li>
                                 </div>
                             </a>
                             <a href="{{ route('ParticipanteVinculacion.baremo') }}" class="p-element">

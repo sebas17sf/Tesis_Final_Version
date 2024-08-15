@@ -858,3 +858,6 @@ background-blend-mode: multiply;
 .input_f{
 padding-right: 75px;
 }
+.colorr{
+    color: #ffffff !important;
+}

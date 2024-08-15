@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Documentacion')
+@section('title', 'Documentación')
 @section('title_component', 'Generar Documentos')
 @section('content')
     @if (session('success'))

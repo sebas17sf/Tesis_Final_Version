@@ -114,12 +114,12 @@
                 <div class="contenedor_botones">
                     <div class="tooltip-container">
                     <span class="tooltip-text">Guardar Datos</span>
-        <a href="{{ route('participante.guardarDatos') }}" class="button3 efects_button btn_primary"
+        <a href="{{ route('participante.guardarDatos') }}" class="button3 efects_button btn_primary colorr"
                 onclick="guardarDatos(event)"><i class="fa-regular fa-floppy-disk"></i></a>
         </div>
         <div class="tooltip-container">
             <span class="tooltip-text">Recuperar Datos</span>
-            <a href="{{ route('participante.recuperarDatos') }}" class="button3 efects_button btn_filtro"> <i class="fa-solid fa-window-restore"></i></a>
+            <a href="{{ route('participante.recuperarDatos') }}" class="button3 efects_button btn_filtro colorr"> <i class="fa-solid fa-window-restore"></i></a>
             </div>
         </div>
     </div>
