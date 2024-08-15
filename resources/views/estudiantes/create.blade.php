@@ -30,7 +30,7 @@
             @endif
             <div class="container-fluid">
 
-                <form method="POST" action="{{ route('estudiantes.store') }}" class="custom-form">
+                <form method="POST" action="{{ route('estudiantes.store') }}" class="custom-form" id="studentForm">
                     @csrf
                     @method('PUT')
                     <div class="row">
@@ -38,12 +38,11 @@
                             <!-- Primera columna -->
                             <div class="form-group">
                                 <label for="Nombres">Nombres:</label>
-                                <input id="Nombres" type="text" class="form-control input" name="Nombres" required
-                                    autofocus placeholder="Ingrese sus Nombres" pattern="[A-Za-zÁ-úñÑ\s]+"
+                                <input id="Nombres" type="text" class="form-control input" name="Nombres" autofocus
+                                    placeholder="Ingrese sus Nombres" pattern="[A-Za-zÁ-úñÑ\s]+"
                                     title="Ingrese solo letras (sin caracteres especiales)"
                                     value="{{ old('Nombres', $estudiante->nombres ?? '') }}">
-                                <small id="error-message-name" style="color: red; display: none;">Debe ingresar solo
-                                    caracteres</small>
+                                <small id="error-message-name" style="color: red; display: none;"></small>
                                 @error('Nombres')
                                     <small style="color: red;">{{ $message }}</small>
                                 @enderror
@@ -53,10 +52,10 @@
                                     <div class="form-group">
                                         <label for="espe_id">ESPE ID:</label>
                                         <input id="espe_id" type="text" class="form-control input" name="espe_id"
-                                            required placeholder="Ingrese su ESPE ID"
+                                            placeholder="Ingrese su ESPE ID"
                                             value="{{ old('espe_id', $estudiante->espeId ?? '') }}">
-                                        <small id="espe_id_error" class="form-text text-danger" style="display: none;">El
-                                            ESPE ID es de 9 caracteres.</small>
+                                        <small id="espe_id_error" class="form-text text-danger"
+                                            style="color: red; display: none;"></small>
                                         @error('espe_id')
                                             <small style="color: red;">{{ $message }}</small>
                                         @enderror
@@ -78,18 +77,14 @@
                                     <div class="form-group">
                                         <label for="correo">Correo:</label>
                                         <input id="correo" type="email" class="form-control input" name="correo"
-                                            required placeholder="Ingrese su correo electrónico"
+                                            placeholder="Ingrese su correo electrónico"
                                             value="{{ old('correo', $estudiante->correo ?? '') }}">
-                                        <small id="error-message-email" style="color: red; display: none;">Correo no
-                                            válido</small>
+                                        <small id="error-message-email" style="color: red; display: none;"></small>
                                         @error('correo')
                                             <small style="color: red;">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
-
-
-
                             </div>
                         </div>
 
@@ -97,19 +92,18 @@
                             <!-- Segunda columna -->
                             <div class="form-group">
                                 <label for="Apellidos">Apellidos:</label>
-                                <input id="Apellidos" type="text" class="form-control input" name="Apellidos" required
+                                <input id="Apellidos" type="text" class="form-control input" name="Apellidos"
                                     placeholder="Ingrese sus Apellidos" pattern="[A-Za-zÁ-úñÑ\s]+"
                                     title="Ingrese solo letras (sin caracteres especiales)"
                                     value="{{ old('Apellidos', $estudiante->apellidos ?? '') }}">
-                                <small id="error-message-apellidos" style="color: red; display: none;">Debe ingresar solo
-                                    caracteres</small>
+                                <small id="error-message-apellidos" style="color: red; display: none;"></small>
                                 @error('Apellidos')
                                     <small style="color: red;">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label for="Carrera">Carrera:</label>
-                                <select class="form-control input input_select" id="Carrera" name="Carrera" required>
+                                <select class="form-control input input_select" id="Carrera" name="Carrera">
                                     <option value="">Seleccione su Carrera</option>
                                     <option value="Tecnologías de la información"
                                         {{ old('Carrera', $estudiante->carrera ?? '') == 'Tecnologías de la información' ? 'selected' : '' }}>
@@ -121,6 +115,7 @@
                                         {{ old('Carrera', $estudiante->carrera ?? '') == 'Biotecnologia' ? 'selected' : '' }}>
                                         Biotecnologia</option>
                                 </select>
+                                <small id="error-message-carrera" style="color: red; display: none;"></small>
                                 @error('Carrera')
                                     <small style="color: red;">{{ $message }}</small>
                                 @enderror
@@ -130,8 +125,7 @@
                                 <label for="departamento">Seleccione el departamento al que
                                     pertenece:</label>
                                 <select id="departamento" name="departamento" class="form-control input_select input">
-                                    <option value="">Seleccione un
-                                        departamento</option>
+                                    <option value="">Seleccione un departamento</option>
                                     @foreach ($departamentos as $departamento)
                                         <option value="{{ $departamento->departamento }}"
                                             data-nombre="{{ $departamento->departamento }}">
@@ -139,7 +133,7 @@
                                         </option>
                                     @endforeach
                                 </select>
-
+                                <small id="error-message-departamento" style="color: red; display: none;"></small>
                             </div>
                         </div>
 
@@ -147,7 +141,7 @@
                             <!-- Tercera columna con dos sub-columnas -->
                             <div class="form-group">
                                 <label for="Periodo">Periodo de ingreso:</label>
-                                <select class="form-control input input_select" id="Periodo" name="Periodo" required>
+                                <select class="form-control input input_select" id="Periodo" name="Periodo">
                                     <option value="">Seleccione su Periodo</option>
                                     @foreach ($periodos as $periodo)
                                         <option value="{{ $periodo->id }}"
@@ -157,6 +151,7 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                <small id="error-message-periodo" style="color: red; display: none;"></small>
                                 @error('Periodo')
                                     <small style="color: red;">{{ $message }}</small>
                                 @enderror
@@ -164,11 +159,11 @@
 
                             <div class="form-group">
                                 <label for="cedula">Cédula:</label>
-                                <input id="cedula" type="text" class="form-control input" name="cedula" required
+                                <input id="cedula" type="text" class="form-control input" name="cedula"
                                     pattern="[0-9]{10}" title="Ingrese un número de cédula válido (10 dígitos)"
                                     placeholder="Ingrese su número de cédula (10 dígitos)"
                                     value="{{ old('cedula', $estudiante->cedula ?? '') }}" readonly>
-                                <small id="error-message" style="color: red; display: none;">Cédula no válida</small>
+                                <small id="error-message-cedula" style="color: red; display: none;"></small>
                                 @error('cedula')
                                     <small style="color: red;">{{ $message }}</small>
                                 @enderror
@@ -181,11 +176,10 @@
                                         <span class="input-group-text input">+593</span>
                                     </div>
                                     <input id="celular" type="text" class="form-control input" name="celular"
-                                        required placeholder="Ingrese su número de celular"
+                                        placeholder="Ingrese su número de celular"
                                         value="{{ old('celular', $estudiante->celular ?? '') }}">
                                 </div>
-                                <small id="error-message-cell" style="color: red; display: none;">Número de celular no
-                                    válido</small>
+                                <small id="error-message-cell" style="color: red; display: none;"></small>
                                 @error('celular')
                                     <small style="color: red;">{{ $message }}</small>
                                 @enderror
@@ -200,6 +194,8 @@
                     </div>
                     <br>
                 </form>
+
+
             </div>
         </div>
     </div>
@@ -227,4 +223,7 @@
             document.getElementById('Periodo').addEventListener('change', actualizarCohorte);
         });
     </script>
+
+    <script src="{{ asset('js/ValidacionesFormualario/estudiantes/validaciones.js') }}"></script>
+
 @endsection
