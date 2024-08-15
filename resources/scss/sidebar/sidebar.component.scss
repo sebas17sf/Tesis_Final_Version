@@ -240,6 +240,10 @@
     justify-content: center;
     font-size: fonts.$icon-size - 0.5em;
     margin-top: -13px;
+
+    i {
+      color: colors.$white !important;
+    }
   }
 }
 .content-sidebar-hidden {

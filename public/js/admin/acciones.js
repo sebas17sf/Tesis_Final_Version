@@ -309,3 +309,11 @@ $(document).ready(function () {
     });
 });
 
+$(document).ready(function() {
+    $('#practicasMenu').click(function() {
+        $('#practicasSubmenu').slideToggle('fast');
+        // Alternar el ícono
+        var icon = $(this).find('.icon-sidebar-item-list i');
+        icon.toggleClass('fa-angle-down fa-angle-up');
+    });
+});

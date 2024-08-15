@@ -96,6 +96,9 @@
                                 <div class="name-sidebar-item">
                                     <li>Prácticas</li>
                                 </div>
+                                <div class="icon-sidebar-item-list color_a">
+                                <i class="fa-regular fa-angle-down"></i>
+                            </div>
                             </a>
 
                             <div class="item-list sublista">
