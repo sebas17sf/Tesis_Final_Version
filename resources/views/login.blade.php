@@ -52,7 +52,7 @@
                     </script>
                 @endif
 
-                <form class="switch_container" action="{{ route('login') }}" method="POST">
+                <form class="switch_container" action="{{ route('login') }}" method="POST" id="loginForm">
                     <img class="logo_login" src="/img/logos/logo_tesis.png" alt="Logo">
                     <h3 class="title" id="sesionTitulo">INICIAR SESIÓN</h3>
 
@@ -62,25 +62,26 @@
                         <div>
                             <!-- Campo de correo electrónico -->
                             <label class="description" for="CorreoElectronico">Usuario</label>
-                            <input class="input form_input" type="text" id="CorreoElectronico"
-                                name="CorreoElectronico" required placeholder="Ingrese su usuario">
+                            <input class="input form_input" type="text" id="CorreoElectronico" name="CorreoElectronico"
+                                   placeholder="Ingrese su usuario">
+                             <span id="CorreoElectronicoError" style="color: red; font-size: 14px; display: block; margin-top: 5px;"></span>
                         </div>
+
                         <!-- Campo de contraseña -->
                         <div>
                             <!-- Campo de contraseña -->
                             <label class="description" for="Contrasena">Contraseña</label>
                             <div class="input-group" style="position: relative;">
                                 <input type="password" class="input form_input" id="Contrasena" name="Contrasena"
-                                    placeholder="Ingrese su contraseña" required>
-
+                                       placeholder="Ingrese su contraseña">
                                 <div id="togglePassword"
-                                    style="position: absolute; top: 55%; right: 10px; transform: translateY(-50%); cursor: pointer;">
+                                     style="position: absolute; top: 55%; right: 10px; transform: translateY(-50%); cursor: pointer;">
                                     <span class="material-icons">
                                         visibility
                                     </span>
                                 </div>
-
                             </div>
+                            <span id="ContrasenaError" style="color: red; font-size: 14px; display: block; margin-top: 5px;"></span>
                         </div>
                     </div>
 
@@ -94,8 +95,6 @@
                         <button type="submit" class="button efects_button">Iniciar Sesión</button>
                     </div>
 
-                  
-
                 </form>
             </div>
         </div>
@@ -105,6 +104,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+    <script src="{{ asset('js/ValidacionesFormualario/login/validaciones.js') }}" type="module"></script>
+
 
     <script>
         let clickCount = 0;

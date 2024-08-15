@@ -516,7 +516,7 @@ class DocumentosVinculacion extends Controller
         if ($fechaInicio && $fechaFin) {
             $query->whereHas('periodo', function ($query) use ($fechaInicio, $fechaFin) {
                 $query->where('inicioPeriodo', '<=', $fechaFin)
-                      ->where('finPeriodo', '>=', $fechaInicio);
+                    ->where('finPeriodo', '>=', $fechaInicio);
             });
         }
 
@@ -909,8 +909,7 @@ class DocumentosVinculacion extends Controller
                         'carrera' => $row[7],
                         'departamento' => $row[6],
                         'comentario' => 'Importado desde Excel',
-                        'activacion' => true,
-                    ];
+                     ];
 
                     if ($estudiante->only(array_keys($newData)) != $newData) {
                         $updateCount++;
@@ -930,21 +929,16 @@ class DocumentosVinculacion extends Controller
 
 
 
+
     public function import(Request $request)
     {
-        // Cargar el archivo Excel
         $spreadsheet = IOFactory::load($request->file('file'));
         $worksheet = $spreadsheet->getActiveSheet();
-        $rows = $worksheet->toArray();
+        $dataRows = array_slice($worksheet->toArray(), 1);
 
-        // Excluir la primera fila (encabezados)
-        $dataRows = array_slice($rows, 1);
-
-        // Inicializar contadores
         $insertCount = 0;
         $updateCount = 0;
 
-        // Procesar cada fila del archivo Excel
         foreach ($dataRows as $row) {
             if (!empty($row[0]) && !empty($row[1]) && !empty($row[2]) && !empty($row[3]) && !empty($row[4]) && !empty($row[5]) && !empty($row[6])) {
                 $periodo = Periodo::where('numeroPeriodo', $row[5])->first();
@@ -961,18 +955,35 @@ class DocumentosVinculacion extends Controller
                     'carrera' => $row[7],
                     'departamento' => $row[6],
                     'comentario' => 'Importado desde Excel',
-                    'estado' => 'Desactivado',
-                    'activacion' => true,
+
                 ];
 
-                // Si el estudiante ya existe, actualizar
+                if ($estudiante && $estudiante->usuario) {
+                    $data['activacion'] = true;
+                }
+
                 if ($estudiante) {
                     $estudiante->update($data);
                     $updateCount++;
                 } else {
-                    // Si el estudiante no existe, crear nuevo
+                    $data['activacion'] = false;
                     Estudiante::create($data);
                     $insertCount++;
+                }
+
+                if ($estudiante) {
+                    $enEjecucion = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->exists();
+
+                    $practicaI = PracticaI::where('estudianteId', $estudiante->estudianteId)->exists();
+                    $practicaII = PracticaII::where('estudianteId', $estudiante->estudianteId)->exists();
+
+                    if ($enEjecucion) {
+                        $estudiante->update(['estado' => 'Aprobado']);
+                    }
+
+                    if ($practicaI) {
+                        $estudiante->update(['estado' => 'Aprobado-practicas']);
+                    }
                 }
             }
 
@@ -1041,7 +1052,6 @@ class DocumentosVinculacion extends Controller
                 $periodo = Periodo::where('numeroPeriodo', $row[20])->first();
                 $nrc = NrcVinculacion::where('nrc', $row[21])->first();
 
-
                 $nombreCompleto = $row[23];
                 $partesNombre = explode(" ", $nombreCompleto);
                 if (count($partesNombre) >= 2) {
@@ -1052,8 +1062,6 @@ class DocumentosVinculacion extends Controller
                         ->where('apellidos', 'like', '%' . $nombre . '%')
                         ->first();
                 }
-
-
 
                 $fechaInicio = $this->convertToDate($row[24]);
                 $fechaFinalizacion = $this->convertToDate($row[25]);
@@ -1162,10 +1170,9 @@ class DocumentosVinculacion extends Controller
             }
         }
 
-        return redirect()->back()->with([
-            'success' => 'Datos importados con éxito!',
-        ]);
+        return redirect()->back()->with('success', "Datos importados con éxito! Insertados: $insertCount, Actualizados: $updateCount");
     }
+
 
 
 
