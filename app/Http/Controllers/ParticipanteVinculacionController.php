@@ -343,7 +343,7 @@ class ParticipanteVinculacionController extends Controller
         $periodos = Periodo::all();
 
         $usuario = Auth::user();
-        $estudiante = $usuario->estudiante;
+        $estudiante = $usuario->profesorUniversidad;
 
         $penultimateSession = UsuariosSession::where('userId', $usuario->userId)
             ->latest()
@@ -358,6 +358,33 @@ class ParticipanteVinculacionController extends Controller
         }
 
         return view('ParticipanteVinculacion.cambiarCredencialesUsuario', compact('usuario', 'userSessions', 'estudiante', 'periodos'));
+    }
+
+
+    public function actualizarDatosParticipanterCredenciales(Request $request, $id)
+    {
+        // Validar los datos del formulario
+        $request->validate([
+            'firstname_student' => 'required',
+            'lastname_student' => 'required',
+            'Departamento' => 'required',
+        ]);
+
+
+
+
+         $estudiante = ProfesUniversidad::findOrFail($id);
+
+        // Actualizar los datos del estudiante
+        $estudiante->nombres = $request->input('firstname_student');
+        $estudiante->apellidos = $request->input('lastname_student');
+        $estudiante->departamento = $request->input('Departamento');
+
+        // Guardar los cambios
+        $estudiante->save();
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->back()->with('success', 'Datos del estudiante actualizados.');
     }
 
     private function getBrowserFromUserAgent($userAgent)

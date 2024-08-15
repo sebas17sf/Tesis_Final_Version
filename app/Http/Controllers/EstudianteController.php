@@ -963,7 +963,7 @@ class EstudianteController extends Controller
         'provincia.*' => 'required|string',
         'canton' => 'required|array',
         'canton.*' => 'required|string',
-        'razones' => 'required|string',
+        'razones' => 'required',
         'parroquia' => 'required|array',
         'parroquia.*' => 'required|string',
         'direccion' => 'required|array',
@@ -979,7 +979,7 @@ class EstudianteController extends Controller
         'conclusiones3' => 'required|string',
         'recomendaciones' => 'required|string'
     ]);
-
+ 
     $estudianteId = auth()->user()->estudiante->estudianteId;
 
     // Encuentra el registro existente o crea uno nuevo

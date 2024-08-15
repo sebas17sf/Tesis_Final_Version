@@ -436,8 +436,10 @@ class DocumentoController extends Controller
             'December' => 'Diciembre',
         ];
 
-        $fechaFormateada = date('d F Y', strtotime($fechaInicioProyecto));
+        $fechaFormateada = date('d F Y', strtotime($fechaFinProyecto));
         $fechaFormateada = strtr($fechaFormateada, $meses);
+
+
 
         $NombreProyecto = $primerEstudiante->nombreProyecto;
         $horasVinculacionConstante = 96;

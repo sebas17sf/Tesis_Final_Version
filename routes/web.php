@@ -510,10 +510,13 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/admin/credenciales', [AdminController::class, 'actualizarCredenciales'])->name('admin.updateCredenciales');
 
     Route::get('/director-vinculacion/cambio-credenciales', [DirectorVinculacionController::class, 'cambiarCredencialesUsuario'])->name('director_vinculacion.cambio-credenciales');
-    Route::put('/director-vinculacion/cambio-credenciales', [DirectorVinculacionController::class, 'actualizarCredenciales'])->name('director_vinculacion.updateCredenciales');
+    Route::put('/director-vinculacion/cambio-credenciales/{userId}', [DirectorVinculacionController::class, 'actualizarCredenciales'])->name('director_vinculacion.updateCredenciales');
+    Route::put('/director-vinculacion/cambio-datos/{id}', [DirectorVinculacionController::class, 'actualizarDatosDirectorCredenciales'])->name('director.updateDatos');
+
 
     Route::get('/participante-vinculacion/cambio-credenciales', [ParticipanteVinculacionController::class, 'cambiarCredencialesUsuario'])->name('participante-vinculacion.cambio-credenciales');
     Route::put('/participante-vinculacion/cambio-credenciales', [ParticipanteVinculacionController::class, 'actualizarCredenciales'])->name('participante-vinculacion.updateCredenciales');
+    Route::put('/participante-vinculacion/cambio/{id}', [ParticipanteVinculacionController::class, 'actualizarDatosParticipanterCredenciales'])->name('participante.updateDatos');
 
     Route::get('/estudiantes/cambio-credenciales', [EstudianteController::class, 'cambiarCredencialesUsuario'])->name('estudiantes.cambio-credenciales');
     Route::put('/estudiantes/cambio-credenciales/{userId}', [EstudianteController::class, 'actualizarCredenciales'])->name('estudiantes.actualizarCredenciales');

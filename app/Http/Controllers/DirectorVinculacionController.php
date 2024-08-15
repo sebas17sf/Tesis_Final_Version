@@ -614,7 +614,7 @@ class DirectorVinculacionController extends Controller
         $periodos = Periodo::all();
 
         $usuario = Auth::user();
-        $estudiante = $usuario->estudiante;
+        $estudiante = $usuario->profesorUniversidad;
 
         $penultimateSession = UsuariosSession::where('userId', $usuario->userId)
             ->latest()
@@ -650,33 +650,57 @@ class DirectorVinculacionController extends Controller
         }
     }
 
-    public function actualizarCredenciales(Request $request)
+    public function actualizarCredenciales(Request $request, $userId)
     {
         $request->validate([
-            'email' => 'required',
             'password' => 'required',
             'password_confirmation' => 'required',
-            'nombre' => 'required',
         ]);
 
         if ($request->password !== $request->password_confirmation) {
             return redirect()->back()->with('error', 'Las contraseñas no coinciden')->withInput();
         }
 
-        //////las credenciales deben ser minimo de 6 caracteres
         if (strlen($request->password) < 6) {
             return redirect()->back()->with('error', 'La contraseña debe tener al menos 6 caracteres')->withInput();
         }
 
-        $usuario = Auth::user();
+        $usuario = Usuario::find($userId);
 
-        $usuario->CorreoElectronico = $request->email;
-        $usuario->NombreUsuario = $request->nombre;
-        $usuario->Contrasena = bcrypt($request->password);
+        if (!$usuario) {
+            return redirect()->back()->with('error', 'Usuario no encontrado')->withInput();
+        }
 
+        $usuario->contrasena = bcrypt($request->password);
         $usuario->save();
 
-        return redirect()->route('director_vinculacion.index')->with('success', 'Credenciales actualizadas exitosamente');
+        return redirect()->back()->with('success', 'Contraseña actualizada.');
+    }
+
+    public function actualizarDatosDirectorCredenciales(Request $request, $id)
+    {
+        // Validar los datos del formulario
+        $request->validate([
+            'firstname_student' => 'required',
+            'lastname_student' => 'required',
+            'Departamento' => 'required',
+        ]);
+
+ 
+
+
+         $estudiante = ProfesUniversidad::findOrFail($id);
+
+        // Actualizar los datos del estudiante
+        $estudiante->nombres = $request->input('firstname_student');
+        $estudiante->apellidos = $request->input('lastname_student');
+        $estudiante->departamento = $request->input('Departamento');
+
+        // Guardar los cambios
+        $estudiante->save();
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->back()->with('success', 'Datos del estudiante actualizados.');
     }
 
 
