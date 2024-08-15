@@ -88,89 +88,94 @@
 
 
     <!-- Barra de navegación en el lado izquierdo -->
-    <section class="content-sidebar content-sidebar-hidden">
-
-        <div class="content scroll-small">
-            <div class="sidebar">
-                <a class="logo_site">
-                    <div class="img_logo">
-                        <img src="\img\logos\logo_tesis.png" alt="logo">
-                    </div>
-                    <div class="title-text">
-                        <p>VINCULACIÓN   Y PRÁCTICAS</p>
-                    </div>
-                </a>
-                <div class="links_site">
-                    <nav class="nav">
-                        <ul class="nav-list">
-                            <a class="p-element" href="{{ route('admin.index') }}">
-                                <div class="icon-sidebar-item">
-                                <i class="fa-solid fa-grid"></i>                                </div>
-                                <div class="name-sidebar-item">
-                                    <li>Panel Administrativo</li>
-                                </div>
-                            </a>
-                            <a href="{{ route('admin.indexProyectos') }}" class="p-element">
-                                <div class="icon-sidebar-item">
-                                    <i class="fa-solid fa-layer-plus"></i>
-                                </div>
-                                <div class="name-sidebar-item">
-                                    <li>Proyectos</li>
-                                </div>
-                            </a>
-
-                            <a href="{{ route('admin.estudiantes') }}" class="p-element">
-                                <div class="icon-sidebar-item">
-                                    <i class="fa-solid fa-users fontawesome"></i>
-                                </div>
-                                <div class="name-sidebar-item">
-                                    <li>Estudiantes</li>
-                                </div>
-                            </a>
-                            <a class="p-element submenu">
-                                <div class="icon-sidebar-item">
-                                    <i class="fa-solid fa-building"></i>
-                                </div>
-                                <div class="name-sidebar-item">
-                                    <li>Prácticas</li>
-                                </div>
-                            </a>
-
-                            <div class="item-list sublista">
-                                <a class="p-element mb-1 subitem" href="{{ route('admin.agregarEmpresa') }}">
-                                    <div class="icon-sidebar-item">
-                                        <i class="fa-solid fa-grid-2-plus"></i>
-                                    </div>
-                                    <div class="name-sidebar-item">
-                                        <li>Agregar Empresa</li>
-                                    </div>
-                                </a>
-                                <a class="p-element subitem" href="{{ route('admin.aceptarFaseI') }}">
-                                    <div class="icon-sidebar-item">
-                                        <i class="fa-solid fa-circle-check"></i>
-                                    </div>
-                                    <div class="name-sidebar-item">
-                                        <li>Aprobar Prácticas</li>
-                                    </div>
-                                </a>
-
-                            </div>
-                        </ul>
-                    </nav>
+    <!-- Barra de navegación en el lado izquierdo -->
+<section class="content-sidebar content-sidebar-hidden">
+    <div class="content scroll-small">
+        <div class="sidebar">
+            <a class="logo_site">
+                <div class="img_logo">
+                    <img src="\img\logos\logo_tesis.png" alt="logo">
                 </div>
+                <div class="title-text">
+                    <p>VINCULACIÓN Y PRÁCTICAS</p>
+                </div>
+            </a>
+            <div class="links_site">
+                <nav class="nav">
+                    <ul class="nav-list">
+                        <a class="p-element" href="{{ route('admin.index') }}">
+                            <div class="icon-sidebar-item">
+                                <i class="fa-solid fa-grid"></i>
+                            </div>
+                            <div class="name-sidebar-item">
+                                <li>Panel Administrativo</li>
+                            </div>
+                        </a>
+                        <a href="{{ route('admin.indexProyectos') }}" class="p-element">
+                            <div class="icon-sidebar-item">
+                                <i class="fa-solid fa-layer-plus"></i>
+                            </div>
+                            <div class="name-sidebar-item">
+                                <li>Proyectos</li>
+                            </div>
+                        </a>
+
+                        <a href="{{ route('admin.estudiantes') }}" class="p-element">
+                            <div class="icon-sidebar-item">
+                                <i class="fa-solid fa-users fontawesome"></i>
+                            </div>
+                            <div class="name-sidebar-item">
+                                <li>Estudiantes</li>
+                            </div>
+                        </a>
+
+                        <!-- Menu Prácticas -->
+                        <a class="p-element submenu" id="practicasMenu">
+                            <div class="icon-sidebar-item">
+                                <i class="fa-solid fa-building"></i>
+                            </div>
+                            <div class="name-sidebar-item">
+                                <li>Prácticas</li>
+                            </div>
+                            <div class="icon-sidebar-item-list color_a">
+                                <i class="fa-regular fa-angle-down"></i>
+                            </div>
+                        </a>
+
+                        <!-- Sublista -->
+                        <div class="item-list sublista">
+        <a class="p-element mb-1 subitem" href="{{ route('admin.agregarEmpresa') }}">
+            <div class="icon-sidebar-item">
+                <i class="fa-solid fa-grid-2-plus"></i>
+            </div>
+            <div class="name-sidebar-item">
+                <li>Agregar Empresa</li>
+            </div>
+        </a>
+        <a class="p-element subitem" href="{{ route('admin.aceptarFaseI') }}">
+            <div class="icon-sidebar-item">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div class="name-sidebar-item">
+                <li>Aprobar Prácticas</li>
+            </div>
+        </a>
+    </div>
+                    </ul>
+                </nav>
             </div>
             <div class="content-autors">
                 <span class="autors1">
-                    
                     <i>Designed by </i>
-      <b><a>Sebastian Flores</a></b>
-      <i> & </i>
-      <b><a>Karen Cueva</a></b>.
+                    <b><a>Sebastian Flores</a></b>
+                    <i> & </i>
+                    <b><a>Karen Cueva</a></b>.
                 </span>
             </div>
         </div>
-        </div>
-    </section>
+    </div>
+</section>
+
     <!-- SIDEBAR -->
     <section class="content-navbar dimension-nav dimension-nav-hidden">
     <!-- Toggle sidebar -->
@@ -288,9 +293,22 @@
         @if (session('token'))
             localStorage.setItem('token', '{{ session('token') }}');
         @endif
+
+        $(document).ready(function() {
+        $('#practicasMenu').click(function() {
+            $('#practicasSubmenu').slideToggle('fast');
+            // Alternar el ícono
+            var icon = $(this).find('.icon-sidebar-item-list i');
+            icon.toggleClass('fa-angle-down fa-angle-up');
+        });
+    });
     </script>
 
-
+<style>
+    .color_a{
+        color: #1d1d1d
+    }
+    </style>
 
 
 </body>
