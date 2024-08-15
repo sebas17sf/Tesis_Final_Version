@@ -102,56 +102,56 @@
                                                 <input class="number-input-calificar"
                                                     style="text-align:center; width: 50px;" type="number"
                                                     name="cumple_tareas[]" value="" step="0.01" required>
-                                                <span class="form-text text-danger error-message-calificar"
-                                                    style="display: none;">El valor debe estar entre 0 y 10</span>
+                                                <small class="form-text text-danger error-message-calificar"
+                                                    style="display: none;">El valor debe estar entre 0 y 10</small>
                                             </td>
                                             <td
                                                 style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                 <input class="number-input-calificar"
                                                     style="text-align:center; width: 50px;" type="number"
                                                     name="resultados_alcanzados[]" value="" step="0.01" required>
-                                                <span class="form-text text-danger error-message-calificar"
-                                                    style="display: none;">El valor debe estar entre 0 y 10</span>
+                                                <small class="form-text text-danger error-message-calificar"
+                                                    style="display: none;">El valor debe estar entre 0 y 10</small>
                                             </td>
                                             <td
                                                 style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                 <input class="number-input-calificar"
                                                     style="text-align:center; width: 50px;" type="number"
                                                     name="conocimientos_area[]" value="" step="0.01" required>
-                                                <span class="form-text text-danger error-message-calificar"
-                                                    style="display: none;">El valor debe estar entre 0 y 10</span>
+                                                <small class="form-text text-danger error-message-calificar"
+                                                    style="display: none;">El valor debe estar entre 0 y 10</small>
                                             </td>
                                             <td
                                                 style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                 <input class="number-input-calificar"
                                                     style="text-align:center; width: 50px;" type="number"
                                                     name="adaptabilidad[]" value="" step="0.01" required>
-                                                <span class="form-text text-danger error-message-calificar"
-                                                    style="display: none;">El valor debe estar entre 0 y 10</span>
+                                                <small class="form-text text-danger error-message-calificar"
+                                                    style="display: none;">El valor debe estar entre 0 y 10</small>
                                             </td>
                                             <td
                                                 style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                 <input class="number-input-calificar"
                                                     style="text-align:center; width: 50px;" type="number"
                                                     name="Aplicacion[]" value="" step="0.01" required>
-                                                <span class="form-text text-danger error-message-calificar"
-                                                    style="display: none;">El valor debe estar entre 0 y 10</span>
+                                                <small class="form-text text-danger error-message-calificar"
+                                                    style="display: none;">El valor debe estar entre 0 y 10</small>
                                             </td>
                                             <td
                                                 style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                 <input class="number-input-calificar"
                                                     style="text-align:center; width: 50px;" type="number"
                                                     name="capacidad_liderazgo[]" value="" step="0.01" required>
-                                                <span class="form-text text-danger error-message-calificar"
-                                                    style="display: none;">El valor debe estar entre 0 y 10</span>
+                                                <small class="form-text text-danger error-message-calificar"
+                                                    style="display: none;">El valor debe estar entre 0 y 10</small>
                                             </td>
                                             <td
                                                 style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                                 <input class="number-input-calificar"
                                                     style="text-align:center; width: 50px;" type="number"
                                                     name="asistencia_puntual[]" value="" step="0.01" required>
-                                                <span class="form-text text-danger error-message-calificar"
-                                                    style="display: none;">El valor debe estar entre 0 y 10</span>
+                                                <small class="form-text text-danger error-message-calificar"
+                                                    style="display: none;">El valor debe estar entre 0 y 10</small>
                                             </td>
                                             <td style="font-size: .7em; text-align: center; min-width: 10px !important;">
                                                 <input style="text-align:center;" class="input" type="hidden"
@@ -266,8 +266,8 @@
                                                 style="text-align:center; width: 50px;" type="number" name="tareas"
                                                 value="{{ $estudiante->notas->first()->tareas ?? '' }}" step="0.01"
                                                 disabled>
-                                            <span class="form-text text-danger error-message-calificados"
-                                                style="display: none;">El valor debe estar entre 0 y 10</span>
+                                            <small class="form-text text-danger error-message-calificados"
+                                                style="display: none;">El valor debe estar entre 0 y 10</small>
                                         </td>
                                         <td
                                             style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
@@ -276,8 +276,8 @@
                                                 name="resultados_alcanzados"
                                                 value="{{ $estudiante->notas->first()->resultadosAlcanzados ?? '' }}"
                                                 step="0.01" disabled>
-                                            <span class="form-text text-danger error-message-calificados"
-                                                style="display: none;">El valor debe estar entre 0 y 10</span>
+                                            <small class="form-text text-danger error-message-calificados"
+                                                style="display: none;">El valor debe estar entre 0 y 10</small>
                                         </td>
                                         <td
                                             style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
@@ -286,8 +286,8 @@
                                                 name="conocimientos_area"
                                                 value="{{ $estudiante->notas->first()->conocimientos ?? '' }}"
                                                 step="0.01" disabled>
-                                            <span class="form-text text-danger error-message-calificados"
-                                                style="display: none;">El valor debe estar entre 0 y 10</span>
+                                            <small class="form-text text-danger error-message-calificados"
+                                                style="display: none;">El valor debe estar entre 0 y 10</small>
                                         </td>
                                         <td
                                             style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
@@ -296,8 +296,8 @@
                                                 name="adaptabilidad"
                                                 value="{{ $estudiante->notas->first()->adaptabilidad ?? '' }}"
                                                 step="0.01" disabled>
-                                            <span class="form-text text-danger error-message-calificados"
-                                                style="display: none;">El valor debe estar entre 0 y 10</span>
+                                            <small class="form-text text-danger error-message-calificados"
+                                                style="display: none;">El valor debe estar entre 0 y 10</small>
                                         </td>
                                         <td
                                             style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
@@ -305,8 +305,8 @@
                                                 style="text-align:center; width: 50px;" type="number" name="Aplicacion"
                                                 value="{{ $estudiante->notas->first()->aplicacion ?? '' }}"
                                                 step="0.01" disabled>
-                                            <span class="form-text text-danger error-message-calificados"
-                                                style="display: none;">El valor debe estar entre 0 y 10</span>
+                                            <small class="form-text text-danger error-message-calificados"
+                                                style="display: none;">El valor debe estar entre 0 y 10</small>
                                         </td>
                                         <td
                                             style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
@@ -315,8 +315,8 @@
                                                 name="capacidad_liderazgo"
                                                 value="{{ $estudiante->notas->first()->CapacidadLiderazgo ?? '' }}"
                                                 step="0.01" disabled>
-                                            <span class="form-text text-danger error-message-calificados"
-                                                style="display: none;">El valor debe estar entre 0 y 10</span>
+                                            <small class="form-text text-danger error-message-calificados"
+                                                style="display: none;">El valor debe estar entre 0 y 10</small>
                                         </td>
                                         <td
                                             style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
@@ -325,8 +325,8 @@
                                                 name="asistencia_puntual"
                                                 value="{{ $estudiante->notas->first()->asistencia ?? '' }}"
                                                 step="0.01" disabled>
-                                            <span class="form-text text-danger error-message-calificados"
-                                                style="display: none;">El valor debe estar entre 0 y 10</span>
+                                            <small class="form-text text-danger error-message-calificados"
+                                                style="display: none;">El valor debe estar entre 0 y 10</small>
                                         </td>
 
                                         <td

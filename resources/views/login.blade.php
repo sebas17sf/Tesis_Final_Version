@@ -64,7 +64,7 @@
                             <label class="description" for="CorreoElectronico">Usuario</label>
                             <input class="input form_input" type="text" id="CorreoElectronico" name="CorreoElectronico"
                                    placeholder="Ingrese su usuario">
-                             <span id="CorreoElectronicoError" style="color: red; font-size: 14px; display: block; margin-top: 5px;"></span>
+                             <span id="CorreoElectronicoError" style="color: red; font-size: 10px; display: block; margin-top: 5px;"></span>
                         </div>
 
                         <!-- Campo de contraseña -->
@@ -81,7 +81,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <span id="ContrasenaError" style="color: red; font-size: 14px; display: block; margin-top: 5px;"></span>
+                            <span id="ContrasenaError" style="color: red; font-size: 10px; display: block; margin-top: 5px;"></span>
                         </div>
                     </div>
 

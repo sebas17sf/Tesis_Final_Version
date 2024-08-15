@@ -138,13 +138,27 @@ function submitForm(event) {
     });
 }
 
-function showAlert(alertId) {
+function showAlert(alertId, message, type = 'success') {
     const alert = document.getElementById(alertId);
+    alert.querySelector('.body').textContent = message;
     alert.style.display = 'flex';
+    
+    let timeoutDuration = 5000; // Duración por defecto: 5 segundos
+    
+    if (type === 'error') {
+        timeoutDuration = 10000; // Duración extendida para errores: 10 segundos
+    }
+    
     setTimeout(() => {
         closeAlert(alertId);
-    }, 9000); // Ocultar automáticamente después de 5 segundos
+    }, timeoutDuration);
 }
+
+function closeAlert(alertId) {
+    const alert = document.getElementById(alertId);
+    alert.style.display = 'none';
+}
+
 
 function closeAlert(alertId) {
     const alert = document.getElementById(alertId);

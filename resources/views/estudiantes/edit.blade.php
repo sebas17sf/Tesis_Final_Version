@@ -120,7 +120,7 @@
             <div class="form-group">
                 <label for="cedula">Cédula:</label>
                 <input id="cedula" type="text" class="form-control input" name="cedula" value="{{ $estudiante->cedula }}" required pattern="[0-9]{10}" title="Ingrese un número de cédula válido (10 dígitos)" placeholder="Ingrese su número de cédula (10 dígitos)">
-                <span id="error-message" style="color: red; display: none;">Cédula no válida</span>
+                <small id="error-message" style="color: red; display: none;">Cédula no válida</small>
             </div>
 
             <div class="form-group">

@@ -142,13 +142,13 @@
                             <div class="form-group">
                                 <label for="cartaCompromiso">Carta Compromiso (PDF):</label>
                                 <div class="input input_file">
-                                    <small id="fileText" class="fileText"><i
+                                    <span id="fileText" class="fileText"><i
                                             class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir el
-                                        documento</small>
+                                        documento</span>
                                     <input type="file" class="form-control-file input input_file" id="cartaCompromiso"
                                         name="cartaCompromiso" onchange="displayFileName(this)">
-                                    <small title="Eliminar archivo" onclick="removeFile(this)"
-                                        class="remove-icon">✖</small>
+                                    <span title="Eliminar archivo" onclick="removeFile(this)"
+                                        class="remove-icon">✖</span>
                                 </div>
                             </div>
                         </div>
@@ -156,14 +156,14 @@
                             <div class="form-group">
                                 <label for="convenio">Convenio (PDF):</label>
                                 <div class="input input_file">
-                                    <small id="fileText" class="fileText"><i
+                                    <span id="fileText" class="fileText"><i
                                             class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí
                                         para
-                                        subir el documento</small>
+                                        subir el documento</span>
                                     <input type="file" class="form-control-file input input_file" id="convenio"
                                         name="convenio" onchange="displayFileName(this)">
-                                    <small title="Eliminar archivo" onclick="removeFile(this)"
-                                        class="remove-icon">✖</small>
+                                    <span title="Eliminar archivo" onclick="removeFile(this)"
+                                        class="remove-icon">✖</span>
                                 </div>
                             </div>
                         </div>
@@ -185,7 +185,7 @@
                 <div class="contenedor_botones">
                     <!-- Botones -->
                     <div class="tooltip-container">
-                        <small class="tooltip-text">Excel</small>
+                        <span class="tooltip-text">Excel</span>
                         <form action="{{ route('coordinador.reportesEmpresas') }}" method="post">
                             @csrf
                             <button type="submit" class="button3 efects_button btn_excel">
@@ -197,7 +197,7 @@
 
                     <!-- Botón de Importar archivo -->
                     <div class="tooltip-container">
-                        <small class="tooltip-text">Importar archivo</small>
+                        <span class="tooltip-text">Importar archivo</span>
                         <button type="button" class="button3 efects_button btn_copy"
                             onclick="openCard('cardImportarArchivo');">
                             <i class="fa fa-upload"></i>
@@ -207,7 +207,7 @@
                     <!-- Card de Importar archivo -->
                     <div class="draggable-card1_4" id="cardImportarArchivo" style="display: none;">
                         <div class="card-header">
-                            <small class="card-title">Importar archivo</small>
+                            <span class="card-title">Importar archivo</span>
                             <button type="button" class="close" onclick="closeCard('cardImportarArchivo')"><i
                                     class="fa-thin fa-xmark"></i></button>
                         </div>
@@ -217,13 +217,13 @@
                                 @csrf
                                 <div class="form-group">
                                     <div class="input_file input">
-                                        <small id="fileText2" class="fileText">
+                                        <span id="fileText2" class="fileText">
                                             <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
-                                        </small>
+                                        </span>
                                         <input type="file" class="form-control-file input input_file" id="file2"
                                             name="file" onchange="displayFileName(this, 'fileText2')" required>
-                                        <small title="Eliminar archivo" onclick="removeFile(this)"
-                                            class="remove-icon">✖</small>
+                                        <sspan title="Eliminar archivo" onclick="removeFile(this)"
+                                            class="remove-icon">✖</span>
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex justify-content-center align-items-center">
@@ -320,7 +320,7 @@
                                                             <i class="material-icons">cloud_download</i>
                                                         </a>
                                                     @else
-                                                        <small class="text-muted">NO DISPONIBLE</small>
+                                                        <span class="text-muted">NO DISPONIBLE</span>
                                                     @endif
                                                 </td>
 
@@ -331,7 +331,7 @@
                                                             <i class="material-icons">cloud_download</i>
                                                         </a>
                                                     @else
-                                                        <small class="text-muted">NO DISPONIBLE</small>
+                                                        <span class="text-muted">NO DISPONIBLE</span>
                                                     @endif
                                                 </td>
 
@@ -406,7 +406,7 @@
 
                                     @if ($empresas->onFirstPage())
                                         <li class="page-item disabled">
-                                            <small class="page-link">Anterior</small>
+                                            <a class="page-link">Anterior</a>
                                         </li>
                                     @else
                                         <li class="page-item">
@@ -418,7 +418,7 @@
                                     @foreach ($empresas->getUrlRange(1, $empresas->lastPage()) as $page => $url)
                                         @if ($page == $empresas->currentPage())
                                             <li class="page-item active">
-                                                <small class="page-link">{{ $page }}</small>
+                                                <a class="page-link">{{ $page }}</a>
                                             </li>
                                         @else
                                             <li class="page-item">
@@ -435,7 +435,7 @@
                                         </li>
                                     @else
                                         <li class="page-item disabled">
-                                            <small class="page-link">Siguiente</small>
+                                            <a class="page-link">Siguiente</a>
                                         </li>
                                     @endif
 
@@ -589,7 +589,7 @@
 
 <style>
     .error-message {
-    font-size: 0.805em; /* Ajusta el tamaño del texto */
+    font-size: 10px; /* Ajusta el tamaño del texto */
     color: red;
     margin-top: 0.25em;
     display: block;

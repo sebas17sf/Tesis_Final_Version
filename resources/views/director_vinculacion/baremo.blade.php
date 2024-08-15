@@ -66,7 +66,7 @@
                                     <center><input type="number" name="puntaje_proyecto1"
                                             class="puntaje_proyecto input input_select2 text-center " id="tabla1" />
                                     </center>
-                                    <span id="errorTabla1" class="error-message" style="color: red;"></span>
+                                    <small id="errorTabla1" class="error-message" style="color: red;"></small>
                                 </td>
 
                                 <td>
@@ -115,7 +115,7 @@
                                 <center><input type="number" name="puntaje_proyecto2"
                                         class="puntaje_proyecto input input_select2 text-center " id="tabla2" />
                                 </center>
-                                <span id="errorTabla2" class="error-message" style="color: red;"></span>
+                                <small id="errorTabla2" class="error-message" style="color: red;"></small>
                             </td>
 
                             <td>
@@ -164,7 +164,7 @@
                             <td>
                                 <center><input type="number" name="puntaje_proyecto3"
                                         class="puntaje_proyecto text-center input input_select2" id="tabla3" /></center>
-                                <span id="errorTabla3" class="error-message" style="color: red;"></span>
+                                <small id="errorTabla3" class="error-message" style="color: red;"></small>
                             </td>
 
                             <td>
@@ -215,7 +215,7 @@
                                 <center><input type="number" name="puntaje_proyecto4"
                                         class="puntaje_proyecto input input_select2 text-center" id="tabla4" />
                                 </center>
-                                <span id="errorTabla4" class="error-message" style="color: red;"></span>
+                                <small id="errorTabla4" class="error-message" style="color: red;"></small>
                             </td>
 
                             <td>
@@ -267,7 +267,7 @@
                                 <center><input type="number" name="puntaje_proyecto5"
                                         class="puntaje_proyecto input input_select2 text-center" id="tabla5" />
                                 </center>
-                                <span id="errorTabla5" class="error-message" style="color: red;"></span>
+                                <small id="errorTabla5" class="error-message" style="color: red;"></small>
                             </td>
 
                             <td>
@@ -318,7 +318,7 @@
                                 <center><input type="number" name="puntaje_proyecto6"
                                         class="puntaje_proyecto input input_select2 text-center" id="tabla6" />
                                 </center>
-                                <span id="errorTabla6" class="error-message" style="color: red;"></span>
+                                <small id="errorTabla6" class="error-message" style="color: red;"></small>
                             </td>
 
                             <td>
@@ -371,7 +371,7 @@
                                 <center><input type="number" name="puntaje_proyecto7"
                                         class="puntaje_proyecto input input_select2 text-center" id="tabla7" />
                                 </center>
-                                <span id="errorTabla7" class="error-message" style="color: red;"></span>
+                                <small id="errorTabla7" class="error-message" style="color: red;"></small>
                             </td>
 
                             <td>

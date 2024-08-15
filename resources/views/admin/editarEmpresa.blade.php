@@ -45,8 +45,8 @@
                             <div class="form-group">
                                 <label for="nombreEmpresa">Nombre de la Empresa:</label>
                                 <input type="text" class="form-control input" id="nombreEmpresa" name="nombreEmpresa"
-                                    required value="{{ $empresa->nombreEmpresa }}">
-                                <span id="error-message" style="color: red;"></span>
+                                required value="{{ $empresa->nombreEmpresa }}">
+                                <small id="error-message" ></small>
 
                             </div>
                             <!-- Inicio de la fila para RUC y Teléfono -->
@@ -57,7 +57,7 @@
                 <label for="rucEmpresa">RUC de la Empresa:</label>
                 <input type="text" class="form-control input" id="rucEmpresa" name="rucEmpresa" required
                     value="{{ $empresa->rucEmpresa }}">
-                <span id="error-message-rucEmpresa" style="color: red;"></span>
+                <small id="error-message-rucEmpresa" style="color: red;"></small>
             </div>
         </div>
         <!-- Columna para Teléfono del contacto de la Empresa -->
@@ -66,8 +66,8 @@
                 <label for="telefonoContacto">Teléfono del contacto de la Empresa:</label>
                 <input type="text" class="form-control input" id="telefonoContacto"
                     name="telefonoContacto" required value="{{ $empresa->telefonoContacto }}">
-                <span id="error-message-telefono" style="color: red; display: none;">Número de teléfono no
-                    válido</span>
+                <small id="error-message-telefono" style="color: red; display: none;">Número de teléfono no
+                    válido</small>
             </div>
         </div>
     </div>
@@ -110,7 +110,7 @@
                                 <label for="ciudad">Ciudad:</label>
                                 <input type="text" class="form-control input" id="ciudad" name="ciudad" required
                                     value="{{ $empresa->ciudad }}">
-                                <span id="error-message-ciudad" style="color: red;"></span>
+                                <small id="error-message-ciudad" style="color: red;"></small>
 
                             </div>
 </div>
@@ -119,7 +119,7 @@
                                 <label for="direccion">Dirección:</label>
                                 <input type="text" class="form-control input" id="direccion" name="direccion" required
                                     value="{{ $empresa->direccion }}">
-                                <span id="error-message-direccion" style="color: red;"></span>
+                                <small id="error-message-direccion" style="color: red;"></small>
 
                             </div>
                             <div class="row">
@@ -128,7 +128,7 @@
                                 <label for="nombreContacto">Nombre del contacto de la Empresa:</label>
                                 <input type="text" class="form-control input" id="nombreContacto" name="nombreContacto"
                                     required value="{{ $empresa->nombreContacto }}">
-                                <span id="error-message-nombreContacto" style="color: red;"></span>
+                                <small id="error-message-nombreContacto" style="color: red;"></small>
 
                             </div>
                             </div>
@@ -137,6 +137,7 @@
                                 <label for="correo">Correo de contacto de la Empresa:</label>
                                 <input type="email" class="form-control input" id="correo" name="correo" required
                                     value="{{ $empresa->correo }}">
+                                    
                             </div>
                       
 </div>
@@ -152,7 +153,7 @@
                                 <textarea class="form-control input textarea" id="actividadesMacro" name="actividadesMacro" rows="4" required>
                                     {{ $empresa->actividadesMacro }}
                                 </textarea>
-                                <span id="error-message-actividadesMacro" style="color: red;"></span>
+                                <small id="error-message-actividadesMacro" style="color: red;"></small>
 
                             </div>
 <br>

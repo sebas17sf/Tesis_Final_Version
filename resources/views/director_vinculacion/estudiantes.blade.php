@@ -90,8 +90,8 @@
                                                         name="informe_servicio[]"
                                                         value="{{ $estudiante->notas->first()->informe === 'Pendiente' ? '' : $estudiante->notas->first()->informe }}"
                                                         required>
-                                                    <span class="form-text text-danger error-message"
-                                                        style="display: none;">El valor debe estar entre 0 y 30</span>
+                                                    <small class="form-text text-danger error-message"
+                                                        style="display: none;">El valor debe estar entre 0 y 30</small>
                                                 </center>
                                             </td>
                                         </tr>
@@ -198,7 +198,7 @@
                                 </td>
                                 <td style="text-align: center; font-size: .7em;">
                                     <input style="text-align: center; font-size: .7em;" type="number" class="form-control input input_select3 informe-input-calificados" name="nota_servicio" value="{{ $estudiante->notas->first()->informe ?? '' }}" required>
-                                    <span class="form-text text-danger error-message" style="display: none;">El valor debe estar entre 0 y 30</span>
+                                    <small class="form-text text-danger error-message" style="display: none;">El valor debe estar entre 0 y 30</small>
                                 </td>
                                 <td style="text-align: center; font-size: .7em; min-width: 60px !important;">
                                     @php

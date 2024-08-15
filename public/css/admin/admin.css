@@ -640,6 +640,12 @@ tr:hover {
     font-size: 60% !important;
     font-weight: 400;
 }
+small{
+    color: red; 
+    font-size: 10px; 
+    display: block; 
+    margin-top: 5px;
+}
 .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
     background-color: #878b91;
     color: white;
