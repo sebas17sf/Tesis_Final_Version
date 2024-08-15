@@ -60,7 +60,10 @@
 
         <div class="elements_static">
           <br>
-        
+          <div class="icon_block">
+                    <i class="fa-brands fa-expeditedssl"></i>
+                </div>
+
           <div>
             <label></label>
             <span></span>

@@ -40,7 +40,10 @@
 
                 <div class="elements_static">
 
-                   
+                <div class="icon_block">
+                    <i class="fa-brands fa-expeditedssl"></i>
+                </div>
+
 
                     <div>
                         <label>ID Espe</label>
