@@ -432,7 +432,7 @@
                                                 <select name="profesor" id="profesor"
                                                     class="form-control input input_select">
                                                     <option value="">Todos los docentes</option>
-                                                    @foreach ($profesores as $profesor)
+                                                    @foreach ($todoslosProfesores as $profesor)
                                                         <option value="{{ $profesor->id }}"
                                                             {{ request('profesor') == $profesor->id ? 'selected' : '' }}>
                                                             {{ $profesor->apellidos }} {{ $profesor->nombres }}
@@ -547,6 +547,7 @@
                                             <th>FECHA FIN</th>
                                             <th>ESTADO</th>
                                             <th>PERMITIR CAMBIOS</th>
+                                            <th>DESCARGAR EVIDENCIAS</th>
                                         </tr>
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
@@ -603,7 +604,10 @@
                                                     <td>
                                                         @foreach ($grupo as $asignacion)
                                                             @php
-                                                                $horas = $asignacion->estudiante->horas_vinculacion->pluck('horasVinculacion')->filter()->toArray();
+                                                                $horas = $asignacion->estudiante->horas_vinculacion
+                                                                    ->pluck('horasVinculacion')
+                                                                    ->filter()
+                                                                    ->toArray();
                                                                 echo implode(' / ', $horas) ?: 'NO ASIGNADA';
                                                             @endphp
                                                             <br>
@@ -613,7 +617,10 @@
                                                     <td>
                                                         @foreach ($grupo as $asignacion)
                                                             @php
-                                                                $notas = $asignacion->estudiante->notas->pluck('notaFinal')->filter()->toArray();
+                                                                $notas = $asignacion->estudiante->notas
+                                                                    ->pluck('notaFinal')
+                                                                    ->filter()
+                                                                    ->toArray();
                                                                 echo implode(' / ', $notas) ?: 'SIN CALIFICAR';
                                                             @endphp
                                                             <br>
@@ -662,6 +669,22 @@
                                                         </form>
 
                                                     </td>
+
+                                                    <td>
+
+                                                        <form class="btn-group shadow-1"
+                                                            action="{{ route('admin.descargarEvidencias', ['proyectoId' => $grupo->first()->proyectoId]) }}"
+                                                            method="GET">
+                                                            <button type="submit"
+                                                            class="button3 efects_button btn_eliminar3">
+                                                            <i class="fas fa-download"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+
+
+
+
                                                 </tr>
                                             @endforeach
                                         @endif

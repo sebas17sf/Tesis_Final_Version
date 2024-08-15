@@ -61,7 +61,7 @@
                         <table class="mat-mdc-table">
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    
+
                                 <th class="tamanio1">ESTUDIANTE</th>
                                     <th class="tamanio2">ID ESPE</th>
                                     <th class="tamanio2">CÉDULA</th>

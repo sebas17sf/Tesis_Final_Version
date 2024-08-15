@@ -126,10 +126,10 @@
             </div>
             <div class="content-autors">
                 <span class="autors1">
-                <i>Designed by </i>
-      <b><a>Sebastian Flores</a></b>
-      <i> & </i>
-      <b><a>Karen Cueva</a></b>.
+                    <i>Designed by </i>
+                    <b><a>Sebastian Flores</a></b>
+                    <i> & </i>
+                    <b><a>Karen Cueva</a></b>.
                 </span>
             </div>
         </div>
@@ -176,7 +176,8 @@
                         <span>Cambiar modulo</span>
                     </a>
 
-                    <a href="{{ route('coordinador.cambio-credenciales') }}" class="change_password active-section p-element">
+                    <a href="{{ route('coordinador.cambio-credenciales') }}"
+                        class="change_password active-section p-element">
                         <i class="fa-regular fa-user"></i>
                         <span>Credenciales</span>
                     </a>
@@ -210,8 +211,8 @@
 
     </section>
 
-   <!-- Scripts de jQuery y Popper.js -->
-   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Scripts de jQuery y Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <!-- Script de Bootstrap 4.5.2 -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

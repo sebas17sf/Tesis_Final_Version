@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.coordinador')
 @section('title', 'Panel Practicas')
 @section('title_component', 'Panel Practicas')
 @section('content')

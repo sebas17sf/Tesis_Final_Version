@@ -218,8 +218,18 @@
                                     Asistencia puntual</th>
                                 <th style="min-width: 130px !important; text-transform: uppercase; font-size:.76em;">
                                     Informe de Servicio Comunitario</th>
+
+                                <th style="min-width: 95px !important; text-transform: uppercase; font-size:.76em;">
+                                    NOTA</th>
+
+                                <th style="min-width: 95px !important; text-transform: uppercase; font-size:.76em;">
+                                    ESTADO</th>
+
                                 <th style="min-width: 95px !important; text-transform: uppercase; font-size:.76em;">
                                     Acciones</th>
+
+
+
                             </tr>
                         </thead>
                         <tbody class="mdc-data-table__content ng-star-inserted">
@@ -318,10 +328,46 @@
                                             <span class="form-text text-danger error-message-calificados"
                                                 style="display: none;">El valor debe estar entre 0 y 10</span>
                                         </td>
+
                                         <td
                                             style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
                                             {{ $estudiante->notas->first()->informe ?? 'Pendiente' }}
                                         </td>
+
+
+                                        @php
+                                            $informe = is_numeric($estudiante->notas->first()->informe)
+                                                ? $estudiante->notas->first()->informe
+                                                : 0;
+
+                                            $totalNotas = collect([
+                                                $estudiante->notas->first()->tareas ?? 0,
+                                                $estudiante->notas->first()->resultadosAlcanzados ?? 0,
+                                                $estudiante->notas->first()->conocimientos ?? 0,
+                                                $estudiante->notas->first()->adaptabilidad ?? 0,
+                                                $estudiante->notas->first()->aplicacion ?? 0,
+                                                $estudiante->notas->first()->CapacidadLiderazgo ?? 0,
+                                                $estudiante->notas->first()->asistencia ?? 0,
+                                                $informe,
+                                            ])->sum();
+
+                                            $resultadoFinal = ($totalNotas * 20) / 100;
+                                        @endphp
+
+                                        <td
+                                            style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                            {{ number_format($resultadoFinal, 2) }}
+                                        </td>
+
+                                        <td style="text-align: center; font-size: .7em; min-width: 50px !important;">
+                                            @if ($resultadoFinal <= 16)
+                                                <span class="badge badge-danger">REPROBADO</span>
+                                            @else
+                                                <span class="badge badge-success">APROBADO</span>
+                                            @endif
+                                        </td>
+
+
                                         <td style="text-align: center;">
                                             <div class="btn-group shadow-0">
                                                 <button class="button3 efects_button btn_editar3"
