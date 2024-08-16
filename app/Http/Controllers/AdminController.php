@@ -50,6 +50,9 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
 
         $departamentos = Departamento::all();
 
@@ -213,6 +216,10 @@ class AdminController extends Controller
     ///////////////Aceptacion de estudiantes para el proceso de vinculacion/////////////////////////////////////
     public function estudiantes(Request $request)
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
         $periodos = Periodo::orderBy('inicioPeriodo', 'asc')->get();
 
         $elementosPorPagina = $request->input('elementosPorPagina');
@@ -332,6 +339,10 @@ class AdminController extends Controller
 
     public function indexProyectos(Request $request)
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
         $todoslosProfesores = ProfesUniversidad::all();
 
         $estadoProyecto = $request->input('estado');
@@ -538,6 +549,10 @@ class AdminController extends Controller
 
     public function crearProyectoForm()
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
         $profesores = ProfesUniversidad::all();
         $departamentos = Departamento::all();
 
@@ -551,6 +566,7 @@ class AdminController extends Controller
 
     public function crearProyecto(Request $request)
     {
+
         try {
             $validatedData = $request->validate([
                 'NombreProyecto' => 'required',
@@ -1006,6 +1022,10 @@ class AdminController extends Controller
     //////guardar empresa////////////////
     public function agregarEmpresa(Request $request)
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
         $elementosPorPagina = $request->input('elementosPorPagina');
         $search = $request->input('search');
 
@@ -1212,6 +1232,10 @@ class AdminController extends Controller
 
     public function aceptarFasei(Request $request)
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
         $todosLosDocentes = ProfesUniversidad::all();
         $todasLasEmpresas = Empresa::all();
         $todosLosPeriodos = Periodo::orderBy('inicioPeriodo', 'asc')->get();
@@ -1682,6 +1706,10 @@ class AdminController extends Controller
     ////////////////////////////cambiar credenciales
     public function cambiarCredencialesUsuario()
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
         $periodos = Periodo::all();
 
         $usuario = Auth::user();
