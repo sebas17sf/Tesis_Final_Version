@@ -7,6 +7,8 @@ use App\Models\PracticaII;
 use App\Models\PracticaIII;
 use App\Models\PracticaIV;
 use App\Models\PracticaV;
+use Illuminate\Support\Facades\DB;
+
 use App\Models\Usuario;
 use App\Models\Estudiante;
 use App\Models\Proyecto;
@@ -17,7 +19,7 @@ use App\Models\Empresa;
 use App\Models\Role;
 use App\Models\Departamento;
 use App\Models\ActividadEstudiante;
- use ZipArchive;
+use ZipArchive;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Mail\AsignacionProyectoMailable;
@@ -50,6 +52,9 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
 
         $departamentos = Departamento::all();
 
@@ -213,6 +218,10 @@ class AdminController extends Controller
     ///////////////Aceptacion de estudiantes para el proceso de vinculacion/////////////////////////////////////
     public function estudiantes(Request $request)
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
         $periodos = Periodo::orderBy('inicioPeriodo', 'asc')->get();
 
         $elementosPorPagina = $request->input('elementosPorPagina');
@@ -332,6 +341,10 @@ class AdminController extends Controller
 
     public function indexProyectos(Request $request)
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
         $todoslosProfesores = ProfesUniversidad::all();
 
         $estadoProyecto = $request->input('estado');
@@ -538,6 +551,10 @@ class AdminController extends Controller
 
     public function crearProyectoForm()
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
         $profesores = ProfesUniversidad::all();
         $departamentos = Departamento::all();
 
@@ -551,6 +568,7 @@ class AdminController extends Controller
 
     public function crearProyecto(Request $request)
     {
+
         try {
             $validatedData = $request->validate([
                 'NombreProyecto' => 'required',
@@ -1006,6 +1024,10 @@ class AdminController extends Controller
     //////guardar empresa////////////////
     public function agregarEmpresa(Request $request)
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
         $elementosPorPagina = $request->input('elementosPorPagina');
         $search = $request->input('search');
 
@@ -1114,21 +1136,21 @@ class AdminController extends Controller
     }
 
     public function eliminarEmpresa($id)
-{
-    try {
-        $empresa = Empresa::find($id);
+    {
+        try {
+            $empresa = Empresa::find($id);
 
-        if (!$empresa) {
-            return redirect()->back()->with('error', 'Empresa no encontrada.');
+            if (!$empresa) {
+                return redirect()->back()->with('error', 'Empresa no encontrada.');
+            }
+
+            $empresa->delete();
+
+            return redirect()->route('admin.agregarEmpresa')->with('success', 'Empresa eliminada exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'No se puede eliminar la empresa. ');
         }
-
-        $empresa->delete();
-
-        return redirect()->route('admin.agregarEmpresa')->with('success', 'Empresa eliminada exitosamente.');
-    } catch (\Exception $e) {
-         return redirect()->back()->with('error', 'No se puede eliminar la empresa. ');
     }
-}
 
     ///editar empresa///////////////////
 
@@ -1212,6 +1234,10 @@ class AdminController extends Controller
 
     public function aceptarFasei(Request $request)
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
         $todosLosDocentes = ProfesUniversidad::all();
         $todasLasEmpresas = Empresa::all();
         $todosLosPeriodos = Periodo::orderBy('inicioPeriodo', 'asc')->get();
@@ -1682,6 +1708,10 @@ class AdminController extends Controller
     ////////////////////////////cambiar credenciales
     public function cambiarCredencialesUsuario()
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
         $periodos = Periodo::all();
 
         $usuario = Auth::user();
@@ -1860,8 +1890,8 @@ class AdminController extends Controller
     public function descargarEvidencias($proyectoId)
     {
         $asignaciones = AsignacionProyecto::where('proyectoId', $proyectoId)
-                                          ->with('estudiante.evidencias', 'periodo', 'proyecto')
-                                          ->get();
+            ->with('estudiante.evidencias', 'periodo', 'proyecto')
+            ->get();
 
         if ($asignaciones->isEmpty()) {
             return back()->with('error', 'No se encontraron asignaciones para este proyecto.');
@@ -1918,6 +1948,106 @@ class AdminController extends Controller
             return back()->with('error', 'El archivo ZIP no existe.');
         }
     }
+
+    public function dashboard(Request $request)
+    {
+        $periodos = Periodo::all();
+
+        $selectedPeriodo = $request->input('periodo');
+
+        // Obtener el número de periodo correspondiente al ID seleccionado
+        $numeroPeriodoSeleccionado = Periodo::where('id', $selectedPeriodo)->value('numeroPeriodo');
+
+        // Obtener los proyectos con sus asignaciones filtradas por periodo
+        $proyectos = Proyecto::with([
+            'asignaciones' => function ($query) use ($selectedPeriodo) {
+                if ($selectedPeriodo) {
+                    $query->where('idPeriodo', $selectedPeriodo);
+                }
+            }
+        ])->get();
+
+        $chartData = [];
+        $categories = [];
+
+        foreach ($proyectos as $proyecto) {
+            $categories[] = $proyecto->nombreProyecto;
+            $chartData[] = $proyecto->asignaciones->count();
+        }
+
+        // Obtener las prácticas por empresa filtradas por numeroPeriodo en periodoPractica
+        $practicasPorEmpresa = Empresa::select('empresas.nombreEmpresa')
+            ->join('practicasi', 'empresas.id', '=', 'practicasi.idEmpresa')
+            ->selectRaw('COUNT(practicasi.estudianteId) as total_estudiantes')
+            ->when($numeroPeriodoSeleccionado, function ($query, $numeroPeriodoSeleccionado) {
+                $query->where('practicasi.periodoPractica', $numeroPeriodoSeleccionado);
+            })
+            ->groupBy('empresas.nombreEmpresa')
+            ->orderBy('total_estudiantes', 'desc')
+            ->get();
+
+        // Extraer los datos para la gráfica de empresas
+        $empresas = $practicasPorEmpresa->pluck('nombreEmpresa')->toArray();
+        $estudiantesPorEmpresa = $practicasPorEmpresa->pluck('total_estudiantes')->toArray();
+
+        return view('admin.dashboard', compact(
+            'chartData',
+            'categories',
+            'periodos',
+            'selectedPeriodo',
+            'empresas',
+            'estudiantesPorEmpresa'
+        ));
+    }
+
+    public function filter(Request $request)
+    {
+        $selectedPeriodo = $request->input('periodo');
+
+         $numeroPeriodoSeleccionado = Periodo::where('id', $selectedPeriodo)->value('numeroPeriodo');
+
+         $proyectos = Proyecto::with([
+            'asignaciones' => function ($query) use ($selectedPeriodo) {
+                if ($selectedPeriodo) {
+                    $query->where('idPeriodo', $selectedPeriodo);
+                }
+            }
+        ])->get();
+
+        $chartData = [];
+        $categories = [];
+
+        foreach ($proyectos as $proyecto) {
+            $categories[] = $proyecto->nombreProyecto;
+            $chartData[] = $proyecto->asignaciones->count();
+        }
+
+        $practicasPorEmpresa = Empresa::select('empresas.nombreEmpresa')
+            ->join('practicasi', 'empresas.id', '=', 'practicasi.idEmpresa')
+            ->selectRaw('COUNT(practicasi.estudianteId) as total_estudiantes')
+            ->when($numeroPeriodoSeleccionado, function ($query, $numeroPeriodoSeleccionado) {
+                $query->where('practicasi.periodoPractica', $numeroPeriodoSeleccionado);
+            })
+            ->groupBy('empresas.nombreEmpresa')
+            ->orderBy('total_estudiantes', 'desc')
+            ->get();
+
+        return response()->json([
+            'categories' => $categories,
+            'chartData' => $chartData,
+            'empresas' => $practicasPorEmpresa->pluck('nombreEmpresa'),
+            'estudiantesPorEmpresa' => $practicasPorEmpresa->pluck('total_estudiantes'),
+        ]);
+    }
+
+
+
+
+
+
+
+
+
 
 
 

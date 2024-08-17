@@ -27,16 +27,20 @@ class DirectorController extends Controller
 
     public function indexProyectos(Request $request)
     {
+        // Verificar si el usuario está autenticado y tiene el rol de Estudiante
+        if (Auth::check() && Auth::user()->role->tipo !== 'Director-Departamento') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
+
+        // Lógica del método continua aquí
         $estadoProyecto = $request->input('estado');
         $departamento = $request->input('departamento');
         $profesorId = $request->input('profesor');
         $periodoId = $request->input('periodos');
 
         $periodos = Periodo::all();
-
-
         $nrcs = NrcVinculacion::where('tipo', 'Vinculacion')->get();
-
 
         $profesores = ProfesUniversidad::whereDoesntHave('proyectosDirigidos')
             ->orWhereHas('proyectosDirigidos', function ($query) {
@@ -45,11 +49,10 @@ class DirectorController extends Controller
             ->orderBy('apellidos', 'asc')
             ->get();
 
-        ///obtener los periodos que tengan fecha de inicio y fin con la fecha actual
+        // Obtener los periodos que tengan fecha de inicio y fin con la fecha actual
         $periodoAsignacion = Periodo::where('inicioPeriodo', '<=', now())
             ->where('finPeriodo', '>=', now())
             ->get();
-
 
         $perPage = $request->input('perPage', 10);
         $perPage2 = $request->input('perPage2', 10);
@@ -57,7 +60,6 @@ class DirectorController extends Controller
         $page2 = $request->input('page2', 1);
         $search = $request->input('search');
         $search2 = $request->input('search2');
-
 
         $validPerPages = [10, 20, 50, 100];
         if (!in_array($perPage, $validPerPages)) {
@@ -86,15 +88,10 @@ class DirectorController extends Controller
 
         $proyectos = $query->paginate($perPage, ['*'], 'page', $page);
 
-
-
         $proyectosDisponibles = Proyecto::where('estado', 'Ejecucion')->get();
         $estudiantesAprobados = Estudiante::where('estado', 'Aprobado')
             ->whereDoesntHave('asignaciones')
             ->get();
-
-        $profesorId = request('profesor');
-        $periodoId = request('periodos');
 
         $asignacionesAgrupadas = AsignacionProyecto::with('estudiante')
             ->with('proyecto')
@@ -110,8 +107,6 @@ class DirectorController extends Controller
                     $query->where('id', $periodoId);
                 });
             })
-
-
             ->when($search2, function ($query, $search2) {
                 return $query->where(function ($query) use ($search2) {
                     $query->whereHas('estudiante', function ($query) use ($search2) {
@@ -120,23 +115,22 @@ class DirectorController extends Controller
                             ->orWhere('espeId', 'like', "%{$search2}%")
                             ->orWhere('cedula', 'like', "%{$search2}%");
                     })
-                        ->orWhereHas('proyecto', function ($query) use ($search2) {
-                            $query->where('nombreProyecto', 'like', "%{$search2}%");
-                        })
-                        ->orWhereHas('docenteParticipante', function ($query) use ($search2) {
-                            $query->where('nombres', 'like', "%{$search2}%")
-                                ->orWhere('apellidos', 'like', "%{$search2}%");
-                        })
-                        ->orWhereHas('periodo', function ($query) use ($search2) {
-                            $query->where('numeroPeriodo', 'like', "%{$search2}%");
-                        })
-                        ->orWhereHas('proyecto.director', function ($query) use ($search2) {
-                            $query->where('nombres', 'like', "%{$search2}%")
-                                ->orWhere('apellidos', 'like', "%{$search2}%");
-                        });
+                    ->orWhereHas('proyecto', function ($query) use ($search2) {
+                        $query->where('nombreProyecto', 'like', "%{$search2}%");
+                    })
+                    ->orWhereHas('docenteParticipante', function ($query) use ($search2) {
+                        $query->where('nombres', 'like', "%{$search2}%")
+                            ->orWhere('apellidos', 'like', "%{$search2}%");
+                    })
+                    ->orWhereHas('periodo', function ($query) use ($search2) {
+                        $query->where('numeroPeriodo', 'like', "%{$search2}%");
+                    })
+                    ->orWhereHas('proyecto.director', function ($query) use ($search2) {
+                        $query->where('nombres', 'like', "%{$search2}%")
+                            ->orWhere('apellidos', 'like', "%{$search2}%");
+                    });
                 });
             })
-
             ->get()
             ->groupBy(function ($item) {
                 return $item->proyectoId . '_' . $item->idPeriodo . "_" . $item->participanteId;
@@ -151,43 +145,6 @@ class DirectorController extends Controller
             $request->input('page2', 1),
             ['path' => route('director.indexProyectos'), 'pageName' => 'page2']
         );
-        return view('director.proyectos', [
-            'proyectos' => $proyectos,
-            'proyectosDisponibles' => $proyectosDisponibles,
-            'estudiantesAprobados' => $estudiantesAprobados,
-            'perPage' => $perPage,
-            'perPage2' => $perPage2,
-            'paginator' => $paginator,
-            'profesores' => $profesores,
-            'nrcs' => $nrcs,
-            'asignacionesAgrupadas' => $paginator,
-            'periodos' => $periodos,
-            'search' => $search,
-            'search2' => $search2,
-            'estadoProyecto' => $estadoProyecto,
-            'profesorId' => $profesorId,
-            'periodoId' => $periodoId,
-            'paginatedData' => $paginatedData,
-            'total' => $total,
-            'periodoAsignacion' => $periodoAsignacion,
-        ]);
-        if ($estadoProyecto) {
-            $query->where('estado', $estadoProyecto);
-        }
-
-        if ($profesorId) {
-            $query->whereHas('director', function ($q) use ($profesorId) {
-                $q->where('id', $profesorId);
-            });
-        }
-
-        if ($periodoId) {
-            $query->whereHas('periodo', function ($q) use ($periodoId) {
-                $q->where('id', $periodoId);
-            });
-        }
-
-        $proyectos = $query->paginate($perPage, ['*'], 'page', $page);
 
         if ($request->ajax()) {
             if ($request->has('search2')) {
@@ -221,8 +178,8 @@ class DirectorController extends Controller
             'total' => $total,
             'periodoAsignacion' => $periodoAsignacion,
         ]);
-
     }
+
 
 
 
@@ -237,6 +194,11 @@ class DirectorController extends Controller
 
     public function practicas(Request $request)
     {
+
+        if (Auth::check() && Auth::user()->role->tipo !== 'Director-Departamento') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
 
 
         $todosLosDocentes = ProfesUniversidad::all();
@@ -537,6 +499,10 @@ class DirectorController extends Controller
 
     public function mostrarEstudiantesAprobados(Request $request)
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'Director-Departamento') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
         $periodos = Periodo::orderBy('inicioPeriodo', 'asc')->get();
 
         $elementosPorPagina = $request->input('elementosPorPagina');
@@ -607,6 +573,10 @@ class DirectorController extends Controller
 
     public function cambiarCredencialesUsuario()
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'Director-Departamento') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
         $periodos = Periodo::all();
 
         $usuario = Auth::user();

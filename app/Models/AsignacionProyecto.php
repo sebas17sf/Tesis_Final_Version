@@ -9,14 +9,11 @@ class AsignacionProyecto extends Model
 {
     use HasFactory;
 
-    // Nombre de la tabla en la base de datos
-    protected $table = 'asignacionproyectos';
+     protected $table = 'asignacionproyectos';
 
-    // Nombre de la columna que es clave primaria en la tabla
-    protected $primaryKey = 'asignacionID';
+     protected $primaryKey = 'asignacionID';
 
-    // Campos que pueden ser llenados en masa (en el proceso de registro)
-    protected $fillable = [
+     protected $fillable = [
         'estudianteId',
         'proyectoId',
         'participanteId',

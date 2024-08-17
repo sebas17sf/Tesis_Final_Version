@@ -20,6 +20,7 @@ class InformeVinculacionEstudiante extends Model
         'direcciones',
         'especificos',
         'alcanzados',
+        'razones',
         'porcentajes',
         'conclusiones1',
         'conclusiones2',

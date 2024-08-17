@@ -496,6 +496,15 @@ class EstudianteController extends Controller
             return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');
         }
 
+        // Verificar si ya existe una actividad con la misma fecha para el estudiante
+        $actividadExistente = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)
+            ->where('fecha', $request->input('fecha'))
+            ->exists();
+
+        if ($actividadExistente) {
+            return redirect()->back()->with('error', 'Ya existe una actividad registrada para esa fecha.')->withInput();
+        }
+
         // Calcular el total de horas registradas por el estudiante
         $totalHoras = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)->sum('numeroHoras');
 
@@ -526,12 +535,13 @@ class EstudianteController extends Controller
 
                 return redirect()->route('estudiantes.documentos')->with('success', 'Actividad registrada exitosamente.');
             } catch (\Exception $e) {
-                return redirect()->back()->with('error', 'Error al guardar la actividad: ' . $e->getMessage());
+                return redirect()->back()->with('error', 'Error al guardar la actividad: ' . $e->getMessage())->withInput();
             }
         } else {
-            return redirect()->back()->with('error', 'Verifica el ingreso de los datos en la Actividad.');
+            return redirect()->back()->with('error', 'Verifica el ingreso de los datos en la Actividad.')->withInput();
         }
     }
+
 
 
 
@@ -557,12 +567,24 @@ class EstudianteController extends Controller
     {
         $actividad = ActividadEstudiante::findOrFail($id);
 
+        $estudiante = Auth::user()->estudiante;
+        $asignaciones = $estudiante->asignaciones;
+
+        // Verificar si ya existe otra actividad con la misma fecha para el estudiante
+        $actividadExistente = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)
+            ->where('fecha', $request->input('fecha'))
+            ->exists();
+
+        if ($actividadExistente) {
+            return redirect()->back()->with('error', 'Ya existe otra actividad registrada para esa fecha.')->withInput();
+        }
+
         if ($request->hasFile('evidencias')) {
             $evidencia = $request->file('evidencias');
 
             $maxFileSize = 500000; // 500 KB
             if ($evidencia->getSize() > $maxFileSize) {
-                return redirect()->back()->with('error', 'La imagen es muy pesada. El tamaño máximo permitido es de 500 KB.');
+                return redirect()->back()->with('error', 'La imagen es muy pesada. El tamaño máximo permitido es de 500 KB.')->withInput();
             }
 
             $evidenciaBase64 = base64_encode(File::get($evidencia));
@@ -573,10 +595,16 @@ class EstudianteController extends Controller
         $actividad->actividades = $request->input('actividades');
         $actividad->numeroHoras = $request->input('numero_horas');
         $actividad->nombreActividad = $request->input('nombre_actividad');
-        $actividad->save();
 
-        return redirect()->route('estudiantes.documentos')->with('success', 'Actividad actualizada exitosamente.');
+        try {
+            $actividad->save();
+            return redirect()->route('estudiantes.documentos')->with('success', 'Actividad actualizada exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error al actualizar la actividad: ' . $e->getMessage())->withInput();
+        }
     }
+
+
 
 
 
@@ -956,60 +984,74 @@ class EstudianteController extends Controller
 
 
     public function guardarDatos(Request $request)
-{
-    $data = $request->validate([
-         'nombreComunidad' => 'required|string',
-        'provincia' => 'required|array',
-        'provincia.*' => 'required|string',
-        'canton' => 'required|array',
-        'canton.*' => 'required|string',
-        'razones' => 'required|string',
-        'parroquia' => 'required|array',
-        'parroquia.*' => 'required|string',
-        'direccion' => 'required|array',
-        'direccion.*' => 'required|string',
-        'especificos' => 'required|array',
-        'especificos.*' => 'required|string',
-        'alcanzados' => 'required|array',
-        'alcanzados.*' => 'required|string',
-        'porcentaje' => 'required|array',
-        'porcentaje.*' => 'required|string',
-         'conclusiones1' => 'required|string',
-        'conclusiones2' => 'required|string',
-        'conclusiones3' => 'required|string',
-        'recomendaciones' => 'required|string'
-    ]);
+    {
+        $data = $request->validate([
+            'nombreComunidad' => 'required|string',
+            'provincia' => 'required|array',
+            'provincia.*' => 'required|string',
+            'canton' => 'required|array',
+            'canton.*' => 'required|string',
+            'razones' => 'required',
+            'parroquia' => 'required|array',
+            'parroquia.*' => 'required|string',
+            'direccion' => 'required|array',
+            'direccion.*' => 'required|string',
+            'especificos' => 'required|array',
+            'especificos.*' => 'required|string',
+            'alcanzados' => 'required|array',
+            'alcanzados.*' => 'required|string',
+            'porcentaje' => 'required|array',
+            'porcentaje.*' => 'required|string',
+            'conclusiones1' => 'required|string',
+            'conclusiones2' => 'required|string',
+            'conclusiones3' => 'required|string',
+            'recomendaciones' => 'required|string'
+        ]);
 
-    $estudianteId = auth()->user()->estudiante->estudianteId;
+        $estudianteId = auth()->user()->estudiante->estudianteId;
 
-    // Encuentra el registro existente o crea uno nuevo
-    $informe = InformeVinculacionEstudiante::updateOrCreate(
-        ['estudianteId' => $estudianteId],
-        [
-            'nombre_comunidad' => $data['nombreComunidad'],
-            'provincias' => json_encode($data['provincia']),
-            'cantones' => json_encode($data['canton']),
-            'parroquias' => json_encode($data['parroquia']),
-            'direcciones' => json_encode($data['direccion']),
-            'especificos' => json_encode($data['especificos']),
-            'alcanzados' => json_encode($data['alcanzados']),
-            'porcentajes' => json_encode($data['porcentaje']),
-             'conclusiones1' => $data['conclusiones1'],
-             'razones' => $data['razones'],
-            'conclusiones2' => $data['conclusiones2'],
-            'conclusiones3' => $data['conclusiones3'],
-            'recomendaciones' => $data['recomendaciones']
-        ]
-    );
+        $asignacionProyecto = AsignacionProyecto::where('estudianteId', $estudianteId)->first();
 
-    return redirect()->back()->withInput()->with('success', 'Datos guardados exitosamente.');
-}
+        if (!$asignacionProyecto) {
+            return redirect()->back()->withInput()->with(['error' => 'El estudiante no tiene una asignación de proyecto.']);
+        }
+
+        $informe = InformeVinculacionEstudiante::updateOrCreate(
+            ['estudianteId' => $estudianteId],
+            [
+                'nombre_comunidad' => $data['nombreComunidad'],
+                'provincias' => json_encode($data['provincia']),
+                'cantones' => json_encode($data['canton']),
+                'parroquias' => json_encode($data['parroquia']),
+                'direcciones' => json_encode($data['direccion']),
+                'especificos' => json_encode($data['especificos']),
+                'alcanzados' => json_encode($data['alcanzados']),
+                'porcentajes' => json_encode($data['porcentaje']),
+                'conclusiones1' => $data['conclusiones1'],
+                'razones' => $data['razones'],
+                'conclusiones2' => $data['conclusiones2'],
+                'conclusiones3' => $data['conclusiones3'],
+                'recomendaciones' => $data['recomendaciones']
+            ]
+        );
+
+        return redirect()->back()->withInput()->with('success', 'Datos guardados exitosamente.');
+    }
 
 
 
     public function recuperarDatos(Request $request)
     {
         $estudianteId = auth()->user()->estudiante->estudianteId;
+
+        // Verificar si el estudiante tiene una asignación de proyectos
+        $asignacionProyecto = AsignacionProyecto::where('estudianteId', $estudianteId)->first();
+
+        if (!$asignacionProyecto) {
+            return redirect()->back()->with('error', 'El estudiante no tiene una asignación de proyectos.');
+        }
+
+        // Buscar el último informe del estudiante
         $informe = InformeVinculacionEstudiante::where('estudianteId', $estudianteId)->latest()->first();
 
         if (!$informe) {
@@ -1033,8 +1075,9 @@ class EstudianteController extends Controller
             'recomendaciones' => $informe->recomendaciones,
         ];
 
-        return redirect()->back()->withInput($data);
+        return redirect()->back()->withInput($data)->with('success', 'La información se ha recuperado correctamente.');
     }
+
 
 
 

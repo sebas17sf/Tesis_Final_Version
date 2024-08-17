@@ -108,7 +108,7 @@
 
     <hr>
     <h4><b>Informe Docente - Vinculación a la Sociedad</b></h4>
-    
+
         <div class="mat-elevation-z8 contenedor_general">
             <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
                 <div class="contenedor_botones">
@@ -125,162 +125,170 @@
     </div>
 
    <hr>
-    
-    <form id="informeForm" action="{{ route('director_vinculacion.generarInformeDirector') }}" method="POST">
-        @csrf
 
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="Objetivos"><strong>Ingrese el Objetivo del Proyecto:</strong></label>
-                <textarea placeholder="Ingrese el objetivo" class="form-control input" id="Objetivos" rows="2" name="Objetivos">{{ old('Objetivos', session('Objetivos')) }}</textarea>
-            </div>
+   <form id="informeForm" action="{{ route('director_vinculacion.generarInformeDirector') }}" method="POST">
+    @csrf
 
-            <div class="form-group col-md-6">
-                <label for="intervencion"><strong>Lugar de intervención del Proyecto:</strong></label>
-                <input placeholder="Ingrese el lugar donde se realizo el proyecto" type="text" class="form-control input"
-                    id="intervencion" name="intervencion" value="{{ old('intervencion', session('intervencion')) }}">
-            </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="Objetivos"><strong>Ingrese el Objetivo del Proyecto:</strong></label>
+            <textarea placeholder="Ingrese el objetivo" class="form-control input" id="Objetivos" rows="2" name="Objetivos">{{ old('Objetivos', session('Objetivos')) }}</textarea>
+            <small id="ObjetivosError" class="error-message" style="color: red;"></small>
         </div>
 
-        <hr>
-        <h4><b>Actividades Planificadas y Resultados Alcanzados</b></h4>
-        <hr>
+        <div class="form-group col-md-6">
+            <label for="intervencion"><strong>Lugar de intervención del Proyecto:</strong></label>
+            <input placeholder="Ingrese el lugar donde se realizó el proyecto" type="text" class="form-control input"
+                id="intervencion" name="intervencion" value="{{ old('intervencion', session('intervencion')) }}">
+            <small id="intervencionError" class="error-message" style="color: red;"></small>
+        </div>
+    </div>
 
-        <div id="campos">
-            @if (old('planificadas', session('planificadas')))
-                @foreach (old('planificadas', session('planificadas')) as $index => $planificada)
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <label for="planificadas"><strong>Actividades planificadas:</strong></label>
-                            <textarea placeholder="Ingrese las actividades planificadas" name="planificadas[]" class="form-control input"
-                                rows="2" required>{{ $planificada }}</textarea>
-                        </div>
+    <hr>
+    <h4><b>Actividades Planificadas y Resultados Alcanzados</b></h4>
+    <hr>
 
-                        <div class="form-group col-md-4">
-                            <label for="alcanzados"><strong>Resultados alcanzados:</strong></label>
-                            <textarea placeholder="Ingrese los resultados alcanzados" name="alcanzados[]" class="form-control input"
-                                rows="2" required>{{ old('alcanzados')[$index] ?? session('alcanzados')[$index] }}</textarea>
-                        </div>
-
-                        <div class="form-group col-md-4">
-                            <label for="porcentaje"><strong>Porcentaje alcanzado:</strong></label>
-                            <textarea placeholder="Ingrese los resultados alcanzados" name="porcentaje[]" class="form-control input"
-                                rows="2" required>{{ old('porcentaje')[$index] ?? session('porcentaje')[$index] }}</textarea>
-                        </div>
-                    </div>
-                @endforeach
-            @else
+    <div id="campos">
+        @if (old('planificadas', session('planificadas')))
+            @foreach (old('planificadas', session('planificadas')) as $index => $planificada)
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label for="planificadas"><strong>Actividades planificadas:</strong></label>
                         <textarea placeholder="Ingrese las actividades planificadas" name="planificadas[]" class="form-control input"
-                            rows="2" required></textarea>
+                            rows="2">{{ $planificada }}</textarea>
+                        <small id="planificadasError" class="error-message" style="color: red;"></small>
                     </div>
 
                     <div class="form-group col-md-4">
                         <label for="alcanzados"><strong>Resultados alcanzados:</strong></label>
                         <textarea placeholder="Ingrese los resultados alcanzados" name="alcanzados[]" class="form-control input"
-                            rows="2" required></textarea>
+                            rows="2">{{ old('alcanzados')[$index] ?? session('alcanzados')[$index] }}</textarea>
+                        <small id="alcanzadosError" class="error-message" style="color: red;"></small>
                     </div>
 
                     <div class="form-group col-md-4">
                         <label for="porcentaje"><strong>Porcentaje alcanzado:</strong></label>
-                        <textarea placeholder="Ingrese los resultados alcanzados" name="porcentaje[]" class="form-control input"
-                            rows="2" required></textarea>
+                        <textarea placeholder="Ingrese el porcentaje alcanzado" name="porcentaje[]" class="form-control input"
+                            rows="2">{{ old('porcentaje')[$index] ?? session('porcentaje')[$index] }}</textarea>
+                        <small id="porcentajeError" class="error-message" style="color: red;"></small>
                     </div>
                 </div>
-            @endif
-        </div>
+            @endforeach
+        @else
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="planificadas"><strong>Actividades planificadas:</strong></label>
+                    <textarea placeholder="Ingrese las actividades planificadas" name="planificadas[]" class="form-control input"
+                        rows="2"></textarea>
+                    <small id="planificadasError" class="error-message" style="color: red;"></small>
+                </div>
 
-        <div class="d-flex">
-            <button type="button" class="button3 efects_button btn_nuevo3 mr-2" onclick="agregarCampo()"><i
-                    class="fa-solid fa-plus"></i></button>
-            <button type="button" class="button3 efects_button btn_eliminar3 mr-2" onclick="eliminarCampo()"><i
-                    class='bx bx-trash'></i></button>
-        </div>
+                <div class="form-group col-md-4">
+                    <label for="alcanzados"><strong>Resultados alcanzados:</strong></label>
+                    <textarea placeholder="Ingrese los resultados alcanzados" name="alcanzados[]" class="form-control input"
+                        rows="2"></textarea>
+                    <small id="alcanzadosError" class="error-message" style="color: red;"></small>
+                </div>
 
-        <hr>
-        <h4><b>Beneficiarios atendidos</b></h4>
-        <hr>
-        <div class="form-row" style="align-items: center !important;">
-            <div class="form-group col-md-3">
-                <label for="Hombres"><strong>Cantidad de Hombres beneficiarios-atendidos:</strong></label>
-                <input placeholder="Ingrese los Hombres beneficiados" type="number" class="form-control input"
-                    id="Hombres" name="Hombres" value="{{ old('Hombres', session('Hombres')) }}" min="1">
+                <div class="form-group col-md-4">
+                    <label for="porcentaje"><strong>Porcentaje alcanzado:</strong></label>
+                    <textarea placeholder="Ingrese el porcentaje alcanzado" name="porcentaje[]" class="form-control input"
+                        rows="2"></textarea>
+                    <small id="porcentajeError" class="error-message" style="color: red;"></small>
+                </div>
             </div>
-            <div class="form-group col-md-3">
-                <label for="Observaciones1"><strong>Observaciones en Hombres:</strong></label>
-                <textarea placeholder="Ingrese las Observaciones" class="form-control input" id="Observaciones1" rows="3"
-                    name="Observaciones1">{{ old('Observaciones1', session('Observaciones1')) }}</textarea>
-            </div>
-            <div class="form-group col-md-3">
-                <label for="Mujeres"><strong>Cantidad de Mujeres beneficiarios-atendidos:</strong></label>
-                <input placeholder="Ingrese las Mujeres beneficiadas" type="number" class="form-control input"
-                    id="Mujeres" name="Mujeres" value="{{ old('Mujeres', session('Mujeres')) }}" min="1">
-            </div>
-            
+        @endif
+    </div>
 
-            <div class="form-group col-md-3">
-                <label for="Observaciones2"><strong>Observaciones en Mujeres:</strong></label>
-                <textarea placeholder="Ingrese las Observaciones" class="form-control input" id="Observaciones2" rows="3"
-                    name="Observaciones2">{{ old('Observaciones2', session('Observaciones2')) }}</textarea>
-            </div>
-            
-        </div>
+    <div class="d-flex">
+        <button type="button" class="button3 efects_button btn_nuevo3 mr-2" onclick="agregarCampo()"><i
+                class="fa-solid fa-plus"></i></button>
+        <button type="button" class="button3 efects_button btn_eliminar3 mr-2" onclick="eliminarCampo()"><i
+                class='bx bx-trash'></i></button>
+    </div>
 
-        <div class="form-row">
+    <hr>
+    <h4><b>Beneficiarios atendidos</b></h4>
+    <hr>
+    <div class="form-row">
         <div class="form-group col-md-3">
-                <label for="Niños"><strong>Cantidad de Niños beneficiarios-atendidos:</strong></label>
-                <input placeholder="Ingrese los Niños beneficiados" type="number" class="form-control input"
-                    id="Niños" name="Niños" value="{{ old('Niños', session('Niños')) }}" min="1">
-            </div>
-            
+            <label for="Hombres"><strong>Cantidad de Hombres beneficiarios-atendidos:</strong></label>
+            <input placeholder="Ingrese los Hombres beneficiados" type="number" class="form-control input"
+                id="Hombres" name="Hombres" value="{{ old('Hombres', session('Hombres')) }}" min="1">
+            <small id="HombresError" class="error-message" style="color: red;"></small>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="Observaciones1"><strong>Observaciones en Hombres:</strong></label>
+            <textarea placeholder="Ingrese las Observaciones" class="form-control input" id="Observaciones1" rows="3"
+                name="Observaciones1">{{ old('Observaciones1', session('Observaciones1')) }}</textarea>
+            <small id="Observaciones1Error" class="error-message" style="color: red;"></small>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="Mujeres"><strong>Cantidad de Mujeres beneficiarios-atendidos:</strong></label>
+            <input placeholder="Ingrese las Mujeres beneficiadas" type="number" class="form-control input"
+                id="Mujeres" name="Mujeres" value="{{ old('Mujeres', session('Mujeres')) }}" min="1">
+            <small id="MujeresError" class="error-message" style="color: red;"></small>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="Observaciones2"><strong>Observaciones en Mujeres:</strong></label>
+            <textarea placeholder="Ingrese las Observaciones" class="form-control input" id="Observaciones2" rows="3"
+                name="Observaciones2">{{ old('Observaciones2', session('Observaciones2')) }}</textarea>
+            <small id="Observaciones2Error" class="error-message" style="color: red;"></small>
+        </div>
+    </div>
 
-        
-            <div class="form-group col-md-3">
-                <label for="Observaciones3"><strong>Observaciones en Niños:</strong></label>
-                <textarea placeholder="Ingrese las Observaciones" class="form-control input" id="Observaciones3" rows="3"
-                    name="Observaciones3">{{ old('Observaciones3', session('Observaciones3')) }}</textarea>
-            </div>
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <label for="Niños"><strong>Cantidad de Niños beneficiarios-atendidos:</strong></label>
+            <input placeholder="Ingrese los Niños beneficiados" type="number" class="form-control input"
+                id="Niños" name="Niños" value="{{ old('Niños', session('Niños')) }}" min="1">
+            <small id="NiñosError" class="error-message" style="color: red;"></small>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="Observaciones3"><strong>Observaciones en Niños:</strong></label>
+            <textarea placeholder="Ingrese las Observaciones" class="form-control input" id="Observaciones3" rows="3"
+                name="Observaciones3">{{ old('Observaciones3', session('Observaciones3')) }}</textarea>
+            <small id="Observaciones3Error" class="error-message" style="color: red;"></small>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="capacidad"><strong>Cantidad de Personas con capacidad beneficiarios-atendidos:</strong></label>
+            <input placeholder="Ingrese las Personas beneficiadas" type="number" class="form-control input"
+                id="capacidad" name="capacidad" value="{{ old('capacidad', session('capacidad')) }}"
+                min="1">
+            <small id="capacidadError" class="error-message" style="color: red;"></small>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="Observaciones4"><strong>Observaciones en Personas con discapacidad:</strong></label>
+            <textarea placeholder="Ingrese las Observaciones" class="form-control input" id="Observaciones4" rows="3"
+                name="Observaciones4">{{ old('Observaciones4', session('Observaciones4')) }}</textarea>
+            <small id="Observaciones4Error" class="error-message" style="color: red;"></small>
+        </div>
+    </div>
 
-
-            <div class="form-group col-md-3">
-                <label for="capacidad"><strong>Cantidad de Personas con capacidad beneficiarios-atendidos:</strong></label>
-                <input placeholder="Ingrese los Personas beneficiadas" type="number" class="form-control input"
-                    id="capacidad" name="capacidad" value="{{ old('capacidad', session('capacidad')) }}"
-                    min="1">
-            </div>
-            
-        
-            <div class="form-group col-md-3">
-                <label for="Observaciones4"><strong>Observaciones en Personas con discapacidad:</strong></label>
-                <textarea placeholder="Ingrese las Observaciones" class="form-control input" id="Observaciones4" rows="3"
-                    name="Observaciones4">{{ old('Observaciones4', session('Observaciones4')) }}</textarea>
-            </div>
+    <hr>
+    <h4><b>Conclusiones y Recomendaciones</b></h4>
+    <hr>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="Conclusiones"><strong>Conclusiones:</strong></label>
+            <textarea placeholder="Ingrese la conclusion" class="form-control input" id="Conclusiones" rows="3"
+                name="Conclusiones">{{ old('Conclusiones', session('Conclusiones')) }}</textarea>
+            <small id="ConclusionesError" class="error-message" style="color: red;"></small>
         </div>
 
-        <hr>
-        <h4><b>Conclusiones y Recomendaciones</b></h4>
-        <hr>
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label for="Conclusiones"><strong>Conclusiones:</strong></label>
-                <textarea placeholder="Ingrese la conclusion" class="form-control input" id="Conclusiones" rows="3"
-                    name="Conclusiones">{{ old('Conclusiones', session('Conclusiones')) }}</textarea>
-            </div>
-
-            <div class="form-group col-md-6">
-                <label for="Recomendaciones"><strong>Recomendaciones:</strong></label>
-                <textarea placeholder="Ingrese la recomendacion" class="form-control input" id="Recomendaciones" rows="3"
-                    name="Recomendaciones">{{ old('Recomendaciones', session('Recomendaciones')) }}</textarea>
-            </div>
+        <div class="form-group col-md-6">
+            <label for="Recomendaciones"><strong>Recomendaciones:</strong></label>
+            <textarea placeholder="Ingrese la recomendacion" class="form-control input" id="Recomendaciones" rows="3"
+                name="Recomendaciones">{{ old('Recomendaciones', session('Recomendaciones')) }}</textarea>
+            <small id="RecomendacionesError" class="error-message" style="color: red;"></small>
         </div>
+    </div>
 
-        <center>
-            <button type="submit" class="button1"><i class="fas fa-cogs"></i> Generar Informe</button>
-         
-        </center>
-    </form>
+    <center>
+        <button type="submit" class="button1"><i class="fas fa-cogs"></i> Generar Informe</button>
+    </center>
+</form>
+
 
     <hr>
     <h4><b>Acta de reuniones</b></h4>
@@ -488,6 +496,115 @@
                 }
             }
         });
+    </script>
+
+    <script>
+        document.getElementById('informeForm').addEventListener('submit', function(event) {
+    // Limpiar mensajes de error previos
+    document.querySelectorAll('.error-message').forEach(function(error) {
+        error.textContent = '';
+    });
+
+    let formIsValid = true;
+
+    // Validar 'Objetivos'
+    const objetivos = document.getElementById('Objetivos').value.trim();
+    if (objetivos === "") {
+        document.getElementById('ObjetivosError').textContent = 'El objetivo del proyecto es requerido.';
+        formIsValid = false;
+    }
+
+    // Validar 'intervencion'
+    const intervencion = document.getElementById('intervencion').value.trim();
+    if (intervencion === "") {
+        document.getElementById('intervencionError').textContent = 'El lugar de intervención es requerido.';
+        formIsValid = false;
+    }
+
+    // Validar 'planificadas', 'alcanzados', 'porcentaje'
+    const planificadas = document.querySelectorAll('textarea[name="planificadas[]"]');
+    const alcanzados = document.querySelectorAll('textarea[name="alcanzados[]"]');
+    const porcentajes = document.querySelectorAll('textarea[name="porcentaje[]"]');
+
+    planificadas.forEach(function(element, index) {
+        if (element.value.trim() === "") {
+            document.getElementById('planificadasError').textContent = 'Las actividades planificadas son requeridas.';
+            formIsValid = false;
+        }
+    });
+
+    alcanzados.forEach(function(element, index) {
+        if (element.value.trim() === "") {
+            document.getElementById('alcanzadosError').textContent = 'Los resultados alcanzados son requeridos.';
+            formIsValid = false;
+        }
+    });
+
+    porcentajes.forEach(function(element, index) {
+        if (element.value.trim() === "") {
+            document.getElementById('porcentajeError').textContent = 'El porcentaje alcanzado es requerido.';
+            formIsValid = false;
+        }
+    });
+
+    // Validar 'Hombres'
+    const hombres = document.getElementById('Hombres').value.trim();
+    if (hombres === "" || hombres < 1) {
+        document.getElementById('HombresError').textContent = 'La cantidad de hombres beneficiados es requerida.';
+        formIsValid = false;
+    }
+
+    // Validar 'Mujeres'
+    const mujeres = document.getElementById('Mujeres').value.trim();
+    if (mujeres === "" || mujeres < 1) {
+        document.getElementById('MujeresError').textContent = 'La cantidad de mujeres beneficiadas es requerida.';
+        formIsValid = false;
+    }
+
+    // Validar 'Niños'
+    const niños = document.getElementById('Niños').value.trim();
+    if (niños === "" || niños < 1) {
+        document.getElementById('NiñosError').textContent = 'La cantidad de niños beneficiados es requerida.';
+        formIsValid = false;
+    }
+
+    // Validar 'capacidad'
+    const capacidad = document.getElementById('capacidad').value.trim();
+    if (capacidad === "" || capacidad < 1) {
+        document.getElementById('capacidadError').textContent = 'La cantidad de personas con capacidad es requerida.';
+        formIsValid = false;
+    }
+
+    // Validar 'Conclusiones'
+    const conclusiones = document.getElementById('Conclusiones').value.trim();
+    if (conclusiones === "") {
+        document.getElementById('ConclusionesError').textContent = 'Las conclusiones son requeridas.';
+        formIsValid = false;
+    }
+
+    // Validar 'Recomendaciones'
+    const recomendaciones = document.getElementById('Recomendaciones').value.trim();
+    if (recomendaciones === "") {
+        document.getElementById('RecomendacionesError').textContent = 'Las recomendaciones son requeridas.';
+        formIsValid = false;
+    }
+
+    // Si el formulario no es válido, evitar el envío
+    if (!formIsValid) {
+        event.preventDefault();
+    }
+});
+
+// Eliminar mensaje de error al escribir
+document.querySelectorAll('textarea, input').forEach(function(element) {
+    element.addEventListener('input', function() {
+        const errorElement = document.getElementById(element.id + 'Error');
+        if (errorElement) {
+            errorElement.textContent = '';
+        }
+    });
+});
+
     </script>
 
 

@@ -59,7 +59,7 @@
         </div>
 
         <div class="elements_static">
-          
+
           <div class="icon_block">
                     <i class="fa-brands fa-expeditedssl"></i>
                 </div>
@@ -85,12 +85,12 @@
             <label></label>
             <span></span>
           </div>
-         
+
           <div style="text-align: center;">
             <label for="nombre"></label>
             <span></span>
           </div>
-        
+
           <div>
             <label></label>
             <span></span>
@@ -102,7 +102,7 @@
       </div>
   </div>
 
-   
+
 
 
   </div>
@@ -111,33 +111,39 @@
       <div>
         <span class="title_edit_profile"><b>Cambiar contraseña</b>
 
-         
+
         </span>
         <hr>
       </div>
 
-      <form class="form_change_passwd">
+      <form class="form_change_passwd"
+      action="{{ route('estudiantes.actualizarCredenciales', ['userId' => auth()->user()->userId]) }}"
+      method="POST" id="changePasswordForm">
+      @csrf
+      @method('PUT')
+      <div>
+          <label for="password">Nueva contraseña <span class="requerido">*</span></label>
+          <input type="password" id="password" name="password" class="input" placeholder="Ingrese la clave">
+          <small id="passwordError" class="error-message" style="color: red;"></small>
+      </div>
 
-        <div>
-          <label for="firstname_student">Nueva contraseña <span class="requerido">*</span></label>
-          <input type="text" id="firstname_student" class="input" placeholder="Ingrese la clave">
-        </div>
+      <div>
+          <label for="password_confirmation">Confirmar contraseña <span class="requerido">*</span></label>
+          <input type="password" id="password_confirmation" name="password_confirmation" class="input"
+              placeholder="Ingrese de nuevo la clave">
+          <small id="confirmPasswordError" class="error-message" style="color: red;"></small>
+      </div>
 
-        <div>
-          <label for="firstname_student">Confirmar contraseña <span class="requerido">*</span></label>
-          <input type="text" id="firstname_student" class="input" placeholder="Ingrese de nuevo la clave">
-        </div>
-
-        <div class="content_button">
-          <button class="button1 efects_button">Actualizar</button>
-        </div>
-      </form>
+      <div class="content_button">
+          <button class="button1 efects_button" type="submit">Actualizar</button>
+      </div>
+  </form>
     </div>
-  
+
 <br>
   <div>
   </section>
-  
+
   <div class="sesion_history">
             <div>
         <span class="title_edit_profile"><b>Control de sesiones</b>
@@ -235,7 +241,55 @@
 
 
 
+<script>
+    document.getElementById('changePasswordForm').addEventListener('submit', function(event) {
+        // Limpiar mensajes de error previos
+        document.getElementById('passwordError').textContent = '';
+        document.getElementById('confirmPasswordError').textContent = '';
 
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('password_confirmation');
+
+        const password = passwordInput.value.trim();
+        const confirmPassword = confirmPasswordInput.value.trim();
+
+        let formIsValid = true;
+
+        // Verificar que ambos campos estén llenos
+        if (password === "") {
+            document.getElementById('passwordError').textContent = 'La nueva contraseña es requerida.';
+            passwordInput.focus();
+            formIsValid = false;
+        }
+
+        if (confirmPassword === "") {
+            document.getElementById('confirmPasswordError').textContent =
+                'La confirmación de contraseña es requerida.';
+            confirmPasswordInput.focus();
+            formIsValid = false;
+        }
+
+        // Verificar que la contraseña tenga al menos 6 caracteres
+        if (password.length > 0 && password.length < 6) {
+            document.getElementById('passwordError').textContent =
+                'La contraseña debe tener al menos 6 caracteres.';
+            passwordInput.focus();
+            formIsValid = false;
+        }
+
+        // Verificar que las contraseñas coincidan
+        if (password.length >= 6 && password !== confirmPassword) {
+            document.getElementById('confirmPasswordError').textContent = 'Las contraseñas no coinciden.';
+            confirmPasswordInput.focus();
+            formIsValid = false;
+        }
+
+        // Si el formulario no es válido, evitar el envío
+        if (!formIsValid) {
+            event.preventDefault();
+        }
+    });
+</script>
 
 
 

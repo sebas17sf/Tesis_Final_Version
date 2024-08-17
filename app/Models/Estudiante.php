@@ -7,14 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Estudiante extends Model
 {
-    // Nombre de la tabla en la base de datos
-    protected $table = 'estudiantes';
+     protected $table = 'estudiantes';
 
-    // Nombre de la columna que es clave primaria en la tabla
-    protected $primaryKey = 'estudianteId';
+     protected $primaryKey = 'estudianteId';
 
-    // Campos que pueden ser llenados en masa (en el proceso de registro)
-    protected $fillable = [
+     protected $fillable = [
         'userId',
         'nombres',
         'apellidos',

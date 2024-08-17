@@ -30,7 +30,13 @@ class DirectorVinculacionController extends Controller
 {
     public function index(Request $request)
     {
+        // Verificar si el usuario está autenticado y tiene el rol de Estudiante
+        if (Auth::check() && Auth::user()->role->tipo !== 'DirectorVinculacion') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
 
+
+        // Lógica del método continua aquí
         $search = $request->input('search');
         $perPage = $request->input('perPage', 10);
         $perPage2 = $request->input('perPage2', 10);
@@ -48,6 +54,7 @@ class DirectorVinculacionController extends Controller
 
         $profesor = Auth::user()->profesorUniversidad;
         $proyectos = Proyecto::where('directorId', $profesor->id)->pluck('proyectoId');
+
         $asignacionesProyectos = AsignacionProyecto::whereIn('proyectoId', $proyectos)
             ->where(function ($query) use ($search) {
                 $query->whereHas('proyecto.director', function ($query) use ($search) {
@@ -55,31 +62,29 @@ class DirectorVinculacionController extends Controller
                         ->orWhere('apellidos', 'like', "%{$search}%")
                         ->orWhere('departamento', 'like', "%{$search}%");
                 })
-                    ->orWhereHas('proyecto', function ($query) use ($search) {
-                        $query->where('nombreProyecto', 'like', "%{$search}%");
-                    })
-                    ->orWhereHas('estudiante', function ($query) use ($search) {
-                        $query->where('nombres', 'like', "%{$search}%")
-                            ->orWhere('apellidos', 'like', "%{$search}%")
-                            ->orWhere('carrera', 'like', "%{$search}%")
-                            ->orWhere('departamento', 'like', "%{$search}%");
+                ->orWhereHas('proyecto', function ($query) use ($search) {
+                    $query->where('nombreProyecto', 'like', "%{$search}%");
+                })
+                ->orWhereHas('estudiante', function ($query) use ($search) {
+                    $query->where('nombres', 'like', "%{$search}%")
+                        ->orWhere('apellidos', 'like', "%{$search}%")
+                        ->orWhere('carrera', 'like', "%{$search}%")
+                        ->orWhere('departamento', 'like', "%{$search}%");
 
-                    })
-                    ->orWhereHas('periodo', function ($query) use ($search) {
-                        $query->where('numeroPeriodo', 'like', "%{$search}%");
-                    })
-
-                    ->orWhereHas('docenteParticipante', function ($query) use ($search) {
-                        $query->where('nombres', 'like', "%{$search}%")
-                            ->orWhere('apellidos', 'like', "%{$search}%")
-                            ->orWhere('departamento', 'like', "%{$search}%");
-                    });
+                })
+                ->orWhereHas('periodo', function ($query) use ($search) {
+                    $query->where('numeroPeriodo', 'like', "%{$search}%");
+                })
+                ->orWhereHas('docenteParticipante', function ($query) use ($search) {
+                    $query->where('nombres', 'like', "%{$search}%")
+                        ->orWhere('apellidos', 'like', "%{$search}%")
+                        ->orWhere('departamento', 'like', "%{$search}%");
+                });
 
             })
             ->when($profesorFiltro, function ($query) use ($profesorFiltro) {
                 $query->whereHas('docenteParticipante', function ($query) use ($profesorFiltro) {
                     $query->where('apellidos', 'like', "%{$profesorFiltro}%");
-
                 });
             })
             ->when($periodoFiltro, function ($query) use ($periodoFiltro) {
@@ -89,10 +94,6 @@ class DirectorVinculacionController extends Controller
             })
             ->paginate($perPage, ['*'], 'proyectosPage');
 
-
-
-
-
         $asignacionParticipante = AsignacionProyecto::where('participanteId', $profesor->id)
             ->where(function ($query) use ($search2) {
                 $query->whereHas('proyecto.director', function ($query) use ($search2) {
@@ -100,23 +101,23 @@ class DirectorVinculacionController extends Controller
                         ->orWhere('apellidos', 'like', "%{$search2}%")
                         ->orWhere('departamento', 'like', "%{$search2}%");
                 })
-                    ->orWhereHas('proyecto', function ($query) use ($search2) {
-                        $query->where('nombreProyecto', 'like', "%{$search2}%");
-                    })
-                    ->orWhereHas('estudiante', function ($query) use ($search2) {
-                        $query->where('nombres', 'like', "%{$search2}%")
-                            ->orWhere('apellidos', 'like', "%{$search2}%")
-                            ->orWhere('carrera', 'like', "%{$search2}%")
-                            ->orWhere('departamento', 'like', "%{$search2}%");
-                    })
-                    ->orWhereHas('periodo', function ($query) use ($search2) {
-                        $query->where('numeroPeriodo', 'like', "%{$search2}%");
-                    })
-                    ->orWhereHas('docenteParticipante', function ($query) use ($search2) {
-                        $query->where('nombres', 'like', "%{$search2}%")
-                            ->orWhere('apellidos', 'like', "%{$search2}%")
-                            ->orWhere('departamento', 'like', "%{$search2}%");
-                    });
+                ->orWhereHas('proyecto', function ($query) use ($search2) {
+                    $query->where('nombreProyecto', 'like', "%{$search2}%");
+                })
+                ->orWhereHas('estudiante', function ($query) use ($search2) {
+                    $query->where('nombres', 'like', "%{$search2}%")
+                        ->orWhere('apellidos', 'like', "%{$search2}%")
+                        ->orWhere('carrera', 'like', "%{$search2}%")
+                        ->orWhere('departamento', 'like', "%{$search2}%");
+                })
+                ->orWhereHas('periodo', function ($query) use ($search2) {
+                    $query->where('numeroPeriodo', 'like', "%{$search2}%");
+                })
+                ->orWhereHas('docenteParticipante', function ($query) use ($search2) {
+                    $query->where('nombres', 'like', "%{$search2}%")
+                        ->orWhere('apellidos', 'like', "%{$search2}%")
+                        ->orWhere('departamento', 'like', "%{$search2}%");
+                });
             })
             ->when($profesorFiltro2, function ($query) use ($profesorFiltro2) {
                 $query->whereHas('proyecto.director', function ($query) use ($profesorFiltro2) {
@@ -128,14 +129,25 @@ class DirectorVinculacionController extends Controller
                     $query->where('numeroPeriodo', 'like', "%{$periodoFiltro2}%");
                 });
             })
-
             ->paginate($perPage2, ['*'], 'participantesPage');
 
-
-
-        return view('director_vinculacion.index', compact('proyectos', 'asignacionesProyectos', 'asignacionParticipante', 'search', 'search2', 'profesTodos', 'obtenerPeriodo', 'profesorFiltro', 'periodoFiltro', 'profesorFiltro2', 'periodoFiltro2', 'perPage', 'perPage2'));
-
+        return view('director_vinculacion.index', compact(
+            'proyectos',
+            'asignacionesProyectos',
+            'asignacionParticipante',
+            'search',
+            'search2',
+            'profesTodos',
+            'obtenerPeriodo',
+            'profesorFiltro',
+            'periodoFiltro',
+            'profesorFiltro2',
+            'periodoFiltro2',
+            'perPage',
+            'perPage2'
+        ));
     }
+
 
     //////////////////buscar
 
@@ -143,6 +155,11 @@ class DirectorVinculacionController extends Controller
     ////////////funcion para repartir los estudiantes
     public function repartoEstudiantes()
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'DirectorVinculacion') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
+
         $correoAutenticado = Auth::user()->correoElectronico;
 
         $directorProyecto = ProfesUniversidad::where('correo', $correoAutenticado)->first();
@@ -231,6 +248,11 @@ class DirectorVinculacionController extends Controller
 
     public function estudiantes()
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'DirectorVinculacion') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
+
         $RepartoEstudiantes = AsignacionProyecto::all();
 
         $correoDirector = Auth::user()->correoElectronico;
@@ -454,6 +476,10 @@ class DirectorVinculacionController extends Controller
 
     public function documentosDirector()
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'DirectorVinculacion') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
 
         return view('director_vinculacion.documentacion');
     }
@@ -611,10 +637,14 @@ class DirectorVinculacionController extends Controller
     ////////////////////////////cambiar credenciales
     public function cambiarCredencialesUsuario()
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'DirectorVinculacion') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
         $periodos = Periodo::all();
 
         $usuario = Auth::user();
-        $estudiante = $usuario->estudiante;
+        $estudiante = $usuario->profesorUniversidad;
 
         $penultimateSession = UsuariosSession::where('userId', $usuario->userId)
             ->latest()
@@ -650,38 +680,67 @@ class DirectorVinculacionController extends Controller
         }
     }
 
-    public function actualizarCredenciales(Request $request)
+    public function actualizarCredenciales(Request $request, $userId)
     {
         $request->validate([
-            'email' => 'required',
             'password' => 'required',
             'password_confirmation' => 'required',
-            'nombre' => 'required',
         ]);
 
         if ($request->password !== $request->password_confirmation) {
             return redirect()->back()->with('error', 'Las contraseñas no coinciden')->withInput();
         }
 
-        //////las credenciales deben ser minimo de 6 caracteres
         if (strlen($request->password) < 6) {
             return redirect()->back()->with('error', 'La contraseña debe tener al menos 6 caracteres')->withInput();
         }
 
-        $usuario = Auth::user();
+        $usuario = Usuario::find($userId);
 
-        $usuario->CorreoElectronico = $request->email;
-        $usuario->NombreUsuario = $request->nombre;
-        $usuario->Contrasena = bcrypt($request->password);
+        if (!$usuario) {
+            return redirect()->back()->with('error', 'Usuario no encontrado')->withInput();
+        }
 
+        $usuario->contrasena = bcrypt($request->password);
         $usuario->save();
 
-        return redirect()->route('director_vinculacion.index')->with('success', 'Credenciales actualizadas exitosamente');
+        return redirect()->back()->with('success', 'Contraseña actualizada.');
+    }
+
+    public function actualizarDatosDirectorCredenciales(Request $request, $id)
+    {
+        // Validar los datos del formulario
+        $request->validate([
+            'firstname_student' => 'required',
+            'lastname_student' => 'required',
+            'Departamento' => 'required',
+        ]);
+
+
+
+
+         $estudiante = ProfesUniversidad::findOrFail($id);
+
+        // Actualizar los datos del estudiante
+        $estudiante->nombres = $request->input('firstname_student');
+        $estudiante->apellidos = $request->input('lastname_student');
+        $estudiante->departamento = $request->input('Departamento');
+
+        // Guardar los cambios
+        $estudiante->save();
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->back()->with('success', 'Datos del estudiante actualizados.');
     }
 
 
     public function baremo(Request $request)
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'DirectorVinculacion') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
+
         $profesor = Auth::user()->profesorUniversidad;
 
         ////encontrar el proyectoId del director
@@ -701,6 +760,11 @@ class DirectorVinculacionController extends Controller
     //////////////////////////practicas 1
     public function practicas1()
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'DirectorVinculacion') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
+
         $participante = Auth::user()->profesorUniversidad;
 
         // Obtener el ID del tutor académico (ajusta esta línea según cómo obtienes este ID)
@@ -837,6 +901,11 @@ class DirectorVinculacionController extends Controller
     /////////////////////////practicas 2
     public function practicasii()
     {
+        if (Auth::check() && Auth::user()->role->tipo !== 'DirectorVinculacion') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
+        
         $participante = Auth::user()->profesorUniversidad;
 
         // Obtener el ID del tutor académico (ajusta esta línea según cómo obtienes este ID)

@@ -611,7 +611,7 @@ class DocumentosVinculacion extends Controller
                     $hojaCalculo->setCellValue("AI$filaActual", mb_strtoupper($estadoEstudiante)); // Añadir el estado del estudiante
 
                     // Copiar el estilo de la fila 9
-                    $hojaCalculo->duplicateStyle($hojaCalculo->getStyle('A9:AI9'), 'A' . $filaActual . ':AH' . $filaActual);
+                    $hojaCalculo->duplicateStyle($hojaCalculo->getStyle('A9:AI9'), 'A' . $filaActual . ':AI' . $filaActual);
 
                     $filaInicio++;
                 } else {
