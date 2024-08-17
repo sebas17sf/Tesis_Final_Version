@@ -63,6 +63,10 @@ class DocumentoController extends Controller
         // Obtener el ProyectoID del modelo AsignacionProyecto del estudiante
         $asignacionProyecto = $estudiante->asignaciones->first();
 
+        if ($asignacionProyecto == null) {
+            return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');
+        }
+
         // Obtener el periodo de la asignación
         $idPeriodo = $asignacionProyecto->idPeriodo;
 
@@ -303,284 +307,294 @@ class DocumentoController extends Controller
 
     ///////////////////////////////GENERAR 1.3 NÚMERO HORAS ESTUDIANTES//////////////////////////
     public function generarHorasEstudiante(Request $request)
-    {
-        // Ruta a la plantilla XLSX en la carpeta "public/Plantillas"
-        $plantillaPath = public_path('Plantillas/1.3-Número-Horas-Estudiantes.xlsx');
+{
+    // Ruta a la plantilla XLSX en la carpeta "public/Plantillas"
+    $plantillaPath = public_path('Plantillas/1.3-Número-Horas-Estudiantes.xlsx');
 
-        // Verificar si el archivo de plantilla existe
-        if (!file_exists($plantillaPath)) {
-            abort(404, 'El archivo de plantilla no existe.');
-        }
-
-        function formatName($name)
-        {
-            return ucwords(strtolower($name));
-        }
-
-        // Cargar la plantilla XLSX existente
-        $spreadsheet = IOFactory::load($plantillaPath);
-
-        // Obtener el usuario actual (asegúrate de que el usuario esté autenticado)
-        $usuario = auth()->user();
-
-        if (!$usuario) {
-            // Manejar el caso en que el usuario no esté autenticado
-            abort(403, 'No estás autenticado.');
-        }
-
-        // Obtener el estudiante asociado al usuario
-        $estudiante = $usuario->estudiante;
-
-        if (!$estudiante) {
-            // Manejar el caso en que no se encontró el estudiante asociado al usuario
-            abort(404, 'No se encontró el estudiante asociado a tu usuario.');
-        }
-
-        // Obtener el ProyectoID del modelo AsignacionProyecto del estudiante
-        $asignacionProyecto = $estudiante->asignaciones->first();
-
-        if ($asignacionProyecto) {
-            $proyectoID = $asignacionProyecto->proyectoId;
-            $idPeriodo = $asignacionProyecto->idPeriodo;
-            $inicioFecha = $asignacionProyecto->inicioFecha;
-        } else {
-            return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');
-        }
-
-        // Obtener el tipo de informe del formulario
-        $tipoInforme = $request->input('tipoDocumentos');
-
-        if ($tipoInforme == 'grupal') {
-            // Consulta para obtener los datos de los estudiantes asignados a un proyecto específico con la misma inicioFecha
-            $datosEstudiantes = DB::table('estudiantes')
-                ->join('asignacionproyectos', 'estudiantes.estudianteId', '=', 'asignacionproyectos.estudianteId')
-                ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
-                ->join('profesuniversidad as director', 'proyectos.directorId', '=', 'director.id')
-                ->join('profesuniversidad as participante', 'asignacionproyectos.participanteId', '=', 'participante.id')
-                ->select(
-                    'estudiantes.apellidos',
-                    'estudiantes.nombres',
-                    'estudiantes.cedula',
-                    'estudiantes.departamento',
-                    'estudiantes.celular',
-                    'estudiantes.carrera',
-                    'estudiantes.correo',
-                    'asignacionproyectos.inicioFecha',
-                    'asignacionproyectos.finalizacionFecha',
-                    'proyectos.nombreProyecto',
-                    'proyectos.departamentoTutor',
-                    'director.nombres as NombreProfesor',
-                    'director.apellidos as ApellidoProfesor',
-                    'participante.nombres as NombreParticipante',
-                    'participante.apellidos as ApellidoParticipante'
-                )
-                ->where('proyectos.estado', '=', 'Ejecucion')
-                ->where('asignacionproyectos.idPeriodo', $asignacionProyecto->idPeriodo)
-                ->where('asignacionproyectos.proyectoId', '=', $proyectoID)
-                ->where('asignacionproyectos.inicioFecha', '=', $inicioFecha)
-                ->orderBy('estudiantes.apellidos', 'asc')
-                ->get();
-        } else {
-            // Consulta para obtener los datos del estudiante autenticado
-            $datosEstudiantes = DB::table('estudiantes')
-                ->join('asignacionproyectos', 'estudiantes.estudianteId', '=', 'asignacionproyectos.estudianteId')
-                ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
-                ->join('profesuniversidad as director', 'proyectos.directorId', '=', 'director.id')
-                ->join('profesuniversidad as participante', 'asignacionproyectos.participanteId', '=', 'participante.id')
-                ->select(
-                    'estudiantes.apellidos',
-                    'estudiantes.nombres',
-                    'estudiantes.cedula',
-                    'estudiantes.departamento',
-                    'estudiantes.celular',
-                    'estudiantes.carrera',
-                    'estudiantes.correo',
-                    'asignacionproyectos.inicioFecha',
-                    'asignacionproyectos.finalizacionFecha',
-                    'proyectos.nombreProyecto',
-                    'proyectos.departamentoTutor',
-                    'director.nombres as NombreProfesor',
-                    'director.apellidos as ApellidoProfesor',
-                    'participante.nombres as NombreParticipante',
-                    'participante.apellidos as ApellidoParticipante'
-                )
-                ->where('estudiantes.estudianteId', $estudiante->estudianteId)
-                ->orderBy('estudiantes.apellidos', 'asc')
-                ->get();
-        }
-
-        // Verificar si se recuperaron datos
-        if ($datosEstudiantes->isEmpty()) {
-            // Manejar el caso en que no se encontraron datos
-            abort(404, 'No se encontraron datos de estudiantes asignados al proyecto activo.');
-        }
-
-        // Obtener Carrera, Provincia y FechaInicio del primer estudiante asignado al proyecto
-        $primerEstudiante = $datosEstudiantes->first();
-        $fechaInicioProyecto = $primerEstudiante->inicioFecha;
-        $fechaFinProyecto = $primerEstudiante->finalizacionFecha;
-        $departamento = "Departamento de " . $primerEstudiante->departamentoTutor;
-
-        $meses = [
-            'January' => 'Enero',
-            'February' => 'Febrero',
-            'March' => 'Marzo',
-            'April' => 'Abril',
-            'May' => 'Mayo',
-            'June' => 'Junio',
-            'July' => 'Julio',
-            'August' => 'Agosto',
-            'September' => 'Septiembre',
-            'October' => 'Octubre',
-            'November' => 'Noviembre',
-            'December' => 'Diciembre',
-        ];
-
-        $fechaFormateada = date('d F Y', strtotime($fechaFinProyecto));
-        $fechaFormateada = strtr($fechaFormateada, $meses);
-
-
-
-        $NombreProyecto = $primerEstudiante->nombreProyecto;
-        $horasVinculacionConstante = 96;
-        $matriz = 'Sede Santo Domingo';
-        $nombreProfesor = $primerEstudiante->NombreProfesor;
-        $apellidoProfesor = $primerEstudiante->ApellidoProfesor;
-        $nombreCombinado = "{$nombreProfesor} {$apellidoProfesor}";
-
-        // Obtener la hoja activa del archivo XLSX
-        $sheet = $spreadsheet->getActiveSheet();
-
-        // Clonar filas en la plantilla
-        $filaInicio = 5; // La primera fila de datos comienza en la fila 5
-        $cantidadFilas = count($datosEstudiantes);
-        $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
-
-        // Bucle para reemplazar los valores en la plantilla
-        foreach ($datosEstudiantes as $index => $estudiante) {
-            $filaActual = $filaInicio + $index;
-            $apellidoNombre = formatName($estudiante->apellidos) . ' ' . formatName($estudiante->nombres);
-            $sheet->setCellValue('C' . $filaActual, $apellidoNombre);
-            $sheet->setCellValue('D' . $filaActual, $estudiante->cedula);
-            $sheet->setCellValue('E' . $filaActual, $estudiante->celular);
-            $horasVinculacionConstanteEntero = round($horasVinculacionConstante);
-            $sheet->setCellValue('L' . $filaActual, $horasVinculacionConstanteEntero);
-            $sheet->setCellValue('H' . $filaActual, $estudiante->departamento);
-            $sheet->setCellValue('I' . $filaActual, $estudiante->carrera);
-            $sheet->setCellValue('J' . $filaActual, $fechaInicioProyecto);
-            $sheet->setCellValue('K' . $filaActual, $fechaFinProyecto);
-            $sheet->setCellValue('G' . $filaActual, $matriz);
-            $sheet->setCellValue('F' . $filaActual, $estudiante->correo);
-        }
-
-        // Unir celdas para los encabezados y el proyecto
-        $sheet->mergeCells("B5:B" . (5 + $cantidadFilas - 1));
-        $sheet->mergeCells("A5:A" . (5 + $cantidadFilas - 1));
-        $sheet->setCellValue('B5', $NombreProyecto);
-        $sheet->setCellValue('A5', '1');
-
-        $sheet->mergeCells('B18:D18');
-        $sheet->mergeCells('B17:D17');
-        $sheet->mergeCells('B19:D19');
-
-        $sheet->setCellValue('C2', $departamento);
-
-        $sheet->getStyle('B28')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
-        $sheet->getStyle('B28')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        $sheet->getStyle('B28')->getAlignment()->setWrapText(true);
-
-        //////contadores para mostrar los nombres despues de la interaccion
-        $filaFinal = $filaInicio + count($datosEstudiantes) + 2;
-        $sheet->setCellValue('B' . $filaFinal, 'Fecha:');
-
-        $nombreCompleto = $filaInicio + count($datosEstudiantes) + 12;
-        $sheet->setCellValue('B' . $nombreCompleto, $nombreCombinado);
-        $rangoCeldas = 'B' . $nombreCompleto . ':D' . $nombreCompleto;
-        $sheet->getStyle($rangoCeldas)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $sheet->getStyle('B' . $nombreCompleto)->getFont()->setBold(true);
-
-        $departamentoProyecto = $filaInicio + count($datosEstudiantes) + 13;
-        $sheet->setCellValue('B' . $departamentoProyecto, $departamento);
-
-        $marcoDirectorProyecto = $filaInicio + count($datosEstudiantes) + 14;
-        $sheet->setCellValue('B' . $marcoDirectorProyecto, 'Director de Proyecto');
-
-        ///////////////////////interacion Coordinadoir
-        $nombreCoordinador = $filaInicio + count($datosEstudiantes) + 12;
-        $sheet->setCellValue('F' . $nombreCoordinador, 'Verónica Isabel Martinez Cepeda');
-        $rangoCeldas = 'F' . $nombreCoordinador . ':G' . $nombreCoordinador;
-        $sheet->getStyle($rangoCeldas)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $sheet->getStyle('F' . $nombreCoordinador)->getFont()->setBold(true);
-        $sheet->getStyle('F' . $nombreCoordinador)->getFont()->setName('Calibri')->setSize(16);
-        $sheet->mergeCells('F' . $nombreCoordinador . ':G' . $nombreCoordinador);
-        $sheet->getStyle('F' . $nombreCoordinador)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
-
-        $departamentoCoordinador = $filaInicio + count($datosEstudiantes) + 13;
-        $sheet->setCellValue('F' . $departamentoCoordinador, 'Departamento de Ciencias de la Computación');
-        $rangoCeldas = 'F' . $departamentoCoordinador . ':G' . $departamentoCoordinador;
-        $sheet->getStyle('F' . $departamentoCoordinador)->getFont()->setBold(true);
-        $sheet->getStyle('F' . $departamentoCoordinador)->getFont()->setName('Calibri')->setSize(16);
-        $sheet->mergeCells('F' . $departamentoCoordinador . ':G' . $departamentoCoordinador);
-        $sheet->getStyle('F' . $departamentoCoordinador)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
-        $marcoCoordinador = $filaInicio + count($datosEstudiantes) + 14;
-        $sheet->setCellValue('F' . $marcoCoordinador, 'Coordinador de Vinculación con la Sociedad');
-        $rangoCeldas = 'F' . $marcoCoordinador . ':G' . $marcoCoordinador;
-        $sheet->getStyle('F' . $marcoCoordinador)->getFont()->setBold(true);
-        $sheet->getStyle('F' . $marcoCoordinador)->getFont()->setName('Calibri')->setSize(16);
-        $sheet->mergeCells('F' . $marcoCoordinador . ':G' . $marcoCoordinador);
-        $sheet->getStyle('F' . $marcoCoordinador)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
-        ////////////////interaccion director de carrera
-        $nombreDirectorCarrera = $filaInicio + count($datosEstudiantes) + 12;
-        $sheet->setCellValue('I' . $nombreDirectorCarrera, 'Christian Alfredo Coronel Guerrero');
-        $rangoCeldas = 'I' . $nombreDirectorCarrera . ':J' . $nombreDirectorCarrera;
-        $sheet->getStyle($rangoCeldas)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-        $sheet->getStyle('I' . $nombreDirectorCarrera)->getFont()->setBold(true);
-        $sheet->getStyle('I' . $nombreDirectorCarrera)->getFont()->setName('Calibri')->setSize(16);
-        $sheet->mergeCells('I' . $nombreDirectorCarrera . ':J' . $nombreDirectorCarrera);
-        $sheet->getStyle('I' . $nombreDirectorCarrera)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
-        $departamentoDirectorCarrera = $filaInicio + count($datosEstudiantes) + 13;
-        $sheet->setCellValue('I' . $departamentoDirectorCarrera, 'Director de Carrera');
-        $rangoCeldas = 'I' . $departamentoDirectorCarrera . ':J' . $departamentoDirectorCarrera;
-        $sheet->getStyle('I' . $departamentoDirectorCarrera)->getFont()->setBold(true);
-        $sheet->getStyle('I' . $departamentoDirectorCarrera)->getFont()->setName('Calibri')->setSize(16);
-        $sheet->mergeCells('I' . $departamentoDirectorCarrera . ':J' . $departamentoDirectorCarrera);
-        $sheet->getStyle('I' . $departamentoDirectorCarrera)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
-        $marcoDirectorCarrera = $filaInicio + count($datosEstudiantes) + 14;
-        $sheet->setCellValue('I' . $marcoDirectorCarrera, 'Tecnologías de la Información');
-        $rangoCeldas = 'I' . $marcoDirectorCarrera . ':J' . $marcoDirectorCarrera;
-        $sheet->getStyle('I' . $marcoDirectorCarrera)->getFont()->setBold(true);
-        $sheet->getStyle('I' . $marcoDirectorCarrera)->getFont()->setName('Calibri')->setSize(16);
-        $sheet->mergeCells('I' . $marcoDirectorCarrera . ':J' . $marcoDirectorCarrera);
-        $sheet->getStyle('I' . $marcoDirectorCarrera)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
-        ///agrega estilos a la celda
-        $sheet->getStyle('B' . $filaFinal)->getFont()->setName('Calibri')->setSize(16)->setBold(true);
-        $sheet->getStyle('C' . $filaFinal)->getFont()->setName('Calibri')->setSize(16);
-        $sheet->getStyle('C' . $filaFinal)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
-        $sheet->getStyle('C' . $filaFinal)->getAlignment()->setWrapText(true);
-        $sheet->setCellValue('C' . $filaFinal, $fechaFormateada);
-
-        // Formatear celdas
-        $sheet->getStyle('C9')->getFont()->setName('Calibri')->setSize(16);
-        $sheet->getStyle('B17')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
-        $sheet->getStyle('B17')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        $sheet->getStyle('B18')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
-        $sheet->getStyle('B18')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        $sheet->getStyle('B19')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
-        $sheet->getStyle('B19')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        $sheet->getStyle('B9')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
-
-        // Descargar el documento generado
-        $nombreArchivo = '1.3-Número-Horas-Estudiantes.xlsx';
-        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save($nombreArchivo);
-        return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+    // Verificar si el archivo de plantilla existe
+    if (!file_exists($plantillaPath)) {
+        abort(404, 'El archivo de plantilla no existe.');
     }
+
+    function formatName($name)
+    {
+        return ucwords(strtolower($name));
+    }
+
+    // Cargar la plantilla XLSX existente
+    $spreadsheet = IOFactory::load($plantillaPath);
+
+    // Obtener el usuario actual (asegúrate de que el usuario esté autenticado)
+    $usuario = auth()->user();
+
+    if (!$usuario) {
+        // Manejar el caso en que el usuario no esté autenticado
+        abort(403, 'No estás autenticado.');
+    }
+
+    // Obtener el estudiante asociado al usuario
+    $estudiante = $usuario->estudiante;
+
+    if (!$estudiante) {
+        // Manejar el caso en que no se encontró el estudiante asociado al usuario
+        abort(404, 'No se encontró el estudiante asociado a tu usuario.');
+    }
+
+    // Obtener el ProyectoID del modelo AsignacionProyecto del estudiante
+    $asignacionProyecto = $estudiante->asignaciones->first();
+
+    if ($asignacionProyecto) {
+        $proyectoID = $asignacionProyecto->proyectoId;
+        $idPeriodo = $asignacionProyecto->idPeriodo;
+        $inicioFecha = $asignacionProyecto->inicioFecha;
+    } else {
+        return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');
+    }
+
+    // Obtener el tipo de informe del formulario
+    $tipoInforme = $request->input('tipoDocumentos');
+
+    if ($tipoInforme == 'grupal') {
+        // Consulta para obtener los datos de los estudiantes asignados a un proyecto específico con la misma inicioFecha
+        $datosEstudiantes = DB::table('estudiantes')
+            ->join('asignacionproyectos', 'estudiantes.estudianteId', '=', 'asignacionproyectos.estudianteId')
+            ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
+            ->join('profesuniversidad as director', 'proyectos.directorId', '=', 'director.id')
+            ->join('profesuniversidad as participante', 'asignacionproyectos.participanteId', '=', 'participante.id')
+            ->select(
+                'estudiantes.apellidos',
+                'estudiantes.nombres',
+                'estudiantes.cedula',
+                'estudiantes.departamento',
+                'estudiantes.celular',
+                'estudiantes.carrera',
+                'estudiantes.correo',
+                'asignacionproyectos.inicioFecha',
+                'asignacionproyectos.finalizacionFecha',
+                'proyectos.nombreProyecto',
+                'proyectos.departamentoTutor',
+                'director.nombres as NombreProfesor',
+                'director.apellidos as ApellidoProfesor',
+                'participante.nombres as NombreParticipante',
+                'participante.apellidos as ApellidoParticipante'
+            )
+            ->where('proyectos.estado', '=', 'Ejecucion')
+            ->where('asignacionproyectos.idPeriodo', $asignacionProyecto->idPeriodo)
+            ->where('asignacionproyectos.proyectoId', '=', $proyectoID)
+            ->where('asignacionproyectos.inicioFecha', '=', $inicioFecha)
+            ->orderBy('estudiantes.apellidos', 'asc')
+            ->get();
+    } else {
+        // Consulta para obtener los datos del estudiante autenticado
+        $datosEstudiantes = DB::table('estudiantes')
+            ->join('asignacionproyectos', 'estudiantes.estudianteId', '=', 'asignacionproyectos.estudianteId')
+            ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
+            ->join('profesuniversidad as director', 'proyectos.directorId', '=', 'director.id')
+            ->join('profesuniversidad as participante', 'asignacionproyectos.participanteId', '=', 'participante.id')
+            ->select(
+                'estudiantes.apellidos',
+                'estudiantes.nombres',
+                'estudiantes.cedula',
+                'estudiantes.departamento',
+                'estudiantes.celular',
+                'estudiantes.carrera',
+                'estudiantes.correo',
+                'asignacionproyectos.inicioFecha',
+                'asignacionproyectos.finalizacionFecha',
+                'proyectos.nombreProyecto',
+                'proyectos.departamentoTutor',
+                'director.nombres as NombreProfesor',
+                'director.apellidos as ApellidoProfesor',
+                'participante.nombres as NombreParticipante',
+                'participante.apellidos as ApellidoParticipante'
+            )
+            ->where('estudiantes.estudianteId', $estudiante->estudianteId)
+            ->orderBy('estudiantes.apellidos', 'asc')
+            ->get();
+    }
+
+    // Verificar si se recuperaron datos
+    if ($datosEstudiantes->isEmpty()) {
+        // Manejar el caso en que no se encontraron datos
+        abort(404, 'No se encontraron datos de estudiantes asignados al proyecto activo.');
+    }
+
+    // Obtener Carrera, Provincia y FechaInicio del primer estudiante asignado al proyecto
+    $primerEstudiante = $datosEstudiantes->first();
+    $fechaInicioProyecto = $primerEstudiante->inicioFecha;
+    $fechaFinProyecto = $primerEstudiante->finalizacionFecha;
+    $departamento = "Departamento de " . $primerEstudiante->departamentoTutor;
+
+    $meses = [
+        'January' => 'enero',
+        'February' => 'febrero',
+        'March' => 'marzo',
+        'April' => 'abril',
+        'May' => 'mayo',
+        'June' => 'junio',
+        'July' => 'julio',
+        'August' => 'agosto',
+        'September' => 'septiembre',
+        'October' => 'octubre',
+        'November' => 'noviembre',
+        'December' => 'diciembre',
+    ];
+
+    $fechaFormateada = date('d F Y', strtotime($fechaFinProyecto));
+    $fechaFormateada = strtr($fechaFormateada, $meses);
+
+    $NombreProyecto = $primerEstudiante->nombreProyecto;
+    $horasVinculacionConstante = 96;
+    $matriz = 'Sede Santo Domingo';
+    $nombreProfesor = $primerEstudiante->NombreProfesor;
+    $apellidoProfesor = $primerEstudiante->ApellidoProfesor;
+    $nombreCombinado = "{$nombreProfesor} {$apellidoProfesor}";
+
+    // Obtener la hoja activa del archivo XLSX
+    $sheet = $spreadsheet->getActiveSheet();
+
+    // Clonar filas en la plantilla
+    $filaInicio = 5; // La primera fila de datos comienza en la fila 5
+    $cantidadFilas = count($datosEstudiantes);
+    $sheet->insertNewRowBefore($filaInicio + 1, $cantidadFilas - 1);
+
+    // Bucle para reemplazar los valores en la plantilla
+    foreach ($datosEstudiantes as $index => $estudiante) {
+        $filaActual = $filaInicio + $index;
+        $apellidoNombre = formatName($estudiante->apellidos) . ' ' . formatName($estudiante->nombres);
+        $sheet->setCellValue('C' . $filaActual, $apellidoNombre);
+        $sheet->setCellValue('D' . $filaActual, $estudiante->cedula);
+        $sheet->setCellValue('E' . $filaActual, $estudiante->celular);
+        $horasVinculacionConstanteEntero = round($horasVinculacionConstante);
+        $sheet->setCellValue('L' . $filaActual, $horasVinculacionConstanteEntero);
+        $sheet->setCellValue('H' . $filaActual, $estudiante->departamento);
+        $sheet->setCellValue('I' . $filaActual, $estudiante->carrera);
+        $sheet->setCellValue('J' . $filaActual, $fechaInicioProyecto);
+        $sheet->setCellValue('K' . $filaActual, $fechaFinProyecto);
+        $sheet->setCellValue('G' . $filaActual, $matriz);
+        $sheet->setCellValue('F' . $filaActual, $estudiante->correo);
+    }
+
+    // Unir celdas para los encabezados y el proyecto
+    $sheet->mergeCells("B5:B" . (5 + $cantidadFilas - 1));
+    $sheet->mergeCells("A5:A" . (5 + $cantidadFilas - 1));
+    $sheet->setCellValue('B5', $NombreProyecto);
+    $sheet->setCellValue('A5', '1');
+
+    $sheet->mergeCells('B18:D18');
+    $sheet->mergeCells('B17:D17');
+    $sheet->mergeCells('B19:D19');
+
+    $sheet->setCellValue('C2', $departamento);
+
+    $sheet->getStyle('B28')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
+    $sheet->getStyle('B28')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    $sheet->getStyle('B28')->getAlignment()->setWrapText(true);
+
+    // Director de Proyecto
+    $nombreDirectorProyecto = $filaInicio + count($datosEstudiantes) + 12;
+    $sheet->setCellValue('B' . $nombreDirectorProyecto, $nombreCombinado);
+    $rangoCeldas = 'B' . $nombreDirectorProyecto . ':D' . $nombreDirectorProyecto;
+    $sheet->getStyle($rangoCeldas)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+    $sheet->getStyle('B' . $nombreDirectorProyecto)->getFont()->setBold(true);
+    $sheet->getStyle('B' . $nombreDirectorProyecto)->getFont()->setName('Calibri')->setSize(16);
+    $sheet->mergeCells($rangoCeldas);
+    $sheet->getStyle('B' . $nombreDirectorProyecto)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+    $departamentoDirectorProyecto = $filaInicio + count($datosEstudiantes) + 13;
+    $sheet->setCellValue('B' . $departamentoDirectorProyecto, $departamento);
+    $rangoCeldas = 'B' . $departamentoDirectorProyecto . ':D' . $departamentoDirectorProyecto;
+    $sheet->getStyle('B' . $departamentoDirectorProyecto)->getFont()->setBold(true);
+    $sheet->getStyle('B' . $departamentoDirectorProyecto)->getFont()->setName('Calibri')->setSize(16);
+    $sheet->mergeCells($rangoCeldas);
+    $sheet->getStyle('B' . $departamentoDirectorProyecto)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+    $marcoDirectorProyecto = $filaInicio + count($datosEstudiantes) + 14;
+    $sheet->setCellValue('B' . $marcoDirectorProyecto, 'Director de Proyecto');
+    $rangoCeldas = 'B' . $marcoDirectorProyecto . ':D' . $marcoDirectorProyecto;
+    $sheet->getStyle('B' . $marcoDirectorProyecto)->getFont()->setBold(true);
+    $sheet->getStyle('B' . $marcoDirectorProyecto)->getFont()->setName('Calibri')->setSize(16);
+    $sheet->mergeCells($rangoCeldas);
+    $sheet->getStyle('B' . $marcoDirectorProyecto)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+    // Coordinador de Vinculación con la Sociedad
+    $nombreCoordinador = $filaInicio + count($datosEstudiantes) + 12;
+    $sheet->setCellValue('F' . $nombreCoordinador, 'Verónica Isabel Martinez Cepeda');
+    $rangoCeldas = 'F' . $nombreCoordinador . ':G' . $nombreCoordinador;
+    $sheet->getStyle($rangoCeldas)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+    $sheet->getStyle('F' . $nombreCoordinador)->getFont()->setBold(true);
+    $sheet->getStyle('F' . $nombreCoordinador)->getFont()->setName('Calibri')->setSize(16);
+    $sheet->mergeCells($rangoCeldas);
+    $sheet->getStyle('F' . $nombreCoordinador)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+    $departamentoCoordinador = $filaInicio + count($datosEstudiantes) + 13;
+    $sheet->setCellValue('F' . $departamentoCoordinador, 'Departamento de Ciencias de la Computación');
+    $rangoCeldas = 'F' . $departamentoCoordinador . ':G' . $departamentoCoordinador;
+    $sheet->getStyle('F' . $departamentoCoordinador)->getFont()->setBold(true);
+    $sheet->getStyle('F' . $departamentoCoordinador)->getFont()->setName('Calibri')->setSize(16);
+    $sheet->mergeCells($rangoCeldas);
+    $sheet->getStyle('F' . $departamentoCoordinador)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+    $marcoCoordinador = $filaInicio + count($datosEstudiantes) + 14;
+    $sheet->setCellValue('F' . $marcoCoordinador, 'Coordinador de Vinculación con la Sociedad');
+    $rangoCeldas = 'F' . $marcoCoordinador . ':G' . $marcoCoordinador;
+    $sheet->getStyle('F' . $marcoCoordinador)->getFont()->setBold(true);
+    $sheet->getStyle('F' . $marcoCoordinador)->getFont()->setName('Calibri')->setSize(16);
+    $sheet->mergeCells($rangoCeldas);
+    $sheet->getStyle('F' . $marcoCoordinador)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+    // Director de Carrera
+    $nombreDirectorCarrera = $filaInicio + count($datosEstudiantes) + 12;
+    $sheet->setCellValue('I' . $nombreDirectorCarrera, 'Christian Alfredo Coronel Guerrero');
+    $rangoCeldas = 'I' . $nombreDirectorCarrera . ':J' . $nombreDirectorCarrera;
+    $sheet->getStyle($rangoCeldas)->getBorders()->getTop()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+    $sheet->getStyle('I' . $nombreDirectorCarrera)->getFont()->setBold(true);
+    $sheet->getStyle('I' . $nombreDirectorCarrera)->getFont()->setName('Calibri')->setSize(16);
+    $sheet->mergeCells($rangoCeldas);
+    $sheet->getStyle('I' . $nombreDirectorCarrera)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+    $departamentoDirectorCarrera = $filaInicio + count($datosEstudiantes) + 13;
+    $sheet->setCellValue('I' . $departamentoDirectorCarrera, 'Director de Carrera');
+    $rangoCeldas = 'I' . $departamentoDirectorCarrera . ':J' . $departamentoDirectorCarrera;
+    $sheet->getStyle('I' . $departamentoDirectorCarrera)->getFont()->setBold(true);
+    $sheet->getStyle('I' . $departamentoDirectorCarrera)->getFont()->setName('Calibri')->setSize(16);
+    $sheet->mergeCells($rangoCeldas);
+    $sheet->getStyle('I' . $departamentoDirectorCarrera)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+    $marcoDirectorCarrera = $filaInicio + count($datosEstudiantes) + 14;
+    $sheet->setCellValue('I' . $marcoDirectorCarrera, 'Tecnologías de la Información');
+    $rangoCeldas = 'I' . $marcoDirectorCarrera . ':J' . $marcoDirectorCarrera;
+    $sheet->getStyle('I' . $marcoDirectorCarrera)->getFont()->setBold(true);
+    $sheet->getStyle('I' . $marcoDirectorCarrera)->getFont()->setName('Calibri')->setSize(16);
+    $sheet->mergeCells($rangoCeldas);
+    $sheet->getStyle('I' . $marcoDirectorCarrera)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+    ///agrega estilos a la celda de fecha
+    $filaFinal = $filaInicio + count($datosEstudiantes) + 2;
+    $sheet->setCellValue('B' . $filaFinal, 'Fecha:');
+    $sheet->getStyle('B' . $filaFinal)->getFont()->setName('Calibri')->setSize(16)->setBold(true);
+    $sheet->getStyle('C' . $filaFinal)->getFont()->setName('Calibri')->setSize(16);
+    $sheet->getStyle('C' . $filaFinal)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT);
+    $sheet->getStyle('C' . $filaFinal)->getAlignment()->setWrapText(true);
+    $sheet->setCellValue('C' . $filaFinal, $fechaFormateada);
+
+    // Formatear celdas adicionales
+    $sheet->getStyle('C9')->getFont()->setName('Calibri')->setSize(16);
+    $sheet->getStyle('B17')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
+    $sheet->getStyle('B17')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    $sheet->getStyle('B18')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
+    $sheet->getStyle('B18')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    $sheet->getStyle('B19')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
+    $sheet->getStyle('B19')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    $sheet->getStyle('B9')->getFont()->setName('Calibri')->setSize(16)->setBold(true);
+
+    // Descargar el documento generado
+    $nombreArchivo = '1.3-Número-Horas-Estudiantes.xlsx';
+    $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+    $writer->save($nombreArchivo);
+    return response()->download($nombreArchivo)->deleteFileAfterSend(true);
+}
+
 
 
 
@@ -619,6 +633,15 @@ class DocumentoController extends Controller
         } else {
             return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');
         }
+
+        $totalHoras = DB::table('actividades_estudiante')
+            ->where('estudianteId', $estudiante->estudianteId)
+            ->sum('numeroHoras');
+        if ($totalHoras < 96) {
+            return redirect()->route('estudiantes.documentos')->with('error', 'No puedes generar el informe porque no has completado las 96 horas requeridas.');
+        }
+
+
 
         // Obtener el tipo de informe del formulario
         $tipoInforme = $request->input('tipo');
@@ -711,19 +734,20 @@ class DocumentoController extends Controller
         $fechaInicioProyecto = $primerEstudiante->inicioFecha;
         $fechaFinProyecto = $primerEstudiante->finalizacionFecha;
         $meses = [
-            'January' => 'Enero',
-            'February' => 'Febrero',
-            'March' => 'Marzo',
-            'April' => 'Abril',
-            'May' => 'Mayo',
-            'June' => 'Junio',
-            'July' => 'Julio',
-            'August' => 'Agosto',
-            'September' => 'Septiembre',
-            'October' => 'Octubre',
-            'November' => 'Noviembre',
-            'December' => 'Diciembre',
+            'January' => 'enero',
+            'February' => 'febrero',
+            'March' => 'marzo',
+            'April' => 'abril',
+            'May' => 'mayo',
+            'June' => 'junio',
+            'July' => 'julio',
+            'August' => 'agosto',
+            'September' => 'septiembre',
+            'October' => 'octubre',
+            'November' => 'noviembre',
+            'December' => 'diciembre',
         ];
+
 
         $fechaFormateada2 = date('d ', strtotime($fechaFinProyecto)) . $meses[date('F', strtotime($fechaFinProyecto))] . date(' Y', strtotime($fechaFinProyecto));
         $fechaFormateada = date('d ', strtotime($fechaInicioProyecto)) . $meses[date('F', strtotime($fechaInicioProyecto))] . date(' Y', strtotime($fechaInicioProyecto));
@@ -773,39 +797,69 @@ class DocumentoController extends Controller
         $proyectoParroquia = $request->input('proyecto_parroquia');
         $proyectoDireccion = $request->input('proyecto_direccion');
 
-        // Inicializa arrays con los datos del proyecto
-        $allProvincias = [$proyectoProvincia];
-        $allCantones = [$proyectoCanton];
-        $allParroquias = [$proyectoParroquia];
-        $allDirecciones = [$proyectoDireccion];
+        // Inicializa arrays con los datos del proyecto, solo si no son "Datos no ingresados"
+        $allProvincias = ($proyectoProvincia !== 'Datos no ingresados') ? [$proyectoProvincia] : [];
+        $allCantones = ($proyectoCanton !== 'Datos no ingresados') ? [$proyectoCanton] : [];
+        $allParroquias = ($proyectoParroquia !== 'Datos no ingresados') ? [$proyectoParroquia] : [];
+        $allDirecciones = ($proyectoDireccion !== 'Datos no ingresados') ? [$proyectoDireccion] : [];
 
-        // Solo añadir datos adicionales si existen
-        if (!empty($provincias) && !empty($cantones) && !empty($parroquias) && !empty($direcciones)) {
-            $allProvincias = array_merge($allProvincias, $provincias);
-            $allCantones = array_merge($allCantones, $cantones);
-            $allParroquias = array_merge($allParroquias, $parroquias);
-            $allDirecciones = array_merge($allDirecciones, $direcciones);
+        // Añadir datos adicionales solo si no son "Datos no ingresados"
+        if (!empty($provincias)) {
+            $allProvincias = array_merge($allProvincias, array_filter($provincias, function ($item) {
+                return $item !== 'Datos no ingresados';
+            }));
         }
 
-        $totalFilas = count($allProvincias);
+        if (!empty($cantones)) {
+            $allCantones = array_merge($allCantones, array_filter($cantones, function ($item) {
+                return $item !== 'Datos no ingresados';
+            }));
+        }
 
-        // Clonar filas solo si hay más de un conjunto de datos
-        if ($totalFilas > 1) {
-            $template->cloneRow('provincia', $totalFilas);
+        if (!empty($parroquias)) {
+            $allParroquias = array_merge($allParroquias, array_filter($parroquias, function ($item) {
+                return $item !== 'Datos no ingresados';
+            }));
+        }
 
-            for ($i = 0; $i < $totalFilas; $i++) {
-                $template->setValue('provincia#' . ($i + 1), $allProvincias[$i]);
-                $template->setValue('canton#' . ($i + 1), $allCantones[$i]);
-                $template->setValue('parroquia#' . ($i + 1), $allParroquias[$i]);
-                $template->setValue('direccion#' . ($i + 1), $allDirecciones[$i]);
+        if (!empty($direcciones)) {
+            $allDirecciones = array_merge($allDirecciones, array_filter($direcciones, function ($item) {
+                return $item !== 'Datos no ingresados';
+            }));
+        }
+
+        // Filtrar cualquier fila donde todos los campos estén vacíos o no ingresados
+        $filteredData = array_filter(array_map(null, $allProvincias, $allCantones, $allParroquias, $allDirecciones), function ($row) {
+            return !empty($row[0]) || !empty($row[1]) || !empty($row[2]) || !empty($row[3]);
+        });
+
+        $totalFilas = count($filteredData);
+
+        if ($totalFilas > 0) {
+            if ($totalFilas > 1) {
+                $template->cloneRow('provincia', $totalFilas);
+
+                foreach ($filteredData as $index => $data) {
+                    $template->setValue('provincia#' . ($index + 1), $data[0]);
+                    $template->setValue('canton#' . ($index + 1), $data[1]);
+                    $template->setValue('parroquia#' . ($index + 1), $data[2]);
+                    $template->setValue('direccion#' . ($index + 1), $data[3]);
+                }
+            } else {
+                // Si solo hay un conjunto de datos, no se clona, solo se usa una fila
+                $template->setValue('provincia', $filteredData[0][0]);
+                $template->setValue('canton', $filteredData[0][1]);
+                $template->setValue('parroquia', $filteredData[0][2]);
+                $template->setValue('direccion', $filteredData[0][3]);
             }
         } else {
-            // Si solo hay un conjunto de datos, no se clona, solo se usa una fila
-            $template->setValue('provincia', $proyectoProvincia);
-            $template->setValue('canton', $proyectoCanton);
-            $template->setValue('parroquia', $proyectoParroquia);
-            $template->setValue('direccion', $proyectoDireccion);
+            // Si no hay datos válidos, puedes dejar los campos vacíos
+            $template->setValue('provincia', '');
+            $template->setValue('canton', '');
+            $template->setValue('parroquia', '');
+            $template->setValue('direccion', '');
         }
+
 
         // Clonar las filas en la plantilla para estudiantes y actividades
         $template->cloneRow('Nombres', count($datosEstudiantes));
@@ -3630,7 +3684,7 @@ class DocumentoController extends Controller
         $actividadesRegistradas = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)->get();
         $totalHoras = $actividadesRegistradas->sum('numeroHoras');
 
-         $proyecto = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->first();
+        $proyecto = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->first();
 
 
         return view('estudiantes.documentos', [

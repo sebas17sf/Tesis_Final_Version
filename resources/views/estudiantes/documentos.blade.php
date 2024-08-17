@@ -147,15 +147,15 @@
                 @csrf
                 <div class="form-group">
                     <label for="fecha"><strong>Fecha:</strong></label>
-                    <input type="date" id="fecha" name="fecha" class="form-control input" required>
+                    <input type="date" id="fecha" name="fecha" class="form-control input" required value="{{ old('fecha') }}">
                 </div>
                 <div class="form-group">
                     <label for="actividades"><strong>Actividades a realizar:</strong></label>
-                    <textarea id="actividades" name="actividades" class="form-control input" rows="4" required></textarea>
+                    <textarea id="actividades" name="actividades" class="form-control input" rows="4" required>{{ old('actividades') }}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="horas"><strong>Número de horas:</strong></label>
-                    <input type="number" id="horas" name="horas" class="form-control input" required>
+                    <input type="number" id="horas" name="horas" class="form-control input" required value="{{ old('horas') }}">
                 </div>
                 <div class="form-group">
                     <label for="evidencias"><strong>Resultados de la actividad (evidencias):</strong></label>
@@ -172,11 +172,12 @@
                 <div class="form-group">
                     <label for="nombre_actividad"><strong>Asigne Nombre de la actividad:</strong></label>
                     <input type="text" id="nombre_actividad" name="nombre_actividad" class="form-control input"
-                        required>
+                        required value="{{ old('nombre_actividad') }}">
                 </div>
                 <center><button type="submit" class="button1">Guardar Actividad</button></center>
             </form>
         </div>
+
     </div>
 
     <div class="mt-4">
@@ -373,7 +374,7 @@
 
     <br>
     <hr>
-    <center><button id="toggleFormBtn2" class="button1_1 efects_button">Crear Informe de Servicio a la
+    <center><button id="toggleFormBtn2" class="button1_1 efects_button">Mostar formulario para Informe de Servicio a la
             comunidad</button>
     </center>
 
@@ -996,33 +997,7 @@
                     formIsValid = false;
                 }
 
-                // Validar 'provincia'
-                const provincia = document.getElementById('provincia').value.trim();
-                if (provincia === "") {
-                    document.getElementById('provinciaError').textContent = 'La provincia es requerida.';
-                    formIsValid = false;
-                }
-
-                // Validar 'canton'
-                const canton = document.getElementById('canton').value.trim();
-                if (canton === "") {
-                    document.getElementById('cantonError').textContent = 'El cantón es requerido.';
-                    formIsValid = false;
-                }
-
-                // Validar 'parroquia'
-                const parroquia = document.getElementById('parroquia').value.trim();
-                if (parroquia === "") {
-                    document.getElementById('parroquiaError').textContent = 'La parroquia es requerida.';
-                    formIsValid = false;
-                }
-
-                // Validar 'direccion'
-                const direccion = document.getElementById('direccion').value.trim();
-                if (direccion === "") {
-                    document.getElementById('direccionError').textContent = 'La dirección es requerida.';
-                    formIsValid = false;
-                }
+                 
 
                 // Validar 'especificos'
                 const especificos = document.querySelectorAll('textarea[name="especificos[]"]');
