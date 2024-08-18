@@ -77,6 +77,7 @@ class EstudianteController extends Controller
         ]);
 
 
+
         $correoElectronico = explode('@', $validatedData['correo'])[0];
 
         $role = Role::where('tipo', 'Estudiante')->first();
@@ -92,7 +93,7 @@ class EstudianteController extends Controller
                 'Cohorte' => $validatedData['Cohorte'],
                 'idPeriodo' => $validatedData['Periodo'],
                 'carrera' => $validatedData['Carrera'],
-                'departamento' => $validatedData['departamento'],
+                'departamentoId' => $validatedData['departamento'],
                 'comentario' => 'Sin comentarios',
                 'estado' => 'En proceso de revisión',
                 'activacion' => true,
@@ -100,6 +101,7 @@ class EstudianteController extends Controller
             ]
 
         );
+
 
         $user = Usuario::updateOrCreate(
             ['nombreUsuario' => $correoElectronico],

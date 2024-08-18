@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProfesUniversidad;
 use Illuminate\Http\Request;
+ use App\Models\Departamento;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Models\AsignacionProyecto;
 use App\Models\NrcVinculacion;
@@ -897,6 +898,8 @@ class DocumentosVinculacion extends Controller
         foreach ($dataRows as $row) {
             if (!empty($row[0]) && !empty($row[1]) && !empty($row[2]) && !empty($row[3]) && !empty($row[4]) && !empty($row[5]) && !empty($row[6])) {
                 $estudiante = Estudiante::where('espeId', $row[0])->first();
+                $departamento = Departamento::where('departamento', 'LIKE', '%' . $row[6] . '%')->first();
+
 
                 if ($estudiante) {
                     $newData = [
@@ -907,7 +910,7 @@ class DocumentosVinculacion extends Controller
                         'Cohorte' => $row[5],
                         'idPeriodo' => Periodo::where('numeroPeriodo', $row[5])->first()->id ?? null,
                         'carrera' => $row[7],
-                        'departamento' => $row[6],
+                        'departamento' => $departamento ? $departamento->departamento : null,
                         'comentario' => 'Importado desde Excel',
                      ];
 
@@ -943,6 +946,7 @@ class DocumentosVinculacion extends Controller
             if (!empty($row[0]) && !empty($row[1]) && !empty($row[2]) && !empty($row[3]) && !empty($row[4]) && !empty($row[5]) && !empty($row[6])) {
                 $periodo = Periodo::where('numeroPeriodo', $row[5])->first();
                 $estudiante = Estudiante::where('espeId', $row[0])->first();
+                $departamento = Departamento::where('departamento', 'LIKE', '%' . $row[6] . '%')->first();
 
                 $data = [
                     'espeId' => $row[0],
@@ -953,7 +957,7 @@ class DocumentosVinculacion extends Controller
                     'Cohorte' => $row[5],
                     'idPeriodo' => $periodo ? $periodo->id : null,
                     'carrera' => $row[7],
-                    'departamento' => $row[6],
+                    'departamentoId' => $departamento ? $departamento->id : null,
                     'comentario' => 'Importado desde Excel',
 
                 ];

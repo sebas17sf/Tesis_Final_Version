@@ -127,7 +127,7 @@
                                 <select id="departamento" name="departamento" class="form-control input_select input">
                                     <option value="">Seleccione un departamento</option>
                                     @foreach ($departamentos as $departamento)
-                                        <option value="{{ $departamento->departamento }}"
+                                        <option value="{{ $departamento->id }}"
                                             data-nombre="{{ $departamento->departamento }}">
                                             {{ $departamento->departamento }}
                                         </option>

@@ -116,6 +116,7 @@ class AuthController extends Controller
                 'departamento.max' => 'El departamento no debe exceder los 255 caracteres',
             ]);
 
+ 
         $correoUsuario = explode("@", $validatedData['correo'])[0];
 
         $docente = ProfesUniversidad::where('cedula', $validatedData['cedula'])->first();
@@ -150,7 +151,7 @@ class AuthController extends Controller
             $docente->apellidos = $validatedData['apellidos'];
             $docente->correo = $validatedData['correo'];
             $docente->espeId = $validatedData['espe_id'];
-            $docente->departamento = $validatedData['departamento'];
+            $docente->departamentoId = $validatedData['departamento'];
             $docente->userId = $usuario->userId;
             $docente->save();
 
@@ -184,7 +185,7 @@ class AuthController extends Controller
             $docente->cedula = $validatedData['cedula'];
             $docente->espeId = $validatedData['espe_id'];
             $docente->usuario = $correoUsuario;
-            $docente->departamento = $validatedData['departamento'];
+            $docente->departamentoId = $validatedData['departamento'];
             $docente->userId = $usuario->userId;
             $docente->save();
 

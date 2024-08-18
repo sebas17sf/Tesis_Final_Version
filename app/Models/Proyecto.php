@@ -17,12 +17,12 @@ class Proyecto extends Model
         'directorId',
         'nombreProyecto',
         'descripcionProyecto',
-        'departamentoTutor',
+        'departamentoId',
         'codigoProyecto',
         'inicioFecha',
         'finFecha',
         'estado',
-        
+
 
     ];
 
@@ -40,6 +40,13 @@ class Proyecto extends Model
     {
         return $this->belongsTo(ProfesUniversidad::class, 'directorId', 'id');
     }
+
+    ///departamento
+    public function departamento()
+    {
+        return $this->belongsTo(Departamento::class, 'departamentoId', 'id');
+    }
+
 
 
 

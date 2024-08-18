@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('usuario');
             $table->string('cedula');
             $table->string('espeId')->nullable();
-            $table->string('departamento');
+            $table->unsignedBigInteger('departamentoId');
+            $table->foreign('departamentoId')->references('id')->on('departamentos');
             $table->timestamps();
         });
     }

@@ -76,7 +76,7 @@
                             <select id="DepartamentoTutor" name="DepartamentoTutor" class="form-control input_select input">
                                 <option value="">Seleccione un departamento</option>
                                 @foreach ($departamentos as $departamento)
-                                    <option value="{{ $departamento->departamento }}" data-nombre="{{ $departamento->departamento }}">
+                                    <option value="{{ $departamento->id }}" data-nombre="{{ $departamento->departamento }}">
                                         {{ $departamento->departamento }}
                                     </option>
                                 @endforeach

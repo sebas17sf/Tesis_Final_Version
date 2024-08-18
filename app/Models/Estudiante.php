@@ -21,7 +21,7 @@ class Estudiante extends Model
         'Cohorte',
         'idPeriodo',
         'correo',
-        'departamento',
+        'departamentoId',
         'carrera',
         'provincia',
         'comentario',
@@ -108,6 +108,12 @@ class Estudiante extends Model
     public function practicasv()
     {
         return $this->belongsTo(PracticaV::class, 'estudianteId', 'estudianteId');
+    }
+
+    ///departamento
+    public function departamento()
+    {
+        return $this->belongsTo(Departamento::class, 'departamentoId', 'id');
     }
 
 

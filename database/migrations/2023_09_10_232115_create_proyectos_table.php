@@ -17,7 +17,8 @@ return new class extends Migration {
             $table->text('nombreProyecto')->nullable();
             $table->string('codigoProyecto')->nullable();
             $table->text('descripcionProyecto')->nullable();
-            $table->string('departamentoTutor')->nullable();
+            $table->unsignedBigInteger('departamentoId')->nullable();
+            $table->foreign('departamentoId')->references('id')->on('departamentos');
             $table->date('inicioFecha')->nullable();
             $table->date('finFecha')->nullable();
             $table->string('estado')->nullable();

@@ -21,14 +21,15 @@ class CreateEstudiantesTable extends Migration
             $table->string('Cohorte')->nullable();
             $table->string('carrera')->nullable();
             $table->string('correo')->nullable();
-             $table->string('departamento')->nullable();
+            $table->unsignedBigInteger('departamentoId')->nullable();
+            $table->foreign('departamentoId')->references('id')->on('departamentos');
             $table->string('estado')->nullable();
             $table->string('comentario')->nullable();
             $table->boolean('activacion')->default(0);
             $table->boolean('actualizacion')->default(0);
 
 
-             $table->foreign('idPeriodo')->references('id')->on('periodo')->nullable();
+            $table->foreign('idPeriodo')->references('id')->on('periodo')->nullable();
         });
     }
 

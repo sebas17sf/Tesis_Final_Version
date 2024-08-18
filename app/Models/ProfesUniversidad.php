@@ -16,7 +16,7 @@ class ProfesUniversidad extends Model
         'correo',
         'usuario',
         'cedula',
-        'departamento',
+        'departamentoId',
         'espeId',
     ];
 
@@ -55,6 +55,12 @@ class ProfesUniversidad extends Model
     public function tutorAcademico()
     {
         return $this->hasMany(PracticaI::class, 'idTutorAcademico');
+    }
+
+    ///departamento
+    public function departamento()
+    {
+        return $this->belongsTo(Departamento::class, 'departamentoId', 'id');
     }
 
 

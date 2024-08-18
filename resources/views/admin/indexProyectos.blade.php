@@ -236,7 +236,7 @@
                                                     {{ strtoupper($proyecto->descripcionProyecto) }}
                                                 </td>
                                                 <td style="text-transform: uppercase;">
-                                                    {{ strtoupper($proyecto->departamentoTutor) }}
+                                                    {{ strtoupper($proyecto->departamento->departamento ?? '') }}
                                                 </td>
                                                 <td>
                                                     @if (empty($proyecto->codigoProyecto))
@@ -596,7 +596,7 @@
                                                         style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
 
                                                         @foreach ($grupo as $asignacion)
-                                                            {{ $asignacion->estudiante->departamento ?? '' }}<br>
+                                                            {{ $asignacion->estudiante->departamento->departamento ?? '' }}<br>
                                                         @endforeach
 
                                                     </td>
@@ -1326,7 +1326,7 @@
                 handle: ".card-header",
                 containment: "window"
             });
-            
+
 
             // Enviar el formulario cuando cambian los select
             $('#filtersForm select').change(function() {

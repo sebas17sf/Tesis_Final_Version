@@ -683,7 +683,7 @@
                                                     <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
                                                     <td>{{ strtoupper($practicaI->nota_final ?? 'AUN NO TIENE CALIFICACION') }}
                                                     </td>
-                                                    <td>{{ $practicaI->Estado }}</td>
+                                                    <td>{{ strtoupper($practicaI->Estado) }}</td>
                                                 </tr>
                                             @endif
                                         @endforeach
@@ -975,7 +975,7 @@
                                                     <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
                                                     <td>{{ strtoupper($practicaI->nota_final ?? 'AUN NO TIENE CALIFICACION') }}
                                                     </td>
-                                                    <td>{{ $practicaI->Estado }}</td>
+                                                    <td>{{ strtoupper($practicaI->Estado) }}</td>
 
 
                                                 </tr>
@@ -1254,7 +1254,7 @@
                                                     <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
                                                     <td>{{ strtoupper($practicaI->nota_final ?? 'AUN NO TIENE CALIFICACION') }}
                                                     </td>
-                                                    <td>{{ $practicaI->Estado }}</td>
+                                                    <td>{{ strtoupper($practicaI->Estado) }}</td>
 
 
                                                 </tr>
@@ -1531,7 +1531,7 @@
                                                     <td>{{ strtoupper($practicaI->HorasPlanificadas) }}</td>
                                                     <td>{{ strtoupper($practicaI->nota_final ?? 'AUN NO TIENE CALIFICACION') }}
                                                     </td>
-                                                    <td>{{ $practicaI->Estado }}</td>
+                                                    <td>{{ strtoupper($practicaI->Estado) }}</td>
 
 
                                                 </tr>
@@ -1897,7 +1897,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Respuesta del servidor:', data);  
+                console.log('Respuesta del servidor:', data);
                 Swal.close();
 
                 // Asegúrate de que data tenga los valores insertCount y updateCount correctamente

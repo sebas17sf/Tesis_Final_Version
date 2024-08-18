@@ -86,7 +86,6 @@ class AdminController extends Controller
 
 
 
-
                 if ($searchTerm) {
                     $query->where(function ($q) use ($searchTerm) {
                         $q->where('apellidos', 'like', "%{$searchTerm}%")
@@ -94,11 +93,15 @@ class AdminController extends Controller
                             ->orWhere('correo', 'like', "%{$searchTerm}%")
                             ->orWhere('usuario', 'like', "%{$searchTerm}%")
                             ->orWhere('Cedula', 'like', "%{$searchTerm}%")
-                            ->orWhere('departamento', 'like', "%{$searchTerm}%");
+                            ->orWhereHas('departamento', function ($query) use ($searchTerm) {
+                                $query->where('departamento', 'LIKE', '%' . $searchTerm . '%');
+                            }); // Este punto y coma faltaba
                     });
-
-
                 }
+
+
+
+
 
                 if ($filtroDepartamento) {
                     $query->where('departamento', 'like', "%{$filtroDepartamento}%");
@@ -391,8 +394,14 @@ class AdminController extends Controller
                 $q->where('nombreProyecto', 'LIKE', '%' . $search . '%')
                     ->orWhere('descripcionProyecto', 'LIKE', '%' . $search . '%')
                     ->orWhere('estado', 'LIKE', '%' . $search . '%')
-                    ->orWhere('departamentoTutor', 'LIKE', '%' . $search . '%')
-                    ->orWhere('codigoProyecto', 'LIKE', '%' . $search . '%');
+                    ->orWhere('codigoProyecto', 'LIKE', '%' . $search . '%')
+                    ->orWhereHas('director', function ($query) use ($search) {
+                        $query->where('nombres', 'LIKE', '%' . $search . '%')
+                            ->orWhere('apellidos', 'LIKE', '%' . $search . '%');
+                    })
+                    ->orWhereHas('departamento', function ($query) use ($search) {
+                        $query->where('departamento', 'LIKE', '%' . $search . '%');
+                    });
             });
         }
 
@@ -587,7 +596,7 @@ class AdminController extends Controller
                 'directorId' => $validatedData['DirectorProyecto'],
                 'nombreProyecto' => $validatedData['NombreProyecto'],
                 'descripcionProyecto' => $validatedData['DescripcionProyecto'],
-                'departamentoTutor' => $validatedData['DepartamentoTutor'],
+                'departamentoId' => $validatedData['DepartamentoTutor'],
                 'codigoProyecto' => $validatedData['codigoProyecto'],
                 'estado' => $validatedData['Estado'],
                 'inicioFecha' => $validatedData['FechaInicio'],
@@ -638,12 +647,13 @@ class AdminController extends Controller
             'FechaFinalizacion.after' => 'La fecha de finalización debe ser posterior a la fecha de inicio',
         ]);
 
+
         $proyecto = Proyecto::findOrFail($ProyectoID);
 
         $proyecto->directorId = $validatedData['DirectorProyecto'];
         $proyecto->nombreProyecto = $validatedData['NombreProyecto'];
         $proyecto->descripcionProyecto = $validatedData['DescripcionProyecto'];
-        $proyecto->departamentoTutor = $validatedData['DepartamentoTutor'];
+        $proyecto->departamentoId = $validatedData['DepartamentoTutor'];
         $proyecto->codigoProyecto = $validatedData['codigoProyecto'];
         $proyecto->inicioFecha = $validatedData['FechaInicio'];
         $proyecto->finFecha = $validatedData['FechaFinalizacion'];
@@ -814,7 +824,7 @@ class AdminController extends Controller
                 'apellidos' => $request->apellidos,
                 'correo' => $request->correo,
                 'cedula' => $request->cedula,
-                'departamento' => $request->departamento,
+                'departamentoId' => $request->departamento,
                 'espeId' => $request->espe_id,
             ]);
 
@@ -896,7 +906,7 @@ class AdminController extends Controller
                 'nombres' => $request->nombres,
                 'apellidos' => $request->apellidos,
 
-                'departamento' => $request->departamento,
+                'departamentoId' => $request->departamento,
             ]);
 
             return redirect()->route('admin.index')->with('success', 'Docente actualizado.');
