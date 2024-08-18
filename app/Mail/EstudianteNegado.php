@@ -32,15 +32,17 @@ class EstudianteNegado extends Mailable
      */
     public function build()
     {
-        $imagePath = public_path('img/logos/itin-presencial.png');
-        $cid = $this->embed($imagePath);
-
         return $this->subject('¡Lo sentimos! Tu estado ha sido negado')
             ->view('emails.estudiante-negado')
             ->with([
                 'estudiante' => $this->estudiante,
                 'motivoNegacion' => $this->motivoNegacion,
-                'imageCid' => $cid,
-            ]);
+            ])
+            ->withSwiftMessage(function ($message) {
+                $imagePath = public_path('img/logos/itin-presencial.png');
+                $cid = $message->embed($imagePath);
+                $this->with(['imageCid' => $cid]);
+            });
     }
 }
+
