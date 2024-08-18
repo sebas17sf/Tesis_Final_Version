@@ -138,7 +138,7 @@ function mostrarSweetAlert() {
         inputLabel: 'Motivo',
         inputPlaceholder: 'Ingrese el motivo aquí...',
         inputAttributes: {
-            rows: 7,
+            rows: 5,
             style: 'resize: vertical;'
         },
         showCancelButton: true,
