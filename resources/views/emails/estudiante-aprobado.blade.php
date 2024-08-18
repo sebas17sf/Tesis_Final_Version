@@ -85,7 +85,7 @@
 <body>
     <div class="container">
 
-        <img src="{{ $imageCid }}" alt="Redes Sociales">
+        <img src="cid:itin-presencial.png" alt="Redes Sociales">
         <h1>Aprobado para proceso de Vinculación con la Sociedad</h1>
         <p>Estimado/a {{ $estudiante->Apellidos }} {{ $estudiante->Nombres }},</p>
         <p>Nos complace informarte que tu solicitud de vinculación con la sociedad ha sido aprobada. Valoramos tu
