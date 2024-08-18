@@ -867,3 +867,23 @@ padding-right: 75px;
 .colorr{
     color: #ffffff !important;
 }
+
+div:where(.swal2-container) .swal2-textarea {
+    height: 3.75em;
+    width: 25em !important;
+    /* padding: .75em; */
+}
+
+.swal2-input-label {
+    font-size: 14px;
+}
+
+.swal2-styled.swal2-confirm {
+
+    background-color: #5d508a !important;
+
+}
+.swal2-title {
+   
+    font-size: 1.5em !important;
+}
