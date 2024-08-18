@@ -159,7 +159,7 @@
                                     {{ $estudiante->carrera }}
                                 </td>
                                 <td style="text-transform: uppercase; word-wrap: break-word; font-size: .7em; text-align: center;">
-                                    {{ $estudiante->departamento }}
+                                    {{ $estudiante->departamento->departamento }}
                                 </td>
                                 <td style="text-align: center; font-size: .7em;">
                                     @foreach ($estudiante->notas as $nota)
@@ -387,7 +387,7 @@
             border-top: 1px solid rgba(0, 0, 0, .1);
         }
         .contenedor_tabla .table-container table td {
- 
+
     min-width: 10px !important;
         }
     </style>

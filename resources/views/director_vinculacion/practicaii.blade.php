@@ -302,9 +302,10 @@
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-                document.getElementById('cerrarPracticaForm').submit();
+                document.getElementById('cerrarPracticaBtn').submit(); // Corregido
             }
         });
     });
 </script>
+
 @endsection

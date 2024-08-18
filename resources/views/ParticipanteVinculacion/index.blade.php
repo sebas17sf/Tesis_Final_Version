@@ -156,7 +156,7 @@
                                             </td>
                                             <td
                                                 style="text-align:center; text-transform: uppercase; word-wrap: break-word;">
-                                                {{ $asignaciones->proyecto->departamentoTutor }}
+                                                {{ $asignaciones->proyecto->departamento->departamento ?? '' }}
                                             </td>
                                             <td style="text-align:left; text-transform: uppercase; word-wrap: break-word;">
                                                 {{ $asignaciones->docenteParticipante->nombres }}
@@ -405,14 +405,14 @@
                                                     {{ $asignaciones->proyecto->director->apellidos }}</td>
                                                 <td
                                                     style="text-align:center; text-transform: uppercase; word-wrap: break-word;">
-                                                    {{ $asignaciones->proyecto->departamentoTutor }}</td>
+                                                    {{ $asignaciones->proyecto->departamento->departamento }}</td>
                                                 <td
                                                     style="text-align:left; text-transform: uppercase; word-wrap: break-word;">
                                                     {{ $asignaciones->docenteParticipante->nombres }}
                                                     {{ $asignaciones->docenteParticipante->apellidos }}</td>
                                                 <td
                                                     style="text-align:left; text-transform: uppercase; word-wrap: break-word;">
-                                                    {{ $asignaciones->docenteParticipante->departamento }}</td>
+                                                    {{ $asignaciones->docenteParticipante->departamento->departamento }}</td>
                                                 <td
                                                     style="text-align:left; text-transform: uppercase; word-wrap: break-word;">
                                                     {{ $asignaciones->estudiante->nombres }}

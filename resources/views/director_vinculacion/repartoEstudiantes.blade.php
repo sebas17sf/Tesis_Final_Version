@@ -237,7 +237,7 @@
                                             {{ $asignaciones->director->nombres }}
                                             {{ $asignaciones->director->apellidos }}</td>
                                         <td style="text-align:center; text-transform: uppercase; word-wrap: break-word;">
-                                            {{ $asignaciones->departamentoTutor }}</td>
+                                            {{ $asignaciones->departamento->departamento }}</td>
 
 
 
