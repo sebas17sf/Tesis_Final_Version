@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
@@ -14,6 +13,7 @@ class EstudianteNegado extends Mailable
 
     public $estudiante;
     public $motivoNegacion;
+    public $imageCid; // Se añade esta propiedad para almacenar el CID de la imagen
 
     /**
      * Create a new message instance.
@@ -37,12 +37,13 @@ class EstudianteNegado extends Mailable
             ->with([
                 'estudiante' => $this->estudiante,
                 'motivoNegacion' => $this->motivoNegacion,
+                'imageCid' => $this->imageCid, // Asegúrate de pasar el CID a la vista
             ])
             ->withSwiftMessage(function ($message) {
                 $imagePath = public_path('img/logos/itin-presencial.png');
-                $cid = $message->embed($imagePath);
-                $this->with(['imageCid' => $cid]);
+                $this->imageCid = $message->embed($imagePath); // Asigna el CID de la imagen a la propiedad
             });
     }
 }
+
 
