@@ -153,19 +153,19 @@
                     <input type="hidden" id="ActividadID" name="ActividadID" value="">
                     <div class="form-group">
                         <label class="label" for="Actividad"><strong>Actividad Realizada:</strong></label>
-                        <textarea id="Actividad" name="Actividad" class="form-control input"></textarea>
+                        <textarea id="Actividad" name="Actividad" class="form-control input" placeholder="Ingrese la actividad realizada"></textarea>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="label" for="horas"><strong>Número de Horas:</strong></label>
-                                <input type="text" id="horas" name="horas" class="form-control input">
+                                <input type="text" id="horas" name="horas" class="form-control input" placeholder="Ingrese el número de horas">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="label" for="fechaActividad"><strong>Fecha de la Actividad:</strong></label>
-                                <input type="date" id="fechaActividad" name="fechaActividad" class="form-control input">
+                                <input type="date" id="fechaActividad" name="fechaActividad" class="form-control input" placeholder="Ingrese la fecha de la actividad">
                             </div>
                         </div>
                     </div>
@@ -173,13 +173,13 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="label" for="observaciones"><strong>Observación:</strong></label>
-                                <input type="text" id="observaciones" name="observaciones" class="form-control input">
+                                <input type="text" id="observaciones" name="observaciones" class="form-control input" placeholder="Ingrese la observación de esta actividad">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="label" for="departamento"><strong>Departamento:</strong></label>
-                                <input type="text" id="departamento" name="departamento" class="form-control input">
+                                <input type="text" id="departamento" name="departamento" class="form-control input" placeholder="Ingrese el departamento">
                             </div>
                         </div>
                     </div>
@@ -187,7 +187,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="label" for="funcion"><strong>Función Asignada:</strong></label>
-                                <input type="text" id="funcion" name="funcion" class="form-control input">
+                                <input type="text" id="funcion" name="funcion" class="form-control input" placeholder="Ingrese la función asignada">
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -284,7 +284,8 @@
         </div>
 
         <br>
-        <button class="button1" onclick="toggleForm()">Generar Informe</button>
+        <button class="button1_1" onclick="toggleForm()">Mostar formulario para Informe de Servicio a la
+        comunidad</button>
 
         <hr>
         <form id="formulario" action="{{ route('generar.InformPractica') }}" method="POST">

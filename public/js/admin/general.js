@@ -11,13 +11,7 @@ $(document).ready(function () {
 
     // Verificar si hay un estado guardado para el formulario de periodos
     var periodosVisible = localStorage.getItem('periodosVisible');
-    if (periodosVisible === 'true') {
-        $("#registrarPeriodos").show();
-        $("#toggleFormBtn2").text("Ocultar Registro");
-    } else {
-        $("#registrarPeriodos").hide();
-        $("#toggleFormBtn2").text("Crear Informe de Servicio a la comunidad");
-    }
+   
 
     $("#toggleFormBtn").click(function (event) {
         event.preventDefault();
@@ -36,12 +30,9 @@ $(document).ready(function () {
         event.preventDefault();
         $("#registrarPeriodos").toggle();
         if ($("#registrarPeriodos").is(":visible")) {
-            $(this).text("Ocultar Registro");
+            $(this).text("Ocultar Informe de Servicio a la comunidad");
             localStorage.setItem('periodosVisible', 'true');
-        } else {
-            $(this).text("Crear Informe de Servicio a la comunidad");
-            localStorage.setItem('periodosVisible', 'false');
-        }
+        } 
     });
 
 

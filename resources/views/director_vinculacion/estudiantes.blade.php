@@ -386,5 +386,9 @@
             border: 0;
             border-top: 1px solid rgba(0, 0, 0, .1);
         }
+        .contenedor_tabla .table-container table td {
+ 
+    min-width: 10px !important;
+        }
     </style>
 @endsection

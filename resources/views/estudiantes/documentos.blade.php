@@ -526,7 +526,7 @@
                             </button>
                         </div>
                     </div>
-
+<br>
                     <!-- Validación de objetivos específicos y resultados -->
                     <div id="campos">
                         @if (old('especificos'))

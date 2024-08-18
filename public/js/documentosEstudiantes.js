@@ -16,9 +16,9 @@ $(document).ready(function() {
         $("#registroInforme").toggle();
         // Cambiar el texto del botón según si el formulario está visible u oculto
         if ($("#registroInforme").is(":visible")) {
-            $(this).text("Ocultar creacion de Informe");
+            $(this).text("Ocultar creación de Informe");
         } else {
-            $(this).text("Crear Informe de Servicio a la comunidad");
+            $(this).text("Mostar formulario para Informe de Servicio a la comunidad");
         }
     });
 });

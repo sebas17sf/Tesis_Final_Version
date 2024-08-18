@@ -78,59 +78,59 @@
                                     <td
                                         style="min-width: 100px !important; text-transform: uppercase; text-align:center; font-size:.7em; ">
                                         {{ $practica->practicasi->FechaFinalizacion }}</td>
-                                    <td style="min-width: 100px !important; text-transform: uppercase; font-size:.7em; ">
-                                        <center><button type="button" class="button3 efects_button btn_eliminar3"
-                                                data-toggle="modal"
-                                                onclick="openCard('actividadesModal{{ $practica->estudianteId }}');">
-                                                <i class="fa-solid fa-eye"></i>
-                                            </button></center>
+                                        <td style="min-width: 100px !important; font-size:.7em;">
+    <center>
+        <button type="button" class="button3 efects_button btn_eliminar3" data-toggle="modal"
+            onclick="openCard('actividadesModal{{ $practica->estudianteId }}');">
+            <i class="fa-solid fa-eye"></i>
+        </button>
+    </center>
 
-                                        <!-- Modal para mostrar actividades -->
-                                        <div class="draggable-card1_3" id="actividadesModal{{ $practica->estudianteId }}">
+    <!-- Modal para mostrar actividades -->
+    <div class="draggable-card1_3" id="actividadesModal{{ $practica->estudianteId }}">
 
-                                            <div class="card-header">
-                                                <span class="card-title1" id="actividadesModalLabel">Actividades del
-                                                    Estudiante</span>
-                                                <button type="button" class="close"
-                                                    onclick="$('#actividadesModal{{ $practica->estudianteId }}').hide()">
-                                                    <i class="fa-thin fa-xmark"></i>
-                                                </button>
-                                            </div>
-                                            <div class="contenedor_tabla">
-                                                <div class="table-container mat-elevation-z8">
-                                                    <div id="tablaActivida">
-                                                        <table class="mat-mdc-table">
-                                                            <thead class="ng-star-inserted">
-                                                                <tr
-                                                                    class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                                                    <th>FECHA</th>
-                                                                    <th>ACTIVIDADES</th>
-                                                                    <th>HORA</th>
-                                                                    <th>NOMBRE DE LA ACTIVIDAD</th>
-                                                                    <th>EVIDENCIA</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach ($actividades as $actividad)
-                                                                    <p>Actividad: {{ $actividad->actividad }}</p>
-                                                                    <p>Horas: {{ $actividad->horas }}</p>
-                                                                    <p>Fecha: {{ $actividad->fechaActividad }}</p>
-                                                                    <p>Departamento: {{ $actividad->departamento }}</p>
-                                                                    <p>Función: {{ $actividad->funcion }}</p>
-                                                                    <p>Evidencias: </p>
-                                                                    <img src="data:image/png;base64,{{ $actividad->evidencia }}"
-                                                                        alt="evidencia" width="100" height="100">
-                                                                    <hr>
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
+        <div class="card-header">
+            <span class="card-title1" id="actividadesModalLabel">Actividades del Estudiante</span>
+            <button type="button" class="close"
+                onclick="$('#actividadesModal{{ $practica->estudianteId }}').hide()">
+                <i class="fa-thin fa-xmark"></i>
+            </button>
+        </div>
+        <div class="contenedor_tabla">
+            <div class="table-container mat-elevation-z8">
+                <div id="tablaActivida">
+                    <table class="mat-mdc-table">
+                        <thead class="ng-star-inserted">
+                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                <th>FECHA</th>
+                                <th>ACTIVIDADES</th>
+                                <th>NÚMERO DE HORAS</th>
+                                <th>NOMBRE DE LA ACTIVIDAD</th>
+                                <th>EVIDENCIA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($actividades as $actividad)
+                            <tr>
+                                <td>{{ $actividad->fechaActividad }}</td>
+                                <td>{{ $actividad->actividad }}</td>
+                                <td>{{ $actividad->horas }}</td>
+                                <td>{{ $actividad->nombreActividad }}</td>
+                                <td>
+                                    <img src="data:image/png;base64,{{ $actividad->evidencia }}" alt="evidencia"
+                                        width="100" height="100">
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
-                </td>
+            </div>
+        </div>
+
+    </div>
+</td>
+
                 </tr>
                 @endforeach
                 </tbody>

@@ -29,17 +29,18 @@
 
 
     <section>
-        <div class="contenedor_registro_genero ">
-            <h4><b>Listado de Proyectos Sociales</b></h4>
-            <hr>
-
+    <center>
             <button type="button" class="button1 mr-2" onclick="openCard('draggableCardNRC');">Agregar NRC</button>
             <button type="button" class="button1 mr-2" onclick="openCard('draggableCardPeriodo');">Agregar
                 Periodo</button>
             <button type="button" class="button1 mr-2" onclick="openCard('draggableCardEditarPeriodo');">Editar
                 Periodo</button>
-
+</center>
             <hr>
+        <div class="contenedor_registro_genero ">
+            <h4><b>Listado de Proyectos Sociales</b></h4>
+            <hr>
+
 
 
             <div class="mat-elevation-z8 contenedor_general">

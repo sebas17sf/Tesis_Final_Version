@@ -438,7 +438,7 @@
         <style>
             .contenedor_tabla .table-container table td {
                 width: 200px;
-                min-width: 150px;
+                min-width: 10px;
                 font-size: 11px !important;
                 padding: .5rem !important;
             }
