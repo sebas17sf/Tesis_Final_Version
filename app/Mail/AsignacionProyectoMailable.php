@@ -5,8 +5,7 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
+use App\Models\Estudiante;
 
 class AsignacionProyectoMailable extends Mailable
 {
@@ -28,31 +27,22 @@ class AsignacionProyectoMailable extends Mailable
     }
 
     /**
-     * Get the message envelope.
+     * Build the message.
      */
-    public function envelope(): Envelope
+    public function build()
     {
-        return new Envelope(
-            subject: 'Asignación de estudiantes',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        // Adjuntar la imagen y obtener el CID
+        // Ruta de la imagen que se va a incrustar
         $imagePath = public_path('img/logos/itin-presencial.png');
+        // Obtener el CID de la imagen para incrustarla en el correo
         $cid = $this->embed($imagePath);
 
-        return new Content(
-            view: 'emails.director-asignacion',
-            with: [
+        return $this->subject('Asignación de estudiantes')
+            ->view('emails.director-asignacion')
+            ->with([
                 'proyecto' => $this->proyecto,
                 'estudiantes' => $this->estudiantesAsignados,
-                'imageCid' => $cid, // Pasar el CID a la vista
-            ],
-        );
+                'imageCid' => $cid,  
+            ]);
     }
 }
+

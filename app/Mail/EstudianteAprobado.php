@@ -18,18 +18,17 @@ class EstudianteAprobado extends Mailable
 
 
 
-
-
     public function build()
     {
-        $this->subject('¡Felicidades! Tu estado ha sido aprobado')
-            ->view('emails.estudiante-aprobado')
-            ->withSwiftMessage(function ($message) {
-                $imagePath = public_path('img/logos/itin-presencial.png');
-                $cid = $message->embed($imagePath);
-                $this->with('imageCid', $cid);
-            });
+        $path = public_path('img/logos/itin-presencial.png');
 
-        return $this;
+        return $this->subject('Recuperar Contraseña')
+            ->attach($path, [
+                'as' => 'itin-presencial.png',
+                'mime' => 'image/png',
+            ])
+            ->markdown('emails.estudiante-aprobado')
+            ->with('imageCid', 'itin-presencial.png');
     }
+
 }
