@@ -331,3 +331,32 @@ $(document).ready(function() {
         icon.toggleClass('fa-angle-down fa-angle-up');
     });
 });
+
+function toggleIcon() {
+    const filterIcon = document.getElementById('filterIcon');
+
+    // Alternar el icono
+    if (filterIcon.classList.contains('fa-filter-list')) {
+        filterIcon.classList.remove('fa-filter-list');
+        filterIcon.classList.add('fa-filter');
+    } else {
+        filterIcon.classList.remove('fa-filter');
+        filterIcon.classList.add('fa-filter-list');
+    }
+}
+
+function openCard(cardId) {
+    const card = document.getElementById(cardId);
+    card.style.display = 'block'; // Abre el card (puedes ajustar este comportamiento)
+    // Aquí puedes agregar lógica adicional para abrir el card si es necesario
+}
+
+function closeCard(cardId) {
+    const card = document.getElementById(cardId);
+    card.style.display = 'none'; // Cierra el card
+
+    // Restablecer el icono al estado inicial
+    const filterIcon = document.getElementById('filterIcon');
+    filterIcon.classList.remove('fa-filter');
+    filterIcon.classList.add('fa-filter-list');
+}

@@ -95,8 +95,8 @@
                             <!-- Botón para abrir el card de filtros -->
                             <div class="tooltip-container">
                                 <span class="tooltip-text">Filtros</span>
-                                <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCard');">
-                                    <i class="fa-solid fa-filter-list"></i>
+                                <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCard'); toggleIcon();">
+                            <i id="filterIcon" class="fa-solid fa-filter-list"></i>
                                 </button>
                             </div>
 
@@ -411,15 +411,15 @@
                                 <div class="tooltip-container mx-1">
                                     <span class="tooltip-text">Filtros</span>
                                     <button class="button3 efects_button btn_filtro"
-                                        onclick="openCard('filtersCardProfesores');">
-                                        <i class="fa-solid fa-filter-list"></i>
+                                        onclick="openCard('filtersCardProfesores'); toggleIcon();">
+                            <i id="filterIcon" class="fa-solid fa-filter-list"></i>
                                     </button>
                                 </div>
 
                                 <!-- Card de Filtros para Profesores y Periodos -->
                                 <div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
                                     <div class="card-header">
-                                        <span class="card-title">Filtros Profesores y Periodos</span>
+                                        <span class="card-title">Filtros</span>
                                         <button type="button" class="close"
                                             onclick="closeCard('filtersCardProfesores')"><i
                                                 class="fa-thin fa-xmark"></i></button>
@@ -428,7 +428,7 @@
                                         <form id="filterFormProfesores" method="GET"
                                             action="{{ route('admin.indexProyectos') }}">
                                             <div class="form-group">
-                                                <label for="profesor">Profesor</label>
+                                                <label for="profesor">Docente</label>
                                                 <select name="profesor" id="profesor"
                                                     class="form-control input input_select">
                                                     <option value="">Todos los docentes</option>
@@ -1314,11 +1314,19 @@
             });
         });
         $(document).ready(function() {
+            // Hacer que los cards sean draggable
+            $('.draggable-card1_3').draggable({
+                handle: ".card-header",
+                containment: "window"
+            });
+        });
+        $(document).ready(function() {
             // Hacer que el card sea draggable
             $('.draggable-card1_2').draggable({
                 handle: ".card-header",
                 containment: "window"
             });
+            
 
             // Enviar el formulario cuando cambian los select
             $('#filtersForm select').change(function() {

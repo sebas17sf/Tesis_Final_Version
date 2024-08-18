@@ -269,7 +269,8 @@
                         </select>
                     </div>
                     <div class="card-footer1 text-right">
-                        <button type="submit" id="submitButton" class="button01 btn btn-primary">Guardar Cambios</button>
+                        <center><button type="submit" id="submitButton" class="button01 btn btn-primary">Guardar Cambios</button>
+        </center>
                     </div>
                 </form>
 
@@ -304,8 +305,8 @@
                     <!-- Botón de Filtros para Profesores y Periodos -->
                     <div class="tooltip-container">
                         <span class="tooltip-text">Filtros</span>
-                        <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCardProfesores');">
-                            <i class="fa-solid fa-filter-list"></i>
+                        <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCardProfesores'); toggleIcon();">
+                            <i id="filterIcon" class="fa-solid fa-filter-list"></i>
                         </button>
                     </div>
 

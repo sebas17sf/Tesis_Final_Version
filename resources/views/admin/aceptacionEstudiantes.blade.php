@@ -69,7 +69,7 @@
                                     <th class="tamanio1">DEPARTAMENTO</th>
                                     <th class="tamanio1">ESTADO ACTUAL</th>
                                     <th>OBSERVACIÓN</th>
-                                    <th>ESTADO</th>
+                                    <th class="tamanio3">ESTADO</th>
                                     <th>ACTUALIZAR</th>
                                 </tr>
                             </thead>
@@ -108,7 +108,7 @@
                                                     <input type="hidden" id="motivoNegacion" name="motivoNegacion"
                                                         class="input">
                                                     <select name="nuevoEstado" id="nuevoEstado" onchange="verificarEstado()"
-                                                        class="form-control input1 input input_select">
+                                                        class="form-control input1 input input_select3">
                                                         <option value="Aprobado">Aprobado</option>
                                                         <option value="Negado">Negado</option>
                                                     </select>
@@ -154,9 +154,8 @@
                     </div>
                     <div class="tooltip-container">
                         <span class="tooltip-text">Filtros</span>
-                        <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCardProfesores');">
-                            <i class="fa-solid fa-filter-list"></i>
-                        </button>
+                        <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCardProfesores'); toggleIcon();">
+                            <i id="filterIcon" class="fa-solid fa-filter-list"></i>
                     </div>
 
                     <div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
