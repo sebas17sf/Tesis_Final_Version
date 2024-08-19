@@ -91,14 +91,14 @@
                     @method('PUT')
                     <div>
                         <label for="password">Nueva contraseña <span class="requerido">*</span></label>
-                        <input type="password" id="password" name="password" class="input" placeholder="Ingrese la clave">
+                        <input type="password" id="password" name="password" class="input" placeholder="Ingrese la contraseña">
                         <small id="passwordError" class="error-message" style="color: red;"></small>
                     </div>
 
                     <div>
                         <label for="password_confirmation">Confirmar contraseña <span class="requerido">*</span></label>
                         <input type="password" id="password_confirmation" name="password_confirmation" class="input"
-                            placeholder="Ingrese de nuevo la clave">
+                            placeholder="Ingrese de nuevo la contraseña">
                         <small id="confirmPasswordError" class="error-message" style="color: red;"></small>
                     </div>
 
