@@ -1,7 +1,64 @@
-@extends('layouts.participante')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Obtener el valor de 'active_role_source' desde localStorage
+        const activeRoleSource = localStorage.getItem('active_role_source');
+        let layout = '';
 
-@section('title', 'Configuracion de Usuario')
+        // Determinar el layout en función del valor de 'active_role_source'
+        if (activeRoleSource === 'role_id_administrativo') {
+            layout = 'admin';
+        } else if (activeRoleSource === 'role_id_participante') {
+            layout = 'participante'; // Layout asociado con role_id para Participante
+        } else if (activeRoleSource === 'role_id_directorVinculacion') {
+            layout = 'directorVinculacion';
+        } else if (activeRoleSource === 'role_id_coordinador') {
+            layout = 'coordinador';
+        } else if (activeRoleSource === 'role_id_director') {
+            layout = 'director';
+        }
 
+        // Redirigir a la misma página con el parámetro de layout si no está ya presente
+        const currentUrl = new URL(window.location.href);
+        if (!currentUrl.searchParams.get('layout') && layout !== '') {
+            currentUrl.searchParams.set('layout', layout);
+            window.location.href = currentUrl.href;
+        }
+    });
+</script>
+
+@php
+    // Obtener el parámetro de layout de la URL
+    $layout = request()->get('layout', 'participante'); // 'participante' es el valor por defecto si no hay parámetro
+
+    // Selecciona el layout basado en el parámetro recibido
+    switch ($layout) {
+        case 'admin':
+            $layout = 'layouts.admin';
+            break;
+        case 'participante':
+            $layout = 'layouts.participante';
+            break;
+        case 'directorVinculacion':
+            $layout = 'layouts.directorVinculacion';
+            break;
+        case 'coordinador':
+            $layout = 'layouts.coordinador';
+            break;
+        case 'director':
+            $layout = 'layouts.director';
+            break;
+        default:
+            $layout = 'layouts.participante'; // Asegúrate de usar un layout existente como valor por defecto
+            break;
+    }
+@endphp
+
+@extends($layout)
+
+
+
+
+@section('title', 'Configuración de Usuario')
 @section('title_component', 'Credenciales de Usuario')
 
 @section('content')
@@ -148,19 +205,16 @@
                     <div>
                         <label for="departament_student">Departamento <span class="requerido">*</span></label>
                         <select class="form-control input input_select" id="Departamento" name="Departamento">
-                            <option value="">Seleccione su Departamento</option>
-                            <option value="Ciencias de la Computación"
-                                {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias de la Computación' ? 'selected' : '' }}>
-                                DCCO - Ciencias de la Computación</option>
-                            <option value="Ciencias Exactas"
-                                {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias Exactas' ? 'selected' : '' }}>
-                                DCEX - Ciencias Exactas</option>
-                            <option value="Ciencias de la Vida y Agricultura"
-                                {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>
-                                DCVA - Ciencias de la Vida y Agricultura</option>
+                            <option value="">Seleccione un departamento</option>
+                            @foreach ($departamentos as $departamento)
+                                <option value="{{ $departamento->id }}" @if (isset($estudiante->departamentoId) && $estudiante->departamentoId == $departamento->id) selected @endif>
+                                    {{ $departamento->departamento }}</option>
+                            @endforeach
                         </select>
                         <small id="departamentoError" class="error-message" style="color: red;"></small>
                     </div>
+
+
 
                     <div class="content_button">
                         <button class="button1 efects_button" type="submit">Actualizar</button>
@@ -169,6 +223,8 @@
 
             </div>
         </div>
+
+
 
 
     </section>
@@ -216,46 +272,46 @@
     </div>
 
     <!--
-            <form action="{{ route('admin.updateCredenciales') }}" method="POST">
-                @csrf
-                @method('PUT')
-                <div class="form-group">
-                    <label for="nombre">Usuario</label>
-                    <input type="text" class="form-control input" id="nombre" name="nombre" value="{{ $usuario->nombreUsuario }}"
-                        required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Correo Electrónico</label>
-                    <input type="email" class="form-control input" id="email" name="email"
-                        value="{{ $usuario->correoElectronico }}" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Nueva Contraseña</label>
-                    <div class="input-group">
-                        <input type="password" class="form-control input" id="password" name="password" required>
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                <i class="fa fa-eye" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="password_confirmation">Confirmar Nueva Contraseña</label>
-                    <div class="input-group">
-                        <input type="password" class="form-control input" id="password_confirmation" name="password_confirmation"
-                            required>
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
-                                <i class="fa fa-eye" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <button type="submit" class="button">Guardar Cambios</button>
-            </form>
+                        <form action="{{ route('admin.updateCredenciales') }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <div class="form-group">
+                                <label for="nombre">Usuario</label>
+                                <input type="text" class="form-control input" id="nombre" name="nombre" value="{{ $usuario->nombreUsuario }}"
+                                    required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Correo Electrónico</label>
+                                <input type="email" class="form-control input" id="email" name="email"
+                                    value="{{ $usuario->correoElectronico }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Nueva Contraseña</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control input" id="password" name="password" required>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password_confirmation">Confirmar Nueva Contraseña</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control input" id="password_confirmation" name="password_confirmation"
+                                        required>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" id="toggleConfirmPassword">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="button">Guardar Cambios</button>
+                        </form>
 
-        -->
+                    -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
@@ -309,6 +365,17 @@
                 formIsValid = false;
             }
 
+            // Verificar que la contraseña tenga al menos una letra mayúscula y un carácter especial
+            const uppercaseRegex = /[A-Z]/;
+            const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+
+            if (!uppercaseRegex.test(password) || !specialCharRegex.test(password)) {
+                document.getElementById('passwordError').textContent =
+                    'La contraseña debe tener al menos una letra mayúscula y un carácter especial.';
+                passwordInput.focus();
+                formIsValid = false;
+            }
+
             // Verificar que las contraseñas coincidan
             if (password.length >= 6 && password !== confirmPassword) {
                 document.getElementById('confirmPasswordError').textContent = 'Las contraseñas no coinciden.';
@@ -321,59 +388,81 @@
                 event.preventDefault();
             }
         });
+
+        // Limpiar mensajes de error al corregir la entrada
+        document.getElementById('password').addEventListener('input', function() {
+            const passwordInput = this.value.trim();
+            const uppercaseRegex = /[A-Z]/;
+            const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+
+            if (passwordInput.length >= 6 && uppercaseRegex.test(passwordInput) && specialCharRegex.test(
+                    passwordInput)) {
+                document.getElementById('passwordError').textContent = '';
+            }
+        });
+
+        document.getElementById('password_confirmation').addEventListener('input', function() {
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = this.value.trim();
+
+            if (confirmPassword === password) {
+                document.getElementById('confirmPasswordError').textContent = '';
+            }
+        });
     </script>
+
+
 
     <script>
         $(document).ready(function() {
-    $('#actualizarDatosFormCredenciales').on('submit', function(event) {
-        // Limpiar mensajes de error previos
-        $('#firstnameError').text('');
-        $('#lastnameError').text('');
-        $('#departamentoError').text('');
+            $('#actualizarDatosFormCredenciales').on('submit', function(event) {
+                // Limpiar mensajes de error previos
+                $('#firstnameError').text('');
+                $('#lastnameError').text('');
+                $('#departamentoError').text('');
 
-        // Obtener los valores de los campos
-        const firstname = $('#firstname_student').val().trim();
-        const lastname = $('#lastname_student').val().trim();
-        const departamento = $('#Departamento').val().trim();
+                // Obtener los valores de los campos
+                const firstname = $('#firstname_student').val().trim();
+                const lastname = $('#lastname_student').val().trim();
+                const departamento = $('#Departamento').val().trim();
 
-        let formIsValid = true;
+                let formIsValid = true;
 
-        // Validación de campos requeridos
-        if (firstname === "") {
-            $('#firstnameError').text('El nombre es requerido.');
-            formIsValid = false;
-        }
+                // Validación de campos requeridos
+                if (firstname === "") {
+                    $('#firstnameError').text('El nombre es requerido.');
+                    formIsValid = false;
+                }
 
-        if (lastname === "") {
-            $('#lastnameError').text('El apellido es requerido.');
-            formIsValid = false;
-        }
+                if (lastname === "") {
+                    $('#lastnameError').text('El apellido es requerido.');
+                    formIsValid = false;
+                }
 
-        if (departamento === "") {
-            $('#departamentoError').text('El departamento es requerido.');
-            formIsValid = false;
-        }
+                if (departamento === "") {
+                    $('#departamentoError').text('El departamento es requerido.');
+                    formIsValid = false;
+                }
 
-        // Si el formulario no es válido, evitar el envío
-        if (!formIsValid) {
-            event.preventDefault();
-        }
-    });
+                // Si el formulario no es válido, evitar el envío
+                if (!formIsValid) {
+                    event.preventDefault();
+                }
+            });
 
-    // Eliminar mensaje de error al escribir
-    $('#firstname_student').on('input', function() {
-        $('#firstnameError').text('');
-    });
+            // Eliminar mensaje de error al escribir
+            $('#firstname_student').on('input', function() {
+                $('#firstnameError').text('');
+            });
 
-    $('#lastname_student').on('input', function() {
-        $('#lastnameError').text('');
-    });
+            $('#lastname_student').on('input', function() {
+                $('#lastnameError').text('');
+            });
 
-    $('#Departamento').on('change', function() {
-        $('#departamentoError').text('');
-    });
-});
-
+            $('#Departamento').on('change', function() {
+                $('#departamentoError').text('');
+            });
+        });
     </script>
 
 

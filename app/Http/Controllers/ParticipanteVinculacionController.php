@@ -9,6 +9,7 @@ use App\Models\ActividadesPracticasII;
 use App\Models\NotasPracticasii;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Departamento;
 use App\Models\PracticaI;
 use App\Models\PracticaII;
 use App\Models\Periodo;
@@ -371,9 +372,12 @@ class ParticipanteVinculacionController extends Controller
     ////////////////////////////cambiar credenciales
     public function cambiarCredencialesUsuario()
     {
-        if (Auth::check() && Auth::user()->role->tipo !== 'ParticipanteVinculacion') {
+        if (Auth::check() && !in_array(Auth::user()->role->tipo, ['ParticipanteVinculacion', 'DirectorVinculacion'])) {
             return redirect()->route('login')->with('error', 'Acceso no autorizado');
         }
+
+
+        $departamentos = Departamento::all();
 
         $periodos = Periodo::all();
 
@@ -392,7 +396,7 @@ class ParticipanteVinculacionController extends Controller
             $userSessions = collect();
         }
 
-        return view('ParticipanteVinculacion.cambiarCredencialesUsuario', compact('usuario', 'userSessions', 'estudiante', 'periodos'));
+        return view('ParticipanteVinculacion.cambiarCredencialesUsuario', compact('usuario', 'userSessions', 'estudiante', 'periodos', 'departamentos'));
     }
 
 
@@ -413,7 +417,7 @@ class ParticipanteVinculacionController extends Controller
         // Actualizar los datos del estudiante
         $estudiante->nombres = $request->input('firstname_student');
         $estudiante->apellidos = $request->input('lastname_student');
-        $estudiante->departamento = $request->input('Departamento');
+        $estudiante->departamentoId = $request->input('Departamento');
 
         // Guardar los cambios
         $estudiante->save();
@@ -443,32 +447,31 @@ class ParticipanteVinculacionController extends Controller
 
     public function actualizarCredenciales(Request $request)
     {
+        // Validar los campos de la solicitud
         $request->validate([
-            'email' => 'required',
-            'password' => 'required',
-            'password_confirmation' => 'required',
-            'nombre' => 'required',
+            'password' => 'required|min:6',
+            'password_confirmation' => 'required|same:password',
         ]);
 
-        if ($request->password !== $request->password_confirmation) {
-            return redirect()->back()->with('error', 'Las contraseñas no coinciden')->withInput();
-        }
-
-        //////las credenciales deben ser minimo de 6 caracteres
-        if (strlen($request->password) < 6) {
-            return redirect()->back()->with('error', 'La contraseña debe tener al menos 6 caracteres')->withInput();
-        }
-
+        // Obtener el usuario autenticado
         $usuario = Auth::user();
 
-        $usuario->CorreoElectronico = $request->email;
-        $usuario->NombreUsuario = $request->nombre;
+        // Actualizar la contraseña del usuario
         $usuario->Contrasena = bcrypt($request->password);
 
+        // Verificar si el usuario tiene relación con profesorUniversidad
+        if ($usuario->profesorUniversidad) {
+            $usuario->profesorUniversidad->actualizacion = true;
+            $usuario->profesorUniversidad->save();
+        }
+
+        // Guardar los cambios en el modelo `Usuario`
         $usuario->save();
 
+        // Redirigir a la ruta deseada con un mensaje de éxito
         return redirect()->route('ParticipanteVinculacion.index')->with('success', 'Credenciales actualizadas exitosamente');
     }
+
 
 
 

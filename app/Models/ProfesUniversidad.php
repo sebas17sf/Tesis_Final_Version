@@ -18,6 +18,7 @@ class ProfesUniversidad extends Model
         'cedula',
         'departamentoId',
         'espeId',
+        'actualizacion',
     ];
 
     public function proyectosDirigidos()
@@ -63,7 +64,7 @@ class ProfesUniversidad extends Model
         return $this->belongsTo(Departamento::class, 'departamentoId', 'id');
     }
 
-    
+
 
 
 

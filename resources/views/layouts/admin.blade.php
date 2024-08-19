@@ -86,9 +86,30 @@
         };
     </script>
 
+    <?php
+    $user = auth()->user()->profesorUniversidad ?? null;
+    $currentRoute = \Route::currentRouteName();
 
-    <!-- Barra de navegación en el lado izquierdo -->
-    <!-- Barra de navegación en el lado izquierdo -->
+    if ($user && $user->actualizacion == 0 && $currentRoute !== 'participante-vinculacion.cambio-credenciales') {
+        echo "<script>
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Primera sesión',
+                    text: 'Es obligatorio que realice el cambio de clave.',
+                    confirmButtonText: 'Aceptar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '" .
+            route('participante-vinculacion.cambio-credenciales') .
+            "';
+                    }
+                });
+            </script>";
+        exit();
+    }
+    ?>
+
+
     <section class="content-sidebar content-sidebar-hidden">
         <div class="content scroll-small">
             <div class="sidebar">
@@ -208,7 +229,7 @@
                         <span>Cambiar modulo</span>
                     </a>
 
-                    <a href="{{ route('admin.cambio-credenciales') }}"
+                    <a href="{{ route('participante-vinculacion.cambio-credenciales') }}"
                         class="change_password active-section p-element">
                         <i class="fa-regular fa-user"></i>
                         <span>Credenciales</span>

@@ -138,16 +138,19 @@
                     <div>
                         <label for="period_student">Período <span class="requerido">*</span></label>
                         <select class="form-control input input_select" id="Periodo" name="Periodo">
-                            <option value="">Seleccione su Periodo</option>
+                            <option value="">Seleccione su Período</option>
                             @foreach ($periodos as $periodo)
                                 <option value="{{ $periodo->id }}" data-numeroPeriodo="{{ $periodo->numeroPeriodo }}"
-                                    {{ old('Periodo') == $periodo->id ? 'selected' : '' }}>
+                                    @if ((isset($estudiante->idPeriodo) && $estudiante->idPeriodo == $periodo->id) || old('Periodo') == $periodo->id)
+                                        selected
+                                    @endif>
                                     {{ $periodo->numeroPeriodo }} {{ $periodo->periodo }}
                                 </option>
                             @endforeach
                         </select>
                         <small id="periodoError" class="error-message" style="color: red;"></small>
                     </div>
+
 
                     <div>
                         <label for="race_student">Carrera <span class="requerido">*</span></label>
@@ -169,16 +172,14 @@
                     <div>
                         <label for="departament_student">Departamento <span class="requerido">*</span></label>
                         <select class="form-control input input_select" id="Departamento" name="Departamento">
-                            <option value="">Seleccione su Departamento</option>
-                            <option value="Ciencias de la Computación"
-                                {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias de la Computación' ? 'selected' : '' }}>
-                                DCCO - Ciencias de la Computación</option>
-                            <option value="Ciencias Exactas"
-                                {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias Exactas' ? 'selected' : '' }}>
-                                DCEX - Ciencias Exactas</option>
-                            <option value="Ciencias de la Vida y Agricultura"
-                                {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>
-                                DCVA - Ciencias de la Vida y Agricultura</option>
+                            <option value="">Seleccione un departamento</option>
+                            @foreach ($departamentos as $departamento)
+                                <option value="{{ $departamento->id }}"
+                                    @if (isset($estudiante->departamentoId) && $estudiante->departamentoId == $departamento->id)
+                                        selected
+                                    @endif>
+                                    {{ $departamento->departamento }}</option>
+                            @endforeach
                         </select>
                         <small id="departamentoError" class="error-message" style="color: red;"></small>
                     </div>
@@ -269,53 +270,66 @@
     </script>
 
     <script>
-        document.getElementById('changePasswordForm').addEventListener('submit', function(event) {
-            // Limpiar mensajes de error previos
-            document.getElementById('passwordError').textContent = '';
-            document.getElementById('confirmPasswordError').textContent = '';
+      document.getElementById('changePasswordForm').addEventListener('submit', function(event) {
+    // Limpiar mensajes de error previos
+    document.getElementById('passwordError').textContent = '';
+    document.getElementById('confirmPasswordError').textContent = '';
 
-            const passwordInput = document.getElementById('password');
-            const confirmPasswordInput = document.getElementById('password_confirmation');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('password_confirmation');
 
-            const password = passwordInput.value.trim();
-            const confirmPassword = confirmPasswordInput.value.trim();
+    const password = passwordInput.value.trim();
+    const confirmPassword = confirmPasswordInput.value.trim();
 
-            let formIsValid = true;
+    let formIsValid = true;
 
-            // Verificar que ambos campos estén llenos
-            if (password === "") {
-                document.getElementById('passwordError').textContent = 'La nueva contraseña es requerida.';
-                passwordInput.focus();
-                formIsValid = false;
-            }
+    // Verificar que ambos campos estén llenos
+    if (password === "") {
+        document.getElementById('passwordError').textContent = 'La nueva contraseña es requerida.';
+        passwordInput.focus();
+        formIsValid = false;
+    }
 
-            if (confirmPassword === "") {
-                document.getElementById('confirmPasswordError').textContent =
-                    'La confirmación de contraseña es requerida.';
-                confirmPasswordInput.focus();
-                formIsValid = false;
-            }
+    if (confirmPassword === "") {
+        document.getElementById('confirmPasswordError').textContent =
+            'La confirmación de contraseña es requerida.';
+        confirmPasswordInput.focus();
+        formIsValid = false;
+    }
 
-            // Verificar que la contraseña tenga al menos 6 caracteres
-            if (password.length > 0 && password.length < 6) {
-                document.getElementById('passwordError').textContent =
-                    'La contraseña debe tener al menos 6 caracteres.';
-                passwordInput.focus();
-                formIsValid = false;
-            }
+    // Verificar que la contraseña tenga al menos 6 caracteres
+    if (password.length > 0 && password.length < 6) {
+        document.getElementById('passwordError').textContent =
+            'La contraseña debe tener al menos 6 caracteres.';
+        passwordInput.focus();
+        formIsValid = false;
+    }
 
-            // Verificar que las contraseñas coincidan
-            if (password.length >= 6 && password !== confirmPassword) {
-                document.getElementById('confirmPasswordError').textContent = 'Las contraseñas no coinciden.';
-                confirmPasswordInput.focus();
-                formIsValid = false;
-            }
+    // Verificar que la contraseña tenga al menos una letra mayúscula y un carácter especial
+    const uppercaseRegex = /[A-Z]/;
+    const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
 
-            // Si el formulario no es válido, evitar el envío
-            if (!formIsValid) {
-                event.preventDefault();
-            }
-        });
+    if (!uppercaseRegex.test(password) || !specialCharRegex.test(password)) {
+        document.getElementById('passwordError').textContent =
+            'La contraseña debe tener al menos una letra mayúscula y un carácter especial.';
+        passwordInput.focus();
+        formIsValid = false;
+    }
+
+    // Verificar que las contraseñas coincidan
+    if (password.length >= 6 && password !== confirmPassword) {
+        document.getElementById('confirmPasswordError').textContent = 'Las contraseñas no coinciden.';
+        confirmPasswordInput.focus();
+        formIsValid = false;
+    }
+
+    // Si el formulario no es válido, evitar el envío
+    if (!formIsValid) {
+        event.preventDefault();
+    }
+});
+
+
     </script>
 
 <script>

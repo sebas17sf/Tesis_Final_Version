@@ -194,12 +194,14 @@ class DirectorVinculacionController extends Controller
         }
 
 
+
         $asignacionesEstudiantesDirector = collect([]);
         if ($proyectoEjecucion) {
             $asignacionesEstudiantesDirector = Proyecto::with([
                 'asignaciones' => function ($query) {
                     $query->whereHas('estudiante', function ($query) {
-                        $query->where('estado', 'Aprobado');
+                        $query->where('estado', 'Aprobado')
+                            ->where('estado', '!=', 'Aprobado-practicas');
                     });
                 }
             ])
@@ -208,8 +210,11 @@ class DirectorVinculacionController extends Controller
                 ->flatMap(function ($proyecto) {
                     return $proyecto->asignaciones;
                 });
-
         }
+
+
+
+
 
 
 
@@ -649,7 +654,7 @@ class DirectorVinculacionController extends Controller
     ////////////////////////////cambiar credenciales
     public function cambiarCredencialesUsuario()
     {
-        if (Auth::check() && Auth::user()->role->tipo !== 'DirectorVinculacion') {
+        if (Auth::check() && !in_array(Auth::user()->role->tipo, ['ParticipanteVinculacion', 'DirectorVinculacion'])) {
             return redirect()->route('login')->with('error', 'Acceso no autorizado');
         }
 
