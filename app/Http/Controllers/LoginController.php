@@ -269,61 +269,91 @@ class LoginController extends Controller
 
 
 
-    public function Modulo1()
-    {
-        try {
-            $user = Auth::user();
-            $userRole = Role::find($user->role_id);
-            $credentials = [
-                'CorreoElectronico' => $user->correoElectronico,
-                'Contrasena' => $user->contrasena,
-            ];
+    public function Modulo1(Request $request)
+{
+    try {
+        $user = Auth::user();
+        $userRole = Role::find($user->role_id);
+        $adminRole = Role::find($user->role_id_administrativo);
 
-            if ($user && (password_verify($credentials['Contrasena'], $user->contrasena) || $user->contrasena === $credentials['Contrasena'])) {
-                Auth::login($user);
+        $credentials = [
+            'CorreoElectronico' => $user->correoElectronico,
+            'Contrasena' => $user->contrasena,
+        ];
 
-                session()->regenerate();
+        if ($user && (password_verify($credentials['Contrasena'], $user->contrasena) || $user->contrasena === $credentials['Contrasena'])) {
+            Auth::login($user);
 
-                // Update token and token_expires_at
-                $user->token = Str::random(60);
-                $user->save();
+            session()->regenerate();
 
-                $encryptedToken = $user->token;
+            // Actualizar token y token_expires_at
+            $user->token = Str::random(60);
+            $user->save();
 
-                setcookie('token', $encryptedToken, time() + 3600, "/");
+            $encryptedToken = $user->token;
+            setcookie('token', $encryptedToken, time() + 3600, "/");
+            session(['token' => $encryptedToken]);
 
-                session(['token' => $encryptedToken]);
-
-                if ($userRole->tipo === 'Administrador') {
-                    return redirect()->route('admin.index')->with('token', $encryptedToken);
-                } elseif ($userRole->tipo === 'Director-Departamento' || $userRole->tipo === 'Director-Carrera') {
-                    return redirect()->route('director.indexProyectos')->with('token', $encryptedToken);
-                } elseif ($userRole->tipo === 'Vinculacion' || $userRole->tipo === 'Practicas') {
-                    return redirect()->route('coordinador.index')->with('token', $encryptedToken);
-                } elseif ($userRole->tipo === 'DirectorVinculacion') {
-                    return redirect()->route('director_vinculacion.index')->with('token', $encryptedToken);
-                } elseif ($userRole->tipo === 'ParticipanteVinculacion') {
-                    return redirect()->route('ParticipanteVinculacion.index')->with('token', $encryptedToken);
-                } else {
-                    return redirect()->route('estudiantes.create')->with('token', $encryptedToken);
-                }
+            // Verificar si el usuario tiene roles específicos en role_id
+            if ($userRole->tipo === 'DirectorVinculacion' && $adminRole && $adminRole->tipo === 'ParticipanteVinculacion') {
+                // Redirigir para mostrar la ventana emergente de selección de roles
+                return redirect()->route('conectarModulos')->with([
+                    'role_id' => $userRole->tipo,
+                    'role_id_administrativo' => $adminRole ? $adminRole->tipo : null,
+                    'token' => $encryptedToken,
+                ]);
             }
 
-            return redirect()->route('login')->with('error', 'Las credenciales proporcionadas no coinciden con nuestros registros.');
-        } catch (\Exception $e) {
-            return redirect()->route('login')->with('error', 'Ocurrió un error: ' . $e->getMessage());
+            // Verificar roles administrativos
+            if ($adminRole && in_array($adminRole->tipo, ['Administrador', 'Vinculacion', 'Practicas', 'Director-Departamento'])) {
+                // Redirigir para mostrar la ventana emergente de Docente o Coordinación
+                return redirect()->route('conectarModulos')->with([
+                    'role_id_administrativo' => $adminRole->tipo,
+                    'token' => $encryptedToken,
+                ]);
+            }
+
+            // Redirigir según el único rol del usuario
+            if ($userRole->tipo === 'Administrador') {
+                return redirect()->route('admin.index')->with('token', $encryptedToken);
+            } elseif ($userRole->tipo === 'Director-Departamento' || $userRole->tipo === 'Director-Carrera') {
+                return redirect()->route('director.indexProyectos')->with('token', $encryptedToken);
+            } elseif ($userRole->tipo === 'Vinculacion' || $userRole->tipo === 'Practicas') {
+                return redirect()->route('coordinador.index')->with('token', $encryptedToken);
+            } elseif ($userRole->tipo === 'DirectorVinculacion') {
+                return redirect()->route('director_vinculacion.index')->with('token', $encryptedToken);
+            } elseif ($userRole->tipo === 'ParticipanteVinculacion') {
+                return redirect()->route('ParticipanteVinculacion.index')->with('token', $encryptedToken);
+            } else {
+                return redirect()->route('estudiantes.create')->with('token', $encryptedToken);
+            }
         }
+
+        return redirect()->route('login')->with('error', 'Las credenciales proporcionadas no coinciden con nuestros registros.');
+    } catch (\Exception $e) {
+        return redirect()->route('login')->with('error', 'Ocurrió un error: ' . $e->getMessage());
+    }
+}
+
+public function conectarModulos()
+{
+    $roleId = Auth::user()->role_id;
+    $roleIdAdministrativo = Auth::user()->role_id_administrativo;
+
+    $roles = [];
+
+    // Recopilar roles relevantes
+    if ($roleId) {
+        $roles[] = Role::find($roleId)->tipo; // Asumiendo que Role::find($roleId)->tipo devuelve el nombre del rol
+    }
+    if ($roleIdAdministrativo) {
+        $roles[] = Role::find($roleIdAdministrativo)->tipo;
     }
 
+    return view('ConexionSistemas', compact('roles'));
+}
 
 
-
-    ////////////////////////////////////////////////////////////////////////////////////////////conexion
-    public function conectarModulos()
-    {
-        return view('ConexionSistemas');
-
-    }
 
 
 

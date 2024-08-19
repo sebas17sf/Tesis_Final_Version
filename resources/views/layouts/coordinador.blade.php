@@ -101,8 +101,8 @@
                                         <li>Prácticas</li>
                                     </div>
                                     <div class="icon-sidebar-item-list color_a">
-                                <i class="fa-regular fa-angle-down"></i>
-                            </div>
+                                        <i class="fa-regular fa-angle-down"></i>
+                                    </div>
                                 </a>
                                 <div class="item-list sublista">
                                     <a class="p-element mb-1 subitem" href="{{ route('coordinador.agregarEmpresa') }}">
@@ -150,14 +150,24 @@
         <div class="nameDirector">
             <label class="labell">Usuario</label>
             <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                @if (Auth::user()->role->tipo == 'Vinculacion')
+                @php
+                    use Illuminate\Support\Facades\DB;
+
+                    // Obtener el tipo de rol administrativo usando una consulta directa a la base de datos
+                    $roleAdministrativo = DB::table('roles')
+                        ->where('id', Auth::user()->role_id_administrativo)
+                        ->value('tipo');
+                @endphp
+
+                @if ($roleAdministrativo == 'Vinculacion')
                     Coordinador de Vinculación
-                @elseif (Auth::user()->role->tipo == 'Practicas')
+                @elseif ($roleAdministrativo == 'Practicas')
                     Coordinador de Prácticas
                 @else
-                    {{ Str::limit(Auth::user()->role->tipo, 30) }}
+                    {{ $roleAdministrativo ? Str::limit($roleAdministrativo, 30) : 'Sin rol administrativo' }}
                 @endif
             </span>
+
         </div>
 
         <!-- contenido -->

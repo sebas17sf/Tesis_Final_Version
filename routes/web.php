@@ -92,6 +92,10 @@ Route::middleware(['auth'])->group(function () {
     ///borrar los permisos concedidos
     Route::delete('/admin/{id}/deletePermission', [AdminController::class, 'deletePermission'])->name('admin.deletePermission');
 
+    Route::get('/admin/getRoleAdministrativo/{userId}', [AdminController::class, 'getRoleAdministrativo']);
+    Route::post('/admin/assignRoleAdministrativo/{userId}', [AdminController::class, 'assignRoleAdministrativo'])->name('admin.assignRoleAdministrativo');
+    Route::post('/admin/removeRoleAdministrativo/{userId}', [AdminController::class, 'removeRoleAdministrativo'])->name('admin.removeRoleAdministrativo');
+
     ////ReporteEstudiantes
     Route::post('/admin/reportes-estudiantes', [DocumentoController::class, 'ReporteEstudiantes'])->name('admin.reportesEstudiantes');
 

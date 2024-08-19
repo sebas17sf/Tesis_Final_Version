@@ -52,40 +52,28 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
-        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
-            return redirect()->route('login')->with('error', 'Acceso no autorizado');
-        }
-
+        $roles = Role::whereIn('tipo', ['Administrador', 'Vinculacion', 'Practicas', 'Director-Departamento'])->get();
         $departamentos = Departamento::all();
-
-
-        $profesoresVerificar = Usuario::where('estado', 'En verificación')
-            ->get();
+        $profesoresVerificar = Usuario::where('estado', 'En verificación')->get();
 
         $perPage = $request->input('perPage', 10);
-
         $validPerPages = [10, 20, 50, 100];
         if (!in_array($perPage, $validPerPages)) {
             $perPage = 10;
         }
 
-
-
         if (Auth::check()) {
             $user = Auth::user();
-            $role = Role::find($user->role_id);
+            $role = DB::table('roles')->where('id', $user->role_id_administrativo)->value('tipo');
 
-            if ($role && $role->tipo === 'Administrador') {
+            if ($role && $role === 'Administrador') {
 
                 $searchTerm = $request->input('search');
-
                 $filtroDepartamento = $request->input('departamentos');
-
 
                 $query = ProfesUniversidad::query();
 
-
-
+                // Filtro de búsqueda general
                 if ($searchTerm) {
                     $query->where(function ($q) use ($searchTerm) {
                         $q->where('apellidos', 'like', "%{$searchTerm}%")
@@ -95,29 +83,25 @@ class AdminController extends Controller
                             ->orWhere('Cedula', 'like', "%{$searchTerm}%")
                             ->orWhereHas('departamento', function ($query) use ($searchTerm) {
                                 $query->where('departamento', 'LIKE', '%' . $searchTerm . '%');
-                            }); // Este punto y coma faltaba
+                            });
                     });
                 }
 
-
-
-
-
+                // Filtrado por departamento
                 if ($filtroDepartamento) {
-                    $query->where('departamento', 'like', "%{$filtroDepartamento}%");
+                    $query->whereHas('departamento', function ($q) use ($filtroDepartamento) {
+                        $q->where('departamento', 'like', "%{$filtroDepartamento}%");
+                    });
                 }
 
-
-
+                // Obtener todos los estados de los profesores con sus usuarios relacionados
                 $estadoProfesores = ProfesUniversidad::with('usuarios')->get();
 
+                // Paginación de los profesores
                 $profesores = $query->paginate($perPage);
-
-
 
                 $periodos = Periodo::all();
                 $profesorRoleId = Role::where('tipo', 'Vinculacion')->value('id');
-
 
                 $profesoresPendientes = Usuario::where('role_id', $profesorRoleId)->get();
 
@@ -125,7 +109,6 @@ class AdminController extends Controller
                 $profesoresConPermisos = Usuario::where('role_id', $profesorRoleId)
                     ->whereIn('estado', ['Vinculacion', 'Practicas', 'Director-Departamento'])
                     ->get();
-
 
                 return view('admin.index', [
                     'profesoresPendientes' => $profesoresPendientes,
@@ -138,15 +121,73 @@ class AdminController extends Controller
                     'estadoProfesores' => $estadoProfesores,
                     'filtroDepartamento' => $filtroDepartamento,
                     'departamentos' => $departamentos,
-
-
-
+                    'roles' => $roles,
                 ]);
             }
         }
 
         return redirect()->route('login')->with('error', 'Acceso no autorizado');
     }
+
+    public function getRoleAdministrativo($userId)
+    {
+        $profesor = ProfesUniversidad::with('usuarios')
+            ->where('userId', $userId)
+            ->first();
+
+        if ($profesor && $profesor->usuarios->role_id_administrativo) {
+            $roleAdministrativo = DB::table('roles')
+                ->where('id', $profesor->usuarios->role_id_administrativo)
+                ->value('tipo');
+
+            return response()->json([
+                'nombres' => $profesor->nombres,
+                'apellidos' => $profesor->apellidos,
+                'roleAdministrativo' => $roleAdministrativo
+            ]);
+        } else {
+            return response()->json([
+                'nombres' => $profesor->nombres,
+                'apellidos' => $profesor->apellidos,
+                'roleAdministrativo' => null
+            ]);
+        }
+    }
+
+    public function assignRoleAdministrativo(Request $request, $userId)
+    {
+        try {
+            $request->validate([
+                'role_id_administrativo' => 'required|exists:roles,id',
+            ]);
+
+
+            $user = Usuario::findOrFail($userId);
+             $user->role_id_administrativo = $request->role_id_administrativo;
+            $user->save();
+
+            return redirect()->route('admin.index')->with('success', 'Rol administrativo asignado correctamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error al asignar el rol administrativo.');
+        }
+    }
+
+    public function removeRoleAdministrativo($userId)
+    {
+        try {
+            $user = Usuario::findOrFail($userId);
+            $user->role_id_administrativo = null;
+            $user->save();
+
+            return redirect()->back()->with('success', 'Rol administrativo eliminado correctamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error al eliminar el rol administrativo.');
+        }
+    }
+
+
+
+
     ////actualizar permisos
     public function updateEstado(Request $request, $id)
     {
@@ -2014,9 +2055,9 @@ class AdminController extends Controller
     {
         $selectedPeriodo = $request->input('periodo');
 
-         $numeroPeriodoSeleccionado = Periodo::where('id', $selectedPeriodo)->value('numeroPeriodo');
+        $numeroPeriodoSeleccionado = Periodo::where('id', $selectedPeriodo)->value('numeroPeriodo');
 
-         $proyectos = Proyecto::with([
+        $proyectos = Proyecto::with([
             'asignaciones' => function ($query) use ($selectedPeriodo) {
                 if ($selectedPeriodo) {
                     $query->where('idPeriodo', $selectedPeriodo);

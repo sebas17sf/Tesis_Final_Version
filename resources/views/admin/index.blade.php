@@ -387,6 +387,7 @@
                                     <th class="tamanio2">ID ESPE</th>
                                     <th>ESTADO</th>
                                     <th>ACCIONES</th>
+                                    <th>PERMISOS</th>
                                 </tr>
                             </thead>
                             <tbody class="mdc-data-table__content ng-star-inserted">
@@ -566,6 +567,28 @@
                     </div>
 
                     </td>
+                    <td class="center_size">
+                        <div class="btn-group shadow-1">
+                            <!-- Otros botones como Editar, Eliminar -->
+                            <button type="button" class="button3 efects_button btn_permisos"
+                                onclick="openPermissionsModal({{ $profesor->userId }})" style="margin-right: 5px;">
+                                <i class="fa-solid fa-user-shield"></i>
+                            </button>
+                        </div>
+                    </td>
+
+
+
+
+
+
+
+
+
+
+
+
+
                     </tr>
                     @endforeach
                     @endif
@@ -637,6 +660,45 @@
                 </nav>
             </div>
         </div>
+
+        <div class="draggable-card1_2" id="permissionsModal" style="display: none; max-width: 400px; margin: auto;">
+            <div class="card-header">
+                <span class="card-title">Información del Profesor</span>
+                <button type="button" class="close" onclick="closePermissionsModal()">
+                    <i class="fa-thin fa-xmark"></i>
+                </button>
+            </div>
+            <div class="card-body">
+                <p><strong>Nombres:</strong> <span id="profesorNombreCompleto">Cargando...</span></p>
+                <p><strong>Permisos:</strong> <span id="roleInfo">Cargando...</span></p>
+
+                <!-- Formulario para agregar rol administrativo -->
+                <form id="assignRoleForm" method="POST"
+                    action="{{ route('admin.assignRoleAdministrativo', ['userId' => 'USER_ID']) }}">
+                    @csrf
+                    <div class="form-group">
+                        <label for="roleSelect">Asignar Nuevo Rol Administrativo:</label>
+                        <select id="roleSelect" class="form-control input input_select" name="role_id_administrativo"
+                            required>
+                            <option value="">Seleccione un permiso</option>
+                            @foreach ($roles as $role)
+                                <option value="{{ $role->id }}">{{ $role->tipo }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="submit" class="button">Asignar permisos</button>
+                </form>
+
+                <!-- Formulario para eliminar rol administrativo -->
+                <form id="removeRoleForm" method="POST"
+                    action="{{ route('admin.removeRoleAdministrativo', ['userId' => 'USER_ID']) }}"
+                    style="margin-top: 10px;">
+                    @csrf
+                    <button type="submit" class="button">Eliminar permisos</button>
+                </form>
+            </div>
+        </div>
+
 
         <div class="container">
             <!-- Tarjeta movible para Agregar NRC -->
@@ -934,6 +996,146 @@
             }
         }
     </script>
+
+    <script>
+        function openPermissionsModal(userId) {
+            // Hacer una solicitud AJAX para obtener la información del usuario y su rol administrativo
+            $.ajax({
+                url: `/admin/getRoleAdministrativo/${userId}`,
+                method: 'GET',
+                success: function(response) {
+                    let nombreCompleto = (response.nombres ? response.nombres : '') + ' ' + (response
+                        .apellidos ? response.apellidos : '');
+                    nombreCompleto = nombreCompleto.trim() !== '' ? nombreCompleto : 'No disponible';
+
+                    let roleInfo = response.roleAdministrativo ?
+                        mapRoleName(response.roleAdministrativo) :
+                        'No tiene permisos asignado.';
+
+                    // Actualizar los elementos del modal con la información obtenida
+                    $('#profesorNombreCompleto').text(nombreCompleto);
+                    $('#roleInfo').text(roleInfo);
+
+                    // Mostrar el modal
+                    $('#permissionsModal').show();
+                    makeElementDraggable('#permissionsModal');
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    $('#profesorNombreCompleto').text('Error al obtener los datos.');
+                    $('#roleInfo').text('Error al obtener el rol administrativo.');
+                    $('#permissionsModal').show();
+                    makeElementDraggable('#permissionsModal');
+                }
+            });
+        }
+
+        function mapRoleName(role) {
+            const roleNames = {
+                'Administrador': 'Administrador',
+                'Vinculacion': 'Coordinador de Vinculación',
+                'Practicas': 'Coordinador de Prácticas',
+                'Director-Departamento': 'Director de departamento',
+                'Director-Carrera': 'Director de carrera',
+                'DirectorVinculacion': 'Director de proyectos sociales',
+                'ParticipanteVinculacion': 'Docente',
+                'Estudiante': 'Estudiante'
+            };
+            return roleNames[role] || role;
+        }
+
+        function closePermissionsModal() {
+            $('#permissionsModal').hide();
+        }
+
+        function makeElementDraggable(element) {
+            $(element).draggable({
+                handle: ".card-header",
+                containment: "window"
+            });
+        }
+
+        $(document).ready(function() {
+            makeElementDraggable('#permissionsModal');
+        });
+    </script>
+
+    <script>
+        let currentUserId;
+
+        function openPermissionsModal(userId) {
+            currentUserId = userId;
+
+            // Actualizar las acciones de los formularios con el userId correcto
+            const assignAction = `{{ route('admin.assignRoleAdministrativo', ['userId' => 'USER_ID']) }}`.replace(
+                'USER_ID', userId);
+            const removeAction = `{{ route('admin.removeRoleAdministrativo', ['userId' => 'USER_ID']) }}`.replace(
+                'USER_ID', userId);
+
+            $('#assignRoleForm').attr('action', assignAction);
+            $('#removeRoleForm').attr('action', removeAction);
+
+            // Hacer la solicitud para obtener los datos del usuario y mostrarlos
+            $.ajax({
+                url: `/admin/getRoleAdministrativo/${userId}`,
+                method: 'GET',
+                success: function(response) {
+                    let nombreCompleto = (response.nombres ? response.nombres : '') + ' ' + (response
+                        .apellidos ? response.apellidos : '');
+                    nombreCompleto = nombreCompleto.trim() !== '' ? nombreCompleto : 'No disponible';
+
+                    let roleInfo = response.roleAdministrativo ? mapRoleName(response.roleAdministrativo) :
+                        'No tiene rol administrativo asignado.';
+
+                    $('#profesorNombreCompleto').text(nombreCompleto);
+                    $('#roleInfo').text(roleInfo);
+
+                    $('#permissionsModal').show();
+                    makeElementDraggable('#permissionsModal');
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    $('#profesorNombreCompleto').text('Error al obtener los datos.');
+                    $('#roleInfo').text('Error al obtener el rol administrativo.');
+                    $('#permissionsModal').show();
+                    makeElementDraggable('#permissionsModal');
+                }
+            });
+        }
+
+        function mapRoleName(role) {
+            const roleNames = {
+                'Administrador': 'Administrador',
+                'Vinculacion': 'Vinculación',
+                'Practicas': 'Prácticas',
+                'Director-Departamento': 'Director de departamento',
+                'Director-Carrera': 'Director de carrera',
+                'DirectorVinculacion': 'Director de proyectos sociales',
+                'ParticipanteVinculacion': 'Docente',
+                'Estudiante': 'Estudiante'
+            };
+            return roleNames[role] || role;
+        }
+
+        function closePermissionsModal() {
+            $('#permissionsModal').hide();
+        }
+
+        function makeElementDraggable(element) {
+            $(element).draggable({
+                handle: ".card-header",
+                containment: "window"
+            });
+        }
+
+        $(document).ready(function() {
+            makeElementDraggable('#permissionsModal');
+        });
+    </script>
+
+
+
+
 
     <script src="{{ asset('js/ValidacionesFormualario/admin/validaciones.js') }}" type="module"></script>
 
