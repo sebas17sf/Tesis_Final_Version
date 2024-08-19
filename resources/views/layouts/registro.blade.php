@@ -56,7 +56,7 @@
                             document.getElementById('countdown').innerText =
                                 `${Math.floor(timeLeft / 60)} minutos y ${timeLeft % 60} segundos restantes`;
                             timeLeft--;
-                        }, 1000);
+                        }, 5000);
                     },
                     onClose: () => {
                         clearInterval(countdown);

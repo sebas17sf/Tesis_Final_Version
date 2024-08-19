@@ -719,7 +719,7 @@
                 if (alertElement) {
                     setTimeout(() => {
                         alertElement.style.display = 'none';
-                    }, 1000); // 1000 ms = 1 segundo
+                    }, 5000); // 1000 ms = 1 segundo
                 }
 
                 // Configurar el formAsistencia para sincronizar el tipo de informe
