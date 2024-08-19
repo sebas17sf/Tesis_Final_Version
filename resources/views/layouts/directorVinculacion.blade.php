@@ -160,7 +160,7 @@
         <main class="navbar">
             <button class="profile-icon dropdown" id="profile-button">
 
-                
+
                 <div class="name-profile">
                     <span>{{ explode(' ', Auth::user()->profesorUniversidad->nombres)[0] }}</span>
                       <span>{{ explode(' ', Auth::user()->profesorUniversidad->apellidos)[0] }}</span>
@@ -168,7 +168,7 @@
                     <div class="icon-profile" >
                         <img src="../img/default/user.svg">
                     </div>
-              
+
             </button>
             <!-- Aquí agregamos el contenedor del menú desplegable -->
             <div class="popup-menu-profile">
@@ -178,7 +178,7 @@
                         <span>Cambiar modulo</span>
                     </a>
 
-                    <a href="{{ route('director_vinculacion.cambio-credenciales') }}" class="change_password active-section p-element">
+                    <a href="{{ route('participante-vinculacion.cambio-credenciales') }}" class="change_password active-section p-element">
                         <i class="fa-regular fa-user"></i>
                         <span>Credenciales</span>
                     </a>

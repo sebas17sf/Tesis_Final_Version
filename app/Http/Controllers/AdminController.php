@@ -163,7 +163,7 @@ class AdminController extends Controller
 
 
             $user = Usuario::findOrFail($userId);
-             $user->role_id_administrativo = $request->role_id_administrativo;
+            $user->role_id_administrativo = $request->role_id_administrativo;
             $user->save();
 
             return redirect()->route('admin.index')->with('success', 'Rol administrativo asignado correctamente.');
@@ -262,7 +262,11 @@ class AdminController extends Controller
     ///////////////Aceptacion de estudiantes para el proceso de vinculacion/////////////////////////////////////
     public function estudiantes(Request $request)
     {
-        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+        $user = Auth::user();
+
+        $role = DB::table('roles')->where('id', $user->role_id_administrativo)->value('tipo');
+
+        if (!Auth::check() || $role !== 'Administrador') {
             return redirect()->route('login')->with('error', 'Acceso no autorizado');
         }
 
@@ -385,7 +389,11 @@ class AdminController extends Controller
 
     public function indexProyectos(Request $request)
     {
-        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+        $user = Auth::user();
+
+        $role = DB::table('roles')->where('id', $user->role_id_administrativo)->value('tipo');
+
+        if (!Auth::check() || $role !== 'Administrador') {
             return redirect()->route('login')->with('error', 'Acceso no autorizado');
         }
 
@@ -601,7 +609,11 @@ class AdminController extends Controller
 
     public function crearProyectoForm()
     {
-        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+        $user = Auth::user();
+
+        $role = DB::table('roles')->where('id', $user->role_id_administrativo)->value('tipo');
+
+        if (!Auth::check() || $role !== 'Administrador') {
             return redirect()->route('login')->with('error', 'Acceso no autorizado');
         }
 
@@ -661,6 +673,14 @@ class AdminController extends Controller
     ///////////////editar proyecto
     public function editProyectoForm($ProyectoID)
     {
+
+        $user = Auth::user();
+
+        $role = DB::table('roles')->where('id', $user->role_id_administrativo)->value('tipo');
+
+        if (!Auth::check() || $role !== 'Administrador') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
 
         $nrcs = NrcVinculacion::all();
 
@@ -1075,7 +1095,11 @@ class AdminController extends Controller
     //////guardar empresa////////////////
     public function agregarEmpresa(Request $request)
     {
-        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+        $user = Auth::user();
+
+        $role = DB::table('roles')->where('id', $user->role_id_administrativo)->value('tipo');
+
+        if (!Auth::check() || $role !== 'Administrador') {
             return redirect()->route('login')->with('error', 'Acceso no autorizado');
         }
 
@@ -1207,6 +1231,14 @@ class AdminController extends Controller
 
     public function editarEmpresa($id)
     {
+        $user = Auth::user();
+
+        $role = DB::table('roles')->where('id', $user->role_id_administrativo)->value('tipo');
+
+        if (!Auth::check() || $role !== 'Administrador') {
+            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        }
+
         $empresa = Empresa::find($id);
 
         if (!$empresa) {
@@ -1285,7 +1317,11 @@ class AdminController extends Controller
 
     public function aceptarFasei(Request $request)
     {
-        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+        $user = Auth::user();
+
+        $role = DB::table('roles')->where('id', $user->role_id_administrativo)->value('tipo');
+
+        if (!Auth::check() || $role !== 'Administrador') {
             return redirect()->route('login')->with('error', 'Acceso no autorizado');
         }
 
@@ -1759,9 +1795,14 @@ class AdminController extends Controller
     ////////////////////////////cambiar credenciales
     public function cambiarCredencialesUsuario()
     {
-        if (Auth::check() && Auth::user()->role->tipo !== 'Administrador') {
+        $user = Auth::user();
+
+        $role = DB::table('roles')->where('id', $user->role_id_administrativo)->value('tipo');
+
+        if (!Auth::check() || $role !== 'Administrador') {
             return redirect()->route('login')->with('error', 'Acceso no autorizado');
         }
+
 
         $periodos = Periodo::all();
 

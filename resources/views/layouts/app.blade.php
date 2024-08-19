@@ -85,6 +85,28 @@
 </script>
 
 <body>
+
+    <?php
+    $user = auth()->user()->estudiante ?? null;
+    $currentRoute = \Route::currentRouteName();
+
+    if ($user && $user->actualizacion == 0 && $currentRoute !== 'estudiantes.cambio-credenciales') {
+        echo "<script>
+            Swal.fire({
+                icon: 'warning',
+                title: 'Primera sesión',
+                text: 'Es obligatorio que realice el cambio de clave.',
+                confirmButtonText: 'Aceptar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '" . route('estudiantes.cambio-credenciales') . "';
+                }
+            });
+        </script>";
+        exit();
+    }
+    ?>
+
     <!-- Barra de navegación en el lado izquierdo -->
     <section class="content-sidebar {{ session('menuState') == 'collapsed' ? 'content-sidebar-hidden' : '' }}"
         _ngcontent-ng-c4160891441>
@@ -113,7 +135,7 @@
 
                             <a href="{{ route('estudiantes.documentos') }}" class="p-element">
                                 <div class="icon-sidebar-item">
-                                <i class="fa-solid fa-diagram-project"></i>
+                                    <i class="fa-solid fa-diagram-project"></i>
                                 </div>
                                 <div class="name-sidebar-item">
                                     <li>Servicio Comunitario</li>
@@ -129,14 +151,14 @@
                                     <li>Prácticas</li>
                                 </div>
                                 <div class="icon-sidebar-item-list color_a">
-                                <i class="fa-regular fa-angle-down"></i>
-                            </div>
+                                    <i class="fa-regular fa-angle-down"></i>
+                                </div>
                             </a>
 
                             <div class="item-list sublista">
                                 <a class="p-element mb-1 subitem" href="{{ route('estudiantes.practica1') }}">
                                     <div class="icon-sidebar-item">
-                                        <i class="fa-solid fa-play"></i>  
+                                        <i class="fa-solid fa-play"></i>
                                     </div>
                                     <div class="name-sidebar-item">
                                         <li>Prácticas I</li>
@@ -168,10 +190,10 @@
             </div>
             <div class="content-autors">
                 <span class="autors1">
-                <i>Designed by </i>
-      <b><a>Sebastian Flores</a></b>
-      <i> & </i>
-      <b><a>Karen Cueva</a></b>.
+                    <i>Designed by </i>
+                    <b><a>Sebastian Flores</a></b>
+                    <i> & </i>
+                    <b><a>Karen Cueva</a></b>.
                 </span>
             </div>
         </div>
@@ -200,7 +222,7 @@
             <button class="profile-icon dropdown" id="profile-button">
                 <div class="name-profile">
                     <span> {{ explode(' ', Auth::user()->estudiante->nombres)[0] }}</span>
-                        <span>{{ explode(' ', Auth::user()->estudiante->apellidos)[0] }} </span>
+                    <span>{{ explode(' ', Auth::user()->estudiante->apellidos)[0] }} </span>
                 </div>
                 <div class="icon-profile">
                     <img src="../img/default/user.svg">
@@ -214,7 +236,8 @@
                         <span>Cambiar modulo</span>
                     </a>
 
-                    <a href="{{ route('estudiantes.cambio-credenciales') }}" class="change_password active-section p-element">
+                    <a href="{{ route('estudiantes.cambio-credenciales') }}"
+                        class="change_password active-section p-element">
                         <i class="fa-regular fa-user"></i>
                         <span>Credenciales</span>
                     </a>

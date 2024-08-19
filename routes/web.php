@@ -524,7 +524,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/director-vinculacion/cambio-datos/{id}', [DirectorVinculacionController::class, 'actualizarDatosDirectorCredenciales'])->name('director.updateDatos');
 
 
-    Route::get('/participante-vinculacion/cambio-credenciales', [ParticipanteVinculacionController::class, 'cambiarCredencialesUsuario'])->name('participante-vinculacion.cambio-credenciales');
+    Route::get('/docentes-espe/cambio-credenciales', [ParticipanteVinculacionController::class, 'cambiarCredencialesUsuario'])->name('participante-vinculacion.cambio-credenciales');
     Route::put('/participante-vinculacion/cambio-credenciales', [ParticipanteVinculacionController::class, 'actualizarCredenciales'])->name('participante-vinculacion.updateCredenciales');
     Route::put('/participante-vinculacion/cambio/{id}', [ParticipanteVinculacionController::class, 'actualizarDatosParticipanterCredenciales'])->name('participante.updateDatos');
 

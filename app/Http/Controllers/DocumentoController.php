@@ -638,7 +638,7 @@ class DocumentoController extends Controller
             ->where('estudianteId', $estudiante->estudianteId)
             ->sum('numeroHoras');
         if ($totalHoras < 96) {
-            return redirect()->route('estudiantes.documentos')->with('error', 'No puedes generar el informe porque no has completado las 96 horas requeridas.');
+            return redirect()->route('estudiantes.documentos')->with('errorHoras', 'No puedes generar el informe porque no has completado las 96 horas requeridas.');
         }
 
 

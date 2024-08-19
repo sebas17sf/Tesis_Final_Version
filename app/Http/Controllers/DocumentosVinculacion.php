@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProfesUniversidad;
 use Illuminate\Http\Request;
- use App\Models\Departamento;
+use App\Models\Departamento;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Models\AsignacionProyecto;
 use App\Models\NrcVinculacion;
@@ -912,7 +912,7 @@ class DocumentosVinculacion extends Controller
                         'carrera' => $row[7],
                         'departamento' => $departamento ? $departamento->departamento : null,
                         'comentario' => 'Importado desde Excel',
-                     ];
+                    ];
 
                     if ($estudiante->only(array_keys($newData)) != $newData) {
                         $updateCount++;
@@ -959,8 +959,10 @@ class DocumentosVinculacion extends Controller
                     'carrera' => $row[7],
                     'departamentoId' => $departamento ? $departamento->id : null,
                     'comentario' => 'Importado desde Excel',
-
+                    'estado' => (isset($row[19]) && trim($row[19]) === 'Finalizado') ? 'Aprobado-practicas' : 'Aprobado',
+                    'activacion' => $estudiante && $estudiante->usuario ? 1 : 0,
                 ];
+
 
                 if ($estudiante && $estudiante->usuario) {
                     $data['activacion'] = true;
@@ -976,19 +978,20 @@ class DocumentosVinculacion extends Controller
                 }
 
                 if ($estudiante) {
-                    $enEjecucion = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->exists();
+                    $estadoExcel = $row[19] ?? null;
 
-                    $practicaI = PracticaI::where('estudianteId', $estudiante->estudianteId)->exists();
-                    $practicaII = PracticaII::where('estudianteId', $estudiante->estudianteId)->exists();
+                    \Log::info("Estado Excel para estudiante {$estudiante->estudianteId}: {$estadoExcel}");
 
-                    if ($enEjecucion) {
+                    if ($estadoExcel === 'Finalizado') {
+                        \Log::info("Actualizando estado a Aprobado-practicas para estudiante {$estudiante->estudianteId}");
+                        $estudiante->update(['estado' => 'Aprobado-practicas']);
+                    } elseif ($estadoExcel === 'En ejecucion') {
+                        \Log::info("Actualizando estado a Aprobado para estudiante {$estudiante->estudianteId}");
                         $estudiante->update(['estado' => 'Aprobado']);
                     }
-
-                    if ($practicaI) {
-                        $estudiante->update(['estado' => 'Aprobado-practicas']);
-                    }
                 }
+
+
             }
 
             // Procesar la primera asignación de proyecto

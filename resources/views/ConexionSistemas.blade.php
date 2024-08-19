@@ -79,6 +79,68 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+        // Función para redirigir según el rol seleccionado
+        function selectRole(role) {
+            let roleSource = '';
+
+            // Asignar roleSource basado en el rol seleccionado
+            switch (role) {
+                case 'Administrador':
+                    roleSource = 'role_id_administrativo';
+                    break;
+                case 'Vinculacion':
+                case 'Practicas':
+                    roleSource = 'role_id_coordinador';
+                    break;
+                case 'Director-Departamento':
+                case 'Director-Carrera':
+                    roleSource = 'role_id_director';
+                    break;
+                case 'DirectorVinculacion':
+                    roleSource = 'role_id_directorVinculacion';
+                    break;
+                case 'ParticipanteVinculacion':
+                    roleSource = 'role_id_participante';
+                    break;
+                case 'Estudiante':
+                    roleSource = 'role_id_estudiante';
+                    break;
+                default:
+                    roleSource = 'role_id';
+            }
+
+            // Almacenar el rol seleccionado en localStorage
+            localStorage.setItem('active_role_source', roleSource);
+
+            // Redirigir según el rol
+            redirectToRole(role);
+        }
+
+        function redirectToRole(role) {
+            // Obtener el roleSource desde localStorage
+            const roleSource = localStorage.getItem('active_role_source');
+
+            // Redirigir según el rol
+            if (role === 'Administrador') {
+                window.location.href = "{{ route('admin.index') }}";
+            } else if (role === 'Vinculacion' || role === 'Practicas') {
+                window.location.href = "{{ route('coordinador.index') }}";
+            } else if (role === 'Director-Departamento' || role === 'Director-Carrera') {
+                window.location.href = "{{ route('director.indexProyectos') }}";
+            } else if (role === 'DirectorVinculacion') {
+                window.location.href = "{{ route('director_vinculacion.index') }}";
+            } else if (role === 'ParticipanteVinculacion') {
+                window.location.href = "{{ route('ParticipanteVinculacion.index') }}";
+            } else if (role === 'Estudiante') {
+                window.location.href = "{{ route('estudiantes.create') }}";
+            }
+        }
+
+        // Función para obtener el valor de un item en localStorage
+        function getLocalStorageItem(key) {
+            return localStorage.getItem(key);
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // Verificar y almacenar el token en localStorage
             const token = "{{ session('token') }}";
@@ -96,7 +158,10 @@
                 console.log("No se encontró un token en localStorage.");
             }
 
-            // Manejar la selección de roles y redirección
+            // Leer el valor de localStorage para determinar el rol activo
+            const activeRoleSource = getLocalStorageItem('active_role_source');
+            console.log("Rol activo desde localStorage:", activeRoleSource);
+
             const roles = @json($roles);
 
             const roleNames = {
@@ -118,13 +183,13 @@
                     Swal.fire({
                         title: 'Seleccione su rol',
                         html: roles.map(role => `
-                            <button class="custom-role-btn"
-                                    onclick="selectRole('${role}')">
-                                ${roleNames[role] || role}
-                            </button>
-                        `).join(''),
+        <button class="custom-role-btn"
+                onclick="selectRole('${role}')">
+            ${roleNames[role] || role}
+        </button>
+    `).join(''),
                         background: '#2A3F54', // Fondo de la alerta
-                        color: '#FFFFFF', // Color del texto
+                        color: '#ffffff', // Color de las letras (contenido)
                         showCancelButton: true,
                         showConfirmButton: false,
                         cancelButtonText: 'Cancelar',
@@ -132,43 +197,22 @@
                         customClass: {
                             popup: 'custom-popup',
                             title: 'custom-title',
+                            content: 'custom-content', // Clase personalizada para el contenido
                             cancelButton: 'custom-cancel-button',
                         },
                     });
 
+
                 } else if (roles.length === 1) {
-                    // Si solo hay un rol, redirigir automáticamente
-                    redirectToRole(roles[0]);
+                    // Si solo hay un rol, almacenarlo en localStorage y redirigir automáticamente
+                    selectRole(roles[0]);
                 } else {
                     // Si no hay roles definidos, envía el formulario normalmente
                     document.getElementById('modulo1Form').submit();
                 }
             });
-        });
 
-        // Función para redirigir según el rol seleccionado
-        function selectRole(role) {
-            redirectToRole(role);
-        }
-
-        function redirectToRole(role) {
-            if (role === 'Administrador') {
-                window.location.href = "{{ route('admin.index') }}";
-            } else if (role === 'Vinculacion' || role === 'Practicas') {
-                window.location.href = "{{ route('coordinador.index') }}";
-            } else if (role === 'Director-Departamento' || role === 'Director-Carrera') {
-                window.location.href = "{{ route('director.indexProyectos') }}";
-            } else if (role === 'DirectorVinculacion') {
-                window.location.href = "{{ route('director_vinculacion.index') }}";
-            } else if (role === 'ParticipanteVinculacion') {
-                window.location.href = "{{ route('ParticipanteVinculacion.index') }}";
-            } else if (role === 'Estudiante') {
-                window.location.href = "{{ route('estudiantes.create') }}";
-            }
-        }
-
-        // Mover la burbuja interactiva
-        document.addEventListener('DOMContentLoaded', () => {
+            // Mover la burbuja interactiva
             const interBubble = document.querySelector('.interactive');
             let curX = 0;
             let curY = 0;
@@ -191,14 +235,20 @@
         });
     </script>
 
+
+
+
+
     <style>
         .custom-role-btn {
             display: block;
             width: 100%;
             padding: 10px 20px;
             margin: 5px 0;
-            background-color: #1A202C; /* Fondo del botón */
-            color: #FFFFFF; /* Color del texto */
+            background-color: #1A202C;
+            /* Fondo del botón */
+            color: #FFFFFF;
+            /* Color del texto */
             border: none;
             border-radius: 5px;
             font-size: 16px;
@@ -207,11 +257,13 @@
         }
 
         .custom-role-btn:hover {
-            background-color: #3F51B5; /* Color de fondo al pasar el mouse */
+            background-color: #3F51B5;
+            /* Color de fondo al pasar el mouse */
         }
 
         .custom-popup {
-            border-radius: 15px; /* Bordes redondeados del popup */
+            border-radius: 15px;
+            /* Bordes redondeados del popup */
             padding: 20px;
         }
 
@@ -225,10 +277,23 @@
             color: #ffffff;
         }
 
-        /* Opcional: estilizar el fondo del botón de cancelar */
-        .custom-cancel-button:hover {
+         .custom-cancel-button:hover {
             background-color: #c12;
         }
+
+        .custom-title {
+            color: #ffffff;
+         }
+
+        .custom-content {
+            color: #ffffff;
+         }
+
+        .custom-popup {
+         }
+
+        .custom-cancel-button {
+         }
     </style>
 
 

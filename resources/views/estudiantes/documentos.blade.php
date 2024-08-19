@@ -22,6 +22,31 @@
             </div>
         </div>
     @endif
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if(session('errorHoras'))
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Precaución',
+                    text: '{{ session('errorHoras') }}',
+                    confirmButtonText: 'Entendido',
+                    background: '#f8f9fa',
+                    customClass: {
+                        popup: 'custom-swal-popup',
+                        title: 'custom-swal-title',
+                        content: 'custom-swal-content',
+                        confirmButton: 'custom-swal-button'
+                    }
+                });
+            @endif
+        });
+    </script>
+
+
+
+
     <div class="title_icon_info" style="text-align:left !important;">
         <b>Documentación</b>
     </div>
@@ -454,9 +479,33 @@
                                 <div class="form-row dynamic-field">
                                     <div class="form-group col-md-3">
                                         <label for="provincia"><strong>Provincia:</strong></label>
-                                        <input type="text" id="provincia" name="provincia[]"
-                                            class="form-control input" value="{{ $provincia }}"
-                                            placeholder="Ingrese la provincia...">
+                                        <select id="provincia" name="provincia[]" class="form-control input">
+                                            <option value="" disabled>Seleccione una provincia...</option>
+                                            <option value="Azuay" {{ $provincia == 'Azuay' ? 'selected' : '' }}>Azuay</option>
+                                            <option value="Bolívar" {{ $provincia == 'Bolívar' ? 'selected' : '' }}>Bolívar</option>
+                                            <option value="Cañar" {{ $provincia == 'Cañar' ? 'selected' : '' }}>Cañar</option>
+                                            <option value="Carchi" {{ $provincia == 'Carchi' ? 'selected' : '' }}>Carchi</option>
+                                            <option value="Chimborazo" {{ $provincia == 'Chimborazo' ? 'selected' : '' }}>Chimborazo</option>
+                                            <option value="Cotopaxi" {{ $provincia == 'Cotopaxi' ? 'selected' : '' }}>Cotopaxi</option>
+                                            <option value="El Oro" {{ $provincia == 'El Oro' ? 'selected' : '' }}>El Oro</option>
+                                            <option value="Esmeraldas" {{ $provincia == 'Esmeraldas' ? 'selected' : '' }}>Esmeraldas</option>
+                                            <option value="Galápagos" {{ $provincia == 'Galápagos' ? 'selected' : '' }}>Galápagos</option>
+                                            <option value="Guayas" {{ $provincia == 'Guayas' ? 'selected' : '' }}>Guayas</option>
+                                            <option value="Imbabura" {{ $provincia == 'Imbabura' ? 'selected' : '' }}>Imbabura</option>
+                                            <option value="Loja" {{ $provincia == 'Loja' ? 'selected' : '' }}>Loja</option>
+                                            <option value="Los Ríos" {{ $provincia == 'Los Ríos' ? 'selected' : '' }}>Los Ríos</option>
+                                            <option value="Manabí" {{ $provincia == 'Manabí' ? 'selected' : '' }}>Manabí</option>
+                                            <option value="Morona Santiago" {{ $provincia == 'Morona Santiago' ? 'selected' : '' }}>Morona Santiago</option>
+                                            <option value="Napo" {{ $provincia == 'Napo' ? 'selected' : '' }}>Napo</option>
+                                            <option value="Orellana" {{ $provincia == 'Orellana' ? 'selected' : '' }}>Orellana</option>
+                                            <option value="Pastaza" {{ $provincia == 'Pastaza' ? 'selected' : '' }}>Pastaza</option>
+                                            <option value="Pichincha" {{ $provincia == 'Pichincha' ? 'selected' : '' }}>Pichincha</option>
+                                            <option value="Santa Elena" {{ $provincia == 'Santa Elena' ? 'selected' : '' }}>Santa Elena</option>
+                                            <option value="Santo Domingo de los Tsáchilas" {{ $provincia == 'Santo Domingo de los Tsáchilas' ? 'selected' : '' }}>Santo Domingo de los Tsáchilas</option>
+                                            <option value="Sucumbíos" {{ $provincia == 'Sucumbíos' ? 'selected' : '' }}>Sucumbíos</option>
+                                            <option value="Tungurahua" {{ $provincia == 'Tungurahua' ? 'selected' : '' }}>Tungurahua</option>
+                                            <option value="Zamora Chinchipe" {{ $provincia == 'Zamora Chinchipe' ? 'selected' : '' }}>Zamora Chinchipe</option>
+                                        </select>
                                         <small id="provinciaError" class="error-message" style="color: red;"></small>
                                     </div>
                                     <div class="form-group col-md-3">
@@ -467,16 +516,14 @@
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="parroquia"><strong>Parroquia:</strong></label>
-                                        <input type="text" id="parroquia" name="parroquia[]"
-                                            class="form-control input" value="{{ old('parroquia')[$index] }}"
-                                            placeholder="Ingrese la parroquia...">
+                                        <input type="text" id="parroquia" name="parroquia[]" class="form-control input"
+                                            value="{{ old('parroquia')[$index] }}" placeholder="Ingrese la parroquia...">
                                         <small id="parroquiaError" class="error-message" style="color: red;"></small>
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="direccion"><strong>Dirección:</strong></label>
-                                        <input type="text" id="direccion" name="direccion[]"
-                                            class="form-control input" value="{{ old('direccion')[$index] }}"
-                                            placeholder="Ingrese la dirección...">
+                                        <input type="text" id="direccion" name="direccion[]" class="form-control input"
+                                            value="{{ old('direccion')[$index] }}" placeholder="Ingrese la dirección...">
                                         <small id="direccionError" class="error-message" style="color: red;"></small>
                                     </div>
                                 </div>
@@ -485,8 +532,33 @@
                             <div class="form-row dynamic-field">
                                 <div class="form-group col-md-3">
                                     <label for="provincia"><strong>Provincia:</strong></label>
-                                    <input type="text" id="provincia" name="provincia[]" class="form-control input"
-                                        placeholder="Ingrese la provincia...">
+                                    <select id="provincia" name="provincia[]" class="form-control input">
+                                        <option value="" disabled selected>Seleccione una provincia...</option>
+                                        <option value="Azuay">Azuay</option>
+                                        <option value="Bolívar">Bolívar</option>
+                                        <option value="Cañar">Cañar</option>
+                                        <option value="Carchi">Carchi</option>
+                                        <option value="Chimborazo">Chimborazo</option>
+                                        <option value="Cotopaxi">Cotopaxi</option>
+                                        <option value="El Oro">El Oro</option>
+                                        <option value="Esmeraldas">Esmeraldas</option>
+                                        <option value="Galápagos">Galápagos</option>
+                                        <option value="Guayas">Guayas</option>
+                                        <option value="Imbabura">Imbabura</option>
+                                        <option value="Loja">Loja</option>
+                                        <option value="Los Ríos">Los Ríos</option>
+                                        <option value="Manabí">Manabí</option>
+                                        <option value="Morona Santiago">Morona Santiago</option>
+                                        <option value="Napo">Napo</option>
+                                        <option value="Orellana">Orellana</option>
+                                        <option value="Pastaza">Pastaza</option>
+                                        <option value="Pichincha">Pichincha</option>
+                                        <option value="Santa Elena">Santa Elena</option>
+                                        <option value="Santo Domingo de los Tsáchilas">Santo Domingo de los Tsáchilas</option>
+                                        <option value="Sucumbíos">Sucumbíos</option>
+                                        <option value="Tungurahua">Tungurahua</option>
+                                        <option value="Zamora Chinchipe">Zamora Chinchipe</option>
+                                    </select>
                                     <small id="provinciaError" class="error-message" style="color: red;"></small>
                                 </div>
                                 <div class="form-group col-md-3">
@@ -503,13 +575,14 @@
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="direccion"><strong>Dirección:</strong></label>
-                                    <input type="text" id="direccion" name="direccion[]"
-                                        placeholder="Ingrese la dirección..." class="form-control input">
+                                    <input type="text" id="direccion" name="direccion[]" placeholder="Ingrese la dirección..."
+                                        class="form-control input">
                                     <small id="direccionError" class="error-message" style="color: red;"></small>
                                 </div>
                             </div>
                         @endif
                     </div>
+
 
                     <!-- Botones para agregar y eliminar filas -->
                     <div class="d-flex">
@@ -997,7 +1070,7 @@
                     formIsValid = false;
                 }
 
-                 
+
 
                 // Validar 'especificos'
                 const especificos = document.querySelectorAll('textarea[name="especificos[]"]');

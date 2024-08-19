@@ -8,6 +8,7 @@ use App\Models\NrcVinculacion;
 use App\Models\Periodo;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use App\Models\Departamento;
 use App\Models\NrcPracticas1;
 use App\Models\ActividadesPracticasII;
 use App\Models\Estudiante;
@@ -48,9 +49,9 @@ class EstudianteController extends Controller
 
         return view('estudiantes.create', compact('periodos'));
     }
-
     public function store(Request $request)
     {
+        // Validar los campos de la solicitud
         $validatedData = $request->validate([
             'Nombres' => 'required',
             'Apellidos' => 'required',
@@ -73,10 +74,11 @@ class EstudianteController extends Controller
             'Carrera.required' => 'El campo Carrera es obligatorio',
             'correo.required' => 'El campo Correo Electrónico es obligatorio',
             'departamento.required' => 'El campo Departamento es obligatorio',
-
         ]);
 
-
+        // Convertir las dos primeras letras de cada palabra en mayúscula
+        $validatedData['Nombres'] = ucwords(strtolower($validatedData['Nombres']));
+        $validatedData['Apellidos'] = ucwords(strtolower($validatedData['Apellidos']));
 
         $correoElectronico = explode('@', $validatedData['correo'])[0];
 
@@ -99,9 +101,7 @@ class EstudianteController extends Controller
                 'activacion' => true,
                 'correo' => $validatedData['correo'],
             ]
-
         );
-
 
         $user = Usuario::updateOrCreate(
             ['nombreUsuario' => $correoElectronico],
@@ -125,31 +125,25 @@ class EstudianteController extends Controller
             }
         }
 
-        /////si el estudiante tiene practicasi en Finalizado o En ejecucion
         $practicaI = PracticaI::where('estudianteId', $estudiante->estudianteId)->first();
         if ($practicaI) {
-            if ($practicaI->Estado === 'Finalizado') {
-                $estudiante->update(['estado' => 'Aprobado-practicas']);
-            } elseif ($practicaI->Estado === 'En ejecucion') {
-                $estudiante->update(['estado' => 'Aprobado-practicas']);
-            }
-        }
-        /////si el estudiante tiene practicasii en Finalizado o En ejecucion
-        $practicaII = PracticaII::where('estudianteId', $estudiante->estudianteId)->first();
-        if ($practicaII) {
-            if ($practicaII->Estado === 'Finalizado') {
-                $estudiante->update(['estado' => 'Aprobado-practicas']);
-            } elseif ($practicaII->Estado === 'En ejecucion') {
+            if ($practicaI->Estado === 'Finalizado' || $practicaI->Estado === 'En ejecucion') {
                 $estudiante->update(['estado' => 'Aprobado-practicas']);
             }
         }
 
+        $practicaII = PracticaII::where('estudianteId', $estudiante->estudianteId)->first();
+        if ($practicaII) {
+            if ($practicaII->Estado === 'Finalizado' || $practicaII->Estado === 'En ejecucion') {
+                $estudiante->update(['estado' => 'Aprobado-practicas']);
+            }
+        }
 
         $mensaje = $estudiante->wasRecentlyCreated ? 'Estudiante creado correctamente' : 'Datos del estudiante actualizados correctamente';
 
-
         return redirect()->route('login')->with('success', $mensaje);
     }
+
 
 
 
@@ -881,6 +875,8 @@ class EstudianteController extends Controller
     {
         $periodos = Periodo::all();
 
+        $departamentos = Departamento::all();
+
         $usuario = Auth::user();
         $estudiante = $usuario->estudiante;
 
@@ -896,7 +892,7 @@ class EstudianteController extends Controller
             $userSessions = collect();
         }
 
-        return view('estudiantes.cambiarCredencialesUsuario', compact('usuario', 'userSessions', 'estudiante', 'periodos'));
+        return view('estudiantes.cambiarCredencialesUsuario', compact('usuario', 'userSessions', 'estudiante', 'periodos', 'departamentos'));
     }
 
 
@@ -925,33 +921,48 @@ class EstudianteController extends Controller
 
 
 
-    public function actualizarCredenciales(Request $request, $userId)
+    public function actualizarCredenciales(Request $request)
     {
+        // Validar los campos de la solicitud
         $request->validate([
-            'password' => 'required',
-            'password_confirmation' => 'required',
+            'password' => 'required|min:6',
+            'password_confirmation' => 'required|same:password',
         ]);
 
-        if ($request->password !== $request->password_confirmation) {
-            return redirect()->back()->with('error', 'Las contraseñas no coinciden')->withInput();
+        // Obtener el usuario autenticado
+        $usuario = Auth::user();
+
+        // Actualizar la contraseña del usuario
+        $usuario->Contrasena = bcrypt($request->password);
+
+        // Verificar si el usuario tiene relación con profesorUniversidad
+        if ($usuario->estudiante) {
+            $usuario->estudiante->actualizacion = true;
+
+            // Guardar los cambios en el modelo `profesorUniversidad`
+            if ($usuario->estudiante->save()) {
+                // Guardar los cambios en el modelo `Usuario`
+                $usuario->save();
+                return redirect()->back()->with('success', 'Credenciales actualizadas exitosamente');
+            } else {
+                return redirect()->back()->with('error', 'No se pudo actualizar el campo de actualización');
+            }
+        } else {
+            return redirect()->back()->with('error', 'No se encontró la relación con profesorUniversidad');
         }
-
-        if (strlen($request->password) < 6) {
-            return redirect()->back()->with('error', 'La contraseña debe tener al menos 6 caracteres')->withInput();
-        }
-
-        $usuario = Usuario::find($userId);
-
-        if (!$usuario) {
-            return redirect()->back()->with('error', 'Usuario no encontrado')->withInput();
-        }
-
-        $usuario->contrasena = bcrypt($request->password);
-        $usuario->save();
-
-        return redirect()->back()->with('success', 'Contraseña actualizada.');
     }
 
+
+
+    public function verificarPrimerasClaves(Request $request)
+    {
+        $user = auth()->user()->estudiante;
+
+        if ($user->actualizacion == 0) {
+            return redirect()->route('estudiantes.cambiarCredencialesUsuario');
+        }
+
+    }
 
     public function actualizarDatosEstudiantesCredenciales(Request $request, $estudianteId)
     {
@@ -966,8 +977,7 @@ class EstudianteController extends Controller
         ]);
 
 
-        // Buscar el estudiante por ID
-        $estudiante = Estudiante::findOrFail($estudianteId);
+         $estudiante = Estudiante::findOrFail($estudianteId);
 
         // Actualizar los datos del estudiante
         $estudiante->nombres = $request->input('firstname_student');
@@ -975,13 +985,11 @@ class EstudianteController extends Controller
         $estudiante->Cohorte = $request->input('Cohorte');
         $estudiante->idPeriodo = $request->input('Periodo');
         $estudiante->carrera = $request->input('Carrera');
-        $estudiante->departamento = $request->input('Departamento');
+        $estudiante->departamentoId = $request->input('Departamento');
 
-        // Guardar los cambios
-        $estudiante->save();
+         $estudiante->save();
 
-        // Redirigir con un mensaje de éxito
-        return redirect()->back()->with('success', 'Datos del estudiante actualizados.');
+         return redirect()->back()->with('success', 'Datos del estudiante actualizados.');
     }
 
 
