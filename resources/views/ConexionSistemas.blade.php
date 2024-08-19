@@ -176,41 +176,40 @@
             };
 
             document.getElementById('modulo1Button').addEventListener('click', function(event) {
-                // Si el usuario tiene más de un rol, mostramos la ventana emergente
-                if (roles.length > 1) {
-                    event.preventDefault();
+    // Si el usuario tiene más de un rol, mostramos la ventana emergente
+    if (roles.length > 1) {
+        event.preventDefault();
 
-                    Swal.fire({
-                        title: 'Seleccione su rol',
-                        html: roles.map(role => `
-        <button class="custom-role-btn"
-                onclick="selectRole('${role}')">
-            ${roleNames[role] || role}
-        </button>
-    `).join(''),
-                        background: '#2A3F54', // Fondo de la alerta
-                        color: '#ffffff', // Color de las letras (contenido)
-                        showCancelButton: true,
-                        showConfirmButton: false,
-                        cancelButtonText: 'Cancelar',
-                        cancelButtonColor: '#d33',
-                        customClass: {
-                            popup: 'custom-popup',
-                            title: 'custom-title',
-                            content: 'custom-content', // Clase personalizada para el contenido
-                            cancelButton: 'custom-cancel-button',
-                        },
-                    });
+        Swal.fire({
+            title: 'Seleccione su rol',
+            html: roles.map(role => `
+                <center><button class="custom-role-btn"
+                        onclick="selectRole('${role}')">
+                    ${roleNames[role] || role}
+                </button></center>
+            `).join(''),
+            background: 'rgba(20, 20, 30, 0.85)', // Fondo translúcido de la alerta
+            color: '#FFFFFF', // Color del texto en la alerta
+            showCancelButton: true,
+            showConfirmButton: false,
+            cancelButtonText: 'Cancelar',
+            customClass: {
+                popup: 'custom-popup', // Clase personalizada para el popup
+                title: 'custom-title', // Clase personalizada para el título
+                content: 'custom-content', // Clase personalizada para el contenido
+                cancelButton: 'custom-cancel-button', // Clase personalizada para el botón de cancelar
+            },
+        });
 
+    } else if (roles.length === 1) {
+        // Si solo hay un rol, almacenarlo en localStorage y redirigir automáticamente
+        selectRole(roles[0]);
+    } else {
+        // Si no hay roles definidos, envía el formulario normalmente
+        document.getElementById('modulo1Form').submit();
+    }
+});
 
-                } else if (roles.length === 1) {
-                    // Si solo hay un rol, almacenarlo en localStorage y redirigir automáticamente
-                    selectRole(roles[0]);
-                } else {
-                    // Si no hay roles definidos, envía el formulario normalmente
-                    document.getElementById('modulo1Form').submit();
-                }
-            });
 
             // Mover la burbuja interactiva
             const interBubble = document.querySelector('.interactive');
@@ -240,60 +239,50 @@
 
 
     <style>
-        .custom-role-btn {
-            display: block;
-            width: 100%;
-            padding: 10px 20px;
-            margin: 5px 0;
-            background-color: #1A202C;
-            /* Fondo del botón */
-            color: #FFFFFF;
-            /* Color del texto */
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            text-align: center;
-            transition: background-color 0.3s ease;
-        }
-
-        .custom-role-btn:hover {
-            background-color: #3F51B5;
-            /* Color de fondo al pasar el mouse */
-        }
-
         .custom-popup {
-            border-radius: 15px;
-            /* Bordes redondeados del popup */
-            padding: 20px;
-        }
+    border-radius: 15px; /* Bordes redondeados */
+    padding: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.2); /* Borde fino translúcido */
+    background-color: rgba(20, 20, 30, 0.85); /* Fondo translúcido */
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5); /* Sombra similar a la imagen */
+}
 
-        .custom-title {
-            font-size: 24px;
-            font-weight: bold;
-        }
+.custom-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7); /* Sombra del texto para destacarlo */
+}
 
-        .custom-cancel-button {
-            background-color: #d33;
-            color: #ffffff;
-        }
+.custom-role-btn {
+    display: block;
+    width: 70%;
+    padding: 10px 20px;
+    margin: 8px 0;
+    background-color: rgba(58, 63, 84, 0.8); /* Fondo oscuro translúcido */
+    color: #FFFFFF; /* Color del texto */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Borde fino translúcido */
+    border-radius: 10px;
+    font-size: 16px;
+    text-align: center;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
 
-         .custom-cancel-button:hover {
-            background-color: #c12;
-        }
+.custom-role-btn:hover {
+    background-color: rgba(86, 93, 146, 0.8); /* Color de fondo al pasar el mouse */
+    box-shadow: 0 0 15px rgba(86, 93, 146, 0.8); /* Iluminación al pasar el mouse */
+}
 
-        .custom-title {
-            color: #ffffff;
-         }
+.custom-cancel-button {
+    background-color: rgba(211, 51, 51, 0.8);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Borde fino translúcido */
+    border-radius: 10px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
 
-        .custom-content {
-            color: #ffffff;
-         }
 
-        .custom-popup {
-         }
 
-        .custom-cancel-button {
-         }
     </style>
 
 

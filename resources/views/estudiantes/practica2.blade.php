@@ -28,7 +28,7 @@
 
     <!-- Sección para FORMATOS PRÁCTICA II -->
     <div class="title_icon_info" style="text-align:left !important;">
-        <b>Formatos Práctica II</b>
+        <b>Documentación</b>
     </div>
     <section class="content_recent_courses">
         <div class="container_cources_cards">

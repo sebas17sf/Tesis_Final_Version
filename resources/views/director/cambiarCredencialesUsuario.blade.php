@@ -120,12 +120,12 @@
 
         <div>
           <label for="firstname_student">Nueva contraseña <span class="requerido">*</span></label>
-          <input type="text" id="firstname_student" class="input" placeholder="Ingrese la clave">
+          <input type="text" id="firstname_student" class="input" placeholder="Ingrese la contraseña">
         </div>
 
         <div>
           <label for="firstname_student">Confirmar contraseña <span class="requerido">*</span></label>
-          <input type="text" id="firstname_student" class="input" placeholder="Ingrese de nuevo la clave">
+          <input type="text" id="firstname_student" class="input" placeholder="Ingrese de nuevo la contraseña">
         </div>
 
         <div class="content_button">
