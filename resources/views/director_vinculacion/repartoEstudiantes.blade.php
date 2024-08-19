@@ -416,7 +416,7 @@
                     if (alertElement) {
                         alertElement.style.display = 'none';
                     }
-                }, 1000); // 2000 milisegundos = 2 segundos
+                }, 5000); // 2000 milisegundos = 2 segundos
             });
         </script>
         <script>

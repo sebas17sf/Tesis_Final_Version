@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Práctica 1')
 
-@section('title_component', 'Panel Prácticas')
+@section('title_component', 'Panel Prácticas I')
 
 @section('content')
     @if (session('success'))
@@ -662,7 +662,7 @@ $(document).ready(function() {
             if (alertElement) {
                 alertElement.style.display = 'none';
             }
-        }, 1000); // 2000 milisegundos = 2 segundos
+        }, 5000); // 2000 milisegundos = 2 segundos
     });
 </script>
 <script>

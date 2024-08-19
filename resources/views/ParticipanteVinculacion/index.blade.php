@@ -48,8 +48,8 @@
                     <!-- Botón para abrir el card de filtros -->
                     <div class="tooltip-container">
                         <span class="tooltip-text">Filtros</span>
-                        <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCard');">
-                            <i class="fa-solid fa-filter-list"></i>
+                        <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCard'); toggleIcon();">
+                            <i id="filterIcon" class="fa-solid fa-filter-list"></i>
                         </button>
                     </div>
 
@@ -523,18 +523,17 @@
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
     <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
     <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
-    <script src="js/admin/acciones.js"></script>
+    <script src="{{ asset('js/admin/acciones.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
-    <style>
-
-    </style>
+    
 
     <script>
+        
         var delayTimer;
         $('#searchForm input[name="search"]').on('keyup', function() {
             clearTimeout(delayTimer);
