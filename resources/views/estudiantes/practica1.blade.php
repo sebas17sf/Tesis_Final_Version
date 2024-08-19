@@ -284,34 +284,59 @@
         </div>
 
         <br>
-        <button class="button1_1" onclick="toggleForm()">Mostar formulario para Informe de Servicio a la
-        comunidad</button>
+<button class="button1_1" onclick="toggleForm()">Mostrar formulario para Informe de Servicio a la Comunidad</button>
 
-        <hr>
-        <form id="formulario" action="{{ route('generar.InformPractica') }}" method="POST">
-            @csrf
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="introduccion">Introducción:</label>
-                        <textarea id="introduccion" name="introduccion" class="form-control input textarea" placeholder="Ingrese la introducción" required></textarea>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="conclusion">Conclusiones:</label>
-                        <textarea id="conclusion" name="conclusion" class="form-control input textarea" placeholder="Ingrese las conclusiones" required></textarea>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="recomendaciones">Recomendaciones:</label>
-                        <textarea id="recomendaciones" name="recomendaciones" class="form-control input textarea" placeholder="Ingrese las recomendaciones" required></textarea>
-                    </div>
-                </div>
+<hr>
+<form id="formulario" action="{{ route('generar.InformPractica') }}" method="POST">
+    @csrf
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="introduccion">Introducción:</label>
+                <textarea id="introduccion" name="introduccion" class="form-control input textarea"
+                    placeholder="Ingrese la introducción" required>{{ old('introduccion') }}</textarea>
             </div>
-            <center><button type="submit" class="button1">Descargar Informe</button></center>
-        </form>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="conclusion">Conclusiones:</label>
+                <textarea id="conclusion" name="conclusion" class="form-control input textarea"
+                    placeholder="Ingrese las conclusiones" required>{{ old('conclusion') }}</textarea>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="recomendaciones">Recomendaciones:</label>
+                <textarea id="recomendaciones" name="recomendaciones" class="form-control input textarea"
+                    placeholder="Ingrese las recomendaciones" required>{{ old('recomendaciones') }}</textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botones para Guardar y Recuperar Datos -->
+    <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+        <div class="contenedor_botones">
+            <div class="tooltip-container">
+                <span class="tooltip-text">Guardar Datos</span>
+                <button type="button" class="button3 efects_button btn_primary"
+                    onclick="setScrollAndAction('{{ route('guardar.DatosInformePractica') }}')">
+                    <i class="fa-regular fa-floppy-disk"></i>
+                </button>
+            </div>
+            <div class="tooltip-container">
+                <a href="{{ route('recuperar.DatosInformePractica') }}" class="button3 efects_button btn_filtro colorr"
+                    onclick="setScrollAndLink('{{ route('recuperar.DatosInformePractica') }}')">
+                    <i class="fa-solid fa-window-restore"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón para Descargar Informe -->
+    <center><button type="submit" class="button1">Descargar Informe</button></center>
+</form>
+
+
     @else
 
 
@@ -679,6 +704,14 @@ $(document).ready(function() {
         } else {
             form.style.display = "none";
         }
+    }
+</script>
+
+<script>
+    function setScrollAndAction(action) {
+        const form = document.getElementById('formulario');
+        form.action = action;
+        form.submit();
     }
 </script>
 

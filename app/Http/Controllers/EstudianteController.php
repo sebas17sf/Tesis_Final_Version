@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ActividadesPracticas;
 use App\Models\Cohorte;
 use App\Models\NrcVinculacion;
+use App\Models\InformePracticai;
 use App\Models\Periodo;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -1086,6 +1087,51 @@ class EstudianteController extends Controller
         ];
 
         return redirect()->back()->withInput($data)->with('success', 'La información se ha recuperado correctamente.');
+    }
+
+
+    public function guardarDatosPracticasi(Request $request)
+    {
+        // Validación de los datos
+        $validatedData = $request->validate([
+            'introduccion' => 'nullable|string',
+            'conclusion' => 'nullable|string',
+            'recomendaciones' => 'nullable|string',
+        ]);
+
+        // Obtener el estudiante_id del usuario autenticado
+        $estudianteId = Auth::user()->estudiante->estudianteId;
+
+        // Usando updateOrCreate para guardar o actualizar el registro
+        $informe = InformePracticai::updateOrCreate(
+            ['estudianteId' => $estudianteId], // Condición de búsqueda
+            [
+                'introduccion' => $validatedData['introduccion'],
+                'conclusion' => $validatedData['conclusion'],
+                'recomendaciones' => $validatedData['recomendaciones'],
+            ] // Datos a actualizar o crear
+        );
+
+        return redirect()->back()->with('success', 'Datos guardados correctamente.');
+    }
+
+    /**
+     * Recupera los datos guardados del informe de práctica para un estudiante.
+     */
+    public function recuperarDatosPracticasi(Request $request)
+    {
+        // Obtener el estudiante_id del usuario autenticado
+        $estudianteId = Auth::user()->estudiante->estudianteId;
+
+        // Buscar el informe relacionado con el estudiante
+        $informe = InformePracticai::where('estudianteId', $estudianteId)->first();
+
+        if ($informe) {
+            // Redirigir de vuelta al formulario con los datos del informe y un mensaje de éxito
+            return redirect()->back()->withInput($informe->toArray())->with('success', 'Datos recuperados exitosamente.');
+        } else {
+            return redirect()->back()->with('error', 'No se encontraron datos para el estudiante.');
+        }
     }
 
 

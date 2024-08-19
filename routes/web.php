@@ -486,6 +486,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/estudiantes/documentos-EvTutorAcademico', [DocumentoController::class, 'EvTutorAcademico'])->name('generar.EvTutorAcademico');
     Route::post('/estudiantes/documentos-Informe', [DocumentoController::class, 'InformPractica'])->name('generar.InformPractica');
 
+    Route::post('/guardar-informe-practica', [EstudianteController::class, 'guardarDatosPracticasi'])->name('guardar.DatosInformePractica');
+    Route::get('/recuperar-informe-practica', [EstudianteController::class, 'recuperarDatosPracticasi'])->name('recuperar.DatosInformePractica');
 
 
     Route::post('/estudiantes/documentos-practicas2', [DocumentoController::class, 'EncuestaEstudiante2'])->name('generar.EncuestaEstudiante2');
