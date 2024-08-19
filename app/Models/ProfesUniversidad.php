@@ -63,6 +63,8 @@ class ProfesUniversidad extends Model
         return $this->belongsTo(Departamento::class, 'departamentoId', 'id');
     }
 
+    
+
 
 
 

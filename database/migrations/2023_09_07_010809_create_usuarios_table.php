@@ -10,16 +10,17 @@ class CreateUsuariosTable extends Migration
     {
         Schema::create('usuarios', function (Blueprint $table) {
             $table->id('userId');
-            $table->string('nombreUsuario');
-            $table->string('correoElectronico')->unique();
-            $table->string('contrasena');
-             $table->string('estado');
+            $table->string('nombreUsuario')->nullable();
+            $table->string('correoElectronico')->unique()->nullable();
+            $table->string('contrasena')->nullable();
+            $table->string('estado')->nullable();
             $table->string('token')->nullable();
             $table->timestamp('token_expires_at')->nullable();
-            $table->string('github_id')->nullable();
             $table->rememberToken();
-            $table->unsignedBigInteger('role_id');
-            $table->foreign('role_id')->references('id')->on('roles');
+            $table->unsignedBigInteger('role_id')->nullable();
+            $table->unsignedBigInteger('role_id_administrativo')->nullable();
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('set null');
+            $table->foreign('role_id_administrativo')->references('id')->on('roles')->onDelete('set null');
             $table->timestamps();
         });
     }

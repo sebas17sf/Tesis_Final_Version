@@ -40,9 +40,17 @@ class CoordinadorController extends Controller
 {
     public function index(Request $request)
     {
-        if (Auth::check() && !in_array(Auth::user()->role->tipo, ['Vinculacion', 'Practicas'])) {
-            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            // Obtener el tipo de rol administrativo si existe
+            $roleAdministrativo = $user->role_id_administrativo ? Role::find($user->role_id_administrativo)->tipo : null;
+
+            if (!in_array($roleAdministrativo, ['Vinculacion', 'Practicas'])) {
+                return redirect()->route('login')->with('error', 'Acceso no autorizado');
+            }
         }
+
 
         $todoslosProfesores = ProfesUniversidad::all();
 
@@ -197,10 +205,16 @@ class CoordinadorController extends Controller
 
     public function crearProyectoForm()
     {
-        if (Auth::check() && !in_array(Auth::user()->role->tipo, ['Vinculacion', 'Practicas'])) {
-            return redirect()->route('login')->with('error', 'Acceso no autorizado');
-        }
+        if (Auth::check()) {
+            $user = Auth::user();
 
+            // Obtener el tipo de rol administrativo si existe
+            $roleAdministrativo = $user->role_id_administrativo ? Role::find($user->role_id_administrativo)->tipo : null;
+
+            if (!in_array($roleAdministrativo, ['Vinculacion', 'Practicas'])) {
+                return redirect()->route('login')->with('error', 'Acceso no autorizado');
+            }
+        }
         $profesores = ProfesUniversidad::all();
 
         return view('coordinador.agregarProyecto', compact('profesores'));
@@ -251,8 +265,15 @@ class CoordinadorController extends Controller
     ///////////////editar proyecto
     public function editProyectoForm($ProyectoID)
     {
-        if (Auth::check() && !in_array(Auth::user()->role->tipo, ['Vinculacion', 'Practicas'])) {
-            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            // Obtener el tipo de rol administrativo si existe
+            $roleAdministrativo = $user->role_id_administrativo ? Role::find($user->role_id_administrativo)->tipo : null;
+
+            if (!in_array($roleAdministrativo, ['Vinculacion', 'Practicas'])) {
+                return redirect()->route('login')->with('error', 'Acceso no autorizado');
+            }
         }
 
         $nrcs = NrcVinculacion::all();
@@ -362,8 +383,15 @@ class CoordinadorController extends Controller
 
     public function mostrarEstudiantesAprobados(Request $request)
     {
-        if (Auth::check() && !in_array(Auth::user()->role->tipo, ['Vinculacion', 'Practicas'])) {
-            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            // Obtener el tipo de rol administrativo si existe
+            $roleAdministrativo = $user->role_id_administrativo ? Role::find($user->role_id_administrativo)->tipo : null;
+
+            if (!in_array($roleAdministrativo, ['Vinculacion', 'Practicas'])) {
+                return redirect()->route('login')->with('error', 'Acceso no autorizado');
+            }
         }
 
         $periodos = Periodo::orderBy('inicioPeriodo', 'asc')->get();
@@ -514,8 +542,15 @@ class CoordinadorController extends Controller
     /////////////retornar a la vista agregar empresa
     public function agregarEmpresa(Request $request)
     {
-        if (Auth::check() && !in_array(Auth::user()->role->tipo, ['Vinculacion', 'Practicas'])) {
-            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            // Obtener el tipo de rol administrativo si existe
+            $roleAdministrativo = $user->role_id_administrativo ? Role::find($user->role_id_administrativo)->tipo : null;
+
+            if (!in_array($roleAdministrativo, ['Vinculacion', 'Practicas'])) {
+                return redirect()->route('login')->with('error', 'Acceso no autorizado');
+            }
         }
 
         $elementosPorPagina = $request->input('elementosPorPagina');
@@ -730,8 +765,15 @@ class CoordinadorController extends Controller
     //ir a la vista de practica 1
     public function aceptarFasei(Request $request)
     {
-        if (Auth::check() && !in_array(Auth::user()->role->tipo, ['Vinculacion', 'Practicas'])) {
-            return redirect()->route('login')->with('error', 'Acceso no autorizado');
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            // Obtener el tipo de rol administrativo si existe
+            $roleAdministrativo = $user->role_id_administrativo ? Role::find($user->role_id_administrativo)->tipo : null;
+
+            if (!in_array($roleAdministrativo, ['Vinculacion', 'Practicas'])) {
+                return redirect()->route('login')->with('error', 'Acceso no autorizado');
+            }
         }
 
         $todosLosDocentes = ProfesUniversidad::all();
@@ -1205,10 +1247,8 @@ class CoordinadorController extends Controller
 
     public function cambiarCredencialesUsuario()
     {
-        if (Auth::check() && !in_array(Auth::user()->role->tipo, ['Vinculacion', 'Practicas'])) {
-            return redirect()->route('login')->with('error', 'Acceso no autorizado');
-        }
         
+
         $periodos = Periodo::all();
 
         $usuario = Auth::user();

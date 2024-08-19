@@ -48,9 +48,9 @@
 
     <section class="global_contenedor">
         <!-- Boton para ir al modulo 1 -->
-        <form class="main1" action="{{ route('modulo1') }}" method="post">
+        <form class="main1" action="{{ route('modulo1') }}" method="post" id="modulo1Form">
             @csrf
-            <button type="submit" class="switch">
+            <button type="button" class="switch" id="modulo1Button">
                 <span class="title">VINCULACIÓN Y PRÁCTICAS</span>
                 <img src="{{ asset('img/default/modulopracticas.png') }}">
             </button>
@@ -77,67 +77,97 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        console.log("Verificando token en la sesión:", "{{ session('token') }}");
 
-        // Verificar si hay un token en la sesión y almacenarlo en localStorage
-        var token = "{{ session('token') }}";
-        if (token) {
-            console.log("Token encontrado en la sesión, almacenando en localStorage:", token);
-            localStorage.setItem('token', token);
-        } else {
-            console.log("No se encontró token en la sesión.");
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar y almacenar el token en localStorage
+            const token = "{{ session('token') }}";
+            if (token) {
+                console.log("Token encontrado en la sesión, almacenando en localStorage:", token);
+                localStorage.setItem('token', token);
+            } else {
+                console.log("No se encontró token en la sesión.");
+            }
+
+            const storedToken = localStorage.getItem('token');
+            if (storedToken) {
+                console.log("Token cargado desde localStorage:", storedToken);
+            } else {
+                console.log("No se encontró un token en localStorage.");
+            }
+
+            // Manejar la selección de roles y redirección
+            const roles = @json($roles);
+
+            const roleNames = {
+                'Administrador': 'Administrador',
+                'Vinculacion': 'Coordinador de Vinculación',
+                'Practicas': 'Coordinador de Prácticas',
+                'Director-Departamento': 'Director de departamento',
+                'Director-Carrera': 'Director de carrera',
+                'DirectorVinculacion': 'Director de proyectos sociales',
+                'ParticipanteVinculacion': 'Docente',
+                'Estudiante': 'Estudiante'
+            };
+
+            document.getElementById('modulo1Button').addEventListener('click', function(event) {
+                // Si el usuario tiene más de un rol, mostramos la ventana emergente
+                if (roles.length > 1) {
+                    event.preventDefault();
+
+                    Swal.fire({
+                        title: 'Seleccione su rol',
+                        html: roles.map(role => `
+                            <button class="custom-role-btn"
+                                    onclick="selectRole('${role}')">
+                                ${roleNames[role] || role}
+                            </button>
+                        `).join(''),
+                        background: '#2A3F54', // Fondo de la alerta
+                        color: '#FFFFFF', // Color del texto
+                        showCancelButton: true,
+                        showConfirmButton: false,
+                        cancelButtonText: 'Cancelar',
+                        cancelButtonColor: '#d33',
+                        customClass: {
+                            popup: 'custom-popup',
+                            title: 'custom-title',
+                            cancelButton: 'custom-cancel-button',
+                        },
+                    });
+
+                } else if (roles.length === 1) {
+                    // Si solo hay un rol, redirigir automáticamente
+                    redirectToRole(roles[0]);
+                } else {
+                    // Si no hay roles definidos, envía el formulario normalmente
+                    document.getElementById('modulo1Form').submit();
+                }
+            });
+        });
+
+        // Función para redirigir según el rol seleccionado
+        function selectRole(role) {
+            redirectToRole(role);
         }
 
-        // Al cargar la página, verificar si hay un token en localStorage
-        document.addEventListener("DOMContentLoaded", function() {
-            var storedToken = localStorage.getItem('token');
-            if (storedToken) {
-                console.log("Token cargado desde localStorage:", storedToken);
-            } else {
-                console.log("No se encontró un token en localStorage.");
+        function redirectToRole(role) {
+            if (role === 'Administrador') {
+                window.location.href = "{{ route('admin.index') }}";
+            } else if (role === 'Vinculacion' || role === 'Practicas') {
+                window.location.href = "{{ route('coordinador.index') }}";
+            } else if (role === 'Director-Departamento' || role === 'Director-Carrera') {
+                window.location.href = "{{ route('director.indexProyectos') }}";
+            } else if (role === 'DirectorVinculacion') {
+                window.location.href = "{{ route('director_vinculacion.index') }}";
+            } else if (role === 'ParticipanteVinculacion') {
+                window.location.href = "{{ route('ParticipanteVinculacion.index') }}";
+            } else if (role === 'Estudiante') {
+                window.location.href = "{{ route('estudiantes.create') }}";
             }
-        });
-    </script>
-
-
-
-
-    <script>
-        console.log("Verificando token en la sesión:", "{{ session('token') }}");
-
-        // Verificar si hay un token en la sesión y almacenarlo en localStorage
-        var token = "{{ session('token') }}";
-        if (token) {
-            console.log("Token encontrado en la sesión, almacenando en localStorage:", token);
-            localStorage.setItem('token', token);
-        } else {
-            console.log("No se encontró token en la sesión.");
         }
 
-        // Al cargar la página, verificar si hay un token en localStorage
-        document.addEventListener("DOMContentLoaded", function() {
-            var storedToken = localStorage.getItem('token');
-            if (storedToken) {
-                console.log("Token cargado desde localStorage:", storedToken);
-            } else {
-                console.log("No se encontró un token en localStorage.");
-            }
-        });
-    </script>
-
-        // Al cargar la página, verificar si hay un token en localStorage
-        document.addEventListener("DOMContentLoaded", function() {
-            var storedToken = localStorage.getItem('token');
-            if (storedToken) {
-                console.log("Token cargado desde localStorage:", storedToken);
-            } else {
-                console.log("No se encontró un token en localStorage.");
-            }
-        });
-    </script>
-
-    <script>
+        // Mover la burbuja interactiva
         document.addEventListener('DOMContentLoaded', () => {
             const interBubble = document.querySelector('.interactive');
             let curX = 0;
@@ -160,6 +190,48 @@
             move();
         });
     </script>
+
+    <style>
+        .custom-role-btn {
+            display: block;
+            width: 100%;
+            padding: 10px 20px;
+            margin: 5px 0;
+            background-color: #1A202C; /* Fondo del botón */
+            color: #FFFFFF; /* Color del texto */
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .custom-role-btn:hover {
+            background-color: #3F51B5; /* Color de fondo al pasar el mouse */
+        }
+
+        .custom-popup {
+            border-radius: 15px; /* Bordes redondeados del popup */
+            padding: 20px;
+        }
+
+        .custom-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .custom-cancel-button {
+            background-color: #d33;
+            color: #ffffff;
+        }
+
+        /* Opcional: estilizar el fondo del botón de cancelar */
+        .custom-cancel-button:hover {
+            background-color: #c12;
+        }
+    </style>
+
+
 </body>
 
 </html>
