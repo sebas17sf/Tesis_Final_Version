@@ -24,13 +24,6 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Mail\AsignacionProyectoMailable;
 
-
-
-
-
-
-
-
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 
@@ -64,7 +57,7 @@ class AdminController extends Controller
 
         if (Auth::check()) {
             $user = Auth::user();
-            $role = DB::table('roles')->where('id', $user->role_id_administrativo)->value('tipo');
+            $role = DB::table('roles')->where('id', $user->role_id)->value('tipo');
 
             if ($role && $role === 'Administrador') {
 
@@ -131,59 +124,76 @@ class AdminController extends Controller
 
     public function getRoleAdministrativo($userId)
     {
-        $profesor = ProfesUniversidad::with('usuarios')
-            ->where('userId', $userId)
-            ->first();
+        $user = Auth::user(); // Obtener el usuario autenticado
 
-        if ($profesor && $profesor->usuarios->role_id_administrativo) {
+        if ($user) {
+            // Obtener el tipo de rol administrativo, si existe
             $roleAdministrativo = DB::table('roles')
-                ->where('id', $profesor->usuarios->role_id_administrativo)
+                ->where('id', $user->role_id)
                 ->value('tipo');
 
             return response()->json([
-                'nombres' => $profesor->nombres,
-                'apellidos' => $profesor->apellidos,
-                'roleAdministrativo' => $roleAdministrativo
+                'nombres' => $user->nombres,
+                'apellidos' => $user->apellidos,
+                'roleAdministrativo' => $roleAdministrativo,
+                'estadosModificados' => $user->estadosModificados // Aquí se pasa la variable al frontend
             ]);
         } else {
             return response()->json([
-                'nombres' => $profesor->nombres,
-                'apellidos' => $profesor->apellidos,
-                'roleAdministrativo' => null
+                'nombres' => null,
+                'apellidos' => null,
+                'roleAdministrativo' => null,
+                'estadoModificado' => null,
             ]);
         }
     }
 
-    public function assignRoleAdministrativo(Request $request, $userId)
-    {
-        try {
-            $request->validate([
-                'role_id_administrativo' => 'required|exists:roles,id',
-            ]);
 
 
-            $user = Usuario::findOrFail($userId);
-            $user->role_id_administrativo = $request->role_id_administrativo;
-            $user->save();
 
-            return redirect()->route('admin.index')->with('success', 'Rol administrativo asignado correctamente.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error al asignar el rol administrativo.');
-        }
+
+public function assignRoleAdministrativo(Request $request, $userId)
+{
+    try {
+        // Validar el ID del rol
+        $request->validate([
+            'role_id_administrativo' => 'required|exists:roles,id',
+        ]);
+
+        // Encontrar el usuario
+        $user = Usuario::findOrFail($userId);
+
+        // Asignar el rol administrativo y actualizar el estado
+        $user->role_id = $request->role_id_administrativo;
+        $user->estadosModificados = 'permiteAdministrativo';
+        $user->save();
+
+        // Devolver una respuesta JSON de éxito
+        return response()->json(['success' => true, 'message' => 'Rol administrativo asignado correctamente.']);
+    } catch (\Exception $e) {
+        // Devolver una respuesta JSON de error
+        return response()->json(['success' => false, 'message' => 'Error al asignar el rol administrativo.'], 500);
     }
+}
 
-    public function removeRoleAdministrativo($userId)
-    {
-        try {
-            $user = Usuario::findOrFail($userId);
-            $user->role_id_administrativo = null;
-            $user->save();
 
-            return redirect()->back()->with('success', 'Rol administrativo eliminado correctamente.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error al eliminar el rol administrativo.');
-        }
+public function removeRoleAdministrativo($userId)
+{
+    try {
+        // Encontrar el usuario
+        $user = Usuario::findOrFail($userId);
+
+        // Eliminar el rol administrativo
+        $user->role_id = null;
+        $user->save();
+
+        // Devolver una respuesta JSON de éxito
+        return response()->json(['success' => true, 'message' => 'Rol administrativo eliminado correctamente.']);
+    } catch (\Exception $e) {
+        // Devolver una respuesta JSON de error
+        return response()->json(['success' => false, 'message' => 'Error al eliminar el rol administrativo.'], 500);
     }
+}
 
 
 
@@ -264,7 +274,7 @@ class AdminController extends Controller
     {
         $user = Auth::user();
 
-        $role = DB::table('roles')->where('id', $user->role_id_administrativo)->value('tipo');
+        $role = DB::table('roles')->where('id', $user->role_id)->value('tipo');
 
         if (!Auth::check() || $role !== 'Administrador') {
             return redirect()->route('login')->with('error', 'Acceso no autorizado');
@@ -391,7 +401,7 @@ class AdminController extends Controller
     {
         $user = Auth::user();
 
-        $role = DB::table('roles')->where('id', $user->role_id_administrativo)->value('tipo');
+        $role = DB::table('roles')->where('id', $user->role_id)->value('tipo');
 
         if (!Auth::check() || $role !== 'Administrador') {
             return redirect()->route('login')->with('error', 'Acceso no autorizado');
@@ -611,7 +621,7 @@ class AdminController extends Controller
     {
         $user = Auth::user();
 
-        $role = DB::table('roles')->where('id', $user->role_id_administrativo)->value('tipo');
+        $role = DB::table('roles')->where('id', $user->role_id)->value('tipo');
 
         if (!Auth::check() || $role !== 'Administrador') {
             return redirect()->route('login')->with('error', 'Acceso no autorizado');
@@ -676,7 +686,7 @@ class AdminController extends Controller
 
         $user = Auth::user();
 
-        $role = DB::table('roles')->where('id', $user->role_id_administrativo)->value('tipo');
+        $role = DB::table('roles')->where('id', $user->role_id)->value('tipo');
 
         if (!Auth::check() || $role !== 'Administrador') {
             return redirect()->route('login')->with('error', 'Acceso no autorizado');
@@ -1097,7 +1107,7 @@ class AdminController extends Controller
     {
         $user = Auth::user();
 
-        $role = DB::table('roles')->where('id', $user->role_id_administrativo)->value('tipo');
+        $role = DB::table('roles')->where('id', $user->role_id)->value('tipo');
 
         if (!Auth::check() || $role !== 'Administrador') {
             return redirect()->route('login')->with('error', 'Acceso no autorizado');
@@ -1233,7 +1243,7 @@ class AdminController extends Controller
     {
         $user = Auth::user();
 
-        $role = DB::table('roles')->where('id', $user->role_id_administrativo)->value('tipo');
+        $role = DB::table('roles')->where('id', $user->role_id)->value('tipo');
 
         if (!Auth::check() || $role !== 'Administrador') {
             return redirect()->route('login')->with('error', 'Acceso no autorizado');
@@ -1319,7 +1329,7 @@ class AdminController extends Controller
     {
         $user = Auth::user();
 
-        $role = DB::table('roles')->where('id', $user->role_id_administrativo)->value('tipo');
+        $role = DB::table('roles')->where('id', $user->role_id)->value('tipo');
 
         if (!Auth::check() || $role !== 'Administrador') {
             return redirect()->route('login')->with('error', 'Acceso no autorizado');
@@ -1797,7 +1807,7 @@ class AdminController extends Controller
     {
         $user = Auth::user();
 
-        $role = DB::table('roles')->where('id', $user->role_id_administrativo)->value('tipo');
+        $role = DB::table('roles')->where('id', $user->role_id)->value('tipo');
 
         if (!Auth::check() || $role !== 'Administrador') {
             return redirect()->route('login')->with('error', 'Acceso no autorizado');

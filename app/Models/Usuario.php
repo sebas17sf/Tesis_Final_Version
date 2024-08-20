@@ -21,14 +21,15 @@ class Usuario extends Model implements Authenticatable
     // Campos que pueden ser llenados en masa (en el proceso de registro)
     protected $fillable = [
         'nombreUsuario',
-         'correoElectronico',
+        'correoElectronico',
         'contrasena',
         'token',
         'token_expires_at',
         'estado',
         'github_id',
-         'remember_token',
-        'role_id'
+        'remember_token',
+        'role_id',
+        'estadosModificados'
     ];
 
     // Desactivar timestamps (created_at y updated_at) en el modelo
