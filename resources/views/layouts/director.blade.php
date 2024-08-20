@@ -27,6 +27,29 @@
 
 <body>
 
+    <?php
+    $user = auth()->user()->profesorUniversidad ?? null;
+    $currentRoute = \Route::currentRouteName();
+
+    if ($user && $user->actualizacion == 0 && $currentRoute !== 'participante-vinculacion.cambio-credenciales') {
+        echo "<script>
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Primera sesión',
+                    text: 'Es obligatorio que realice el cambio de clave.',
+                    confirmButtonText: 'Aceptar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '" .
+            route('participante-vinculacion.cambio-credenciales') .
+            "';
+                    }
+                });
+            </script>";
+        exit();
+    }
+    ?>
+
     <script>
         window.routes = {
             keepAlive: '{{ route('keep-alive') }}',

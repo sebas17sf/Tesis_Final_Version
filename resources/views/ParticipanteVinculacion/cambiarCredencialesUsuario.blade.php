@@ -1,54 +1,32 @@
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Obtener el valor de 'active_role_source' desde localStorage
-        const activeRoleSource = localStorage.getItem('active_role_source');
-        let layout = '';
-
-        // Determinar el layout en función del valor de 'active_role_source'
-        if (activeRoleSource === 'role_id_administrativo') {
-            layout = 'admin';
-        } else if (activeRoleSource === 'role_id_participante') {
-            layout = 'participante'; // Layout asociado con role_id para Participante
-        } else if (activeRoleSource === 'role_id_directorVinculacion') {
-            layout = 'directorVinculacion';
-        } else if (activeRoleSource === 'role_id_coordinador') {
-            layout = 'coordinador';
-        } else if (activeRoleSource === 'role_id_director') {
-            layout = 'director';
-        }
-
-        // Redirigir a la misma página con el parámetro de layout si no está ya presente
-        const currentUrl = new URL(window.location.href);
-        if (!currentUrl.searchParams.get('layout') && layout !== '') {
-            currentUrl.searchParams.set('layout', layout);
-            window.location.href = currentUrl.href;
-        }
-    });
-</script>
-
 @php
-    // Obtener el parámetro de layout de la URL
-    $layout = request()->get('layout', 'participante'); // 'participante' es el valor por defecto si no hay parámetro
+     $user = Auth::user();
 
-    // Selecciona el layout basado en el parámetro recibido
-    switch ($layout) {
-        case 'admin':
+     $layout = '';
+
+    switch ($user->role->tipo) {
+        case 'Administrador':
             $layout = 'layouts.admin';
             break;
-        case 'participante':
-            $layout = 'layouts.participante';
-            break;
-        case 'directorVinculacion':
+        case 'DirectorProyecto':
             $layout = 'layouts.directorVinculacion';
             break;
-        case 'coordinador':
+        case 'DocenteParticipante':
+            $layout = 'layouts.participante';
+            break;
+        case 'Vinculacion':
             $layout = 'layouts.coordinador';
             break;
-        case 'director':
+        case 'Director-Departamento':
             $layout = 'layouts.director';
             break;
+        case 'Practicas':
+            $layout = 'layouts.coordinador';
+            break;
+        case 'DirectorVinculacion':
+            $layout = 'layouts.directorVinculacion';
+            break;
         default:
-            $layout = 'layouts.participante'; // Asegúrate de usar un layout existente como valor por defecto
+            $layout = 'layouts.participante';
             break;
     }
 @endphp
@@ -142,7 +120,7 @@
                 </div>
 
                 <form class="form_change_passwd"
-                    action="{{ route('estudiantes.actualizarCredenciales', ['userId' => auth()->user()->userId]) }}"
+                    action="{{ route('participante-vinculacion.updateCredenciales', ['userId' => auth()->user()->userId]) }}"
                     method="POST" id="changePasswordForm">
                     @csrf
                     @method('PUT')

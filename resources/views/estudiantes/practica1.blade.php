@@ -102,40 +102,78 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Estudiante:</th>
-                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($practicaPendiente->estudiante->apellidos) }} {{ strtoupper($practicaPendiente->estudiante->nombres) }}</td>
-                                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Docente Tutor:</th>
-                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($practicaPendiente->tutorAcademico->apellidos) }} {{ strtoupper($practicaPendiente->tutorAcademico->nombres) }}</td>
+                                <th class="small-th"
+                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                    Estudiante:</th>
+                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                    {{ strtoupper($practicaPendiente->estudiante->apellidos) }}
+                                    {{ strtoupper($practicaPendiente->estudiante->nombres) }}</td>
+                                <th class="small-th"
+                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                    Docente Tutor:</th>
+                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                    {{ strtoupper($practicaPendiente->tutorAcademico->apellidos) }}
+                                    {{ strtoupper($practicaPendiente->tutorAcademico->nombres) }}</td>
                             </tr>
                             <tr>
-                                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Empresa:</th>
-                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($practicaPendiente->Empresa->nombreEmpresa) }}</td>
-                                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Tutor Empresarial:</th>
-                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($practicaPendiente->NombreTutorEmpresarial) }}</td>
+                                <th class="small-th"
+                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                    Empresa:</th>
+                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                    {{ strtoupper($practicaPendiente->Empresa->nombreEmpresa) }}</td>
+                                <th class="small-th"
+                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                    Tutor Empresarial:</th>
+                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                    {{ strtoupper($practicaPendiente->NombreTutorEmpresarial) }}</td>
                             </tr>
                             <tr>
-                                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Cédula Tutor Empresarial:</th>
-                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ $practicaPendiente->CedulaTutorEmpresarial }}</td>
-                                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Función:</th>
-                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($practicaPendiente->Funcion) }}</td>
+                                <th class="small-th"
+                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                    Cédula Tutor Empresarial:</th>
+                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                    {{ $practicaPendiente->CedulaTutorEmpresarial }}</td>
+                                <th class="small-th"
+                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                    Función:</th>
+                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                    {{ strtoupper($practicaPendiente->Funcion) }}</td>
                             </tr>
                             <tr>
-                                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Teléfono Tutor Empresarial:</th>
-                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ $practicaPendiente->TelefonoTutorEmpresarial }}</td>
-                                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Estado de Fase I:</th>
-                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($practicaPendiente->Estado) }}</td>
+                                <th class="small-th"
+                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                    Teléfono Tutor Empresarial:</th>
+                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                    {{ $practicaPendiente->TelefonoTutorEmpresarial }}</td>
+                                <th class="small-th"
+                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                    Estado de Fase I:</th>
+                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                    {{ strtoupper($practicaPendiente->Estado) }}</td>
                             </tr>
                             <tr>
-                                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Email Tutor Empresarial:</th>
-                                <td class="large-td" style="font-size: .7em;">{{ $practicaPendiente->EmailTutorEmpresarial }}</td>
-                                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Horas planificadas:</th>
-                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($practicaPendiente->HorasPlanificadas) }}</td>
+                                <th class="small-th"
+                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                    Email Tutor Empresarial:</th>
+                                <td class="large-td" style="font-size: .7em;">
+                                    {{ $practicaPendiente->EmailTutorEmpresarial }}</td>
+                                <th class="small-th"
+                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                    Horas planificadas:</th>
+                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                    {{ strtoupper($practicaPendiente->HorasPlanificadas) }}</td>
                             </tr>
                             <tr>
-                                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Fecha de Inicio:</th>
-                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ $practicaPendiente->FechaInicio }}</td>
-                                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Fecha de Finalización:</th>
-                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ $practicaPendiente->FechaFinalizacion }}</td>
+                                <th class="small-th"
+                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                    Fecha de Inicio:</th>
+                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                    {{ $practicaPendiente->FechaInicio }}</td>
+                                <th class="small-th"
+                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                    Fecha de Finalización:</th>
+                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                    {{ $practicaPendiente->FechaFinalizacion }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -146,10 +184,13 @@
             <div class="col-md-6 formulario_actividad">
                 <h4><b>Agregar Actividades</b></h4>
                 <hr>
-                <form id="actividadForm" action="{{ route('estudiantes.guardarActividadesPracticas1') }}" method="POST" enctype="multipart/form-data">
+                <form id="actividadForm" action="{{ route('estudiantes.guardarActividadesPracticas1') }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" id="EstudianteID" name="EstudianteID" value="{{ $practicaPendiente->estudiante->estudianteId }}">
-                    <input type="hidden" id="PracticasI" name="PracticasI" value="{{ $practicaPendiente->practicasi }}">
+                    <input type="hidden" id="EstudianteID" name="EstudianteID"
+                        value="{{ $practicaPendiente->estudiante->estudianteId }}">
+                    <input type="hidden" id="PracticasI" name="PracticasI"
+                        value="{{ $practicaPendiente->practicasi }}">
                     <input type="hidden" id="ActividadID" name="ActividadID" value="">
                     <div class="form-group">
                         <label class="label" for="Actividad"><strong>Actividad Realizada:</strong></label>
@@ -159,13 +200,15 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="label" for="horas"><strong>Número de Horas:</strong></label>
-                                <input type="text" id="horas" name="horas" class="form-control input" placeholder="Ingrese el número de horas">
+                                <input type="text" id="horas" name="horas" class="form-control input"
+                                    placeholder="Ingrese el número de horas">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="label" for="fechaActividad"><strong>Fecha de la Actividad:</strong></label>
-                                <input type="date" id="fechaActividad" name="fechaActividad" class="form-control input" placeholder="Ingrese la fecha de la actividad">
+                                <input type="date" id="fechaActividad" name="fechaActividad"
+                                    class="form-control input" placeholder="Ingrese la fecha de la actividad">
                             </div>
                         </div>
                     </div>
@@ -173,13 +216,15 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="label" for="observaciones"><strong>Observación:</strong></label>
-                                <input type="text" id="observaciones" name="observaciones" class="form-control input" placeholder="Ingrese la observación de esta actividad">
+                                <input type="text" id="observaciones" name="observaciones" class="form-control input"
+                                    placeholder="Ingrese la observación de esta actividad">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="label" for="departamento"><strong>Departamento:</strong></label>
-                                <input type="text" id="departamento" name="departamento" class="form-control input" placeholder="Ingrese el departamento">
+                                <input type="text" id="departamento" name="departamento" class="form-control input"
+                                    placeholder="Ingrese el departamento">
                             </div>
                         </div>
                     </div>
@@ -187,7 +232,8 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="label" for="funcion"><strong>Función Asignada:</strong></label>
-                                <input type="text" id="funcion" name="funcion" class="form-control input" placeholder="Ingrese la función asignada">
+                                <input type="text" id="funcion" name="funcion" class="form-control input"
+                                    placeholder="Ingrese la función asignada">
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -198,19 +244,24 @@
                                         <span id="fileText2" class="fileText">
                                             <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
                                         </span>
-                                        <input type="file" class="form-control-file input input_file" id="evidencia" name="evidencia" onchange="displayFileName(this, 'fileText2')">
-                                        <span title="Eliminar archivo" onclick="removeFile(this)" class="remove-icon">✖</span>
+                                        <input type="file" class="form-control-file input input_file" id="evidencia"
+                                            name="evidencia" onchange="displayFileName(this, 'fileText2')">
+                                        <span title="Eliminar archivo" onclick="removeFile(this)"
+                                            class="remove-icon">✖</span>
                                     </div>
                                 </div>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="eliminarEvidencia" name="eliminarEvidencia">
-                                    <label class="form-check-label" for="eliminarEvidencia">Eliminar evidencia actual</label>
+                                    <input type="checkbox" class="form-check-input" id="eliminarEvidencia"
+                                        name="eliminarEvidencia">
+                                    <label class="form-check-label" for="eliminarEvidencia">Eliminar evidencia
+                                        actual</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <center><button type="submit" id="submitButton" class="button1">Guardar Actividad</button></center>
+                        <center><button type="submit" id="submitButton" class="button1">Guardar Actividad</button>
+                        </center>
                     </div>
                 </form>
             </div>
@@ -238,23 +289,37 @@
                         <tbody class="mdc-data-table__content ng-star-inserted">
                             @if ($actividades->isEmpty())
                                 <tr style="text-align:center">
-                                    <td class="noExisteRegistro1" style="font-size: 16px !important;" colspan="8">No hay actividades agregadas.</td>
+                                    <td class="noExisteRegistro1" style="font-size: 16px !important;" colspan="8">No
+                                        hay actividades agregadas.</td>
                                 </tr>
                             @else
                                 @foreach ($actividades as $actividad)
                                     <tr>
-                                        <td style="text-transform: uppercase; text-align:center; font-size: .7em; min-width: 30px !important;">{{ $loop->iteration }}</td>
-                                        <td style="text-transform: uppercase; font-size: .7em; max-width: 130px !important;">{{ $actividad->actividad }}</td>
-                                        <td style="text-transform: uppercase; text-align:center; font-size: .7em; min-width: 30px !important;">{{ $actividad->horas }}</td>
-                                        <td style="text-transform: uppercase; font-size: .7em;">{{ $actividad->observaciones }}</td>
-                                        <td style="text-transform: uppercase; text-align:center; font-size: .7em;">{{ $actividad->fechaActividad }}</td>
-                                        <td style="text-transform: uppercase; font-size: .7em;">{{ $actividad->departamento }}</td>
-                                        <td style="text-transform: uppercase; font-size: .7em;">{{ $actividad->funcion }}</td>
-                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            <img src="data:image/png;base64,{{ $actividad->evidencia }}" width="100" height="100" alt="SIN EVIDENCIA">
+                                        <td
+                                            style="text-transform: uppercase; text-align:center; font-size: .7em; min-width: 30px !important;">
+                                            {{ $loop->iteration }}</td>
+                                        <td
+                                            style="text-transform: uppercase; font-size: .7em; max-width: 130px !important;">
+                                            {{ $actividad->actividad }}</td>
+                                        <td
+                                            style="text-transform: uppercase; text-align:center; font-size: .7em; min-width: 30px !important;">
+                                            {{ $actividad->horas }}</td>
+                                        <td style="text-transform: uppercase; font-size: .7em;">
+                                            {{ $actividad->observaciones }}</td>
+                                        <td style="text-transform: uppercase; text-align:center; font-size: .7em;">
+                                            {{ $actividad->fechaActividad }}</td>
+                                        <td style="text-transform: uppercase; font-size: .7em;">
+                                            {{ $actividad->departamento }}</td>
+                                        <td style="text-transform: uppercase; font-size: .7em;">{{ $actividad->funcion }}
                                         </td>
                                         <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            <form action="{{ route('estudiantes.eliminarActividadPracticas1', $actividad->id) }}" method="POST" style="display: inline-block;">
+                                            <img src="data:image/png;base64,{{ $actividad->evidencia }}" width="100"
+                                                height="100" alt="SIN EVIDENCIA">
+                                        </td>
+                                        <td style="text-transform: uppercase; word-wrap: break-word; text-align: center;">
+                                            <form
+                                                action="{{ route('estudiantes.eliminarActividadPracticas1', $actividad->id) }}"
+                                                method="POST" style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <div class="tooltip-container">
@@ -264,7 +329,8 @@
                                                 </div>
                                             </form>
                                             <div class="tooltip-container">
-                                                <button type="button" class="button3 efects_button btn_editar3" onclick="editActividad({{ $actividad }})">
+                                                <button type="button" class="button3 efects_button btn_editar3"
+                                                    onclick="editActividad({{ $actividad }})">
                                                     <i class="material-icons">edit</i>
                                                 </button>
                                             </div>
@@ -275,7 +341,8 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="8" align="left"><strong>Total horas realizadas:</strong> {{ $totalHoras }} / {{ $practicaPendiente->HorasPlanificadas }}</td>
+                                <td colspan="8" align="left"><strong>Total horas realizadas:</strong>
+                                    {{ $totalHoras }} / {{ $practicaPendiente->HorasPlanificadas }}</td>
                             </tr>
                         </tfoot>
                     </table>
@@ -284,518 +351,589 @@
         </div>
 
         <br>
-<button class="button1_1" onclick="toggleForm()">Mostrar formulario para Informe de Servicio a la Comunidad</button>
+        <button class="button1_1" onclick="toggleForm()">Mostrar formulario para Informe de Servicio a la
+            Comunidad</button>
 
-<hr>
-<form id="formulario" action="{{ route('generar.InformPractica') }}" method="POST">
-    @csrf
-    <div class="row">
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="introduccion">Introducción:</label>
-                <textarea id="introduccion" name="introduccion" class="form-control input textarea"
-                    placeholder="Ingrese la introducción" required>{{ old('introduccion') }}</textarea>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="conclusion">Conclusiones:</label>
-                <textarea id="conclusion" name="conclusion" class="form-control input textarea"
-                    placeholder="Ingrese las conclusiones" required>{{ old('conclusion') }}</textarea>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                <label for="recomendaciones">Recomendaciones:</label>
-                <textarea id="recomendaciones" name="recomendaciones" class="form-control input textarea"
-                    placeholder="Ingrese las recomendaciones" required>{{ old('recomendaciones') }}</textarea>
-            </div>
-        </div>
-    </div>
-
-    <!-- Botones para Guardar y Recuperar Datos -->
-    <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
-        <div class="contenedor_botones">
-            <div class="tooltip-container">
-                <span class="tooltip-text">Guardar Datos</span>
-                <button type="button" class="button3 efects_button btn_primary"
-                    onclick="setScrollAndAction('{{ route('guardar.DatosInformePractica') }}')">
-                    <i class="fa-regular fa-floppy-disk"></i>
-                </button>
-            </div>
-            <div class="tooltip-container">
-                <a href="{{ route('recuperar.DatosInformePractica') }}" class="button3 efects_button btn_filtro colorr"
-                    onclick="setScrollAndLink('{{ route('recuperar.DatosInformePractica') }}')">
-                    <i class="fa-solid fa-window-restore"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Botón para Descargar Informe -->
-    <center><button type="submit" class="button1">Descargar Informe</button></center>
-</form>
-
-
-    @else
-
-
-    <h4> <b>Fase 1 - Inicio del proceso de prácticas pre profesionales del estudiante </b> </h4>
-    <hr>
-    <form action="{{ route('guardarPracticas') }}" method="POST" id="practicasForm">
-    @csrf
-    <div class="row">
-        <div class="col-md-6">
-            <div class="table-responsive-sm table-container">
-                <table class="table2 table table-bordered">
-                    <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                        <th class="tamanio1 table2th" style="text-transform: uppercase; font-size: .9em;" colspan="2">
-                            <center>DATOS DEL ESTUDIANTE:</center>
-                        </th>
-                    </tr>
-                    <tbody>
-                        <tr>
-                            <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">ID de Estudiante:</th>
-                            <td class="large-td"  style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($estudiante->espeId) }}</td>
-                        </tr>
-                        <tr>
-                            <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Cédula:</th>
-                            <td class="large-td"  style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($estudiante->cedula) }}</td>
-                        </tr>
-                        <tr>
-                            <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">ESTUDIANTE:</th>
-                            <td class="large-td"  style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($estudiante->apellidos) }} {{ strtoupper($estudiante->nombres) }}</td>
-                        </tr>
-                        <tr>
-                            <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Correo:</th>
-                            <td class="large-td"  style="font-size: .7em;">{{ $correoEstudiante }}</td>
-                        </tr>
-                        <tr>
-                            <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Nivel:</th>
-                            <td class="large-td"  style="text-transform: uppercase; font-size: .7em;">
-                                <select id="Nivel" name="Nivel" class="form-control input input_select3">
-                                    <option value="">Seleccione un nivel</option>
-                                    <option value="Pregrado">PREGRADO</option>
-                                    <option value="Posgrado">POSTGRADO</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Campus:</th>
-                            <td class="large-td"  style="text-transform: uppercase; font-size: .7em;">EXTENSIÓN SANTO DOMINGO</td>
-                        </tr>
-                        <tr>
-                            <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Departamento:</th>
-                            <td class="large-td"  style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($estudiante->departamento) }}</td>
-                        </tr>
-                        <tr>
-                            <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Escoja Práctica:</th>
-                            <td class="large-td"  style="text-transform: uppercase; font-size: .7em;">
-                                <select id="Practicas" name="Practicas" class="form-control input input_select3">
-                                    <option value="">Seleccione una práctica</option>
-                                    <option value="SERVICIO A LA COMUNIDAD">SERVICIO A LA COMUNIDAD</option>
-                                    <option value="PASANTIAS">PASANTÍAS</option>
-                                    <option value="PRACTICAS PRE PROFESIONALES">PRÁCTICAS PRE PROFESIONALES</option>
-                                    <option value="AYUDANDIA DE CATEDRA">AYUDANTÍA DE CATEDRA</option>
-                                    <option value="AYUDANTIA DE INVESTIGACION">AYUDANTÍA DE INVESTIGACION</option>
-                                    <option value="RECONOCE EXPERIENCIA LABORAL">RECONOCE EXPERIENCIA LABORAL</option>
-                                    <option value="P. INTEGRADOR SABERES">P. INTEGRADOR SABERES</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Teléfono:</th>
-                            <td class="large-td"  style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($estudiante->celular) }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="table-responsive-sm table-container">
-                <table class="table2 table table-bordered">
-                    <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                        <th class="tamanio1 table2th" style="text-transform: uppercase; font-size: .9em;" colspan="2">
-                            <center>DATOS DE LA PRÁCTICA</center>
-                        </th>
-                    </tr>
-                    <tbody>
-                        <tr>
-                            <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Estado Académico Actual:</th>
-                            <td class="large-td" >
-                                <select id="EstadoAcademico" name="EstadoAcademico" class="form-control input input_select3">
-                                    <option value="1">Seleccione un estado académico</option>
-                                    <option value="FINALIZANDO ESTUDIOS">FINALIZANDO ESTUDIOS</option>
-                                    <option value="CURSANDO ESTUDIOS">CURSANDO ESTUDIOS</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Fecha de inicio de la práctica:</th>
-                            <td class="large-td" >
-                                <input type="date" id="FechaInicio" name="FechaInicio" class="form-control input input_select3">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Fecha de finalización de la práctica:</th>
-                            <td class="large-td" >
-                                <input type="date" id="FechaFinalizacion" name="FechaFinalizacion" class="form-control input input_select3">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Horas planificadas:</th>
-                            <td class="large-td" >
-                                <input type="number" id="HorasPlanificadas" name="HorasPlanificadas" class="form-control input input_select3" min="80" max="144" placeholder="Ingrese el número de horas">
-                                <small id="errorHorasPlanificadas" style="color: red;"></small>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Horario de entrada:</th>
-                            <td class="large-td" >
-                                <input type="time" id="HoraEntrada" name="HoraEntrada" class="form-control input input_select3">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Horario de salida:</th>
-                            <td class="large-td" >
-                                <input type="time" id="HoraSalida" name="HoraSalida" class="form-control input input_select3">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Área de conocimiento:</th>
-                            <td class="large-td" >
-                                <input type="text" id="AreaConocimiento" name="AreaConocimiento" class="form-control input input_select3" placeholder="Ingrese el área de conocimiento">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-        <br>
-
-
-        <h4><b>Opciones de practicas</b></h4>
         <hr>
-         <!-- Tabla adicional -->
-    <!-- Segunda tabla -->
-    <div class="table-responsive-sm table-container">
-    <table class="table2 table table-bordered mat-mdc-table">
-        <thead class="ng-star-inserted">
-            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                <th class="table2th" colspan="4" style="font-size: 14px;">PRÁCTICA PREPROFESIONAL NO REMUNERADA, PASANTÍA O AYUDA A LA COMUNIDAD</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Sugiera un docente como tutor académico:</th>
-                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
-                    <select name="ID_tutorAcademico" class="form-control input input_select3" required>
-                        <option value="">Seleccione un tutor académico</option>
-                        @foreach ($profesores as $profesor)
-                            <option value="{{ $profesor->id }}"> {{ $profesor->apellidos }} {{ $profesor->nombres }} {{ $profesor->Departamento }} {{ $profesor->Correo }} </option>
-                        @endforeach
-                    </select>
-                </td>
-                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">NRC Práctica:</th>
-                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
-                    <select name="nrc" class="form-control input input_select3" required>
-                        <option value="">Seleccionar NRC</option>
-                        @foreach ($nrcpracticas1 as $nrc)
-                            <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
-                        @endforeach
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Empresa:</th>
-                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
-                    <select id="Empresa" name="Empresa" class="form-control input input_select3">
-                        <option value="1">Seleccione una empresa</option>
-                        @foreach ($empresas as $empresa)
-                            <option value="{{ $empresa->id }}">{{ $empresa->nombreEmpresa }} - Requiere: {{ $empresa->actividadesMacro }}</option>
-                        @endforeach
-                    </select>
-                </td>
-                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Cédula del tutor empresarial:</th>
-                <td class="large-td" style="font-size: .6em;">
-                    <input type="text" id="CedulaTutorEmpresarial" name="CedulaTutorEmpresarial" class="form-control input input_select3" placeholder="Ingrese 10 dígitos">
-                    <div id="errorCedula" style="color: red;"></div>
-                </td>
-            </tr>
-            <tr>
-                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Nombre del tutor empresarial:</th>
-                <td class="large-td" style="font-size: .6em;">
-                    <input type="text" id="NombreTutorEmpresarial" name="NombreTutorEmpresarial" class="form-control input input_select3" placeholder="Ingrese el nombre completo">
-                    <div id="errorNombre" style="color: red;"></div>
-                </td>
-                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Función:</th>
-                <td class="large-td" style="font-size: .6em;">
-                    <input type="text" id="Funcion" name="Funcion" class="form-control input input_1 input_select3" placeholder="Ingrese la función del tutor empresarial">
-                </td>
-            </tr>
-            <tr>
-                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Teléfono:</th>
-                <td class="large-td" style="font-size: .6em;">
-                    <input type="text" id="TelefonoTutorEmpresarial" name="TelefonoTutorEmpresarial" class="form-control input input_select3" placeholder="Ingrese 10 dígitos">
-                    <div id="errorTelefono" style="color: red;"></div>
-                </td>
-                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Email:</th>
-                <td class="large-td" style="font-size: .6em;">
-                    <input type="text" id="EmailTutorEmpresarial" name="EmailTutorEmpresarial" class="form-control input input_select3" placeholder="Ingrese el correo del tutor empresarial">
-                    <div id="errorEmail" style="color: red;"></div>
-                </td>
-            </tr>
-            <tr>
-                <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Departamento dentro de la empresa:</th>
-                <td class="large-td" style="font-size: .6em;">
-                    <input type="text" id="DepartamentoTutorEmpresarial" name="DepartamentoTutorEmpresarial" class="form-control input input_select3" placeholder="Ingrese el departamento">
-                </td>
-                <td colspan="2"></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<br>
-<center>
-    <button type="submit" id="iniciarPracticasBtn" class="button1 btn_excel">
-        Iniciar prácticas
-    </button>
-</center></form>
-@endif
-</div>
+        <form id="formulario" action="{{ route('generar.InformPractica') }}" method="POST">
+            @csrf
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="introduccion">Introducción:</label>
+                        <textarea id="introduccion" name="introduccion" class="form-control input textarea"
+                            placeholder="Ingrese la introducción" required>{{ old('introduccion') }}</textarea>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="conclusion">Conclusiones:</label>
+                        <textarea id="conclusion" name="conclusion" class="form-control input textarea"
+                            placeholder="Ingrese las conclusiones" required>{{ old('conclusion') }}</textarea>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="recomendaciones">Recomendaciones:</label>
+                        <textarea id="recomendaciones" name="recomendaciones" class="form-control input textarea"
+                            placeholder="Ingrese las recomendaciones" required>{{ old('recomendaciones') }}</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones para Guardar y Recuperar Datos -->
+            <div class="contenedor_acciones_tabla sidebar_active_content_acciones_tabla">
+                <div class="contenedor_botones">
+                    <div class="tooltip-container">
+                        <span class="tooltip-text">Guardar Datos</span>
+                        <button type="button" class="button3 efects_button btn_primary"
+                            onclick="setScrollAndAction('{{ route('guardar.DatosInformePractica') }}')">
+                            <i class="fa-regular fa-floppy-disk"></i>
+                        </button>
+                    </div>
+                    <div class="tooltip-container">
+                        <a href="{{ route('recuperar.DatosInformePractica') }}"
+                            class="button3 efects_button btn_filtro colorr"
+                            onclick="setScrollAndLink('{{ route('recuperar.DatosInformePractica') }}')">
+                            <i class="fa-solid fa-window-restore"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón para Descargar Informe -->
+            <center><button type="submit" class="button1">Descargar Informe</button></center>
+        </form>
+    @else
+        <h4> <b>Fase 1 - Inicio del proceso de prácticas pre profesionales del estudiante </b> </h4>
+        <hr>
+        <form action="{{ route('guardarPracticas') }}" method="POST" id="practicasForm">
+            @csrf
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="table-responsive-sm table-container">
+                        <table class="table2 table table-bordered">
+                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                <th class="tamanio1 table2th" style="text-transform: uppercase; font-size: .9em;"
+                                    colspan="2">
+                                    <center>DATOS DEL ESTUDIANTE:</center>
+                                </th>
+                            </tr>
+                            <tbody>
+                                <tr>
+                                    <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">ID de
+                                        Estudiante:</th>
+                                    <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                        {{ strtoupper($estudiante->espeId) }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Cédula:
+                                    </th>
+                                    <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                        {{ strtoupper($estudiante->cedula) }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">
+                                        ESTUDIANTE:</th>
+                                    <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                        {{ strtoupper($estudiante->apellidos) }} {{ strtoupper($estudiante->nombres) }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Correo:
+                                    </th>
+                                    <td class="large-td" style="font-size: .7em;">{{ $correoEstudiante }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Nivel:
+                                    </th>
+                                    <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                        <select id="Nivel" name="Nivel" class="form-control input input_select3">
+                                            <option value="">Seleccione un nivel</option>
+                                            <option value="Pregrado">PREGRADO</option>
+                                            <option value="Posgrado">POSTGRADO</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Campus:
+                                    </th>
+                                    <td class="large-td" style="text-transform: uppercase; font-size: .7em;">EXTENSIÓN
+                                        SANTO DOMINGO</td>
+                                </tr>
+                                <tr>
+                                    <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">
+                                        Departamento:</th>
+                                    <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                        {{ strtoupper($estudiante->departamento) }}</td>
+                                </tr>
+                                <tr>
+                                    <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Escoja
+                                        Práctica:</th>
+                                    <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                        <select id="Practicas" name="Practicas" class="form-control input input_select3">
+                                            <option value="">Seleccione una práctica</option>
+                                            <option value="SERVICIO A LA COMUNIDAD">SERVICIO A LA COMUNIDAD</option>
+                                            <option value="PASANTIAS">PASANTÍAS</option>
+                                            <option value="PRACTICAS PRE PROFESIONALES">PRÁCTICAS PRE PROFESIONALES
+                                            </option>
+                                            <option value="AYUDANDIA DE CATEDRA">AYUDANTÍA DE CATEDRA</option>
+                                            <option value="AYUDANTIA DE INVESTIGACION">AYUDANTÍA DE INVESTIGACION</option>
+                                            <option value="RECONOCE EXPERIENCIA LABORAL">RECONOCE EXPERIENCIA LABORAL
+                                            </option>
+                                            <option value="P. INTEGRADOR SABERES">P. INTEGRADOR SABERES</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Teléfono:
+                                    </th>
+                                    <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                        {{ strtoupper($estudiante->celular) }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="table-responsive-sm table-container">
+                        <table class="table2 table table-bordered">
+                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                <th class="tamanio1 table2th" style="text-transform: uppercase; font-size: .9em;"
+                                    colspan="2">
+                                    <center>DATOS DE LA PRÁCTICA</center>
+                                </th>
+                            </tr>
+                            <tbody>
+                                <tr>
+                                    <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Estado
+                                        Académico Actual:</th>
+                                    <td class="large-td">
+                                        <select id="EstadoAcademico" name="EstadoAcademico"
+                                            class="form-control input input_select3">
+                                            <option value="1">Seleccione un estado académico</option>
+                                            <option value="FINALIZANDO ESTUDIOS">FINALIZANDO ESTUDIOS</option>
+                                            <option value="CURSANDO ESTUDIOS">CURSANDO ESTUDIOS</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Fecha de
+                                        inicio de la práctica:</th>
+                                    <td class="large-td">
+                                        <input type="date" id="FechaInicio" name="FechaInicio"
+                                            class="form-control input input_select3">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Fecha de
+                                        finalización de la práctica:</th>
+                                    <td class="large-td">
+                                        <input type="date" id="FechaFinalizacion" name="FechaFinalizacion"
+                                            class="form-control input input_select3">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Horas
+                                        planificadas:</th>
+                                    <td class="large-td">
+                                        <input type="number" id="HorasPlanificadas" name="HorasPlanificadas"
+                                            class="form-control input input_select3" min="80" max="144"
+                                            placeholder="Ingrese el número de horas">
+                                        <small id="errorHorasPlanificadas" style="color: red;"></small>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Horario
+                                        de entrada:</th>
+                                    <td class="large-td">
+                                        <input type="time" id="HoraEntrada" name="HoraEntrada"
+                                            class="form-control input input_select3">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Horario
+                                        de salida:</th>
+                                    <td class="large-td">
+                                        <input type="time" id="HoraSalida" name="HoraSalida"
+                                            class="form-control input input_select3">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Área de
+                                        conocimiento:</th>
+                                    <td class="large-td">
+                                        <input type="text" id="AreaConocimiento" name="AreaConocimiento"
+                                            class="form-control input input_select3"
+                                            placeholder="Ingrese el área de conocimiento">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <br>
 
 
-<link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
-<script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
-<script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
-<script src="js\admin\acciones.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
-<script src="{{ asset('js/estudiante/practicas.js') }}"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+            <h4><b>Opciones de practicas</b></h4>
+            <hr>
+            <!-- Tabla adicional -->
+            <!-- Segunda tabla -->
+            <div class="table-responsive-sm table-container">
+                <table class="table2 table table-bordered mat-mdc-table">
+                    <thead class="ng-star-inserted">
+                        <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                            <th class="table2th" colspan="4" style="font-size: 14px;">PRÁCTICA PREPROFESIONAL NO
+                                REMUNERADA, PASANTÍA O AYUDA A LA COMUNIDAD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="small-th"
+                                style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                Sugiera un docente como tutor académico:</th>
+                            <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                <select name="ID_tutorAcademico" class="form-control input input_select3" required>
+                                    <option value="">Seleccione un tutor académico</option>
+                                    @foreach ($profesores as $profesor)
+                                        <option value="{{ $profesor->id }}"> {{ $profesor->apellidos }}
+                                            {{ $profesor->nombres }} {{ $profesor->Departamento }}
+                                            {{ $profesor->Correo }} </option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <th class="small-th"
+                                style="text-transform: uppercase; font-size: .7em; background-color:white !important;">NRC
+                                Práctica:</th>
+                            <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                <select name="nrc" class="form-control input input_select3" required>
+                                    <option value="">Seleccionar NRC</option>
+                                    @foreach ($nrcpracticas1 as $nrc)
+                                        <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
+                                    @endforeach
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="small-th"
+                                style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                Empresa:</th>
+                            <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                                <select id="Empresa" name="Empresa" class="form-control input input_select3">
+                                    <option value="1">Seleccione una empresa</option>
+                                    @foreach ($empresas as $empresa)
+                                        <option value="{{ $empresa->id }}">{{ $empresa->nombreEmpresa }} - Requiere:
+                                            {{ $empresa->actividadesMacro }}</option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <th class="small-th"
+                                style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                Cédula del tutor empresarial:</th>
+                            <td class="large-td" style="font-size: .6em;">
+                                <input type="text" id="CedulaTutorEmpresarial" name="CedulaTutorEmpresarial"
+                                    class="form-control input input_select3" placeholder="Ingrese 10 dígitos">
+                                <div id="errorCedula" style="color: red;"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="small-th"
+                                style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                Nombre del tutor empresarial:</th>
+                            <td class="large-td" style="font-size: .6em;">
+                                <input type="text" id="NombreTutorEmpresarial" name="NombreTutorEmpresarial"
+                                    class="form-control input input_select3" placeholder="Ingrese el nombre completo">
+                                <div id="errorNombre" style="color: red;"></div>
+                            </td>
+                            <th class="small-th"
+                                style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                Función:</th>
+                            <td class="large-td" style="font-size: .6em;">
+                                <input type="text" id="Funcion" name="Funcion"
+                                    class="form-control input input_1 input_select3"
+                                    placeholder="Ingrese la función del tutor empresarial">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="small-th"
+                                style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                Teléfono:</th>
+                            <td class="large-td" style="font-size: .6em;">
+                                <input type="text" id="TelefonoTutorEmpresarial" name="TelefonoTutorEmpresarial"
+                                    class="form-control input input_select3" placeholder="Ingrese 10 dígitos">
+                                <div id="errorTelefono" style="color: red;"></div>
+                            </td>
+                            <th class="small-th"
+                                style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                Email:</th>
+                            <td class="large-td" style="font-size: .6em;">
+                                <input type="text" id="EmailTutorEmpresarial" name="EmailTutorEmpresarial"
+                                    class="form-control input input_select3"
+                                    placeholder="Ingrese el correo del tutor empresarial">
+                                <div id="errorEmail" style="color: red;"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="small-th"
+                                style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                                Departamento dentro de la empresa:</th>
+                            <td class="large-td" style="font-size: .6em;">
+                                <input type="text" id="DepartamentoTutorEmpresarial"
+                                    name="DepartamentoTutorEmpresarial" class="form-control input input_select3"
+                                    placeholder="Ingrese el departamento">
+                            </td>
+                            <td colspan="2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <center>
+                <button type="submit" id="iniciarPracticasBtn" class="button1 btn_excel">
+                    Iniciar prácticas
+                </button>
+            </center>
+        </form>
+    @endif
+    </div>
+
+
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
+    <script src="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>
+    <script src="{{ asset('js/plantilla/main.js') }}" type="module"></script>
+    <script src="js\admin\acciones.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+    <script src="{{ asset('js/estudiante/practicas.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip({
-            template: '<div class="tooltip custom-tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
-        });
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip({
+                template: '<div class="tooltip custom-tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
+            });
 
-        $('.card-button').on('click', function(){
-            $('.card-button').removeClass('active');
-            $(this).addClass('active');
-        });
-    });
-    function editActividad(actividad) {
-    // Asigna los valores de la actividad al formulario
-    $('#ActividadID').val(actividad.id);
-    $('#Actividad').val(actividad.actividad);
-    $('#horas').val(actividad.horas);
-    $('#observaciones').val(actividad.observaciones);
-    $('#fechaActividad').val(actividad.fechaActividad);
-    $('#departamento').val(actividad.departamento);
-    $('#funcion').val(actividad.funcion);
-
-    // Mostrar el checkbox de eliminar evidencia solo si existe evidencia
-    if (actividad.evidencia) {
-        $('#eliminarEvidencia').closest('.form-check').show();
-    } else {
-        $('#eliminarEvidencia').closest('.form-check').hide();
-    }
-
-    // Cambia el método y la acción del formulario para la edición
-    $('#actividadForm').attr('action', `/estudiantes/${actividad.id}/editar-actividad-practicas1`);
-    $('#actividadForm').attr('method', 'POST');
-    $('#actividadForm').append('<input type="hidden" name="_method" value="PUT">');
-
-    // Cambia el texto del botón de guardar a actualizar
-    $('#submitButton').text('Actualizar Actividad');
-}
-
-// Función para visualizar el nombre del archivo seleccionado
-function displayFileName(input, textElementId) {
-    var fileName = input.files[0].name;
-    document.getElementById(textElementId).innerText = fileName;
-}
-
-// Función para eliminar el archivo seleccionado
-function removeFile(element) {
-    var input = element.previousElementSibling;
-    input.value = '';
-    document.getElementById('fileText2').innerText = 'Haz clic aquí para subir el documento';
-}
-
-// Asegúrate de ocultar el checkbox de eliminar evidencia al cargar la página
-$(document).ready(function() {
-    $('#eliminarEvidencia').closest('.form-check').hide();
-});
-
-
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var verOpcionesBtn = document.getElementById('verOpcionesBtn');
-        var opcionesPracticas = document.getElementById('opcionesPracticas');
-        var iniciarPracticasBtn = document.getElementById('iniciarPracticasBtn');
-
-        var opcionesAbiertas = false; // Variable para rastrear el estado de las opciones
-
-        verOpcionesBtn.addEventListener('click', function() {
-            if (opcionesAbiertas) {
-                opcionesPracticas.style.display = 'none'; // Cierra las opciones
-                iniciarPracticasBtn.style.display = 'none'; // Oculta el botón de inicio
-            } else {
-                opcionesPracticas.style.display = 'table'; // Abre las opciones
-                iniciarPracticasBtn.style.display = 'block'; // Muestra el botón de inicio
-            }
-
-            // Cambia el estado de las opciones
-            opcionesAbiertas = !opcionesAbiertas;
-        });
-
-        iniciarPracticasBtn.addEventListener('click', function() {
-            // Aquí puedes agregar la lógica para cuando se hace clic en "Iniciar prácticas"
-        });
-    });
-    $(document).ready(function() {
-        // Hacer que el card sea draggable
-        $('.draggable-card').draggable({
-            handle: ".card-header",
-            containment: "window"
-        });
-        // Hacer el card draggable
-        document.addEventListener('DOMContentLoaded', function() {
-            $("#draggableCardActividad").draggable({
-                handle: ".card-header"
+            $('.card-button').on('click', function() {
+                $('.card-button').removeClass('active');
+                $(this).addClass('active');
             });
         });
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        // Selecciona el elemento de la alerta
-        const alertElement = document.querySelector('.contenedor_alerta');
-        // Establece un temporizador para ocultar la alerta después de 2 segundos
-        setTimeout(() => {
-            if (alertElement) {
-                alertElement.style.display = 'none';
+
+        function editActividad(actividad) {
+            // Asigna los valores de la actividad al formulario
+            $('#ActividadID').val(actividad.id);
+            $('#Actividad').val(actividad.actividad);
+            $('#horas').val(actividad.horas);
+            $('#observaciones').val(actividad.observaciones);
+            $('#fechaActividad').val(actividad.fechaActividad);
+            $('#departamento').val(actividad.departamento);
+            $('#funcion').val(actividad.funcion);
+
+            // Mostrar el checkbox de eliminar evidencia solo si existe evidencia
+            if (actividad.evidencia) {
+                $('#eliminarEvidencia').closest('.form-check').show();
+            } else {
+                $('#eliminarEvidencia').closest('.form-check').hide();
             }
-        }, 5000); // 2000 milisegundos = 2 segundos
-    });
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Asegura que el formulario esté oculto al cargar la página
-        var form = document.getElementById("formulario");
-        form.style.display = "none";
-    });
 
-    function toggleForm() {
-        var form = document.getElementById("formulario");
-        if (form.style.display === "none" || form.style.display === "") {
-            form.style.display = "block";
-        } else {
-            form.style.display = "none";
+            // Cambia el método y la acción del formulario para la edición
+            $('#actividadForm').attr('action', `/estudiantes/${actividad.id}/editar-actividad-practicas1`);
+            $('#actividadForm').attr('method', 'POST');
+            $('#actividadForm').append('<input type="hidden" name="_method" value="PUT">');
+
+            // Cambia el texto del botón de guardar a actualizar
+            $('#submitButton').text('Actualizar Actividad');
         }
-    }
-</script>
 
-<script>
-    function setScrollAndAction(action) {
-        const form = document.getElementById('formulario');
-        form.action = action;
-        form.submit();
-    }
-</script>
+        // Función para visualizar el nombre del archivo seleccionado
+        function displayFileName(input, textElementId) {
+            var fileName = input.files[0].name;
+            document.getElementById(textElementId).innerText = fileName;
+        }
 
-<style>
+        // Función para eliminar el archivo seleccionado
+        function removeFile(element) {
+            var input = element.previousElementSibling;
+            input.value = '';
+            document.getElementById('fileText2').innerText = 'Haz clic aquí para subir el documento';
+        }
 
-    hr {
-  margin-top: 0.5rem !important;
-  margin-bottom: 0.8rem !important;
-  border: 0;
-  border-top: 1px solid rgba(0, 0, 0, .1);
-}
-.input_1 {
-    height: none !important;
-}
-.table-container {
+        // Asegúrate de ocultar el checkbox de eliminar evidencia al cargar la página
+        $(document).ready(function() {
+            $('#eliminarEvidencia').closest('.form-check').hide();
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var verOpcionesBtn = document.getElementById('verOpcionesBtn');
+            var opcionesPracticas = document.getElementById('opcionesPracticas');
+            var iniciarPracticasBtn = document.getElementById('iniciarPracticasBtn');
 
-    border-radius: 5px !important;
-    background-color: white !important;
-  }
+            var opcionesAbiertas = false; // Variable para rastrear el estado de las opciones
 
-   td {
-    background-color: white !important;
-    padding: 10px;
-  }
-  .table-bordered td, .table-bordered th {
-    border: 1px solid #dee2e6;
-    border-radius: 7px 7px 0px 0px !important;
-}
+            verOpcionesBtn.addEventListener('click', function() {
+                if (opcionesAbiertas) {
+                    opcionesPracticas.style.display = 'none'; // Cierra las opciones
+                    iniciarPracticasBtn.style.display = 'none'; // Oculta el botón de inicio
+                } else {
+                    opcionesPracticas.style.display = 'table'; // Abre las opciones
+                    iniciarPracticasBtn.style.display = 'block'; // Muestra el botón de inicio
+                }
 
-  .small-th {
-    width: 20%; /* Ajusta el ancho de las celdas de encabezado */
-  }
+                // Cambia el estado de las opciones
+                opcionesAbiertas = !opcionesAbiertas;
+            });
 
-  .large-td {
-    width: 30%; /* Ajusta el ancho de las celdas de datos */
-  }
+            iniciarPracticasBtn.addEventListener('click', function() {
+                // Aquí puedes agregar la lógica para cuando se hace clic en "Iniciar prácticas"
+            });
+        });
+        $(document).ready(function() {
+            // Hacer que el card sea draggable
+            $('.draggable-card').draggable({
+                handle: ".card-header",
+                containment: "window"
+            });
+            // Hacer el card draggable
+            document.addEventListener('DOMContentLoaded', function() {
+                $("#draggableCardActividad").draggable({
+                    handle: ".card-header"
+                });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Selecciona el elemento de la alerta
+            const alertElement = document.querySelector('.contenedor_alerta');
+            // Establece un temporizador para ocultar la alerta después de 2 segundos
+            setTimeout(() => {
+                if (alertElement) {
+                    alertElement.style.display = 'none';
+                }
+            }, 5000); // 2000 milisegundos = 2 segundos
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Asegura que el formulario esté oculto al cargar la página
+            var form = document.getElementById("formulario");
+            form.style.display = "none";
+        });
+
+        function toggleForm() {
+            var form = document.getElementById("formulario");
+            if (form.style.display === "none" || form.style.display === "") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+    </script>
+
+    <script>
+        function setScrollAndAction(action) {
+            const form = document.getElementById('formulario');
+            form.action = action;
+            form.submit();
+        }
+    </script>
+
+    <style>
+        hr {
+            margin-top: 0.5rem !important;
+            margin-bottom: 0.8rem !important;
+            border: 0;
+            border-top: 1px solid rgba(0, 0, 0, .1);
+        }
+
+        .input_1 {
+            height: none !important;
+        }
+
+        .table-container {
+
+            border-radius: 5px !important;
+            background-color: white !important;
+        }
+
+        td {
+            background-color: white !important;
+            padding: 10px;
+        }
+
+        .table-bordered td,
+        .table-bordered th {
+            border: 1px solid #dee2e6;
+            border-radius: 7px 7px 0px 0px !important;
+        }
+
+        .small-th {
+            width: 20%;
+            /* Ajusta el ancho de las celdas de encabezado */
+        }
+
+        .large-td {
+            width: 30%;
+            /* Ajusta el ancho de las celdas de datos */
+        }
 
 
-  .mat-mdc-table th {
-    font-weight: bold;
-    text-align: left;
-  }
+        .mat-mdc-table th {
+            font-weight: bold;
+            text-align: left;
+        }
 
-  .mat-mdc-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
+        .mat-mdc-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-  .mat-mdc-table th,
-  .mat-mdc-table td {
+        .mat-mdc-table th,
+        .mat-mdc-table td {
 
-    padding: 8px;
-  }
-}
-.contenedor_tabla .table-container table td .tamanio11 {
-    width: 200px;
-    min-width: 0px !important;
-    font-size: 10px;
-    padding: .5rem !important;
-}
+            padding: 8px;
+        }
+        }
 
-.small-th {
-    width: 20%;
-}
+        .contenedor_tabla .table-container table td .tamanio11 {
+            width: 200px;
+            min-width: 0px !important;
+            font-size: 10px;
+            padding: .5rem !important;
+        }
 
-.large-td {
-    width: 30%;
-}
+        .small-th {
+            width: 20%;
+        }
 
-.formulario_actividad {
+        .large-td {
+            width: 30%;
+        }
 
-    padding: 20px 20px 0px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    min-width: 300px;
-}
-.contenedor_principal {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 5px; /* Espacio entre el formulario y la tabla */
-}
+        .formulario_actividad {
 
+            padding: 20px 20px 0px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            min-width: 300px;
+        }
 
+        .contenedor_principal {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 5px;
+            /* Espacio entre el formulario y la tabla */
+        }
     </style>
 
 @endsection

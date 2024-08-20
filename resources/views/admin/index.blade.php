@@ -673,8 +673,7 @@
                 <p><strong>Permisos:</strong> <span id="roleInfo">Cargando...</span></p>
 
                 <!-- Formulario para agregar rol administrativo -->
-                <form id="assignRoleForm" method="POST"
-                    action="{{ route('admin.assignRoleAdministrativo', ['userId' => 'USER_ID']) }}">
+                <form id="assignRoleForm" method="POST">
                     @csrf
                     <div class="form-group">
                         <label for="roleSelect">Asignar Nuevo Rol Administrativo:</label>
@@ -690,14 +689,15 @@
                 </form>
 
                 <!-- Formulario para eliminar rol administrativo -->
-                <form id="removeRoleForm" method="POST"
-                    action="{{ route('admin.removeRoleAdministrativo', ['userId' => 'USER_ID']) }}"
-                    style="margin-top: 10px;">
+                <form id="removeRoleForm" method="POST" style="margin-top: 10px;">
                     @csrf
                     <button type="submit" class="button">Eliminar permisos</button>
                 </form>
             </div>
         </div>
+
+
+
 
 
         <div class="container">
@@ -997,141 +997,47 @@
         }
     </script>
 
-    <script>
-        function openPermissionsModal(userId) {
-            // Hacer una solicitud AJAX para obtener la información del usuario y su rol administrativo
-            $.ajax({
-                url: `/admin/getRoleAdministrativo/${userId}`,
-                method: 'GET',
-                success: function(response) {
-                    let nombreCompleto = (response.nombres ? response.nombres : '') + ' ' + (response
-                        .apellidos ? response.apellidos : '');
-                    nombreCompleto = nombreCompleto.trim() !== '' ? nombreCompleto : 'No disponible';
-
-                    let roleInfo = response.roleAdministrativo ?
-                        mapRoleName(response.roleAdministrativo) :
-                        'No tiene permisos asignado.';
-
-                    // Actualizar los elementos del modal con la información obtenida
-                    $('#profesorNombreCompleto').text(nombreCompleto);
-                    $('#roleInfo').text(roleInfo);
-
-                    // Mostrar el modal
-                    $('#permissionsModal').show();
-                    makeElementDraggable('#permissionsModal');
-                },
-                error: function(xhr) {
-                    console.error(xhr.responseText);
-                    $('#profesorNombreCompleto').text('Error al obtener los datos.');
-                    $('#roleInfo').text('Error al obtener el rol administrativo.');
-                    $('#permissionsModal').show();
-                    makeElementDraggable('#permissionsModal');
-                }
-            });
-        }
-
-        function mapRoleName(role) {
-            const roleNames = {
-                'Administrador': 'Administrador',
-                'Vinculacion': 'Coordinador de Vinculación',
-                'Practicas': 'Coordinador de Prácticas',
-                'Director-Departamento': 'Director de departamento',
-                'Director-Carrera': 'Director de carrera',
-                'DirectorVinculacion': 'Director de proyectos sociales',
-                'ParticipanteVinculacion': 'Docente',
-                'Estudiante': 'Estudiante'
-            };
-            return roleNames[role] || role;
-        }
-
-        function closePermissionsModal() {
-            $('#permissionsModal').hide();
-        }
-
-        function makeElementDraggable(element) {
-            $(element).draggable({
-                handle: ".card-header",
-                containment: "window"
-            });
-        }
-
-        $(document).ready(function() {
-            makeElementDraggable('#permissionsModal');
-        });
-    </script>
 
     <script>
-        let currentUserId;
+       function openPermissionsModal(userId) {
+    // Mostrar el modal
+    document.getElementById('permissionsModal').style.display = 'block';
 
-        function openPermissionsModal(userId) {
-            currentUserId = userId;
+    // Actualizar la acción del formulario para asignar roles
+    let assignRoleForm = document.getElementById('assignRoleForm');
+    assignRoleForm.action = `/admin/assignRoleAdministrativo/${userId}`;
 
-            // Actualizar las acciones de los formularios con el userId correcto
-            const assignAction = `{{ route('admin.assignRoleAdministrativo', ['userId' => 'USER_ID']) }}`.replace(
-                'USER_ID', userId);
-            const removeAction = `{{ route('admin.removeRoleAdministrativo', ['userId' => 'USER_ID']) }}`.replace(
-                'USER_ID', userId);
+    // Actualizar la acción del formulario para eliminar roles
+    let removeRoleForm = document.getElementById('removeRoleForm');
+    removeRoleForm.action = `/admin/removeRoleAdministrativo/${userId}`;
 
-            $('#assignRoleForm').attr('action', assignAction);
-            $('#removeRoleForm').attr('action', removeAction);
+    // Realizar una solicitud AJAX para obtener los datos del usuario
+    fetch(`/admin/getRoleAdministrativo/${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            // Mostrar nombres y apellidos si están disponibles
+            if (data.nombres || data.apellidos) {
+                document.getElementById('profesorNombreCompleto').textContent = `${data.nombres} ${data.apellidos}`;
+            } else {
+                document.getElementById('profesorNombreCompleto').textContent = 'No se encontró información del profesor';
+            }
 
-            // Hacer la solicitud para obtener los datos del usuario y mostrarlos
-            $.ajax({
-                url: `/admin/getRoleAdministrativo/${userId}`,
-                method: 'GET',
-                success: function(response) {
-                    let nombreCompleto = (response.nombres ? response.nombres : '') + ' ' + (response
-                        .apellidos ? response.apellidos : '');
-                    nombreCompleto = nombreCompleto.trim() !== '' ? nombreCompleto : 'No disponible';
-
-                    let roleInfo = response.roleAdministrativo ? mapRoleName(response.roleAdministrativo) :
-                        'No tiene rol administrativo asignado.';
-
-                    $('#profesorNombreCompleto').text(nombreCompleto);
-                    $('#roleInfo').text(roleInfo);
-
-                    $('#permissionsModal').show();
-                    makeElementDraggable('#permissionsModal');
-                },
-                error: function(xhr) {
-                    console.error(xhr.responseText);
-                    $('#profesorNombreCompleto').text('Error al obtener los datos.');
-                    $('#roleInfo').text('Error al obtener el rol administrativo.');
-                    $('#permissionsModal').show();
-                    makeElementDraggable('#permissionsModal');
-                }
-            });
-        }
-
-        function mapRoleName(role) {
-            const roleNames = {
-                'Administrador': 'Administrador',
-                'Vinculacion': 'Vinculación',
-                'Practicas': 'Prácticas',
-                'Director-Departamento': 'Director de departamento',
-                'Director-Carrera': 'Director de carrera',
-                'DirectorVinculacion': 'Director de proyectos sociales',
-                'ParticipanteVinculacion': 'Docente',
-                'Estudiante': 'Estudiante'
-            };
-            return roleNames[role] || role;
-        }
-
-        function closePermissionsModal() {
-            $('#permissionsModal').hide();
-        }
-
-        function makeElementDraggable(element) {
-            $(element).draggable({
-                handle: ".card-header",
-                containment: "window"
-            });
-        }
-
-        $(document).ready(function() {
-            makeElementDraggable('#permissionsModal');
+            // Mostrar el rol administrativo si existe, si no, mostrar 'Ninguno'
+            document.getElementById('roleInfo').textContent = data.roleAdministrativo;
+        })
+        .catch(error => {
+            console.error('Error al obtener los datos del usuario:', error);
+            document.getElementById('profesorNombreCompleto').textContent = 'Error al cargar la información';
+            document.getElementById('roleInfo').textContent = 'Error al cargar la información';
         });
+}
+
+function closePermissionsModal() {
+    document.getElementById('permissionsModal').style.display = 'none';
+}
+
     </script>
+
 
 
 

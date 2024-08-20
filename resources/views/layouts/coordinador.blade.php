@@ -60,6 +60,31 @@
 </script>
 
 <body>
+
+    <?php
+    $user = auth()->user()->profesorUniversidad ?? null;
+    $currentRoute = \Route::currentRouteName();
+
+    if ($user && $user->actualizacion == 0 && $currentRoute !== 'participante-vinculacion.cambio-credenciales') {
+        echo "<script>
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Primera sesión',
+                    text: 'Es obligatorio que realice el cambio de clave.',
+                    confirmButtonText: 'Aceptar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '" .
+            route('participante-vinculacion.cambio-credenciales') .
+            "';
+                    }
+                });
+            </script>";
+        exit();
+    }
+    ?>
+
+
     <!-- Barra de navegación en el lado izquierdo -->
     <section class="content-sidebar {{ session('menuState') == 'collapsed' ? 'content-sidebar-hidden' : '' }}"
         _ngcontent-ng-c4160891441>
@@ -155,7 +180,7 @@
 
                     // Obtener el tipo de rol administrativo usando una consulta directa a la base de datos
                     $roleAdministrativo = DB::table('roles')
-                        ->where('id', Auth::user()->role_id_administrativo)
+                        ->where('id', Auth::user()->role_id)
                         ->value('tipo');
                 @endphp
 

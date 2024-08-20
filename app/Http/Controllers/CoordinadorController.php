@@ -44,7 +44,7 @@ class CoordinadorController extends Controller
             $user = Auth::user();
 
             // Obtener el tipo de rol administrativo si existe
-            $roleAdministrativo = $user->role_id_administrativo ? Role::find($user->role_id_administrativo)->tipo : null;
+            $roleAdministrativo = $user->role_id ? Role::find($user->role_id)->tipo : null;
 
             if (!in_array($roleAdministrativo, ['Vinculacion', 'Practicas'])) {
                 return redirect()->route('login')->with('error', 'Acceso no autorizado');
@@ -209,7 +209,7 @@ class CoordinadorController extends Controller
             $user = Auth::user();
 
             // Obtener el tipo de rol administrativo si existe
-            $roleAdministrativo = $user->role_id_administrativo ? Role::find($user->role_id_administrativo)->tipo : null;
+            $roleAdministrativo = $user->role_id ? Role::find($user->role_id)->tipo : null;
 
             if (!in_array($roleAdministrativo, ['Vinculacion', 'Practicas'])) {
                 return redirect()->route('login')->with('error', 'Acceso no autorizado');
@@ -269,7 +269,7 @@ class CoordinadorController extends Controller
             $user = Auth::user();
 
             // Obtener el tipo de rol administrativo si existe
-            $roleAdministrativo = $user->role_id_administrativo ? Role::find($user->role_id_administrativo)->tipo : null;
+            $roleAdministrativo = $user->role_id ? Role::find($user->role_id)->tipo : null;
 
             if (!in_array($roleAdministrativo, ['Vinculacion', 'Practicas'])) {
                 return redirect()->route('login')->with('error', 'Acceso no autorizado');
@@ -387,7 +387,7 @@ class CoordinadorController extends Controller
             $user = Auth::user();
 
             // Obtener el tipo de rol administrativo si existe
-            $roleAdministrativo = $user->role_id_administrativo ? Role::find($user->role_id_administrativo)->tipo : null;
+            $roleAdministrativo = $user->role_id ? Role::find($user->role_id)->tipo : null;
 
             if (!in_array($roleAdministrativo, ['Vinculacion', 'Practicas'])) {
                 return redirect()->route('login')->with('error', 'Acceso no autorizado');
@@ -546,7 +546,7 @@ class CoordinadorController extends Controller
             $user = Auth::user();
 
             // Obtener el tipo de rol administrativo si existe
-            $roleAdministrativo = $user->role_id_administrativo ? Role::find($user->role_id_administrativo)->tipo : null;
+            $roleAdministrativo = $user->role_id ? Role::find($user->role_id)->tipo : null;
 
             if (!in_array($roleAdministrativo, ['Vinculacion', 'Practicas'])) {
                 return redirect()->route('login')->with('error', 'Acceso no autorizado');
@@ -769,7 +769,7 @@ class CoordinadorController extends Controller
             $user = Auth::user();
 
             // Obtener el tipo de rol administrativo si existe
-            $roleAdministrativo = $user->role_id_administrativo ? Role::find($user->role_id_administrativo)->tipo : null;
+            $roleAdministrativo = $user->role_id ? Role::find($user->role_id)->tipo : null;
 
             if (!in_array($roleAdministrativo, ['Vinculacion', 'Practicas'])) {
                 return redirect()->route('login')->with('error', 'Acceso no autorizado');
@@ -1247,7 +1247,7 @@ class CoordinadorController extends Controller
 
     public function cambiarCredencialesUsuario()
     {
-        
+
 
         $periodos = Periodo::all();
 

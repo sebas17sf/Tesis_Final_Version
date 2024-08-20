@@ -38,7 +38,32 @@
     };
 </script>
 
+
+
 <body>
+
+    <?php
+    $user = auth()->user()->profesorUniversidad ?? null;
+    $currentRoute = \Route::currentRouteName();
+
+    if ($user && $user->actualizacion == 0 && $currentRoute !== 'participante-vinculacion.cambio-credenciales') {
+        echo "<script>
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Primera sesión',
+                    text: 'Es obligatorio que realice el cambio de clave.',
+                    confirmButtonText: 'Aceptar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '" .
+            route('participante-vinculacion.cambio-credenciales') .
+            "';
+                    }
+                });
+            </script>";
+        exit();
+    }
+    ?>
     <!-- Barra de navegación en el lado izquierdo -->
     <section class="content-sidebar {{ session('menuState') == 'collapsed' ? 'content-sidebar-hidden' : '' }}"
         _ngcontent-ng-c4160891441>
@@ -162,7 +187,7 @@
             <button class="profile-icon dropdown" id="profile-button">
 
                 <div class="name-profile">
-                    <span> {{ explode(' ', Auth::user()->profesorUniversidad->nombres)[0] }}</span> 
+                    <span> {{ explode(' ', Auth::user()->profesorUniversidad->nombres)[0] }}</span>
                     <span>    {{ explode(' ', Auth::user()->profesorUniversidad->apellidos)[0] }}</span>
                 </div>
                 <div class="icon-profile">

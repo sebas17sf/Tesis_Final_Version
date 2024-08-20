@@ -372,10 +372,9 @@ class ParticipanteVinculacionController extends Controller
     ////////////////////////////cambiar credenciales
     public function cambiarCredencialesUsuario()
     {
-        if (Auth::check() && !in_array(Auth::user()->role->tipo, ['ParticipanteVinculacion', 'DirectorVinculacion'])) {
+        if (Auth::check() && in_array(Auth::user()->role->tipo, ['Estudiante'])) {
             return redirect()->route('login')->with('error', 'Acceso no autorizado');
         }
-
 
         $departamentos = Departamento::all();
 
@@ -408,9 +407,6 @@ class ParticipanteVinculacionController extends Controller
             'lastname_student' => 'required',
             'Departamento' => 'required',
         ]);
-
-
-
 
         $estudiante = ProfesUniversidad::findOrFail($id);
 
@@ -453,10 +449,10 @@ class ParticipanteVinculacionController extends Controller
             'password_confirmation' => 'required|same:password',
         ]);
 
+
         // Obtener el usuario autenticado
         $usuario = Auth::user();
-
-        // Actualizar la contraseña del usuario
+          // Actualizar la contraseña del usuario
         $usuario->Contrasena = bcrypt($request->password);
 
         // Verificar si el usuario tiene relación con profesorUniversidad
@@ -469,7 +465,7 @@ class ParticipanteVinculacionController extends Controller
         $usuario->save();
 
         // Redirigir a la ruta deseada con un mensaje de éxito
-        return redirect()->route('ParticipanteVinculacion.index')->with('success', 'Credenciales actualizadas exitosamente');
+        return back()->with('success', 'Credenciales actualizadas exitosamente');
     }
 
 

@@ -92,9 +92,12 @@ Route::middleware(['auth'])->group(function () {
     ///borrar los permisos concedidos
     Route::delete('/admin/{id}/deletePermission', [AdminController::class, 'deletePermission'])->name('admin.deletePermission');
 
-    Route::get('/admin/getRoleAdministrativo/{userId}', [AdminController::class, 'getRoleAdministrativo']);
     Route::post('/admin/assignRoleAdministrativo/{userId}', [AdminController::class, 'assignRoleAdministrativo'])->name('admin.assignRoleAdministrativo');
-    Route::post('/admin/removeRoleAdministrativo/{userId}', [AdminController::class, 'removeRoleAdministrativo'])->name('admin.removeRoleAdministrativo');
+    Route::get('/admin/getRoleAdministrativo/{userId}', [AdminController::class, 'getRoleAdministrativo']);
+Route::post('/admin/removeRoleAdministrativo/{userId}', [AdminController::class, 'removeRoleAdministrativo'])->name('admin.removeRoleAdministrativo');
+
+    ////////////updateRoleVentana
+    Route::put('/admin/updateRoleVentana', [AdminController::class, 'updateRoleVentana'])->name('admin.updateRoleVentana');
 
     ////ReporteEstudiantes
     Route::post('/admin/reportes-estudiantes', [DocumentoController::class, 'ReporteEstudiantes'])->name('admin.reportesEstudiantes');
@@ -527,7 +530,8 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/docentes-espe/cambio-credenciales', [ParticipanteVinculacionController::class, 'cambiarCredencialesUsuario'])->name('participante-vinculacion.cambio-credenciales');
-    Route::put('/participante-vinculacion/cambio-credenciales', [ParticipanteVinculacionController::class, 'actualizarCredenciales'])->name('participante-vinculacion.updateCredenciales');
+    Route::put('/docentes-espe/cambio-credenciales/{userId}', [ParticipanteVinculacionController::class, 'actualizarCredenciales'])->name('participante-vinculacion.updateCredenciales');
+
     Route::put('/participante-vinculacion/cambio/{id}', [ParticipanteVinculacionController::class, 'actualizarDatosParticipanterCredenciales'])->name('participante.updateDatos');
 
     Route::get('/estudiantes/cambio-credenciales', [EstudianteController::class, 'cambiarCredencialesUsuario'])->name('estudiantes.cambio-credenciales');

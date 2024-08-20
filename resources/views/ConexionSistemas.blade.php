@@ -47,10 +47,9 @@
     </div>
 
     <section class="global_contenedor">
-        <!-- Boton para ir al modulo 1 -->
-        <form class="main1" action="{{ route('modulo1') }}" method="post" id="modulo1Form">
+         <form class="main1" action="{{ route('modulo1') }}" method="post">
             @csrf
-            <button type="button" class="switch" id="modulo1Button">
+            <button type="submit" class="switch">
                 <span class="title">VINCULACIÓN Y PRÁCTICAS</span>
                 <img src="{{ asset('img/default/modulopracticas.png') }}">
             </button>
@@ -79,69 +78,23 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Función para redirigir según el rol seleccionado
-        function selectRole(role) {
-            let roleSource = '';
+        // Definir rolesMap en el contexto global
+        const rolesMap = @json($rolesMap);
 
-            // Asignar roleSource basado en el rol seleccionado
-            switch (role) {
-                case 'Administrador':
-                    roleSource = 'role_id_administrativo';
-                    break;
-                case 'Vinculacion':
-                case 'Practicas':
-                    roleSource = 'role_id_coordinador';
-                    break;
-                case 'Director-Departamento':
-                case 'Director-Carrera':
-                    roleSource = 'role_id_director';
-                    break;
-                case 'DirectorVinculacion':
-                    roleSource = 'role_id_directorVinculacion';
-                    break;
-                case 'ParticipanteVinculacion':
-                    roleSource = 'role_id_participante';
-                    break;
-                case 'Estudiante':
-                    roleSource = 'role_id_estudiante';
-                    break;
-                default:
-                    roleSource = 'role_id';
-            }
-
-            // Almacenar el rol seleccionado en localStorage
-            localStorage.setItem('active_role_source', roleSource);
-
-            // Redirigir según el rol
-            redirectToRole(role);
-        }
-
-        function redirectToRole(role) {
-            // Obtener el roleSource desde localStorage
-            const roleSource = localStorage.getItem('active_role_source');
-
-            // Redirigir según el rol
-            if (role === 'Administrador') {
-                window.location.href = "{{ route('admin.index') }}";
-            } else if (role === 'Vinculacion' || role === 'Practicas') {
-                window.location.href = "{{ route('coordinador.index') }}";
-            } else if (role === 'Director-Departamento' || role === 'Director-Carrera') {
-                window.location.href = "{{ route('director.indexProyectos') }}";
-            } else if (role === 'DirectorVinculacion') {
-                window.location.href = "{{ route('director_vinculacion.index') }}";
-            } else if (role === 'ParticipanteVinculacion') {
-                window.location.href = "{{ route('ParticipanteVinculacion.index') }}";
-            } else if (role === 'Estudiante') {
-                window.location.href = "{{ route('estudiantes.create') }}";
-            }
-        }
-
-        // Función para obtener el valor de un item en localStorage
-        function getLocalStorageItem(key) {
-            return localStorage.getItem(key);
-        }
+        // Mapeo de nombres técnicos a nombres legibles para la alerta
+        const readableRoleNames = {
+            'Administrador': 'Administrador',
+            'Estudiante': 'Estudiante',
+            'DirectorVinculacion': 'Director de Vinculación',
+            'ParticipanteVinculacion': 'Docente',
+            'Vinculacion': 'Coordinador de Vinculación',
+            'Director-Departamento': 'Director de Departamento',
+            'Practicas': 'Coordinador de Prácticas',
+        };
 
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('rolesMap:', rolesMap);
+
             // Verificar y almacenar el token en localStorage
             const token = "{{ session('token') }}";
             if (token) {
@@ -158,81 +111,85 @@
                 console.log("No se encontró un token en localStorage.");
             }
 
-            // Leer el valor de localStorage para determinar el rol activo
-            const activeRoleSource = getLocalStorageItem('active_role_source');
-            console.log("Rol activo desde localStorage:", activeRoleSource);
+            const estado = "{{ $estado }}";
 
-            const roles = @json($roles);
+            let roles = [];
+            if (estado === 'permiteAdministrativo') {
+                roles = ['Administrador', 'ParticipanteVinculacion'];
+            } else if (estado === 'permiteVinculacion') {
+                roles = ['Vinculacion', 'ParticipanteVinculacion'];
+            } else if (estado === 'permiteDepartamento') {
+                roles = ['Director-Departamento', 'ParticipanteVinculacion'];
+            } else if (estado === 'permitePracticas') {
+                roles = ['Practicas', 'ParticipanteVinculacion'];
+            } else {
+                roles = [];
+            }
 
-            const roleNames = {
-                'Administrador': 'Administrador',
-                'Vinculacion': 'Coordinador de Vinculación',
-                'Practicas': 'Coordinador de Prácticas',
-                'Director-Departamento': 'Director de departamento',
-                'Director-Carrera': 'Director de carrera',
-                'DirectorVinculacion': 'Director de proyectos sociales',
-                'ParticipanteVinculacion': 'Docente',
-                'Estudiante': 'Estudiante'
-            };
-
-            document.getElementById('modulo1Button').addEventListener('click', function(event) {
-    // Si el usuario tiene más de un rol, mostramos la ventana emergente
-    if (roles.length > 1) {
-        event.preventDefault();
-
-        Swal.fire({
-            title: 'Seleccione su rol',
-            html: roles.map(role => `
-                <center><button class="custom-role-btn"
-                        onclick="selectRole('${role}')">
-                    ${roleNames[role] || role}
-                </button></center>
-            `).join(''),
-            background: 'rgba(20, 20, 30, 0.85)', // Fondo translúcido de la alerta
-            color: '#FFFFFF', // Color del texto en la alerta
-            showCancelButton: true,
-            showConfirmButton: false,
-            cancelButtonText: 'Cancelar',
-            customClass: {
-                popup: 'custom-popup', // Clase personalizada para el popup
-                title: 'custom-title', // Clase personalizada para el título
-                content: 'custom-content', // Clase personalizada para el contenido
-                cancelButton: 'custom-cancel-button', // Clase personalizada para el botón de cancelar
-            },
+            // Verificar si hay roles disponibles antes de mostrar la alerta
+            if (roles.length > 0) {
+                // Usar readableRoleNames para mostrar nombres legibles en la alerta
+                Swal.fire({
+                    title: 'Seleccione su rol',
+                    html: roles.map(role => `
+                        <center><button class="custom-role-btn"
+                                onclick="selectRole('${role}')">
+                            ${readableRoleNames[role] || role}
+                        </button></center>
+                    `).join(''),
+                    background: 'rgba(20, 20, 30, 0.85)',
+                    showCancelButton: true,
+                    showConfirmButton: false,
+                    cancelButtonText: 'Cancelar',
+                    customClass: {
+                        popup: 'custom-popup',
+                        title: 'custom-title',
+                        content: 'custom-content',
+                        cancelButton: 'custom-cancel-button',
+                    },
+                });
+            }
         });
 
-    } else if (roles.length === 1) {
-        // Si solo hay un rol, almacenarlo en localStorage y redirigir automáticamente
-        selectRole(roles[0]);
-    } else {
-        // Si no hay roles definidos, envía el formulario normalmente
-        document.getElementById('modulo1Form').submit();
-    }
-});
+        function selectRole(role) {
+            console.log("Rol seleccionado:", role);
 
+            // Cerrar la alerta inmediatamente
+            Swal.close();
 
-            // Mover la burbuja interactiva
-            const interBubble = document.querySelector('.interactive');
-            let curX = 0;
-            let curY = 0;
-            let tgX = 0;
-            let tgY = 0;
+            // Obtener el ID del rol seleccionado
+            const roleId = getRoleIdByName(role);
 
-            const move = () => {
-                curX += (tgX - curX) / 20;
-                curY += (tgY - curY) / 20;
-                interBubble.style.transform = `translate(${Math.round(curX)}px, ${Math.round(curY)}px)`;
-                requestAnimationFrame(move);
-            };
+            // Enviar solicitud AJAX para actualizar el role_id del usuario
+            if (roleId) {
+                fetch('{{ route('admin.updateRoleVentana') }}', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ role_id: roleId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log("Rol actualizado exitosamente.");
+                    } else {
+                        console.error("Error al actualizar el rol:", data.message);
+                    }
+                })
+                .catch(error => console.error("Error en la solicitud:", error));
+            }
+        }
 
-            window.addEventListener('mousemove', (event) => {
-                tgX = event.clientX;
-                tgY = event.clientY;
-            });
-
-            move();
-        });
+        function getRoleIdByName(roleName) {
+            return rolesMap[roleName] || null;
+        }
     </script>
+
+
+
+
 
 
 
@@ -240,49 +197,57 @@
 
     <style>
         .custom-popup {
-    border-radius: 15px; /* Bordes redondeados */
-    padding: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.2); /* Borde fino translúcido */
-    background-color: rgba(20, 20, 30, 0.85); /* Fondo translúcido */
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5); /* Sombra similar a la imagen */
-}
+            border-radius: 15px;
+            /* Bordes redondeados */
+            padding: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            /* Borde fino translúcido */
+            background-color: rgba(20, 20, 30, 0.85);
+            /* Fondo translúcido */
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+            /* Sombra similar a la imagen */
+        }
 
-.custom-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #FFFFFF;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7); /* Sombra del texto para destacarlo */
-}
+        .custom-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #FFFFFF;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+            /* Sombra del texto para destacarlo */
+        }
 
-.custom-role-btn {
-    display: block;
-    width: 70%;
-    padding: 10px 20px;
-    margin: 8px 0;
-    background-color: rgba(58, 63, 84, 0.8); /* Fondo oscuro translúcido */
-    color: #FFFFFF; /* Color del texto */
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Borde fino translúcido */
-    border-radius: 10px;
-    font-size: 16px;
-    text-align: center;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
+        .custom-role-btn {
+            display: block;
+            width: 70%;
+            padding: 10px 20px;
+            margin: 8px 0;
+            background-color: rgba(58, 63, 84, 0.8);
+            /* Fondo oscuro translúcido */
+            color: #FFFFFF;
+            /* Color del texto */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            /* Borde fino translúcido */
+            border-radius: 10px;
+            font-size: 16px;
+            text-align: center;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
 
-.custom-role-btn:hover {
-    background-color: rgba(86, 93, 146, 0.8); /* Color de fondo al pasar el mouse */
-    box-shadow: 0 0 15px rgba(86, 93, 146, 0.8); /* Iluminación al pasar el mouse */
-}
+        .custom-role-btn:hover {
+            background-color: rgba(86, 93, 146, 0.8);
+            /* Color de fondo al pasar el mouse */
+            box-shadow: 0 0 15px rgba(86, 93, 146, 0.8);
+            /* Iluminación al pasar el mouse */
+        }
 
-.custom-cancel-button {
-    background-color: rgba(211, 51, 51, 0.8);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Borde fino translúcido */
-    border-radius: 10px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-
-
+        .custom-cancel-button {
+            background-color: rgba(211, 51, 51, 0.8);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            /* Borde fino translúcido */
+            border-radius: 10px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
     </style>
 
 

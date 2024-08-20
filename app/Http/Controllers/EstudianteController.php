@@ -949,7 +949,7 @@ class EstudianteController extends Controller
                 return redirect()->back()->with('error', 'No se pudo actualizar el campo de actualización');
             }
         } else {
-            return redirect()->back()->with('error', 'No se encontró la relación con profesorUniversidad');
+            return redirect()->back()->with('error', 'No se encontró la relación con estudiante');
         }
     }
 

@@ -124,25 +124,37 @@ class AdminController extends Controller
 
     public function getRoleAdministrativo($userId)
     {
-        $user = Auth::user(); // Obtener el usuario autenticado
+         $user = Usuario::find($userId);
 
         if ($user) {
-            // Obtener el tipo de rol administrativo, si existe
-            $roleAdministrativo = DB::table('roles')
+            $profesor = $user->profesorUniversidad;
+
+             $roleAdministrativo = DB::table('roles')
                 ->where('id', $user->role_id)
                 ->value('tipo');
 
+             $roleMapping = [
+                'Administrador' => 'Administrador',
+                'DirectorProyecto' => 'Docente',
+                'DocenteParticipante' => 'Docente',
+                'Vinculacion' => 'Coordinador de Vinculación',
+                'Director-Departamento' => 'Director de Departamento',
+                'Practicas' => 'Coordinador de Prácticas'
+            ];
+
+             $mappedRole = $roleMapping[$roleAdministrativo] ?? 'Ninguno';
+
             return response()->json([
-                'nombres' => $user->nombres,
-                'apellidos' => $user->apellidos,
-                'roleAdministrativo' => $roleAdministrativo,
-                'estadosModificados' => $user->estadosModificados // Aquí se pasa la variable al frontend
+                'nombres' => $profesor ? $profesor->nombres : null,
+                'apellidos' => $profesor ? $profesor->apellidos : null,
+                'roleAdministrativo' => $mappedRole,
+                'estadosModificados' => $user->estadosModificados
             ]);
         } else {
             return response()->json([
                 'nombres' => null,
                 'apellidos' => null,
-                'roleAdministrativo' => null,
+                'roleAdministrativo' => 'Ninguno',
                 'estadoModificado' => null,
             ]);
         }
@@ -152,48 +164,82 @@ class AdminController extends Controller
 
 
 
-public function assignRoleAdministrativo(Request $request, $userId)
-{
-    try {
-        // Validar el ID del rol
-        $request->validate([
-            'role_id_administrativo' => 'required|exists:roles,id',
-        ]);
+    public function removeRoleAdministrativo($userId)
+    {
+        try {
+            $user = Usuario::findOrFail($userId);
 
-        // Encontrar el usuario
-        $user = Usuario::findOrFail($userId);
+            $user->role_id = null;
+            $user->save();
 
-        // Asignar el rol administrativo y actualizar el estado
-        $user->role_id = $request->role_id_administrativo;
-        $user->estadosModificados = 'permiteAdministrativo';
-        $user->save();
-
-        // Devolver una respuesta JSON de éxito
-        return response()->json(['success' => true, 'message' => 'Rol administrativo asignado correctamente.']);
-    } catch (\Exception $e) {
-        // Devolver una respuesta JSON de error
-        return response()->json(['success' => false, 'message' => 'Error al asignar el rol administrativo.'], 500);
+            return back()->with('success', 'Rol administrativo eliminado correctamente.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error al eliminar el rol administrativo.');
+        }
     }
-}
 
 
-public function removeRoleAdministrativo($userId)
-{
-    try {
-        // Encontrar el usuario
-        $user = Usuario::findOrFail($userId);
 
-        // Eliminar el rol administrativo
-        $user->role_id = null;
-        $user->save();
+    public function assignRoleAdministrativo(Request $request, $userId)
+    {
+        try {
+            $request->validate([
+                'role_id_administrativo' => 'required|exists:roles,id',
+            ]);
 
-        // Devolver una respuesta JSON de éxito
-        return response()->json(['success' => true, 'message' => 'Rol administrativo eliminado correctamente.']);
-    } catch (\Exception $e) {
-        // Devolver una respuesta JSON de error
-        return response()->json(['success' => false, 'message' => 'Error al eliminar el rol administrativo.'], 500);
+            $user = Usuario::findOrFail($userId);
+
+            $role = Role::findOrFail($request->role_id_administrativo);
+
+            $user->role_id = $role->id;
+
+            switch ($role->tipo) {
+                case 'Administrador':
+                    $user->estadosModificados = 'permiteAdministrativo';
+                    break;
+                case 'Vinculacion':
+                    $user->estadosModificados = 'permiteVinculacion';
+                    break;
+                case 'Director-Departamento':
+                    $user->estadosModificados = 'permiteDepartamento';
+                    break;
+                case 'Practicas':
+                    $user->estadosModificados = 'permitePracticas';
+                    break;
+                default:
+                    $user->estadosModificados = null;
+                    break;
+            }
+
+            $user->save();
+
+            return back()->with('success', 'Rol asignado correctamente.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error al asignar el rol administrativo.');
+        }
     }
-}
+
+
+    ///////////actualizar roles desde la ventana
+    public function updateRoleVentana(Request $request)
+    {
+        try {
+            $user = Auth::user();
+
+            $request->validate([
+                'role_id' => 'required|exists:roles,id',
+            ]);
+
+            // Actualizar el role_id del usuario
+            $user->role_id = $request->role_id;
+            $user->save();
+
+            return response()->json(['success' => true, 'message' => 'Rol actualizado exitosamente.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error al actualizar el rol.'], 500);
+        }
+    }
+
 
 
 
