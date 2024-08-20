@@ -78,10 +78,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Definir rolesMap en el contexto global
         const rolesMap = @json($rolesMap);
 
-        // Mapeo de nombres técnicos a nombres legibles para la alerta
         const readableRoleNames = {
             'Administrador': 'Administrador',
             'Estudiante': 'Estudiante',
@@ -95,7 +93,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('rolesMap:', rolesMap);
 
-            // Verificar y almacenar el token en localStorage
             const token = "{{ session('token') }}";
             if (token) {
                 console.log("Token encontrado en la sesión, almacenando en localStorage:", token);
@@ -126,9 +123,7 @@
                 roles = [];
             }
 
-            // Verificar si hay roles disponibles antes de mostrar la alerta
             if (roles.length > 0) {
-                // Usar readableRoleNames para mostrar nombres legibles en la alerta
                 Swal.fire({
                     title: 'Seleccione su rol',
                     html: roles.map(role => `
@@ -138,14 +133,13 @@
                         </button></center>
                     `).join(''),
                     background: 'rgba(20, 20, 30, 0.85)',
-                    showCancelButton: true,
+                    showCancelButton: false, // Se elimina el botón de cancelar
                     showConfirmButton: false,
-                    cancelButtonText: 'Cancelar',
+                    allowOutsideClick: false, // Se desactiva el cierre al hacer clic fuera
                     customClass: {
                         popup: 'custom-popup',
                         title: 'custom-title',
                         content: 'custom-content',
-                        cancelButton: 'custom-cancel-button',
                     },
                 });
             }
@@ -154,13 +148,10 @@
         function selectRole(role) {
             console.log("Rol seleccionado:", role);
 
-            // Cerrar la alerta inmediatamente
             Swal.close();
 
-            // Obtener el ID del rol seleccionado
             const roleId = getRoleIdByName(role);
 
-            // Enviar solicitud AJAX para actualizar el role_id del usuario
             if (roleId) {
                 fetch('{{ route('admin.updateRoleVentana') }}', {
                     method: 'PUT',
@@ -186,6 +177,7 @@
             return rolesMap[roleName] || null;
         }
     </script>
+
 
 
 

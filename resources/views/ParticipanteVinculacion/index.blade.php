@@ -163,7 +163,7 @@
                                                 {{ $asignaciones->docenteParticipante->apellidos }}
                                             </td>
                                             <td style="text-align:left; text-transform: uppercase; word-wrap: break-word;">
-                                                {{ $asignaciones->docenteParticipante->departamento }}
+                                                {{ $asignaciones->docenteParticipante->departamento->departamento }}
                                             </td>
                                             <td style="text-align:left; text-transform: uppercase; word-wrap: break-word;">
                                                 {{ $asignaciones->estudiante->nombres }}
@@ -530,10 +530,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
-    
+
 
     <script>
-        
+
         var delayTimer;
         $('#searchForm input[name="search"]').on('keyup', function() {
             clearTimeout(delayTimer);
