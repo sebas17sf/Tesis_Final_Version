@@ -282,6 +282,21 @@
     <script src="{{ asset('js/sesiones.js') }}"></script>
 
     <script>
+        @if (session('token'))
+            localStorage.setItem('token', '{{ session('token') }}');
+        @endif
+
+        $(document).ready(function() {
+            $('#practicasMenu').click(function() {
+                $('#practicasSubmenu').slideToggle('fast');
+                // Alternar el ícono
+                var icon = $(this).find('.icon-sidebar-item-list i');
+                icon.toggleClass('fa-angle-down fa-angle-up');
+            });
+        });
+    </script>
+
+    <script>
         function toggleSidebar() {
             var menuState = localStorage.getItem('menuState') === 'expanded' ? 'collapsed' : 'expanded';
 
@@ -311,20 +326,7 @@
     </script>
 
 
-    <script>
-        @if (session('token'))
-            localStorage.setItem('token', '{{ session('token') }}');
-        @endif
 
-        $(document).ready(function() {
-            $('#practicasMenu').click(function() {
-                $('#practicasSubmenu').slideToggle('fast');
-                // Alternar el ícono
-                var icon = $(this).find('.icon-sidebar-item-list i');
-                icon.toggleClass('fa-angle-down fa-angle-up');
-            });
-        });
-    </script>
 
     <style>
         .color_a {

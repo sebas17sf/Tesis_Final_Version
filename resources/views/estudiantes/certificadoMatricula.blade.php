@@ -115,7 +115,7 @@
         <th>Correo:</th>
         <td style="text-transform: lowercase;">{{ $estudiante->correo }}</td>
         <th>Departamento:</th>
-        <td>{{ $estudiante->departamento }}</td>
+        <td>{{ $estudiante->departamento->departamento }}</td>
     </tr>
     <tr>
         <th>Campus:</th>

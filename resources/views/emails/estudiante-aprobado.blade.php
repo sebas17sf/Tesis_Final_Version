@@ -100,7 +100,7 @@
             <li><strong>Celular:</strong> {{ $estudiante->celular }}</li>
             <li><strong>Cedula:</strong> {{ $estudiante->cedula }}</li>
             <li><strong>Cohorte:</strong> {{ $estudiante->Cohorte}}</li>
-            <li><strong>Departamento:</strong> {{ $estudiante->departamento }}</li>
+            <li><strong>Departamento:</strong> {{ $estudiante->departamento->departamento }}</li>
         </ul>
 
         <p>Pronto sera asignado aun proyecto, estar atento en el respectivo proceso!.</p>

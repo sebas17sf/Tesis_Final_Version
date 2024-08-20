@@ -631,7 +631,6 @@ class DocumentosVinculacion extends Controller
                     $hojaCalculo->setCellValue('AH' . ($filaActual - 1), mb_strtoupper($asignacion->estado));
                 }
 
-                // Suma de las horas de vinculación del estudiante
                 $hojaCalculo->setCellValue("AG" . ($filaActual), "=SUM(K" . ($filaActual) . ",AE" . ($filaActual) . ")");
             }
         }
@@ -698,21 +697,21 @@ class DocumentosVinculacion extends Controller
             $hojaCalculo->setCellValue("A$filaActual", $index + 1);
             $hojaCalculo->setCellValue("M$filaActual", mb_strtoupper($proyecto->nombreProyecto, 'UTF-8'));
             $hojaCalculo->setCellValue("P$filaActual", mb_strtoupper($director->apellidos . ' ' . $director->nombres, 'UTF-8'));
-            $hojaCalculo->setCellValue("Q$filaActual", mb_strtoupper($director->departamento, 'UTF-8'));
+            $hojaCalculo->setCellValue("Q$filaActual", mb_strtoupper($director->departamento->departamento, 'UTF-8'));
             $hojaCalculo->setCellValue("R$filaActual", mb_strtoupper($participante->apellidos . ' ' . $participante->nombres, 'UTF-8'));
-            $hojaCalculo->setCellValue("S$filaActual", mb_strtoupper($participante->departamento, 'UTF-8'));
+            $hojaCalculo->setCellValue("S$filaActual", mb_strtoupper($participante->departamento->departamento, 'UTF-8'));
 
             $hojaCalculo->setCellValue("T$filaActual", $asignacion->inicioFecha);
             $hojaCalculo->setCellValue("O$filaActual", mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
             $hojaCalculo->setCellValue("U$filaActual", $asignacion->finalizacionFecha);
-            $hojaCalculo->setCellValue("N$filaActual", mb_strtoupper($proyecto->departamentoTutor, 'UTF-8'));
+            $hojaCalculo->setCellValue("N$filaActual", mb_strtoupper($proyecto->departamento->departamento, 'UTF-8'));
             $hojaCalculo->setCellValue("I$filaActual", $periodo->numeroPeriodo);
 
             $nombreCompleto = mb_strtoupper(($asignacion->estudiante->apellidos ?? '') . ' ' . ($asignacion->estudiante->nombres ?? ''), 'UTF-8');
             $hojaCalculo->setCellValue("C$filaActual", $asignacion->estudiante->espeId ?? '');
             $hojaCalculo->setCellValue("D$filaActual", $asignacion->estudiante->cedula ?? '');
             $hojaCalculo->setCellValue("H$filaActual", mb_strtoupper($asignacion->estudiante->carrera, 'UTF-8' ?? ''));
-            $hojaCalculo->setCellValue("G$filaActual", mb_strtoupper($asignacion->estudiante->departamento, 'UTF-8' ?? ''));
+            $hojaCalculo->setCellValue("G$filaActual", mb_strtoupper($asignacion->estudiante->departamento->departamento, 'UTF-8' ?? ''));
 
 
             $hojaCalculo->setCellValue("J$filaActual", $nrc->nrc ?? 'NO REQUIRE NRC');
@@ -769,7 +768,6 @@ class DocumentosVinculacion extends Controller
         $director = ProfesUniversidad::where('correo', $correoUsuario)->first();
         $proyecto = Proyecto::where('directorId', $director->id)->first();
 
-        /////valida si el director tiene proyectos asignados
         if ($proyecto == null) {
             return redirect()->back()->with('error', 'No tiene proyectos asignados como director');
         }
@@ -811,21 +809,21 @@ class DocumentosVinculacion extends Controller
             $hojaCalculo->setCellValue("A$filaActual", $index + 1);
             $hojaCalculo->setCellValue("M$filaActual", mb_strtoupper($proyecto->nombreProyecto, 'UTF-8'));
             $hojaCalculo->setCellValue("P$filaActual", mb_strtoupper($director->apellidos . ' ' . $director->nombres, 'UTF-8'));
-            $hojaCalculo->setCellValue("Q$filaActual", mb_strtoupper($director->departamento, 'UTF-8'));
+            $hojaCalculo->setCellValue("Q$filaActual", mb_strtoupper($director->departamento->departamento, 'UTF-8'));
             $hojaCalculo->setCellValue("R$filaActual", mb_strtoupper($participante->apellidos . ' ' . $participante->nombres, 'UTF-8'));
-            $hojaCalculo->setCellValue("S$filaActual", mb_strtoupper($participante->departamento, 'UTF-8'));
+            $hojaCalculo->setCellValue("S$filaActual", mb_strtoupper($participante->departamento->departamento, 'UTF-8'));
 
             $hojaCalculo->setCellValue("T$filaActual", $asignacion->inicioFecha);
             $hojaCalculo->setCellValue("O$filaActual", mb_strtoupper($proyecto->descripcionProyecto, 'UTF-8'));
             $hojaCalculo->setCellValue("U$filaActual", $asignacion->finalizacionFecha);
-            $hojaCalculo->setCellValue("N$filaActual", mb_strtoupper($proyecto->departamentoTutor, 'UTF-8'));
+            $hojaCalculo->setCellValue("N$filaActual", mb_strtoupper($proyecto->departamento->departamento, 'UTF-8'));
             $hojaCalculo->setCellValue("I$filaActual", $periodo->numeroPeriodo);
 
             $nombreCompleto = mb_strtoupper(($asignacion->estudiante->apellidos ?? '') . ' ' . ($asignacion->estudiante->nombres ?? ''), 'UTF-8');
             $hojaCalculo->setCellValue("C$filaActual", $asignacion->estudiante->espeId ?? '');
             $hojaCalculo->setCellValue("D$filaActual", $asignacion->estudiante->cedula ?? '');
             $hojaCalculo->setCellValue("H$filaActual", mb_strtoupper($asignacion->estudiante->carrera, 'UTF-8' ?? ''));
-            $hojaCalculo->setCellValue("G$filaActual", mb_strtoupper($asignacion->estudiante->departamento, 'UTF-8' ?? ''));
+            $hojaCalculo->setCellValue("G$filaActual", mb_strtoupper($asignacion->estudiante->departamento->departamento, 'UTF-8' ?? ''));
 
 
             $hojaCalculo->setCellValue("J$filaActual", $nrc->nrc ?? 'NO REQUIRE NRC');

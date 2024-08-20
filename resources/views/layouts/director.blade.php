@@ -50,12 +50,13 @@
     }
     ?>
 
-    <script>
-        window.routes = {
-            keepAlive: '{{ route('keep-alive') }}',
-            logout: '{{ route('logout') }}'
-        };
-    </script>
+
+<script>
+    window.routes = {
+        keepAlive: '{{ route('keep-alive') }}',
+        logout: '{{ route('logout') }}'
+    };
+</script>
 
     <header>
         <!-- Barra de navegación en el lado izquierdo -->
@@ -145,10 +146,11 @@
                 <!-- Aquí agregamos el contenedor del menú desplegable -->
                 <div class="popup-menu-profile">
                     <div class="container">
-                        <a href="{{ route('conectarModulos', ['token' => session('token')]) }}" class="change_module">
+                        <a href="{{ route('conectarModulos') }}" class="change_module">
                             <i class="fa-regular fa-rectangle-vertical-history"></i>
-                            <span>Cambiar módulo</span>
+                            <span>Cambiar modulo</span>
                         </a>
+
 
                         <a href="participante-vinculacion.cambio-credenciales" class="change_password active-section p-element">
                         <i class="fa-regular fa-user"></i>
@@ -242,10 +244,18 @@
 
         </script>
         <script>
-            var token = "{{ session('token') }}";
-            if (token) {
-                localStorage.setItem('token', token);
-            }
+            @if (session('token'))
+                localStorage.setItem('token', '{{ session('token') }}');
+            @endif
+
+            $(document).ready(function() {
+                $('#practicasMenu').click(function() {
+                    $('#practicasSubmenu').slideToggle('fast');
+                    // Alternar el ícono
+                    var icon = $(this).find('.icon-sidebar-item-list i');
+                    icon.toggleClass('fa-angle-down fa-angle-up');
+                });
+            });
         </script>
 
         <script src="{{ asset('js/menu.js') }}"></script>

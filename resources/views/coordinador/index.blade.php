@@ -572,7 +572,7 @@
                                                         style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
 
                                                         @foreach ($grupo as $asignacion)
-                                                            {{ $asignacion->estudiante->departamento ?? '' }}<br>
+                                                            {{ $asignacion->estudiante->departamento->departamento ?? '' }}<br>
                                                         @endforeach
 
                                                     </td>

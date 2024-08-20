@@ -189,7 +189,7 @@
                                 class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir el
                             documento</span>
                         <input type="file" id="evidencias" name="evidencias"
-                            accept="image/jpeg, image/jpg, image/png" class="form-control-file input input_file" required
+                            accept="image/jpeg, image/jpg, image/png" class="form-control-file input input_file"
                             onchange="displayFileName(this, 'fileText')">
                         <span title="Eliminar archivo" onclick="removeFile(this)" class="remove-icon">✖</span>
                     </div>
@@ -197,7 +197,7 @@
                 <div class="form-group">
                     <label for="nombre_actividad"><strong>Asigne Nombre de la actividad:</strong></label>
                     <input type="text" id="nombre_actividad" name="nombre_actividad" class="form-control input"
-                        required value="{{ old('nombre_actividad') }}">
+                         value="{{ old('nombre_actividad') }}">
                 </div>
                 <center><button type="submit" class="button1">Guardar Actividad</button></center>
             </form>
@@ -260,11 +260,11 @@
                                         </td>
                                         <td
                                             style="text-transform: uppercase; word-wrap: break-word; text-align: left; font-size: .7em;">
-                                            {{ $actividad->nombreActividad }}
+                                            {{ $actividad->nombreActividad ?? 'NO REQUIERE' }}
                                         </td>
                                         <td
                                             style="text-transform: uppercase; word-wrap: break-word; text-align: center; font-size: .7em;">
-                                            <img src="data:image/png;base64,{{ $actividad->evidencias }}" alt="Evidencia"
+                                            <img src="data:image/png;base64,{{ $actividad->evidencias ?? 'NO REQUIERE' }}" alt="Evidencia"
                                                 width="100" height="100">
                                         </td>
                                         <td

@@ -361,14 +361,18 @@ class AdminController extends Controller
                     ->orWhere('celular', 'like', '%' . $busquedaEstudiantesAprobados . '%')
                     ->orWhere('Cohorte', 'like', '%' . $busquedaEstudiantesAprobados . '%')
                     ->orWhere('correo', 'like', '%' . $busquedaEstudiantesAprobados . '%')
-                    ->orWhere('departamento', 'like', '%' . $busquedaEstudiantesAprobados . '%');
+                    ->orWhereHas('departamento', function ($query) use ($busquedaEstudiantesAprobados) {
+                        $query->where('departamento', 'like', '%' . $busquedaEstudiantesAprobados . '%');
+                    });
             })
-                ->orderBy('apellidos', 'asc');
+            ->orderBy('apellidos', 'asc');
         }
 
         if ($request->has('Departamento') && $request->input('Departamento')) {
             $departamento = $request->input('Departamento');
-            $queryEstudiantesAprobados->where('departamento', $departamento);
+            $queryEstudiantesAprobados->whereHas('departamento', function ($query) use ($departamento) {
+                $query->where('departamento', $departamento);
+            });
         }
 
         if ($request->has('periodos') && $request->input('periodos')) {

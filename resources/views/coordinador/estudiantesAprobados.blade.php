@@ -160,7 +160,7 @@
                                             <td>{{ $estudiante->periodos->numeroPeriodo ?? '' }}</td>
                                             <td>{{ $estudiante->periodos->periodo ?? '' }}</td>
                                             <td style="text-transform: uppercase; ">
-                                                {{ strtoupper($estudiante->departamento) }}</td>
+                                                {{ strtoupper($estudiante->departamento->departamento) }}</td>
                                             <td style="text-transform: uppercase;">
                                                 @if ($estudiante->estado == 'Aprobado')
                                                     {{ strtoupper('Vinculación') }}

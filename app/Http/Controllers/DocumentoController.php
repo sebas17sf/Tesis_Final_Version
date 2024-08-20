@@ -394,11 +394,12 @@ class DocumentoController extends Controller
                 ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
                 ->join('profesuniversidad as director', 'proyectos.directorId', '=', 'director.id')
                 ->join('profesuniversidad as participante', 'asignacionproyectos.participanteId', '=', 'participante.id')
+                ->join('departamentos as deptEstudiante', 'estudiantes.departamentoId', '=', 'deptEstudiante.id')
                 ->select(
                     'estudiantes.apellidos',
                     'estudiantes.nombres',
                     'estudiantes.cedula',
-                    'estudiantes.departamento',
+                    'deptEstudiante.departamento as departamento',
                     'estudiantes.celular',
                     'estudiantes.carrera',
                     'estudiantes.correo',
@@ -644,8 +645,6 @@ class DocumentoController extends Controller
             return redirect()->route('estudiantes.documentos')->with('errorHoras', 'No puedes generar el informe porque no has completado las 96 horas requeridas.');
         }
 
-
-
         // Obtener el tipo de informe del formulario
         $tipoInforme = $request->input('tipo');
 
@@ -677,7 +676,7 @@ class DocumentoController extends Controller
                 ->orderBy('estudiantes.apellidos', 'asc')
                 ->get();
 
-            // Actividades de todos los estudiantes en el proyecto con la misma inicioFecha
+            // Actividades de todos los estudiantes en el proyecto con la misma inicioFecha y con evidencias
             $datosEstudiantes2 = DB::table('estudiantes')
                 ->join('asignacionproyectos', 'estudiantes.estudianteId', '=', 'asignacionproyectos.estudianteId')
                 ->join('actividades_estudiante', 'estudiantes.estudianteId', '=', 'actividades_estudiante.estudianteId')
@@ -692,6 +691,7 @@ class DocumentoController extends Controller
                 ->where('asignacionproyectos.inicioFecha', '=', $inicioFecha)
                 ->where('asignacionproyectos.proyectoId', '=', $proyectoID)
                 ->where('proyectos.Estado', '=', 'Ejecucion')
+                ->whereNotNull('actividades_estudiante.evidencias') // Filtrar solo las actividades con evidencias
                 ->orderBy('estudiantes.apellidos', 'asc')
                 ->orderBy('actividades_estudiante.fecha', 'asc')
                 ->get();
@@ -702,7 +702,7 @@ class DocumentoController extends Controller
                 ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
                 ->join('profesuniversidad as director', 'proyectos.directorId', '=', 'director.id')
                 ->join('profesuniversidad as participante', 'asignacionproyectos.participanteId', '=', 'participante.id')
-                ->join('departamentos', 'estudiantes.departamentoId', '=', 'departamentos.id') // Aquí se hace la join con departamentos
+                ->join('departamentos', 'estudiantes.departamentoId', '=', 'departamentos.id')
                 ->select(
                     'estudiantes.Apellidos',
                     'estudiantes.nombres',
@@ -721,10 +721,10 @@ class DocumentoController extends Controller
                 ->orderBy('estudiantes.apellidos', 'asc')
                 ->get();
 
-
-            // Actividades solo del estudiante autenticado
+            // Actividades solo del estudiante autenticado con evidencias
             $datosEstudiantes2 = DB::table('actividades_estudiante')
                 ->where('estudianteId', $estudiante->estudianteId)
+                ->whereNotNull('evidencias') // Filtrar solo las actividades con evidencias
                 ->orderBy('fecha', 'asc')
                 ->get();
         }
@@ -754,7 +754,6 @@ class DocumentoController extends Controller
             'December' => 'diciembre',
         ];
 
-
         $fechaFormateada2 = date('d ', strtotime($fechaFinProyecto)) . $meses[date('F', strtotime($fechaFinProyecto))] . date(' Y', strtotime($fechaFinProyecto));
         $fechaFormateada = date('d ', strtotime($fechaInicioProyecto)) . $meses[date('F', strtotime($fechaInicioProyecto))] . date(' Y', strtotime($fechaInicioProyecto));
         $NombreProyecto = $primerEstudiante->NombreProyecto;
@@ -779,10 +778,6 @@ class DocumentoController extends Controller
 
         // Obtener los datos del formulario
         $nombreComunidad = $request->input('nombreComunidad');
-        $provincias = $request->input('provincia');
-        $cantones = $request->input('canton');
-        $parroquias = $request->input('parroquia');
-        $direcciones = $request->input('direccion');
         $razones = $request->input('razones');
         $conclusiones1 = $request->input('conclusiones1');
         $conclusiones2 = $request->input('conclusiones2');
@@ -797,7 +792,6 @@ class DocumentoController extends Controller
         $template->setValue('recomendaciones', $recomendaciones);
 
         // Datos del proyecto cargados desde los inputs ocultos
-        $proyectoComunidad = $request->input('proyecto_comunidad');
         $proyectoProvincia = $request->input('proyecto_provincia');
         $proyectoCanton = $request->input('proyecto_canton');
         $proyectoParroquia = $request->input('proyecto_parroquia');
@@ -866,11 +860,10 @@ class DocumentoController extends Controller
             $template->setValue('direccion', '');
         }
 
-
         // Clonar las filas en la plantilla para estudiantes y actividades
         $template->cloneRow('Nombres', count($datosEstudiantes));
         $template->cloneRow('actividades', count($datosEstudiantes2));
-        $template->cloneRow('nombre_actividad', count($datosEstudiantes2));  // Clonar filas para nombre_actividad
+        $template->cloneRow('nombre_actividad', count($datosEstudiantes2));
 
         function formatName($name)
         {
@@ -909,20 +902,12 @@ class DocumentoController extends Controller
             // Guardar la imagen decodificada en la ruta temporal
             file_put_contents($tempImagePath, $imageData);
 
-            // Insertar la imagen en el documento
-            $template->setImageValue('evidencias#' . ($index + 1), [
-                'path' => $tempImagePath,
-                'width' => 150,
-                'height' => 150,
-                'ratio' => false,
-            ]);
-
             // Asignar el nombre de la actividad con el contador de figuras
             $nombreActividad = $actividad->nombreActividad;
             $nombreFigura = 'Figura ' . $contadorFiguras . ': ' . $nombreActividad;
             $template->setValue('nombre_actividad#' . ($index + 1), $nombreFigura);
 
-            // Insertar la imagen en el documento nuevamente con las dimensiones actualizadas
+            // Insertar la imagen en el documento con las dimensiones actualizadas
             $template->setImageValue('evidencias#' . ($index + 1), [
                 'path' => $tempImagePath,
                 'width' => 250,
@@ -962,6 +947,7 @@ class DocumentoController extends Controller
         // Descargar el documento generado
         return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
     }
+
 
 
 

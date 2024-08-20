@@ -158,7 +158,7 @@
                                                 {{ $asignaciones->docenteParticipante->nombres }}
                                                 {{ $asignaciones->docenteParticipante->apellidos }}</td>
                                             <td style="text-align:left; text-transform: uppercase; word-wrap: break-word;">
-                                                {{ $asignaciones->docenteParticipante->departamento }}</td>
+                                                {{ $asignaciones->docenteParticipante->departamento->departamento }}</td>
                                             <td style="text-align:left; text-transform: uppercase; word-wrap: break-word;">
                                                 {{ $asignaciones->estudiante->nombres }}
                                                 {{ $asignaciones->estudiante->apellidos }}</td>
@@ -389,7 +389,7 @@
                                                     {{ $asignaciones->docenteParticipante->apellidos }}</td>
                                                 <td
                                                     style="text-align:left; text-transform: uppercase; word-wrap: break-word;">
-                                                    {{ $asignaciones->docenteParticipante->departamento }}</td>
+                                                    {{ $asignaciones->docenteParticipante->departamento->departamento }}</td>
                                                 <td
                                                     style="text-align:left; text-transform: uppercase; word-wrap: break-word;">
                                                     {{ $asignaciones->estudiante->nombres }}

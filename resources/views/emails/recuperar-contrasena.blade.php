@@ -100,7 +100,7 @@
                 <li><strong>Carrera:</strong> {{ $estudiante->carrera }}</li>
                 <li><strong>Cohorte:</strong> {{ $estudiante->Cohorte}}</li>
                  <li><strong>Correo Electrónico:</strong> {{ $estudiante->correo }}</li>
-                <li><strong>Departamento:</strong> {{ $estudiante->departamento }}</li>
+                <li><strong>Departamento:</strong> {{ $estudiante->departamento->departamento }}</li>
             @else
                 <p>Aún no has proporcionado tu información académica.</p>
             @endif
