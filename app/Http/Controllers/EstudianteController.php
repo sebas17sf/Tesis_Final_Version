@@ -478,66 +478,66 @@ class EstudianteController extends Controller
 
     ////////////////////guardar actividades
     public function guardarActividad(Request $request)
-{
-    $request->validate([
-        'fecha' => 'required|date',
-        'actividades' => 'required|string',
-        'horas' => 'required|integer',
-        'nombre_actividad' => 'nullable|string',
-    ]);
+    {
+        $request->validate([
+            'fecha' => 'required|date',
+            'actividades' => 'required|string',
+            'horas' => 'required|integer',
+            'nombre_actividad' => 'nullable|string',
+        ]);
 
-    $estudiante = Auth::user()->estudiante;
-    $asignaciones = $estudiante->asignaciones;
+        $estudiante = Auth::user()->estudiante;
+        $asignaciones = $estudiante->asignaciones;
 
-    if (!$asignaciones->count()) {
-        return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');
+        if (!$asignaciones->count()) {
+            return redirect()->route('estudiantes.documentos')->with('error', 'No está asignado a un proyecto.');
+        }
+
+        // Verificar si ya existe una actividad con la misma fecha para el estudiante
+        $actividadExistente = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)
+            ->where('fecha', $request->input('fecha'))
+            ->exists();
+
+        if ($actividadExistente) {
+            return redirect()->back()->with('error', 'Ya existe una actividad registrada para esa fecha.')->withInput();
+        }
+
+        // Calcular el total de horas registradas por el estudiante
+        $totalHoras = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)->sum('numeroHoras');
+
+        // Verificar si la suma de las horas actuales y las nuevas horas supera el límite permitido
+        $nuevasHoras = $request->input('horas');
+        if ($totalHoras + $nuevasHoras > 96) {
+            return redirect()->route('estudiantes.documentos')->with('error', 'Registrar esta actividad supera el límite de 96 horas.');
+        }
+
+        // Procesar la evidencia si está presente
+        $evidenciaBase64 = null;
+        if ($request->hasFile('evidencias')) {
+            $evidencia = $request->file('evidencias');
+
+            // Comprimir la imagen y convertirla en base64
+            $compressedImage = Image::make($evidencia)->encode('jpg', 75);
+            $evidenciaBase64 = base64_encode($compressedImage->encoded);
+        }
+
+        $actividadEstudiante = new ActividadEstudiante([
+            'estudianteId' => $estudiante->estudianteId,
+            'fecha' => $request->input('fecha'),
+            'actividades' => $request->input('actividades'),
+            'numeroHoras' => $nuevasHoras,
+            'evidencias' => $evidenciaBase64,
+            'nombreActividad' => $request->input('nombre_actividad') ?? null,
+        ]);
+
+        try {
+            $actividadEstudiante->save();
+
+            return redirect()->route('estudiantes.documentos')->with('success', 'Actividad registrada exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error al guardar la actividad: ' . $e->getMessage())->withInput();
+        }
     }
-
-    // Verificar si ya existe una actividad con la misma fecha para el estudiante
-    $actividadExistente = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)
-        ->where('fecha', $request->input('fecha'))
-        ->exists();
-
-    if ($actividadExistente) {
-        return redirect()->back()->with('error', 'Ya existe una actividad registrada para esa fecha.')->withInput();
-    }
-
-    // Calcular el total de horas registradas por el estudiante
-    $totalHoras = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)->sum('numeroHoras');
-
-    // Verificar si la suma de las horas actuales y las nuevas horas supera el límite permitido
-    $nuevasHoras = $request->input('horas');
-    if ($totalHoras + $nuevasHoras > 96) {
-        return redirect()->route('estudiantes.documentos')->with('error', 'Registrar esta actividad supera el límite de 96 horas.');
-    }
-
-    // Procesar la evidencia si está presente
-    $evidenciaBase64 = null;
-    if ($request->hasFile('evidencias')) {
-        $evidencia = $request->file('evidencias');
-
-        // Comprimir la imagen y convertirla en base64
-        $compressedImage = Image::make($evidencia)->encode('jpg', 75);
-        $evidenciaBase64 = base64_encode($compressedImage->encoded);
-    }
-
-    $actividadEstudiante = new ActividadEstudiante([
-        'estudianteId' => $estudiante->estudianteId,
-        'fecha' => $request->input('fecha'),
-        'actividades' => $request->input('actividades'),
-        'numeroHoras' => $nuevasHoras,
-        'evidencias' => $evidenciaBase64,
-        'nombreActividad' => $request->input('nombre_actividad') ?? null,
-    ]);
-
-    try {
-        $actividadEstudiante->save();
-
-        return redirect()->route('estudiantes.documentos')->with('success', 'Actividad registrada exitosamente.');
-    } catch (\Exception $e) {
-        return redirect()->back()->with('error', 'Error al guardar la actividad: ' . $e->getMessage())->withInput();
-    }
-}
 
 
 
@@ -568,17 +568,10 @@ class EstudianteController extends Controller
         $estudiante = Auth::user()->estudiante;
         $asignaciones = $estudiante->asignaciones;
 
-        // Verificar si ya existe otra actividad con la misma fecha para el estudiante
-        $actividadExistente = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)
-            ->where('fecha', $request->input('fecha'))
-            ->exists();
-
-        if ($actividadExistente) {
-            return redirect()->back()->with('error', 'Ya existe otra actividad registrada para esa fecha.')->withInput();
-        }
-
-        if ($request->hasFile('evidencias')) {
-            $evidencia = $request->file('evidencias');
+         if ($request->has('remove_evidencias') && $request->input('remove_evidencias') == 1) {
+            $actividad->evidencias = null;
+        } elseif ($request->hasFile('evidencias')) {
+             $evidencia = $request->file('evidencias');
 
             $maxFileSize = 500000; // 500 KB
             if ($evidencia->getSize() > $maxFileSize) {
@@ -589,6 +582,7 @@ class EstudianteController extends Controller
             $actividad->evidencias = $evidenciaBase64;
         }
 
+        // Actualizar otros campos
         $actividad->fecha = $request->input('fecha');
         $actividad->actividades = $request->input('actividades');
         $actividad->numeroHoras = $request->input('numero_horas');
@@ -601,6 +595,7 @@ class EstudianteController extends Controller
             return redirect()->back()->with('error', 'Error al actualizar la actividad: ' . $e->getMessage())->withInput();
         }
     }
+
 
 
 
@@ -979,7 +974,7 @@ class EstudianteController extends Controller
         ]);
 
 
-         $estudiante = Estudiante::findOrFail($estudianteId);
+        $estudiante = Estudiante::findOrFail($estudianteId);
 
         // Actualizar los datos del estudiante
         $estudiante->nombres = $request->input('firstname_student');
@@ -989,9 +984,9 @@ class EstudianteController extends Controller
         $estudiante->carrera = $request->input('Carrera');
         $estudiante->departamentoId = $request->input('Departamento');
 
-         $estudiante->save();
+        $estudiante->save();
 
-         return redirect()->back()->with('success', 'Datos del estudiante actualizados.');
+        return redirect()->back()->with('success', 'Datos del estudiante actualizados.');
     }
 
 

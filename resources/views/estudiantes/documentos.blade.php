@@ -26,7 +26,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            @if(session('errorHoras'))
+            @if (session('errorHoras'))
                 Swal.fire({
                     icon: 'warning',
                     title: 'Precaución',
@@ -168,26 +168,31 @@
                     class="fa-thin fa-xmark"></i></button>
         </div>
         <div class="card-body">
-            <form action="{{ route('estudiantes.guardarActividad') }}" method="post" enctype="multipart/form-data">
+            <form id="guardarActividad" action="{{ route('estudiantes.guardarActividad') }}" method="post"
+                enctype="multipart/form-data" onsubmit="return validateForm()">
                 @csrf
                 <div class="form-group">
                     <label for="fecha"><strong>Fecha:</strong></label>
-                    <input type="date" id="fecha" name="fecha" class="form-control input" required value="{{ old('fecha') }}">
+                    <input type="date" id="fecha" name="fecha" class="form-control input"
+                        value="{{ old('fecha') }}">
+                    <small id="fechaError" class="text-danger"></small>
                 </div>
                 <div class="form-group">
                     <label for="actividades"><strong>Actividades a realizar:</strong></label>
-                    <textarea id="actividades" name="actividades" class="form-control input" rows="4" required>{{ old('actividades') }}</textarea>
+                    <textarea id="actividades" name="actividades" class="form-control input" rows="4">{{ old('actividades') }}</textarea>
+                    <small id="actividadesError" class="text-danger"></small>
                 </div>
                 <div class="form-group">
                     <label for="horas"><strong>Número de horas:</strong></label>
-                    <input type="number" id="horas" name="horas" class="form-control input" required value="{{ old('horas') }}">
+                    <input type="number" id="horas" name="horas" class="form-control input"
+                        value="{{ old('horas') }}">
+                    <small id="horasError" class="text-danger"></small>
                 </div>
                 <div class="form-group">
                     <label for="evidencias"><strong>Resultados de la actividad (evidencias):</strong></label>
                     <div class="input-group input_file">
                         <span id="fileText" class="fileText input input_file"><i
-                                class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir el
-                            documento</span>
+                                class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir el documento</span>
                         <input type="file" id="evidencias" name="evidencias"
                             accept="image/jpeg, image/jpg, image/png" class="form-control-file input input_file"
                             onchange="displayFileName(this, 'fileText')">
@@ -197,10 +202,11 @@
                 <div class="form-group">
                     <label for="nombre_actividad"><strong>Asigne Nombre de la actividad:</strong></label>
                     <input type="text" id="nombre_actividad" name="nombre_actividad" class="form-control input"
-                         value="{{ old('nombre_actividad') }}">
+                        value="{{ old('nombre_actividad') }}">
                 </div>
                 <center><button type="submit" class="button1">Guardar Actividad</button></center>
             </form>
+
         </div>
 
     </div>
@@ -264,8 +270,8 @@
                                         </td>
                                         <td
                                             style="text-transform: uppercase; word-wrap: break-word; text-align: center; font-size: .7em;">
-                                            <img src="data:image/png;base64,{{ $actividad->evidencias ?? 'NO REQUIERE' }}" alt="Evidencia"
-                                                width="100" height="100">
+                                            <img src="data:image/png;base64,{{ $actividad->evidencias ?? 'NO REQUIERE' }}"
+                                                alt="Evidencia" width="100" height="100">
                                         </td>
                                         <td
                                             style="text-transform: uppercase; word-wrap: break-word; text-align: center; font-size: .7em;">
@@ -342,28 +348,21 @@
                                                                     value="{{ $actividad->nombreActividad }}">
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="label"
-                                                                    for="evidencias{{ $actividad->idActividades }}"><b>Evidencias</b></label>
+                                                                <label class="label" for="evidencias{{ $actividad->idActividades }}"><b>Evidencias</b></label>
                                                                 <div>
-                                                                    <img src="data:image/png;base64,{{ $actividad->evidencias }}"
-                                                                        alt="Evidencia" width="100" height="100">
+                                                                    <img src="data:image/png;base64,{{ $actividad->evidencias }}" alt="Evidencia" width="100" height="100">
                                                                 </div>
                                                                 <div class="input-group input_file mt-2">
-                                                                    <span id="fileText{{ $actividad->idActividades }}"
-                                                                        class="fileText input input_file input_select1"><i
-                                                                            class="fa-solid fa-arrow-up-from-bracket"></i>
-                                                                        Haz clic aquí para subir una nueva imagen</span>
-                                                                    <input type="file"
-                                                                        id="evidencias{{ $actividad->idActividades }}"
-                                                                        name="evidencias"
-                                                                        accept="image/jpeg, image/jpg, image/png"
-                                                                        class="form-control-file input input_file"
-                                                                        onchange="displayFileName(this, 'fileText{{ $actividad->idActividades }}')">
-                                                                    <span title="Eliminar archivo"
-                                                                        onclick="removeFile(this)"
-                                                                        class="remove-icon">✖</span>
+                                                                    <span id="fileText{{ $actividad->idActividades }}" class="fileText input input_file input_select1"><i class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir una nueva imagen</span>
+                                                                    <input type="file" id="evidencias{{ $actividad->idActividades }}" name="evidencias" accept="image/jpeg, image/jpg, image/png" class="form-control-file input input_file" onchange="displayFileName(this, 'fileText{{ $actividad->idActividades }}')">
+                                                                    <span title="Eliminar archivo" onclick="removeFile(this)" class="remove-icon">✖</span>
+                                                                </div>
+                                                                <div class="form-check mt-2">
+                                                                    <input type="checkbox" class="form-check-input" id="removeEvidencias{{ $actividad->idActividades }}" name="remove_evidencias" value="1">
+                                                                    <label class="form-check-label" for="removeEvidencias{{ $actividad->idActividades }}">Eliminar imagen</label>
                                                                 </div>
                                                             </div>
+
                                                             <div
                                                                 class="card-footer d-flex justify-content-center align-items-center">
                                                                 <button type="submit"
@@ -481,30 +480,57 @@
                                         <label for="provincia"><strong>Provincia:</strong></label>
                                         <select id="provincia" name="provincia[]" class="form-control input">
                                             <option value="" disabled>Seleccione una provincia...</option>
-                                            <option value="Azuay" {{ $provincia == 'Azuay' ? 'selected' : '' }}>Azuay</option>
-                                            <option value="Bolívar" {{ $provincia == 'Bolívar' ? 'selected' : '' }}>Bolívar</option>
-                                            <option value="Cañar" {{ $provincia == 'Cañar' ? 'selected' : '' }}>Cañar</option>
-                                            <option value="Carchi" {{ $provincia == 'Carchi' ? 'selected' : '' }}>Carchi</option>
-                                            <option value="Chimborazo" {{ $provincia == 'Chimborazo' ? 'selected' : '' }}>Chimborazo</option>
-                                            <option value="Cotopaxi" {{ $provincia == 'Cotopaxi' ? 'selected' : '' }}>Cotopaxi</option>
-                                            <option value="El Oro" {{ $provincia == 'El Oro' ? 'selected' : '' }}>El Oro</option>
-                                            <option value="Esmeraldas" {{ $provincia == 'Esmeraldas' ? 'selected' : '' }}>Esmeraldas</option>
-                                            <option value="Galápagos" {{ $provincia == 'Galápagos' ? 'selected' : '' }}>Galápagos</option>
-                                            <option value="Guayas" {{ $provincia == 'Guayas' ? 'selected' : '' }}>Guayas</option>
-                                            <option value="Imbabura" {{ $provincia == 'Imbabura' ? 'selected' : '' }}>Imbabura</option>
-                                            <option value="Loja" {{ $provincia == 'Loja' ? 'selected' : '' }}>Loja</option>
-                                            <option value="Los Ríos" {{ $provincia == 'Los Ríos' ? 'selected' : '' }}>Los Ríos</option>
-                                            <option value="Manabí" {{ $provincia == 'Manabí' ? 'selected' : '' }}>Manabí</option>
-                                            <option value="Morona Santiago" {{ $provincia == 'Morona Santiago' ? 'selected' : '' }}>Morona Santiago</option>
-                                            <option value="Napo" {{ $provincia == 'Napo' ? 'selected' : '' }}>Napo</option>
-                                            <option value="Orellana" {{ $provincia == 'Orellana' ? 'selected' : '' }}>Orellana</option>
-                                            <option value="Pastaza" {{ $provincia == 'Pastaza' ? 'selected' : '' }}>Pastaza</option>
-                                            <option value="Pichincha" {{ $provincia == 'Pichincha' ? 'selected' : '' }}>Pichincha</option>
-                                            <option value="Santa Elena" {{ $provincia == 'Santa Elena' ? 'selected' : '' }}>Santa Elena</option>
-                                            <option value="Santo Domingo de los Tsáchilas" {{ $provincia == 'Santo Domingo de los Tsáchilas' ? 'selected' : '' }}>Santo Domingo de los Tsáchilas</option>
-                                            <option value="Sucumbíos" {{ $provincia == 'Sucumbíos' ? 'selected' : '' }}>Sucumbíos</option>
-                                            <option value="Tungurahua" {{ $provincia == 'Tungurahua' ? 'selected' : '' }}>Tungurahua</option>
-                                            <option value="Zamora Chinchipe" {{ $provincia == 'Zamora Chinchipe' ? 'selected' : '' }}>Zamora Chinchipe</option>
+                                            <option value="Azuay" {{ $provincia == 'Azuay' ? 'selected' : '' }}>Azuay
+                                            </option>
+                                            <option value="Bolívar" {{ $provincia == 'Bolívar' ? 'selected' : '' }}>
+                                                Bolívar</option>
+                                            <option value="Cañar" {{ $provincia == 'Cañar' ? 'selected' : '' }}>Cañar
+                                            </option>
+                                            <option value="Carchi" {{ $provincia == 'Carchi' ? 'selected' : '' }}>Carchi
+                                            </option>
+                                            <option value="Chimborazo" {{ $provincia == 'Chimborazo' ? 'selected' : '' }}>
+                                                Chimborazo</option>
+                                            <option value="Cotopaxi" {{ $provincia == 'Cotopaxi' ? 'selected' : '' }}>
+                                                Cotopaxi</option>
+                                            <option value="El Oro" {{ $provincia == 'El Oro' ? 'selected' : '' }}>El Oro
+                                            </option>
+                                            <option value="Esmeraldas" {{ $provincia == 'Esmeraldas' ? 'selected' : '' }}>
+                                                Esmeraldas</option>
+                                            <option value="Galápagos" {{ $provincia == 'Galápagos' ? 'selected' : '' }}>
+                                                Galápagos</option>
+                                            <option value="Guayas" {{ $provincia == 'Guayas' ? 'selected' : '' }}>Guayas
+                                            </option>
+                                            <option value="Imbabura" {{ $provincia == 'Imbabura' ? 'selected' : '' }}>
+                                                Imbabura</option>
+                                            <option value="Loja" {{ $provincia == 'Loja' ? 'selected' : '' }}>Loja
+                                            </option>
+                                            <option value="Los Ríos" {{ $provincia == 'Los Ríos' ? 'selected' : '' }}>Los
+                                                Ríos</option>
+                                            <option value="Manabí" {{ $provincia == 'Manabí' ? 'selected' : '' }}>Manabí
+                                            </option>
+                                            <option value="Morona Santiago"
+                                                {{ $provincia == 'Morona Santiago' ? 'selected' : '' }}>Morona Santiago
+                                            </option>
+                                            <option value="Napo" {{ $provincia == 'Napo' ? 'selected' : '' }}>Napo
+                                            </option>
+                                            <option value="Orellana" {{ $provincia == 'Orellana' ? 'selected' : '' }}>
+                                                Orellana</option>
+                                            <option value="Pastaza" {{ $provincia == 'Pastaza' ? 'selected' : '' }}>
+                                                Pastaza</option>
+                                            <option value="Pichincha" {{ $provincia == 'Pichincha' ? 'selected' : '' }}>
+                                                Pichincha</option>
+                                            <option value="Santa Elena"
+                                                {{ $provincia == 'Santa Elena' ? 'selected' : '' }}>Santa Elena</option>
+                                            <option value="Santo Domingo de los Tsáchilas"
+                                                {{ $provincia == 'Santo Domingo de los Tsáchilas' ? 'selected' : '' }}>
+                                                Santo Domingo de los Tsáchilas</option>
+                                            <option value="Sucumbíos" {{ $provincia == 'Sucumbíos' ? 'selected' : '' }}>
+                                                Sucumbíos</option>
+                                            <option value="Tungurahua" {{ $provincia == 'Tungurahua' ? 'selected' : '' }}>
+                                                Tungurahua</option>
+                                            <option value="Zamora Chinchipe"
+                                                {{ $provincia == 'Zamora Chinchipe' ? 'selected' : '' }}>Zamora Chinchipe
+                                            </option>
                                         </select>
                                         <small id="provinciaError" class="error-message" style="color: red;"></small>
                                     </div>
@@ -516,14 +542,16 @@
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="parroquia"><strong>Parroquia:</strong></label>
-                                        <input type="text" id="parroquia" name="parroquia[]" class="form-control input"
-                                            value="{{ old('parroquia')[$index] }}" placeholder="Ingrese la parroquia...">
+                                        <input type="text" id="parroquia" name="parroquia[]"
+                                            class="form-control input" value="{{ old('parroquia')[$index] }}"
+                                            placeholder="Ingrese la parroquia...">
                                         <small id="parroquiaError" class="error-message" style="color: red;"></small>
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="direccion"><strong>Dirección:</strong></label>
-                                        <input type="text" id="direccion" name="direccion[]" class="form-control input"
-                                            value="{{ old('direccion')[$index] }}" placeholder="Ingrese la dirección...">
+                                        <input type="text" id="direccion" name="direccion[]"
+                                            class="form-control input" value="{{ old('direccion')[$index] }}"
+                                            placeholder="Ingrese la dirección...">
                                         <small id="direccionError" class="error-message" style="color: red;"></small>
                                     </div>
                                 </div>
@@ -554,7 +582,8 @@
                                         <option value="Pastaza">Pastaza</option>
                                         <option value="Pichincha">Pichincha</option>
                                         <option value="Santa Elena">Santa Elena</option>
-                                        <option value="Santo Domingo de los Tsáchilas">Santo Domingo de los Tsáchilas</option>
+                                        <option value="Santo Domingo de los Tsáchilas">Santo Domingo de los Tsáchilas
+                                        </option>
                                         <option value="Sucumbíos">Sucumbíos</option>
                                         <option value="Tungurahua">Tungurahua</option>
                                         <option value="Zamora Chinchipe">Zamora Chinchipe</option>
@@ -575,8 +604,8 @@
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label for="direccion"><strong>Dirección:</strong></label>
-                                    <input type="text" id="direccion" name="direccion[]" placeholder="Ingrese la dirección..."
-                                        class="form-control input">
+                                    <input type="text" id="direccion" name="direccion[]"
+                                        placeholder="Ingrese la dirección..." class="form-control input">
                                     <small id="direccionError" class="error-message" style="color: red;"></small>
                                 </div>
                             </div>
@@ -599,7 +628,7 @@
                             </button>
                         </div>
                     </div>
-<br>
+                    <br>
                     <!-- Validación de objetivos específicos y resultados -->
                     <div id="campos">
                         @if (old('especificos'))
@@ -950,6 +979,77 @@
                 }
             }
         </script>
+
+        <script>
+            function validateForm() {
+                let isValid = true;
+
+                // Clear previous error messages
+                document.getElementById('fechaError').innerText = '';
+                document.getElementById('actividadesError').innerText = '';
+                document.getElementById('horasError').innerText = '';
+
+                // Get form elements
+                const fecha = document.getElementById('fecha').value;
+                const actividades = document.getElementById('actividades').value.trim();
+                const horas = document.getElementById('horas').value;
+
+                // Validate Fecha
+                if (!fecha) {
+                    document.getElementById('fechaError').innerText = 'La fecha es requerida.';
+                    isValid = false;
+                }
+
+                // Validate Actividades
+                if (!actividades) {
+                    document.getElementById('actividadesError').innerText = 'Las actividades son requeridas.';
+                    isValid = false;
+                }
+
+                // Validate Horas
+                if (!horas || horas <= 0) {
+                    document.getElementById('horasError').innerText = 'El número de horas debe ser mayor a 0.';
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+            // Attach event listeners to inputs to clear error messages on user input
+            document.getElementById('fecha').addEventListener('input', function() {
+                if (this.value) {
+                    document.getElementById('fechaError').innerText = '';
+                }
+            });
+
+            document.getElementById('actividades').addEventListener('input', function() {
+                if (this.value.trim()) {
+                    document.getElementById('actividadesError').innerText = '';
+                }
+            });
+
+            document.getElementById('horas').addEventListener('input', function() {
+                if (this.value > 0) {
+                    document.getElementById('horasError').innerText = '';
+                }
+            });
+
+            function displayFileName(input, fileTextId) {
+                const fileText = document.getElementById(fileTextId);
+                if (input.files && input.files.length > 0) {
+                    fileText.innerText = input.files[0].name;
+                } else {
+                    fileText.innerText = 'Haz clic aquí para subir el documento';
+                }
+            }
+
+            function removeFile(element) {
+                const input = element.previousElementSibling;
+                input.value = ''; // Clear the file input
+                displayFileName(input, 'fileText'); // Reset the file display text
+            }
+        </script>
+
 
         <style>
             .contenedor_tabla .table-container table td {

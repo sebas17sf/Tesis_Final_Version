@@ -29,16 +29,20 @@ class AsignacionProyectoMailable extends Mailable
      */
     public function build()
     {
+        $path = public_path('img/logos/itin-presencial.png');
+
         return $this->subject('Asignación de estudiantes')
             ->view('emails.director-asignacion')
             ->with([
                 'proyecto' => $this->proyecto,
                 'estudiantes' => $this->estudiantesAsignados,
             ])
-            ->withSwiftMessage(function ($message) {
-                $imagePath = public_path('img/logos/itin-presencial.png');
-                $cid = $message->embed($imagePath);
-                $this->with(['imageCid' => $cid]);
-            });
+            ->attach($path, [
+                'as' => 'itin-presencial.png',
+                'mime' => 'image/png',
+            ])
+            ->with('imageCid', 'itin-presencial.png');
+
+
     }
 }

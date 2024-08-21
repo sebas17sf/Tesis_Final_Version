@@ -80,7 +80,7 @@
 
 <body>
     <div class="container">
-        <img src="{{ $imageCid }}" alt="Logo" />
+        <img src="cid:itin-presencial.png" alt="Redes Sociales">
         <h1>Asignación de estudiantes al Proyecto</h1>
         <p>Director del Proyecto: {{ $proyecto->director->apellidos }} {{ $proyecto->director->nombres }}</p>
         <p>Proyecto: {{ $proyecto->nombreProyecto }}</p>

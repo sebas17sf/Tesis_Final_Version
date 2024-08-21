@@ -641,9 +641,22 @@ class DocumentoController extends Controller
         $totalHoras = DB::table('actividades_estudiante')
             ->where('estudianteId', $estudiante->estudianteId)
             ->sum('numeroHoras');
+
+        // Check if total hours are less than 96, set error message in the session
         if ($totalHoras < 96) {
-            return redirect()->route('estudiantes.documentos')->with('errorHoras', 'No puedes generar el informe porque no has completado las 96 horas requeridas.');
+            return back()->with('errorHoras', 'Aun no estan completas las 96 horas requeridas.');
         }
+
+
+        /////sumar las horas de las actividades
+        $totalHoras = DB::table('actividades_estudiante')
+            ->where('estudianteId', $estudiante->estudianteId)
+            ->sum('numeroHoras');
+
+        $totalHoras = round($totalHoras);
+
+        ////enviar las horas al informe
+        $template->setValue('HorasVinculacion', $totalHoras);
 
         // Obtener el tipo de informe del formulario
         $tipoInforme = $request->input('tipo');
@@ -1324,19 +1337,19 @@ class DocumentoController extends Controller
             $departamento = $request->input('departamento');
 
             $query = DB::table('proyectos')
-            ->join('departamentos', 'proyectos.departamentoId', '=', 'departamentos.id') // Realizar el INNER JOIN
-            ->select(
-                'proyectos.nombreProyecto',
-                'proyectos.codigoProyecto',
-                'proyectos.directorId',
-                'proyectos.inicioFecha',
-                'proyectos.finFecha',
-                 'proyectos.estado',
-                'proyectos.descripcionProyecto',
-                'proyectos.directorId',
-                'departamentos.departamento as departamentoTutor'
-            )
-            ->orderBy('proyectos.nombreProyecto', 'asc');
+                ->join('departamentos', 'proyectos.departamentoId', '=', 'departamentos.id') // Realizar el INNER JOIN
+                ->select(
+                    'proyectos.nombreProyecto',
+                    'proyectos.codigoProyecto',
+                    'proyectos.directorId',
+                    'proyectos.inicioFecha',
+                    'proyectos.finFecha',
+                    'proyectos.estado',
+                    'proyectos.descripcionProyecto',
+                    'proyectos.directorId',
+                    'departamentos.departamento as departamentoTutor'
+                )
+                ->orderBy('proyectos.nombreProyecto', 'asc');
 
             if ($estado) {
                 $query->where('estado', $estado);

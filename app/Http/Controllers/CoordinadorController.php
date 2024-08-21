@@ -10,6 +10,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Periodo;
 use App\Mail\AsignacionProyectoMailable;
+use App\Models\HoraVinculacion;
 
 
 use App\Models\Usuario;
@@ -321,19 +322,16 @@ class CoordinadorController extends Controller
     private function actualizarUsuarioYRol($profesorId, $tipoRol)
     {
         $profesor = ProfesUniversidad::findOrFail($profesorId);
-        $rolId = Role::where('Tipo', $tipoRol)->value('id');
+        $rolId = Role::where('tipo', $tipoRol)->value('id');
 
-        $usuario = Usuario::where('CorreoElectronico', $profesor->Correo)->first();
+        $usuario = Usuario::where('correoElectronico', $profesor->correo)->first();
 
         if (!$usuario) {
             Usuario::create([
-                'NombreUsuario' => $profesor->Usuario,
-                'Nombre' => $profesor->Nombres,
-                'Apellido' => $profesor->Apellidos,
-                'CorreoElectronico' => $profesor->Correo,
-                'FechaNacimiento' => now(),
-                'Contrasena' => bcrypt('123'),
-                'Estado' => 'activo',
+                'nombreUsuario' => $profesor->usuario,
+                'correoElectronico' => $profesor->correo,
+                'contrasena' => bcrypt('123'),
+                'estado' => 'activo',
                 'role_id' => $rolId,
             ]);
         } else {
@@ -344,7 +342,7 @@ class CoordinadorController extends Controller
         }
 
         //////actualizar el UserID de ProfesUniversidad con el ID de Usuario creado
-        $profesor->UserID = Usuario::where('CorreoElectronico', $profesor->Correo)->value('UserID');
+        $profesor->userId = Usuario::where('correoElectronico', $profesor->correo)->value('userId');
         $profesor->save();
     }
 
@@ -466,38 +464,25 @@ class CoordinadorController extends Controller
 
     //vistar para asignar proyectos
     public function guardarAsignacion(Request $request)
-    {
-        // Validación de datos
-        $request->validate([
-            'proyecto_id' => 'required',
-            'estudiante_id' => '',
-            'estudiante_id.*' => 'numeric',
-            'ProfesorParticipante' => 'required',
-            'nrc' => 'required',
-            'FechaInicio' => 'required',
-            'FechaFinalizacion' => 'required',
-        ]);
+{
+    // Validación de datos
+    $request->validate([
+        'proyecto_id' => 'required',
+        'estudiante_id' => 'nullable|array',
+        'estudiante_id.*' => 'numeric',
+        'ProfesorParticipante' => 'required',
+        'nrc' => 'required',
+        'FechaInicio' => 'required',
+        'FechaFinalizacion' => 'required',
+    ]);
 
-        $nrc = NrcVinculacion::where('id', $request->nrc)->first();
+    $nrc = NrcVinculacion::where('id', $request->nrc)->first();
 
-        if (!empty($request->estudiante_id)) {
-            foreach ($request->estudiante_id as $estudianteID) {
-                AsignacionProyecto::create([
-                    'proyectoId' => $request->proyecto_id,
-                    'estudianteId' => $estudianteID,
-                    'participanteId' => $request->ProfesorParticipante,
-                    'asignacionFecha' => now(),
-                    'idPeriodo' => $nrc->idPeriodo,
-                    'nrc' => $request->nrc,
-                    'inicioFecha' => $request->FechaInicio,
-                    'finalizacionFecha' => $request->FechaFinalizacion,
-                    'estado' => 'En ejecucion',
-                ]);
-            }
-        } else {
+    if (!empty($request->estudiante_id)) {
+        foreach ($request->estudiante_id as $estudianteID) {
             AsignacionProyecto::create([
                 'proyectoId' => $request->proyecto_id,
-                'estudianteId' => null,
+                'estudianteId' => $estudianteID,
                 'participanteId' => $request->ProfesorParticipante,
                 'asignacionFecha' => now(),
                 'idPeriodo' => $nrc->idPeriodo,
@@ -506,22 +491,42 @@ class CoordinadorController extends Controller
                 'finalizacionFecha' => $request->FechaFinalizacion,
                 'estado' => 'En ejecucion',
             ]);
+
+            // Inserción en HoraVinculacion
+            HoraVinculacion::create([
+                'estudianteId' => $estudianteID,
+                'horasVinculacion' => 96,
+            ]);
         }
-        $this->actualizarUsuarioYRol($request->ProfesorParticipante, 'ParticipanteVinculacion');
-
-        $proyecto = Proyecto::with('director')->find($request->proyecto_id);
-        $directorEmail = $proyecto->director->correo;
-
-        /////obtener los estudiantes asignados al proyecto con estado aprobado
-        $estudiantesAsignados = Estudiante::whereIn('estudianteId', $request->estudiante_id)->get();
-        if (filter_var($directorEmail, FILTER_VALIDATE_EMAIL)) {
-            Mail::to($directorEmail)->send(new AsignacionProyectoMailable($proyecto, $estudiantesAsignados));
-        }
-
-
-        return redirect()->route('cooridnador.index')->with('success', 'Asignación realizada.');
-
+    } else {
+        $asignacion = AsignacionProyecto::create([
+            'proyectoId' => $request->proyecto_id,
+            'estudianteId' => null,
+            'participanteId' => $request->ProfesorParticipante,
+            'asignacionFecha' => now(),
+            'idPeriodo' => $nrc->idPeriodo,
+            'nrc' => $request->nrc,
+            'inicioFecha' => $request->FechaInicio,
+            'finalizacionFecha' => $request->FechaFinalizacion,
+            'estado' => 'En ejecucion',
+        ]);
     }
+
+    $this->actualizarUsuarioYRol($request->ProfesorParticipante, 'ParticipanteVinculacion');
+
+    $proyecto = Proyecto::with('director')->find($request->proyecto_id);
+    $directorEmail = $proyecto->director->correo;
+
+    // Obtener los estudiantes asignados al proyecto con estado aprobado
+    $estudiantesAsignados = Estudiante::whereIn('estudianteId', $request->estudiante_id)->get();
+    if (filter_var($directorEmail, FILTER_VALIDATE_EMAIL)) {
+        Mail::to($directorEmail)->send(new AsignacionProyectoMailable($proyecto, $estudiantesAsignados));
+    }
+
+    return back()->with('success', 'Asignación realizada.');
+}
+
+
 
 
 

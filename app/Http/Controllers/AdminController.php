@@ -124,16 +124,16 @@ class AdminController extends Controller
 
     public function getRoleAdministrativo($userId)
     {
-         $user = Usuario::find($userId);
+        $user = Usuario::find($userId);
 
         if ($user) {
             $profesor = $user->profesorUniversidad;
 
-             $roleAdministrativo = DB::table('roles')
+            $roleAdministrativo = DB::table('roles')
                 ->where('id', $user->role_id)
                 ->value('tipo');
 
-             $roleMapping = [
+            $roleMapping = [
                 'Administrador' => 'Administrador',
                 'DirectorProyecto' => 'Docente',
                 'DocenteParticipante' => 'Docente',
@@ -142,7 +142,7 @@ class AdminController extends Controller
                 'Practicas' => 'Coordinador de Prácticas'
             ];
 
-             $mappedRole = $roleMapping[$roleAdministrativo] ?? 'Ninguno';
+            $mappedRole = $roleMapping[$roleAdministrativo] ?? 'Ninguno';
 
             return response()->json([
                 'nombres' => $profesor ? $profesor->nombres : null,
@@ -365,7 +365,7 @@ class AdminController extends Controller
                         $query->where('departamento', 'like', '%' . $busquedaEstudiantesAprobados . '%');
                     });
             })
-            ->orderBy('apellidos', 'asc');
+                ->orderBy('apellidos', 'asc');
         }
 
         if ($request->has('Departamento') && $request->input('Departamento')) {
@@ -839,7 +839,7 @@ class AdminController extends Controller
         // Validación de datos
         $request->validate([
             'proyecto_id' => 'required',
-            'estudiante_id' => '',
+            'estudiante_id' => 'nullable|array',
             'estudiante_id.*' => 'numeric',
             'ProfesorParticipante' => 'required',
             'nrc' => 'required',
@@ -873,24 +873,24 @@ class AdminController extends Controller
                 'nrc' => $request->nrc,
                 'inicioFecha' => $request->FechaInicio,
                 'finalizacionFecha' => $request->FechaFinalizacion,
-                'estado' => 'En ejecucion',
+                'estado' => 'En ejecucion', 
             ]);
         }
+
         $this->actualizarUsuarioYRol($request->ProfesorParticipante, 'ParticipanteVinculacion');
 
         $proyecto = Proyecto::with('director')->find($request->proyecto_id);
         $directorEmail = $proyecto->director->correo;
 
-        /////obtener los estudiantes asignados al proyecto con estado aprobado
+        // Obtener los estudiantes asignados al proyecto con estado aprobado
         $estudiantesAsignados = Estudiante::whereIn('estudianteId', $request->estudiante_id)->get();
         if (filter_var($directorEmail, FILTER_VALIDATE_EMAIL)) {
             Mail::to($directorEmail)->send(new AsignacionProyectoMailable($proyecto, $estudiantesAsignados));
         }
 
-
-        return redirect()->route('admin.indexProyectos')->with('success', 'Asignación realizada.');
-
+        return back()->with('success', 'Asignación realizada.');
     }
+
 
 
 
