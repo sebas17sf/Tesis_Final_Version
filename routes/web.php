@@ -531,6 +531,9 @@ Route::post('/admin/removeRoleAdministrativo/{userId}', [AdminController::class,
 
     Route::get('/docentes-espe/cambio-credenciales', [ParticipanteVinculacionController::class, 'cambiarCredencialesUsuario'])->name('participante-vinculacion.cambio-credenciales');
     Route::put('/docentes-espe/cambio-credenciales/{userId}', [ParticipanteVinculacionController::class, 'actualizarCredenciales'])->name('participante-vinculacion.updateCredenciales');
+    Route::post('/participante/guardar-acta-reunion', [ParticipanteVinculacionController::class, 'guardarActa'])->name('ParticipanteVinculacion.guardarActa');
+    Route::get('/participante/recuperar-datos-acta', [ParticipanteVinculacionController::class, 'recuperarDatosActa'])->name('ParticipanteVinculacion.recuperarDatosActa');
+
 
     Route::put('/participante-vinculacion/cambio/{id}', [ParticipanteVinculacionController::class, 'actualizarDatosParticipanterCredenciales'])->name('participante.updateDatos');
 

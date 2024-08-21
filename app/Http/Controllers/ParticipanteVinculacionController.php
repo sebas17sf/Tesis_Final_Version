@@ -17,6 +17,7 @@ use App\Models\ActividadesPracticas;
 use App\Models\NotasPracticasi;
 use Carbon\Carbon;
 use App\Models\Role;
+use App\Models\ActaReunion;
 use App\Models\Proyecto;
 use App\Models\AsignacionSinEstudiante;
 use App\Models\ActividadEstudiante;
@@ -452,7 +453,7 @@ class ParticipanteVinculacionController extends Controller
 
         // Obtener el usuario autenticado
         $usuario = Auth::user();
-          // Actualizar la contraseña del usuario
+        // Actualizar la contraseña del usuario
         $usuario->Contrasena = bcrypt($request->password);
 
         // Verificar si el usuario tiene relación con profesorUniversidad
@@ -859,9 +860,118 @@ class ParticipanteVinculacionController extends Controller
             'Recomendaciones' => $informe->recomendaciones,
         ];
 
-        return redirect()->back()->withInput($data);
+        return redirect()->back()->withInput($data)->with('success', 'Información recuperada exitosamente.');
     }
 
+
+
+
+    public function guardarActa(Request $request)
+    {
+        $data = $request->validate([
+            'actaId' => 'nullable|integer',  // Validar que el actaId sea un entero si está presente
+            'lugar' => 'required|string',
+            'tema' => 'required|string',
+            'fecha' => 'required|date',
+            'horaInicial' => 'required',
+            'horaFinal' => 'required',
+            'objetivo' => 'required|string',
+            'antecedentes' => 'required|string',
+            'acciones' => 'required|array',
+            'responsable' => 'required|array',
+            'fechaAcciones' => 'required|array',
+            'desarrollo' => 'required|array',  // Validación del campo desarrollo
+        ]);
+
+        $participanteId = auth()->user()->profesorUniversidad->id;
+        $proyectoId = $request->input('proyectoId');
+        $actaId = $request->input('actaId');
+
+        if ($actaId) {
+            // Si existe actaId, actualiza el acta existente
+            $acta = ActaReunion::where('id', $actaId)
+                ->where('participanteId', $participanteId)
+                ->where('proyectoId', $proyectoId)
+                ->first();
+
+            if ($acta) {
+                $acta->update([
+                    'lugar' => $data['lugar'],
+                    'tema' => $data['tema'],
+                    'fecha' => $data['fecha'],
+                    'horaInicial' => $data['horaInicial'],
+                    'horaFinal' => $data['horaFinal'],
+                    'objetivo' => $data['objetivo'],
+                    'antecedentes' => $data['antecedentes'],
+                    'acciones' => json_encode($data['acciones']),
+                    'responsables' => json_encode($data['responsable']),
+                    'fechaAcciones' => json_encode($data['fechaAcciones']),
+                    'desarrollo' => json_encode($data['desarrollo']), // Guardar el campo desarrollo
+                ]);
+
+                return redirect()->back()->with('success', 'Acta de reunión actualizada correctamente.');
+            }
+        }
+
+        // Si no existe actaId, crear un nuevo registro
+        ActaReunion::create([
+            'participanteId' => $participanteId,
+            'proyectoId' => $proyectoId,
+            'lugar' => $data['lugar'],
+            'tema' => $data['tema'],
+            'fecha' => $data['fecha'],
+            'horaInicial' => $data['horaInicial'],
+            'horaFinal' => $data['horaFinal'],
+            'objetivo' => $data['objetivo'],
+            'antecedentes' => $data['antecedentes'],
+            'acciones' => json_encode($data['acciones']),
+            'responsables' => json_encode($data['responsable']),
+            'fechaAcciones' => json_encode($data['fechaAcciones']),
+            'desarrollo' => json_encode($data['desarrollo']), // Guardar el campo desarrollo
+        ]);
+
+        return redirect()->back()->with('success', 'Acta de reunión guardada correctamente.');
+    }
+
+
+
+
+    public function recuperarDatosActa(Request $request)
+    {
+        $participanteId = auth()->user()->profesorUniversidad->id;
+
+        $request->validate([
+            'proyectoId' => 'required',
+            'actaId' => 'required',
+        ]);
+
+        $acta = ActaReunion::where('participanteId', $participanteId)
+            ->where('proyectoId', $request->input('proyectoId'))
+            ->where('id', $request->input('actaId'))
+            ->first();
+
+        if (!$acta) {
+            return redirect()->back()->with('error', 'No se encontraron datos previos.');
+        }
+
+        $data = [
+            'proyectoId' => $acta->proyectoId,
+            'actaId' => $acta->id, // Asegúrate de incluir 'actaId'
+            'lugar' => $acta->lugar,
+            'tema' => $acta->tema,
+            'fecha' => $acta->fecha,
+            'horaInicial' => $acta->horaInicial,
+            'horaFinal' => $acta->horaFinal,
+            'objetivo' => $acta->objetivo,
+            'antecedentes' => $acta->antecedentes,
+            'acciones' => json_decode($acta->acciones, true),
+            'responsable' => json_decode($acta->responsables, true),
+            'fechaAcciones' => json_decode($acta->fechaAcciones, true),
+            'desarrollo' => json_decode($acta->desarrollo, true), // Recuperar el campo desarrollo
+        ];
+
+        return redirect()->back()->withInput($data)->with('success', 'Datos recuperados correctamente.');
+    }
 
 
 

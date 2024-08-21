@@ -19,6 +19,7 @@ use App\Models\ActividadesPracticasII;
 use App\Models\UsuariosSession;
 use App\Models\ActividadesPracticas;
 use App\Models\NrcVinculacion;
+use App\Models\ActaReunion;
 
 use App\Models\PracticaI;
 use App\Models\Periodo;
@@ -1033,8 +1034,8 @@ class DocumentoController extends Controller
             $nombreDirector = "Ing. " . $director->apellidos . ' ' . $director->nombres . ", Mgtr.";
 
             // Obtener el departamento del participante
-            $departamento = "Departamento de " . $docenteParticipante->departamento;
-            $departamentoDirector = "Departamento de " . $proyecto->departamentoTutor;
+            $departamento = "Departamento de " . $docenteParticipante->departamento->departamento;
+            $departamentoDirector = "Departamento de " . $proyecto->departamento->departamento;
             $nombreProyecto = "Nombre del Proyecto: " . $proyecto->nombreProyecto;
             $firma1 = 'DOCENTE PARTICIPANTE';
             $firma2 = 'DIRECTOR DE PROYECTO';
@@ -3455,7 +3456,6 @@ class DocumentoController extends Controller
 
         $profesor = Auth::user()->profesorUniversidad;
 
-        ////obtener el proyecto del profesor con estudiantes asignados en estado aprobado
         $proyecto = AsignacionProyecto::where('ParticipanteID', $profesor->id)
             ->whereHas('estudiante', function ($query) {
                 $query->where('Estado', 'Aprobado');
@@ -3478,15 +3478,27 @@ class DocumentoController extends Controller
         $fecha = $request->input('fechaAcciones');
 
         $contadorObjetivos = count($acciones);
-        $template->cloneRow('acciones', $contadorObjetivos); // Clonar filas según la cantidad de acciones
+        $template->cloneRow('acciones', $contadorObjetivos);
 
         foreach ($acciones as $index => $objetivo) {
-            $numFila = $index + 1; // Obtener el número de fila
-            $template->setValue('acciones#' . $numFila, $objetivo); // Asignar valor de acción
-            $template->setValue('responsable#' . $numFila, $responsable[$index]); // Asignar valor de responsable
-            $template->setValue('fechaAcciones#' . $numFila, $fecha[$index]); // Asignar valor de fecha de acciones
-            $template->setValue('contador#' . $numFila, $numFila); // Asignar valor de contador
+            $numFila = $index + 1;
+            $template->setValue('acciones#' . $numFila, $objetivo);
+            $template->setValue('responsable#' . $numFila, $responsable[$index]);
+            $template->setValue('fechaAcciones#' . $numFila, $fecha[$index]);
+            $template->setValue('contador#' . $numFila, $numFila);
         }
+
+        $desarrollos = $request->input('desarrollo');
+        $contadorDesarrollo = count($desarrollos);
+        $template->cloneRow('desarrollo', $contadorDesarrollo);
+
+        foreach ($desarrollos as $index => $desarrollo) {
+            $numFila = $index + 1;
+            $template->setValue('desarrollo#' . $numFila, $desarrollo);
+            $template->setValue('contadorDesarrollo#' . $numFila, $numFila);
+        }
+
+
 
         $template->setValue('participante', $profesor->apellidos . ' ' . $profesor->nombres);
         $template->setValue('Correo', $profesor->correo);
@@ -3683,22 +3695,25 @@ class DocumentoController extends Controller
     {
         $estudiante = Auth::user()->estudiante;
 
-        if ($estudiante->estado === 'En proceso de revision') {
+         if ($estudiante->estado === 'En proceso de revision') {
             return redirect()->back()->with('error', 'No tienes acceso a esta página en este momento.');
         }
 
-        $actividadesRegistradas = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)->get();
+         $actividadesRegistradas = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)->get();
         $totalHoras = $actividadesRegistradas->sum('numeroHoras');
 
-        $proyecto = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->first();
+         $proyecto = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->first();
 
+         $actasReunion = ActaReunion::where('proyectoId', $proyecto->proyectoId)->get();
 
         return view('estudiantes.documentos', [
             'actividadesRegistradas' => $actividadesRegistradas,
             'totalHoras' => $totalHoras,
-            'proyecto' => $proyecto
+            'proyecto' => $proyecto,
+            'actasReunion' => $actasReunion // Pasar las actas a la vista
         ]);
     }
+
 
 
 

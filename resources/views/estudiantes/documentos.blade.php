@@ -120,9 +120,26 @@
                 @csrf
                 <input type="hidden" name="tipoDocumentos" id="tipoDocumentosHidden">
 
+                <!-- Select para escoger el acta -->
+                <div class="form-group">
+                    <label class="label" for="acta"><strong>Seleccionar Acta:</strong></label>
+                    <select class="form-control input" id="acta" onchange="cargarDatosActa(this.value)">
+                        <option value="" selected disabled>Seleccione un acta</option>
+                        @foreach ($actasReunion as $acta)
+                            <option value="{{ $acta->id }}"
+                                    data-fecha="{{ $acta->fecha }}"
+                                    data-lugar="{{ $acta->lugar }}"
+                                    data-tema="{{ $acta->tema }}">
+                                {{ $acta->tema }} - {{ \Carbon\Carbon::parse($acta->fecha)->format('d-m-Y') }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Campos del formulario -->
                 <div class="form-group">
                     <label class="label" for="fecha"><strong>Fecha de asistencia:</strong></label>
-                    <input type="date" id="fecha" name="fecha" class="form-control input">
+                    <input type="date" id="fecha" name="fecha" class="form-control input" readonly>
                     <small id="fechaError" class="form-text text-danger" style="display: none;"></small>
                     @error('fecha')
                         <small class="form-text text-danger">{{ $message }}</small>
@@ -131,7 +148,7 @@
 
                 <div class="form-group">
                     <label class="label" for="lugar"><strong>Lugar de la actividad:</strong></label>
-                    <input type="text" id="lugar" name="lugar" class="form-control input"
+                    <input type="text" id="lugar" name="lugar" class="form-control input" readonly
                         placeholder="Escribir el lugar de la actividad">
                     <small id="lugarError" class="form-text text-danger" style="display: none;"></small>
                     @error('lugar')
@@ -141,7 +158,7 @@
 
                 <div class="form-group">
                     <label class="label" for="actividades"><strong>Actividades a realizar:</strong></label>
-                    <textarea id="actividades" name="actividades" class="form-control input" placeholder="Escribir la actividad"></textarea>
+                    <textarea id="actividades" name="actividades" class="form-control input" readonly placeholder="Escribir la actividad"></textarea>
                     <small id="actividadesError" class="form-text text-danger" style="display: none;"></small>
                     @error('actividades')
                         <small class="form-text text-danger">{{ $message }}</small>
@@ -155,7 +172,6 @@
                     </button>
                 </div>
             </form>
-
         </div>
     </div>
 
@@ -348,18 +364,34 @@
                                                                     value="{{ $actividad->nombreActividad }}">
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="label" for="evidencias{{ $actividad->idActividades }}"><b>Evidencias</b></label>
+                                                                <label class="label"
+                                                                    for="evidencias{{ $actividad->idActividades }}"><b>Evidencias</b></label>
                                                                 <div>
-                                                                    <img src="data:image/png;base64,{{ $actividad->evidencias }}" alt="Evidencia" width="100" height="100">
+                                                                    <img src="data:image/png;base64,{{ $actividad->evidencias }}"
+                                                                        alt="Evidencia" width="100" height="100">
                                                                 </div>
                                                                 <div class="input-group input_file mt-2">
-                                                                    <span id="fileText{{ $actividad->idActividades }}" class="fileText input input_file input_select1"><i class="fa-solid fa-arrow-up-from-bracket"></i> Haz clic aquí para subir una nueva imagen</span>
-                                                                    <input type="file" id="evidencias{{ $actividad->idActividades }}" name="evidencias" accept="image/jpeg, image/jpg, image/png" class="form-control-file input input_file" onchange="displayFileName(this, 'fileText{{ $actividad->idActividades }}')">
-                                                                    <span title="Eliminar archivo" onclick="removeFile(this)" class="remove-icon">✖</span>
+                                                                    <span id="fileText{{ $actividad->idActividades }}"
+                                                                        class="fileText input input_file input_select1"><i
+                                                                            class="fa-solid fa-arrow-up-from-bracket"></i>
+                                                                        Haz clic aquí para subir una nueva imagen</span>
+                                                                    <input type="file"
+                                                                        id="evidencias{{ $actividad->idActividades }}"
+                                                                        name="evidencias"
+                                                                        accept="image/jpeg, image/jpg, image/png"
+                                                                        class="form-control-file input input_file"
+                                                                        onchange="displayFileName(this, 'fileText{{ $actividad->idActividades }}')">
+                                                                    <span title="Eliminar archivo"
+                                                                        onclick="removeFile(this)"
+                                                                        class="remove-icon">✖</span>
                                                                 </div>
                                                                 <div class="form-check mt-2">
-                                                                    <input type="checkbox" class="form-check-input" id="removeEvidencias{{ $actividad->idActividades }}" name="remove_evidencias" value="1">
-                                                                    <label class="form-check-label" for="removeEvidencias{{ $actividad->idActividades }}">Eliminar imagen</label>
+                                                                    <input type="checkbox" class="form-check-input"
+                                                                        id="removeEvidencias{{ $actividad->idActividades }}"
+                                                                        name="remove_evidencias" value="1">
+                                                                    <label class="form-check-label"
+                                                                        for="removeEvidencias{{ $actividad->idActividades }}">Eliminar
+                                                                        imagen</label>
                                                                 </div>
                                                             </div>
 
@@ -421,10 +453,10 @@
                                             class="fa-regular fa-floppy-disk"></i></button>
                                 </div>
                                 <div class="tooltip-container">
-                                    <a href="{{ route('estudiantes.recuperarDatos') }}"
-                                        class="button3 efects_button btn_filtro colorr"
-                                        onclick="setScrollAndLink('{{ route('estudiantes.recuperarDatos') }}')"> <i
-                                            class="fa-solid fa-window-restore"></i></a>
+                                    <a href="#" class="button3 efects_button btn_filtro colorr"
+                                        onclick="setScrollAndLink();">
+                                        <i class="fa-solid fa-window-restore"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -980,75 +1012,7 @@
             }
         </script>
 
-        <script>
-            function validateForm() {
-                let isValid = true;
 
-                // Clear previous error messages
-                document.getElementById('fechaError').innerText = '';
-                document.getElementById('actividadesError').innerText = '';
-                document.getElementById('horasError').innerText = '';
-
-                // Get form elements
-                const fecha = document.getElementById('fecha').value;
-                const actividades = document.getElementById('actividades').value.trim();
-                const horas = document.getElementById('horas').value;
-
-                // Validate Fecha
-                if (!fecha) {
-                    document.getElementById('fechaError').innerText = 'La fecha es requerida.';
-                    isValid = false;
-                }
-
-                // Validate Actividades
-                if (!actividades) {
-                    document.getElementById('actividadesError').innerText = 'Las actividades son requeridas.';
-                    isValid = false;
-                }
-
-                // Validate Horas
-                if (!horas || horas <= 0) {
-                    document.getElementById('horasError').innerText = 'El número de horas debe ser mayor a 0.';
-                    isValid = false;
-                }
-
-                return isValid;
-            }
-
-            // Attach event listeners to inputs to clear error messages on user input
-            document.getElementById('fecha').addEventListener('input', function() {
-                if (this.value) {
-                    document.getElementById('fechaError').innerText = '';
-                }
-            });
-
-            document.getElementById('actividades').addEventListener('input', function() {
-                if (this.value.trim()) {
-                    document.getElementById('actividadesError').innerText = '';
-                }
-            });
-
-            document.getElementById('horas').addEventListener('input', function() {
-                if (this.value > 0) {
-                    document.getElementById('horasError').innerText = '';
-                }
-            });
-
-            function displayFileName(input, fileTextId) {
-                const fileText = document.getElementById(fileTextId);
-                if (input.files && input.files.length > 0) {
-                    fileText.innerText = input.files[0].name;
-                } else {
-                    fileText.innerText = 'Haz clic aquí para subir el documento';
-                }
-            }
-
-            function removeFile(element) {
-                const input = element.previousElementSibling;
-                input.value = ''; // Clear the file input
-                displayFileName(input, 'fileText'); // Reset the file display text
-            }
-        </script>
 
 
         <style>
@@ -1357,6 +1321,35 @@
                 });
             });
         </script>
+
+        <script>
+            function setScrollAndLink() {
+                const tipo = document.getElementById('tipo').value; // Obtener el valor del campo tipo
+                if (tipo) {
+                    // Redirigir a la ruta con el valor de tipo como parámetro
+                    window.location.href = "{{ route('estudiantes.recuperarDatos') }}?tipo=" + tipo;
+                } else {
+                    alert('Por favor, seleccione un tipo de informe.');
+                }
+            }
+        </script>
+
+<script>
+    function cargarDatosActa(actaId) {
+        var selectedOption = document.querySelector('#acta option[value="' + actaId + '"]');
+        if (selectedOption) {
+            // Obtener los datos del acta seleccionada
+            var fecha = selectedOption.getAttribute('data-fecha');
+            var lugar = selectedOption.getAttribute('data-lugar');
+            var tema = selectedOption.getAttribute('data-tema');
+
+            // Asignar los datos a los campos del formulario
+            document.getElementById('fecha').value = fecha;
+            document.getElementById('lugar').value = lugar;
+            document.getElementById('actividades').value = tema;
+        }
+    }
+</script>
 
 
     @endsection

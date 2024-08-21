@@ -95,7 +95,7 @@
                                             </td>
                                             <td
                                                 style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                                {{ $estudiante->departamento }}
+                                                {{ $estudiante->departamento->departamento }}
                                             </td>
                                             <td
                                                 style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
@@ -336,23 +336,28 @@
 
 
                                         @php
-                                            $informe = is_numeric($estudiante->notas->first()->informe)
-                                                ? $estudiante->notas->first()->informe
-                                                : 0;
+                                            $notas = $estudiante->notas->first();
 
-                                            $totalNotas = collect([
-                                                $estudiante->notas->first()->tareas ?? 0,
-                                                $estudiante->notas->first()->resultadosAlcanzados ?? 0,
-                                                $estudiante->notas->first()->conocimientos ?? 0,
-                                                $estudiante->notas->first()->adaptabilidad ?? 0,
-                                                $estudiante->notas->first()->aplicacion ?? 0,
-                                                $estudiante->notas->first()->CapacidadLiderazgo ?? 0,
-                                                $estudiante->notas->first()->asistencia ?? 0,
+                                             $informe = is_numeric($notas->informe ?? null) ? $notas->informe : 0;
+
+                                             $totalNotas = collect([
+                                                $notas->tareas ?? 0,
+                                                $notas->resultadosAlcanzados ?? 0,
+                                                $notas->conocimientos ?? 0,
+                                                $notas->adaptabilidad ?? 0,
+                                                $notas->aplicacion ?? 0,
+                                                $notas->CapacidadLiderazgo ?? 0,
+                                                $notas->asistencia ?? 0,
                                                 $informe,
-                                            ])->sum();
+                                            ])
+                                                ->filter(function ($value) {
+                                                    return $value !== null;
+                                                })
+                                                ->sum();
 
-                                            $resultadoFinal = ($totalNotas * 20) / 100;
+                                             $resultadoFinal = ($totalNotas * 20) / 100;
                                         @endphp
+
 
                                         <td
                                             style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">

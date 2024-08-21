@@ -1012,53 +1012,121 @@ class EstudianteController extends Controller
             'conclusiones1' => 'required|string',
             'conclusiones2' => 'required|string',
             'conclusiones3' => 'required|string',
-            'recomendaciones' => 'required|string'
+            'recomendaciones' => 'required|string',
+            'tipo' => 'required|string'
         ]);
 
         $estudianteId = auth()->user()->estudiante->estudianteId;
-
         $asignacionProyecto = AsignacionProyecto::where('estudianteId', $estudianteId)->first();
 
         if (!$asignacionProyecto) {
             return redirect()->back()->withInput()->with(['error' => 'El estudiante no tiene una asignación de proyecto.']);
         }
 
-        $informe = InformeVinculacionEstudiante::updateOrCreate(
-            ['estudianteId' => $estudianteId],
-            [
-                'nombre_comunidad' => $data['nombreComunidad'],
-                'provincias' => json_encode($data['provincia']),
-                'cantones' => json_encode($data['canton']),
-                'parroquias' => json_encode($data['parroquia']),
-                'direcciones' => json_encode($data['direccion']),
-                'especificos' => json_encode($data['especificos']),
-                'alcanzados' => json_encode($data['alcanzados']),
-                'porcentajes' => json_encode($data['porcentaje']),
-                'conclusiones1' => $data['conclusiones1'],
-                'razones' => $data['razones'],
-                'conclusiones2' => $data['conclusiones2'],
-                'conclusiones3' => $data['conclusiones3'],
-                'recomendaciones' => $data['recomendaciones']
-            ]
-        );
+        if ($data['tipo'] === 'grupal') {
+            // Asumir que el "líder" es el estudiante con el ID más bajo del grupo
+            $liderId = AsignacionProyecto::where('proyectoId', $asignacionProyecto->proyectoId)
+                ->where('idPeriodo', $asignacionProyecto->idPeriodo)
+                ->where('inicioFecha', $asignacionProyecto->inicioFecha)
+                ->orderBy('estudianteId')
+                ->pluck('estudianteId')
+                ->first();
+
+            InformeVinculacionEstudiante::updateOrCreate(
+                ['estudianteId' => $liderId],
+                [
+                    'nombre_comunidad' => $data['nombreComunidad'],
+                    'provincias' => json_encode($data['provincia']),
+                    'cantones' => json_encode($data['canton']),
+                    'parroquias' => json_encode($data['parroquia']),
+                    'direcciones' => json_encode($data['direccion']),
+                    'especificos' => json_encode($data['especificos']),
+                    'alcanzados' => json_encode($data['alcanzados']),
+                    'porcentajes' => json_encode($data['porcentaje']),
+                    'conclusiones1' => $data['conclusiones1'],
+                    'razones' => $data['razones'],
+                    'conclusiones2' => $data['conclusiones2'],
+                    'conclusiones3' => $data['conclusiones3'],
+                    'recomendaciones' => $data['recomendaciones'],
+                ]
+            );
+        } else {
+            // Si es individual, solo actualizar o crear el informe del estudiante actual
+            InformeVinculacionEstudiante::updateOrCreate(
+                ['estudianteId' => $estudianteId],
+                [
+                    'nombre_comunidad' => $data['nombreComunidad'],
+                    'provincias' => json_encode($data['provincia']),
+                    'cantones' => json_encode($data['canton']),
+                    'parroquias' => json_encode($data['parroquia']),
+                    'direcciones' => json_encode($data['direccion']),
+                    'especificos' => json_encode($data['especificos']),
+                    'alcanzados' => json_encode($data['alcanzados']),
+                    'porcentajes' => json_encode($data['porcentaje']),
+                    'conclusiones1' => $data['conclusiones1'],
+                    'razones' => $data['razones'],
+                    'conclusiones2' => $data['conclusiones2'],
+                    'conclusiones3' => $data['conclusiones3'],
+                    'recomendaciones' => $data['recomendaciones'],
+                ]
+            );
+        }
 
         return redirect()->back()->withInput()->with('success', 'Datos guardados exitosamente.');
     }
 
 
 
+
     public function recuperarDatos(Request $request)
-    {
-        $estudianteId = auth()->user()->estudiante->estudianteId;
+{
+    $estudianteId = auth()->user()->estudiante->estudianteId;
 
-        // Verificar si el estudiante tiene una asignación de proyectos
-        $asignacionProyecto = AsignacionProyecto::where('estudianteId', $estudianteId)->first();
+    // Verificar si el estudiante tiene una asignación de proyectos
+    $asignacionProyecto = AsignacionProyecto::where('estudianteId', $estudianteId)->first();
 
-        if (!$asignacionProyecto) {
-            return redirect()->back()->with('error', 'El estudiante no tiene una asignación de proyectos.');
+    if (!$asignacionProyecto) {
+        return redirect()->back()->with('error', 'El estudiante no tiene una asignación de proyectos.');
+    }
+
+    // Verificar el tipo de informe solicitado
+    $tipoInforme = $request->input('tipo');
+
+    if ($tipoInforme == 'grupal') {
+        // Obtener todos los estudiantes asignados al mismo proyecto, periodo y fecha de asignación
+        $estudiantesAsignados = AsignacionProyecto::where('proyectoId', $asignacionProyecto->proyectoId)
+            ->where('idPeriodo', $asignacionProyecto->idPeriodo)
+            ->where('inicioFecha', $asignacionProyecto->inicioFecha)
+            ->pluck('estudianteId');
+
+        // Buscar los últimos informes de cada estudiante
+        $informes = InformeVinculacionEstudiante::whereIn('estudianteId', $estudiantesAsignados)
+            ->latest()
+            ->get();
+
+        if ($informes->isEmpty()) {
+            return redirect()->back()->with('error', 'No se encontraron datos previos para el informe grupal.');
         }
 
-        // Buscar el último informe del estudiante
+        // Combinar datos de los informes grupales
+        $data = [
+            'tipo' => 'grupal',
+            'nombreComunidad' => $informes->pluck('nombre_comunidad')->unique()->implode(', '),
+            'provincia' => $informes->pluck('provincias')->map(function($prov) { return json_decode($prov, true); })->collapse()->toArray(),
+            'canton' => $informes->pluck('cantones')->map(function($canton) { return json_decode($canton, true); })->collapse()->toArray(),
+            'parroquia' => $informes->pluck('parroquias')->map(function($parroquia) { return json_decode($parroquia, true); })->collapse()->toArray(),
+            'direccion' => $informes->pluck('direcciones')->map(function($direccion) { return json_decode($direccion, true); })->collapse()->toArray(),
+            'especificos' => $informes->pluck('especificos')->map(function($especifico) { return json_decode($especifico, true); })->collapse()->toArray(),
+            'alcanzados' => $informes->pluck('alcanzados')->map(function($alcanzado) { return json_decode($alcanzado, true); })->collapse()->toArray(),
+            'porcentaje' => $informes->pluck('porcentajes')->map(function($porcentaje) { return json_decode($porcentaje, true); })->collapse()->toArray(),
+            'razones' => $informes->pluck('razones')->unique()->implode(', '),
+            'conclusiones1' => $informes->pluck('conclusiones1')->unique()->implode(', '),
+            'conclusiones2' => $informes->pluck('conclusiones2')->unique()->implode(', '),
+            'conclusiones3' => $informes->pluck('conclusiones3')->unique()->implode(', '),
+            'recomendaciones' => $informes->pluck('recomendaciones')->unique()->implode(', '),
+        ];
+    } else {
+        // Buscar el último informe del estudiante individual
         $informe = InformeVinculacionEstudiante::where('estudianteId', $estudianteId)->latest()->first();
 
         if (!$informe) {
@@ -1081,9 +1149,11 @@ class EstudianteController extends Controller
             'conclusiones3' => $informe->conclusiones3,
             'recomendaciones' => $informe->recomendaciones,
         ];
-
-        return redirect()->back()->withInput($data)->with('success', 'La información se ha recuperado correctamente.');
     }
+
+    return redirect()->back()->withInput($data)->with('success', 'La información se ha recuperado correctamente.');
+}
+
 
 
     public function guardarDatosPracticasi(Request $request)

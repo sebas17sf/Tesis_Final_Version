@@ -13,7 +13,9 @@ use App\Models\Proyecto;
 use App\Models\NotasEstudiante;
 use App\Models\Empresa;
 use App\Models\Periodo;
+use App\Models\ActaReunion;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
+
 use App\Models\PracticaI;
 use App\Models\PracticaII;
 use App\Models\PracticaIII;
@@ -37,20 +39,29 @@ class DocumentosVinculacion extends Controller
     {
         $profesor = Auth::user()->profesorUniversidad;
 
-        $proyecto = AsignacionProyecto::where('participanteId', $profesor->id)
+        $proyectos = AsignacionProyecto::where('participanteId', $profesor->id)
             ->whereHas('estudiante', function ($query) {
                 $query->where('estado', 'Aprobado');
-            })->first();
+            })
+            ->get();
 
+        $proyectosAsignados = $proyectos
+            ->unique('proyectoId')
+            ->values();
 
-        $inicioFecha = $proyecto->inicioFecha ?? null;
-        $finalizacionFecha = $proyecto->finalizacionFecha ?? null;
+        $inicioFecha = $proyectos->first()->inicioFecha ?? null;
+        $finalizacionFecha = $proyectos->first()->finalizacionFecha ?? null;
 
+        $actas = ActaReunion::whereIn('proyectoId', $proyectosAsignados->pluck('proyectoId'))
+            ->whereHas('proyecto.estudiantes', function ($query) {
+                $query->where('estudiantes.estado', 'Aprobado'); // Especifica la tabla aquí también
+            })
+            ->get();
 
-
-
-        return view('ParticipanteVinculacion.documentos', compact('inicioFecha', 'finalizacionFecha'));
+        return view('ParticipanteVinculacion.documentos', compact('proyectos', 'inicioFecha', 'finalizacionFecha', 'proyectosAsignados', 'actas'));
     }
+
+
 
     public function generarEvaluacionEstudiante()
     {
@@ -69,8 +80,6 @@ class DocumentosVinculacion extends Controller
             return redirect()->back()->with('error', 'No tiene proyectos asignados');
         }
 
-
-
         ///obtener la id del director de AsiignacionProyecto
         $proyecto = Proyecto::where('proyectoId', $asignacionProyecto->proyectoId)->first();
         if ($proyecto->estado != 'Ejecucion') {
@@ -80,12 +89,12 @@ class DocumentosVinculacion extends Controller
         ////buscar en profesores universidad
         $Director = ProfesUniversidad::where('id', $proyecto->directorId)->first();
         // Obtener los estudiantes asignados a este proyecto
-
         $estudiantes = AsignacionProyecto::where('proyectoId', $proyecto->proyectoId)
             ->whereHas('estudiante', function ($query) {
                 $query->where('estado', 'Aprobado');
             })
             ->get();
+
         if ($estudiantes->isEmpty()) {
             return redirect()->back()->with('error', 'No hay estudiantes asignados a este proyecto.');
         }
@@ -99,11 +108,12 @@ class DocumentosVinculacion extends Controller
         $nombreParticipante = "Ing. " . $participanteVinculacion->apellidos . ' ' . $participanteVinculacion->nombres . ", Mgtr.";
         $nombreDirector = "Ing. " . $Director->apellidos . ' ' . $Director->nombres . ", Mgtr.";
         ///Obtener el departamento del participante
-        $departamento = "Departamento de " . $participanteVinculacion->Departamento;
-        $departamentoDirector = "Departamento de " . $proyecto->DepartamentoTutor;
-        ///combinar celdas
+        $departamento = "Departamento de " . $participanteVinculacion->departamento->departamento;
+        $departamentoDirector = "Departamento de " . $proyecto->departamento->departamento;
+
+        ///combinar celdas y ajustar el texto
         $hojaCalculo->mergeCells('B12:D12');
-        $hojaCalculo->mergeCells('I12:K12');
+        $hojaCalculo->mergeCells('I12:M12'); // Ajuste: combinar celdas para el director del proyecto
         $hojaCalculo->mergeCells('B11:D11');
         $hojaCalculo->mergeCells('B13:D13');
         $hojaCalculo->mergeCells('B14:D14');
@@ -116,7 +126,6 @@ class DocumentosVinculacion extends Controller
         $hojaCalculo->getStyle("B14")->getFont()->setName("Calibri");
         $hojaCalculo->getStyle("B14")->getFont()->setBold(true);
         $hojaCalculo->getStyle("B14")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
 
         ///en I14 "DIRECTOR DE PROYECTO"
         $hojaCalculo->setCellValue('I14', 'DIRECTOR DE PROYECTO');
@@ -132,19 +141,23 @@ class DocumentosVinculacion extends Controller
         $hojaCalculo->getStyle("B12")->getFont()->setName("Calibri");
         $hojaCalculo->getStyle("B12")->getFont()->setBold(true);
         $hojaCalculo->getStyle("B12")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $hojaCalculo->getStyle('B12')->getAlignment()->setWrapText(true); // Activar ajuste de texto
+        $hojaCalculo->getStyle('B12')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_BOTTOM);
 
         $hojaCalculo->setCellValue("I12", $nombreDirector);
         $hojaCalculo->getStyle("I12")->getFont()->setSize(14);
         $hojaCalculo->getStyle("I12")->getFont()->setName("Calibri");
         $hojaCalculo->getStyle("I12")->getFont()->setBold(true);
         $hojaCalculo->getStyle("I12")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $hojaCalculo->getStyle('I12')->getAlignment()->setWrapText(true); // Activar ajuste de texto
 
         $hojaCalculo->setCellValue("B13", $departamento);
         $hojaCalculo->getStyle("B13")->getFont()->setSize(14);
         $hojaCalculo->getStyle("B13")->getFont()->setName("Calibri");
         $hojaCalculo->getStyle("B13")->getFont()->setBold(true);
         $hojaCalculo->getStyle("B13")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        $hojaCalculo->getStyle("B13")->getAlignment()->setWrapText(true);
+        $hojaCalculo->getStyle('B13')->getAlignment()->setWrapText(true);
+        $hojaCalculo->getStyle('B13')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_BOTTOM);
 
         $hojaCalculo->setCellValue("I13", $departamentoDirector);
         $hojaCalculo->getStyle("I13")->getFont()->setSize(14);
@@ -152,6 +165,7 @@ class DocumentosVinculacion extends Controller
         $hojaCalculo->getStyle("I13")->getFont()->setBold(true);
         $hojaCalculo->getStyle("I13")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         $hojaCalculo->getStyle("I13")->getAlignment()->setWrapText(true);
+        $hojaCalculo->getStyle("I13")->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_BOTTOM);
 
         foreach ($estudiantes as $index => $estudiante) {
             $notas = NotasEstudiante::where('estudianteId', $estudiante->estudianteId)->first();
@@ -180,10 +194,6 @@ class DocumentosVinculacion extends Controller
             $hojaCalculo->setCellValue("K$filaActual", $notas->informe);
             $hojaCalculo->setCellValue("L$filaActual", "=SUM(D$filaActual:K$filaActual)");
             $hojaCalculo->setCellValue("M$filaActual", "=L$filaActual*20/100");
-
-
-
-
         }
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
@@ -191,17 +201,13 @@ class DocumentosVinculacion extends Controller
         $nombreArchivo = '1.4-Evaluación-Estudiantes.xlsx';
         $writer->save($nombreArchivo);
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
-
-
-
-
-
     }
 
 
 
 
-    public function generarHorasDocente()
+
+    public function generarHorasDocente(Request $request)
     {
         $plantillaPath = public_path('Plantillas/1.3-Número-Horas-Docentes.xlsx');
         $spreadsheet = IOFactory::load($plantillaPath);
@@ -246,12 +252,12 @@ class DocumentosVinculacion extends Controller
         $correoParticipante = $participanteVinculacion->correo;
         $correoDirector = $Director->correo;
         $sede = 'Santo Domingo';
-        $departamentosParticipante = $participanteVinculacion->departamento;
-        $departamentosDirector = $proyecto->departamentoTutor;
+        $departamentosParticipante = $participanteVinculacion->departamento->departamento;
+        $departamentosDirector = $proyecto->departamento->departamento;
         $fechaInicio = $asignacionProyecto->inicioFecha;
         $fechaFin = $asignacionProyecto->finalizacionFecha;
-        $NumeroHoras = '96';
-        $nombreProyecto = $proyecto->nombreProyecto;
+        $NumeroHoras = $request->input('horas_entre_fechas');
+         $nombreProyecto = $proyecto->nombreProyecto;
         $fechaFormateada = date('d F Y', strtotime($fechaFin));
         setlocale(LC_TIME, 'es_ES');
         $meses = [
