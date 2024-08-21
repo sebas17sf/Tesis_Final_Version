@@ -62,7 +62,7 @@
                             <thead class="ng-star-inserted">
                                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
 
-                                <th class="tamanio1">ESTUDIANTE</th>
+                                    <th class="tamanio1">ESTUDIANTE</th>
                                     <th class="tamanio2">ID ESPE</th>
                                     <th class="tamanio2">CÉDULA</th>
                                     <th>COHORTE</th>
@@ -154,7 +154,8 @@
                     </div>
                     <div class="tooltip-container">
                         <span class="tooltip-text">Filtros</span>
-                        <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCardProfesores'); toggleIcon();">
+                        <button class="button3 efects_button btn_filtro"
+                            onclick="openCard('filtersCardProfesores'); toggleIcon();">
                             <i id="filterIcon" class="fa-solid fa-filter-list"></i>
                     </div>
 
@@ -166,21 +167,18 @@
                         </div>
                         <div class="card-body">
                             <form id="filterFormProfesores" method="GET" action="{{ route('admin.indexProyectos') }}">
-                                <div class="form-group">
-                                    <label for="Departamento">Departamento:</label>
-                                    <select class="form-control input input_select" id="Departamento" name="Departamento"
-                                        required>
-                                        <option value="">Todos los departamentos</option>
-                                        <option value="Ciencias de la Computación"
-                                            {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias de la Computación' ? 'selected' : '' }}>
-                                            DCCO - Ciencias de la Computación</option>
-                                        <option value="Ciencias Exactas"
-                                            {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias Exactas' ? 'selected' : '' }}>
-                                            DCEX - Ciencias Exactas</option>
-                                        <option value="Ciencias de la Vida y Agricultura"
-                                            {{ old('Departamento', $estudiante->departamento ?? '') == 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>
-                                            DCVA - Ciencias de la Vida y Agricultura</option>
+                                <div>
+                                    <label for="departament_student">Departamento <span class="requerido">*</span></label>
+                                    <select class="form-control input input_select" id="Departamento"
+                                        name="Departamento">
+                                        <option value="">Seleccione un departamento</option>
+                                        @foreach ($departamentos as $departamento)
+                                            <option value="{{ $departamento->id }}"
+                                                @if (isset($estudiante->departamentoId) && $estudiante->departamentoId == $departamento->id) selected @endif>
+                                                {{ $departamento->departamento }}</option>
+                                        @endforeach
                                     </select>
+                                    <small id="departamentoError" class="error-message" style="color: red;"></small>
                                 </div>
                                 <div class="form-group">
                                     <label for="periodos">Períodos</label>
@@ -511,17 +509,17 @@
     </script>
 
 
-<script>
-    document.getElementById('formdatos').addEventListener('submit', function(event) {
-        event.preventDefault();
-        var profesor = document.getElementById('Departamento').value;
-        var periodo = document.getElementById('periodos').value;
-        document.getElementById('hiddenDepartamento').value = profesor;
-        document.getElementById('hiddenPeriodo').value = periodo;
+    <script>
+        document.getElementById('formdatos').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var profesor = document.getElementById('Departamento').value;
+            var periodo = document.getElementById('periodos').value;
+            document.getElementById('hiddenDepartamento').value = profesor;
+            document.getElementById('hiddenPeriodo').value = periodo;
 
-        this.submit();
-    });
-</script>
+            this.submit();
+        });
+    </script>
 
 
 

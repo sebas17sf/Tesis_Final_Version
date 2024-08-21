@@ -6,6 +6,9 @@
 
 @section('content')
 
+
+
+
     @if (session('success'))
         <div class="contenedor_alerta success">
             <div class="icon_alert"><i class="fa-regular fa-circle-check fa-beat"></i></div>
@@ -29,17 +32,8 @@
 
 
     <section>
-    <center>
-            <button type="button" class="button1 mr-2" onclick="openCard('draggableCardNRC');">Agregar NRC</button>
-            <button type="button" class="button1 mr-2" onclick="openCard('draggableCardPeriodo');">Agregar
-                Periodo</button>
-            <button type="button" class="button1 mr-2" onclick="openCard('draggableCardEditarPeriodo');">Editar
-                Periodo</button>
-</center>
-            <hr>
         <div class="contenedor_registro_genero ">
             <h4><b>Listado de Proyectos Sociales</b></h4>
-            <hr>
 
 
 
@@ -52,7 +46,7 @@
                             <!-- Botón para agregar proyecto -->
                             <div class="tooltip-container mr-2">
                                 <span class="tooltip-text">Agregar</span>
-                                <button type="button" onclick="location.href='{{ route('coordinador.agregarProyecto') }}';"
+                                <button type="button" onclick="location.href='{{ route('admin.agregarProyecto') }}';"
                                     class="button3 efects_button btn_primary" id="button3">
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
@@ -101,8 +95,8 @@
                             <!-- Botón para abrir el card de filtros -->
                             <div class="tooltip-container">
                                 <span class="tooltip-text">Filtros</span>
-                                <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCard');">
-                                    <i class="fa-solid fa-filter-list"></i>
+                                <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCard'); toggleIcon();">
+                            <i id="filterIcon" class="fa-solid fa-filter-list"></i>
                                 </button>
                             </div>
 
@@ -110,15 +104,15 @@
                             <div class="draggable-card1_2" id="filtersCard" style="display: none;">
                                 <div class="card-header">
                                     <span class="card-title">Filtros</span>
-                                    <button type="button" class="close" onclick="closeCard('filtersCard')"><i
-                                            class="fa-thin fa-xmark"></i></button>
+                                    <button type="button" class="close" onclick="closeCard('filtersCard')">
+                                        <i class="fa-thin fa-xmark"></i>
+                                    </button>
                                 </div>
                                 <div class="card-body">
-                                    <form id="filtersForm" method="GET" action="{{ route('admin.indexProyectos') }}">
+                                    <form id="filtersForm" method="GET" action="{{ route('coordinador.index') }}">
                                         <div class="form-group">
                                             <label for="estado" class="mr-2">Estado del Proyecto:</label>
-                                            <select name="estado" id="estado"
-                                                class="form-control input input_select">
+                                            <select name="estado" id="estado" class="form-control input input_select">
                                                 <option value="">Todos</option>
                                                 <option value="Ejecucion"
                                                     {{ request('estado') == 'Ejecucion' ? 'selected' : '' }}>En Ejecución
@@ -128,26 +122,44 @@
                                                 </option>
                                             </select>
                                         </div>
-
-                                        <div class="form-group">
-                                            <label for="departamento" class="mr-2">Departamento:</label>
-                                            <select name="departamento" id="departamento"
-                                                class="form-control input input_select">
-                                                <option value="">Todos</option>
-                                                <option value="Ciencias de la Computación"
-                                                    {{ request('departamento') == 'Ciencias de la Computación' ? 'selected' : '' }}>
-                                                    Ciencias de la Computación</option>
-                                                <option value="Ciencias Exactas"
-                                                    {{ request('departamento') == 'Ciencias Exactas' ? 'selected' : '' }}>
-                                                    Ciencias Exactas</option>
-                                                <option value="Ciencias de la Vida y Agricultura"
-                                                    {{ request('departamento') == 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>
-                                                    Ciencias de la Vida y Agricultura</option>
+                                        <div>
+                                            <label for="departament_student">Departamento <span class="requerido">*</span></label>
+                                            <select class="form-control input input_select" id="departamento"
+                                                name="departamento">
+                                                <option value="">Seleccione un departamento</option>
+                                                @foreach ($departamentos as $departamento)
+                                                    <option value="{{ $departamento->id }}"
+                                                        @if (isset($estudiante->departamentoId) && $estudiante->departamentoId == $departamento->id) selected @endif>
+                                                        {{ $departamento->departamento }}</option>
+                                                @endforeach
                                             </select>
+                                            <small id="departamentoError" class="error-message" style="color: red;"></small>
+                                        </div>
+                                    </form>
+
+                                    <!-- Formulario para descargar el reporte en Excel -->
+                                    <form method="POST" action="{{ route('coordinador.reportesProyectos') }}"
+                                        class="form-inline d-flex align-items-center">
+                                        @csrf
+                                        <input type="hidden" name="estado" id="hiddenEstado"
+                                            value="{{ request('estado') }}">
+                                        <input type="hidden" name="departamento" id="hiddenDepartamento"
+                                            value="{{ request('departamento') }}">
+                                        <div style="display: flex; align-items: center;">
+                                            <label for="submitButton" style="margin-right: 30px;">Descargar
+                                                Reporte</label>
+                                            <button type="submit" class="button3 efects_button btn_excel"
+                                                id="submitButton">
+                                                <span id="loadingIcon" style="display: none !important;">
+                                                    <img src="gif/load2.gif" alt="Loading" style="height: 20px;">
+                                                </span>
+                                                <i class="fa-solid fa-download"></i>
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
+
 
                             <!-- Botón de Eliminar Filtros -->
                             <div class="tooltip-container mx-2">
@@ -221,7 +233,7 @@
                                                     {{ strtoupper($proyecto->descripcionProyecto) }}
                                                 </td>
                                                 <td style="text-transform: uppercase;">
-                                                    {{ strtoupper($proyecto->departamentoTutor) }}
+                                                    {{ strtoupper($proyecto->departamento->departamento ?? '') }}
                                                 </td>
                                                 <td>
                                                     @if (empty($proyecto->codigoProyecto))
@@ -237,7 +249,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="btn-group shadow-0">
-                                                        <a href="{{ route('admin.editarProyecto', ['ProyectoID' => $proyecto->proyectoId]) }}"
+                                                        <a href="{{ route('coordinador.editarProyecto', ['proyectoId' => $proyecto->proyectoId]) }}"
                                                             type="button" class="button3 efects_button btn_editar3">
                                                             <i class="bx bx-edit-alt"></i>
                                                         </a>
@@ -271,7 +283,7 @@
                             <div id="totalRows">Proyectos: {{ $proyectos->total() }}</div>
                             <ul class="pagination">
                                 <li class="page-item mx-3">
-                                    <form method="GET" action="{{ route('admin.indexProyectos') }}#tablaProyectos">
+                                    <form method="GET" action="{{ route('coordinador.index') }}#tablaProyectos">
                                         <select class="form-control page-item" name="perPage" id="perPage"
                                             onchange="this.form.submit()">
                                             <option value="10" @if ($perPage == 10) selected @endif>10
@@ -336,7 +348,6 @@
                             <div class="col-md-12 d-flex">
 
                                 <!-- Botón de Matriz de Vinculación -->
-                                <!-- Botones -->
                                 <div class="tooltip-container mx-1">
                                     <span class="tooltip-text">Excel</span>
                                     <form action="{{ route('reporte.matrizVinculacion') }}" method="POST"
@@ -352,7 +363,6 @@
                                         </button>
                                     </form>
                                 </div>
-
                                 <!-- Botón de Importar archivo -->
                                 <div class="tooltip-container mx-1">
                                     <span class="tooltip-text">Importar archivo</span>
@@ -387,7 +397,8 @@
                                                 </div>
                                             </div>
                                             <div class="card-footer d-flex justify-content-center align-items-center">
-                                                <button type="submit" class="button">Importar Archivo</button>
+                                                <button type="button" class="button"
+                                                    onclick="showImportConfirmation()">Importar Archivo</button>
                                             </div>
                                         </form>
                                     </div>
@@ -397,24 +408,24 @@
                                 <div class="tooltip-container mx-1">
                                     <span class="tooltip-text">Filtros</span>
                                     <button class="button3 efects_button btn_filtro"
-                                        onclick="openCard('filtersCardProfesores');">
-                                        <i class="fa-solid fa-filter-list"></i>
+                                        onclick="openCard('filtersCardProfesores'); toggleIcon();">
+                            <i id="filterIcon" class="fa-solid fa-filter-list"></i>
                                     </button>
                                 </div>
 
                                 <!-- Card de Filtros para Profesores y Periodos -->
                                 <div class="draggable-card1_2" id="filtersCardProfesores" style="display: none;">
                                     <div class="card-header">
-                                        <span class="card-title">Filtros Profesores y Periodos</span>
+                                        <span class="card-title">Filtros</span>
                                         <button type="button" class="close"
                                             onclick="closeCard('filtersCardProfesores')"><i
                                                 class="fa-thin fa-xmark"></i></button>
                                     </div>
                                     <div class="card-body">
                                         <form id="filterFormProfesores" method="GET"
-                                            action="{{ route('admin.indexProyectos') }}">
+                                            action="{{ route('coordinador.index') }}">
                                             <div class="form-group">
-                                                <label for="profesor">Profesor</label>
+                                                <label for="profesor">Docente</label>
                                                 <select name="profesor" id="profesor"
                                                     class="form-control input input_select">
                                                     <option value="">Todos los docentes</option>
@@ -439,28 +450,37 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-
                                             <div class="form-group">
                                                 <label for="fechaInicio">Fecha inicio</label>
-                                                <input type="date" class="input" name="fechaInicio"
+                                                <input type="date" class=" form-control input input_f" name="fechaInicio"
                                                     id="fechaInicio">
                                             </div>
-
                                             <div class="form-group">
                                                 <label for="fechaFin">Fecha Fin</label>
-                                                <input type="date" class="input" name="fechaFin" id="fechaFin">
+                                                <input type="date" class=" form-control input input_f" name="fechaFin" id="fechaFin">
                                             </div>
-
-
-
-
-
-
                                         </form>
 
+                                        <!-- Formulario para descargar el reporte en Excel -->
+                                        <form action="{{ route('reporte.matrizVinculacion') }}" method="POST"
+                                            id="reportForm">
+                                            @csrf
+                                            <input type="hidden" name="fechaInicio" id="hiddenFechaInicio">
+                                            <input type="hidden" name="fechaFin" id="hiddenFechaFin">
+                                            <input type="hidden" name="profesor" id="hiddenProfesor">
+                                            <input type="hidden" name="periodos" id="hiddenPeriodos">
 
+                                            <div style="display: flex; align-items: center;">
+                                                <label for="submitButton" style="margin-right: 20px;">Descargar
+                                                    Reporte</label>
+                                                <button type="submit" class="button3 efects_button btn_excel">
+                                                    <i class="fa-solid fa-download"></i>
+                                                </button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
+
 
                                 <!-- Botón de Eliminar Filtros Profesores y Periodos -->
                                 <div class="tooltip-container mx-1">
@@ -483,7 +503,8 @@
                             </div>
                             <div class="icon_remove" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
+                                    <span aria-hidden="true"><i
+                                    class="fa-thin fa-xmark"></i></span>
                                 </button>
                             </div>
                         </div>
@@ -507,23 +528,23 @@
 
                                     <thead class="ng-star-inserted">
                                         <tr
-                                        class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                        <th>N°</th>
-                                        <th class="tamanio"> NOMBRE DE PROYECTO</th>
-                                        <th class="tamanio3">CÓDIGO DEL PROYECTO</th>
-                                        <th class="tamanio4">DIRECTOR</th>
-                                        <th class="tamanio4">DOCENTES PARTICIPANTES</th>
-                                        <th>ESTUDIANTES</th>
-                                        <th>DEPARTAMENTO</th>
-                                        <th>HORAS REALIZADAS</th>
-                                        <th class="tamanio4">NOTA</th>
-                                        <th>PERIODO</th>
-                                        <th>NRC</th>
-                                        <th>FECHA INICIO</th>
-                                        <th>FECHA FIN</th>
-                                        <th>ESTADO</th>
-                                        <th>PERMITIR CAMBIOS</th>
-                                        <th>DESCARGAR EVIDENCIAS</th>
+                                            class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                                            <th>N°</th>
+                                            <th class="tamanio"> NOMBRE DE PROYECTO</th>
+                                            <th class="tamanio3">CÓDIGO DEL PROYECTO</th>
+                                            <th class="tamanio4">DIRECTOR</th>
+                                            <th class="tamanio4">DOCENTES PARTICIPANTES</th>
+                                            <th>ESTUDIANTES</th>
+                                            <th>DEPARTAMENTO</th>
+                                            <th>HORAS REALIZADAS</th>
+                                            <th class="tamanio4">NOTA</th>
+                                            <th>PERIODO</th>
+                                            <th>NRC</th>
+                                            <th>FECHA INICIO</th>
+                                            <th>FECHA FIN</th>
+                                            <th>ESTADO</th>
+                                            <th>PERMITIR CAMBIOS</th>
+                                            <th>DESCARGAR EVIDENCIAS</th>
                                         </tr>
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
@@ -652,8 +673,8 @@
                                                             action="{{ route('admin.descargarEvidencias', ['proyectoId' => $grupo->first()->proyectoId]) }}"
                                                             method="GET">
                                                             <button type="submit"
-                                                                class="button3 efects_button btn_eliminar3">
-                                                                <i class="fas fa-download"></i>
+                                                            class="button3 efects_button btn_eliminar3">
+                                                            <i class="fas fa-download"></i>
                                                             </button>
                                                         </form>
                                                     </td>
@@ -682,7 +703,7 @@
 
                                     <li class="page-item mx-3 d-flex align-items-center">
                                         <form method="GET"
-                                            action="{{ route('admin.indexProyectos') }}#tablaAsignaciones"
+                                            action="{{ route('coordinador.index') }}#tablaAsignaciones"
                                             class="form-inline">
                                             <div class="form-group">
                                                 <label for="perPage2" class="sr-only">Items per page</label>
@@ -762,7 +783,7 @@
                     class="fa-thin fa-xmark"></i></button>
         </div>
         <div class="card-body">
-            <form method="POST" action="{{ route('coordinador.guardarAsignacion') }}">
+            <form method="POST" action="{{ route('admin.guardarAsignacion') }}">
                 @csrf
                 <div class="row">
                     <div class="col-md-12">
@@ -875,7 +896,8 @@
     <div class="draggable-card1_3" id="draggableCardAsignarDocente">
         <div class="card-header">
             <span class="card-title">Asignar Docente</span>
-            <button type="button" class="close" onclick="$('#draggableCardAsignarDocente').hide()">&times;</button>
+            <button type="button" class="close" onclick="$('#draggableCardAsignarDocente').hide()"><i
+            class="fa-thin fa-xmark"></i></button>
         </div>
         <div class="card-body">
             <form method="POST" action="{{ route('admin.guardarDocentesProyectos') }}">
@@ -1289,11 +1311,19 @@
             });
         });
         $(document).ready(function() {
+            // Hacer que los cards sean draggable
+            $('.draggable-card1_3').draggable({
+                handle: ".card-header",
+                containment: "window"
+            });
+        });
+        $(document).ready(function() {
             // Hacer que el card sea draggable
             $('.draggable-card1_2').draggable({
                 handle: ".card-header",
                 containment: "window"
             });
+
 
             // Enviar el formulario cuando cambian los select
             $('#filtersForm select').change(function() {
@@ -1402,7 +1432,94 @@
             document.getElementById('hiddenPeriodos').value = document.getElementById('periodos').value;
         });
     </script>
+
+    <script>
+        function displayFileName(input, fileTextId) {
+            const fileName = input.files[0]?.name || 'Haz clic aquí para subir el documento';
+            document.getElementById(fileTextId).textContent = fileName;
+        }
+
+        function showImportConfirmation() {
+            const fileInput = document.getElementById('file2');
+
+            // Validar que un archivo esté seleccionado
+            if (!fileInput.files.length) {
+                Swal.fire('Error', 'Por favor, seleccione un archivo primero.', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            // Mostrar SweetAlert de carga
+            Swal.fire({
+                title: 'Cargando...',
+                text: 'Procesando archivo, por favor espere',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Realizar la solicitud AJAX para previsualizar la importación
+            fetch('{{ route('import.preview') }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    Swal.close(); // Cerrar la alerta de carga
+                    Swal.fire({
+                        title: 'Confirmación de Importación',
+                        html: `
+                    <p>Se van a <strong>insertar</strong> ${data.insertCount} registros.</p>
+                    <p>Se van a <strong>actualizar</strong> ${data.updateCount} registros.</p>
+                    <p>¿Deseas proceder con esta operación?</p>
+                `,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, proceder',
+                        cancelButtonText: 'Cancelar',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.getElementById('idModalImportar2').submit();
+                        }
+                    });
+                })
+                .catch(error => {
+                    Swal.close(); // Cerrar la alerta de carga
+                    Swal.fire('Error', 'Ocurrió un error al previsualizar la importación.', 'error');
+                    console.error('Error:', error);
+                });
+        }
+
+        function removeFile(span) {
+            const fileInput = document.getElementById('file2');
+            fileInput.value = ''; // Limpiar el input file
+            document.getElementById('fileText2').textContent = 'Haz clic aquí para subir el documento'; // Resetear el texto
+        }
+    </script>
+
+
+
+
+
     <script src="{{ asset('js\admin\index.js') }}"></script>
+
+    <style>
+        .btn_revertir3 {
+            color: #ffc107;
+            /* Puedes ajustar este color para que coincida con el estilo deseado */
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            font-size: 1.5em;
+            /* Ajusta el tamaño del ícono si es necesario */
+        }
+    </style>
 
 
 @endsection

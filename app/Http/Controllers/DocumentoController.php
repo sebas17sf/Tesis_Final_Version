@@ -1163,11 +1163,10 @@ class DocumentoController extends Controller
         $departamento = $request->input('Departamento');
         $periodo = $request->input('periodos');
 
-        // Construir la consulta con los filtros
         $queryEstudiantes = Estudiante::whereIn('estado', ['Desactivados', 'Aprobado', 'Aprobado-practicas']);
 
         if ($departamento) {
-            $queryEstudiantes->where('departamento', $departamento);
+            $queryEstudiantes->where('departamentoId', $departamento);
         }
 
         if ($periodo) {
@@ -1175,6 +1174,7 @@ class DocumentoController extends Controller
         }
 
         $estudiantes = $queryEstudiantes->orderBy('apellidos', 'asc')->get();
+
 
         $filaInicio = 9;
         $cantidadFilas = count($estudiantes);
@@ -1336,8 +1336,7 @@ class DocumentoController extends Controller
             $spreadsheet = IOFactory::load($plantillaPath);
             $estado = $request->input('estado');
             $departamento = $request->input('departamento');
-
-            $query = DB::table('proyectos')
+             $query = DB::table('proyectos')
                 ->join('departamentos', 'proyectos.departamentoId', '=', 'departamentos.id') // Realizar el INNER JOIN
                 ->select(
                     'proyectos.nombreProyecto',
@@ -1357,7 +1356,7 @@ class DocumentoController extends Controller
             }
 
             if ($departamento) {
-                $query->where('departamentoTutor', $departamento);
+                $query->where('departamentoId', $departamento);
             }
 
             $datosProyectos = $query->get();
@@ -3572,11 +3571,11 @@ class DocumentoController extends Controller
         $director = ProfesUniversidad::find($proyecto->proyecto->directorId);
         $nombreDirector = $director->apellidos . ' ' . $director->nombres;
         $sheet->setCellValue('B8', $nombreDirector);
-        $sheet->setCellValue('B10', $proyecto->proyecto->departamentoTutor);
+        $sheet->setCellValue('B10', $proyecto->proyecto->departamento->departamento);
         $sheet->setCellValue('B11', $proyecto->inicioFecha);
         $sheet->setCellValue('B12', $proyecto->finalizacionFecha);
         $sheet->setCellValue('B13', $profesor->apellidos . ' ' . $profesor->nombres);
-        $sheet->setCellValue('B14', $profesor->departamento);
+        $sheet->setCellValue('B14', $profesor->departamento->departamento);
 
         $tabla1 = $request->input('puntaje_proyecto1');
         $tabla2 = $request->input('puntaje_proyecto2');
@@ -3635,7 +3634,7 @@ class DocumentoController extends Controller
         $director = ProfesUniversidad::find($proyecto->directorId);
         $nombreDirector = $director->apellidos . ' ' . $director->nombres;
         $sheet->setCellValue('B8', $nombreDirector);
-        $sheet->setCellValue('B10', $proyecto->departamentoTutor);
+        $sheet->setCellValue('B10', $proyecto->departamento->departamento);
         $sheet->setCellValue('B11', $proyecto->inicioFecha);
         $sheet->setCellValue('B12', $proyecto->finFecha);
 
@@ -3695,16 +3694,16 @@ class DocumentoController extends Controller
     {
         $estudiante = Auth::user()->estudiante;
 
-         if ($estudiante->estado === 'En proceso de revision') {
+        if ($estudiante->estado === 'En proceso de revision') {
             return redirect()->back()->with('error', 'No tienes acceso a esta página en este momento.');
         }
 
-         $actividadesRegistradas = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)->get();
+        $actividadesRegistradas = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)->get();
         $totalHoras = $actividadesRegistradas->sum('numeroHoras');
 
-         $proyecto = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->first();
+        $proyecto = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->first();
 
-         $actasReunion = ActaReunion::where('proyectoId', $proyecto->proyectoId)->get();
+        $actasReunion = ActaReunion::where('proyectoId', $proyecto->proyectoId)->get();
 
         return view('estudiantes.documentos', [
             'actividadesRegistradas' => $actividadesRegistradas,

@@ -125,7 +125,7 @@
             <div class="nameDirector">
                 <label class="labell">Usuario</label>
                 <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                    @if (Auth::user()->role->tipo == 'Director de Departamento')
+                    @if (Auth::user()->role->tipo == 'Director-Departamento')
                         Director de Departamento
                     @else
                         {{ Str::limit(Auth::user()->role->tipo, 30) }}
@@ -137,7 +137,8 @@
                 <button class="profile-icon dropdown" id="profile-button">
 
                     <div class="name-profile">
-                        <span><?php echo Auth::user()->nombreUsuario; ?></span>
+                        <span> {{ explode(' ', Auth::user()->profesorUniversidad->nombres)[0] }}</span>
+                    <span>{{ explode(' ', Auth::user()->profesorUniversidad->apellidos)[0] }} </span>
                     </div>
                     <div class="icon-profile">
                         <img src="../img/default/user.svg">

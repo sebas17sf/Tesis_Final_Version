@@ -7,6 +7,7 @@ use App\Models\Proyecto;
 use App\Models\estudiantesvinculacion;
 use App\Models\Estudiante;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\Departamento;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Periodo;
 use App\Mail\AsignacionProyectoMailable;
@@ -41,7 +42,12 @@ class CoordinadorController extends Controller
 {
     public function index(Request $request)
     {
-        if (Auth::check()) {
+        $departamentos = Departamento::all();
+        $user = Auth::user();
+
+        $role = DB::table('roles')->where('id', $user->role_id)->value('tipo');
+
+         if (Auth::check()) {
             $user = Auth::user();
 
             // Obtener el tipo de rol administrativo si existe
@@ -52,7 +58,6 @@ class CoordinadorController extends Controller
             }
         }
 
-
         $todoslosProfesores = ProfesUniversidad::all();
 
         $estadoProyecto = $request->input('estado');
@@ -61,16 +66,23 @@ class CoordinadorController extends Controller
         $periodoId = $request->input('periodos');
 
         $periodos = Periodo::all();
-        $nrcs = NrcVinculacion::all();
+
+
+        $nrcs = NrcVinculacion::where('tipo', 'Vinculacion')->get();
+
+
         $profesores = ProfesUniversidad::whereDoesntHave('proyectosDirigidos')
             ->orWhereHas('proyectosDirigidos', function ($query) {
                 $query->where('estado', 'Terminado');
-            })->get();
+            })
+            ->orderBy('apellidos', 'asc')
+            ->get();
 
-        /// obtener los periodos que tengan fecha de inicio y fin con la fecha actual
+        ///obtener los periodos que tengan fecha de inicio y fin con la fecha actual
         $periodoAsignacion = Periodo::where('inicioPeriodo', '<=', now())
             ->where('finPeriodo', '>=', now())
             ->get();
+
 
         $perPage = $request->input('perPage', 10);
         $perPage2 = $request->input('perPage2', 10);
@@ -78,6 +90,7 @@ class CoordinadorController extends Controller
         $page2 = $request->input('page2', 1);
         $search = $request->input('search');
         $search2 = $request->input('search2');
+
 
         $validPerPages = [10, 20, 50, 100];
         if (!in_array($perPage, $validPerPages)) {
@@ -91,8 +104,14 @@ class CoordinadorController extends Controller
                 $q->where('nombreProyecto', 'LIKE', '%' . $search . '%')
                     ->orWhere('descripcionProyecto', 'LIKE', '%' . $search . '%')
                     ->orWhere('estado', 'LIKE', '%' . $search . '%')
-                    ->orWhere('departamentoTutor', 'LIKE', '%' . $search . '%')
-                    ->orWhere('codigoProyecto', 'LIKE', '%' . $search . '%');
+                    ->orWhere('codigoProyecto', 'LIKE', '%' . $search . '%')
+                    ->orWhereHas('director', function ($query) use ($search) {
+                        $query->where('nombres', 'LIKE', '%' . $search . '%')
+                            ->orWhere('apellidos', 'LIKE', '%' . $search . '%');
+                    })
+                    ->orWhereHas('departamento', function ($query) use ($search) {
+                        $query->where('departamento', 'LIKE', '%' . $search . '%');
+                    });
             });
         }
 
@@ -101,15 +120,20 @@ class CoordinadorController extends Controller
         }
 
         if ($departamento) {
-            $query->where('departamentoTutor', $departamento);
+            $query->where('departamentoId', $departamento);
         }
 
         $proyectos = $query->paginate($perPage, ['*'], 'page', $page);
+
+
 
         $proyectosDisponibles = Proyecto::where('estado', 'Ejecucion')->get();
         $estudiantesAprobados = Estudiante::where('estado', 'Aprobado')
             ->whereDoesntHave('asignaciones')
             ->get();
+
+        $profesorId = request('profesor');
+        $periodoId = request('periodos');
 
         $asignacionesAgrupadas = AsignacionProyecto::with('estudiante')
             ->with('proyecto')
@@ -125,6 +149,8 @@ class CoordinadorController extends Controller
                     $query->where('id', $periodoId);
                 });
             })
+
+
             ->when($search2, function ($query, $search2) {
                 return $query->where(function ($query) use ($search2) {
                     $query->whereHas('estudiante', function ($query) use ($search2) {
@@ -133,22 +159,23 @@ class CoordinadorController extends Controller
                             ->orWhere('espeId', 'like', "%{$search2}%")
                             ->orWhere('cedula', 'like', "%{$search2}%");
                     })
-                    ->orWhereHas('proyecto', function ($query) use ($search2) {
-                        $query->where('nombreProyecto', 'like', "%{$search2}%");
-                    })
-                    ->orWhereHas('docenteParticipante', function ($query) use ($search2) {
-                        $query->where('nombres', 'like', "%{$search2}%")
-                            ->orWhere('apellidos', 'like', "%{$search2}%");
-                    })
-                    ->orWhereHas('periodo', function ($query) use ($search2) {
-                        $query->where('numeroPeriodo', 'like', "%{$search2}%");
-                    })
-                    ->orWhereHas('proyecto.director', function ($query) use ($search2) {
-                        $query->where('nombres', 'like', "%{$search2}%")
-                            ->orWhere('apellidos', 'like', "%{$search2}%");
-                    });
+                        ->orWhereHas('proyecto', function ($query) use ($search2) {
+                            $query->where('nombreProyecto', 'like', "%{$search2}%");
+                        })
+                        ->orWhereHas('docenteParticipante', function ($query) use ($search2) {
+                            $query->where('nombres', 'like', "%{$search2}%")
+                                ->orWhere('apellidos', 'like', "%{$search2}%");
+                        })
+                        ->orWhereHas('periodo', function ($query) use ($search2) {
+                            $query->where('numeroPeriodo', 'like', "%{$search2}%");
+                        })
+                        ->orWhereHas('proyecto.director', function ($query) use ($search2) {
+                            $query->where('nombres', 'like', "%{$search2}%")
+                                ->orWhere('apellidos', 'like', "%{$search2}%");
+                        });
                 });
             })
+
             ->get()
             ->groupBy(function ($item) {
                 return $item->proyectoId . '_' . $item->idPeriodo . "_" . $item->participanteId;
@@ -161,8 +188,47 @@ class CoordinadorController extends Controller
             $total,
             $request->input('perPage2', 10),
             $request->input('page2', 1),
-            ['path' => route('coordinador.index'), 'pageName' => 'page2']
+            ['path' => route('admin.indexProyectos'), 'pageName' => 'page2']
         );
+        return view('coordinador.index', [
+            'proyectos' => $proyectos,
+            'proyectosDisponibles' => $proyectosDisponibles,
+            'estudiantesAprobados' => $estudiantesAprobados,
+            'perPage' => $perPage,
+            'perPage2' => $perPage2,
+            'paginator' => $paginator,
+            'profesores' => $profesores,
+            'nrcs' => $nrcs,
+            'asignacionesAgrupadas' => $paginator,
+            'periodos' => $periodos,
+            'search' => $search,
+            'search2' => $search2,
+            'estadoProyecto' => $estadoProyecto,
+            'profesorId' => $profesorId,
+            'periodoId' => $periodoId,
+            'paginatedData' => $paginatedData,
+            'total' => $total,
+            'periodoAsignacion' => $periodoAsignacion,
+            'todoslosProfesores' => $todoslosProfesores,
+            'departamentos' => $departamentos,
+        ]);
+        if ($estadoProyecto) {
+            $query->where('estado', $estadoProyecto);
+        }
+
+        if ($profesorId) {
+            $query->whereHas('director', function ($q) use ($profesorId) {
+                $q->where('id', $profesorId);
+            });
+        }
+
+        if ($periodoId) {
+            $query->whereHas('periodo', function ($q) use ($periodoId) {
+                $q->where('id', $periodoId);
+            });
+        }
+
+        $proyectos = $query->paginate($perPage, ['*'], 'page', $page);
 
         if ($request->ajax()) {
             if ($request->has('search2')) {
@@ -196,9 +262,10 @@ class CoordinadorController extends Controller
             'total' => $total,
             'periodoAsignacion' => $periodoAsignacion,
             'todoslosProfesores' => $todoslosProfesores,
+            'departamentos' => $departamentos,
         ]);
-    }
 
+    }
 
 
 
@@ -217,8 +284,9 @@ class CoordinadorController extends Controller
             }
         }
         $profesores = ProfesUniversidad::all();
+        $departamentos = Departamento::all();
 
-        return view('coordinador.agregarProyecto', compact('profesores'));
+        return view('coordinador.agregarProyecto', compact('profesores', 'departamentos'));
     }
 
     public function crearProyecto(Request $request)
@@ -280,9 +348,11 @@ class CoordinadorController extends Controller
         $nrcs = NrcVinculacion::all();
 
         $profesores = ProfesUniversidad::all();
+        $departamentos = Departamento::all();
+
 
         $proyecto = Proyecto::findOrFail($ProyectoID);
-        return view('coordinador.editarProyecto', compact('proyecto', 'nrcs', 'profesores'));
+        return view('coordinador.editarProyecto', compact('proyecto', 'nrcs', 'profesores', 'departamentos'));
     }
 
 
@@ -301,16 +371,17 @@ class CoordinadorController extends Controller
             'FechaFinalizacion.after' => 'La fecha de finalización debe ser posterior a la fecha de inicio',
         ]);
 
+
         $proyecto = Proyecto::findOrFail($ProyectoID);
 
-        $proyecto->DirectorID = $validatedData['DirectorProyecto'];
-        $proyecto->NombreProyecto = $validatedData['NombreProyecto'];
-        $proyecto->DescripcionProyecto = $validatedData['DescripcionProyecto'];
-        $proyecto->DepartamentoTutor = $validatedData['DepartamentoTutor'];
+        $proyecto->directorId = $validatedData['DirectorProyecto'];
+        $proyecto->nombreProyecto = $validatedData['NombreProyecto'];
+        $proyecto->descripcionProyecto = $validatedData['DescripcionProyecto'];
+        $proyecto->departamentoId = $validatedData['DepartamentoTutor'];
         $proyecto->codigoProyecto = $validatedData['codigoProyecto'];
-        $proyecto->FechaInicio = $validatedData['FechaInicio'];
-        $proyecto->FechaFinalizacion = $validatedData['FechaFinalizacion'];
-        $proyecto->Estado = $validatedData['Estado'];
+        $proyecto->inicioFecha = $validatedData['FechaInicio'];
+        $proyecto->finFecha = $validatedData['FechaFinalizacion'];
+        $proyecto->estado = $validatedData['Estado'];
         $proyecto->save();
 
         $this->actualizarUsuarioYRol($validatedData['DirectorProyecto'], 'DirectorVinculacion');
@@ -393,6 +464,7 @@ class CoordinadorController extends Controller
         }
 
         $periodos = Periodo::orderBy('inicioPeriodo', 'asc')->get();
+        $departamentos = Departamento::all();
 
         $elementosPorPagina = $request->input('elementosPorPagina');
         $elementosPorPaginaAprobados = $request->input('elementosPorPaginaAprobados'); // Cambio de nombre
@@ -427,14 +499,18 @@ class CoordinadorController extends Controller
                     ->orWhere('celular', 'like', '%' . $busquedaEstudiantesAprobados . '%')
                     ->orWhere('Cohorte', 'like', '%' . $busquedaEstudiantesAprobados . '%')
                     ->orWhere('correo', 'like', '%' . $busquedaEstudiantesAprobados . '%')
-                    ->orWhere('departamento', 'like', '%' . $busquedaEstudiantesAprobados . '%');
+                    ->orWhereHas('departamento', function ($query) use ($busquedaEstudiantesAprobados) {
+                        $query->where('id', 'like', '%' . $busquedaEstudiantesAprobados . '%'); // Cambiado para buscar por departamentoId
+                    });
             })
-                ->orderBy('apellidos', 'asc');
+            ->orderBy('apellidos', 'asc');
         }
 
         if ($request->has('Departamento') && $request->input('Departamento')) {
             $departamento = $request->input('Departamento');
-            $queryEstudiantesAprobados->where('departamento', $departamento);
+            $queryEstudiantesAprobados->whereHas('departamento', function ($query) use ($departamento) {
+                $query->where('id', $departamento); // Cambiado para buscar por departamentoId
+            });
         }
 
         if ($request->has('periodos') && $request->input('periodos')) {
@@ -445,9 +521,9 @@ class CoordinadorController extends Controller
 
 
 
+
         $estudiantesAprobados = $queryEstudiantesAprobados->paginate($elementosPorPaginaAprobados); // Cambio de nombre
 
-        // Verificar si no se encontraron resultados para la búsqueda de estudiantes de vinculación
 
         return view('coordinador.estudiantesAprobados', [
             'estudiantesEnRevision' => $estudiantesEnRevision,
@@ -456,6 +532,7 @@ class CoordinadorController extends Controller
             'elementosPorPaginaAprobados' => $elementosPorPaginaAprobados,
             'search2' => $search2,
             'periodos' => $periodos,
+            'departamentos' => $departamentos,
         ]);
     }
 
@@ -559,9 +636,23 @@ class CoordinadorController extends Controller
         }
 
         $elementosPorPagina = $request->input('elementosPorPagina');
-        $empresas = Empresa::paginate($elementosPorPagina);
+        $search = $request->input('search');
 
-        return view('coordinador.agregarEmpresa', compact('empresas', 'elementosPorPagina'));
+        $empresas = Empresa::when($search, function ($query, $search) {
+            return $query->where('nombreEmpresa', 'like', '%' . $search . '%')
+                ->orWhere('rucEmpresa', 'like', '%' . $search . '%')
+                ->orWhere('provincia', 'like', '%' . $search . '%')
+                ->orWhere('ciudad', 'like', '%' . $search . '%')
+                ->orWhere('direccion', 'like', '%' . $search . '%')
+                ->orWhere('correo', 'like', '%' . $search . '%')
+                ->orWhere('nombreContacto', 'like', '%' . $search . '%')
+                ->orWhere('telefonoContacto', 'like', '%' . $search . '%')
+                ->orWhere('actividadesMacro', 'like', '%' . $search . '%')
+                ->orWhere('cuposDisponibles', 'like', '%' . $search . '%');
+        })->paginate($elementosPorPagina);
+
+
+        return view('coordinador.agregarEmpresa', compact('empresas', 'elementosPorPagina', 'search'));
     }
 
     public function descargar($tipo, $id)

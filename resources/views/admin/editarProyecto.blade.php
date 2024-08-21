@@ -54,7 +54,7 @@
                                 <option value="">Seleccionar Director</option>
                                 @foreach ($profesores as $profesor)
                                     <option value="{{ $profesor->id }}" {{ $proyecto->directorId === $profesor->id ? 'selected' : '' }}>
-                                        {{ $profesor->apellidos }} {{ $profesor->nombres }} - {{ $profesor->departamento }} - {{ $profesor->correo }}
+                                        {{ $profesor->apellidos }} {{ $profesor->nombres }} - {{ $profesor->departamento->departamento }} - {{ $profesor->correo }}
                                     </option>
                                 @endforeach
                             </select>

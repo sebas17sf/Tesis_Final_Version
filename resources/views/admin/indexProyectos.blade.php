@@ -122,21 +122,18 @@
                                                 </option>
                                             </select>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="departamento" class="mr-2">Departamento:</label>
-                                            <select name="departamento" id="departamento"
-                                                class="form-control input input_select">
-                                                <option value="">Todos</option>
-                                                <option value="Ciencias de la Computación"
-                                                    {{ request('departamento') == 'Ciencias de la Computación' ? 'selected' : '' }}>
-                                                    Ciencias de la Computación</option>
-                                                <option value="Ciencias Exactas"
-                                                    {{ request('departamento') == 'Ciencias Exactas' ? 'selected' : '' }}>
-                                                    Ciencias Exactas</option>
-                                                <option value="Ciencias de la Vida y Agricultura"
-                                                    {{ request('departamento') == 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>
-                                                    Ciencias de la Vida y Agricultura</option>
+                                        <div>
+                                            <label for="departament_student">Departamento <span class="requerido">*</span></label>
+                                            <select class="form-control input input_select" id="departamento"
+                                                name="departamento">
+                                                <option value="">Seleccione un departamento</option>
+                                                @foreach ($departamentos as $departamento)
+                                                    <option value="{{ $departamento->id }}"
+                                                        @if (isset($estudiante->departamentoId) && $estudiante->departamentoId == $departamento->id) selected @endif>
+                                                        {{ $departamento->departamento }}</option>
+                                                @endforeach
                                             </select>
+                                            <small id="departamentoError" class="error-message" style="color: red;"></small>
                                         </div>
                                     </form>
 

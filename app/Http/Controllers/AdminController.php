@@ -320,6 +320,7 @@ class AdminController extends Controller
     {
         $user = Auth::user();
 
+
         $role = DB::table('roles')->where('id', $user->role_id)->value('tipo');
 
         if (!Auth::check() || $role !== 'Administrador') {
@@ -327,6 +328,7 @@ class AdminController extends Controller
         }
 
         $periodos = Periodo::orderBy('inicioPeriodo', 'asc')->get();
+        $departamentos = Departamento::all();
 
         $elementosPorPagina = $request->input('elementosPorPagina');
         $elementosPorPaginaAprobados = $request->input('elementosPorPaginaAprobados'); // Cambio de nombre
@@ -362,16 +364,16 @@ class AdminController extends Controller
                     ->orWhere('Cohorte', 'like', '%' . $busquedaEstudiantesAprobados . '%')
                     ->orWhere('correo', 'like', '%' . $busquedaEstudiantesAprobados . '%')
                     ->orWhereHas('departamento', function ($query) use ($busquedaEstudiantesAprobados) {
-                        $query->where('departamento', 'like', '%' . $busquedaEstudiantesAprobados . '%');
+                        $query->where('id', 'like', '%' . $busquedaEstudiantesAprobados . '%'); // Cambiado para buscar por departamentoId
                     });
             })
-                ->orderBy('apellidos', 'asc');
+            ->orderBy('apellidos', 'asc');
         }
 
         if ($request->has('Departamento') && $request->input('Departamento')) {
             $departamento = $request->input('Departamento');
             $queryEstudiantesAprobados->whereHas('departamento', function ($query) use ($departamento) {
-                $query->where('departamento', $departamento);
+                $query->where('id', $departamento); // Cambiado para buscar por departamentoId
             });
         }
 
@@ -379,6 +381,7 @@ class AdminController extends Controller
             $periodo = $request->input('periodos');
             $queryEstudiantesAprobados->where('Cohorte', $periodo);
         }
+
 
 
 
@@ -394,6 +397,7 @@ class AdminController extends Controller
             'elementosPorPaginaAprobados' => $elementosPorPaginaAprobados,
             'search2' => $search2,
             'periodos' => $periodos,
+            'departamentos' => $departamentos,
         ]);
     }
 
@@ -449,6 +453,7 @@ class AdminController extends Controller
 
     public function indexProyectos(Request $request)
     {
+        $departamentos = Departamento::all();
         $user = Auth::user();
 
         $role = DB::table('roles')->where('id', $user->role_id)->value('tipo');
@@ -519,7 +524,7 @@ class AdminController extends Controller
         }
 
         if ($departamento) {
-            $query->where('departamentoTutor', $departamento);
+            $query->where('departamentoId', $departamento);
         }
 
         $proyectos = $query->paginate($perPage, ['*'], 'page', $page);
@@ -609,6 +614,7 @@ class AdminController extends Controller
             'total' => $total,
             'periodoAsignacion' => $periodoAsignacion,
             'todoslosProfesores' => $todoslosProfesores,
+            'departamentos' => $departamentos,
         ]);
         if ($estadoProyecto) {
             $query->where('estado', $estadoProyecto);
@@ -660,6 +666,7 @@ class AdminController extends Controller
             'total' => $total,
             'periodoAsignacion' => $periodoAsignacion,
             'todoslosProfesores' => $todoslosProfesores,
+            'departamentos' => $departamentos,
         ]);
 
     }
@@ -721,7 +728,7 @@ class AdminController extends Controller
             $proyecto->save();
 
 
-            return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto agregado.');
+            return back()->with('success', 'Proyecto agregado.');
         } catch (\Exception $e) {
             return back()->with('error', 'Hubo un error al crear el proyecto: ' . $e->getMessage());
         }
@@ -873,7 +880,7 @@ class AdminController extends Controller
                 'nrc' => $request->nrc,
                 'inicioFecha' => $request->FechaInicio,
                 'finalizacionFecha' => $request->FechaFinalizacion,
-                'estado' => 'En ejecucion', 
+                'estado' => 'En ejecucion',
             ]);
         }
 
@@ -1231,15 +1238,14 @@ class AdminController extends Controller
             // Guarda la empresa en la base de datos
             $empresa->save();
 
-            // Redirige de vuelta a la página de agregar empresa con un mensaje de éxito
-            return redirect()->route('admin.agregarEmpresa')->with('success', 'Empresa guardada exitosamente');
+            // Redirige de vuelta a la página anterior con un mensaje de éxito
+            return back()->with('success', 'Empresa guardada exitosamente');
         } catch (\Exception $e) {
             // Maneja cualquier excepción que ocurra durante el proceso y registra el error
-            return redirect()
-                ->route('admin.agregarEmpresa')
-                ->with('error', 'Ocurrió un error al guardar la empresa: ' . $e->getMessage());
+            return back()->with('error', 'Ocurrió un error al guardar la empresa: ' . $e->getMessage());
         }
     }
+
 
     public function descargar($tipo, $id)
     {

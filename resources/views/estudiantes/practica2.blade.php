@@ -457,7 +457,7 @@
                                         <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">
                                             Departamento:</th>
                                         <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
-                                            {{ strtoupper($estudiante->departamento) }}</td>
+                                            {{ strtoupper($estudiante->departamento->departamento) }}</td>
                                     </tr>
                                     <tr>
                                         <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">
@@ -594,7 +594,7 @@
                                         <option value="">Seleccione un tutor académico</option>
                                         @foreach ($profesores as $profesor)
                                             <option value="{{ $profesor->id }}"> {{ $profesor->apellidos }}
-                                                {{ $profesor->nombres }} {{ $profesor->Departamento }}
+                                                {{ $profesor->nombres }} {{ $profesor->departamento->departamento }} -
                                                 {{ $profesor->Correo }} </option>
                                         @endforeach
                                     </select>

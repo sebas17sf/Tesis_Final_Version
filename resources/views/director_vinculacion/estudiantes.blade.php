@@ -78,7 +78,7 @@
                                             </td>
                                             <td
                                                 style="text-transform: uppercase; font-size: .7em; word-wrap: break-word; text-align: center;">
-                                                {{ $estudiante->departamento }}
+                                                {{ $estudiante->departamento->departamento }}
                                             </td>
                                             <td
                                                 style="text-transform: uppercase; font-size: .6em; word-wrap: break-word; text-align: center;">
@@ -386,5 +386,5 @@
             border: 0;
             border-top: 1px solid rgba(0, 0, 0, .1);
         }
-    
+
 @endsection
