@@ -127,13 +127,13 @@
                                                 <option value="">Todos</option>
                                                 <option value="Ciencias de la Computación"
                                                     {{ request('departamento') == 'Ciencias de la Computación' ? 'selected' : '' }}>
-                                                    Ciencias de la Computación</option>
+                                                    DCCO - Ciencias de la Computación</option>
                                                 <option value="Ciencias Exactas"
                                                     {{ request('departamento') == 'Ciencias Exactas' ? 'selected' : '' }}>
-                                                    Ciencias Exactas</option>
+                                                    DCEX - Ciencias Exactas</option>
                                                 <option value="Ciencias de la Vida y Agricultura"
                                                     {{ request('departamento') == 'Ciencias de la Vida y Agricultura' ? 'selected' : '' }}>
-                                                    Ciencias de la Vida y Agricultura</option>
+                                                    DCVA - Ciencias de la Vida y Agricultura</option>
                                             </select>
                                         </div>
                                     </form>
