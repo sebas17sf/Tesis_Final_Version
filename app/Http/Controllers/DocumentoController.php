@@ -901,39 +901,50 @@ class DocumentoController extends Controller
 
         $contadorFiguras = 1;
         foreach ($datosEstudiantes2 as $index => $actividad) {
+            // Insertar siempre los datos de la actividad en la tabla
             $fechaActividades = date('d ', strtotime($actividad->fecha)) . $meses[date('F', strtotime($actividad->fecha))] . date(' Y', strtotime($actividad->fecha));
             $template->setValue('fecha#' . ($index + 1), $fechaActividades);
             $template->setValue('actividades#' . ($index + 1), $actividad->actividades);
             $template->setValue('numero_horas#' . ($index + 1), $actividad->numeroHoras);
 
-            // Decodificar la imagen base64
-            $base64Image = $actividad->evidencias;
-            $imageData = base64_decode($base64Image);
+            // Verificar si la evidencia no es null para insertar la imagen y el nombre de la figura
+            if ($actividad->evidencias !== null) {
+                // Decodificar la imagen base64
+                $base64Image = $actividad->evidencias;
+                $imageData = base64_decode($base64Image);
 
-            // Generar una ruta temporal para la imagen
-            $tempImagePath = tempnam(sys_get_temp_dir(), 'evidencia_');
+                // Generar una ruta temporal para la imagen
+                $tempImagePath = tempnam(sys_get_temp_dir(), 'evidencia_');
 
-            // Guardar la imagen decodificada en la ruta temporal
-            file_put_contents($tempImagePath, $imageData);
+                // Guardar la imagen decodificada en la ruta temporal
+                file_put_contents($tempImagePath, $imageData);
 
-            // Asignar el nombre de la actividad con el contador de figuras
-            $nombreActividad = $actividad->nombreActividad;
-            $nombreFigura = 'Figura ' . $contadorFiguras . ': ' . $nombreActividad;
-            $template->setValue('nombre_actividad#' . ($index + 1), $nombreFigura);
+                // Asignar el nombre de la actividad con el contador de figuras
+                $nombreActividad = $actividad->nombreActividad;
+                $nombreFigura = 'Figura ' . $contadorFiguras . ': ' . $nombreActividad;
+                $template->setValue('nombre_actividad#' . ($index + 1), $nombreFigura);
 
-            // Insertar la imagen en el documento con las dimensiones actualizadas
-            $template->setImageValue('evidencias#' . ($index + 1), [
-                'path' => $tempImagePath,
-                'width' => 250,
-                'height' => 250,
-                'ratio' => false,
-            ]);
+                // Insertar la imagen en el documento con las dimensiones actualizadas
+                $template->setImageValue('evidencias#' . ($index + 1), [
+                    'path' => $tempImagePath,
+                    'width' => 250,
+                    'height' => 250,
+                    'ratio' => false,
+                ]);
 
-            // Eliminar la imagen temporal después de usarla
-            unlink($tempImagePath);
+                // Eliminar la imagen temporal después de usarla
+                unlink($tempImagePath);
 
-            $contadorFiguras++;
+                $contadorFiguras++;
+            } else {
+                // Si no hay evidencia, dejar vacío el campo de nombre de actividad (figura) y evidencias
+                $template->setValue('nombre_actividad#' . ($index + 1), '');
+                $template->setValue('evidencias#' . ($index + 1), '');
+            }
         }
+
+
+
 
         $objetivosEspecificos = $request->input('especificos');
         $alcanzados = $request->input('alcanzados');
@@ -1336,7 +1347,7 @@ class DocumentoController extends Controller
             $spreadsheet = IOFactory::load($plantillaPath);
             $estado = $request->input('estado');
             $departamento = $request->input('departamento');
-             $query = DB::table('proyectos')
+            $query = DB::table('proyectos')
                 ->join('departamentos', 'proyectos.departamentoId', '=', 'departamentos.id') // Realizar el INNER JOIN
                 ->select(
                     'proyectos.nombreProyecto',

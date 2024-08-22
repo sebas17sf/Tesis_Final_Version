@@ -1,6 +1,7 @@
 @use 'vars/colors' as colors;
 @use 'vars/fonts' as fonts;
 @use "components/input";
+@use "components/alert-session.component.scss";
 @use "components/buttons";
 @use "components/menu_nav";
 
@@ -66,7 +67,7 @@ body {
   background-color: colors.$bg;
   margin: 0;
   font-family: 'Arial', sans-serif;
-  
+
     line-height: 1.35 !important;
 
 

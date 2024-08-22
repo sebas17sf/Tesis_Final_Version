@@ -94,7 +94,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/admin/assignRoleAdministrativo/{userId}', [AdminController::class, 'assignRoleAdministrativo'])->name('admin.assignRoleAdministrativo');
     Route::get('/admin/getRoleAdministrativo/{userId}', [AdminController::class, 'getRoleAdministrativo']);
-Route::post('/admin/removeRoleAdministrativo/{userId}', [AdminController::class, 'removeRoleAdministrativo'])->name('admin.removeRoleAdministrativo');
+    Route::post('/admin/removeRoleAdministrativo/{userId}', [AdminController::class, 'removeRoleAdministrativo'])->name('admin.removeRoleAdministrativo');
 
     ////////////updateRoleVentana
     Route::put('/admin/updateRoleVentana', [AdminController::class, 'updateRoleVentana'])->name('admin.updateRoleVentana');

@@ -95,7 +95,7 @@
                                             </td>
                                             <td
                                                 style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                                {{ $estudiante->departamento->departamento }}
+                                                {{ $estudiante->departamento->departamento ?? '' }}
                                             </td>
                                             <td
                                                 style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
@@ -258,7 +258,7 @@
                                         </td>
                                         <td
                                             style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
-                                            {{ $estudiante->departamento->departamento }}
+                                            {{ $estudiante->departamento->departamento ?? ''}}
                                         </td>
                                         <td
                                             style="font-size: .7em; text-transform: uppercase; word-wrap: break-word; text-align: center;">
