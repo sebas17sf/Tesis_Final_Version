@@ -202,6 +202,7 @@ class AdminController extends Controller
                     break;
                 case 'Director-Departamento':
                     $user->estadosModificados = 'permiteDepartamento';
+                    $user->estado = 'director-departamento';
                     break;
                 case 'Practicas':
                     $user->estadosModificados = 'permitePracticas';
@@ -2109,44 +2110,11 @@ class AdminController extends Controller
 
     public function dashboard(Request $request)
     {
-        $periodos = Periodo::all();
-
+        $periodos = Periodo::orderBy('inicioPeriodo', 'asc')->get();
         $selectedPeriodo = $request->input('periodo');
 
-        // Obtener el número de periodo correspondiente al ID seleccionado
-        $numeroPeriodoSeleccionado = Periodo::where('id', $selectedPeriodo)->value('numeroPeriodo');
-
-        // Obtener los proyectos con sus asignaciones filtradas por periodo
-        $proyectos = Proyecto::with([
-            'asignaciones' => function ($query) use ($selectedPeriodo) {
-                if ($selectedPeriodo) {
-                    $query->where('idPeriodo', $selectedPeriodo);
-                }
-            }
-        ])->get();
-
-        $chartData = [];
-        $categories = [];
-
-        foreach ($proyectos as $proyecto) {
-            $categories[] = $proyecto->nombreProyecto;
-            $chartData[] = $proyecto->asignaciones->count();
-        }
-
-        // Obtener las prácticas por empresa filtradas por numeroPeriodo en periodoPractica
-        $practicasPorEmpresa = Empresa::select('empresas.nombreEmpresa')
-            ->join('practicasi', 'empresas.id', '=', 'practicasi.idEmpresa')
-            ->selectRaw('COUNT(practicasi.estudianteId) as total_estudiantes')
-            ->when($numeroPeriodoSeleccionado, function ($query, $numeroPeriodoSeleccionado) {
-                $query->where('practicasi.periodoPractica', $numeroPeriodoSeleccionado);
-            })
-            ->groupBy('empresas.nombreEmpresa')
-            ->orderBy('total_estudiantes', 'desc')
-            ->get();
-
-        // Extraer los datos para la gráfica de empresas
-        $empresas = $practicasPorEmpresa->pluck('nombreEmpresa')->toArray();
-        $estudiantesPorEmpresa = $practicasPorEmpresa->pluck('total_estudiantes')->toArray();
+        // Fetch data using a private method to avoid duplication
+        list($categories, $chartData, $empresas, $estudiantesPorEmpresa, $empresasII, $estudiantesPorEmpresaII) = $this->getDashboardData($selectedPeriodo);
 
         return view('admin.dashboard', compact(
             'chartData',
@@ -2154,7 +2122,9 @@ class AdminController extends Controller
             'periodos',
             'selectedPeriodo',
             'empresas',
-            'estudiantesPorEmpresa'
+            'estudiantesPorEmpresa',
+            'empresasII',
+            'estudiantesPorEmpresaII'
         ));
     }
 
@@ -2162,24 +2132,47 @@ class AdminController extends Controller
     {
         $selectedPeriodo = $request->input('periodo');
 
+        // Fetch data using the same private method
+        list($categories, $chartData, $empresas, $estudiantesPorEmpresa, $empresasII, $estudiantesPorEmpresaII) = $this->getDashboardData($selectedPeriodo);
+
+        return response()->json([
+            'categories' => $categories,
+            'chartData' => $chartData,
+            'empresas' => $empresas,
+            'estudiantesPorEmpresa' => $estudiantesPorEmpresa,
+            'empresasII' => $empresasII,
+            'estudiantesPorEmpresaII' => $estudiantesPorEmpresaII,
+        ]);
+    }
+
+    // Private method to fetch and process data for dashboard
+    private function getDashboardData($selectedPeriodo)
+    {
+        // Get the period number if a period is selected
         $numeroPeriodoSeleccionado = Periodo::where('id', $selectedPeriodo)->value('numeroPeriodo');
 
-        $proyectos = Proyecto::with([
-            'asignaciones' => function ($query) use ($selectedPeriodo) {
-                if ($selectedPeriodo) {
-                    $query->where('idPeriodo', $selectedPeriodo);
-                }
+        // Fetch projects with their assignments filtered by period
+        $proyectos = Proyecto::with(['asignaciones' => function ($query) use ($selectedPeriodo) {
+            if ($selectedPeriodo) {
+                $query->where('idPeriodo', $selectedPeriodo);
             }
-        ])->get();
+        }])
+        ->whereHas('asignaciones', function ($query) use ($selectedPeriodo) {
+            if ($selectedPeriodo) {
+                $query->where('idPeriodo', $selectedPeriodo);
+            }
+        })
+        ->get();
 
+        // Prepare chart data
         $chartData = [];
         $categories = [];
-
         foreach ($proyectos as $proyecto) {
             $categories[] = $proyecto->nombreProyecto;
             $chartData[] = $proyecto->asignaciones->count();
         }
 
+        // Fetch practices per company filtered by period number for Practicas I
         $practicasPorEmpresa = Empresa::select('empresas.nombreEmpresa')
             ->join('practicasi', 'empresas.id', '=', 'practicasi.idEmpresa')
             ->selectRaw('COUNT(practicasi.estudianteId) as total_estudiantes')
@@ -2190,14 +2183,27 @@ class AdminController extends Controller
             ->orderBy('total_estudiantes', 'desc')
             ->get();
 
-        return response()->json([
-            'categories' => $categories,
-            'chartData' => $chartData,
-            'empresas' => $practicasPorEmpresa->pluck('nombreEmpresa'),
-            'estudiantesPorEmpresa' => $practicasPorEmpresa->pluck('total_estudiantes'),
-        ]);
-    }
+        // Extract data for companies chart
+        $empresas = $practicasPorEmpresa->pluck('nombreEmpresa')->toArray();
+        $estudiantesPorEmpresa = $practicasPorEmpresa->pluck('total_estudiantes')->toArray();
 
+        // Fetch practices per company filtered by period number for Practicas II
+        $practicasPorEmpresaII = Empresa::select('empresas.nombreEmpresa')
+            ->join('practicasii', 'empresas.id', '=', 'practicasii.idEmpresa')
+            ->selectRaw('COUNT(practicasii.estudianteId) as total_estudiantes')
+            ->when($numeroPeriodoSeleccionado, function ($query, $numeroPeriodoSeleccionado) {
+                $query->where('practicasii.periodoPractica', $numeroPeriodoSeleccionado);
+            })
+            ->groupBy('empresas.nombreEmpresa')
+            ->orderBy('total_estudiantes', 'desc')
+            ->get();
+
+        // Extract data for companies chart for Practicas II
+        $empresasII = $practicasPorEmpresaII->pluck('nombreEmpresa')->toArray();
+        $estudiantesPorEmpresaII = $practicasPorEmpresaII->pluck('total_estudiantes')->toArray();
+
+        return [$categories, $chartData, $empresas, $estudiantesPorEmpresa, $empresasII, $estudiantesPorEmpresaII];
+    }
 
 
 

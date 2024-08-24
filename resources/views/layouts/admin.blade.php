@@ -124,6 +124,8 @@
                 <div class="links_site">
                     <nav class="nav">
                         <ul class="nav-list">
+
+
                             <a class="p-element" href="{{ route('admin.index') }}">
                                 <div class="icon-sidebar-item">
                                     <i class="fa-solid fa-grid"></i>
@@ -132,6 +134,17 @@
                                     <li>Panel Administrativo</li>
                                 </div>
                             </a>
+
+                            <a href="{{ route('dashboard') }}" class="p-element">
+                                <div class="icon-sidebar-item">
+                                    <i class="fa-solid fa-tachometer-alt"></i>  
+                                </div>
+                                <div class="name-sidebar-item">
+                                    <li>Graficas estadisticas</li>
+                                </div>
+                            </a>
+
+
                             <a href="{{ route('admin.indexProyectos') }}" class="p-element">
                                 <div class="icon-sidebar-item">
                                     <i class="fa-solid fa-layer-plus"></i>
@@ -224,7 +237,7 @@
             <!-- Aquí agregamos el contenedor del menú desplegable -->
             <div class="popup-menu-profile">
                 <div class="container">
-                    <a href="{{ route('conectarModulos') }}" class="change_module">
+                    <a chref="{{ route('conectarModulos') }}" class="change_module">
                         <i class="fa-regular fa-rectangle-vertical-history"></i>
                         <span>Cambiar modulo</span>
                     </a>
