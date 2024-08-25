@@ -142,7 +142,6 @@
                                 </div>
                             </a>
 
-
                             <a class="p-element submenu">
                                 <div class="icon-sidebar-item">
                                     <i class="fa-solid fa-building"></i>
@@ -173,17 +172,6 @@
                                     </div>
                                 </a>
                             </div>
-
-
-
-
-
-
-
-
-
-
-
                         </ul>
                     </nav>
                 </div>
@@ -233,7 +221,7 @@
                 <div class="container">
                     <a href="{{ route('conectarModulos') }}" class="change_module">
                         <i class="fa-regular fa-rectangle-vertical-history"></i>
-                        <span>Cambiar modulo</span>
+                        <span>Cambiar módulo</span>
                     </a>
 
                     <a href="{{ route('estudiantes.cambio-credenciales') }}"

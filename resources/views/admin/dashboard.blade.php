@@ -1,18 +1,17 @@
 @extends('layouts.admin')
 
-@section('title', 'Panel Aceptación')
+@section('title', 'EStadísticas')
 
-@section('title_component', 'Panel Estudiantes')
+@section('title_component', 'Panel Estadísticas')
 
 @section('content')
 
 <div class="container">
-    <h1>Estudiantes en Proyectos</h1>
 
     <form id="filter-form" method="GET" class="mb-4">
         <div class="form-group">
             <label for="periodo">Selecciona un Periodo:</label>
-            <select name="periodo" id="periodo" class="form-control">
+            <select name="periodo" id="periodo" class="form-control input input_select">
                 <option value="">Todos los periodos</option>
                 @foreach ($periodos as $periodo)
                     <option value="{{ $periodo->id }}" {{ $selectedPeriodo == $periodo->id ? 'selected' : '' }}>
@@ -23,28 +22,62 @@
         </div>
     </form>
 
-    <div class="chart-container mb-5">
+    <!-- Chart 1 -->
+    <div class="chart-wrapper mb-5">
+   
         <div id="chart"></div>
     </div>
 
-    <div class="chart-container mb-5">
-        <h2>Estudiantes por Empresa - Practicas I</h2>
+    <!-- Chart 2 -->
+    <div class="chart-wrapper mb-5">
+   
         <div id="chartEmpresas"></div>
     </div>
 
-    <div class="chart-container mb-5">
-        <h2>Estudiantes por Empresa - Practicas II</h2>
+    <!-- Chart 3 -->
+    <div class="chart-wrapper mb-5">
+      
         <div id="chartEmpresasII"></div>
     </div>
 </div>
 
+<style>
+    .chart-wrapper {
+        border: 1px solid #ddd; /* Borde para el recuadro */
+        padding: 15px;           /* Espacio interno */
+        border-radius: 10px;     /* Bordes redondeados */
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+        background-color: #fff;  /* Fondo blanco */
+        max-width: 100%;         /* Asegura que el contenedor no se salga del ancho disponible */
+        margin: 0 auto;          /* Centra el contenedor si hay espacio disponible */
+        overflow-x: auto;        /* Agrega un scroll horizontal si el contenido se desborda */
+    }
+
+    .chart-title {
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    #chart, #chartEmpresas, #chartEmpresasII {
+        height: 400px; /* Altura de las gráficas */
+        width: 100%;  /* Asegura que la gráfica no exceda el ancho del contenedor */
+    }
+</style>
+
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
-    // Setup configuration for the first chart (Estudiantes en Proyectos)
+    // Función para convertir texto a mayúsculas preservando caracteres especiales
+    function toUpperCaseSpecial(str) {
+        return str.toLocaleUpperCase('es-ES'); // Convertir texto a mayúsculas preservando tildes
+    }
+
+    // Configuración de la primera gráfica (Estudiantes en Proyectos)
     var chartOptions = {
         chart: {
             type: 'bar',
-            height: 600,
+            height: 'auto',
             toolbar: {
                 show: true,
                 tools: {
@@ -59,21 +92,28 @@
                 easing: 'easeinout',
                 speed: 800,
             },
+            padding: {
+                right: 10,
+                left: 10
+            }
         },
         series: [{
             name: 'Estudiantes',
             data: {!! json_encode($chartData) !!}
         }],
         xaxis: {
-            categories: {!! json_encode($categories) !!},
+            categories: {!! json_encode($categories) !!}.map(toUpperCaseSpecial), // Convertir categorías a mayúsculas
             labels: {
                 style: {
                     fontSize: '12px',
                     fontFamily: 'Arial, sans-serif',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
                 },
             },
             title: {
-                text: 'Número de estudiantes',
+                text: 'NÚMERO DE ESTUDIANTES',
                 offsetY: 10,
                 style: {
                     fontSize: '14px',
@@ -97,7 +137,7 @@
                 }
             },
             title: {
-                text: 'Proyectos sociales',
+                text: 'PROYECTOS SOCIALES',
                 style: {
                     fontSize: '14px',
                     fontWeight: 'bold',
@@ -106,7 +146,7 @@
             },
         },
         legend: {
-            show: false,  // Disable legend
+            show: false,  // Ocultar leyenda
         },
         tooltip: {
             enabled: true,
@@ -135,31 +175,48 @@
             },
             style: {
                 fontSize: '12px',
-                colors: ['#000']
+                colors: ['#ffffff']
             }
         },
-        colors: ['#1E90FF', '#FF6347', '#32CD32', '#FFD700', '#8A2BE2'],
+        colors: ['#242c72', '#3642A5', '#3768DB', '#41A4FF'], // Colores personalizados
         title: {
-            text: 'Estudiantes por Proyecto',
+            text: 'ESTUDIANTES EN PROYECTOS SOCIALES',
             align: 'center',
             margin: 10,
             offsetY: 0,
             style: {
-                fontSize: '20px',
+                fontSize: '14px',
                 fontWeight: 'bold',
                 color: '#263238'
             }
-        }
+        },
+        responsive: [
+            {
+                breakpoint: 768,  // Móvil
+                options: {
+                    chart: {
+                        height: 400
+                    },
+                    xaxis: {
+                        labels: {
+                            style: {
+                                fontSize: '10px'  // Etiquetas más pequeñas en dispositivos pequeños
+                            }
+                        }
+                    }
+                }
+            }
+        ]
     };
 
     var chart = new ApexCharts(document.querySelector("#chart"), chartOptions);
     chart.render();
 
-    // Setup configuration for the second chart (Estudiantes por Empresa - Practicas I)
+    // Configuración de la segunda gráfica (Estudiantes por Empresa - Practicas I)
     var chartEmpresasOptions = {
         chart: {
             type: 'bar',
-            height: 600,
+            height: 'auto',
             toolbar: {
                 show: true,
                 tools: {
@@ -174,15 +231,19 @@
                 easing: 'easeinout',
                 speed: 800,
             },
+            padding: {
+                right: 10,
+                left: 10
+            }
         },
         series: [{
             name: 'Estudiantes',
             data: {!! json_encode($estudiantesPorEmpresa) !!}
         }],
         xaxis: {
-            categories: {!! json_encode($empresas) !!},
+            categories: {!! json_encode($empresas) !!}.map(toUpperCaseSpecial), // Convertir categorías a mayúsculas
             title: {
-                text: 'Número de estudiantes',
+                text: 'NÚMERO DE ESTUDIANTES',
                 offsetY: 10,
                 style: {
                     fontSize: '14px',
@@ -197,6 +258,9 @@
                 style: {
                     fontSize: '12px',
                     fontFamily: 'Arial, sans-serif',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
                 },
             }
         },
@@ -208,7 +272,7 @@
                 },
             },
             title: {
-                text: 'Empresas',
+                text: 'EMPRESAS',
                 style: {
                     fontSize: '14px',
                     fontWeight: 'bold',
@@ -217,7 +281,7 @@
             }
         },
         legend: {
-            show: false,  // Disable legend
+            show: false,  // Ocultar leyenda
         },
         plotOptions: {
             bar: {
@@ -233,31 +297,48 @@
             },
             style: {
                 fontSize: '12px',
-                colors: ['#000']
+                colors: ['#ffffff']
             }
         },
-        colors: ['#FF6347', '#32CD32', '#1E90FF', '#FFD700', '#8A2BE2'], // Match the colors as needed
+        colors: ['#242c72', '#3642A5', '#3768DB', '#41A4FF'], // Colores personalizados
         title: {
-            text: 'Estudiantes por Empresa - Practicas I',
+            text: 'ESTUDIANTES POR EMPRESAS - PRÁCTICAS I',
             align: 'center',
             margin: 10,
             offsetY: 0,
             style: {
-                fontSize: '20px',
+                fontSize: '14px',
                 fontWeight: 'bold',
                 color: '#263238'
             }
-        }
+        },
+        responsive: [
+            {
+                breakpoint: 768,  // Móvil
+                options: {
+                    chart: {
+                        height: 400
+                    },
+                    xaxis: {
+                        labels: {
+                            style: {
+                                fontSize: '10px'  // Etiquetas más pequeñas en dispositivos pequeños
+                            }
+                        }
+                    }
+                }
+            }
+        ]
     };
 
     var chartEmpresas = new ApexCharts(document.querySelector("#chartEmpresas"), chartEmpresasOptions);
     chartEmpresas.render();
 
-    // Setup configuration for the third chart (Estudiantes por Empresa - Practicas II)
+    // Configuración de la tercera gráfica (Estudiantes por Empresa - Practicas II)
     var chartEmpresasIIOptions = {
         chart: {
             type: 'bar',
-            height: 600,
+            height: 'auto',
             toolbar: {
                 show: true,
                 tools: {
@@ -272,15 +353,19 @@
                 easing: 'easeinout',
                 speed: 800,
             },
+            padding: {
+                right: 10,
+                left: 10
+            }
         },
         series: [{
             name: 'Estudiantes',
             data: {!! json_encode($estudiantesPorEmpresaII) !!}
         }],
         xaxis: {
-            categories: {!! json_encode($empresasII) !!},
+            categories: {!! json_encode($empresasII) !!}.map(toUpperCaseSpecial), // Convertir categorías a mayúsculas
             title: {
-                text: 'Número de estudiantes',
+                text: 'NÚMERO DE ESTUDIANTES',
                 offsetY: 10,
                 style: {
                     fontSize: '14px',
@@ -295,6 +380,9 @@
                 style: {
                     fontSize: '12px',
                     fontFamily: 'Arial, sans-serif',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
                 },
             }
         },
@@ -306,7 +394,7 @@
                 },
             },
             title: {
-                text: 'Empresas',
+                text: 'EMPRESAS',
                 style: {
                     fontSize: '14px',
                     fontWeight: 'bold',
@@ -315,7 +403,7 @@
             }
         },
         legend: {
-            show: false,  // Disable legend
+            show: false,  // Ocultar leyenda
         },
         plotOptions: {
             bar: {
@@ -331,27 +419,44 @@
             },
             style: {
                 fontSize: '12px',
-                colors: ['#000']
+                colors: ['#ffffff']
             }
         },
-        colors: ['#FF6347', '#32CD32', '#1E90FF', '#FFD700', '#8A2BE2'], // Match the colors as needed
+        colors: ['#242c72', '#3642A5', '#3768DB', '#41A4FF'], // Colores personalizados
         title: {
-            text: 'Estudiantes por Empresa - Practicas II',
+            text: 'ESTUDIANTES POR EMPRESAS - PRÁCTICAS II',
             align: 'center',
             margin: 10,
             offsetY: 0,
             style: {
-                fontSize: '20px',
+                fontSize: '14px',
                 fontWeight: 'bold',
                 color: '#263238'
             }
-        }
+        },
+        responsive: [
+            {
+                breakpoint: 768,  // Móvil
+                options: {
+                    chart: {
+                        height: 400
+                    },
+                    xaxis: {
+                        labels: {
+                            style: {
+                                fontSize: '10px'  // Etiquetas más pequeñas en dispositivos pequeños
+                            }
+                        }
+                    }
+                }
+            }
+        ]
     };
 
     var chartEmpresasII = new ApexCharts(document.querySelector("#chartEmpresasII"), chartEmpresasIIOptions);
     chartEmpresasII.render();
 
-    // Handle filter change with AJAX
+    // Manejo del cambio de filtro con AJAX
     document.getElementById('periodo').addEventListener('change', function() {
         var periodoId = this.value;
         var url = "{{ route('dashboard.filter') }}?periodo=" + periodoId;
@@ -359,10 +464,10 @@
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                // Update project chart data
+                // Actualizar datos de la gráfica de proyectos
                 chart.updateOptions({
                     xaxis: {
-                        categories: data.categories
+                        categories: data.categories.map(toUpperCaseSpecial) // Convertir categorías a mayúsculas
                     },
                     series: [{
                         name: 'Estudiantes',
@@ -370,10 +475,10 @@
                     }]
                 });
 
-                // Update company chart data for Practicas I
+                // Actualizar datos de la gráfica de empresas para Practicas I
                 chartEmpresas.updateOptions({
-                    xaxis: { // Update xaxis for companies
-                        categories: data.empresas
+                    xaxis: { // Actualizar xaxis para empresas
+                        categories: data.empresas.map(toUpperCaseSpecial) // Convertir categorías a mayúsculas
                     },
                     series: [{
                         name: 'Estudiantes',
@@ -381,10 +486,10 @@
                     }]
                 });
 
-                // Update company chart data for Practicas II
+                // Actualizar datos de la gráfica de empresas para Practicas II
                 chartEmpresasII.updateOptions({
-                    xaxis: { // Update xaxis for companies
-                        categories: data.empresasII
+                    xaxis: { // Actualizar xaxis para empresas
+                        categories: data.empresasII.map(toUpperCaseSpecial) // Convertir categorías a mayúsculas
                     },
                     series: [{
                         name: 'Estudiantes',

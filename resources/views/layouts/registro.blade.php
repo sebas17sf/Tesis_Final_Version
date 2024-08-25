@@ -178,7 +178,7 @@
                 <div class="container">
                     <a href="{{ route('conectarModulos', ['token' => session('token')]) }}" class="change_module">
                         <i class="fa-regular fa-rectangle-vertical-history"></i>
-                        <span>Cambiar modulo</span>
+                        <span>Cambiar módulo</span>
                     </a>
 
                     <a class="logout" href="{{ route('logout') }}">

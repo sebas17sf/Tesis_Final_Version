@@ -200,7 +200,7 @@
                 <div class="container">
                     <a href="{{ route('conectarModulos') }}" class="change_module">
                         <i class="fa-regular fa-rectangle-vertical-history"></i>
-                        <span>Cambiar modulo</span>
+                        <span>Cambiar módulo</span>
                     </a>
 
                     <a href="{{ route('participante-vinculacion.cambio-credenciales') }}"

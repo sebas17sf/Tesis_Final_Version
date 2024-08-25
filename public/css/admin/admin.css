@@ -395,8 +395,6 @@ tr:hover {
     background-color: #fff; /* Fondo blanco */
 }
 
-
-
 .form-control {
     border-radius: 0.25rem;
     box-shadow: none;
@@ -806,14 +804,14 @@ small{
         .table2th{
             background: linear-gradient(to bottom, #ffffff, #ffffff), 
             linear-gradient(to bottom, rgba(64, 69, 108, 0.3), rgba(64, 69, 108, 0.2));
-background-blend-mode: multiply;
+            background-blend-mode: multiply;
 
 
         }
         .colorth{
             background: linear-gradient(to bottom, #ffffff, #ffffff), 
             linear-gradient(to bottom, rgba(64, 69, 108, 0.192), rgba(64, 69, 108, 0.055));
-background-blend-mode: multiply;
+            background-blend-mode: multiply;
         }
 
         .labell{

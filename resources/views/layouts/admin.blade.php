@@ -74,9 +74,6 @@
 
 </head>
 
-
-
-
 <body>
 
     <script>
@@ -135,16 +132,6 @@
                                 </div>
                             </a>
 
-                            <a href="{{ route('dashboard') }}" class="p-element">
-                                <div class="icon-sidebar-item">
-                                    <i class="fa-solid fa-tachometer-alt"></i>  
-                                </div>
-                                <div class="name-sidebar-item">
-                                    <li>Graficas estadisticas</li>
-                                </div>
-                            </a>
-
-
                             <a href="{{ route('admin.indexProyectos') }}" class="p-element">
                                 <div class="icon-sidebar-item">
                                     <i class="fa-solid fa-layer-plus"></i>
@@ -195,6 +182,16 @@
                                     </div>
                                 </a>
                             </div>
+                          
+                    <a href="{{ route('dashboard') }}" class="p-element">
+                        <div class="icon-sidebar-item">
+                            <i class="fa-solid fa-chart-mixed fontawesome"></i>
+                        </div>
+                        <div class="name-sidebar-item">
+                            <li>Gráficas estadísticas</li>
+                        </div>
+                    </a>
+
                         </ul>
                     </nav>
                 </div>
@@ -239,7 +236,7 @@
                 <div class="container">
                     <a chref="{{ route('conectarModulos') }}" class="change_module">
                         <i class="fa-regular fa-rectangle-vertical-history"></i>
-                        <span>Cambiar modulo</span>
+                        <span>Cambiar módulo</span>
                     </a>
 
                     <a href="{{ route('participante-vinculacion.cambio-credenciales') }}"
@@ -309,7 +306,7 @@
         });
     </script>
 
-    <script>
+<script>
         function toggleSidebar() {
             var menuState = localStorage.getItem('menuState') === 'expanded' ? 'collapsed' : 'expanded';
 
@@ -324,29 +321,28 @@
                     menuState: menuState
                 },
                 success: function(response) {
-                    /*    console.log('Estado del menú enviado:',menuState);
-                    console.log('Estado del menú actualizado:', response.menuState); */
+                    console.log('Estado del menú actualizado:', response.menuState);
                     // Actualizar el estado del menú en el localStorage si es necesario
-                    //localStorage.setItem('menuState', response.menuState);
+                    localStorage.setItem('menuState', response.menuState);
                 },
                 error: function(xhr, status, error) {
-                    /*    console.error('Error al actualizar el estado del menú:', error); */
+                    console.error('Error al actualizar el estado del menú:', error);
                 }
             });
 
+
             triggerToggleSidebar();
+
         }
-    </script>
 
-
-
-
+   </script>
+   
     <style>
         .color_a {
             color: #1d1d1d
         }
-    </style>
 
+    </style>
 
 </body>
 
