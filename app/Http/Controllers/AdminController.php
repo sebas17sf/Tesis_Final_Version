@@ -169,7 +169,8 @@ class AdminController extends Controller
         try {
             $user = Usuario::findOrFail($userId);
 
-            $user->role_id = null;
+            $user->role_id = 4;
+            $user->estadosModificados = null;
             $user->save();
 
             return back()->with('success', 'Rol administrativo eliminado correctamente.');
@@ -838,7 +839,7 @@ class AdminController extends Controller
         // Eliminar el proyecto
         $proyecto->delete();
 
-        return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto y asignaciones relacionadas eliminados.');
+        return redirect()->route('admin.indexProyectos')->with('success', 'Proyecto eliminado.');
     }
     ///////asignar proyecto a estudiante/////////////
 

@@ -1174,30 +1174,28 @@ class CoordinadorController extends Controller
             'nuevoEstado' => 'required|in:En ejecucion,Negado,Terminado',
         ]);
 
-
-        $practica = PracticaI::where('EstudianteID', $id)->first();
+        // Encuentra la práctica del estudiante
+        $practica = PracticaI::where('estudianteId', $id)
+            ->where('Estado', '!=', 'Reprobado')
+            ->first();
 
         if (!$practica) {
-            return redirect()->route('coordinador.aceptarFaseI')->with('error', 'Práctica no encontrada.');
+            return back()->with('error', 'Práctica no encontrada.');
         }
 
-        // Actualiza el estado de la práctica
+        // Actualiza el estado usando update()
         $nuevoEstado = $request->input('nuevoEstado');
-        $practica->Estado = $nuevoEstado;
-        $practica->save();
+        $practica->update(['Estado' => $nuevoEstado]);
 
+        // Maneja las redirecciones según el estado seleccionado
         if ($nuevoEstado === 'En ejecucion') {
-            return redirect()->route('coordinador.aceptarFaseI')->with('success', 'Práctica aprobada.');
-        }
-
-        // Si el nuevo estado es 'Negado', elimina la práctica
-        if ($nuevoEstado === 'Negado') {
+            return back()->with('success', 'Práctica aprobada.');
+        } elseif ($nuevoEstado === 'Negado') {
             $practica->delete();
-            return redirect()->route('coordinador.index')->with('success', 'Práctica negada y eliminada.');
+            return back()->with('success', 'Práctica negada y eliminada.');
+        } else {
+            return back()->with('success', 'Estado de la práctica actualizado.');
         }
-
-        // Redirecciona de regreso con un mensaje de éxito
-        return redirect()->route('coordinador.aceptarFaseI')->with('success', 'Estado de la práctica actualizado.');
     }
 
     public function actualizarEstadoEstudiante2(Request $request, $id)
@@ -1207,27 +1205,27 @@ class CoordinadorController extends Controller
             'nuevoEstado' => 'required|in:En ejecucion,Negado,Terminado',
         ]);
 
-        $practica = PracticaII::where('EstudianteID', $id)->first();
+        $practica = PracticaII::where('estudianteId', $id)->first();
 
         if (!$practica) {
-            return redirect()->route('coordinador.aceptarFaseI')->with('error', 'Práctica no encontrada.');
+            return back()->with('error', 'Práctica no encontrada.');
         }
 
         // Actualiza el estado de la práctica
         $nuevoEstado = $request->input('nuevoEstado');
-        $practica->Estado = $nuevoEstado;
+        $practica->estado = $nuevoEstado;
         $practica->save();
 
         if ($nuevoEstado === 'En ejecucion') {
-            return redirect()->route('coordinador.aceptarFaseI')->with('success', 'Práctica II aprobada.');
+            return back()->with('success', 'Práctica II aprobada.');
         }
 
         if ($nuevoEstado === 'Negado') {
             $practica->delete();
-            return redirect()->route('coordinador.index')->with('success', 'Práctica II negada y eliminada.');
+            return back()->with('success', 'Práctica II negada y eliminada.');
         }
 
-        return redirect()->route('coordinador.aceptarFaseI')->with('success', 'Estado de la Práctica II actualizado.');
+        return back()->with('success', 'Estado de la Práctica II actualizado.');
     }
 
 

@@ -275,6 +275,9 @@ Route::middleware(['auth'])->group(function () {
     /////////////////////importar practcias 1
     Route::post('/import-practicas1', [DocumentosVinculacion::class, 'importarPracticas1'])->name('import-practicas1');
     Route::post('/preview-import-practicas1', [DocumentosVinculacion::class, 'previewImportarPracticas1'])->name('import.previewImportarPracticas1');
+    Route::post('/preview-import-practicas2', [DocumentosVinculacion::class, 'previewImportarPracticas2'])->name('import.previewImportarPracticas2');
+    Route::post('/preview-import-practicas3', [DocumentosVinculacion::class, 'previewImportarPracticas3'])->name('import.previewImportarPracticas3');
+    Route::post('/preview-import-practicas4', [DocumentosVinculacion::class, 'previewImportarPracticas4'])->name('import.previewImportarPracticas4');
 
 
 
