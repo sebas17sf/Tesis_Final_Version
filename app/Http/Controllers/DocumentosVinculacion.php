@@ -8,6 +8,10 @@ use App\Models\Departamento;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Models\AsignacionProyecto;
 use App\Models\NrcVinculacion;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+
+
 use Illuminate\Support\Facades\Http;
 use App\Models\Proyecto;
 use App\Models\NotasEstudiante;
@@ -937,8 +941,13 @@ class DocumentosVinculacion extends Controller
 
 
 
+
     public function import(Request $request)
     {
+        $request->validate([
+            'file' => 'required|mimes:xlsx',
+        ]);
+
         $spreadsheet = IOFactory::load($request->file('file'));
         $worksheet = $spreadsheet->getActiveSheet();
         $dataRows = array_slice($worksheet->toArray(), 1);
@@ -946,7 +955,7 @@ class DocumentosVinculacion extends Controller
         $insertCount = 0;
         $updateCount = 0;
 
-        foreach ($dataRows as $row) {
+        foreach ($dataRows as $rowIndex => $row) {
             if (!empty($row[0]) && !empty($row[1]) && !empty($row[2]) && !empty($row[3]) && !empty($row[4]) && !empty($row[5]) && !empty($row[6])) {
                 $periodo = Periodo::where('numeroPeriodo', $row[5])->first();
                 $estudiante = Estudiante::where('espeId', $row[0])->first();
@@ -966,7 +975,6 @@ class DocumentosVinculacion extends Controller
                     'estado' => (isset($row[19]) && trim($row[19]) === 'Finalizado') ? 'Aprobado-practicas' : 'Aprobado',
                     'activacion' => $estudiante && $estudiante->usuario ? 1 : 0,
                 ];
-
 
                 if ($estudiante && $estudiante->usuario) {
                     $data['activacion'] = true;
@@ -994,9 +1002,11 @@ class DocumentosVinculacion extends Controller
                         $estudiante->update(['estado' => 'Aprobado']);
                     }
                 }
-
-
             }
+
+            // Convert dates for project assignments using dynamic cell addresses
+            $fechaInicio = $this->convertExcelDate($worksheet, $rowIndex + 2, 'M'); // Convert date from column "M" (13th column, 1-based index)
+            $fechaFinalizacion = $this->convertExcelDate($worksheet, $rowIndex + 2, 'N'); // Convert date from column "N" (14th column, 1-based index)
 
             // Procesar la primera asignación de proyecto
             if (!empty($row[7]) && !empty($row[8]) && !empty($row[6]) && !empty($row[9]) && !empty($row[10]) && !empty($row[11]) && !empty($row[15])) {
@@ -1018,8 +1028,8 @@ class DocumentosVinculacion extends Controller
                         ->first();
                 }
 
-                $fechaInicio = $this->convertToDate($row[12]);
-                $fechaFinalizacion = $this->convertToDate($row[13]);
+                $fechaInicio = $this->convertExcelDate($worksheet, $rowIndex + 2, 'M'); // Convert date from column "M"
+                $fechaFinalizacion = $this->convertExcelDate($worksheet, $rowIndex + 2, 'N'); // Convert date from column "N"
 
                 $nrc = NrcVinculacion::where('nrc', $row[9])->first();
 
@@ -1074,8 +1084,8 @@ class DocumentosVinculacion extends Controller
                         ->first();
                 }
 
-                $fechaInicio = $this->convertToDate($row[24]);
-                $fechaFinalizacion = $this->convertToDate($row[25]);
+                $fechaInicio = $this->convertExcelDate($worksheet, $rowIndex + 2, 'Y'); // Convert date from column "Y"
+                $fechaFinalizacion = $this->convertExcelDate($worksheet, $rowIndex + 2, 'Z'); // Convert date from column "Z"
 
                 $data = [
                     'estudianteId' => $estudiante ? $estudiante->estudianteId : null,
@@ -1184,19 +1194,26 @@ class DocumentosVinculacion extends Controller
         return redirect()->back()->with('success', "Datos importados con éxito! Insertados: $insertCount, Actualizados: $updateCount");
     }
 
-
-
-
-
-
-    private function convertToDate($excelDate)
+    /**
+     * Helper function to convert Excel date to Y-m-d format.
+     */
+    private function convertExcelDate($worksheet, $row, $columnLetter)
     {
-        if (is_numeric($excelDate)) {
-            return Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($excelDate))->format('Y-m-d');
+        $cellAddress = $columnLetter . $row;
+        $cell = $worksheet->getCell($cellAddress);
+        $value = $cell->getValue();
+
+        if (Date::isDateTime($cell)) {
+            return Date::excelToDateTimeObject($value)->format('Y-m-d');
         } else {
-            return Carbon::parse($excelDate)->format('Y-m-d');
+            $date = DateTime::createFromFormat('d/m/Y', $value);
+            return $date ? $date->format('Y-m-d') : null;
         }
     }
+
+
+
+
 
 
 
@@ -1735,644 +1752,751 @@ class DocumentosVinculacion extends Controller
 
 
     public function importarPracticas1(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:xlsx',
-        ]);
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx',
+    ]);
 
-        DB::beginTransaction(); // Start transaction
+    DB::beginTransaction(); // Start transaction
 
-        try {
-            $spreadsheet = IOFactory::load($request->file('file'));
-            $worksheet = $spreadsheet->getActiveSheet();
-            $rows = $worksheet->toArray();
-            $dataRows = array_slice($rows, 2);
+    try {
+        $spreadsheet = IOFactory::load($request->file('file'));
+        $worksheet = $spreadsheet->getActiveSheet();
+        $rows = $worksheet->toArray();
+        $dataRows = array_slice($rows, 2); // Start from the third row (0-based index)
 
-            foreach ($dataRows as $row) {
-                // Skip rows with missing essential data
-                if (empty($row[1]) || empty($row[2]) || empty($row[3]) || empty($row[4])) {
-                    \Log::warning('Skipping row due to missing data: ' . json_encode($row));
-                    continue;
-                }
+        foreach ($dataRows as $rowIndex => $row) {
+            // Skip rows with missing essential data
+            if (empty($row[1]) || empty($row[2]) || empty($row[3]) || empty($row[4])) {
+                \Log::warning('Skipping row due to missing data: ' . json_encode($row));
+                continue;
+            }
 
-                // Busca al estudiante por espeId o nombre y apellidos
-                $estudiante = Estudiante::where('espeId', $row[4])->first();
-                if (!$estudiante) {
-                    $estudiante = Estudiante::where('nombres', $row[2])
-                        ->where('apellidos', $row[1])
-                        ->first();
-                }
+            // Date conversion using PHPSpreadsheet's date class
+            $fechaInicio = null;
+            $fechaFinalizacion = null;
 
-                // Si el estudiante no existe, lo crea
-                if (!$estudiante) {
-                    $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
-                    $departamento = Departamento::where('departamento', 'LIKE', '%' . $row[8] . '%')->first();
-                    $estudiante = Estudiante::create([
-                        'nombres' => $row[2],
-                        'apellidos' => $row[1],
-                        'espeId' => $row[4],
-                        'Cohorte' => $row[7],
-                        'carrera' => 'Tecnologías de la información',
-                        'departamentoId' => $departamento ? $departamento->id : null,
-                        'correo' => $row[5],
-                        'cedula' => $row[3],
-                        'idPeriodo' => $periodo ? $periodo->id : null,
-                        'comentario' => null,
-                    ]);
+            // Calculate the Excel row number (1-based index)
+            $excelRowIndex = $rowIndex + 3;
+
+            // For column "M" (13th column, 1-based index)
+            $fechaInicioCell = 'M' . $excelRowIndex;
+            $fechaInicioValue = $worksheet->getCell($fechaInicioCell)->getValue();
+            if (!empty($fechaInicioValue)) {
+                if (Date::isDateTime($worksheet->getCell($fechaInicioCell))) {
+                    $fechaInicio = Date::excelToDateTimeObject($fechaInicioValue)->format('Y-m-d');
                 } else {
-                    $updateFields = [
-                        'nombres' => $row[2],
-                        'apellidos' => $row[1],
-                        'espeId' => $row[4],
-                        'Cohorte' => $row[7],
-                        'correo' => $row[5],
-                        'cedula' => $row[3],
-
-                    ];
-
-                    foreach ($updateFields as $key => $value) {
-                        if (is_null($estudiante->$key)) {
-                            $estudiante->$key = $value;
-                        }
-                    }
-
-                    $estudiante->save();
-                }
-
-                // Busca la empresa con LIKE
-                $empresa = Empresa::where('nombreEmpresa', 'LIKE', '%' . $row[19] . '%')->first();
-                $tutorAcademico = ProfesUniversidad::where('apellidos', $row[34])->first();
-                $nombreTutorEmpresarial = $row[28] . ' ' . $row[29];
-
-                // Formatea las fechas
-                $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[12]);
-                $fechaInicioFormatted = $fechaInicio ? $fechaInicio->format('Y-m-d') : null;
-
-                $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $row[13]);
-                $fechaFinalizacionFormatted = $fechaFinalizacion ? $fechaFinalizacion->format('Y-m-d') : null;
-                $nrc = NrcVinculacion::where('nrc', $row[6])->first();
-
-                $practicaData = [
-                    'estudianteId' => $estudiante->estudianteId,
-                    'AreaConocimiento' => $row[11],
-                    'FechaInicio' => $fechaInicioFormatted,
-                    'FechaFinalizacion' => $fechaFinalizacionFormatted,
-                    'HoraEntrada' => $row[14],
-                    'HoraSalida' => $row[15],
-                    'HorasPlanificadas' => $row[16],
-                    'tipoPractica' => $row[17],
-                    'idEmpresa' => $empresa ? $empresa->id : null,
-                    'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
-                    'CedulaTutorEmpresarial' => $row[30],
-                    'nrc' => $nrc ? $nrc->id : null,
-                    'EmailTutorEmpresarial' => $row[31],
-                    'TelefonoTutorEmpresarial' => $row[32],
-                    'Funcion' => $row[33],
-                    'idTutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
-                    'nota_final' => $row[18],
-                    'periodoPractica' => $row[10],
-                    'Estado' => 'Finalizado',
-                    'EstadoAcademico' => 'Cursando estudios',
-                    'DepartamentoTutorEmpresarial' => 'Programacion',
-                ];
-
-                // Create or update the practice
-                $practica1 = PracticaI::where('estudianteId', $estudiante->estudianteId)->first();
-                if (!$practica1) {
-                    PracticaI::create($practicaData);
-                } else {
-                    $practica1->update($practicaData);
+                    $fechaInicio = DateTime::createFromFormat('d/m/Y', $fechaInicioValue) ? DateTime::createFromFormat('d/m/Y', $fechaInicioValue)->format('Y-m-d') : null;
                 }
             }
 
-            DB::commit(); // Commit the transaction
-
-            return redirect()->back()->with('success', 'Estudiantes y prácticas importados correctamente.');
-
-        } catch (\Exception $e) {
-            DB::rollback(); // Rollback the transaction if there is an error
-
-            // Log the error message for debugging
-            \Log::error('Error importing students and practices: ' . $e->getMessage());
-
-            // Redirect back with an error message
-            return redirect()->back()->with('error', 'Hubo un error al importar los estudiantes y prácticas. Por favor, revise el archivo e intente nuevamente.');
-        }
-    }
-
-
-
-
-    public function importarPracticas2(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:xlsx',
-        ]);
-
-        DB::beginTransaction(); // Start transaction
-
-        try {
-            $spreadsheet = IOFactory::load($request->file('file'));
-            $worksheet = $spreadsheet->getActiveSheet();
-            $rows = $worksheet->toArray();
-            $dataRows = array_slice($rows, 2);
-
-            foreach ($dataRows as $row) {
-                // Skip rows with missing essential data
-                if (empty($row[1]) || empty($row[2]) || empty($row[3]) || empty($row[4])) {
-                    \Log::warning('Skipping row due to missing data: ' . json_encode($row));
-                    continue;
-                }
-
-                // Busca al estudiante por espeId o nombre y apellidos
-                $estudiante = Estudiante::where('espeId', $row[4])->first();
-                if (!$estudiante) {
-                    $estudiante = Estudiante::where('nombres', $row[2])
-                        ->where('apellidos', $row[1])
-                        ->first();
-                }
-
-                // Si el estudiante no existe, lo crea
-                if (!$estudiante) {
-                    $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
-                    $departamento = Departamento::where('departamento', 'LIKE', '%' . $row[8] . '%')->first();
-                    $estudiante = Estudiante::create([
-                        'nombres' => $row[2],
-                        'apellidos' => $row[1],
-                        'espeId' => $row[4],
-                        'Cohorte' => $row[7],
-                        'carrera' => 'Tecnologías de la información',
-                        'departamentoId' => $departamento ? $departamento->id : null,
-                        'correo' => $row[5],
-                        'cedula' => $row[3],
-                        'idPeriodo' => $periodo ? $periodo->id : null,
-                        'comentario' => null,
-                    ]);
+            // For column "N" (14th column, 1-based index)
+            $fechaFinalizacionCell = 'N' . $excelRowIndex;
+            $fechaFinalizacionValue = $worksheet->getCell($fechaFinalizacionCell)->getValue();
+            if (!empty($fechaFinalizacionValue)) {
+                if (Date::isDateTime($worksheet->getCell($fechaFinalizacionCell))) {
+                    $fechaFinalizacion = Date::excelToDateTimeObject($fechaFinalizacionValue)->format('Y-m-d');
                 } else {
-                    $updateFields = [
-                        'nombres' => $row[2],
-                        'apellidos' => $row[1],
-                        'espeId' => $row[4],
-                        'Cohorte' => $row[7],
-                        'correo' => $row[5],
-                        'cedula' => $row[3],
-
-                    ];
-
-                    foreach ($updateFields as $key => $value) {
-                        if (is_null($estudiante->$key)) {
-                            $estudiante->$key = $value;
-                        }
-                    }
-
-                    $estudiante->save();
-                }
-
-                // Busca la empresa con LIKE
-                $empresa = Empresa::where('nombreEmpresa', 'LIKE', '%' . $row[19] . '%')->first();
-                $tutorAcademico = ProfesUniversidad::where('apellidos', $row[34])->first();
-                $nombreTutorEmpresarial = $row[28] . ' ' . $row[29];
-
-                // Formatea las fechas
-                $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[12]);
-                $fechaInicioFormatted = $fechaInicio ? $fechaInicio->format('Y-m-d') : null;
-
-                $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $row[13]);
-                $fechaFinalizacionFormatted = $fechaFinalizacion ? $fechaFinalizacion->format('Y-m-d') : null;
-                $nrc = NrcVinculacion::where('nrc', $row[6])->first();
-
-                $practicaData = [
-                    'estudianteId' => $estudiante->estudianteId,
-                    'AreaConocimiento' => $row[11],
-                    'FechaInicio' => $fechaInicioFormatted,
-                    'FechaFinalizacion' => $fechaFinalizacionFormatted,
-                    'HoraEntrada' => $row[14],
-                    'HoraSalida' => $row[15],
-                    'HorasPlanificadas' => $row[16],
-                    'tipoPractica' => $row[17],
-                    'idEmpresa' => $empresa ? $empresa->id : null,
-                    'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
-                    'CedulaTutorEmpresarial' => $row[30],
-                    'nrc' => $nrc ? $nrc->id : null,
-                    'EmailTutorEmpresarial' => $row[31],
-                    'TelefonoTutorEmpresarial' => $row[32],
-                    'Funcion' => $row[33],
-                    'idTutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
-                    'nota_final' => $row[18],
-                    'periodoPractica' => $row[10],
-                    'Estado' => 'Finalizado',
-                    'EstadoAcademico' => 'Cursando estudios',
-                    'DepartamentoTutorEmpresarial' => 'Programacion',
-                ];
-
-                // Create or update the practice
-                $practica1 = PracticaIII::where('estudianteId', $estudiante->estudianteId)->first();
-                if (!$practica1) {
-                    PracticaIII::create($practicaData);
-                } else {
-                    $practica1->update($practicaData);
+                    $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $fechaFinalizacionValue) ? DateTime::createFromFormat('d/m/Y', $fechaFinalizacionValue)->format('Y-m-d') : null;
                 }
             }
 
-            DB::commit(); // Commit the transaction
+            // Find or create the student
+            $estudiante = Estudiante::where('espeId', $row[4])->first();
+            if (!$estudiante) {
+                $estudiante = Estudiante::where('nombres', $row[2])
+                    ->where('apellidos', $row[1])
+                    ->first();
+            }
 
-            return redirect()->back()->with('success', 'Estudiantes y prácticas importados correctamente.');
-
-        } catch (\Exception $e) {
-            DB::rollback(); // Rollback the transaction if there is an error
-
-            // Log the error message for debugging
-            \Log::error('Error importing students and practices: ' . $e->getMessage());
-
-            // Redirect back with an error message
-            return redirect()->back()->with('error', 'Hubo un error al importar los estudiantes y prácticas. Por favor, revise el archivo e intente nuevamente.');
-
-        }
-    }
-
-
-    public function importarPracticas3(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:xlsx',
-        ]);
-
-        DB::beginTransaction(); // Start transaction
-
-        try {
-            $spreadsheet = IOFactory::load($request->file('file'));
-            $worksheet = $spreadsheet->getActiveSheet();
-            $rows = $worksheet->toArray();
-            $dataRows = array_slice($rows, 2);
-
-            foreach ($dataRows as $row) {
-                // Skip rows with missing essential data
-                if (empty($row[1]) || empty($row[2]) || empty($row[3]) || empty($row[4])) {
-                    \Log::warning('Skipping row due to missing data: ' . json_encode($row));
-                    continue;
-                }
-
-                // Busca al estudiante por espeId o nombre y apellidos
-                $estudiante = Estudiante::where('espeId', $row[4])->first();
-                if (!$estudiante) {
-                    $estudiante = Estudiante::where('nombres', $row[2])
-                        ->where('apellidos', $row[1])
-                        ->first();
-                }
-
-                // Si el estudiante no existe, lo crea
-                if (!$estudiante) {
-                    $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
-                    $departamento = Departamento::where('departamento', 'LIKE', '%' . $row[8] . '%')->first();
-                    $estudiante = Estudiante::create([
-                        'nombres' => $row[2],
-                        'apellidos' => $row[1],
-                        'espeId' => $row[4],
-                        'Cohorte' => $row[7],
-                        'carrera' => 'Tecnologías de la información',
-                        'departamentoId' => $departamento ? $departamento->id : null,
-                        'correo' => $row[5],
-                        'cedula' => $row[3],
-                        'idPeriodo' => $periodo ? $periodo->id : null,
-                        'comentario' => null,
-                    ]);
-                } else {
-                    $updateFields = [
-                        'nombres' => $row[2],
-                        'apellidos' => $row[1],
-                        'espeId' => $row[4],
-                        'Cohorte' => $row[7],
-                        'correo' => $row[5],
-                        'cedula' => $row[3],
-
-                    ];
-
-                    foreach ($updateFields as $key => $value) {
-                        if (is_null($estudiante->$key)) {
-                            $estudiante->$key = $value;
-                        }
-                    }
-
-                    $estudiante->save();
-                }
-
-                // Busca la empresa con LIKE
-                $empresa = Empresa::where('nombreEmpresa', 'LIKE', '%' . $row[19] . '%')->first();
-                $tutorAcademico = ProfesUniversidad::where('apellidos', $row[34])->first();
-                $nombreTutorEmpresarial = $row[28] . ' ' . $row[29];
-
-                // Formatea las fechas
-                $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[12]);
-                $fechaInicioFormatted = $fechaInicio ? $fechaInicio->format('Y-m-d') : null;
-
-                $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $row[13]);
-                $fechaFinalizacionFormatted = $fechaFinalizacion ? $fechaFinalizacion->format('Y-m-d') : null;
-                $nrc = NrcVinculacion::where('nrc', $row[6])->first();
-
-                $practicaData = [
-                    'estudianteId' => $estudiante->estudianteId,
-                    'AreaConocimiento' => $row[11],
-                    'FechaInicio' => $fechaInicioFormatted,
-                    'FechaFinalizacion' => $fechaFinalizacionFormatted,
-                    'HoraEntrada' => $row[14],
-                    'HoraSalida' => $row[15],
-                    'HorasPlanificadas' => $row[16],
-                    'tipoPractica' => $row[17],
-                    'idEmpresa' => $empresa ? $empresa->id : null,
-                    'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
-                    'CedulaTutorEmpresarial' => $row[30],
-                    'nrc' => $nrc ? $nrc->id : null,
-                    'EmailTutorEmpresarial' => $row[31],
-                    'TelefonoTutorEmpresarial' => $row[32],
-                    'Funcion' => $row[33],
-                    'idTutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
-                    'nota_final' => $row[18],
-                    'periodoPractica' => $row[10],
-                    'Estado' => 'Finalizado',
-                    'EstadoAcademico' => 'Cursando estudios',
-                    'DepartamentoTutorEmpresarial' => 'Programacion',
+            // If the student doesn't exist, create a new one
+            if (!$estudiante) {
+                $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
+                $departamento = Departamento::where('departamento', 'LIKE', '%' . $row[8] . '%')->first();
+                $estudiante = Estudiante::create([
+                    'nombres' => $row[2],
+                    'apellidos' => $row[1],
+                    'espeId' => $row[4],
+                    'Cohorte' => $row[7],
+                    'carrera' => 'Tecnologías de la información',
+                    'departamentoId' => $departamento ? $departamento->id : null,
+                    'correo' => $row[5],
+                    'cedula' => $row[3],
+                    'idPeriodo' => $periodo ? $periodo->id : null,
+                    'comentario' => null,
+                ]);
+            } else {
+                // Update student fields if necessary
+                $updateFields = [
+                    'nombres' => $row[2],
+                    'apellidos' => $row[1],
+                    'espeId' => $row[4],
+                    'Cohorte' => $row[7],
+                    'correo' => $row[5],
+                    'cedula' => $row[3],
                 ];
 
-                // Create or update the practice
-                $practica1 = PracticaIV::where('estudianteId', $estudiante->estudianteId)->first();
-                if (!$practica1) {
-                    PracticaIV::create($practicaData);
+                foreach ($updateFields as $key => $value) {
+                    if (is_null($estudiante->$key)) {
+                        $estudiante->$key = $value;
+                    }
+                }
+
+                $estudiante->save();
+            }
+
+            // Find the company with LIKE
+            $empresa = Empresa::where('nombreEmpresa', 'LIKE', '%' . $row[19] . '%')->first();
+            $tutorAcademico = ProfesUniversidad::where('apellidos', $row[34])->first();
+            $nombreTutorEmpresarial = $row[28] . ' ' . $row[29];
+
+            $nrc = NrcVinculacion::where('nrc', $row[6])->first();
+
+            // Prepare practice data
+            $practicaData = [
+                'estudianteId' => $estudiante->estudianteId,
+                'AreaConocimiento' => $row[11],
+                'FechaInicio' => $fechaInicio,
+                'FechaFinalizacion' => $fechaFinalizacion,
+                'HoraEntrada' => $row[14],
+                'HoraSalida' => $row[15],
+                'HorasPlanificadas' => $row[16],
+                'tipoPractica' => $row[17],
+                'idEmpresa' => $empresa ? $empresa->id : null,
+                'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
+                'CedulaTutorEmpresarial' => $row[30],
+                'nrc' => $nrc ? $nrc->id : null,
+                'EmailTutorEmpresarial' => $row[31],
+                'TelefonoTutorEmpresarial' => $row[32],
+                'Funcion' => $row[33],
+                'idTutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
+                'nota_final' => $row[18],
+                'periodoPractica' => $row[10],
+                'Estado' => 'Finalizado',
+                'EstadoAcademico' => 'Cursando estudios',
+                'DepartamentoTutorEmpresarial' => 'Programacion',
+            ];
+
+            // Create or update the practice
+            $practica1 = PracticaI::where('estudianteId', $estudiante->estudianteId)->first();
+            if (!$practica1) {
+                PracticaI::create($practicaData);
+            } else {
+                $practica1->update($practicaData);
+            }
+        }
+
+        DB::commit(); // Commit the transaction
+
+        return redirect()->back()->with('success', 'Estudiantes y prácticas importados correctamente.');
+
+    } catch (\Exception $e) {
+        DB::rollback(); // Rollback the transaction if there is an error
+
+        // Log the error message for debugging
+        \Log::error('Error importing students and practices: ' . $e->getMessage());
+
+        // Redirect back with an error message
+        return redirect()->back()->with('error', 'Hubo un error al importar los estudiantes y prácticas. Por favor, revise el archivo e intente nuevamente.');
+    }
+}
+
+
+
+public function importarPracticas2(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx',
+    ]);
+
+    DB::beginTransaction(); // Start transaction
+
+    try {
+        $spreadsheet = IOFactory::load($request->file('file'));
+        $worksheet = $spreadsheet->getActiveSheet();
+        $rows = $worksheet->toArray();
+        $dataRows = array_slice($rows, 2); // Start from the third row (0-based index)
+
+        foreach ($dataRows as $rowIndex => $row) {
+            // Skip rows with missing essential data
+            if (empty($row[1]) || empty($row[2]) || empty($row[3]) || empty($row[4])) {
+                \Log::warning('Skipping row due to missing data: ' . json_encode($row));
+                continue;
+            }
+
+            // Date conversion using PHPSpreadsheet's date class
+            $fechaInicio = null;
+            $fechaFinalizacion = null;
+
+            // Calculate the Excel row number (1-based index)
+            $excelRowIndex = $rowIndex + 3;
+
+            // For column "M" (13th column, 1-based index)
+            $fechaInicioCell = 'M' . $excelRowIndex;
+            $fechaInicioValue = $worksheet->getCell($fechaInicioCell)->getValue();
+            if (!empty($fechaInicioValue)) {
+                if (Date::isDateTime($worksheet->getCell($fechaInicioCell))) {
+                    $fechaInicio = Date::excelToDateTimeObject($fechaInicioValue)->format('Y-m-d');
                 } else {
-                    $practica1->update($practicaData);
+                    $fechaInicio = DateTime::createFromFormat('d/m/Y', $fechaInicioValue) ? DateTime::createFromFormat('d/m/Y', $fechaInicioValue)->format('Y-m-d') : null;
                 }
             }
 
-            DB::commit(); // Commit the transaction
-
-            return redirect()->back()->with('success', 'Estudiantes y prácticas importados correctamente.');
-
-        } catch (\Exception $e) {
-            DB::rollback(); // Rollback the transaction if there is an error
-
-            // Log the error message for debugging
-            \Log::error('Error importing students and practices: ' . $e->getMessage());
-
-            // Redirect back with an error message
-            return redirect()->back()->with('error', 'Hubo un error al importar los estudiantes y prácticas. Por favor, revise el archivo e intente nuevamente.');
-
-        }
-    }
-
-
-    public function importarPracticas4(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:xlsx',
-        ]);
-
-        DB::beginTransaction(); // Start transaction
-
-        try {
-            $spreadsheet = IOFactory::load($request->file('file'));
-            $worksheet = $spreadsheet->getActiveSheet();
-            $rows = $worksheet->toArray();
-            $dataRows = array_slice($rows, 2);
-
-            foreach ($dataRows as $row) {
-                // Skip rows with missing essential data
-                if (empty($row[1]) || empty($row[2]) || empty($row[3]) || empty($row[4])) {
-                    \Log::warning('Skipping row due to missing data: ' . json_encode($row));
-                    continue;
-                }
-
-                // Busca al estudiante por espeId o nombre y apellidos
-                $estudiante = Estudiante::where('espeId', $row[4])->first();
-                if (!$estudiante) {
-                    $estudiante = Estudiante::where('nombres', $row[2])
-                        ->where('apellidos', $row[1])
-                        ->first();
-                }
-
-                // Si el estudiante no existe, lo crea
-                if (!$estudiante) {
-                    $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
-                    $departamento = Departamento::where('departamento', 'LIKE', '%' . $row[8] . '%')->first();
-                    $estudiante = Estudiante::create([
-                        'nombres' => $row[2],
-                        'apellidos' => $row[1],
-                        'espeId' => $row[4],
-                        'Cohorte' => $row[7],
-                        'carrera' => 'Tecnologías de la información',
-                        'departamentoId' => $departamento ? $departamento->id : null,
-                        'correo' => $row[5],
-                        'cedula' => $row[3],
-                        'idPeriodo' => $periodo ? $periodo->id : null,
-                        'comentario' => null,
-                    ]);
+            // For column "N" (14th column, 1-based index)
+            $fechaFinalizacionCell = 'N' . $excelRowIndex;
+            $fechaFinalizacionValue = $worksheet->getCell($fechaFinalizacionCell)->getValue();
+            if (!empty($fechaFinalizacionValue)) {
+                if (Date::isDateTime($worksheet->getCell($fechaFinalizacionCell))) {
+                    $fechaFinalizacion = Date::excelToDateTimeObject($fechaFinalizacionValue)->format('Y-m-d');
                 } else {
-                    $updateFields = [
-                        'nombres' => $row[2],
-                        'apellidos' => $row[1],
-                        'espeId' => $row[4],
-                        'Cohorte' => $row[7],
-                        'correo' => $row[5],
-                        'cedula' => $row[3],
-
-                    ];
-
-                    foreach ($updateFields as $key => $value) {
-                        if (is_null($estudiante->$key)) {
-                            $estudiante->$key = $value;
-                        }
-                    }
-
-                    $estudiante->save();
-                }
-
-                // Busca la empresa con LIKE
-                $empresa = Empresa::where('nombreEmpresa', 'LIKE', '%' . $row[19] . '%')->first();
-                $tutorAcademico = ProfesUniversidad::where('apellidos', $row[34])->first();
-                $nombreTutorEmpresarial = $row[28] . ' ' . $row[29];
-
-                // Formatea las fechas
-                $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[12]);
-                $fechaInicioFormatted = $fechaInicio ? $fechaInicio->format('Y-m-d') : null;
-
-                $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $row[13]);
-                $fechaFinalizacionFormatted = $fechaFinalizacion ? $fechaFinalizacion->format('Y-m-d') : null;
-                $nrc = NrcVinculacion::where('nrc', $row[6])->first();
-
-                $practicaData = [
-                    'estudianteId' => $estudiante->estudianteId,
-                    'AreaConocimiento' => $row[11],
-                    'FechaInicio' => $fechaInicioFormatted,
-                    'FechaFinalizacion' => $fechaFinalizacionFormatted,
-                    'HoraEntrada' => $row[14],
-                    'HoraSalida' => $row[15],
-                    'HorasPlanificadas' => $row[16],
-                    'tipoPractica' => $row[17],
-                    'idEmpresa' => $empresa ? $empresa->id : null,
-                    'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
-                    'CedulaTutorEmpresarial' => $row[30],
-                    'nrc' => $nrc ? $nrc->id : null,
-                    'EmailTutorEmpresarial' => $row[31],
-                    'TelefonoTutorEmpresarial' => $row[32],
-                    'Funcion' => $row[33],
-                    'idTutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
-                    'nota_final' => $row[18],
-                    'periodoPractica' => $row[10],
-                    'Estado' => 'Finalizado',
-                    'EstadoAcademico' => 'Cursando estudios',
-                    'DepartamentoTutorEmpresarial' => 'Programacion',
-                ];
-
-                // Create or update the practice
-                $practica1 = PracticaII::where('estudianteId', $estudiante->estudianteId)->first();
-                if (!$practica1) {
-                    PracticaII::create($practicaData);
-                } else {
-                    $practica1->update($practicaData);
+                    $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $fechaFinalizacionValue) ? DateTime::createFromFormat('d/m/Y', $fechaFinalizacionValue)->format('Y-m-d') : null;
                 }
             }
 
-            DB::commit(); // Commit the transaction
+            // Busca al estudiante por espeId o nombre y apellidos
+            $estudiante = Estudiante::where('espeId', $row[4])->first();
+            if (!$estudiante) {
+                $estudiante = Estudiante::where('nombres', $row[2])
+                    ->where('apellidos', $row[1])
+                    ->first();
+            }
 
-            return redirect()->back()->with('success', 'Estudiantes y prácticas importados correctamente.');
-
-        } catch (\Exception $e) {
-            DB::rollback(); // Rollback the transaction if there is an error
-
-            // Log the error message for debugging
-            \Log::error('Error importing students and practices: ' . $e->getMessage());
-
-            // Redirect back with an error message
-            return redirect()->back()->with('error', 'Hubo un error al importar los estudiantes y prácticas. Por favor, revise el archivo e intente nuevamente.');
-
-        }
-    }
-
-
-    public function importarPracticas5(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:xlsx',
-        ]);
-
-        DB::beginTransaction(); // Start transaction
-
-        try {
-            $spreadsheet = IOFactory::load($request->file('file'));
-            $worksheet = $spreadsheet->getActiveSheet();
-            $rows = $worksheet->toArray();
-            $dataRows = array_slice($rows, 2);
-
-            foreach ($dataRows as $row) {
-                // Skip rows with missing essential data
-                if (empty($row[1]) || empty($row[2]) || empty($row[3]) || empty($row[4])) {
-                    \Log::warning('Skipping row due to missing data: ' . json_encode($row));
-                    continue;
-                }
-
-                // Busca al estudiante por espeId o nombre y apellidos
-                $estudiante = Estudiante::where('espeId', $row[4])->first();
-                if (!$estudiante) {
-                    $estudiante = Estudiante::where('nombres', $row[2])
-                        ->where('apellidos', $row[1])
-                        ->first();
-                }
-
-                // Si el estudiante no existe, lo crea
-                if (!$estudiante) {
-                    $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
-                    $departamento = Departamento::where('departamento', 'LIKE', '%' . $row[8] . '%')->first();
-                    $estudiante = Estudiante::create([
-                        'nombres' => $row[2],
-                        'apellidos' => $row[1],
-                        'espeId' => $row[4],
-                        'Cohorte' => $row[7],
-                        'carrera' => 'Tecnologías de la información',
-                        'departamentoId' => $departamento ? $departamento->id : null,
-                        'correo' => $row[5],
-                        'cedula' => $row[3],
-                        'idPeriodo' => $periodo ? $periodo->id : null,
-                        'comentario' => null,
-                    ]);
-                } else {
-                    $updateFields = [
-                        'nombres' => $row[2],
-                        'apellidos' => $row[1],
-                        'espeId' => $row[4],
-                        'Cohorte' => $row[7],
-                        'correo' => $row[5],
-                        'cedula' => $row[3],
-
-                    ];
-
-                    foreach ($updateFields as $key => $value) {
-                        if (is_null($estudiante->$key)) {
-                            $estudiante->$key = $value;
-                        }
-                    }
-
-                    $estudiante->save();
-                }
-
-                // Busca la empresa con LIKE
-                $empresa = Empresa::where('nombreEmpresa', 'LIKE', '%' . $row[19] . '%')->first();
-                $tutorAcademico = ProfesUniversidad::where('apellidos', $row[34])->first();
-                $nombreTutorEmpresarial = $row[28] . ' ' . $row[29];
-
-                // Formatea las fechas
-                $fechaInicio = DateTime::createFromFormat('d/m/Y', $row[12]);
-                $fechaInicioFormatted = $fechaInicio ? $fechaInicio->format('Y-m-d') : null;
-
-                $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $row[13]);
-                $fechaFinalizacionFormatted = $fechaFinalizacion ? $fechaFinalizacion->format('Y-m-d') : null;
-                $nrc = NrcVinculacion::where('nrc', $row[6])->first();
-
-                $practicaData = [
-                    'estudianteId' => $estudiante->estudianteId,
-                    'AreaConocimiento' => $row[11],
-                    'FechaInicio' => $fechaInicioFormatted,
-                    'FechaFinalizacion' => $fechaFinalizacionFormatted,
-                    'HoraEntrada' => $row[14],
-                    'HoraSalida' => $row[15],
-                    'HorasPlanificadas' => $row[16],
-                    'tipoPractica' => $row[17],
-                    'idEmpresa' => $empresa ? $empresa->id : null,
-                    'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
-                    'CedulaTutorEmpresarial' => $row[30],
-                    'nrc' => $nrc ? $nrc->id : null,
-                    'EmailTutorEmpresarial' => $row[31],
-                    'TelefonoTutorEmpresarial' => $row[32],
-                    'Funcion' => $row[33],
-                    'idTutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
-                    'nota_final' => $row[18],
-                    'periodoPractica' => $row[10],
-                    'Estado' => 'Finalizado',
-                    'EstadoAcademico' => 'Cursando estudios',
-                    'DepartamentoTutorEmpresarial' => 'Programacion',
+            // Si el estudiante no existe, lo crea
+            if (!$estudiante) {
+                $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
+                $departamento = Departamento::where('departamento', 'LIKE', '%' . $row[8] . '%')->first();
+                $estudiante = Estudiante::create([
+                    'nombres' => $row[2],
+                    'apellidos' => $row[1],
+                    'espeId' => $row[4],
+                    'Cohorte' => $row[7],
+                    'carrera' => 'Tecnologías de la información',
+                    'departamentoId' => $departamento ? $departamento->id : null,
+                    'correo' => $row[5],
+                    'cedula' => $row[3],
+                    'idPeriodo' => $periodo ? $periodo->id : null,
+                    'comentario' => null,
+                ]);
+            } else {
+                $updateFields = [
+                    'nombres' => $row[2],
+                    'apellidos' => $row[1],
+                    'espeId' => $row[4],
+                    'Cohorte' => $row[7],
+                    'correo' => $row[5],
+                    'cedula' => $row[3],
                 ];
 
-                // Create or update the practice
-                $practica1 = PracticaV::where('estudianteId', $estudiante->estudianteId)->first();
-                if (!$practica1) {
-                    PracticaV::create($practicaData);
+                foreach ($updateFields as $key => $value) {
+                    if (is_null($estudiante->$key)) {
+                        $estudiante->$key = $value;
+                    }
+                }
+
+                $estudiante->save();
+            }
+
+            // Busca la empresa con LIKE
+            $empresa = Empresa::where('nombreEmpresa', 'LIKE', '%' . $row[19] . '%')->first();
+            $tutorAcademico = ProfesUniversidad::where('apellidos', $row[34])->first();
+            $nombreTutorEmpresarial = $row[28] . ' ' . $row[29];
+
+            $nrc = NrcVinculacion::where('nrc', $row[6])->first();
+
+            $practicaData = [
+                'estudianteId' => $estudiante->estudianteId,
+                'AreaConocimiento' => $row[11],
+                'FechaInicio' => $fechaInicio,
+                'FechaFinalizacion' => $fechaFinalizacion,
+                'HoraEntrada' => $row[14],
+                'HoraSalida' => $row[15],
+                'HorasPlanificadas' => $row[16],
+                'tipoPractica' => $row[17],
+                'idEmpresa' => $empresa ? $empresa->id : null,
+                'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
+                'CedulaTutorEmpresarial' => $row[30],
+                'nrc' => $nrc ? $nrc->id : null,
+                'EmailTutorEmpresarial' => $row[31],
+                'TelefonoTutorEmpresarial' => $row[32],
+                'Funcion' => $row[33],
+                'idTutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
+                'nota_final' => $row[18],
+                'periodoPractica' => $row[10],
+                'Estado' => 'Finalizado',
+                'EstadoAcademico' => 'Cursando estudios',
+                'DepartamentoTutorEmpresarial' => 'Programacion',
+            ];
+
+            // Create or update the practice
+            $practica1 = PracticaIII::where('estudianteId', $estudiante->estudianteId)->first();
+            if (!$practica1) {
+                PracticaIII::create($practicaData);
+            } else {
+                $practica1->update($practicaData);
+            }
+        }
+
+        DB::commit(); // Commit the transaction
+
+        return redirect()->back()->with('success', 'Estudiantes y prácticas importados correctamente.');
+
+    } catch (\Exception $e) {
+        DB::rollback(); // Rollback the transaction if there is an error
+
+        // Log the error message for debugging
+        \Log::error('Error importing students and practices: ' . $e->getMessage());
+
+        // Redirect back with an error message
+        return redirect()->back()->with('error', 'Hubo un error al importar los estudiantes y prácticas. Por favor, revise el archivo e intente nuevamente.');
+    }
+}
+
+
+public function importarPracticas3(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx',
+    ]);
+
+    DB::beginTransaction(); // Start transaction
+
+    try {
+        $spreadsheet = IOFactory::load($request->file('file'));
+        $worksheet = $spreadsheet->getActiveSheet();
+        $rows = $worksheet->toArray();
+        $dataRows = array_slice($rows, 2); // Start from the third row (0-based index)
+
+        foreach ($dataRows as $rowIndex => $row) {
+            // Skip rows with missing essential data
+            if (empty($row[1]) || empty($row[2]) || empty($row[3]) || empty($row[4])) {
+                \Log::warning('Skipping row due to missing data: ' . json_encode($row));
+                continue;
+            }
+
+            // Date conversion using PHPSpreadsheet's date class
+            $fechaInicio = null;
+            $fechaFinalizacion = null;
+
+            // Calculate the Excel row number (1-based index)
+            $excelRowIndex = $rowIndex + 3;
+
+            // For column "M" (13th column, 1-based index)
+            $fechaInicioCell = 'M' . $excelRowIndex;
+            $fechaInicioValue = $worksheet->getCell($fechaInicioCell)->getValue();
+            if (!empty($fechaInicioValue)) {
+                if (Date::isDateTime($worksheet->getCell($fechaInicioCell))) {
+                    $fechaInicio = Date::excelToDateTimeObject($fechaInicioValue)->format('Y-m-d');
                 } else {
-                    $practica1->update($practicaData);
+                    $fechaInicio = DateTime::createFromFormat('d/m/Y', $fechaInicioValue) ? DateTime::createFromFormat('d/m/Y', $fechaInicioValue)->format('Y-m-d') : null;
                 }
             }
 
-            DB::commit(); // Commit the transaction
+            // For column "N" (14th column, 1-based index)
+            $fechaFinalizacionCell = 'N' . $excelRowIndex;
+            $fechaFinalizacionValue = $worksheet->getCell($fechaFinalizacionCell)->getValue();
+            if (!empty($fechaFinalizacionValue)) {
+                if (Date::isDateTime($worksheet->getCell($fechaFinalizacionCell))) {
+                    $fechaFinalizacion = Date::excelToDateTimeObject($fechaFinalizacionValue)->format('Y-m-d');
+                } else {
+                    $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $fechaFinalizacionValue) ? DateTime::createFromFormat('d/m/Y', $fechaFinalizacionValue)->format('Y-m-d') : null;
+                }
+            }
 
-            return redirect()->back()->with('success', 'Estudiantes y prácticas importados correctamente.');
+            // Busca al estudiante por espeId o nombre y apellidos
+            $estudiante = Estudiante::where('espeId', $row[4])->first();
+            if (!$estudiante) {
+                $estudiante = Estudiante::where('nombres', $row[2])
+                    ->where('apellidos', $row[1])
+                    ->first();
+            }
 
-        } catch (\Exception $e) {
-            DB::rollback(); // Rollback the transaction if there is an error
+            // Si el estudiante no existe, lo crea
+            if (!$estudiante) {
+                $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
+                $departamento = Departamento::where('departamento', 'LIKE', '%' . $row[8] . '%')->first();
+                $estudiante = Estudiante::create([
+                    'nombres' => $row[2],
+                    'apellidos' => $row[1],
+                    'espeId' => $row[4],
+                    'Cohorte' => $row[7],
+                    'carrera' => 'Tecnologías de la información',
+                    'departamentoId' => $departamento ? $departamento->id : null,
+                    'correo' => $row[5],
+                    'cedula' => $row[3],
+                    'idPeriodo' => $periodo ? $periodo->id : null,
+                    'comentario' => null,
+                ]);
+            } else {
+                $updateFields = [
+                    'nombres' => $row[2],
+                    'apellidos' => $row[1],
+                    'espeId' => $row[4],
+                    'Cohorte' => $row[7],
+                    'correo' => $row[5],
+                    'cedula' => $row[3],
+                ];
 
-            // Log the error message for debugging
-            \Log::error('Error importing students and practices: ' . $e->getMessage());
+                foreach ($updateFields as $key => $value) {
+                    if (is_null($estudiante->$key)) {
+                        $estudiante->$key = $value;
+                    }
+                }
 
-            // Redirect back with an error message
-            return redirect()->back()->with('error', 'Hubo un error al importar los estudiantes y prácticas. Por favor, revise el archivo e intente nuevamente.');
+                $estudiante->save();
+            }
 
+            // Busca la empresa con LIKE
+            $empresa = Empresa::where('nombreEmpresa', 'LIKE', '%' . $row[19] . '%')->first();
+            $tutorAcademico = ProfesUniversidad::where('apellidos', $row[34])->first();
+            $nombreTutorEmpresarial = $row[28] . ' ' . $row[29];
+
+            $nrc = NrcVinculacion::where('nrc', $row[6])->first();
+
+            $practicaData = [
+                'estudianteId' => $estudiante->estudianteId,
+                'AreaConocimiento' => $row[11],
+                'FechaInicio' => $fechaInicio,
+                'FechaFinalizacion' => $fechaFinalizacion,
+                'HoraEntrada' => $row[14],
+                'HoraSalida' => $row[15],
+                'HorasPlanificadas' => $row[16],
+                'tipoPractica' => $row[17],
+                'idEmpresa' => $empresa ? $empresa->id : null,
+                'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
+                'CedulaTutorEmpresarial' => $row[30],
+                'nrc' => $nrc ? $nrc->id : null,
+                'EmailTutorEmpresarial' => $row[31],
+                'TelefonoTutorEmpresarial' => $row[32],
+                'Funcion' => $row[33],
+                'idTutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
+                'nota_final' => $row[18],
+                'periodoPractica' => $row[10],
+                'Estado' => 'Finalizado',
+                'EstadoAcademico' => 'Cursando estudios',
+                'DepartamentoTutorEmpresarial' => 'Programacion',
+            ];
+
+            // Create or update the practice
+            $practica1 = PracticaIV::where('estudianteId', $estudiante->estudianteId)->first();
+            if (!$practica1) {
+                PracticaIV::create($practicaData);
+            } else {
+                $practica1->update($practicaData);
+            }
         }
+
+        DB::commit(); // Commit the transaction
+
+        return redirect()->back()->with('success', 'Estudiantes y prácticas importados correctamente.');
+
+    } catch (\Exception $e) {
+        DB::rollback(); // Rollback the transaction if there is an error
+
+        // Log the error message for debugging
+        \Log::error('Error importing students and practices: ' . $e->getMessage());
+
+        // Redirect back with an error message
+        return redirect()->back()->with('error', 'Hubo un error al importar los estudiantes y prácticas. Por favor, revise el archivo e intente nuevamente.');
     }
+}
+
+
+public function importarPracticas4(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx',
+    ]);
+
+    DB::beginTransaction(); // Start transaction
+
+    try {
+        $spreadsheet = IOFactory::load($request->file('file'));
+        $worksheet = $spreadsheet->getActiveSheet();
+        $rows = $worksheet->toArray();
+        $dataRows = array_slice($rows, 2); // Start from the third row (0-based index)
+
+        foreach ($dataRows as $rowIndex => $row) {
+            // Skip rows with missing essential data
+            if (empty($row[1]) || empty($row[2]) || empty($row[3]) || empty($row[4])) {
+                \Log::warning('Skipping row due to missing data: ' . json_encode($row));
+                continue;
+            }
+
+            // Date conversion using PHPSpreadsheet's date class
+            $fechaInicio = null;
+            $fechaFinalizacion = null;
+
+            // Calculate the Excel row number (1-based index)
+            $excelRowIndex = $rowIndex + 3;
+
+            // For column "M" (13th column, 1-based index)
+            $fechaInicioCell = 'M' . $excelRowIndex;
+            $fechaInicioValue = $worksheet->getCell($fechaInicioCell)->getValue();
+            if (!empty($fechaInicioValue)) {
+                if (Date::isDateTime($worksheet->getCell($fechaInicioCell))) {
+                    $fechaInicio = Date::excelToDateTimeObject($fechaInicioValue)->format('Y-m-d');
+                } else {
+                    $fechaInicio = DateTime::createFromFormat('d/m/Y', $fechaInicioValue) ? DateTime::createFromFormat('d/m/Y', $fechaInicioValue)->format('Y-m-d') : null;
+                }
+            }
+
+            // For column "N" (14th column, 1-based index)
+            $fechaFinalizacionCell = 'N' . $excelRowIndex;
+            $fechaFinalizacionValue = $worksheet->getCell($fechaFinalizacionCell)->getValue();
+            if (!empty($fechaFinalizacionValue)) {
+                if (Date::isDateTime($worksheet->getCell($fechaFinalizacionCell))) {
+                    $fechaFinalizacion = Date::excelToDateTimeObject($fechaFinalizacionValue)->format('Y-m-d');
+                } else {
+                    $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $fechaFinalizacionValue) ? DateTime::createFromFormat('d/m/Y', $fechaFinalizacionValue)->format('Y-m-d') : null;
+                }
+            }
+
+            // Busca al estudiante por espeId o nombre y apellidos
+            $estudiante = Estudiante::where('espeId', $row[4])->first();
+            if (!$estudiante) {
+                $estudiante = Estudiante::where('nombres', $row[2])
+                    ->where('apellidos', $row[1])
+                    ->first();
+            }
+
+            // Si el estudiante no existe, lo crea
+            if (!$estudiante) {
+                $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
+                $departamento = Departamento::where('departamento', 'LIKE', '%' . $row[8] . '%')->first();
+                $estudiante = Estudiante::create([
+                    'nombres' => $row[2],
+                    'apellidos' => $row[1],
+                    'espeId' => $row[4],
+                    'Cohorte' => $row[7],
+                    'carrera' => 'Tecnologías de la información',
+                    'departamentoId' => $departamento ? $departamento->id : null,
+                    'correo' => $row[5],
+                    'cedula' => $row[3],
+                    'idPeriodo' => $periodo ? $periodo->id : null,
+                    'comentario' => null,
+                ]);
+            } else {
+                $updateFields = [
+                    'nombres' => $row[2],
+                    'apellidos' => $row[1],
+                    'espeId' => $row[4],
+                    'Cohorte' => $row[7],
+                    'correo' => $row[5],
+                    'cedula' => $row[3],
+                ];
+
+                foreach ($updateFields as $key => $value) {
+                    if (is_null($estudiante->$key)) {
+                        $estudiante->$key = $value;
+                    }
+                }
+
+                $estudiante->save();
+            }
+
+            // Busca la empresa con LIKE
+            $empresa = Empresa::where('nombreEmpresa', 'LIKE', '%' . $row[19] . '%')->first();
+            $tutorAcademico = ProfesUniversidad::where('apellidos', $row[34])->first();
+            $nombreTutorEmpresarial = $row[28] . ' ' . $row[29];
+
+            $nrc = NrcVinculacion::where('nrc', $row[6])->first();
+
+            $practicaData = [
+                'estudianteId' => $estudiante->estudianteId,
+                'AreaConocimiento' => $row[11],
+                'FechaInicio' => $fechaInicio,
+                'FechaFinalizacion' => $fechaFinalizacion,
+                'HoraEntrada' => $row[14],
+                'HoraSalida' => $row[15],
+                'HorasPlanificadas' => $row[16],
+                'tipoPractica' => $row[17],
+                'idEmpresa' => $empresa ? $empresa->id : null,
+                'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
+                'CedulaTutorEmpresarial' => $row[30],
+                'nrc' => $nrc ? $nrc->id : null,
+                'EmailTutorEmpresarial' => $row[31],
+                'TelefonoTutorEmpresarial' => $row[32],
+                'Funcion' => $row[33],
+                'idTutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
+                'nota_final' => $row[18],
+                'periodoPractica' => $row[10],
+                'Estado' => 'Finalizado',
+                'EstadoAcademico' => 'Cursando estudios',
+                'DepartamentoTutorEmpresarial' => 'Programacion',
+            ];
+
+            // Create or update the practice
+            $practica1 = PracticaII::where('estudianteId', $estudiante->estudianteId)->first();
+            if (!$practica1) {
+                PracticaII::create($practicaData);
+            } else {
+                $practica1->update($practicaData);
+            }
+        }
+
+        DB::commit(); // Commit the transaction
+
+        return redirect()->back()->with('success', 'Estudiantes y prácticas importados correctamente.');
+
+    } catch (\Exception $e) {
+        DB::rollback(); // Rollback the transaction if there is an error
+
+        // Log the error message for debugging
+        \Log::error('Error importing students and practices: ' . $e->getMessage());
+
+        // Redirect back with an error message
+        return redirect()->back()->with('error', 'Hubo un error al importar los estudiantes y prácticas. Por favor, revise el archivo e intente nuevamente.');
+    }
+}
+
+
+public function importarPracticas5(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx',
+    ]);
+
+    DB::beginTransaction(); // Start transaction
+
+    try {
+        $spreadsheet = IOFactory::load($request->file('file'));
+        $worksheet = $spreadsheet->getActiveSheet();
+        $rows = $worksheet->toArray();
+        $dataRows = array_slice($rows, 2); // Start from the third row (0-based index)
+
+        foreach ($dataRows as $rowIndex => $row) {
+            // Skip rows with missing essential data
+            if (empty($row[1]) || empty($row[2]) || empty($row[3]) || empty($row[4])) {
+                \Log::warning('Skipping row due to missing data: ' . json_encode($row));
+                continue;
+            }
+
+            // Date conversion using PHPSpreadsheet's date class
+            $fechaInicio = null;
+            $fechaFinalizacion = null;
+
+            // Calculate the Excel row number (1-based index)
+            $excelRowIndex = $rowIndex + 3;
+
+            // For column "M" (13th column, 1-based index)
+            $fechaInicioCell = 'M' . $excelRowIndex;
+            $fechaInicioValue = $worksheet->getCell($fechaInicioCell)->getValue();
+            if (!empty($fechaInicioValue)) {
+                if (Date::isDateTime($worksheet->getCell($fechaInicioCell))) {
+                    $fechaInicio = Date::excelToDateTimeObject($fechaInicioValue)->format('Y-m-d');
+                } else {
+                    $fechaInicio = DateTime::createFromFormat('d/m/Y', $fechaInicioValue) ? DateTime::createFromFormat('d/m/Y', $fechaInicioValue)->format('Y-m-d') : null;
+                }
+            }
+
+            // For column "N" (14th column, 1-based index)
+            $fechaFinalizacionCell = 'N' . $excelRowIndex;
+            $fechaFinalizacionValue = $worksheet->getCell($fechaFinalizacionCell)->getValue();
+            if (!empty($fechaFinalizacionValue)) {
+                if (Date::isDateTime($worksheet->getCell($fechaFinalizacionCell))) {
+                    $fechaFinalizacion = Date::excelToDateTimeObject($fechaFinalizacionValue)->format('Y-m-d');
+                } else {
+                    $fechaFinalizacion = DateTime::createFromFormat('d/m/Y', $fechaFinalizacionValue) ? DateTime::createFromFormat('d/m/Y', $fechaFinalizacionValue)->format('Y-m-d') : null;
+                }
+            }
+
+            // Busca al estudiante por espeId o nombre y apellidos
+            $estudiante = Estudiante::where('espeId', $row[4])->first();
+            if (!$estudiante) {
+                $estudiante = Estudiante::where('nombres', $row[2])
+                    ->where('apellidos', $row[1])
+                    ->first();
+            }
+
+            // Si el estudiante no existe, lo crea
+            if (!$estudiante) {
+                $periodo = Periodo::where('numeroPeriodo', $row[6])->first();
+                $departamento = Departamento::where('departamento', 'LIKE', '%' . $row[8] . '%')->first();
+                $estudiante = Estudiante::create([
+                    'nombres' => $row[2],
+                    'apellidos' => $row[1],
+                    'espeId' => $row[4],
+                    'Cohorte' => $row[7],
+                    'carrera' => 'Tecnologías de la información',
+                    'departamentoId' => $departamento ? $departamento->id : null,
+                    'correo' => $row[5],
+                    'cedula' => $row[3],
+                    'idPeriodo' => $periodo ? $periodo->id : null,
+                    'comentario' => null,
+                ]);
+            } else {
+                $updateFields = [
+                    'nombres' => $row[2],
+                    'apellidos' => $row[1],
+                    'espeId' => $row[4],
+                    'Cohorte' => $row[7],
+                    'correo' => $row[5],
+                    'cedula' => $row[3],
+                ];
+
+                foreach ($updateFields as $key => $value) {
+                    if (is_null($estudiante->$key)) {
+                        $estudiante->$key = $value;
+                    }
+                }
+
+                $estudiante->save();
+            }
+
+            // Busca la empresa con LIKE
+            $empresa = Empresa::where('nombreEmpresa', 'LIKE', '%' . $row[19] . '%')->first();
+            $tutorAcademico = ProfesUniversidad::where('apellidos', $row[34])->first();
+            $nombreTutorEmpresarial = $row[28] . ' ' . $row[29];
+
+            $nrc = NrcVinculacion::where('nrc', $row[6])->first();
+
+            $practicaData = [
+                'estudianteId' => $estudiante->estudianteId,
+                'AreaConocimiento' => $row[11],
+                'FechaInicio' => $fechaInicio,
+                'FechaFinalizacion' => $fechaFinalizacion,
+                'HoraEntrada' => $row[14],
+                'HoraSalida' => $row[15],
+                'HorasPlanificadas' => $row[16],
+                'tipoPractica' => $row[17],
+                'idEmpresa' => $empresa ? $empresa->id : null,
+                'NombreTutorEmpresarial' => $nombreTutorEmpresarial,
+                'CedulaTutorEmpresarial' => $row[30],
+                'nrc' => $nrc ? $nrc->id : null,
+                'EmailTutorEmpresarial' => $row[31],
+                'TelefonoTutorEmpresarial' => $row[32],
+                'Funcion' => $row[33],
+                'idTutorAcademico' => $tutorAcademico ? $tutorAcademico->id : null,
+                'nota_final' => $row[18],
+                'periodoPractica' => $row[10],
+                'Estado' => 'Finalizado',
+                'EstadoAcademico' => 'Cursando estudios',
+                'DepartamentoTutorEmpresarial' => 'Programacion',
+            ];
+
+            // Create or update the practice
+            $practica1 = PracticaV::where('estudianteId', $estudiante->estudianteId)->first();
+            if (!$practica1) {
+                PracticaV::create($practicaData);
+            } else {
+                $practica1->update($practicaData);
+            }
+        }
+
+        DB::commit(); // Commit the transaction
+
+        return redirect()->back()->with('success', 'Estudiantes y prácticas importados correctamente.');
+
+    } catch (\Exception $e) {
+        DB::rollback(); // Rollback the transaction if there is an error
+
+        // Log the error message for debugging
+        \Log::error('Error importing students and practices: ' . $e->getMessage());
+
+        // Redirect back with an error message
+        return redirect()->back()->with('error', 'Hubo un error al importar los estudiantes y prácticas. Por favor, revise el archivo e intente nuevamente.');
+    }
+}
 
 
 }
