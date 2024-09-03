@@ -510,39 +510,44 @@
                             <div class="tooltip-container">
                                 <span class="tooltip-text">Importar archivo</span>
                                 <button type="button" class="button3 efects_button btn_copy"
-                                    onclick="openCard('cardImportarArchivo2');">
+                                    onclick="openCard('cardImportarArchivoPracticaII');">
                                     <i class="fa fa-upload"></i>
                                 </button>
                             </div>
-                            <!-- Card de Importar archivo -->
-                            <div class="draggable-card1_4" id="cardImportarArchivo2" style="display: none;">
+                            <!-- Card de Importar archivo para Practica II -->
+                            <div class="draggable-card1_4" id="cardImportarArchivoPracticaII" style="display: none;">
                                 <div class="card-header">
                                     <span class="card-title">Importar archivo</span>
-                                    <button type="button" class="close" onclick="closeCard('cardImportarArchivo2')"><i
+                                    <button type="button" class="close"
+                                        onclick="closeCard('cardImportarArchivoPracticaII')"><i
                                             class="fa-thin fa-xmark"></i></button>
                                 </div>
                                 <div class="card-body">
-                                    <form id="idModalImportar2" action="{{ route('import-practicas2') }}" method="POST"
-                                        enctype="multipart/form-data">
+                                    <form id="idModalImportarPracticaII" action="{{ route('import-practicas2') }}"
+                                        method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div class="form-group">
                                             <div class="input_file input">
-                                                <span id="fileText2" class="fileText">
+                                                <span id="fileTextPracticaII" class="fileText">
                                                     <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
                                                 </span>
                                                 <input type="file" class="form-control-file input input_file"
-                                                    id="file2" name="file"
-                                                    onchange="displayFileName(this, 'fileText2')" required>
-                                                <span title="Eliminar archivo" onclick="removeFile(this)"
+                                                    id="fileInputPracticaII" name="file"
+                                                    onchange="displayFileName(this, 'fileTextPracticaII')" required>
+                                                <span title="Eliminar archivo"
+                                                    onclick="removeFile('fileInputPracticaII', 'fileTextPracticaII')"
                                                     class="remove-icon">✖</span>
                                             </div>
                                         </div>
                                         <div class="card-footer d-flex justify-content-center align-items-center">
-                                            <button type="submit" class="button">Importar Archivo</button>
+                                            <button type="button" class="button"
+                                                onclick="showPreviewImportPracticas('PracticaII')">Importar
+                                                Archivo</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
+
 
                             <!-- Botón de Filtros para Profesores y Periodos -->
                             <div class="tooltip-container">
@@ -619,7 +624,7 @@
                         <div class="contenedor_buscador">
                             <div>
                                 <form id="formbusquedaPractica2">
-                                    <input type="text" class="input" name="search2" value="{{ $search2 }}"
+                                    <input type="text" class="input" name="search3" value="{{ $search3 }}"
                                         matInput placeholder="Buscar en practicas 1.2...">
                                     <i class='bx bx-search-alt'></i>
                                 </form>
@@ -808,39 +813,47 @@
                             <div class="tooltip-container">
                                 <span class="tooltip-text">Importar archivo</span>
                                 <button type="button" class="button3 efects_button btn_copy"
-                                    onclick="openCard('cardImportarArchivo3');">
+                                    onclick="openCard('cardImportarArchivoPracticaIII');">
+                                    <!-- Cambiado a cardImportarArchivoPracticaIII -->
                                     <i class="fa fa-upload"></i>
                                 </button>
                             </div>
+
                             <!-- Card de Importar archivo -->
-                            <div class="draggable-card1_4" id="cardImportarArchivo3" style="display: none;">
+                            <div class="draggable-card1_4" id="cardImportarArchivoPracticaIII" style="display: none;">
                                 <div class="card-header">
                                     <span class="card-title">Importar archivo</span>
-                                    <button type="button" class="close" onclick="closeCard('cardImportarArchivo3')"><i
+                                    <button type="button" class="close"
+                                        onclick="closeCard('cardImportarArchivoPracticaIII')"><i
                                             class="fa-thin fa-xmark"></i></button>
                                 </div>
                                 <div class="card-body">
-                                    <form id="idModalImportar2" action="{{ route('import-practicas3') }}"
+                                    <form id="idModalImportarPracticaIII" action="{{ route('import-practicas3') }}"
                                         method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div class="form-group">
                                             <div class="input_file input">
-                                                <span id="fileText2" class="fileText">
+                                                <span id="fileTextPracticaIII" class="fileText">
                                                     <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
                                                 </span>
                                                 <input type="file" class="form-control-file input input_file"
-                                                    id="file2" name="file"
-                                                    onchange="displayFileName(this, 'fileText2')" required>
-                                                <span title="Eliminar archivo" onclick="removeFile(this)"
+                                                    id="fileInputPracticaIII" name="file"
+                                                    onchange="displayFileName(this, 'fileTextPracticaIII')" required>
+                                                <span title="Eliminar archivo"
+                                                    onclick="removeFile('fileInputPracticaIII', 'fileTextPracticaIII')"
                                                     class="remove-icon">✖</span>
                                             </div>
                                         </div>
                                         <div class="card-footer d-flex justify-content-center align-items-center">
-                                            <button type="submit" class="button">Importar Archivo</button>
+                                            <button type="button" class="button"
+                                                onclick="showPreviewImportPracticas('PracticaIII')">Importar
+                                                Archivo</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
+
+
 
                             <!-- Botón de Filtros para Profesores y Periodos -->
                             <div class="tooltip-container">
@@ -914,7 +927,7 @@
                         <div class="contenedor_buscador">
                             <div>
                                 <form id="formbusquedaPractica3">
-                                    <input type="text" class="input" name="search3" value="{{ $search3 }}"
+                                    <input type="text" class="input" name="search4" value="{{ $search4 }}"
                                         matInput placeholder="Buscar en practicas 1.3..">
                                     <i class='bx bx-search-alt'></i>
                                 </form>
@@ -1087,39 +1100,44 @@
                             <div class="tooltip-container">
                                 <span class="tooltip-text">Importar archivo</span>
                                 <button type="button" class="button3 efects_button btn_copy"
-                                    onclick="openCard('cardImportarArchivo4');">
+                                    onclick="openCard('cardImportarArchivoPracticaII');">
                                     <i class="fa fa-upload"></i>
                                 </button>
                             </div>
                             <!-- Card de Importar archivo -->
-                            <div class="draggable-card1_4" id="cardImportarArchivo4" style="display: none;">
+                            <div class="draggable-card1_4" id="cardImportarArchivoPracticaII" style="display: none;">
                                 <div class="card-header">
                                     <span class="card-title">Importar archivo</span>
-                                    <button type="button" class="close" onclick="closeCard('cardImportarArchivo4')"><i
+                                    <button type="button" class="close"
+                                        onclick="closeCard('cardImportarArchivoPracticaII')"><i
                                             class="fa-thin fa-xmark"></i></button>
                                 </div>
                                 <div class="card-body">
-                                    <form id="idModalImportar2" action="{{ route('import-practicas4') }}"
+                                    <form id="idModalImportarPracticaII" action="{{ route('import-practicas4') }}"
                                         method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div class="form-group">
                                             <div class="input_file input">
-                                                <span id="fileText2" class="fileText">
+                                                <span id="fileTextPracticaII" class="fileText">
                                                     <i class="fa fa-upload"></i> Haz clic aquí para subir el documento
                                                 </span>
                                                 <input type="file" class="form-control-file input input_file"
-                                                    id="file2" name="file"
-                                                    onchange="displayFileName(this, 'fileText2')" required>
-                                                <span title="Eliminar archivo" onclick="removeFile(this)"
+                                                    id="fileInputPracticaII" name="file"
+                                                    onchange="displayFileName(this, 'fileTextPracticaII')" required>
+                                                <span title="Eliminar archivo"
+                                                    onclick="removeFile('fileInputPracticaII', 'fileTextPracticaII')"
                                                     class="remove-icon">✖</span>
                                             </div>
                                         </div>
                                         <div class="card-footer d-flex justify-content-center align-items-center">
-                                            <button type="submit" class="button">Importar Archivo</button>
+                                            <button type="button" class="button"
+                                                onclick="showPreviewImportPracticas('PracticaII')">Importar
+                                                Archivo</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
+
 
                             <!-- Botón de Filtros para Profesores y Periodos -->
                             <div class="tooltip-container">
@@ -1193,8 +1211,8 @@
                         </div>
                         <div class="contenedor_buscador">
                             <div>
-                                <form id="formbusquedaPractica1">
-                                    <input type="text" class="input" name="search4" value="{{ $search4 }}"
+                                <form id="formbusquedaPractica4">
+                                    <input type="text" class="input" name="search2" value="{{ $search2 }}"
                                         matInput placeholder="Buscar en practicas 2...">
                                     <i class='bx bx-search-alt'></i>
                                 </form>
@@ -1388,7 +1406,7 @@
                                             class="fa-thin fa-xmark"></i></button>
                                 </div>
                                 <div class="card-body">
-                                    <form id="idModalImportar2" action="{{ route('import-practicas5') }}"
+                                    <form id="idModalImportar5" action="{{ route('import-practicas5') }}"
                                         method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div class="form-group">
@@ -1504,7 +1522,7 @@
                                         </tr>
                                     </thead>
                                     <tbody class="mdc-data-table__content ng-star-inserted">
-                                        @foreach ($estudiantesPracticasV as $practicaI)
+                                        @foreach ($estudiantesPracticasV as $index => $practicaI)
                                             @if ($practicaI->estudiante)
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
@@ -1548,7 +1566,7 @@
 
 
                                 <ul class="pagination" style=" padding: 10px 30px; !important">
-                                    <div id="totalRows">Estudiantes: {{ $estudiantesPracticasIII->total() }}</div>
+                                    <div id="totalRows">Estudiantes: {{ $estudiantesPracticasV->count() }}</div>
                                 </ul>
                             </nav>
                         </div>
@@ -1591,7 +1609,7 @@
 
     <script>
         var delayTimer;
-        $('#formbusquedaPractica2 input[name="search2"]').on('keyup', function() {
+        $('#formbusquedaPractica2 input[name="search3"]').on('keyup', function() {
             clearTimeout(delayTimer);
             var query = $(this).val();
             delayTimer = setTimeout(function() {
@@ -1599,7 +1617,7 @@
                     url: '{{ route('admin.aceptarFaseI') }}',
                     type: 'GET',
                     data: {
-                        search2: query
+                        search3: query
                     },
                     success: function(response) {
                         $('#practicas2').html($(response).find('#practicas2').html());
@@ -1610,7 +1628,7 @@
     </script>
     <script>
         var delayTimer;
-        $('#formbusquedaPractica4 input[name="search4"]').on('keyup', function() {
+        $('#formbusquedaPractica4 input[name="search2"]').on('keyup', function() {
             clearTimeout(delayTimer);
             var query = $(this).val();
             delayTimer = setTimeout(function() {
@@ -1618,7 +1636,7 @@
                     url: '{{ route('admin.aceptarFaseI') }}',
                     type: 'GET',
                     data: {
-                        search4: query
+                        search2: query
                     },
                     success: function(response) {
                         $('#practicas4').html($(response).find('#practicas4').html());
@@ -1629,7 +1647,7 @@
     </script>
     <script>
         var delayTimer;
-        $('#formbusquedaPractica3 input[name="search3"]').on('keyup', function() {
+        $('#formbusquedaPractica3 input[name="search4"]').on('keyup', function() {
             clearTimeout(delayTimer);
             var query = $(this).val();
             delayTimer = setTimeout(function() {
@@ -1637,7 +1655,7 @@
                     url: '{{ route('admin.aceptarFaseI') }}',
                     type: 'GET',
                     data: {
-                        search3: query
+                        search4: query
                     },
                     success: function(response) {
                         $('#practicas3').html($(response).find('#practicas3').html());
@@ -1853,81 +1871,336 @@
     </script>
 
 
-<script>
-    //////practicas 1
-    function displayFileName(input, fileTextId) {
-        const fileName = input.files[0].name;
-        document.getElementById(fileTextId).textContent = fileName;
-    }
-
-    function removeFile(span) {
-        const fileInput = document.getElementById('file2');
-        fileInput.value = ''; // Limpiar el input file
-        document.getElementById('fileText2').textContent = 'Haz clic aquí para subir el documento'; // Resetear el texto
-    }
-
-    function showPreviewImportPracticas1() {
-        const fileInput = document.getElementById('file2');
-
-        if (!fileInput.files.length) {
-            Swal.fire('Error', 'Por favor, seleccione un archivo primero.', 'error');
-            return;
+    <script>
+        //////practicas 1
+        function displayFileName(input, fileTextId) {
+            const fileName = input.files[0].name;
+            document.getElementById(fileTextId).textContent = fileName;
         }
 
-        const formData = new FormData();
-        formData.append('file', fileInput.files[0]);
+        function removeFile(span) {
+            const fileInput = document.getElementById('file2');
+            fileInput.value = ''; // Limpiar el input file
+            document.getElementById('fileText2').textContent = 'Haz clic aquí para subir el documento'; // Resetear el texto
+        }
 
-        Swal.fire({
-            title: 'Cargando...',
-            text: 'Espere mientras se previsualizan los datos.',
-            allowOutsideClick: false,
-            showConfirmButton: false,
-            willOpen: () => {
-                Swal.showLoading();
+        function showPreviewImportPracticas1() {
+            const fileInput = document.getElementById('file2');
+
+            if (!fileInput.files.length) {
+                Swal.fire('Error', 'Por favor, seleccione un archivo primero.', 'error');
+                return;
             }
-        });
 
-        // Realizar la solicitud AJAX para previsualizar la importación
-        fetch('{{ route("import.previewImportarPracticas1") }}', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Respuesta del servidor:', data);
-                Swal.close();
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
 
-                // Asegúrate de que data tenga los valores insertCount y updateCount correctamente
-                if (typeof data.insertCount === 'number' && typeof data.updateCount === 'number') {
-                    Swal.fire({
-                        title: 'Confirmación de Importación',
-                        html: `
+            Swal.fire({
+                title: 'Cargando...',
+                text: 'Espere mientras se previsualizan los datos.',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Realizar la solicitud AJAX para previsualizar la importación
+            fetch('{{ route('import.previewImportarPracticas1') }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Respuesta del servidor:', data);
+                    Swal.close();
+
+                    // Asegúrate de que data tenga los valores insertCount y updateCount correctamente
+                    if (typeof data.insertCount === 'number' && typeof data.updateCount === 'number') {
+                        Swal.fire({
+                            title: 'Confirmación de Importación',
+                            html: `
                             <p>Se van a <strong>insertar</strong> ${data.insertCount} registros.</p>
                             <p>Se van a <strong>actualizar</strong> ${data.updateCount} registros.</p>
                             <p>¿Deseas proceder con esta operación?</p>
                         `,
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Sí, proceder',
-                        cancelButtonText: 'Cancelar',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            document.getElementById('idModalImportar2').submit();
-                        }
-                    });
-                } else {
-                    Swal.fire('Error', 'Ocurrió un error al obtener los datos de previsualización.', 'error');
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Sí, proceder',
+                            cancelButtonText: 'Cancelar',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                document.getElementById('idModalImportar2').submit();
+                            }
+                        });
+                    } else {
+                        Swal.fire('Error', 'Ocurrió un error al obtener los datos de previsualización.', 'error');
+                    }
+                })
+                .catch(error => {
+                    Swal.fire('Error', 'Ocurrió un error al previsualizar la importación.', 'error');
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+
+
+    <script>
+        // Función para abrir el card de importación
+        function openCard(cardId) {
+            document.getElementById(cardId).style.display = 'block';
+        }
+
+        // Función para cerrar el card de importación
+        function closeCard(cardId) {
+            document.getElementById(cardId).style.display = 'none';
+        }
+
+        // Función para mostrar el nombre del archivo seleccionado
+        function displayFileName(input, fileTextId) {
+            const fileName = input.files[0].name;
+            document.getElementById(fileTextId).textContent = fileName;
+        }
+
+        // Función para eliminar el archivo seleccionado
+        function removeFile(inputId, fileTextId) {
+            document.getElementById(inputId).value = ''; // Limpiar el input file
+            document.getElementById(fileTextId).textContent = 'Haz clic aquí para subir el documento'; // Resetear el texto
+        }
+
+        // Función para mostrar la vista previa de la importación
+        function showPreviewImportPracticas(practicaType) {
+            const fileInput = document.getElementById('fileInput' + practicaType);
+
+            if (!fileInput.files.length) {
+                Swal.fire('Error', 'Por favor, seleccione un archivo primero.', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            Swal.fire({
+                title: 'Cargando...',
+                text: 'Espere mientras se previsualizan los datos.',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading();
                 }
-            })
-            .catch(error => {
-                Swal.fire('Error', 'Ocurrió un error al previsualizar la importación.', 'error');
-                console.error('Error:', error);
             });
-    }
-</script>
+
+            fetch('{{ route('import.previewImportarPracticas2') }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    Swal.close();
+
+                    if (typeof data.insertCount === 'number' && typeof data.updateCount === 'number') {
+                        Swal.fire({
+                            title: 'Confirmación de Importación',
+                            html: `
+                    <p>Se van a <strong>insertar</strong> ${data.insertCount} registros.</p>
+                    <p>Se van a <strong>actualizar</strong> ${data.updateCount} registros.</p>
+                    <p>¿Deseas proceder con esta operación?</p>
+                `,
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Sí, proceder',
+                            cancelButtonText: 'Cancelar',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                document.getElementById('idModalImportar' + practicaType).submit();
+                            }
+                        });
+                    } else {
+                        Swal.fire('Error', 'Ocurrió un error al obtener los datos de previsualización.', 'error');
+                    }
+                })
+                .catch(error => {
+                    Swal.fire('Error', 'Ocurrió un error al previsualizar la importación.', 'error');
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+
+    <script>
+        function openCard(cardId) {
+            const card = document.getElementById(cardId);
+            if (card) {
+                card.style.display = 'block';
+            } else {
+                console.error('Elemento no encontrado con ID:', cardId);
+            }
+        }
+
+        function closeCard(cardId) {
+            const card = document.getElementById(cardId);
+            if (card) {
+                card.style.display = 'none';
+            } else {
+                console.error('Elemento no encontrado con ID:', cardId);
+            }
+        }
+
+        // Función para mostrar la previsualización de la importación
+        function showPreviewImportPracticas(type) {
+            const fileInput = document.getElementById(`fileInput${type}`);
+            const fileTextId = `fileText${type}`;
+
+            if (!fileInput.files.length) {
+                Swal.fire('Error', 'Por favor, seleccione un archivo primero.', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            Swal.fire({
+                title: 'Cargando...',
+                text: 'Espere mientras se previsualizan los datos.',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Realizar la solicitud AJAX para previsualizar la importación
+            fetch('{{ route('import.previewImportarPracticas3') }}', { // Ajusta la ruta aquí
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    Swal.close();
+
+                    if (typeof data.insertCount === 'number' && typeof data.updateCount === 'number') {
+                        Swal.fire({
+                            title: 'Confirmación de Importación',
+                            html: `
+                    <p>Se van a <strong>insertar</strong> ${data.insertCount} registros.</p>
+                    <p>Se van a <strong>actualizar</strong> ${data.updateCount} registros.</p>
+                    <p>¿Deseas proceder con esta operación?</p>
+                `,
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Sí, proceder',
+                            cancelButtonText: 'Cancelar',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                document.getElementById(`idModalImportar${type}`).submit();
+                            }
+                        });
+                    } else {
+                        Swal.fire('Error', 'Ocurrió un error al obtener los datos de previsualización.', 'error');
+                    }
+                })
+                .catch(error => {
+                    Swal.fire('Error', 'Ocurrió un error al previsualizar la importación.', 'error');
+                    console.error('Error:', error);
+                });
+        }
+
+        function displayFileName(input, fileTextId) {
+            const fileName = input.files[0].name;
+            document.getElementById(fileTextId).textContent = fileName;
+        }
+
+        function removeFile(inputId, fileTextId) {
+            const fileInput = document.getElementById(inputId);
+            fileInput.value = ''; // Limpiar el input file
+            document.getElementById(fileTextId).innerHTML =
+                '<i class="fa fa-upload"></i> Haz clic aquí para subir el documento'; // Resetear el texto
+        }
+    </script>
+
+
+    <script>
+        function showPreviewImportPracticas(practica) {
+            const fileInput = document.getElementById(`fileInput${practica}`);
+
+            if (!fileInput.files.length) {
+                Swal.fire('Error', 'Por favor, seleccione un archivo primero.', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            Swal.fire({
+                title: 'Cargando...',
+                text: 'Espere mientras se previsualizan los datos.',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Selecciona la URL de la ruta específica según la práctica
+            let url;
+            switch (practica) {
+                case 'PracticaII':
+                    url = "{{ route('import.previewImportarPracticas4') }}";
+                    break;
+                    // Añadir más casos aquí si tienes más prácticas
+                default:
+                    url = "{{ route('import.previewImportarPracticas4') }}"; // Ruta por defecto
+                    break;
+            }
+
+            // Realizar la solicitud AJAX para previsualizar la importación
+            fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Respuesta del servidor:', data);
+                    Swal.close();
+
+                    if (typeof data.insertCount === 'number' && typeof data.updateCount === 'number') {
+                        Swal.fire({
+                            title: 'Confirmación de Importación',
+                            html: `
+                        <p>Se van a <strong>insertar</strong> ${data.insertCount} registros.</p>
+                        <p>Se van a <strong>actualizar</strong> ${data.updateCount} registros.</p>
+                        <p>¿Deseas proceder con esta operación?</p>
+                    `,
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Sí, proceder',
+                            cancelButtonText: 'Cancelar',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                document.getElementById(`idModalImportar${practica}`).submit();
+                            }
+                        });
+                    } else {
+                        Swal.fire('Error', 'Ocurrió un error al obtener los datos de previsualización.', 'error');
+                    }
+                })
+                .catch(error => {
+                    Swal.fire('Error', 'Ocurrió un error al previsualizar la importación.', 'error');
+                    console.error('Error:', error);
+                });
+        }
+    </script>
 
 
 

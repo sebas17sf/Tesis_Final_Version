@@ -60,7 +60,7 @@
                     @foreach ($profesores as $profesor)
                         <option value="{{ $profesor->id }}">
                             {{ $profesor->apellidos }} {{ $profesor->nombres }} -
-                            {{ $profesor->departamento }} -
+                            {{ $profesor->departamento->departamento }} -
                             {{ $profesor->correo }}
                         </option>
                     @endforeach
