@@ -48,15 +48,15 @@
                         <tbody>
                             @foreach ($estudiantes as $practica)
                                 <tr>
-                                    <td>{{ $practica->apellidos }} {{ $practica->nombres }}</td>
-                                    <td>{{ $practica->carrera }}</td>
-                                    <td>{{ $practica->correo }}</td>
+                                    <td  style="text-align:center; text-transform: uppercase; word-wrap: break-word;">{{ $practica->apellidos }} {{ $practica->nombres }}</td>
+                                    <td  style="text-align:center; text-transform: uppercase; word-wrap: break-word;">{{ $practica->carrera }}</td>
+                                    <td >{{ $practica->correo }}</td>
                                     <td>{{ $practica->celular }}</td>
-                                    <td>{{ $practica->practicasi->empresa->nombreEmpresa }}</td>
-                                    <td>{{ $practica->practicasi->NombreTutorEmpresarial }}</td>
-                                    <td>{{ $practica->practicasi->HorasPlanificadas }}</td>
-                                    <td>{{ $practica->practicasi->FechaInicio }}</td>
-                                    <td>{{ $practica->practicasi->FechaFinalizacion }}</td>
+                                    <td  style="text-align:center; text-transform: uppercase; word-wrap: break-word;">{{ $practica->practicasi->empresa->nombreEmpresa }}</td>
+                                    <td  style="text-align:center; text-transform: uppercase; word-wrap: break-word;">{{ $practica->practicasi->NombreTutorEmpresarial }}</td>
+                                    <td  style="text-align:center; text-transform: uppercase; word-wrap: break-word;">{{ $practica->practicasi->HorasPlanificadas }}</td>
+                                    <td  style="text-align:center; text-transform: uppercase; word-wrap: break-word;">{{ $practica->practicasi->FechaInicio }}</td>
+                                    <td  style="text-align:center; text-transform: uppercase; word-wrap: break-word;">{{ $practica->practicasi->FechaFinalizacion }}</td>
                                     <td>
                                         <button type="button" class="button3 efects_button btn_eliminar3" data-toggle="modal" data-target="#actividadesModal{{ $practica->estudianteId }}">
                                             <i class="fa-solid fa-eye"></i>
@@ -124,7 +124,7 @@
                                 <th>CORREO</th>
                                 <th>TELÉFONO</th>
                                 <th>NOTA PRÁCTICA</th>
-                                <th>ESTADO</th>
+                             
                                 <th>ACCIONES</th>
                              </tr>
                         </thead>
@@ -133,9 +133,9 @@
                                 <form action="{{ route('director_vinculacion.guardarNotasPracticas1') }}" method="POST">
                                     @csrf
                                     <tr>
-                                        <td>{{ $practica->apellidos }} {{ $practica->nombres }}</td>
-                                        <td>{{ $practica->correo }}</td>
-                                        <td>{{ $practica->celular }}</td>
+                                        <td  style="text-align:center; text-transform: uppercase; word-wrap: break-word;">{{ $practica->apellidos }} {{ $practica->nombres }}</td>
+                                        <td >{{ $practica->correo }}</td>
+                                        <td  style="text-align:center; text-transform: uppercase; word-wrap: break-word;">{{ $practica->celular }}</td>
                                         <input type="hidden" name="estudianteId" value="{{ $practica->estudianteId }}">
                                         <td>
                                             <input type="number" name="notaTutorEmpresarial" id="notaTutorEmpresarial">
@@ -173,8 +173,8 @@
                         <tbody>
                             @foreach ($estudiantesCalificados as $index => $practica)
                                 <tr id="row{{ $practica->estudianteId }}">
-                                    <td>{{ $practica->apellidos }} {{ $practica->nombres }}</td>
-                                    <td>{{ $practica->carrera }}</td>
+                                    <td  style="text-align:center; text-transform: uppercase; word-wrap: break-word;">{{ $practica->apellidos }} {{ $practica->nombres }}</td>
+                                    <td  style="text-align:center; text-transform: uppercase; word-wrap: break-word;">{{ $practica->carrera }}</td>
                                     <td>{{ $practica->correo }}</td>
                                     <td>
                                         <input type="number" name="notaTutorEmpresarial" value="{{ $practica->practicasi->nota_final ?? '' }}" min="0" max="10" step="0.01" disabled>
@@ -301,5 +301,16 @@
         });
     });
 </script>
+<style>
+        .contenedor_tabla .table-container table td {
 
+            font-size: .7em !important;
+            padding: .5rem !important;
+        }
+
+        .contenedor_general .contenedor_tabla {
+            min-height: 1px !important;
+        }
+
+    </style>
 @endsection

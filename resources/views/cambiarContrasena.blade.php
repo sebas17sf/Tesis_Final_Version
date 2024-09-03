@@ -48,7 +48,7 @@
                 @endif
             </div>
 
-            < <form method="POST" action="{{ route('restablecer-contrasena', ['correoElectronico' => $correoElectronico, 'token' => $token]) }}">
+             <form method="POST" action="{{ route('restablecer-contrasena', ['correoElectronico' => $correoElectronico, 'token' => $token]) }}">
                 @csrf
                 <input type="hidden" name="correoElectronico" value="{{ $correoElectronico }}">
                 <input type="hidden" name="token" value="{{ $token }}">
