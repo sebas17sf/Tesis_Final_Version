@@ -397,41 +397,42 @@
             <!--------------------------------- De aqui para abajo es otra zona de trabajoooooooooooooooooooooo------------------>
       <!--------------------------------- De aqui para abajo es otra zona de trabajoooooooooooooooooooooo------------------>
 @else
-    <br>
-    <h3><b>Practicas II - Inicio del proceso de prácticas pre profesionales del estudiante</b></h3>
+    
+    <h4><b>Practicas II - Inicio del proceso de prácticas pre profesionales del estudiante</b></h3>
     <hr>
-
 
     <form action="{{ route('guardarPracticas2') }}" method="POST">
         @csrf
-        <div class="table-responsive-sm">
+        <div class="row">
+        <div class="col-md-6">
+        <div class="table-responsive-sm table-container">
             <table class="table2 table table-bordered">
                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                    <th class="tamanio1 table2th" colspan="2">
+                    <th class="tamanio1 table2th" colspan="2" style="text-transform: uppercase; font-size: .9em;">
                         <center>DATOS DEL ESTUDIANTE</center>
                     </th>
                 </tr>
                 <tbody>
                     <tr>
-                        <th>ID de Estudiante:</th>
-                        <td>{{ strtoupper($estudiante->espeId) }}</td>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;">ID de Estudiante:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;" >{{ strtoupper($estudiante->espeId) }}</td>
                     </tr>
                     <tr>
-                        <th>Cédula:</th>
-                        <td>{{ strtoupper($estudiante->cedula) }}</td>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;" >Cédula:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;" >{{ strtoupper($estudiante->cedula) }}</td>
                     </tr>
                     <tr>
-                        <th>Nombres Completos:</th>
-                        <td>{{ strtoupper($estudiante->apellidos) }} {{ strtoupper($estudiante->nombres) }}
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;" >Nombres Completos:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($estudiante->apellidos) }} {{ strtoupper($estudiante->nombres) }}
                         </td>
                     </tr>
                     <tr>
-                        <th>Correo:</th>
-                        <td>{{ strtoupper($correoEstudiante) }}</td>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Correo:</th>
+                        <td class="large-td" style="font-size: .7em;">{{ $correoEstudiante }}</td>
                     </tr>
                     <tr>
-                        <th>Nivel:</th>
-                        <td>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;" >Nivel:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
                             <select id="Nivel" name="Nivel" class="form-control input input_select3">
                                 <option value="1">Seleccione un nivel</option>
                                 <option value="Pregrado">PREGRADO</option>
@@ -440,16 +441,16 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Campus:</th>
-                        <td>EXTENSION SANTO DOMINGO</td>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;">Campus:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">EXTENSION SANTO DOMINGO</td>
                     </tr>
                     <tr>
-                        <th>Departamento:</th>
-                        <td>{{ strtoupper($estudiante->departamento) }}</td>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;">Departamento:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($estudiante->departamento->departamento) }}</td>
                     </tr>
                     <tr>
-                        <th>Escoja Práctica:</th>
-                        <td>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;">Escoja Práctica:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
                             <select id="Practicas" name="Practicas" class="form-control input input_select3 ">
                                 <option value="1">Seleccione una práctica</option>
                                 <option value="SERVICIO A LA COMUNIDAD">SERVICIO A LA COMUNIDAD</option>
@@ -465,25 +466,26 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Teléfono:</th>
-                        <td>{{ strtoupper($estudiante->celular) }}</td>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;">Teléfono:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($estudiante->celular) }}</td>
                     </tr>
                 </tbody>
             </table>
+            </div>
         </div>
 
-        <br>
-        <div class="table-responsive-sm">
+        <div class="col-md-6">
+        <div class="table-responsive-sm table-container">
             <table class="table2 table table-bordered">
                 <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                    <th class="tamanio1 table2th" colspan="2">
-                        <center>DATOS DEL ESTUDIANTE</center>
+                    <th class="tamanio1 table2th" style="text-transform: uppercase; font-size: .9em;" colspan="2">
+                        <center>DATOS DE LA PRÁCTICA</center>
                     </th>
                 </tr>
                 <tbody>
                     <tr>
-                        <th>Estado Académico Actual:</th>
-                        <td>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;">Estado Académico Actual:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
                             <select id="EstadoAcademico" name="EstadoAcademico" class="form-control input input_select4">
                                 <option value="1">Seleccione un estado académico</option>
                                 <option value="FINALIZANDO ESTUDIOS">FINALIZANDO ESTUDIOS</option>
@@ -492,28 +494,28 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Fecha de inicio de la práctica:</th>
-                        <td>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;">Fecha de inicio de la práctica:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
                             <input type="date" id="FechaInicio" name="FechaInicio"
                                 class="form-control input input_select4">
                         </td>
                     </tr>
                     <tr>
-                        <th>Fecha de finalización de la práctica:</th>
-                        <td>
+                        <th th class="small-th" style="text-transform: uppercase; font-size: .7em;">Fecha de finalización de la práctica:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
                             <input type="date" id="FechaFinalizacion" name="FechaFinalizacion"
                                 class="form-control input input_select4">
                         </td>
                     </tr>
                     <tr>
-                        <th>Horas de PracticaI:</th>
-                        <td>
+                        <th th class="small-th" style="text-transform: uppercase; font-size: .7em;">Horas de Practica I:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
                             <span id="horasPracticaI">{{ $horasPlanificadasI }}</span>
                         </td>
                     </tr>
                     <tr>
-                        <th>Horas planificadas:</th>
-                        <td>
+                        <th th class="small-th" style="text-transform: uppercase; font-size: .7em;">Horas planificadas:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
                             <input type="number" id="HorasPlanificadas" name="HorasPlanificadas"
                                 class="form-control input input_select4" min="80" max="144">
                             <div id="errorHorasPlanificadas" style="color: red;"></div>
@@ -521,28 +523,28 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Horas totales:</th>
-                        <td>
+                        <th th class="small-th" style="text-transform: uppercase; font-size: .7em;">Horas totales:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
                             <span id="horasTotales">0</span>
                         </td>
                     </tr>
 
                     <tr>
-                        <th>Horario de entrada:</th>
+                        <th th class="small-th" style="text-transform: uppercase; font-size: .7em;">Horario de entrada:</th>
                         <td>
                             <input type="time" id="HoraEntrada" name="HoraEntrada"
                                 class="form-control input input_select4">
                         </td>
                     </tr>
                     <tr>
-                        <th>Horario de salida:</th>
+                        <th th class="small-th" style="text-transform: uppercase; font-size: .7em;">Horario de salida:</th>
                         <td>
                             <input type="time" id="HoraSalida" name="HoraSalida"
                                 class="form-control input input_select4">
                         </td>
                     </tr>
                     <tr>
-                        <th>Área de conocimiento:</th>
+                        <th th class="small-th" style="text-transform: uppercase; font-size: .7em;">Área de conocimiento:</th>
                         <td>
                             <input type="text" id="AreaConocimiento" name="AreaConocimiento"
                                 class="form-control input input_select4">
@@ -551,7 +553,8 @@
                 </tbody>
             </table>
         </div>
-
+</div>
+</div>
 
         <br>
 
@@ -559,20 +562,19 @@
                 class="fa-regular fa-magnifying-glass-plus"></i> Ver opciones de
             prácticas</button>
         <br><br>
-        <div class="table-responsive-sm">
-
-            <table id="opcionesPracticas" class="table2 table table-bordered" style="display: none;">
-                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                    <th class="tamanio1 table2th" colspan="2">
-                        <center>PRÁCTICA PREPROFESIONAL NO REMUNERADA, PASANTÍA O AYUDA A LA COMUNIDAD </center>
-                    </th>
-                </tr>
-
+        <div class="table-responsive-sm table-container">
+        <table class="table2 table table-bordered mat-mdc-table">
+                    <thead class="ng-star-inserted">
+                        <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                            <th class="table2th" colspan="4" style="font-size: 14px;">PRÁCTICA PREPROFESIONAL NO
+                                REMUNERADA, PASANTÍA O AYUDA A LA COMUNIDAD</th>
+                        </tr>
+                    </thead>
                 <tbody>
 
                     <tr>
-                        <th>Sugiera un docente como tutor académico:</th>
-                        <td>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Sugiera un docente como tutor académico:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
                             <div class="form-group">
                                 <label for="ID_tutorAcademico">
                                 </label>
@@ -580,8 +582,7 @@
                                     <option value="">Seleccionar el Docente</option>
                                     @foreach ($profesores as $profesor)
                                         <option value="{{ $profesor->id }}"> {{ $profesor->apellidos }}
-                                            {{ $profesor->nombres }}
-                                            {{ $profesor->Departamento }} {{ $profesor->Correo }} </option>
+                                            {{ $profesor->nombres }} </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -590,8 +591,8 @@
                     </tr>
 
                     <tr>
-                        <th>NRC Práctica</th>
-                        <td>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">NRC Práctica</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
                             <div class="form-group">
                                 <select name="nrc" class="form-control input input_select3" required>
                                     <option value="">Seleccionar NRC</option>
@@ -604,8 +605,8 @@
                     </tr>
 
                     <tr>
-                        <th>Empresa:</th>
-                        <td>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Empresa:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
                             <select id="Empresa" name="Empresa" class="form-control input input_select4">
                                 @foreach ($empresas as $empresa)
                                     <option value="{{ $empresa->id }}">{{ $empresa->nombreEmpresa }} -
@@ -616,8 +617,8 @@
                     </tr>
 
                     <tr>
-                        <th>Cédula del tutor empresarial:</th>
-                        <td>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Cédula del tutor empresarial:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
                             <input type="text" id="CedulaTutorEmpresarial" name="CedulaTutorEmpresarial"
                                 class="form-control input input_select3">
                             <div id="errorCedula" style="color: red;"></div>
@@ -627,8 +628,8 @@
                     </tr>
 
                     <tr>
-                        <th>Nombre del tutor empresarial:</th>
-                        <td>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Nombre del tutor empresarial:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
                             <input type="text" id="NombreTutorEmpresarial" name="NombreTutorEmpresarial"
                                 class="form-control input input_select3">
                             <div id="errorNombre" style="color: red;"></div>
@@ -638,8 +639,8 @@
                     </tr>
 
                     <tr>
-                        <th>Funcion:</th>
-                        <td>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Funcion:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
                             <input type="text" id="Funcion" name="Funcion"
                                 class="form-control input input_select3">
                         </td>
@@ -647,8 +648,8 @@
                     </tr>
 
                     <tr>
-                        <th>Telefono:</th>
-                        <td>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Telefono:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
                             <input type="text" id="TelefonoTutorEmpresarial" name="TelefonoTutorEmpresarial"
                                 class="form-control input input_select3">
                             <div id="errorTelefono" style="color: red;"></div>
@@ -658,8 +659,8 @@
                     </tr>
 
                     <tr>
-                        <th>Email:</th>
-                        <td>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Email:</th>
+                        <td class="large-td" style=" font-size: .7em;">
                             <input type="text" id="EmailTutorEmpresarial" name="EmailTutorEmpresarial"
                                 class="form-control input input_select3">
                             <div id="errorEmail" style="color: red;"></div>
@@ -668,8 +669,8 @@
                     </tr>
 
                     <tr>
-                        <th>Departamento dentro de la empresa:</th>
-                        <td>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Departamento dentro de la empresa:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
                             <input type="text" id="DepartamentoTutorEmpresarial" name="DepartamentoTutorEmpresarial"
                                 class="form-control input input_select3">
                         </td>
@@ -682,10 +683,10 @@
 
             </table>
         </div>
-
+</div>
         <br>
         <center> <button type="submit" id="iniciarPracticasBtn" class="button1 btn_excel"
-                style="display: none;">Iniciar
+              >Iniciar
                 prácticas</button> </center>
     </form>
     @endif

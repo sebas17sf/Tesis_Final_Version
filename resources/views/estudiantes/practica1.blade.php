@@ -592,8 +592,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <th class="small-th"
-                                style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
+                            <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
                                 Sugiera un docente como tutor académico:</th>
                             <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
                                 <select name="ID_tutorAcademico" class="form-control input input_select3" required>
@@ -605,8 +604,7 @@
                                     @endforeach
                                 </select>
                             </td>
-                            <th class="small-th"
-                                style="text-transform: uppercase; font-size: .7em; background-color:white !important;">NRC
+                            <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">NRC
                                 Práctica:</th>
                             <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
                                 <select name="nrc" class="form-control input input_select3" required>
