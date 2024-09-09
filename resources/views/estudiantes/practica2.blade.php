@@ -25,7 +25,7 @@
     @endif
 
 
-
+    @if (isset($practicaPendiente))
     <!-- Sección para FORMATOS PRÁCTICA II -->
     <div class="title_icon_info" style="text-align:left !important;">
         <b>Documentación</b>
@@ -93,7 +93,7 @@
     </section>
 
     <div class="container">
-        @if (isset($practicaPendiente))
+      
             <div class="row">
                 <div class="col-md-6">
                     <div class="table-responsive-sm table-container">
@@ -395,303 +395,301 @@
 
 
             <!--------------------------------- De aqui para abajo es otra zona de trabajoooooooooooooooooooooo------------------>
-        @else
-            <h4> <b> Inicio del proceso de prácticas pre profesionales del estudiante </b> </h4>
-            <hr>
-            <form action="{{ route('guardarPracticas') }}" method="POST" id="practicasForm">
-                @csrf
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="table-responsive-sm table-container">
-                            <table class="table2 table table-bordered">
-                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio1 table2th" style="text-transform: uppercase; font-size: .9em;"
-                                        colspan="2">
-                                        <center>DATOS DEL ESTUDIANTE:</center>
-                                    </th>
-                                </tr>
-                                <tbody>
-                                    <tr>
-                                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">ID de
-                                            Estudiante:</th>
-                                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
-                                            {{ strtoupper($estudiante->espeId) }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">
-                                            Cédula:</th>
-                                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
-                                            {{ strtoupper($estudiante->cedula) }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">
-                                            ESTUDIANTE:</th>
-                                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
-                                            {{ strtoupper($estudiante->apellidos) }}
-                                            {{ strtoupper($estudiante->nombres) }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">
-                                            Correo:</th>
-                                        <td class="large-td" style="font-size: .7em;">{{ $correoEstudiante }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">
-                                            Nivel:</th>
-                                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
-                                            <select id="Nivel" name="Nivel"
-                                                class="form-control input input_select3">
-                                                <option value="">Seleccione un nivel</option>
-                                                <option value="Pregrado">PREGRADO</option>
-                                                <option value="Posgrado">POSTGRADO</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">
-                                            Campus:</th>
-                                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">EXTENSIÓN
-                                            SANTO DOMINGO</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">
-                                            Departamento:</th>
-                                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
-                                            {{ strtoupper($estudiante->departamento->departamento) }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">
-                                            Escoja Práctica:</th>
-                                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
-                                            <select id="Practicas" name="Practicas"
-                                                class="form-control input input_select3">
-                                                <option value="">Seleccione una práctica</option>
-                                                <option value="SERVICIO A LA COMUNIDAD">SERVICIO A LA COMUNIDAD</option>
-                                                <option value="PASANTIAS">PASANTÍAS</option>
-                                                <option value="PRACTICAS PRE PROFESIONALES">PRÁCTICAS PRE PROFESIONALES
-                                                </option>
-                                                <option value="AYUDANDIA DE CATEDRA">AYUDANTÍA DE CATEDRA</option>
-                                                <option value="AYUDANTIA DE INVESTIGACION">AYUDANTÍA DE INVESTIGACION
-                                                </option>
-                                                <option value="RECONOCE EXPERIENCIA LABORAL">RECONOCE EXPERIENCIA LABORAL
-                                                </option>
-                                                <option value="P. INTEGRADOR SABERES">P. INTEGRADOR SABERES</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">
-                                            Teléfono:</th>
-                                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
-                                            {{ strtoupper($estudiante->celular) }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+      <!--------------------------------- De aqui para abajo es otra zona de trabajoooooooooooooooooooooo------------------>
+@else
+    
+    <h4><b>Practicas II - Inicio del proceso de prácticas pre profesionales del estudiante</b></h3>
+    <hr>
 
-                    <div class="col-md-6">
-                        <div class="table-responsive-sm table-container">
-                            <table class="table2 table table-bordered">
-                                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                    <th class="tamanio1 table2th" style="text-transform: uppercase; font-size: .9em;"
-                                        colspan="2">
-                                        <center>DATOS DE LA PRÁCTICA</center>
-                                    </th>
-                                </tr>
-                                <tbody>
-                                    <tr>
-                                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">
-                                            Estado Académico Actual:</th>
-                                        <td class="large-td">
-                                            <select id="EstadoAcademico" name="EstadoAcademico"
-                                                class="form-control input input_select3">
-                                                <option value="1">Seleccione un estado académico</option>
-                                                <option value="FINALIZANDO ESTUDIOS">FINALIZANDO ESTUDIOS</option>
-                                                <option value="CURSANDO ESTUDIOS">CURSANDO ESTUDIOS</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Fecha
-                                            de inicio de la práctica:</th>
-                                        <td class="large-td">
-                                            <input type="date" id="FechaInicio" name="FechaInicio"
-                                                class="form-control input input_select3">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Fecha
-                                            de finalización de la práctica:</th>
-                                        <td class="large-td">
-                                            <input type="date" id="FechaFinalizacion" name="FechaFinalizacion"
-                                                class="form-control input input_select3">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Horas
-                                            planificadas:</th>
-                                        <td class="large-td">
-                                            <input type="number" id="HorasPlanificadas" name="HorasPlanificadas"
-                                                class="form-control input input_select3" min="80" max="144"
-                                                placeholder="Ingrese el número de horas">
-                                            <small id="errorHorasPlanificadas" style="color: red;"></small>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">
-                                            Horario de entrada:</th>
-                                        <td class="large-td">
-                                            <input type="time" id="HoraEntrada" name="HoraEntrada"
-                                                class="form-control input input_select3">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">
-                                            Horario de salida:</th>
-                                        <td class="large-td">
-                                            <input type="time" id="HoraSalida" name="HoraSalida"
-                                                class="form-control input input_select3">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Área
-                                            de conocimiento:</th>
-                                        <td class="large-td">
-                                            <input type="text" id="AreaConocimiento" name="AreaConocimiento"
-                                                class="form-control input input_select3"
-                                                placeholder="Ingrese el área de conocimiento">
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+    <form action="{{ route('guardarPracticas2') }}" method="POST">
+        @csrf
+        <div class="row">
+        <div class="col-md-6">
+        <div class="table-responsive-sm table-container">
+            <table class="table2 table table-bordered">
+                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                    <th class="tamanio1 table2th" colspan="2" style="text-transform: uppercase; font-size: .9em;">
+                        <center>DATOS DEL ESTUDIANTE</center>
+                    </th>
+                </tr>
+                <tbody>
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;">ID de Estudiante:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;" >{{ strtoupper($estudiante->espeId) }}</td>
+                    </tr>
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;" >Cédula:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;" >{{ strtoupper($estudiante->cedula) }}</td>
+                    </tr>
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;" >Nombres Completos:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($estudiante->apellidos) }} {{ strtoupper($estudiante->nombres) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;    ">Correo:</th>
+                        <td class="large-td" style="font-size: .7em;">{{ $correoEstudiante }}</td>
+                    </tr>
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;" >Nivel:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                            <select id="Nivel" name="Nivel" class="form-control input input_select3">
+                                <option value="1">Seleccione un nivel</option>
+                                <option value="Pregrado">PREGRADO</option>
+                                <option value="Posgrado">POSGRADO</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;">Campus:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">EXTENSION SANTO DOMINGO</td>
+                    </tr>
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;">Departamento:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($estudiante->departamento->departamento) }}</td>
+                    </tr>
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;">Escoja Práctica:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                            <select id="Practicas" name="Practicas" class="form-control input input_select3 ">
+                                <option value="1">Seleccione una práctica</option>
+                                <option value="SERVICIO A LA COMUNIDAD">SERVICIO A LA COMUNIDAD</option>
+                                <option value="PASANTIAS">PASANTIAS</option>
+                                <option value="PRACTICAS PRE PROFESIONALES">PRÁCTICAS PRE PROFESIONALES
+                                </option>
+                                <option value="AYUDANDIA DE CATEDRA">AYUDANDIA DE CATEDRA</option>
+                                <option value="AYUDANTIA DE INVESTIGACION">AYUDANTIA DE INVESTIGACION</option>
+                                <option value="RECONOCE EXPERIENCIA LABORAL">RECONOCE EXPERIENCIA LABORAL
+                                </option>
+                                <option value="P. INTEGRADOR SABERES">P. INTEGRADOR SABERES</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;">Teléfono:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">{{ strtoupper($estudiante->celular) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
 
-                <br>
+        <div class="col-md-6">
+        <div class="table-responsive-sm table-container">
+            <table class="table2 table table-bordered">
+                <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                    <th class="tamanio1 table2th" style="text-transform: uppercase; font-size: .9em;" colspan="2">
+                        <center>DATOS DE LA PRÁCTICA</center>
+                    </th>
+                </tr>
+                <tbody>
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;">Estado Académico Actual:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                            <select id="EstadoAcademico" name="EstadoAcademico" class="form-control input input_select4">
+                                <option value="1">Seleccione un estado académico</option>
+                                <option value="FINALIZANDO ESTUDIOS">FINALIZANDO ESTUDIOS</option>
+                                <option value="CURSANDO ESTUDIOS">CURSANDO ESTUDIOS</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em;">Fecha de inicio de la práctica:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                            <input type="date" id="FechaInicio" name="FechaInicio"
+                                class="form-control input input_select4">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th th class="small-th" style="text-transform: uppercase; font-size: .7em;">Fecha de finalización de la práctica:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                            <input type="date" id="FechaFinalizacion" name="FechaFinalizacion"
+                                class="form-control input input_select4">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th th class="small-th" style="text-transform: uppercase; font-size: .7em;">Horas de Practica I:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                            <span id="horasPracticaI">{{ $horasPlanificadasI }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th th class="small-th" style="text-transform: uppercase; font-size: .7em;">Horas planificadas:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                            <input type="number" id="HorasPlanificadas" name="HorasPlanificadas"
+                                class="form-control input input_select4" min="80" max="144">
+                            <div id="errorHorasPlanificadas" style="color: red;"></div>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <th th class="small-th" style="text-transform: uppercase; font-size: .7em;">Horas totales:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                            <span id="horasTotales">0</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th th class="small-th" style="text-transform: uppercase; font-size: .7em;">Horario de entrada:</th>
+                        <td>
+                            <input type="time" id="HoraEntrada" name="HoraEntrada"
+                                class="form-control input input_select4">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th th class="small-th" style="text-transform: uppercase; font-size: .7em;">Horario de salida:</th>
+                        <td>
+                            <input type="time" id="HoraSalida" name="HoraSalida"
+                                class="form-control input input_select4">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th th class="small-th" style="text-transform: uppercase; font-size: .7em;">Área de conocimiento:</th>
+                        <td>
+                            <input type="text" id="AreaConocimiento" name="AreaConocimiento"
+                                class="form-control input input_select4">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+</div>
+</div>
+
+        <br>
+
+        <button type="button" id="verOpcionesBtn" class="button1 btn3"><i
+                class="fa-regular fa-magnifying-glass-plus"></i> Ver opciones de
+            prácticas</button>
+        <br><br>
+        <div class="table-responsive-sm table-container">
+        <table class="table2 table table-bordered mat-mdc-table">
+                    <thead class="ng-star-inserted">
+                        <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
+                            <th class="table2th" colspan="4" style="font-size: 14px;">PRÁCTICA PREPROFESIONAL NO
+                                REMUNERADA, PASANTÍA O AYUDA A LA COMUNIDAD</th>
+                        </tr>
+                    </thead>
+                <tbody>
+
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Sugiera un docente como tutor académico:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                            <div class="form-group">
+                                <label for="ID_tutorAcademico">
+                                </label>
+                                <select name="ID_tutorAcademico" class="form-control input input input_select3" required>
+                                    <option value="">Seleccionar el Docente</option>
+                                    @foreach ($profesores as $profesor)
+                                        <option value="{{ $profesor->id }}"> {{ $profesor->apellidos }}
+                                            {{ $profesor->nombres }} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">NRC Práctica</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                            <div class="form-group">
+                                <select name="nrc" class="form-control input input_select3" required>
+                                    <option value="">Seleccionar NRC</option>
+                                    @foreach ($nrcpracticas1 as $nrc)
+                                        <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Empresa:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                            <select id="Empresa" name="Empresa" class="form-control input input_select4">
+                                @foreach ($empresas as $empresa)
+                                    <option value="{{ $empresa->id }}">{{ $empresa->nombreEmpresa }} -
+                                        Requiere: {{ $empresa->actividadesMacro }} </option>
+                                @endforeach
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Cédula del tutor empresarial:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                            <input type="text" id="CedulaTutorEmpresarial" name="CedulaTutorEmpresarial"
+                                class="form-control input input_select3">
+                            <div id="errorCedula" style="color: red;"></div>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Nombre del tutor empresarial:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                            <input type="text" id="NombreTutorEmpresarial" name="NombreTutorEmpresarial"
+                                class="form-control input input_select3">
+                            <div id="errorNombre" style="color: red;"></div>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Funcion:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                            <input type="text" id="Funcion" name="Funcion"
+                                class="form-control input input_select3">
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Telefono:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                            <input type="text" id="TelefonoTutorEmpresarial" name="TelefonoTutorEmpresarial"
+                                class="form-control input input_select3">
+                            <div id="errorTelefono" style="color: red;"></div>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Email:</th>
+                        <td class="large-td" style=" font-size: .7em;">
+                            <input type="text" id="EmailTutorEmpresarial" name="EmailTutorEmpresarial"
+                                class="form-control input input_select3">
+                            <div id="errorEmail" style="color: red;"></div>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th class="small-th" style="text-transform: uppercase; font-size: .7em; background-color:white !important;">Departamento dentro de la empresa:</th>
+                        <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
+                            <input type="text" id="DepartamentoTutorEmpresarial" name="DepartamentoTutorEmpresarial"
+                                class="form-control input input_select3">
+                        </td>
+
+                    </tr>
 
 
-                <h4><b>Opciones de practicas</b></h4>
-                <hr>
-                <!-- Tabla adicional -->
-                <!-- Segunda tabla -->
-                <div class="table-responsive-sm table-container">
-                    <table class="table2 table table-bordered mat-mdc-table">
-                        <thead class="ng-star-inserted">
-                            <tr class="mat-mdc-header-row mdc-data-table__header-row cdk-header-row ng-star-inserted">
-                                <th class="table2th" colspan="4" style="font-size: 14px;">PRÁCTICA PREPROFESIONAL NO
-                                    REMUNERADA, PASANTÍA O AYUDA A LA COMUNIDAD</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th class="small-th"
-                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
-                                    Sugiera un docente como tutor académico:</th>
-                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
-                                    <select name="ID_tutorAcademico" class="form-control input input_select3" required>
-                                        <option value="">Seleccione un tutor académico</option>
-                                        @foreach ($profesores as $profesor)
-                                            <option value="{{ $profesor->id }}"> {{ $profesor->apellidos }}
-                                                {{ $profesor->nombres }} {{ $profesor->departamento->departamento }} -
-                                                {{ $profesor->Correo }} </option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <th class="small-th"
-                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
-                                    NRC Práctica:</th>
-                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
-                                    <select name="nrc" class="form-control input input_select3" required>
-                                        <option value="">Seleccionar NRC</option>
-                                        @foreach ($nrcpracticas1 as $nrc)
-                                            <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="small-th"
-                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
-                                    Empresa:</th>
-                                <td class="large-td" style="text-transform: uppercase; font-size: .7em;">
-                                    <select id="Empresa" name="Empresa" class="form-control input input_select3">
-                                        <option value="1">Seleccione una empresa</option>
-                                        @foreach ($empresas as $empresa)
-                                            <option value="{{ $empresa->id }}">{{ $empresa->nombreEmpresa }} - Requiere:
-                                                {{ $empresa->actividadesMacro }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <th class="small-th"
-                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
-                                    Cédula del tutor empresarial:</th>
-                                <td class="large-td" style="font-size: .6em;">
-                                    <input type="text" id="CedulaTutorEmpresarial" name="CedulaTutorEmpresarial"
-                                        class="form-control input input_select3" placeholder="Ingrese 10 dígitos">
-                                    <div id="errorCedula" style="color: red;"></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="small-th"
-                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
-                                    Nombre del tutor empresarial:</th>
-                                <td class="large-td" style="font-size: .6em;">
-                                    <input type="text" id="NombreTutorEmpresarial" name="NombreTutorEmpresarial"
-                                        class="form-control input input_select3" placeholder="Ingrese el nombre completo">
-                                    <div id="errorNombre" style="color: red;"></div>
-                                </td>
-                                <th class="small-th"
-                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
-                                    Función:</th>
-                                <td class="large-td" style="font-size: .6em;">
-                                    <input type="text" id="Funcion" name="Funcion"
-                                        class="form-control input input_1 input_select3"
-                                        placeholder="Ingrese la función del tutor empresarial">
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="small-th"
-                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
-                                    Teléfono:</th>
-                                <td class="large-td" style="font-size: .6em;">
-                                    <input type="text" id="TelefonoTutorEmpresarial" name="TelefonoTutorEmpresarial"
-                                        class="form-control input input_select3" placeholder="Ingrese 10 dígitos">
-                                    <div id="errorTelefono" style="color: red;"></div>
-                                </td>
-                                <th class="small-th"
-                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
-                                    Email:</th>
-                                <td class="large-td" style="font-size: .6em;">
-                                    <input type="text" id="EmailTutorEmpresarial" name="EmailTutorEmpresarial"
-                                        class="form-control input input_select3"
-                                        placeholder="Ingrese el correo del tutor empresarial">
-                                    <div id="errorEmail" style="color: red;"></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="small-th"
-                                    style="text-transform: uppercase; font-size: .7em; background-color:white !important;">
-                                    Departamento dentro de la empresa:</th>
-                                <td class="large-td" style="font-size: .6em;">
-                                    <input type="text" id="DepartamentoTutorEmpresarial"
-                                        name="DepartamentoTutorEmpresarial" class="form-control input input_select3"
-                                        placeholder="Ingrese el departamento">
-                                </td>
-                                <td colspan="2"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <br>
-                <center>
-                    <button type="submit" id="iniciarPracticasBtn" class="button1 btn_excel">
-                        Iniciar prácticas
-                    </button>
-                </center>
-            </form>
-        @endif
+
+                </tbody>
+
+            </table>
+        </div>
+</div>
+        <br>
+        <center> <button type="submit" id="iniciarPracticasBtn" class="button1 btn_excel"
+              >Iniciar
+                prácticas</button> </center>
+    </form>
+    @endif
     </div>
 
     <link rel="stylesheet" href="https://cdn.ckeditor.com/4.16.1/standard/ckeditor.css">
