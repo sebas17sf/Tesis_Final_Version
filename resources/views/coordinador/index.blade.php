@@ -95,8 +95,9 @@
                             <!-- Botón para abrir el card de filtros -->
                             <div class="tooltip-container">
                                 <span class="tooltip-text">Filtros</span>
-                                <button class="button3 efects_button btn_filtro" onclick="openCard('filtersCard'); toggleIcon();">
-                            <i id="filterIcon" class="fa-solid fa-filter-list"></i>
+                                <button class="button3 efects_button btn_filtro"
+                                    onclick="openCard('filtersCard'); toggleIcon();">
+                                    <i id="filterIcon" class="fa-solid fa-filter-list"></i>
                                 </button>
                             </div>
 
@@ -123,7 +124,8 @@
                                             </select>
                                         </div>
                                         <div>
-                                            <label for="departament_student">Departamento <span class="requerido">*</span></label>
+                                            <label for="departament_student">Departamento <span
+                                                    class="requerido">*</span></label>
                                             <select class="form-control input input_select" id="departamento"
                                                 name="departamento">
                                                 <option value="">Seleccione un departamento</option>
@@ -133,7 +135,8 @@
                                                         {{ $departamento->departamento }}</option>
                                                 @endforeach
                                             </select>
-                                            <small id="departamentoError" class="error-message" style="color: red;"></small>
+                                            <small id="departamentoError" class="error-message"
+                                                style="color: red;"></small>
                                         </div>
                                     </form>
 
@@ -409,7 +412,7 @@
                                     <span class="tooltip-text">Filtros</span>
                                     <button class="button3 efects_button btn_filtro"
                                         onclick="openCard('filtersCardProfesores'); toggleIcon();">
-                            <i id="filterIcon" class="fa-solid fa-filter-list"></i>
+                                        <i id="filterIcon" class="fa-solid fa-filter-list"></i>
                                     </button>
                                 </div>
 
@@ -452,12 +455,13 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="fechaInicio">Fecha inicio</label>
-                                                <input type="date" class=" form-control input input_f" name="fechaInicio"
-                                                    id="fechaInicio">
+                                                <input type="date" class=" form-control input input_f"
+                                                    name="fechaInicio" id="fechaInicio">
                                             </div>
                                             <div class="form-group">
                                                 <label for="fechaFin">Fecha Fin</label>
-                                                <input type="date" class=" form-control input input_f" name="fechaFin" id="fechaFin">
+                                                <input type="date" class=" form-control input input_f" name="fechaFin"
+                                                    id="fechaFin">
                                             </div>
                                         </form>
 
@@ -503,8 +507,7 @@
                             </div>
                             <div class="icon_remove" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true"><i
-                                    class="fa-thin fa-xmark"></i></span>
+                                    <span aria-hidden="true"><i class="fa-thin fa-xmark"></i></span>
                                 </button>
                             </div>
                         </div>
@@ -630,20 +633,27 @@
                                                     <td>{{ $grupo->first()->nrcVinculacion->nrc ?? 'NO REQUERIA DE NRC' }}
                                                     </td>
                                                     <td
-                                                        style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
-
+                                                        style="text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
                                                         @foreach ($grupo as $asignacion)
-                                                            {{ $asignacion->inicioFecha ?? '' }}<br>
+                                                            <a href="#" class="edit-date"
+                                                                data-fecha="{{ $asignacion->inicioFecha }}"
+                                                                data-estudiante-id="{{ $asignacion->estudiante->estudianteId }}"
+                                                                data-tipo="inicio">
+                                                                {{ $asignacion->inicioFecha ?? 'Sin fecha' }}
+                                                            </a><br>
                                                         @endforeach
-
                                                     </td>
+
                                                     <td
-                                                        style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
-
+                                                        style="text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
                                                         @foreach ($grupo as $asignacion)
-                                                            {{ $asignacion->finalizacionFecha ?? '' }}<br>
+                                                            <a href="#" class="edit-date"
+                                                                data-fecha="{{ $asignacion->finalizacionFecha }}"
+                                                                data-estudiante-id="{{ $asignacion->estudiante->estudianteId }}"
+                                                                data-tipo="fin">
+                                                                {{ $asignacion->finalizacionFecha ?? 'Sin fecha' }}
+                                                            </a><br>
                                                         @endforeach
-
                                                     </td>
                                                     <td
                                                         style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
@@ -673,8 +683,8 @@
                                                             action="{{ route('admin.descargarEvidencias', ['proyectoId' => $grupo->first()->proyectoId]) }}"
                                                             method="GET">
                                                             <button type="submit"
-                                                            class="button3 efects_button btn_eliminar3">
-                                                            <i class="fas fa-download"></i>
+                                                                class="button3 efects_button btn_eliminar3">
+                                                                <i class="fas fa-download"></i>
                                                             </button>
                                                         </form>
                                                     </td>
@@ -702,8 +712,7 @@
 
 
                                     <li class="page-item mx-3 d-flex align-items-center">
-                                        <form method="GET"
-                                            action="{{ route('coordinador.index') }}#tablaAsignaciones"
+                                        <form method="GET" action="{{ route('coordinador.index') }}#tablaAsignaciones"
                                             class="form-inline">
                                             <div class="form-group">
                                                 <label for="perPage2" class="sr-only">Items per page</label>
@@ -897,7 +906,7 @@
         <div class="card-header">
             <span class="card-title">Asignar Docente</span>
             <button type="button" class="close" onclick="$('#draggableCardAsignarDocente').hide()"><i
-            class="fa-thin fa-xmark"></i></button>
+                    class="fa-thin fa-xmark"></i></button>
         </div>
         <div class="card-body">
             <form method="POST" action="{{ route('admin.guardarDocentesProyectos') }}">
@@ -1146,6 +1155,39 @@
     </div>
 
 
+    <div class="draggable-card" id="modalEditarFecha" style="display: none;">
+        <div class="card-header">
+            <span class="card-title">Editar Fecha</span>
+            <button type="button" class="close" onclick="$('#modalEditarFecha').hide()"><i
+                    class="fa-thin fa-xmark"></i></button>
+        </div>
+        <div class="card-body">
+            <form id="formEditarFecha" method="POST" action="{{ route('admin.updateFecha') }}">
+                @csrf
+                @method('PATCH')
+
+                <input type="hidden" name="estudiante_id" id="estudiante_id">
+                <input type="hidden" name="tipo_fecha" id="tipo_fecha">
+
+                <div class="form-group col-md-12">
+                    <label for="nombre_estudiante"><strong>Nombre del Estudiante:</strong></label>
+                    <input type="text" name="nombre_estudiante" id="nombre_estudiante" class="form-control input"
+                        readonly>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label for="fecha"><strong>Selecciona la nueva fecha:</strong></label>
+                    <input type="date" name="fecha" id="fecha" class="form-control input" required>
+                </div>
+
+                <div class="card-footer1 d-flex justify-content-center align-items-center">
+                    <center><button type="submit" class="button01">Guardar Cambios</button></center>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
 
 
     </section>
@@ -1156,6 +1198,57 @@
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // Usamos event delegation para manejar los clicks en los enlaces de fecha
+            $(document).on('click', '.edit-date', function(e) {
+                e.preventDefault();
+
+                // Obtener los datos de la fecha seleccionada y el estudiante
+                var fecha = $(this).data('fecha');
+                var estudianteId = $(this).data('estudiante-id');
+                var tipo = $(this).data('tipo');
+
+                // Establecer los valores en el modal
+                $('#fecha').val(fecha);
+                $('#estudiante_id').val(estudianteId);
+                $('#tipo_fecha').val(tipo);
+
+                // Cargar el nombre del estudiante en el modal
+                loadStudentName(estudianteId);
+
+                // Mostrar el modal
+                $('#modalEditarFecha').show();
+            });
+
+            // Hacer el modal draggable
+            $('#modalEditarFecha').draggable({
+                handle: ".card-header"
+            });
+        });
+
+        // Si prefieres hacer una consulta AJAX al servidor (en lugar de pasar la lista completa de estudiantes):
+        function loadStudentName(estudianteId) {
+            $.ajax({
+                url: '/admin/estudiante/' + estudianteId, // Ruta que devuelve los datos del estudiante
+                method: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        $('#nombre_estudiante').val(response.estudiante.apellidos + ' ' + response.estudiante
+                            .nombres);
+                    } else {
+                        $('#nombre_estudiante').val('Estudiante no encontrado');
+                    }
+                },
+                error: function(xhr) {
+                    console.log(xhr.responseText);
+                    $('#nombre_estudiante').val('Error al cargar los datos');
+                }
+            });
+        }
+    </script>
+
     <script>
         $(document).ready(function() {
             $('#estado, #departamento').change(function() {
