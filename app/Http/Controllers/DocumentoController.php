@@ -3700,7 +3700,6 @@ class DocumentoController extends Controller
         return response()->download($nombreArchivo)->deleteFileAfterSend(true);
     }
 
-    /////////entrar a la vista
     public function mostrarFormulario()
     {
         $estudiante = Auth::user()->estudiante;
@@ -3709,20 +3708,22 @@ class DocumentoController extends Controller
             return redirect()->back()->with('error', 'No tienes acceso a esta página en este momento.');
         }
 
-        $actividadesRegistradas = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)->get();
+        // Obtener actividades registradas o un arreglo vacío si no existen
+        $actividadesRegistradas = ActividadEstudiante::where('estudianteId', $estudiante->estudianteId)->get() ?? collect([]);
         $totalHoras = $actividadesRegistradas->sum('numeroHoras');
 
-        $proyecto = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->first();
+        $proyecto = AsignacionProyecto::where('estudianteId', $estudiante->estudianteId)->first() ?? null;
 
-        $actasReunion = ActaReunion::where('proyectoId', $proyecto->proyectoId)->get();
+        $actasReunion = $proyecto ? ActaReunion::where('proyectoId', $proyecto->proyectoId)->get() : collect([]);
 
         return view('estudiantes.documentos', [
             'actividadesRegistradas' => $actividadesRegistradas,
             'totalHoras' => $totalHoras,
             'proyecto' => $proyecto,
-            'actasReunion' => $actasReunion // Pasar las actas a la vista
+            'actasReunion' => $actasReunion
         ]);
     }
+
 
 
 

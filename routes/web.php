@@ -476,6 +476,8 @@ Route::middleware(['auth'])->group(function () {
     ////////////Reporte Docentes de admin
     Route::post('/admin/reportes-docentes', [DocumentoController::class, 'ReporteProyectos'])->name('admin.reportesDocentes');
 
+    Route::patch('/admin/fecha-actualizar-estudiantes', [AdminController::class, 'updateFecha'])->name('admin.updateFecha');
+    Route::get('/admin/estudiante/{id}', [AdminController::class, 'getEstudianteById'])->name('admin.getEstudiante');
 
     ////////////////NRC Vincluacion de admin
     Route::post('/admin/nrc-vinculacion', [AdminController::class, 'GuardarNRC'])->name('admin.nrcVinculacion');
@@ -551,6 +553,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/respaldo', [AdminController::class, 'backup'])->name('admin.respaldo');
 
     Route::get('/admin/descargar-evidencias/{proyectoId}', [AdminController::class, 'descargarEvidencias'])->name('admin.descargarEvidencias');
+
 
 
 

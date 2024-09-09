@@ -369,7 +369,7 @@ class AdminController extends Controller
                         $query->where('id', 'like', '%' . $busquedaEstudiantesAprobados . '%'); // Cambiado para buscar por departamentoId
                     });
             })
-            ->orderBy('apellidos', 'asc');
+                ->orderBy('apellidos', 'asc');
         }
 
         if ($request->has('Departamento') && $request->input('Departamento')) {
@@ -2153,17 +2153,19 @@ class AdminController extends Controller
         $numeroPeriodoSeleccionado = Periodo::where('id', $selectedPeriodo)->value('numeroPeriodo');
 
         // Fetch projects with their assignments filtered by period
-        $proyectos = Proyecto::with(['asignaciones' => function ($query) use ($selectedPeriodo) {
-            if ($selectedPeriodo) {
-                $query->where('idPeriodo', $selectedPeriodo);
+        $proyectos = Proyecto::with([
+            'asignaciones' => function ($query) use ($selectedPeriodo) {
+                if ($selectedPeriodo) {
+                    $query->where('idPeriodo', $selectedPeriodo);
+                }
             }
-        }])
-        ->whereHas('asignaciones', function ($query) use ($selectedPeriodo) {
-            if ($selectedPeriodo) {
-                $query->where('idPeriodo', $selectedPeriodo);
-            }
-        })
-        ->get();
+        ])
+            ->whereHas('asignaciones', function ($query) use ($selectedPeriodo) {
+                if ($selectedPeriodo) {
+                    $query->where('idPeriodo', $selectedPeriodo);
+                }
+            })
+            ->get();
 
         // Prepare chart data
         $chartData = [];
@@ -2207,8 +2209,52 @@ class AdminController extends Controller
     }
 
 
+//////////////////////////////editar fechas estudiante///////////////////////////
 
+    public function updateFecha(Request $request)
+    {
+        $request->validate([
+            'fecha' => 'required|date',
+            'estudiante_id' => 'required|integer',
+            'tipo_fecha' => 'required|string|in:inicio,fin'
+        ]);
 
+        // Obtener la asignación del estudiante
+        $asignacion = AsignacionProyecto::where('estudianteId', $request->estudiante_id)->firstOrFail();
+
+        // Actualizar la fecha correspondiente
+        if ($request->tipo_fecha == 'inicio') {
+            $asignacion->inicioFecha = $request->fecha;
+        } else {
+            $asignacion->finalizacionFecha = $request->fecha;
+        }
+
+        // Guardar los cambios
+        $asignacion->save();
+
+        return redirect()->back()->with('success', 'Fecha actualizada correctamente.');
+    }
+
+    public function getEstudianteById($id)
+    {
+        // Buscar el estudiante por su ID
+        $estudiante = Estudiante::find($id);
+
+        // Verificar si el estudiante existe
+        if ($estudiante) {
+            // Retornar la información del estudiante en formato JSON
+            return response()->json([
+                'success' => true,
+                'estudiante' => [
+                    'nombres' => $estudiante->nombres,
+                    'apellidos' => $estudiante->apellidos,
+                ]
+            ]);
+        } else {
+            // Si no se encuentra el estudiante, retornar un error
+            return response()->json(['success' => false, 'message' => 'Estudiante no encontrado']);
+        }
+    }
 
 
 

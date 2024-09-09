@@ -92,18 +92,19 @@
         <p>Por motivos de seguridad, te proporcionamos algunos detalles de tu cuenta:</p>
         <ul>
             @if ($estudiante)
-                <li><strong>Nombre:</strong> {{ $estudiante->nombres}}</li>
-                <li><strong>Apellido:</strong> {{ $estudiante->apellidos }}</li>
-                <li><strong>ID ESPE:</strong> {{ $estudiante->espeId }}</li>
-                <li><strong>Celular:</strong> {{ $estudiante->celular }}</li>
-                <li><strong>Cedula:</strong> {{ $estudiante->cedula }}</li>
-                <li><strong>Carrera:</strong> {{ $estudiante->carrera }}</li>
-                <li><strong>Cohorte:</strong> {{ $estudiante->Cohorte}}</li>
-                 <li><strong>Correo Electrónico:</strong> {{ $estudiante->correo }}</li>
-                <li><strong>Departamento:</strong> {{ $estudiante->departamento->departamento }}</li>
+                <li><strong>Nombre:</strong> {{ $estudiante->nombres ?? '' }}</li>
+                <li><strong>Apellido:</strong> {{ $estudiante->apellidos ?? '' }}</li>
+                <li><strong>ID ESPE:</strong> {{ $estudiante->espeId ?? '' }}</li>
+                <li><strong>Celular:</strong> {{ $estudiante->celular ?? '' }}</li>
+                <li><strong>Cedula:</strong> {{ $estudiante->cedula ?? '' }}</li>
+                <li><strong>Carrera:</strong> {{ $estudiante->carrera ?? '' }}</li>
+                <li><strong>Cohorte:</strong> {{ $estudiante->Cohorte ?? '' }}</li>
+                <li><strong>Correo Electrónico:</strong> {{ $estudiante->correo ?? '' }}</li>
+                <li><strong>Departamento:</strong> {{ $estudiante->departamento->departamento ?? '' }}</li>
             @else
                 <p>Aún no has proporcionado tu información académica.</p>
             @endif
+
         </ul>
 
         <p>Para restablecer tu contraseña, haz clic en el siguiente enlace:</p>
