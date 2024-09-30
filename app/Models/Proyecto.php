@@ -22,6 +22,11 @@ class Proyecto extends Model
         'inicioFecha',
         'finFecha',
         'estado',
+        'comunidad',
+        'provincia',
+        'canton',
+        'parroquia',
+        'direccion',
 
 
     ];

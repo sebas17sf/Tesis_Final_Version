@@ -192,13 +192,7 @@
 
         <br>
 
-        <center>
-            <form id="finalizarForm" action="{{ route('director_vinculacion.cerrarProcesoEstudiantes') }}" method="POST">
-                @csrf
-                <button id="finalizarBtn" type="button" class="button1_1">Finalizar actividades de los
-                    estudiantes</button>
-            </form>
-        </center>
+       
 
         <br>
 
@@ -401,6 +395,7 @@
                     });
                 }
             };
+
             $(document).ready(function() {
                 // Hacer que los cards sean draggable
                 $('.draggable-card1_3').draggable({

@@ -24,6 +24,7 @@ use App\Models\ActividadesPracticas;
 use App\Models\AsignacionProyecto;
 use App\Models\Estudiante;
 use App\Models\NotasEstudiante;
+use App\Models\NrcVinculacion;
 
 
 class DirectorVinculacionController extends Controller
@@ -544,7 +545,7 @@ class DirectorVinculacionController extends Controller
         $plantilla->setValue('Objetivos', $request->input('Objetivos'));
         $plantilla->setValue('ParticipanteApellido', $docenteParticipante->apellidos);
         $plantilla->setValue('ParticipanteNombre', $docenteParticipante->nombres);
-        $plantilla->setValue('DepartamentoTutor', $proyecto->departamentoTutor);
+        $plantilla->setValue('DepartamentoTutor', $proyecto->departamento->departamento);
         $plantilla->setValue('intervencion', $request->input('intervencion'));
         $plantilla->setValue('FechaInicio', $asignacion->inicioFecha);
         $plantilla->setValue('FechaFinalizacion', $asignacion->finalizacionFecha);
@@ -646,6 +647,165 @@ class DirectorVinculacionController extends Controller
         return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
     }
 
+    public function generarInformeDirectorNuevoFormato(Request $request)
+    {
+        $plantillaPath = public_path('Plantillas/nuevoFormatoDocente.docx');
+        $plantilla = new \PhpOffice\PhpWord\TemplateProcessor($plantillaPath);
+
+        // Obtener el usuario autenticado que tenga el estado DirectorVinculación
+        $Director = Auth::user();
+        $correoDirector = $Director->correoElectronico;
+        $Director = ProfesUniversidad::where('correo', $correoDirector)->first();
+
+        // Verifica si el director fue encontrado
+        if (!$Director) {
+            return response()->json(['error' => 'Director no encontrado'], 404);
+        }
+
+        // Obtener la relación AsignacionProyecto para este DirectorVinculación
+        $asignacion = AsignacionProyecto::where('participanteId', $Director->id)
+            ->whereHas('estudiante', function ($query) {
+                $query->where('estado', 'Aprobado');
+            })
+            ->first();
+
+        if (!$asignacion) {
+            return redirect()->back()->with('error', 'No se encontró ninguna asignación de proyecto para el director.');
+        }
+
+        $proyecto = Proyecto::find($asignacion->proyectoId);
+
+        // Revisar si el proyecto fue encontrado
+        if (!$proyecto) {
+            return redirect()->back()->with('error', 'No se encontró el proyecto.');
+        }
+
+        // Encuentra la asignación específica del docente participante
+        $docenteParticipante = $proyecto->asignaciones->where('participanteId', $Director->id)->first()->docenteParticipante;
+
+        // Rellena los valores en la plantilla
+        $plantilla->setValue('NombreProyecto', $proyecto->nombreProyecto);
+        $plantilla->setValue('Objetivos', $request->input('Objetivos'));
+        $plantilla->setValue('ParticipanteApellido', $docenteParticipante->apellidos);
+        $plantilla->setValue('ParticipanteNombre', $docenteParticipante->nombres);
+        $plantilla->setValue('DepartamentoTutor', $proyecto->departamento->departamento);
+        $plantilla->setValue('intervencion', $request->input('intervencion'));
+        $plantilla->setValue('FechaInicio', $asignacion->inicioFecha);
+        $plantilla->setValue('FechaFinalizacion', $asignacion->finalizacionFecha);
+        $plantilla->setValue('NombreDirector', $proyecto->director->apellidos . " " . $proyecto->director->nombres);
+        $plantilla->setValue('NombreParticipante', $docenteParticipante->apellidos . " " . $docenteParticipante->nombres);
+
+        // Objetivos y logros
+        $planificadas = $request->input('planificadas');
+        $alcanzados = $request->input('alcanzados');
+        $porcentaje = $request->input('porcentaje');
+        $contadorObjetivos = count($planificadas);
+
+        $plantilla->cloneRow('planificadas', $contadorObjetivos);
+
+        foreach ($planificadas as $index => $objetivo) {
+            $plantilla->setValue('planificadas#' . ($index + 1), $objetivo);
+            $plantilla->setValue('alcanzados#' . ($index + 1), $alcanzados[$index]);
+            $plantilla->setValue('porcentaje#' . ($index + 1), $porcentaje[$index]);
+        }
+
+        // Actualización de la consulta para incluir el NRC desde nrcVinculacion
+        $estudiantes = DB::table('asignacionproyectos')
+            ->join('estudiantes', 'asignacionproyectos.estudianteId', '=', 'estudiantes.estudianteId')
+            ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
+            ->leftJoin('nrc', 'asignacionproyectos.nrc', '=', 'nrc.id')
+            ->select('estudiantes.*', 'nrc.nrc as nrc_value', 'asignacionproyectos.inicioFecha', 'asignacionproyectos.finalizacionFecha')
+            ->where('estudiantes.estado', 'Aprobado')
+            ->where('proyectos.proyectoId', $proyecto->proyectoId)
+            ->get();
+
+
+
+        // Clonar la fila en la plantilla según el número de estudiantes encontrados
+        $plantilla->cloneRow('estudiante', count($estudiantes));
+
+        // Establecer los valores en la plantilla para cada estudiante
+        foreach ($estudiantes as $index => $estudiante) {
+            $plantilla->setValue('estudiante#' . ($index + 1), $estudiante->apellidos . ' ' . $estudiante->nombres);
+            $plantilla->setValue('Carrera#' . ($index + 1), $estudiante->carrera);
+            $plantilla->setValue('FechaInicio#' . ($index + 1), $estudiante->inicioFecha);
+            $plantilla->setValue('FechaFinalizacion#' . ($index + 1), $estudiante->finalizacionFecha);
+            $plantilla->setValue('Observaciones#' . ($index + 1), 'Sin ninguna observacion');
+            $plantilla->setValue('nrc#' . ($index + 1), $estudiante->nrc_value ?? 'No requiere'); // Utilizar el NRC obtenido desde la unión
+        }
+
+        $nrc = AsignacionProyecto::where('estudianteId', $estudiantes[0]->estudianteId)->first();
+
+        // Rellena los valores en la plantilla
+        $plantilla->setValue('periodonrc', $nrc->periodo->numeroPeriodo);
+
+        $provincia = Proyecto::where('proyectoId', $proyecto->proyectoId)->first();
+        $plantilla->setValue('provincia', $provincia->provincia ?? 'No ingresado');
+
+        // Rellena otros valores en la plantilla
+        $plantilla->setValue('Hombres', $request->input('Hombres'));
+        $plantilla->setValue('Mujeres', $request->input('Mujeres'));
+        $plantilla->setValue('Niños', $request->input('Niños'));
+        $plantilla->setValue('capacidad', $request->input('capacidad'));
+
+
+
+        $suma = $request->input('Hombres') + $request->input('Mujeres') + $request->input('Niños') + $request->input('capacidad');
+        $plantilla->setValue('total', $suma);
+
+        $plantilla->setValue('Observaciones1', $request->input('Observaciones1'));
+        $plantilla->setValue('Observaciones2', $request->input('Observaciones2'));
+        $plantilla->setValue('Observaciones3', $request->input('Observaciones3'));
+        $plantilla->setValue('Observaciones4', $request->input('Observaciones4'));
+        $plantilla->setValue('Conclusiones', $request->input('Conclusiones'));
+        $plantilla->setValue('Recomendaciones', $request->input('Recomendaciones'));
+
+        // Obtener actividades de los estudiantes asignados al proyecto del DirectorVinculacion
+        $actividades = DB::table('asignacionproyectos')
+            ->join('estudiantes', 'asignacionproyectos.estudianteId', '=', 'estudiantes.estudianteId')
+            ->join('proyectos', 'asignacionproyectos.proyectoId', '=', 'proyectos.proyectoId')
+            ->join('actividades_estudiante', 'asignacionproyectos.estudianteId', '=', 'actividades_estudiante.estudianteId')
+            ->select('actividades_estudiante.*')
+            ->where('estudiantes.estado', 'Aprobado')
+            ->where('proyectos.proyectoId', $proyecto->proyectoId)
+            ->orderBy('actividades_estudiante.fecha', 'asc')
+            ->get();
+
+        $plantilla->cloneRow('nombre_actividad', count($actividades));
+        $contadorFiguras = 1;
+
+        foreach ($actividades as $index => $actividad) {
+            $nombreActividad = $actividad->nombreActividad;
+            $nombreFigura = 'Figura ' . $contadorFiguras . ': ' . $nombreActividad;
+            $plantilla->setValue('nombre_actividad#' . ($index + 1), $nombreFigura);
+
+            $imagenBase64 = $actividad->evidencias;
+            if ($imagenBase64) {
+                // Decodifica la imagen en base64
+                $imagenDecodificada = base64_decode($imagenBase64);
+
+                // Crea un archivo temporal para la imagen
+                $rutaImagen = tempnam(sys_get_temp_dir(), 'img');
+                file_put_contents($rutaImagen, $imagenDecodificada);
+
+                // Agrega la imagen a la plantilla
+                $plantilla->setImageValue('evidencias#' . ($index + 1), [
+                    'path' => $rutaImagen,
+                    'width' => 250,
+                    'height' => 250,
+                    'ratio' => false,
+                ]);
+            }
+            $contadorFiguras++;
+        }
+
+        // Descargar el documento generado
+        $documentoGeneradoPath = storage_path('app/public/1.-Informe-Docente-Colaborador.docx');
+        $plantilla->saveAs($documentoGeneradoPath);
+
+        return response()->download($documentoGeneradoPath)->deleteFileAfterSend(true);
+
+    }
 
 
 

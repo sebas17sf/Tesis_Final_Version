@@ -116,6 +116,8 @@ class Estudiante extends Model
         return $this->belongsTo(Departamento::class, 'departamentoId', 'id');
     }
 
+    
+
 
 
 

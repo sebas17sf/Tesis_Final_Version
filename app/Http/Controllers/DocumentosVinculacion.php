@@ -212,7 +212,8 @@ class DocumentosVinculacion extends Controller
 
 
     public function generarHorasDocente(Request $request)
-    {
+     {
+ 
         $plantillaPath = public_path('Plantillas/1.3-Número-Horas-Docentes.xlsx');
         $spreadsheet = IOFactory::load($plantillaPath);
         $usuario = auth()->user();

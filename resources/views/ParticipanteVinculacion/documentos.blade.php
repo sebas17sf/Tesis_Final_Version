@@ -39,7 +39,7 @@
                         </button>
                     </form>
                 </div>
-               
+
 
 
 
@@ -75,8 +75,7 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="Objetivos"><strong>Ingrese el Objetivo del Proyecto:</strong></label>
-                    <textarea placeholder="Ingrese el objetivo" class="form-control input" id="Objetivos" rows="2"
-                        name="Objetivos">{{ old('Objetivos', session('Objetivos')) }}</textarea>
+                    <textarea placeholder="Ingrese el objetivo" class="form-control input" id="Objetivos" rows="2" name="Objetivos">{{ old('Objetivos', session('Objetivos')) }}</textarea>
                     <small id="ObjetivosError" class="error-message" style="color: red;"></small>
                 </div>
 
@@ -106,15 +105,13 @@
 
                             <div class="form-group col-md-4">
                                 <label for="alcanzados"><strong>Resultados alcanzados:</strong></label>
-                                <textarea placeholder="Ingrese los resultados alcanzados" name="alcanzados[]" class="form-control input"
-                                    rows="2">{{ old('alcanzados')[$index] ?? session('alcanzados')[$index] }}</textarea>
+                                <textarea placeholder="Ingrese los resultados alcanzados" name="alcanzados[]" class="form-control input" rows="2">{{ old('alcanzados')[$index] ?? session('alcanzados')[$index] }}</textarea>
                                 <small id="alcanzadosError" class="error-message" style="color: red;"></small>
                             </div>
 
                             <div class="form-group col-md-4">
                                 <label for="porcentaje"><strong>Porcentaje alcanzado:</strong></label>
-                                <textarea placeholder="Ingrese el porcentaje alcanzado" name="porcentaje[]" class="form-control input"
-                                    rows="2">{{ old('porcentaje')[$index] ?? session('porcentaje')[$index] }}</textarea>
+                                <textarea placeholder="Ingrese el porcentaje alcanzado" name="porcentaje[]" class="form-control input" rows="2">{{ old('porcentaje')[$index] ?? session('porcentaje')[$index] }}</textarea>
                                 <small id="porcentajeError" class="error-message" style="color: red;"></small>
                             </div>
                         </div>
@@ -231,9 +228,39 @@
             </div>
 
             <center>
-                <button type="submit" class="button1"><i class="fas fa-cogs"></i> Generar Informe</button>
+                <button type="button" id="generateInformeButton" class="button1"><i class="fas fa-cogs"></i> Generar
+                    Informe</button>
             </center>
         </form>
+
+        <!-- Modal de Selección de Formato -->
+        <div id="selectFormatModal" class="draggable-card" style="display: none;">
+            <div class="modal-content">
+                <div class="card-header">
+                    <span class="card-title">Seleccione el Formato del Informe</span>
+                    <button type="button" class="close" onclick="closeModal()">
+                        <i class="fa-thin fa-xmark"></i>
+                    </button>
+                </div>
+                <div class="card-body">
+                    <form id="formatSelectionForm">
+                        <div class="form-group">
+                            <label for="informeFormato"><strong>Seleccione el formato del informe:</strong></label>
+                            <select id="informeFormato" class="form-control input" name="formato" required>
+                                <option value="">Seleccione una opción</option>
+                                <option value="nuevo">Nuevo Formato</option>
+                                <option value="anterior">Forma Anterior</option>
+                            </select>
+                        </div>
+                        <div class="card-footer d-flex justify-content-center align-items-center">
+                            <button type="button" class="button" onclick="submitInforme()">Confirmar y Generar
+                                Informe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
 
 
         <hr>
@@ -262,7 +289,8 @@
                 <!-- Selección de actas de reunión -->
                 <div class="col-md-3 form-group">
                     <label for="acta"><strong>Ver Actas de Reunión:</strong></label>
-                    <select class="form-control input input_select3" name="actaId" id="acta" onchange="verActa(this.value)">
+                    <select class="form-control input input_select3" name="actaId" id="acta"
+                        onchange="verActa(this.value)">
                         <option value="#" disabled selected>Seleccione un acta</option>
                         @foreach ($actas as $acta)
                             <option value="{{ $acta->id }}"
@@ -358,19 +386,24 @@
                             <div class="form-group col-md-4">
                                 <label for="acciones"><strong>Acciones a realizar:</strong></label>
                                 <textarea name="acciones[]" class="form-control input" placeholder="Ingrese las acciones a realizar" rows="2">{{ $accion }}</textarea>
-                                <small class="form-text text-danger" style="display: none;">Este campo es obligatorio</small>
+                                <small class="form-text text-danger" style="display: none;">Este campo es
+                                    obligatorio</small>
                             </div>
 
                             <div class="form-group col-md-4">
                                 <label for="responsable"><strong>Responsable:</strong></label>
-                                <textarea name="responsable[]" class="form-control input" placeholder="Ingrese el nombre del responsable" rows="2">{{ old('responsable')[$index] }}</textarea>
-                                <small class="form-text text-danger" style="display: none;">Este campo es obligatorio</small>
+                                <textarea name="responsable[]" class="form-control input" placeholder="Ingrese el nombre del responsable"
+                                    rows="2">{{ old('responsable')[$index] }}</textarea>
+                                <small class="form-text text-danger" style="display: none;">Este campo es
+                                    obligatorio</small>
                             </div>
 
                             <div class="form-group col-md-4">
                                 <label for="fechaAcciones"><strong>Fecha termino:</strong></label>
-                                <input type="date" name="fechaAcciones[]" class="form-control input" placeholder="Ingrese la fecha" value="{{ old('fechaAcciones')[$index] }}">
-                                <small class="form-text text-danger" style="display: none;">Este campo es obligatorio</small>
+                                <input type="date" name="fechaAcciones[]" class="form-control input"
+                                    placeholder="Ingrese la fecha" value="{{ old('fechaAcciones')[$index] }}">
+                                <small class="form-text text-danger" style="display: none;">Este campo es
+                                    obligatorio</small>
                             </div>
                         </div>
                     @endforeach
@@ -384,13 +417,15 @@
 
                         <div class="form-group col-md-4">
                             <label for="responsable"><strong>Responsable:</strong></label>
-                            <textarea name="responsable[]" class="form-control input" placeholder="Ingrese el nombre del responsable" rows="2"></textarea>
+                            <textarea name="responsable[]" class="form-control input" placeholder="Ingrese el nombre del responsable"
+                                rows="2"></textarea>
                             <small class="form-text text-danger" style="display: none;">Este campo es obligatorio</small>
                         </div>
 
                         <div class="form-group col-md-4">
                             <label for="fechaAcciones"><strong>Fecha termino:</strong></label>
-                            <input type="date" name="fechaAcciones[]" class="form-control input" placeholder="Ingrese la fecha">
+                            <input type="date" name="fechaAcciones[]" class="form-control input"
+                                placeholder="Ingrese la fecha">
                             <small class="form-text text-danger" style="display: none;">Este campo es obligatorio</small>
                         </div>
                     </div>
@@ -414,8 +449,10 @@
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="desarrollo"><strong>Desarrollo:</strong></label>
-                                <input type="text" name="desarrollo[]" class="form-control input" placeholder="Ingrese el desarrollo" value="{{ $desarrollo }}">
-                                <small class="form-text text-danger" style="display: none;">Este campo es obligatorio</small>
+                                <input type="text" name="desarrollo[]" class="form-control input"
+                                    placeholder="Ingrese el desarrollo" value="{{ $desarrollo }}">
+                                <small class="form-text text-danger" style="display: none;">Este campo es
+                                    obligatorio</small>
                             </div>
                         </div>
                     @endforeach
@@ -423,7 +460,8 @@
                     <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="desarrollo"><strong>Desarrollo:</strong></label>
-                            <input type="text" name="desarrollo[]" class="form-control input" placeholder="Ingrese el desarrollo">
+                            <input type="text" name="desarrollo[]" class="form-control input"
+                                placeholder="Ingrese el desarrollo">
                             <small class="form-text text-danger" style="display: none;">Este campo es obligatorio</small>
                         </div>
                     </div>
@@ -434,7 +472,8 @@
                 <button type="button" class="button3 efects_button btn_nuevo3 mr-2" onclick="agregarCampoDesarrollo()">
                     <i class="fa-solid fa-plus"></i>
                 </button>
-                <button type="button" class="button3 efects_button btn_eliminar3 mr-2" onclick="eliminarCampoDesarrollo()">
+                <button type="button" class="button3 efects_button btn_eliminar3 mr-2"
+                    onclick="eliminarCampoDesarrollo()">
                     <i class='bx bx-trash'></i>
                 </button>
             </div>
@@ -755,50 +794,86 @@
         </script>
 
         <script>
-          document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('actaReunionForm');
+            document.addEventListener('DOMContentLoaded', function() {
+                const form = document.getElementById('actaReunionForm');
 
-    form.addEventListener('submit', function(event) {
-        let isValid = true;
-        const requiredFields = form.querySelectorAll('input, textarea');
+                form.addEventListener('submit', function(event) {
+                    let isValid = true;
+                    const requiredFields = form.querySelectorAll('input, textarea');
 
-        // Recorre todos los campos y verifica si están vacíos
-        requiredFields.forEach(field => {
-            const errorElement = field.nextElementSibling;
-            if (field.value.trim() === '') {
-                // Si el campo está vacío, muestra un mensaje de error
-                if (errorElement && errorElement.classList.contains('form-text')) {
-                    errorElement.textContent = 'Este campo es obligatorio';
-                    errorElement.style.display = 'block';
-                }
-                isValid = false;
-            } else {
-                // Si el campo no está vacío, oculta el mensaje de error
-                if (errorElement && errorElement.classList.contains('form-text')) {
-                    errorElement.style.display = 'none';
-                }
-            }
-        });
+                    // Recorre todos los campos y verifica si están vacíos
+                    requiredFields.forEach(field => {
+                        const errorElement = field.nextElementSibling;
+                        if (field.value.trim() === '') {
+                            // Si el campo está vacío, muestra un mensaje de error
+                            if (errorElement && errorElement.classList.contains('form-text')) {
+                                errorElement.textContent = 'Este campo es obligatorio';
+                                errorElement.style.display = 'block';
+                            }
+                            isValid = false;
+                        } else {
+                            // Si el campo no está vacío, oculta el mensaje de error
+                            if (errorElement && errorElement.classList.contains('form-text')) {
+                                errorElement.style.display = 'none';
+                            }
+                        }
+                    });
 
-        // Si hay algún campo vacío, se previene el envío del formulario
-        if (!isValid) {
-            event.preventDefault();
-        }
-    });
+                    // Si hay algún campo vacío, se previene el envío del formulario
+                    if (!isValid) {
+                        event.preventDefault();
+                    }
+                });
 
-    // Oculta el mensaje de error cuando el usuario empieza a escribir
-    const requiredFields = form.querySelectorAll('input, textarea');
-    requiredFields.forEach(field => {
-        field.addEventListener('input', function() {
-            const errorElement = this.nextElementSibling;
-            if (errorElement && errorElement.classList.contains('form-text')) {
-                errorElement.style.display = 'none';
-            }
-        });
-    });
-});
-
+                // Oculta el mensaje de error cuando el usuario empieza a escribir
+                const requiredFields = form.querySelectorAll('input, textarea');
+                requiredFields.forEach(field => {
+                    field.addEventListener('input', function() {
+                        const errorElement = this.nextElementSibling;
+                        if (errorElement && errorElement.classList.contains('form-text')) {
+                            errorElement.style.display = 'none';
+                        }
+                    });
+                });
+            });
         </script>
+
+        <script>
+            document.getElementById('generateInformeButton').addEventListener('click', function(event) {
+                event.preventDefault(); // Evita que el formulario se envíe inmediatamente
+                showModal();
+            });
+
+            function showModal() {
+                document.getElementById('selectFormatModal').style.display = 'block';
+            }
+
+            function closeModal() {
+                document.getElementById('selectFormatModal').style.display = 'none';
+            }
+
+            function submitInforme() {
+                const formato = document.getElementById('informeFormato').value;
+
+                if (!formato) {
+                    alert('Por favor, seleccione un formato para continuar.');
+                    return;
+                }
+
+                 const informeForm = document.getElementById('informeForm');
+
+                 if (formato === 'anterior') {
+                    informeForm.action = '{{ route('director_vinculacion.generarInformeDirector') }}';
+                } else if (formato === 'nuevo') {
+                    informeForm.action = '{{ route('director_vinculacion.generarInformeDirector2') }}';
+                }
+
+                 closeModal();
+                informeForm.submit();
+            }
+        </script>
+
+
 
 
     @endsection

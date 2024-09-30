@@ -350,6 +350,7 @@ Route::middleware(['auth'])->group(function () {
 
     //generarInformeDirector
     Route::post('/director-vinculacion/generar-informe-director', [DirectorVinculacionController::class, 'generarInformeDirector'])->name('director_vinculacion.generarInformeDirector');
+    Route::post('/director-vinculacion/generar-informe-director-nuevo', [DirectorVinculacionController::class, 'generarInformeDirectorNuevoFormato'])->name('director_vinculacion.generarInformeDirector2');
 
     route::get('/director/estudiantes-repartidos', [DirectorVinculacionController::class, 'repartoEstudiantes'])->name('director.repartoEstudiantes');
 
@@ -554,7 +555,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/admin/descargar-evidencias/{proyectoId}', [AdminController::class, 'descargarEvidencias'])->name('admin.descargarEvidencias');
 
-
+    //////////////////////////nuevas rutas de actualizacion/////////////////////////////////////
+    Route::put('/admin/actualizar-estudiantes', [AdminController::class, 'actualizarProyectosEstudiante'])->name('admin.actualizarEstudiantes');
 
 
 

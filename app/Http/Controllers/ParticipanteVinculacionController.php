@@ -237,46 +237,60 @@ class ParticipanteVinculacionController extends Controller
     ///////////////baremos
 
     public function baremo(Request $request)
-    {
-        if (Auth::check() && Auth::user()->role->tipo !== 'ParticipanteVinculacion') {
-            return redirect()->route('login')->with('error', 'Acceso no autorizado');
-        }
+{
+    // Verificar si el usuario está autenticado y tiene el rol adecuado
+    if (Auth::check() && Auth::user()->role->tipo !== 'ParticipanteVinculacion') {
+        return redirect()->route('login')->with('error', 'Acceso no autorizado');
+    }
 
-        $profesor = Auth::user()->profesorUniversidad;
+    // Obtener el profesor vinculado al usuario autenticado
+    $profesor = Auth::user()->profesorUniversidad;
 
-        $proyecto = AsignacionProyecto::where('participanteId', $profesor->id)
-            ->whereHas('estudiante', function ($query) {
-                $query->where('estado', 'Aprobado');
-            })
-            ->with([
-                'proyecto',
-                'estudiante',
-                'nrcVinculacion.periodo'
-            ])
+    // Buscar el proyecto donde participa el profesor y está relacionado con estudiantes aprobados
+    $proyecto = AsignacionProyecto::where('participanteId', $profesor->id)
+        ->whereHas('estudiante', function ($query) {
+            $query->where('estado', 'Aprobado');
+        })
+        ->with([
+            'proyecto',
+            'estudiante',
+            'nrcVinculacion.periodo'
+        ])
+        ->first();
+
+    $inicioFecha = null;
+    $finalizacionFecha = null;
+
+    // Si se encuentra el proyecto, establecer las fechas según el período del NRC
+    if ($proyecto) {
+        $inicioFecha = $proyecto->nrcVinculacion->periodo->inicioPeriodo ?? null;
+        $finalizacionFecha = $proyecto->nrcVinculacion->periodo->finPeriodo ?? null;
+    } else {
+        // Si no se encuentra el proyecto, buscar una asignación sin estudiante
+        $fechaActual = Carbon::now()->format('Y-m-d');
+        $proyecto = AsignacionSinEstudiante::where('participanteId', $profesor->id)
+            ->where('inicioFecha', '<=', $fechaActual)
+            ->where('finalizacionFecha', '>=', $fechaActual)
+            ->with(['proyecto'])
             ->first();
 
-        $inicioFecha = null;
-        $finalizacionFecha = null;
-
+        // Establecer las fechas en caso de encontrar una asignación sin estudiante
         if ($proyecto) {
-            $inicioFecha = $proyecto->nrcVinculacion->periodo->inicioPeriodo ?? null;
-            $finalizacionFecha = $proyecto->nrcVinculacion->periodo->finPeriodo ?? null;
-        } else {
-            $fechaActual = Carbon::now()->format('Y-m-d');
-            $proyecto = AsignacionSinEstudiante::where('participanteId', $profesor->id)
-                ->where('inicioFecha', '<=', $fechaActual)
-                ->where('finalizacionFecha', '>=', $fechaActual)
-                ->with(['proyecto'])
-                ->first();
-
-            if ($proyecto) {
-                $inicioFecha = $proyecto->inicioFecha ?? null;
-                $finalizacionFecha = $proyecto->finalizacionFecha ?? null;
-            }
+            $inicioFecha = $proyecto->inicioFecha ?? null;
+            $finalizacionFecha = $proyecto->finalizacionFecha ?? null;
         }
-
-        return view('ParticipanteVinculacion.baremo', compact('inicioFecha', 'finalizacionFecha'));
     }
+
+    // Si no se encuentran fechas válidas, asignar valores por defecto
+    if (is_null($inicioFecha) || is_null($finalizacionFecha)) {
+        // Puedes asignar aquí valores por defecto o manejar el caso de fechas no encontradas
+        $inicioFecha = Carbon::now()->subMonth()->format('Y-m-d');  // Por ejemplo, 1 mes antes de la fecha actual
+        $finalizacionFecha = Carbon::now()->addMonth()->format('Y-m-d');  // Por ejemplo, 1 mes después de la fecha actual
+    }
+
+    // Retornar la vista con las fechas obtenidas
+    return view('ParticipanteVinculacion.baremo', compact('inicioFecha', 'finalizacionFecha'));
+}
 
 
 

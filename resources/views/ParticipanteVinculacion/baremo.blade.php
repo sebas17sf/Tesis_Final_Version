@@ -312,33 +312,26 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                var tabla1 = document.getElementById('tabla1');
-                var errorTabla1 = document.getElementById('errorTabla1');
-                var tabla2 = document.getElementById('tabla2');
-                var errorTabla2 = document.getElementById('errorTabla2');
-                var tabla3 = document.getElementById('tabla3');
-                var errorTabla3 = document.getElementById('errorTabla3');
-                var tabla4 = document.getElementById('tabla4');
-                var errorTabla4 = document.getElementById('errorTabla4');
                 var totalPuntaje = document.getElementById('total_puntaje');
                 var horasTotales = document.getElementById('horas_totales');
                 var horasEntreFechas = document.getElementById('horas_entre_fechas');
+                var hiddenHorasEntreFechas = document.getElementById('hidden_horas_entre_fechas');
                 var inputs = document.querySelectorAll('.puntaje_proyecto');
+
+                // Inicializamos las fechas obtenidas desde PHP con el formato adecuado
+                var startDateStr = '{{ $inicioFecha }}';
+                var endDateStr = '{{ $finalizacionFecha }}';
 
                 function updateTotal() {
                     var total = 0;
-                    var errorMessages = [errorTabla1, errorTabla2, errorTabla3, errorTabla4];
                     var valid = true;
 
-                    inputs.forEach(function(input, index) {
+                    inputs.forEach(function(input) {
                         var value = parseInt(input.value) || 0;
-                        var error = '';
                         if (![10, 8, 6, 4, 0].includes(value)) {
-                            error = 'El valor no es valido.';
                             valid = false;
                         }
                         total += value;
-                        errorMessages[index].textContent = error;
                     });
 
                     if (valid) {
@@ -347,6 +340,7 @@
                     } else {
                         totalPuntaje.value = '';
                         horasTotales.value = '';
+                        hiddenHorasEntreFechas.value = '';
                     }
                 }
 
@@ -358,32 +352,64 @@
                         hours = 4;
                     } else if (total <= 24) {
                         hours = 2;
-                    } else {
-                        hours = 0;
                     }
                     horasTotales.value = hours;
                     calculateHoursBetweenDates(hours);
                 }
 
-
                 function calculateHoursBetweenDates(hours) {
-                    var startDate = new Date('{{ $inicioFecha }}');
-                    var endDate = new Date('{{ $finalizacionFecha }}');
-                    var weeks = Math.ceil((endDate - startDate) / (7 * 24 * 60 * 60 * 1000));
+                    // Crear objetos de fecha con los valores formateados
+                    var startDate = new Date(Date.parse(startDateStr));
+                    var endDate = new Date(Date.parse(endDateStr));
+
+                    // Validar que las fechas sean válidas
+                    if (isNaN(startDate) || isNaN(endDate)) {
+                        console.error('Las fechas no son válidas:', { startDateStr, endDateStr });
+                        horasEntreFechas.value = '0';
+                        hiddenHorasEntreFechas.value = '0';
+                        return;
+                    }
+
+                    // Calcular la cantidad de semanas entre las fechas
+                    var timeDiff = endDate.getTime() - startDate.getTime();
+
+                    if (timeDiff <= 0) {
+                        console.error('La fecha de inicio es posterior a la fecha de finalización o son iguales');
+                        horasEntreFechas.value = '0';
+                        hiddenHorasEntreFechas.value = '0';
+                        return;
+                    }
+
+                    // Calcular el número de semanas completas (tomando en cuenta 7 días por semana)
+                    var weeks = Math.ceil(timeDiff / (7 * 24 * 60 * 60 * 1000));
                     var hoursBetweenDates = weeks * hours;
+
+                    // Actualizar los valores de los campos
                     horasEntreFechas.value = hoursBetweenDates;
-                    document.getElementById('hidden_horas_entre_fechas').value = hoursBetweenDates;
+                    hiddenHorasEntreFechas.value = hoursBetweenDates;
 
-
-
-
+                    console.log('Fechas:', { startDate, endDate, weeks, hoursBetweenDates });
                 }
 
                 inputs.forEach(function(input) {
                     input.addEventListener('input', updateTotal);
                 });
+
+                // Agregar evento al formulario para enviar el valor oculto correctamente
+                document.getElementById('horasDocenteForm').addEventListener('submit', function(event) {
+                    hiddenHorasEntreFechas.value = horasEntreFechas.value;
+
+                    console.log('Horas entre fechas antes de enviar:', hiddenHorasEntreFechas.value);
+
+                    if (!hiddenHorasEntreFechas.value || hiddenHorasEntreFechas.value === '0') {
+                        alert('El valor de horas entre fechas no es válido. Por favor, verifique los datos ingresados.');
+                        event.preventDefault();
+                    }
+                });
+
             });
         </script>
+
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {

@@ -586,9 +586,20 @@
                                                         style=" text-transform: uppercase; text-align: left; white-space: nowrap; overflow: hidden;">
 
                                                         @foreach ($grupo as $asignacion)
-                                                            {{ $asignacion->estudiante->apellidos ?? '' }}
-                                                            {{ $asignacion->estudiante->nombres ?? '' }}<br>
+                                                            <a href="#" class="edit-student"
+                                                                data-id="{{ $asignacion->estudiante->estudianteId }}"
+                                                                data-nombres="{{ $asignacion->estudiante->nombres }}"
+                                                                data-apellidos="{{ $asignacion->estudiante->apellidos }}"
+                                                                data-proyecto-id="{{ $asignacion->proyectoId }}"
+                                                                data-nrc-id="{{ $asignacion->nrc }}">
+                                                                {{ $asignacion->estudiante->apellidos ?? '' }}
+                                                                {{ $asignacion->estudiante->nombres ?? '' }}
+                                                            </a><br>
                                                         @endforeach
+
+
+
+
 
                                                     </td>
 
@@ -1192,6 +1203,59 @@
     </div>
 
 
+    <div id="editStudentModal" class="draggable-card" style="display: none;">
+        <div class="modal-content">
+            <div class="card-header">
+                <span class="card-title">Detalles del Estudiante</span>
+                <button type="button" class="close" onclick="$('#editStudentModal').hide()">
+                    <i class="fa-thin fa-xmark"></i>
+                </button>
+            </div>
+            <div class="card-body">
+                <form id="editStudentForm" action="{{ route('admin.actualizarEstudiantes') }}" method="POST">
+                    @csrf
+                    @method('PUT') <!-- Usamos PUT ya que estamos actualizando -->
+
+                    <input type="hidden" name="estudiante_id" id="estudiante_id_modal">
+
+                    <div class="form-group">
+                        <label for="nombre_estudiante_modal"><strong>Nombre del Estudiante:</strong></label>
+                        <input type="text" id="nombre_estudiante_modal" class="form-control input" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="proyecto_id"><strong>Proyecto Disponible:</strong></label>
+                        <select id="proyecto_id_modal" name="proyecto_id" class="form-control input input_select"
+                            required>
+                            <option value="">Seleccione un proyecto</option>
+                            @foreach ($proyectosDisponibles as $proyecto)
+                                <option value="{{ $proyecto->proyectoId }}">{{ $proyecto->director->nombres }}
+                                    {{ $proyecto->director->apellidos }} {{ $proyecto->codigoProyecto }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nrc"><strong>NRC:</strong></label>
+                        <select id="nrc_modal" name="nrc" class="form-control input input_select">
+                            <option value="">Seleccione un NRC</option>
+                            @foreach ($nrcs as $nrc)
+                                <option value="{{ $nrc->id }}">{{ $nrc->nrc }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="card-footer d-flex justify-content-center align-items-center">
+                        <button type="submit" class="button">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
 
 
 
@@ -1603,6 +1667,38 @@
         }
     </script>
 
+
+    <script>
+        $(document).ready(function() {
+            // Event listener for when a student name link is clicked
+            $('.edit-student').click(function(event) {
+                event.preventDefault(); // Prevent default link behavior
+
+                // Obtener los datos del estudiante del enlace (data-*)
+                var estudianteId = $(this).data('id');
+                var nombres = $(this).data('nombres');
+                var apellidos = $(this).data('apellidos');
+                var proyectoId = $(this).data('proyecto-id'); // Proyecto actual asignado
+                var nrcId = $(this).data('nrc-id'); // NRC actual asignado
+
+                // Asignar el valor del ID del estudiante al input oculto
+                $('#estudiante_id_modal').val(estudianteId);
+
+                // Asignar los otros valores a los campos del modal
+                $('#nombre_estudiante_modal').val(apellidos + ' ' + nombres);
+                $('#proyecto_id_modal').val(proyectoId);
+                $('#nrc_modal').val(nrcId);
+
+                // Mostrar el modal
+                $('#editStudentModal').show();
+            });
+
+            // Hacer que el modal sea draggable (opcional)
+            $('#editStudentModal').draggable({
+                handle: ".card-header"
+            });
+        });
+    </script>
 
 
 

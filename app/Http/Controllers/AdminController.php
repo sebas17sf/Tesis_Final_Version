@@ -2209,7 +2209,7 @@ class AdminController extends Controller
     }
 
 
-//////////////////////////////editar fechas estudiante///////////////////////////
+    //////////////////////////////editar fechas estudiante///////////////////////////
 
     public function updateFecha(Request $request)
     {
@@ -2258,6 +2258,32 @@ class AdminController extends Controller
 
 
 
+    public function actualizarProyectosEstudiante(Request $request)
+    {
+        $request->validate([
+            'estudiante_id' => 'required|integer',
+            'proyecto_id' => 'required',
+            'nrc' => '',
+        ]);
+
+        try {
+            $estudiante = AsignacionProyecto::where('estudianteId', $request->estudiante_id)->first();
+
+            if (!$estudiante) {
+                return redirect()->back()->with('error', 'Estudiante no encontrado.');
+            }
+
+            $estudiante->proyectoId = $request->proyecto_id ?? null;
+            $estudiante->nrc = $request->nrc ?? null;
+            $estudiante->save();
+
+            return redirect()->back()->with('success', 'Proyectos actualizados correctamente.');
+
+        } catch (\Exception $e) {
+            // Capturar cualquier excepción que ocurra durante el proceso
+            return redirect()->back()->with('error', 'Ocurrió un error al actualizar los proyectos. Por favor, inténtelo nuevamente.')->withErrors($e->getMessage());
+        }
+    }
 
 
 
